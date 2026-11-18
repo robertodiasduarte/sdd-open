@@ -1,0 +1,9 @@
+$ T=$(mktemp -d) && git archive v2.3.1 | tar -x -C $T && cp tests/test_contexto_lint.py tests/test_patterns_lint.py tests/test_governanca_fronteira.py tests/test_governanca_bloco.py tests/test_governanca_gate.py tests/test_docs_extract_decisions.py tests/test_f12_textos.py $T/tests/ && cd $T/tests && for m in test_contexto_lint test_patterns_lint test_governanca_fronteira test_governanca_bloco test_governanca_gate test_docs_extract_decisions test_f12_textos; do SDD_TEST_BASH=/bin/bash /usr/bin/python3 -B -m unittest $m > $T/$m.out 2>&1; echo "$m: exit=$? $(grep -E "^(Ran|OK|FAILED)" $T/$m.out | tr "\n" " ")"; done
+test_contexto_lint: exit=1 Ran 11 tests in 0.185s FAILED (errors=11) 
+test_patterns_lint: exit=1 Ran 7 tests in 0.126s FAILED (errors=7) 
+test_governanca_fronteira: exit=1 Ran 5 tests in 0.305s FAILED (failures=4, errors=1) 
+test_governanca_bloco: exit=1 Ran 6 tests in 0.432s FAILED (failures=18) 
+test_governanca_gate: exit=1 Ran 8 tests in 1.672s FAILED (failures=14) 
+test_docs_extract_decisions: exit=1 Ran 4 tests in 0.057s FAILED (failures=5, errors=1) 
+test_f12_textos: exit=1 
+[exit=0]

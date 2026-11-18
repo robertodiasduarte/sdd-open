@@ -1,0 +1,42 @@
+$ /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f17c-starter-etapa3/4be28bc9-cd19-4e52-baaf-378f21755723/scratchpad/at008.sh /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f17c-starter-etapa3/4be28bc9-cd19-4e52-baaf-378f21755723/scratchpad/g1/starter
+$ python3 -B scripts/check-gerado.py
+✅ 18 skill(s) gerada(s) e a infra conferidas: tudo igual ao que o sdd-open gerou
+RESULTADO: VERDE
+rc=0
+
+$ bash scripts/publish-check.sh
+PASS: publish-check found no forbidden content.
+rc=0
+
+$ python3 -B scripts/check-versions.py --base v1.5.18
+PASS: check-versions — 18 skills com versão coerente, comparadas a v1.5.18.
+rc=0
+
+$ bash skills/sdd-kb/scripts/gate.sh
+RESULTADO: VERDE — 4 aceitas, 12 rejeitadas pelo motivo certo, RULE_MAP do exemplo em dia
+rc=0
+
+$ python3 -B -m unittest discover -s tests
+..............................................................
+----------------------------------------------------------------------
+Ran 62 tests in 3.270s
+
+OK
+rc=0
+
+== testes das skills geradas (CI do starter)
+$ bash -c for t in skills/*/tests; do [ -d "$t" ] || continue; python3 -B -m unittest discover -s "$t" -p "test_*.py" || exit 1; done
+.................
+----------------------------------------------------------------------
+Ran 17 tests in 0.065s
+
+OK
+rc=0
+
+== sabotagem: 1 byte trocado em skills/sdd-build (cópia)
+skills/sdd-build/references/verify-gate.md com 1 byte trocado: check-gerado rc=1 (esperado 1)
+skills/sdd-build/SKILL.md com 1 byte trocado: check-gerado rc=1 (esperado 1)
+skills/sdd-build/assets/BUILD_REPORT_TEMPLATE.md com 1 byte trocado: check-gerado rc=1 (esperado 1)
+arquivo a mais em skills/sdd-build: check-gerado rc=1 (esperado != 0)
+falhas=0
+rc=0

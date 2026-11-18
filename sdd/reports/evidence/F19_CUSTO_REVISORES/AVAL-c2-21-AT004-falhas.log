@@ -1,0 +1,14 @@
+$ /bin/bash sdd/bin/eval-revisores.sh /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f21-f19/8ca3f42f-d684-434d-9f0b-19bdcf0aef88/scratchpad/aval2-f19/casos/at/exits --ledgers /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f21-f19/8ca3f42f-d684-434d-9f0b-19bdcf0aef88/scratchpad/aval2-f19/casos/at/custos --registry sdd/fixtures/revisao/custo/registry.tsv | sed -n '3,$p' | cut -c1-700; echo "[exit ${PIPESTATUS[0]}]"
+| Papel | Engine (modelo) | Cobrança | Rodadas | Falhas | Pago US$ | Nominal US$ | Achados | Aplicados | Com dano | Falsos positivos | Fora de escopo | Sem classificar | Pago por dano | Nominal por dano | AGREE |
+|---|---|---|---:|---|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|
+| revisor | claude (m-x) | assinatura | 8 | 0 | 0.0000 | 8.0000 | 8 | 0 de 8 | 0 de 8 | 0 de 8 | 0 de 8 | 8 de 8 | — | — | — |
+| 2º revisor | openrouter (t/t) | pay-per-token | 0 | 6 (1 cota ou tempo, 1 credencial, 3 outro, 1 resposta inválida) | 1.8750 (n/d em 2 de 6) | 1.8750 (n/d em 2 de 6) | 0 | 0 | 0 | 0 | 0 | 0 | — | — | — |
+| auditor | codex (-) | assinatura | 0 | 1 (1 trocada por outra engine) | 0.0000 | n/d | 0 | 0 | 0 | 0 | 0 | 0 | — | — | n/a |
+| auditor | openrouter (q/p via A) | pay-per-token | 1 | 0 | 0.4000 | 0.4000 | 0 | 0 | 0 | 0 | 0 | 0 | — | — | 100.0% (1 de 1) |
+| desempate | codex (-) | assinatura | 1 | 0 | 0.0000 | n/d | 0 | 0 | 0 | 0 | 0 | 0 | — | — | — |
+
+fora da conta: 9 (EXTERNAL_REVIEW_20260401-000007: 2º revisor indisponível: nenhuma engine foi chamada; LEDGER_REVISAO_C.md:3: achado R9 não está em EXTERNAL_REVIEW_20260401-000005; LEDGER_REVISAO_C.md:4: achado R9 não está em EXTERNAL_REVIEW_20260401-000006; LEDGER_REVISAO_C.md:5: achado R9 não está em EXTERNAL_REVIEW_20260401-000007; EXTERNAL_REVIEW_20260401-000001: sem linha em nenhum ledger: os achados dela ficam em sem classificar; EXTERNAL_REVIEW_20260401-000002: sem linha em nenhum ledger: os achados dela ficam em sem classificar; EXTERNAL_REVIEW_20260401-000003: sem linha em nenhum ledger: os achados dela ficam em sem classificar; EXTERNAL_REVIEW_20260401-000004: sem linha em nenhum 
+RESULTADO: MEDIDO
+→ leia cada taxa com a amostra ao lado: poucas rodadas dão número instável. O script conta o que está registrado; trocar a cadeia de revisão é decisão de quem lê.
+[exit 0]
+[exit 0]

@@ -1,0 +1,33 @@
+$ PATH=/usr/bin:/bin:/usr/sbin:/sbin /bin/bash /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f21-f19/8ca3f42f-d684-434d-9f0b-19bdcf0aef88/scratchpad/aval-f19/tools/init.sh /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f21-f19/8ca3f42f-d684-434d-9f0b-19bdcf0aef88/scratchpad/aval-f19/casos/projnovo
+[init exit=0]
+✅ nenhum segredo salvo no git (.env, .pfx, .p12, .pem com chave privada)
+RESULTADO: INSTALADO
+→ abra seu agente e peça a fase Define (ex.: /sdd-define ou /skill:sdd-define).
+presente  361c2f4b6424  sdd/bin/eval-revisores.sh
+          idêntico ao do pacote
+presente  3ae2bb7ed8e7  sdd/bin/ledger-revisao-lint.sh
+          idêntico ao do pacote
+presente  b81445f8ab59  sdd/review/CRITERIO_DANO.md
+          idêntico ao do pacote
+presente  899795cbf031  sdd/templates/LEDGER_REVISAO_TEMPLATE.md
+          idêntico ao do pacote
+presente  adcae399a092  sdd/review/registry.tsv
+          idêntico ao do pacote
+sdd/fixtures
+sdd/reviews
+=== eval-revisores no projeto novo, sem revisões
+eval-revisores — custo e resultado por papel, engine e modelo (0 pasta(s) lida(s) em /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f21-f19/8ca3f42f-d684-434d-9f0b-19bdcf0aef88/scratchpad/aval-f19/casos/projnovo/sdd/reports/reviews; 0 ledger(s))
+RESULTADO: SEM DADOS
+→ nenhuma revisão com META.txt legível nesta pasta: rode adversarial-review.sh e meça de novo.
+[exit=2]
+=== lint no molde recém-instalado (sem linhas → 64)
+🛑 sdd/templates/LEDGER_REVISAO_TEMPLATE.md — nenhuma linha de dados nem linha `sem achados:`: nada conferido nunca é verde
+RESULTADO: ERRO DE USO
+→ grave as linhas do ledger pelo molde (sdd/templates/LEDGER_REVISAO_TEMPLATE.md) e rode de novo.
+[exit=64]
+=== --help dos dois
+  ledger-revisao-lint.sh <LEDGER_REVISAO_F.md>…
+      a tabela do ledger é a que tem o cabeçalho começando por `achado`; cada linha de dados tem 7 células:
+        | achado | sev | veredito | rodada | evidência | dano | revisão |
+[exit=0]
+[exit=0]

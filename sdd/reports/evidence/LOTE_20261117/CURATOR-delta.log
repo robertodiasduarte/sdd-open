@@ -1,0 +1,33 @@
+$ bash sdd/bin/playbook-curator.sh --aplicar "$TMPDIR/lote-delta.txt" sdd/playbook.md > "$TMPDIR/novo.md"   # na worktree do lote (main 017f09a)
+--- lote-delta.txt
+LM-001 ajudou+1
+LM-002 ajudou+1
+LM-012 ajudou+1
+LM-013 ajudou+1
+LM-014 ajudou+1
+LM-015 ajudou+1
+LM-017 ajudou+1
+LM-018 ajudou+1
+LM-024 ajudou+1
+LM-025 ajudou+1
+LM-026 ajudou+1
+LM-029 ajudou+1
+LM-030 ajudou+1
+LM-037 ajudou+1
+LM-038 ajudou+1
+LM-010 ajudou+1
+LM-035 mordeu+1
+--- stderr
+RESULTADO: DELTA APLICADO (17 linha(s))
+→ o stdout é o playbook novo: rode o playbook-lint.sh nele antes de copiar por cima.
+[exit=0]
+
+$ bash sdd/bin/playbook-curator.sh --aplicar-inv "$TMPDIR/lote-inv.txt" sdd/invariants.md > "$TMPDIR/inv.md"
+--- lote-inv.txt
+- [LM-035] descartado :: regra de manutenção deste pacote (a lista e o gerador do starter em `scripts/`), já barrada pelo lint do `scripts/gerar-starter.py` e pelos testes de `test_gerar_starter`, que não são instalados no projeto do aluno; não é regra do sistema que o aluno constrói (mesmo motivo do descarte da LM-012)
+--- stderr
+RESULTADO: INVARIANTES APLICADAS
+→ o stdout é o arquivo novo: rode --validar-inv com o playbook novo antes de copiar por cima.
+[exit=0]
+
+# decisão do Roberto, 2026-11-17: LM-035 "contar e dispensar"; envio para a main: sim

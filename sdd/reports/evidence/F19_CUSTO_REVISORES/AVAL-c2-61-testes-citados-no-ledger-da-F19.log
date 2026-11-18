@@ -1,0 +1,9 @@
+$ /usr/bin/python3 -I -B /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f21-f19/8ca3f42f-d684-434d-9f0b-19bdcf0aef88/scratchpad/aval2-f19/ferr/testes-citados.py /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f21-f19/8ca3f42f-d684-434d-9f0b-19bdcf0aef88/scratchpad/aval2-f19/casos/ledgers-reais/LEDGER_REVISAO_F19_CUSTO_REVISORES.md /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f21-f19/8ca3f42f-d684-434d-9f0b-19bdcf0aef88/scratchpad/aval2-f19/copia/tests
+linha 10 · R1 · dano=sim · test_linhas_depois_de_linha_em_branco_continuam_sendo_o_ledger · NÃO EXISTE em tests/ no commit avaliado
+linha 11 · R2 · dano=nao · test_ledger_sem_rotulo_casa_com_id_rotulado_quando_nao_ha_ambiguidade · existe
+linha 12 · R3 · dano=nao · test_arquivo_vazio_nao_esconde_as_violacoes_de_outro · NÃO EXISTE em tests/ no commit avaliado
+linha 13 · R4 · dano=sim · test_dano_fora_da_lista_e_avisado_e_nao_conta · existe
+linha 15 · R1 · dano=nao · test_sem_achados_dito_para_revisao_que_tem_achados_e_avisado · existe
+linha 16 · R2 · dano=nao · test_rotulo_escrito_como_o_id_cru_da_engine_tambem_casa · existe
+linha 17 · R3 · dano=nao · test_cabecalho_fora_do_molde_da_uma_mensagem_so · existe
+[exit 0]

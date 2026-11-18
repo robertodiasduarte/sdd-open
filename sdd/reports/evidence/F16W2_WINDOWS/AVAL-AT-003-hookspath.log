@@ -1,0 +1,19 @@
+$ git config core.hooksPath 'C:/<raiz sem a 1a barra>/sdd/hooks' (com 'C:' -> / como link na raiz, simulando a letra de drive) && bash .agents/skills/sdd-higiene-dado/scripts/alarme.sh verificar  # base=ad32fe1 head=3ba89de
+=== base  core.hooksPath=C:/private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f16w-windows/b56e801b-0f18-49ee-b51c-5b9188b29c23/scratchpad/repo-base/sdd/hooks
+1
+Estado: o projeto usa outro gerenciador de alarmes (core.hooksPath = C:/private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f16w-windows/b56e801b-0f18-49ee-b51c-5b9188b29c23/scratchpad/repo-base/sdd/hooks, comum com husky).
+Não instalei para não interferir no alarme que já existe.
+Para acrescentar esta verificação à mão, inclua no alarme existente (ex.: .husky/pre-commit) a linha:
+  bash "/private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f16w-windows/b56e801b-0f18-49ee-b51c-5b9188b29c23/scratchpad/repo-base/.agents/skills/sdd-higiene-dado/scripts/pre-commit.sh" || exit 1
+rc=2
+--- controle: core.hooksPath em C:/ de OUTRA pasta
+Estado: o projeto usa outro gerenciador de alarmes (core.hooksPath = C:/private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f16w-windows/b56e801b-0f18-49ee-b51c-5b9188b29c23/scratchpad/outra/sdd/hooks, comum com husky).
+Não instalei para não interferir no alarme que já existe.
+=== head  core.hooksPath=C:/private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f16w-windows/b56e801b-0f18-49ee-b51c-5b9188b29c23/scratchpad/repo-head/sdd/hooks
+1
+Estado: o projeto usa os hooks do sdd-open (sdd/hooks) e o alarme desta skill está desligado neles.
+Dá para ligar: o alarme passa a rodar pelos hooks do projeto (sdd/hooks) a cada commit, sem gravar nada em .git/.
+rc=0
+--- controle: core.hooksPath em C:/ de OUTRA pasta
+Estado: o projeto usa outro gerenciador de alarmes (core.hooksPath = C:/private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f16w-windows/b56e801b-0f18-49ee-b51c-5b9188b29c23/scratchpad/outra/sdd/hooks, comum com husky).
+Não instalei para não interferir no alarme que já existe.

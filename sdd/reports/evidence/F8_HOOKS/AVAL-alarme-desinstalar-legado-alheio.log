@@ -1,0 +1,7 @@
+$ cd /tmp/sdd-aval/alarme-legado-alheio && printf '#!/bin/sh\necho alheio\n' > .git/hooks/pre-commit && git config sdd.higieneDado on && bash .agents/skills/sdd-higiene-dado/scripts/alarme.sh desinstalar && cat .git/hooks/pre-commit && echo legado-alheio-preservado; echo higieneDado="$(git config --get sdd.higieneDado)"
+Alarme desligado dos hooks do projeto (sdd/hooks). Os hooks do sdd-open continuam no lugar.
+#!/bin/sh
+echo alheio
+legado-alheio-preservado
+higieneDado=
+[exit=0]

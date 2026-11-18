@@ -741,3 +741,11 @@ tests/test_validate_reverse.py
 tests/test_verify_gate.py
 tests/test_verify_gate_trace.py
 tests/test_windows.py
+scripts/montar-pacote.sh
+scripts/docs-migracao.py
+sdd/bin/docs-varredura.py
+sdd/bin/docs-varredura.sh
+.agents/skills/sdd-release/scripts/anexar-bruto.sh
+.agents/skills/sdd-release/references/bruto.md
+tests/test_f26_docs_na_main.py
+tests/test_f26_marca_starter.py

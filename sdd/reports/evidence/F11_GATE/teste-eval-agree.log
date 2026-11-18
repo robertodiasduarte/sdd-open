@@ -1,0 +1,12 @@
+$ SDD_TEST_BASH=/bin/bash /usr/bin/python3 -B -m unittest discover -s tests -p 'test_eval_agree.py' -v
+test_at014_numeros_exatos_da_fixture (test_eval_agree.EvalAgree) ... ok
+test_at014_pasta_padrao_vem_do_output_dir (test_eval_agree.EvalAgree) ... ok
+test_at015_fora_da_conta_com_o_motivo (test_eval_agree.EvalAgree) ... ok
+test_at016_sem_dados_e_uso (test_eval_agree.EvalAgree) ... ok
+test_at017_so_le_arquivos (test_eval_agree.EvalAgree) ... ok
+
+----------------------------------------------------------------------
+Ran 5 tests in 0.725s
+
+OK
+[exit=0]

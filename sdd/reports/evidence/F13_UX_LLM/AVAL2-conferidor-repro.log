@@ -1,0 +1,12 @@
+$ /bin/bash /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f13-ux-llm/78ae1e97-e8f5-4e7a-aec5-ff37409eac82/scratchpad/n2.sh
+RESULTADO: PASSA
+64 mascarado: rc=0 (esperado 1)
+RESULTADO: PASSA
+gravou por patch e varreu depois: rc=0 (esperado 1)
+RESULTADO: PASSA
+1 scan, 2 arquivos só citados: rc=0 (esperado 1)
+RESULTADO: PASSA
+grep no script no lugar do scan: rc=0 (esperado 1)
+RESULTADO: PASSA
+echo cat no lugar da leitura: rc=0 (esperado 1)
+[exit=0]

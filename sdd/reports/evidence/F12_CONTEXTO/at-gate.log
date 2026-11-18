@@ -1,0 +1,70 @@
+$ git rev-parse --short HEAD && cd tests && SDD_TEST_BASH=/bin/bash /usr/bin/python3 -B -m unittest -v test_governanca_gate test_verify_gate test_verify_gate_trace test_gate_baseline
+96a97ec
+test_aval2_duas_duvidas_na_mesma_linha_aparecem (test_governanca_gate.Gate) ... ok
+test_fixture_sem_a_linha_sai_5_com_as_duas_saidas (test_governanca_gate.Gate) ... ok
+test_fixtures_mantem_o_exit (test_governanca_gate.Gate) ... ok
+test_l2_marcador_de_governanca_com_outra_duvida_mostra_as_duas (test_governanca_gate.Gate) ... ok
+test_l3_linha_com_recuo_ou_sem_negrito_vale (test_governanca_gate.Gate) ... ok
+test_linha_fora_do_technical_context_ou_em_cerca_nao_vale (test_governanca_gate.Gate) ... ok
+test_marcador_do_passo_11_imprime_a_mensagem_da_governanca (test_governanca_gate.Gate) ... ok
+test_print_isento_strict_remapeia_e_ordem (test_governanca_gate.Gate) ... ok
+test_real2_linha_em_cerca_til_nao_vale (test_governanca_gate.Gate) ... ok
+test_sabotagem_sem_a_checagem_a_fixture_sem_linha_passa (test_governanca_gate.Gate) ... ok
+test_valores_finais_passam (test_governanca_gate.Gate) ... ok
+test_valores_que_nao_sao_finais_saem_5 (test_governanca_gate.Gate) ... ok
+test_fixtures_canonicas (test_verify_gate.FixturesDoRepositorio) ... ok
+test_fixtures_existem_no_pacote (test_verify_gate.FixturesDoRepositorio) ... ok
+test_0_verde_quando_cmd_passa (test_verify_gate.VerifyGate) ... ok
+test_2_vermelho_declarado_vence_ruido_de_ferramenta (test_verify_gate.VerifyGate) ... ok
+test_2_vermelho_quando_cmd_falha (test_verify_gate.VerifyGate) ... ok
+test_3_comando_que_declara_inconclusivo_propaga (test_verify_gate.VerifyGate) ... ok
+test_3_inconclusivo_quando_ferramenta_ausente (test_verify_gate.VerifyGate) ... ok
+test_3_smoke_com_403_inesperado_e_ruido_de_infra (test_verify_gate.VerifyGate) ... ok
+test_4_manual_ux_exige_assinatura (test_verify_gate.VerifyGate) ... ok
+test_5_marcador_ativo_fora_de_fence (test_verify_gate.VerifyGate) ... ok
+test_64_arquivo_inexistente (test_verify_gate.VerifyGate) ... ok
+test_64_fora_de_repositorio_git (test_verify_gate.VerifyGate) ... ok
+test_64_kind_invalido (test_verify_gate.VerifyGate) ... ok
+test_64_kind_test_sem_cmd_executavel (test_verify_gate.VerifyGate) ... ok
+test_64_sem_bloco (test_verify_gate.VerifyGate) ... ok
+test_contains_ausente_e_vermelho (test_verify_gate.VerifyGate) ... ok
+test_contains_presente_passa (test_verify_gate.VerifyGate) ... ok
+test_exit_n_explicito (test_verify_gate.VerifyGate) ... ok
+test_marcador_dentro_de_fence_e_documentacao_nao_duvida (test_verify_gate.VerifyGate) ... ok
+test_print_lista_o_bloco_mesmo_com_marcador (test_verify_gate.VerifyGate) ... ok
+test_smoke_com_403_esperado_passa (test_verify_gate.VerifyGate) ... ok
+test_strict_preserva_0_2_64 (test_verify_gate.VerifyGate) ... ok
+test_strict_remapeia_3_4_5_para_1 (test_verify_gate.VerifyGate) ... ok
+test_grava_release_no_define_e_sai_0 (test_verify_gate_trace.SemDefine) ... ok
+test_nome_vira_nome_de_arquivo_seguro (test_verify_gate_trace.SemDefine) ... ok
+test_sdd_trace_off_diz_que_nao_gravou (test_verify_gate_trace.SemDefine) ... ok
+test_sem_feature_e_64 (test_verify_gate_trace.SemDefine) ... ok
+test_sem_permissao_diz_que_nao_gravou (test_verify_gate_trace.SemDefine) ... ok
+test_de_subpasta_com_caminho_relativo (test_verify_gate_trace.Trace) ... ok
+test_erro_de_uso_antes_da_raiz_nao_grava (test_verify_gate_trace.Trace) ... ok
+test_grava_o_exit_original_mesmo_com_strict (test_verify_gate_trace.Trace) ... ok
+test_pasta_sem_escrita_nao_muda_exit_nem_saida (test_verify_gate_trace.Trace) ... ok
+test_print_nao_grava (test_verify_gate_trace.Trace) ... ok
+test_saida_igual_com_e_sem_trace (test_verify_gate_trace.Trace) ... ok
+test_sdd_trace_dir_troca_a_pasta (test_verify_gate_trace.Trace) ... ok
+test_sdd_trace_off_nao_grava (test_verify_gate_trace.Trace) ... ok
+test_trace_flag_e_aceita (test_verify_gate_trace.Trace) ... ok
+test_trace_sem_permissao_nao_muda_a_saida (test_verify_gate_trace.Trace) ... ok
+test_uma_linha_por_execucao_com_os_campos (test_verify_gate_trace.Trace) ... ok
+test_vermelho_conta_no_trace (test_verify_gate_trace.Trace) ... ok
+test_base_default_vem_do_config (test_gate_baseline.GateBaseline) ... ok
+test_base_invalida_sai_3 (test_gate_baseline.GateBaseline) ... ok
+test_base_passa_sai_2 (test_gate_baseline.GateBaseline) ... ok
+test_base_reprova_avaliando_sai_0_e_grava_evidencia (test_gate_baseline.GateBaseline) ... ok
+test_build_continua_verde (test_gate_baseline.GateBaseline) ... ok
+test_crash_com_rc_2_nao_prova_dentes (test_gate_baseline.GateBaseline) ... ok
+test_hooks_e_assinatura_globais_nao_quebram_a_copia (test_gate_baseline.GateBaseline) ... ok
+test_marcadores_de_asssercao_provam_dentes (test_gate_baseline.GateBaseline) ... ok
+test_sem_sobrepor_o_gate_novo_nao_existe_na_base (test_gate_baseline.GateBaseline) ... ok
+test_uso (test_gate_baseline.GateBaseline) ... ok
+
+----------------------------------------------------------------------
+Ran 62 tests in 12.472s
+
+OK
+[exit=0]

@@ -1,0 +1,50 @@
+$ T=$(mktemp -d); trap "rm -rf $T" EXIT; D=$T/pacote; mkdir $D; git archive HEAD | tar -x -C $D; P=$T/novo; mkdir $P; cd $P; git init -q .; bash $D/bin/sdd-open.sh init --yes --vendors claude >/dev/null 2>&1 </dev/null; rm -rf .claude/skills/sdd-loop-builder
+bash $D/bin/sdd-open.sh sync --yes --vendors claude 2>&1 </dev/null; echo "[sync rc=$?]"; ls -R .claude/skills/sdd-loop-builder 2>&1
+echo "--- upgrade de 2.4.0"; P2=$T/velho; mkdir $P2; cd $P2; git init -q .; D0=$T/v240; mkdir $D0; git -C /Users/robertoduarte/rdd-worktrees/sdd-open-f13-ux-llm archive v2.4.0 | tar -x -C $D0; bash $D0/bin/sdd-open.sh init --yes --vendors claude >/dev/null 2>&1 </dev/null
+bash $D/bin/sdd-open.sh help 2>&1 | head -30; bash $D/bin/sdd-open.sh upgrade --yes 2>&1 </dev/null | tail -12; echo "[upgrade rc=${PIPESTATUS[0]}]"
+grep -n "wrapper_pattern" sdd/config.yaml; grep -n "^  version" .agents/skills/sdd-build/SKILL.md; ls .agents/skills/sdd-loop-builder sdd/bin/prompt-drift-scan.sh sdd/templates/fragments/LLM_PROMPTS_DESIGN.md; grep -c "LLM_PROMPTS_DESIGN" sdd/templates/DESIGN_TEMPLATE.md; grep -c "1.4.11" sdd/templates/UX_REVIEW_TEMPLATE.md; printf "x\n" | bash sdd/bin/prompt-drift-scan.sh --conteudo a.ts; echo "[rc=$?]"
+▶ sync — plano
++ .claude/skills/sdd-loop-builder/SKILL.md (novo)
++ .claude/skills/sdd-loop-builder/references/como-falar.md (novo)
++ .claude/skills/sdd-loop-builder/references/exemplo-loop-spec.md (novo)
++ .claude/skills/sdd-loop-builder/references/loop-spec-rules.md (novo)
+4 a criar · 0 a atualizar · 101 já corretos
+RESULTADO: SINCRONIZADO
+→ adaptadores regenerados a partir de .agents/skills/.
+[sync rc=0]
+SKILL.md
+references
+
+.claude/skills/sdd-loop-builder/references:
+como-falar.md
+exemplo-loop-spec.md
+loop-spec-rules.md
+--- upgrade de 2.4.0
+sdd-open — Spec-Driven Development agnóstico de agente
+
+  init    prepara o projeto: sdd/, .agents/skills/, AGENTS.md e os adaptadores do seu agente
+  sync    regenera os adaptadores a partir de .agents/skills/ (sdd/ nunca é tocado)
+  doctor  mostra o que está instalado e o que cada agente vai enxergar
+
+  --vendors claude,codex,gemini,cursor,kimi   quais agentes preparar (init) ou regenerar (sync)
+  --dry-run                                   mostra o plano e não escreve nada
+  --yes                                       aplica sem perguntar
+  --check                                     (sync) só verifica se os adaptadores estão em dia
+  --verbose                                   lista também o que já está correto
+
+Exemplos:
+  bash sdd-open/bin/sdd-open.sh init --vendors codex
+  bash sdd-open/bin/sdd-open.sh sync --check
+🛑 verbo desconhecido: upgrade
+RESULTADO: ERRO
+→ use init, sync ou doctor (rode sem argumentos para a ajuda)
+[upgrade rc=64]
+8:  version: "2.5.1"
+ls: .agents/skills/sdd-loop-builder: No such file or directory
+ls: sdd/bin/prompt-drift-scan.sh: No such file or directory
+ls: sdd/templates/fragments/LLM_PROMPTS_DESIGN.md: No such file or directory
+0
+0
+bash: sdd/bin/prompt-drift-scan.sh: No such file or directory
+[rc=127]
+[exit=0]

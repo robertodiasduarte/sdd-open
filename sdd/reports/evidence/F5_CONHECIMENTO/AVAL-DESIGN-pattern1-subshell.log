@@ -1,0 +1,5 @@
+$ /bin/bash scratchpad/sonda-p1.sh   (falha()/projeto()/troca() do Pattern 1; cp falhando; d=$(projeto ...); âncora ausente)
+depois de projeto(): o script CONTINUOU; d=[🛑 geral: cópia do exemplo falhou|RESULTADO: VERMELHO|→ confira assets/example-kb]
+âncora ausente
+rc=2
+GNU bash, version 3.2.57(1)-release (arm64-apple-darwin25)

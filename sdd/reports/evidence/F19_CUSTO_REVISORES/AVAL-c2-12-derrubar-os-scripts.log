@@ -1,0 +1,252 @@
+$ /bin/bash /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f21-f19/8ca3f42f-d684-434d-9f0b-19bdcf0aef88/scratchpad/aval2-f19/ferr/crash.sh /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f21-f19/8ca3f42f-d684-434d-9f0b-19bdcf0aef88/scratchpad/aval2-f19/copia /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f21-f19/8ca3f42f-d684-434d-9f0b-19bdcf0aef88/scratchpad/aval2-f19/casos/crash
+##### MEDIDOR
+--- medidor · exit com 5000 dígitos [py /usr/bin] → exit=0
+| revisor | claude (m) | assinatura | 0 | 1 (1 outro) | 0.0000 | 1.0000 | 0 | 0 | 0 | 0 | 0 | 0 | — | — | — |
+fora da conta: 1 (L.md:3: achado R1 não está em EXTERNAL_REVIEW_20260301-000001)
+RESULTADO: MEDIDO
+--- medidor · exit com 5000 dígitos [py /opt/homebrew/bin] → exit=1 TRACEBACK FORA-DO-CONTRATO
+ValueError: Exceeds the limit (4300 digits) for integer string conversion: value has 5000 digits; use sys.set_int_max_str_digits() to increase the limit
+--- medidor · custo com 31 dígitos [py /usr/bin] → exit=1 TRACEBACK FORA-DO-CONTRATO
+--- medidor · custo com 31 dígitos [py /opt/homebrew/bin] → exit=1 TRACEBACK FORA-DO-CONTRATO
+--- medidor · custo com 38 casas [py /usr/bin] → exit=0
+| revisor | claude (m) | assinatura | 1 | 0 | 0.0000 | <0.000001 | 2 | 1 de 2 | 1 de 2 | 0 de 2 | 0 de 2 | 1 de 2 | 0.0000 | <0.000001 | — |
+fora da conta: 0
+RESULTADO: MEDIDO
+--- medidor · custo com 38 casas [py /opt/homebrew/bin] → exit=0
+| revisor | claude (m) | assinatura | 1 | 0 | 0.0000 | <0.000001 | 2 | 1 de 2 | 1 de 2 | 0 de 2 | 0 de 2 | 1 de 2 | 0.0000 | <0.000001 | — |
+fora da conta: 0
+RESULTADO: MEDIDO
+--- medidor · vereditos do revisor com JSON aninhado 100 mil níveis [py /usr/bin] → exit=1 TRACEBACK FORA-DO-CONTRATO
+RecursionError: maximum recursion depth exceeded while decoding a JSON array from a unicode string
+--- medidor · vereditos do revisor com JSON aninhado 100 mil níveis [py /opt/homebrew/bin] → exit=0
+| revisor | claude (m) | assinatura | 1 | 0 | 0.0000 | 1.0000 | 0 | 0 | 0 | 0 | 0 | 0 | — | — | — |
+fora da conta: 1 (L.md:3: achado R1 não está em EXTERNAL_REVIEW_20260301-000001)
+RESULTADO: MEDIDO
+--- medidor · vereditos do auditor com JSON aninhado 100 mil níveis [py /usr/bin] → exit=1 TRACEBACK FORA-DO-CONTRATO
+RecursionError: maximum recursion depth exceeded while decoding a JSON array from a unicode string
+--- medidor · vereditos do auditor com JSON aninhado 100 mil níveis [py /opt/homebrew/bin] → exit=0
+| revisor | claude (m) | assinatura | 1 | 0 | 0.0000 | 1.0000 | 2 | 1 de 2 | 1 de 2 | 0 de 2 | 0 de 2 | 1 de 2 | 0.0000 | 1.0000 | — |
+fora da conta: 0
+RESULTADO: MEDIDO
+--- medidor · META binário [py /usr/bin] → exit=2
+fora da conta: 2 (EXTERNAL_REVIEW_20260301-000001: META ilegível ou incompleto; L.md:3: achado R1 não está em EXTERNAL_REVIEW_20260301-000001)
+RESULTADO: SEM DADOS
+--- medidor · META binário [py /opt/homebrew/bin] → exit=2
+fora da conta: 2 (EXTERNAL_REVIEW_20260301-000001: META ilegível ou incompleto; L.md:3: achado R1 não está em EXTERNAL_REVIEW_20260301-000001)
+RESULTADO: SEM DADOS
+--- medidor · ledger binário [py /usr/bin] → exit=0
+| revisor | claude (m) | assinatura | 1 | 0 | 0.0000 | 1.0000 | 2 | 0 de 2 | 0 de 2 | 0 de 2 | 0 de 2 | 2 de 2 | — | — | — |
+fora da conta: 2 (L.md: ledger ilegível; ledgers: nenhum ledger lido: os achados das 1 pasta(s) ficam em sem classificar)
+RESULTADO: MEDIDO
+--- medidor · ledger binário [py /opt/homebrew/bin] → exit=0
+| revisor | claude (m) | assinatura | 1 | 0 | 0.0000 | 1.0000 | 2 | 0 de 2 | 0 de 2 | 0 de 2 | 0 de 2 | 2 de 2 | — | — | — |
+fora da conta: 2 (L.md: ledger ilegível; ledgers: nenhum ledger lido: os achados das 1 pasta(s) ficam em sem classificar)
+RESULTADO: MEDIDO
+--- medidor · META.txt e vereditos são pastas [py /usr/bin] → exit=2
+fora da conta: 2 (EXTERNAL_REVIEW_20260301-000001: META ilegível ou incompleto; L.md:3: achado R1 não está em EXTERNAL_REVIEW_20260301-000001)
+RESULTADO: SEM DADOS
+--- medidor · META.txt e vereditos são pastas [py /opt/homebrew/bin] → exit=2
+fora da conta: 2 (EXTERNAL_REVIEW_20260301-000001: META ilegível ou incompleto; L.md:3: achado R1 não está em EXTERNAL_REVIEW_20260301-000001)
+RESULTADO: SEM DADOS
+--- medidor · LEDGER_REVISAO_D.md é uma pasta [py /usr/bin] → exit=0
+| revisor | claude (m) | assinatura | 1 | 0 | 0.0000 | 1.0000 | 2 | 0 de 2 | 0 de 2 | 0 de 2 | 0 de 2 | 2 de 2 | — | — | — |
+fora da conta: 2 (LEDGER_REVISAO_D.md: ledger ilegível; ledgers: nenhum ledger lido: os achados das 1 pasta(s) ficam em sem classificar)
+RESULTADO: MEDIDO
+--- medidor · LEDGER_REVISAO_D.md é uma pasta [py /opt/homebrew/bin] → exit=0
+| revisor | claude (m) | assinatura | 1 | 0 | 0.0000 | 1.0000 | 2 | 0 de 2 | 0 de 2 | 0 de 2 | 0 de 2 | 2 de 2 | — | — | — |
+fora da conta: 2 (LEDGER_REVISAO_D.md: ledger ilegível; ledgers: nenhum ledger lido: os achados das 1 pasta(s) ficam em sem classificar)
+RESULTADO: MEDIDO
+--- medidor · --ledgers /dev/null [py /usr/bin] → exit=0
+| revisor | claude (m) | assinatura | 1 | 0 | 0.0000 | 1.0000 | 2 | 0 de 2 | 0 de 2 | 0 de 2 | 0 de 2 | 2 de 2 | — | — | — |
+fora da conta: 1 (ledgers: nenhum ledger lido: os achados das 1 pasta(s) ficam em sem classificar)
+RESULTADO: MEDIDO
+--- medidor · --ledgers /dev/null [py /opt/homebrew/bin] → exit=0
+| revisor | claude (m) | assinatura | 1 | 0 | 0.0000 | 1.0000 | 2 | 0 de 2 | 0 de 2 | 0 de 2 | 0 de 2 | 2 de 2 | — | — | — |
+fora da conta: 1 (ledgers: nenhum ledger lido: os achados das 1 pasta(s) ficam em sem classificar)
+RESULTADO: MEDIDO
+--- medidor · --registry é pasta [py /usr/bin] → exit=64
+🛑 eval-revisores: o arquivo de --registry não existe: /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f21-f19/8ca3f42f-d684-434d-9f0b-19bdcf0aef88/scratchpad/aval2-f19/casos/crash/m8
+RESULTADO: PAROU
+--- medidor · --registry é pasta [py /opt/homebrew/bin] → exit=64
+🛑 eval-revisores: o arquivo de --registry não existe: /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f21-f19/8ca3f42f-d684-434d-9f0b-19bdcf0aef88/scratchpad/aval2-f19/casos/crash/m8
+RESULTADO: PAROU
+--- medidor · pasta é arquivo [py /usr/bin] → exit=64
+🛑 eval-revisores: a pasta /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f21-f19/8ca3f42f-d684-434d-9f0b-19bdcf0aef88/scratchpad/aval2-f19/casos/crash/m8/L.md não existe
+RESULTADO: PAROU
+--- medidor · pasta é arquivo [py /opt/homebrew/bin] → exit=64
+🛑 eval-revisores: a pasta /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f21-f19/8ca3f42f-d684-434d-9f0b-19bdcf0aef88/scratchpad/aval2-f19/casos/crash/m8/L.md não existe
+RESULTADO: PAROU
+--- medidor · --ledgers sem valor [py /usr/bin] → exit=64
+🛑 eval-revisores: --ledgers pede um caminho
+RESULTADO: PAROU
+--- medidor · --ledgers sem valor [py /opt/homebrew/bin] → exit=64
+🛑 eval-revisores: --ledgers pede um caminho
+RESULTADO: PAROU
+--- medidor · opção desconhecida [py /usr/bin] → exit=64
+🛑 eval-revisores: opção desconhecida: --json
+RESULTADO: PAROU
+--- medidor · opção desconhecida [py /opt/homebrew/bin] → exit=64
+🛑 eval-revisores: opção desconhecida: --json
+RESULTADO: PAROU
+--- medidor · 2 pastas [py /usr/bin] → exit=64
+🛑 eval-revisores: argumento a mais: /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f21-f19/8ca3f42f-d684-434d-9f0b-19bdcf0aef88/scratchpad/aval2-f19/casos/crash/m8/rev
+RESULTADO: PAROU
+--- medidor · 2 pastas [py /opt/homebrew/bin] → exit=64
+🛑 eval-revisores: argumento a mais: /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f21-f19/8ca3f42f-d684-434d-9f0b-19bdcf0aef88/scratchpad/aval2-f19/casos/crash/m8/rev
+RESULTADO: PAROU
+--- medidor · pasta que não existe [py /usr/bin] → exit=64
+🛑 eval-revisores: a pasta /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f21-f19/8ca3f42f-d684-434d-9f0b-19bdcf0aef88/scratchpad/aval2-f19/casos/crash/m8/nao-existe não existe
+RESULTADO: PAROU
+--- medidor · pasta que não existe [py /opt/homebrew/bin] → exit=64
+🛑 eval-revisores: a pasta /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f21-f19/8ca3f42f-d684-434d-9f0b-19bdcf0aef88/scratchpad/aval2-f19/casos/crash/m8/nao-existe não existe
+RESULTADO: PAROU
+--- medidor · --ledgers que não existe [py /usr/bin] → exit=64
+🛑 eval-revisores: o caminho de --ledgers não existe: /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f21-f19/8ca3f42f-d684-434d-9f0b-19bdcf0aef88/scratchpad/aval2-f19/casos/crash/m8/nada.md
+RESULTADO: PAROU
+--- medidor · --ledgers que não existe [py /opt/homebrew/bin] → exit=64
+🛑 eval-revisores: o caminho de --ledgers não existe: /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f21-f19/8ca3f42f-d684-434d-9f0b-19bdcf0aef88/scratchpad/aval2-f19/casos/crash/m8/nada.md
+RESULTADO: PAROU
+--- medidor · registry binário [py /usr/bin] → exit=0
+| revisor | claude (m) | desconhecida | 1 | 0 | n/d | 1.0000 | 2 | 0 de 2 | 0 de 2 | 0 de 2 | 0 de 2 | 2 de 2 | — | — | — |
+fora da conta: 1 (ledgers: nenhum ledger lido: os achados das 1 pasta(s) ficam em sem classificar)
+RESULTADO: MEDIDO
+--- medidor · registry binário [py /opt/homebrew/bin] → exit=0
+| revisor | claude (m) | desconhecida | 1 | 0 | n/d | 1.0000 | 2 | 0 de 2 | 0 de 2 | 0 de 2 | 0 de 2 | 2 de 2 | — | — | — |
+fora da conta: 1 (ledgers: nenhum ledger lido: os achados das 1 pasta(s) ficam em sem classificar)
+RESULTADO: MEDIDO
+--- medidor · link simbólico quebrado na pasta [py /usr/bin] → exit=0
+| revisor | claude (m) | assinatura | 1 | 0 | 0.0000 | 1.0000 | 2 | 1 de 2 | 1 de 2 | 0 de 2 | 0 de 2 | 1 de 2 | 0.0000 | 1.0000 | — |
+fora da conta: 0
+RESULTADO: MEDIDO
+--- medidor · link simbólico quebrado na pasta [py /opt/homebrew/bin] → exit=0
+| revisor | claude (m) | assinatura | 1 | 0 | 0.0000 | 1.0000 | 2 | 1 de 2 | 1 de 2 | 0 de 2 | 0 de 2 | 1 de 2 | 0.0000 | 1.0000 | — |
+fora da conta: 0
+RESULTADO: MEDIDO
+--- medidor · LC_ALL=C [py /usr/bin] → exit=0
+| revisor | claude (m) | assinatura | 1 | 0 | 0.0000 | 1.0000 | 2 | 1 de 2 | 1 de 2 | 0 de 2 | 0 de 2 | 1 de 2 | 0.0000 | 1.0000 | — |
+fora da conta: 0
+RESULTADO: MEDIDO
+--- medidor · PYTHONIOENCODING=ascii [py /usr/bin] → exit=1 TRACEBACK FORA-DO-CONTRATO
+UnicodeEncodeError: 'ascii' codec can't encode character '\u2014' in position 15: ordinal not in range(128)
+--- medidor · saída padrão fechada [py /usr/bin] → exit=0
+--- medidor · leitor do pipe fechado [py /usr/bin]: (ver abaixo)
+exit-do-script=0
+--- medidor · LC_ALL=C [py /opt/homebrew/bin] → exit=0
+| revisor | claude (m) | assinatura | 1 | 0 | 0.0000 | 1.0000 | 2 | 1 de 2 | 1 de 2 | 0 de 2 | 0 de 2 | 1 de 2 | 0.0000 | 1.0000 | — |
+fora da conta: 0
+RESULTADO: MEDIDO
+--- medidor · PYTHONIOENCODING=ascii [py /opt/homebrew/bin] → exit=1 TRACEBACK FORA-DO-CONTRATO
+UnicodeEncodeError: 'ascii' codec can't encode character '\u2014' in position 15: ordinal not in range(128)
+--- medidor · saída padrão fechada [py /opt/homebrew/bin] → exit=0
+--- medidor · leitor do pipe fechado [py /opt/homebrew/bin]: (ver abaixo)
+exit-do-script=0
+--- medidor · pasta atual apagada [py /usr/bin] → exit=1 TRACEBACK FORA-DO-CONTRATO
+FileNotFoundError: [Errno 2] No such file or directory
+FileNotFoundError: [Errno 2] No such file or directory
+--- medidor · pasta atual apagada [py /opt/homebrew/bin] → exit=1 TRACEBACK FORA-DO-CONTRATO
+FileNotFoundError: [Errno 2] No such file or directory
+FileNotFoundError: [Errno 2] No such file or directory
+--- medidor · sem python3 no PATH → exit=64
+🛑 eval-revisores: python3 não encontrado no PATH.
+RESULTADO: PAROU
+--- medidor · META com valores esquisitos [py /usr/bin] → exit=0
+| revisor |  () | desconhecida | 1 | 0 | n/d | 1.5000 | 2 | 1 de 2 | 1 de 2 | 0 de 2 | 0 de 2 | 1 de 2 | — | 1.5000 | — |
+fora da conta: 1 (EXTERNAL_REVIEW_20260301-000001: 2º revisor indisponível: nenhuma engine foi chamada)
+RESULTADO: MEDIDO
+--- medidor · META com valores esquisitos [py /opt/homebrew/bin] → exit=0
+| revisor |  () | desconhecida | 1 | 0 | n/d | 1.5000 | 2 | 1 de 2 | 1 de 2 | 0 de 2 | 0 de 2 | 1 de 2 | — | 1.5000 | — |
+fora da conta: 1 (EXTERNAL_REVIEW_20260301-000001: 2º revisor indisponível: nenhuma engine foi chamada)
+RESULTADO: MEDIDO
+--- medidor · ledger com 200 mil linhas [py /usr/bin] → exit=0
+| revisor | claude (m) | assinatura | 1 | 0 | 0.0000 | 1.0000 | 2 | 2 de 2 | 0 de 2 | 0 de 2 | 0 de 2 | 0 de 2 | — | — | — |
+fora da conta: 199998 (L.md:3: achado R0 não está em EXTERNAL_REVIEW_20260301-000001; L.md:6: achado R3 não está em EXTERNAL_REVIEW_20260301-000001; L.md:7: achado R4 não está em EXTERNAL_REVIEW_20260301-000001; L.md:8: achado R5 não está em EXTERNAL_REVIEW_20260301-000001; L.md:9: achado R6 não está em EXTERNAL_REVIEW_20260301-000001; L.md:10: achado R7 não está em EXTERNAL_REVIEW_20260301-000001; L.md:11: achado R8
+RESULTADO: MEDIDO
+--- medidor · ledger com 200 mil linhas [py /opt/homebrew/bin] → exit=0
+| revisor | claude (m) | assinatura | 1 | 0 | 0.0000 | 1.0000 | 2 | 2 de 2 | 0 de 2 | 0 de 2 | 0 de 2 | 0 de 2 | — | — | — |
+fora da conta: 199998 (L.md:3: achado R0 não está em EXTERNAL_REVIEW_20260301-000001; L.md:6: achado R3 não está em EXTERNAL_REVIEW_20260301-000001; L.md:7: achado R4 não está em EXTERNAL_REVIEW_20260301-000001; L.md:8: achado R5 não está em EXTERNAL_REVIEW_20260301-000001; L.md:9: achado R6 não está em EXTERNAL_REVIEW_20260301-000001; L.md:10: achado R7 não está em EXTERNAL_REVIEW_20260301-000001; L.md:11: achado R8
+RESULTADO: MEDIDO
+##### LINT
+--- lint · sem argumento [py /usr/bin] → exit=64
+🛑 ledger-revisao-lint: faltou o arquivo do ledger
+RESULTADO: ERRO DE USO
+--- lint · sem argumento [py /opt/homebrew/bin] → exit=64
+🛑 ledger-revisao-lint: faltou o arquivo do ledger
+RESULTADO: ERRO DE USO
+--- lint · opção [py /usr/bin] → exit=64
+🛑 ledger-revisao-lint: opção desconhecida: --x
+RESULTADO: ERRO DE USO
+--- lint · opção [py /opt/homebrew/bin] → exit=64
+🛑 ledger-revisao-lint: opção desconhecida: --x
+RESULTADO: ERRO DE USO
+--- lint · arquivo que não existe [py /usr/bin] → exit=64
+🛑 ledger-revisao-lint: não consegui ler /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f21-f19/8ca3f42f-d684-434d-9f0b-19bdcf0aef88/scratchpad/aval2-f19/casos/crash/l1/nada.md
+RESULTADO: ERRO DE USO
+--- lint · arquivo que não existe [py /opt/homebrew/bin] → exit=64
+🛑 ledger-revisao-lint: não consegui ler /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f21-f19/8ca3f42f-d684-434d-9f0b-19bdcf0aef88/scratchpad/aval2-f19/casos/crash/l1/nada.md
+RESULTADO: ERRO DE USO
+--- lint · pasta [py /usr/bin] → exit=64
+🛑 ledger-revisao-lint: não consegui ler /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f21-f19/8ca3f42f-d684-434d-9f0b-19bdcf0aef88/scratchpad/aval2-f19/casos/crash/l1
+RESULTADO: ERRO DE USO
+--- lint · pasta [py /opt/homebrew/bin] → exit=64
+🛑 ledger-revisao-lint: não consegui ler /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f21-f19/8ca3f42f-d684-434d-9f0b-19bdcf0aef88/scratchpad/aval2-f19/casos/crash/l1
+RESULTADO: ERRO DE USO
+--- lint · /dev/null [py /usr/bin] → exit=64
+🛑 /dev/null — nenhuma linha de dados nem linha `sem achados:`: nada conferido nunca é verde
+RESULTADO: ERRO DE USO
+--- lint · /dev/null [py /opt/homebrew/bin] → exit=64
+🛑 /dev/null — nenhuma linha de dados nem linha `sem achados:`: nada conferido nunca é verde
+RESULTADO: ERRO DE USO
+--- lint · argumento vazio [py /usr/bin] → exit=64
+🛑 ledger-revisao-lint: não consegui ler 
+RESULTADO: ERRO DE USO
+--- lint · argumento vazio [py /opt/homebrew/bin] → exit=64
+🛑 ledger-revisao-lint: não consegui ler 
+RESULTADO: ERRO DE USO
+--- lint · binário [py /usr/bin] → exit=64
+🛑 ledger-revisao-lint: não consegui ler /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f21-f19/8ca3f42f-d684-434d-9f0b-19bdcf0aef88/scratchpad/aval2-f19/casos/crash/m5/L.md
+RESULTADO: ERRO DE USO
+--- lint · binário [py /opt/homebrew/bin] → exit=64
+🛑 ledger-revisao-lint: não consegui ler /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f21-f19/8ca3f42f-d684-434d-9f0b-19bdcf0aef88/scratchpad/aval2-f19/casos/crash/m5/L.md
+RESULTADO: ERRO DE USO
+--- lint · pasta + bom [py /usr/bin] → exit=64
+🛑 ledger-revisao-lint: não consegui ler /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f21-f19/8ca3f42f-d684-434d-9f0b-19bdcf0aef88/scratchpad/aval2-f19/casos/crash/l1
+RESULTADO: ERRO DE USO
+--- lint · pasta + bom [py /opt/homebrew/bin] → exit=64
+🛑 ledger-revisao-lint: não consegui ler /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f21-f19/8ca3f42f-d684-434d-9f0b-19bdcf0aef88/scratchpad/aval2-f19/casos/crash/l1
+RESULTADO: ERRO DE USO
+--- lint · sem permissão [py /usr/bin] → exit=64
+🛑 ledger-revisao-lint: não consegui ler /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f21-f19/8ca3f42f-d684-434d-9f0b-19bdcf0aef88/scratchpad/aval2-f19/casos/crash/l1/L.md
+RESULTADO: ERRO DE USO
+--- lint · sem permissão [py /opt/homebrew/bin] → exit=64
+🛑 ledger-revisao-lint: não consegui ler /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f21-f19/8ca3f42f-d684-434d-9f0b-19bdcf0aef88/scratchpad/aval2-f19/casos/crash/l1/L.md
+RESULTADO: ERRO DE USO
+--- lint · linhas de 30 mil asteriscos/espaços [py /usr/bin] (23s) → exit=0
+RESULTADO: VERDE
+--- lint · linhas de 30 mil asteriscos/espaços [py /opt/homebrew/bin] (19s) → exit=0
+RESULTADO: VERDE
+--- lint · evidência 'teste: a.a.a…' de 80 mil caracteres [py /usr/bin] (0s) → exit=0
+🛑 /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f21-f19/8ca3f42f-d684-434d-9f0b-19bdcf0aef88/scratchpad/aval2-f19/casos/crash/l1/ev.md:3 — dano = sim sem `teste: <nome>` na evidência: cite o teste que falha no código antigo (test_…, arquivo::teste ou tests/…)
+RESULTADO: VERMELHO
+--- lint · evidência 'teste: a.a.a…' de 80 mil caracteres [py /opt/homebrew/bin] (0s) → exit=0
+🛑 /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f21-f19/8ca3f42f-d684-434d-9f0b-19bdcf0aef88/scratchpad/aval2-f19/casos/crash/l1/ev.md:3 — dano = sim sem `teste: <nome>` na evidência: cite o teste que falha no código antigo (test_…, arquivo::teste ou tests/…)
+RESULTADO: VERMELHO
+--- lint · ledger com 200 mil linhas [py /usr/bin] → exit=0
+RESULTADO: VERDE
+--- lint · ledger com 200 mil linhas [py /opt/homebrew/bin] → exit=0
+RESULTADO: VERDE
+--- lint · PYTHONIOENCODING=ascii, verde [py /usr/bin] → exit=1 TRACEBACK FORA-DO-CONTRATO
+UnicodeEncodeError: 'ascii' codec can't encode character '\u2705' in position 0: ordinal not in range(128)
+--- lint · PYTHONIOENCODING=ascii, erro [py /usr/bin] → exit=64
+RESULTADO: ERRO DE USO
+--- lint · LC_ALL=C [py /usr/bin] → exit=0
+RESULTADO: VERDE
+--- lint · PYTHONIOENCODING=ascii, verde [py /opt/homebrew/bin] → exit=1 TRACEBACK FORA-DO-CONTRATO
+UnicodeEncodeError: 'ascii' codec can't encode character '\u2705' in position 0: ordinal not in range(128)
+--- lint · PYTHONIOENCODING=ascii, erro [py /opt/homebrew/bin] → exit=64
+RESULTADO: ERRO DE USO
+--- lint · LC_ALL=C [py /opt/homebrew/bin] → exit=0
+RESULTADO: VERDE
+--- lint · sem python3 no PATH → exit=64
+🛑 ledger-revisao-lint: python3 não encontrado no PATH.
+RESULTADO: ERRO DE USO
+[exit 0]

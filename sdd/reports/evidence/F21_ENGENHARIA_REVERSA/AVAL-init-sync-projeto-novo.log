@@ -1,0 +1,23 @@
+$ git init -q . && /bin/bash <cópia git archive>/bin/sdd-open.sh init --vendors claude,codex,gemini,cursor,kimi --yes (PATH=/usr/bin:/bin, python3 = 3.9.6); sync --check; validate_reverse.py de cada cópia
+✅ AGENTS.md com o bloco sdd-open
+✅ .agents/skills/ com 20 skill(s) sdd-*
+✅ hooks ligados (sdd/hooks: pre-commit com 5 regras + relatório + alarme da higiene off, pre-push)
+✅ claude: gerado (.claude/skills · CLAUDE.md · .claude/hooks + settings.json) · CLI não encontrado no PATH · cobre também Grok Build e GLM
+✅ codex: nativo — nada a gerar (lê .agents/skills/ e AGENTS.md nativamente) · CLI não encontrado no PATH
+✅ gemini: gerado (GEMINI.md · .gemini/settings.json) · CLI não encontrado no PATH
+✅ cursor: gerado (.cursor/skills) · CLI não encontrado no PATH
+✅ kimi: nativo — nada a gerar (lê .agents/skills/, .kimi/skills e AGENTS.md nativamente) · CLI não encontrado no PATH
+✅ skills e sdd/bin/ em dia com o pacote
+✅ nenhum segredo salvo no git (.env, .pfx, .p12, .pem com chave privada)
+RESULTADO: INSTALADO
+→ abra seu agente e peça a fase Define (ex.: /sdd-define ou /skill:sdd-define).
+RESULTADO: EM DIA
+→ todos os adaptadores refletem .agents/skills/.
+sync --check exit=0 (conferido de novo, sem pipe)
+.agents igual ao pacote
+{"errors": [], "evidence_count": 1, "finding_count": 1, "ok": true, "scope": "lint_estrutural_apenas; nao verifica veracidade, autorizacao ou gates SDD"}
+.agents exit=0
+{"errors": [], "evidence_count": 1, "finding_count": 1, "ok": true, "scope": "lint_estrutural_apenas; nao verifica veracidade, autorizacao ou gates SDD"}
+.claude exit=0
+{"errors": [], "evidence_count": 1, "finding_count": 1, "ok": true, "scope": "lint_estrutural_apenas; nao verifica veracidade, autorizacao ou gates SDD"}
+.cursor exit=0

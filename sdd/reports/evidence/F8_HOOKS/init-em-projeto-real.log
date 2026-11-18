@@ -1,0 +1,25 @@
+$ W=$PWD && T=$(mktemp -d) && cd "$T" && git init -q -b main p && cd p && git config user.email t@example.com && git config user.name t && printf "# projeto\n" > AGENTS.md && git add -A && git commit -q -m base && bash "$W/bin/sdd-open.sh" init --yes --vendors claude,codex > init.out 2>&1 && grep -E "hooksPath|hooks ligados|RESULTADO" init.out && rm init.out && echo "core.hooksPath=$(git config core.hooksPath)" && ls -l sdd/hooks/pre-commit sdd/hooks/pre-push && git add -A && git commit -q -m init && echo "1º commit depois do init: ok" && printf "{\"password\": \"%s\"}\n" "$(python3 -c "import secrets; print(secrets.token_hex(8))")" > cfg.json && git add cfg.json; git commit -q -m cfg; echo "commit com credencial: rc=$?"; ls .claude/hooks; python3 -c "import json; d=json.load(open(\".claude/settings.json\")); print([e[\"matcher\"] for e in d[\"hooks\"][\"PreToolUse\"]])"; cd /; rm -rf "${T:?}"
++ core.hooksPath = sdd/hooks — 5 regras + relatório + alarme passam a conferir cada commit (teto do arquivo de contexto, credencial, playbook, byte NUL, branch padrão); git commit --no-verify pula uma vez (novo)
+✅ hooks ligados (sdd/hooks: pre-commit com 5 regras + relatório + alarme da higiene off, pre-push)
+RESULTADO: INSTALADO
+core.hooksPath=sdd/hooks
+-rwxr-xr-x@ 1 robertoduarte  staff  15622 Oct 30 22:34 sdd/hooks/pre-commit
+-rwxr-xr-x@ 1 robertoduarte  staff   1664 Oct 30 22:34 sdd/hooks/pre-push
+1º commit depois do init: ok
+
+sdd-open: commit recusado. Encontrei o que não pode entrar nesta versão:
+
+  🛑 [H3] cfg.json: credencial em texto claro (chave: password)
+
+Por que importa:
+  [H3] o que entra no git fica no histórico e vai junto em todo push; depois disso, rotacionar a credencial é o único conserto
+
+RESULTADO: COMMIT RECUSADO
+→ [H3] troque o valor por um placeholder (${VAR}, CHANGEME, example) ou tire o arquivo desta versão: git restore --staged "<arquivo>"
+→ se você conferiu e quer gravar mesmo assim, só desta vez: git commit --no-verify
+  Agente de IA: não use --no-verify sem o OK explícito da pessoa.
+commit com credencial: rc=1
+sdd-avaliador-guard.py
+sdd-report-guard.py
+['Write|Edit|MultiEdit', 'Agent|Task']
+[exit=0]

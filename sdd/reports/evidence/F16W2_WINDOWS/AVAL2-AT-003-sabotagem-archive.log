@@ -1,0 +1,11 @@
+$ cd /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f16w-windows/b56e801b-0f18-49ee-b51c-5b9188b29c23/scratchpad/sab && grep -n 'base = os.path.join' sdd/bin/sdd-archive.py && SDD_TEST_BASH=/bin/bash /usr/bin/python3 -B -m unittest discover -s tests -p 'test_f16w2_caminhos.py' 2>&1 | grep -E 'FAIL:|ERROR:|AssertionError|^Ran|^OK|^FAILED' | head; echo '--- sem sabotagem (HEAD):'; cd /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f16w-windows/b56e801b-0f18-49ee-b51c-5b9188b29c23/scratchpad/head && SDD_TEST_BASH=/bin/bash /usr/bin/python3 -B -m unittest discover -s tests -p 'test_f16w2_caminhos.py' 2>&1 | tail -3; echo "[rc=$?]"
+184:        base = os.path.join("sdd", sub)
+FAIL: test_os_lotes_saem_como_no_mac (test_f16w2_caminhos.ArchiveComNtpath)
+AssertionError: '== Lote com-ledger: 2 arquivo(s) ==' not found in '\n== Lote com-ledger: 0 arquivo(s) ==\n\n== Lote sem-ledger: 0 arquivo(s) ==\n\n== Lote soltos: 0 arquivo(s) ==\n\n== Protegidos: 0 grupo(s) ==\n\n== Recentes (ficam): 2 grupo(s) ==\n  A (2 documento(s), quieto há -9 dia(s), limite 30)\n  B (1 documento(s), quieto há -9 dia(s), limite 60)\n\n== Sem classificação (decisão sua): 0 ==\n\n== Subpastas (ficam): 0 ==\n\nTOTAIS: com-ledger=0 · sem-ledger=0 · soltos=0 · protegidos=0 · recentes=2 · sem classificação=0 · subpastas=0\nNada foi movido.\nRESULTADO: SIMULACAO\n→ para mover, rode com --lote <nome> --aplicar, um lote por vez.\n'
+Ran 21 tests in 12.454s
+FAILED (failures=1)
+--- sem sabotagem (HEAD):
+Ran 21 tests in 9.419s
+
+OK
+[rc=0]

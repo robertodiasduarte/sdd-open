@@ -1,0 +1,13 @@
+feature_id: F16W2_F22
+slice_id: s1
+versao: 2.17.1
+data: 2026-11-15
+estado: shipado
+veredito: PASS
+waived: null
+dod: "Curadoria do playbook da F16W2 e da F22: BLOCO VÁLIDO, --cruzar sem aviso, lint e anti-colapso verdes, 202 testes do playbook OK; CI do PR #33 verde"
+descricao: "18 contagens ajudou; LM-015 refinada; LM-032 (calço no PATH vaza para o comando do aluno), LM-033 (saída do git lida por máquina desliga a cor), LM-034 (PATH restrito pelo path_restrito no Windows)"
+deploy: real
+review_externo: sdd/reports/reviews/EXTERNAL_REVIEW_20261115-183446 sha256=0e8f42233c2d262d7976928c4a5ca118afda9693cc3c37b32c840e03a6220ac0 diversidade=vendor
+avisos:
+  - "revisão em 3 rodadas: rodada 1 rebatida (2 leves), rodada 2 aplicada (2 leves, depois do CI vermelho por testes que fixavam contagens), rodada 3 adiada (1 leve)"

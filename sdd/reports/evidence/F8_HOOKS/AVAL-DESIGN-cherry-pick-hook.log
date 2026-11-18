@@ -1,0 +1,14 @@
+$ cd <tmp> && git init -q -b main r && cd r && git config user.email t@example.com && git config user.name t && echo a > a && git add a && git commit -q -m a && git switch -q -c feat && echo b > b && git add b && git commit -q -m b && git switch -q main && mkdir -p hooks && printf '#!/bin/sh\necho HOOK-RODOU >&2; exit 1\n' > hooks/pre-commit && chmod +x hooks/pre-commit && git config core.hooksPath hooks && echo '--- cherry-pick na main com pre-commit que recusa:' && git cherry-pick feat; echo "exit=$?"; git log --oneline | head -3; echo '--- git switch -c leva o staged junto:' && echo c > c && git add c && git switch -c nova && git status --porcelain
+--- cherry-pick na main com pre-commit que recusa:
+[main ecacbdf] b
+ Date: Fri Oct 30 19:57:11 2026 -0300
+ 1 file changed, 1 insertion(+)
+ create mode 100644 b
+exit=0
+ecacbdf b
+6511614 a
+--- git switch -c leva o staged junto:
+Switched to a new branch 'nova'
+A  c
+?? hooks/
+[exit=0]

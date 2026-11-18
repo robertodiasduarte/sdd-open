@@ -1,0 +1,3 @@
+$ grep -nE "mapfile|declare -A|\\\$\{[a-zA-Z_]+\^\^" sdd/bin/*.sh sdd/hooks/pre-commit sdd/hooks/pre-push .agents/skills/sdd-higiene-dado/scripts/*.sh bin/sdd-open.sh bin/lib/*.sh | grep -vE "^[^:]+:[0-9]+:[[:space:]]*#"; test $? -eq 1 && echo "(nenhum bashismo fora de comentário)"
+(nenhum bashismo fora de comentário)
+[exit=0]

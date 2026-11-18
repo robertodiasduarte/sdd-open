@@ -1,0 +1,59 @@
+$ git log --oneline -2; echo '== Generated files gate'; python3 scripts/check-gerado.py; echo rc=$?
+echo '== publish-check.sh'; bash scripts/publish-check.sh; echo rc=$?
+echo '== check-versions.py --base v1.5.16'; python3 scripts/check-versions.py --base v1.5.16; echo rc=$?
+echo '== Validators compile'; python3 -m py_compile skills/*/scripts/*.py scripts/*.py; echo rc=$?
+echo '== Shell scripts parse'; for f in scripts/package.sh scripts/publish-check.sh skills/*/scripts/*.sh; do bash -n "$f" || echo FAIL $f; done; echo rc=$?
+echo '== Skill tests'; for t in skills/*/tests; do [ -d "$t" ] || continue; echo "== $t"; python3 -B -m unittest discover -s "$t" -p 'test_*.py'; done; echo rc=$?
+echo '== skills/sdd-kb/scripts/gate.sh'; bash skills/sdd-kb/scripts/gate.sh; echo rc=$?
+echo '== Skill zips build'; bash scripts/package.sh > /dev/null; echo rc=$?; git status --porcelain --ignored | head -5
+echo '== check-gerado de novo depois de tudo'; python3 scripts/check-gerado.py | tail -1; echo rc=${PIPESTATUS[0]}
+0a25128 geração
+a82c972 docs(readme): sdd-engenharia-reversa-saas na tabela de skills, nos dois idiomas
+== Generated files gate
+✅ 10 skill(s) gerada(s) e a infra conferidas: tudo igual ao que o sdd-open gerou
+RESULTADO: VERDE
+rc=0
+== publish-check.sh
+PASS: publish-check found no forbidden content.
+rc=0
+== check-versions.py --base v1.5.16
+PASS: check-versions — 18 skills com versão coerente, comparadas a v1.5.16.
+rc=0
+== Validators compile
+rc=0
+== Shell scripts parse
+rc=0
+== Skill tests
+== skills/sdd-build/tests
+........
+----------------------------------------------------------------------
+Ran 8 tests in 0.168s
+
+OK
+== skills/sdd-define/tests
+...............
+----------------------------------------------------------------------
+Ran 15 tests in 0.759s
+
+OK
+== skills/ux-review-builder/tests
+................
+----------------------------------------------------------------------
+Ran 16 tests in 0.044s
+
+OK
+rc=0
+== skills/sdd-kb/scripts/gate.sh
+RESULTADO: VERDE — 4 aceitas, 12 rejeitadas pelo motivo certo, RULE_MAP do exemplo em dia
+rc=0
+== Skill zips build
+rc=0
+!! dist/
+!! scripts/__pycache__/
+!! skills/sdd-auditoria-harness/scripts/__pycache__/
+!! skills/sdd-build/scripts/__pycache__/
+!! skills/sdd-define/scripts/__pycache__/
+== check-gerado de novo depois de tudo
+RESULTADO: VERDE
+rc=0
+rc=0

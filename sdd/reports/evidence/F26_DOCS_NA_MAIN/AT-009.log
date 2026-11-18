@@ -1,0 +1,9 @@
+$ SDD_TEST_BASH=/bin/bash /usr/bin/python3 -B -m unittest -v -k at009 test_f26_marca_starter
+# AT-009 · HEAD e99136d · cópia de git archive HEAD · piso (/usr/bin/python3, /bin/bash)
+test_at009_descricao_acima_do_teto_sai_65_sem_gravar (test_f26_marca_starter.Marca) ... ok
+
+----------------------------------------------------------------------
+Ran 1 test in 0.884s
+
+OK
+[exit=0]

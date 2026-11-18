@@ -1,0 +1,41 @@
+$ SDD_TEST_BASH=/bin/bash /usr/bin/python3 -B -m unittest tests.test_f17_textos -v 2>&1 | tail -25
+test_f17_textos (unittest.loader._FailedTest) ... ERROR
+
+======================================================================
+ERROR: test_f17_textos (unittest.loader._FailedTest)
+----------------------------------------------------------------------
+ImportError: Failed to import test module: test_f17_textos
+Traceback (most recent call last):
+  File "/Library/Developer/CommandLineTools/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/unittest/loader.py", line 154, in loadTestsFromName
+    module = __import__(module_name)
+  File "/private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f17-starter-gerado/ec173b46-ec5c-43da-887d-2b87a8b93fd4/scratchpad/aval2.XXgg/open/tests/test_f17_textos.py", line 12, in <module>
+    from apoio import RAIZ
+ModuleNotFoundError: No module named 'apoio'
+
+
+----------------------------------------------------------------------
+Ran 1 test in 0.000s
+
+FAILED (errors=1)
+rc=0
+$ # refeito pelo jeito do Verify Gate (discover -s tests), só este arquivo
+SDD_TEST_BASH=/bin/bash /usr/bin/python3 -B -m unittest discover -s tests -p 'test_f17_textos.py' -v 2>&1 | tail -30
+test_projeto_so_com_agents_e_codex_nao_volta_vazio (test_f17_textos.AuditoriaVariosMotores) ... ok
+test_prompt_do_codex_chamado_como_prompts_nome_tem_referencia (test_f17_textos.AuditoriaVariosMotores) ... ok
+test_protocolo_diz_que_copia_gerada_nao_e_duplicata (test_f17_textos.AuditoriaVariosMotores) ... ok
+test_skill_cita_os_motores_e_a_precedencia (test_f17_textos.AuditoriaVariosMotores) ... ok
+test_governanca_prova_pos_build_pela_leitura_do_aplicar_a_migration (test_f17_textos.Consertos) ... ok
+test_molde_do_brainstorm_sem_restos_de_outro_dominio (test_f17_textos.Consertos) ... ok
+test_nenhum_arquivo_do_pacote_cita_skill_rdd_audita (test_f17_textos.Consertos) ... ok
+test_a_do_remoto_nao_vem_do_pre_voo (test_f17_textos.NewSessionDoStarter) ... ok
+test_c1_pre_voo_a_mao_com_a_nuvem_e_os_4_casos (test_f17_textos.NewSessionDoStarter) ... ok
+test_c2_skills_fora_do_git_vao_para_a_frente (test_f17_textos.NewSessionDoStarter) ... ok
+test_c3_as_duas_notas_do_por_que (test_f17_textos.NewSessionDoStarter) ... ok
+test_c4_textos_curtos (test_f17_textos.NewSessionDoStarter) ... ok
+test_drift_a_mao_quando_o_script_nao_existe (test_f17_textos.PromptBuilderSemScript) ... ok
+
+----------------------------------------------------------------------
+Ran 13 tests in 0.187s
+
+OK
+rc=0

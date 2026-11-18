@@ -1,0 +1,37 @@
+$ (repo com origin git@github.com:exemplo/x.git) GIT_SSH_COMMAND=<ssh que pendura com neto> SDD_CHECAR_GH=<gh que pendura com neto> [GIT_ASKPASS=<askpass que pendura>] bash checar.sh [--frente]  # base=ad32fe1 head=3ba89de; tempo medido por date +%s
+=== base modo=[normal] askpass=[] rc=0 tempo=11s
+- Não consegui falar com github.com agora (sem internet ou rede bloqueada).
+  Quando a conexão voltar, rode de novo — sem o remoto não dá para abrir frente nem publicar.
+- Não deu para conferir o login do gh no GitHub agora (o GitHub não respondeu em 10 s).
+  Rode de novo quando a conexão voltar; para ver na hora: gh auth status
+✅ Repo ck-base, branch main, nenhuma frente aberta, Claude Code 2.1.314, Codex 0.163.0, editor cursor · sdd-checar-ambiente v1.5.2 · nov/2026 · versão atual: https://gith
+=== base modo=[normal] askpass=[sim] rc=0 tempo=10s
+- Não consegui falar com github.com agora (sem internet ou rede bloqueada).
+  Quando a conexão voltar, rode de novo — sem o remoto não dá para abrir frente nem publicar.
+- Não deu para conferir o login do gh no GitHub agora (o GitHub não respondeu em 10 s).
+  Rode de novo quando a conexão voltar; para ver na hora: gh auth status
+✅ Repo ck-base, branch main, nenhuma frente aberta, Claude Code 2.1.314, Codex 0.163.0, editor cursor · sdd-checar-ambiente v1.5.2 · nov/2026 · versão atual: https://gith
+=== base modo=[--frente] askpass=[] rc=1 tempo=11s
+- Não consegui falar com github.com agora (sem internet ou rede bloqueada).
+  Quando a conexão voltar, rode de novo — sem o remoto não dá para abrir frente nem publicar.
+=== base modo=[--frente] askpass=[sim] rc=1 tempo=10s
+- Não consegui falar com github.com agora (sem internet ou rede bloqueada).
+  Quando a conexão voltar, rode de novo — sem o remoto não dá para abrir frente nem publicar.
+=== head modo=[normal] askpass=[] rc=0 tempo=11s
+- Não consegui falar com github.com agora (sem internet ou rede bloqueada).
+  Quando a conexão voltar, rode de novo — sem o remoto não dá para abrir frente nem publicar.
+- Não deu para conferir o login do gh no GitHub agora (o GitHub não respondeu em 10 s).
+  Rode de novo quando a conexão voltar; para ver na hora: gh auth status
+✅ Repo ck-head, branch main, nenhuma frente aberta, Claude Code 2.1.314, Codex 0.163.0, editor cursor · sdd-checar-ambiente v1.5.3 · nov/2026 · versão atual: https://gith
+=== head modo=[normal] askpass=[sim] rc=0 tempo=10s
+- Não consegui falar com github.com agora (sem internet ou rede bloqueada).
+  Quando a conexão voltar, rode de novo — sem o remoto não dá para abrir frente nem publicar.
+- Não deu para conferir o login do gh no GitHub agora (o GitHub não respondeu em 10 s).
+  Rode de novo quando a conexão voltar; para ver na hora: gh auth status
+✅ Repo ck-head, branch main, nenhuma frente aberta, Claude Code 2.1.314, Codex 0.163.0, editor cursor · sdd-checar-ambiente v1.5.3 · nov/2026 · versão atual: https://gith
+=== head modo=[--frente] askpass=[] rc=1 tempo=11s
+- Não consegui falar com github.com agora (sem internet ou rede bloqueada).
+  Quando a conexão voltar, rode de novo — sem o remoto não dá para abrir frente nem publicar.
+=== head modo=[--frente] askpass=[sim] rc=1 tempo=10s
+- Não consegui falar com github.com agora (sem internet ou rede bloqueada).
+  Quando a conexão voltar, rode de novo — sem o remoto não dá para abrir frente nem publicar.

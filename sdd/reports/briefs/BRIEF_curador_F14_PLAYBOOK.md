@@ -1,0 +1,2 @@
+feature: F14_PLAYBOOK · staging: /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/sdd-curadoria-d97842246539/F14_PLAYBOOK · colheita: /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/sdd-curadoria-d97842246539/F14_PLAYBOOK/colheita.txt · playbook: /Users/robertoduarte/rdd-worktrees/sdd-open-f14-playbook/sdd/playbook.md · worktree: /Users/robertoduarte/rdd-worktrees/sdd-open-f14-playbook
+Leia e siga .agents/skills/sdd-playbook/references/curator.md.

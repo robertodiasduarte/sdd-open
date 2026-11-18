@@ -1,0 +1,15 @@
+$ HOME=<temporário> CODEX_HOME=<temporário, só auth.json> codex exec --ignore-user-config --ephemeral -s workspace-write -C <cópia> "<prompt abaixo>"   # HEAD=08fbb5b
+codex: stub
+prompt: Você é a fase Build deste projeto. Siga .agents/skills/sdd-build/SKILL.md. Os artefatos são sdd/features/DEFINE_NOTAS.md e sdd/features/DESIGN_NOTAS.md. O modo é default: não pergunte. Sem revisão de contexto fresco nesta execução. Execute só a tarefa 1 do File Manifest, conforme o passo 4 da skill, e pare depois dela, sem Verify Gate. Registre o que fez em sdd/reports/BUILD_REPORT_NOTAS.md, em poucas linhas. Sem commit. Se algo impedir a tarefa, faça a pergunta que a skill manda fazer, na sua mensagem final, e pare.
+
+sem-skill
+HOME/CODEX_HOME: auth.json
+32:| # | Nome | Tipo | Arquivo de destino | Versão | Provedo
+34:| 1 | notas_de_versao | loop | `src/notas/LOOP_SPEC.md` |
+3
+[exit=0]
+
+$ python3 -B confere_roteador.py sem-skill <cópia> AVAL2-stub-sem-skill.log
+🛑 a mensagem final não traz [D2 · muda o produto]
+RESULTADO: REPROVA
+[exit=1]

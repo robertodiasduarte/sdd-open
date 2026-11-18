@@ -1,0 +1,102 @@
+$ /bin/bash /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.lyAZcjfTsM/scripts/sonda6.sh
+AT-027: principal/sdd é link
+IGNORADO sdd/features (a pasta é um link no checkout principal)
+RESULTADO: NADA A COPIAR
+→ 1 item(ns) com link não foram copiados: confira as linhas IGNORADO e copie à mão o que for desta frente.
+[exit=0]
+
+=== AT-031
+BRAINSTORM_EXEMPLO.md
+DEFINE_FIXTURE_CONTROLE.md
+DEFINE_FIXTURE_GOVERNANCA.md
+DEFINE_FIXTURE_NEEDS_CLARIFICATION.md
+DEFINE_FIXTURE_SEM_BLOCO.md
+DEFINE_FIXTURE_SEM_GOVERNANCA.md
+contexto
+conversa
+design
+evidencia
+fluxo
+handoff
+hooks
+patterns
+playbook
+revisao
+DESIGN_VALIDO.md
+47:    def test_placeholder_dentro_de_codigo_nao_conta(self):
+226:    def test_prefixo_numerado_de_varios_niveis_e_conferido(self):
+255:    def test_o_que_esta_entre_chaves_nunca_passa(self):
+
+=== AT-032
+✅ 96 casos conferidos
+RESULTADO: VERDE
+→ o prompt-drift-scan.sh está pronto para uso
+[self-test exit=0]
+[prompts:~  wrapper_pattern: ["a", "b"]~] exit=64 · 🛑 falta dizer o que avaliar RESULTADO: ERRO DE USO 
+[prompts: {wrapper_pattern: "x"}~] exit=64 · 🛑 falta dizer o que avaliar RESULTADO: ERRO DE USO 
+[prompts:~  wrapper_pattern: "ok"~] exit=64 · 🛑 falta dizer o que avaliar RESULTADO: ERRO DE USO 
+[prompts:~  wrapper_pattern:~    - a~] exit=64 · 🛑 falta dizer o que avaliar RESULTADO: ERRO DE USO 
+
+=== AT-035
+docs/playbook-curation.md
+docs/pt-BR/playbook-curation.md
+README.md:1
+README.pt-BR.md:1
+
+=== AT-036
+[sdd/bin/playbook-curator.sh grep exit=1]
+[.agents/skills/sdd-new-session/scripts/copiar-docs.sh grep exit=1]
+✅ .agents/skills/sdd-ux-review/SKILL.md: frontmatter válido · camada de conversa ok
+[skill-lint exit=0]
+      18
+🟢 sdd-decisoes-lint --sites: 25 pergunta(s) em 22 arquivo(s), cada uma com a marca de classe e no formato.
+[decisoes exit=0]
+RESULTADO: VERDE
+→ siga para o próximo passo.
+[check-versions exit=0]
+
+=== AT-037
+[exit=0]
+
+=== AT-045
+git status →  [exit=64]
+git diff →  [exit=64]
+git log →  [exit=64]
+touch+git status (índice recalculado) →  [exit=64]
+git stash list →  [exit=64]
+git add →  [exit=64]
+assume-unchanged →  [exit=64]
+skip-worktree →  [exit=64]
+assume-unchanged + edição →  [exit=64]
+config local →  [exit=64]
+info/exclude →  [exit=64]
+hook →  [exit=64]
+troca de branch →  [exit=64]
+commit →  [exit=64]
+branch nova sem trocar →  [exit=64]
+tag nova →  [exit=64]
+arquivo ignorado em sdd/ →  [exit=64]
+sobrescrita de ignorado em sdd/ →  [exit=64]
+→ a fronteira NÃO foi verificada; corrija a chamada e rode de novo.
+[snapshot pasta ilegível exit=64]
+uso: /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.lyAZcjfTsM/nogit/sdd/bin/governanca-fronteira.sh --snapshot <raiz-do-worktree> <arquivo-do-snapshot> [incluir…] | --comparar <antes> <depois> <permitido>…
+RESULTADO: ERRO DE USO
+→ a fronteira NÃO foi verificada; corrija a chamada e rode de novo.
+[raiz com & e | exit=64]
+6:    python3 sdd/bin/governanca-bloco.py <resposta.txt> --saida <caminho do relatório> [--comparar <saída.txt>]
+9:      --comparar       a saída de `governanca-fronteira.sh --comparar` (linhas MUDOU:/FORA:); com ela, o bloco
+15:conjunto de Gnn do bloco é igual ao dos títulos `### Gnn — ` de `## Lacunas`; com --comparar, REVISADO exige
+34:    print("RESULTADO: ERRO DE USO\n→ chame com <resposta.txt> --saida <relatório> [--comparar <saída>].")
+72:    resp, saida, comparar = argv[0], None, None
+75:        if argv[i] in ("--saida", "--comparar") and i + 1 < len(argv):
+79:                comparar = argv[i + 1]
+85:    if not os.path.isfile(resp) or (comparar is not None and not os.path.isfile(comparar)):
+255:   sessão nova que retoma depois da parada (exit 40) o refaz igual e acha o snapshot e a cópia do DEFINE. Se a
+257:   **Sessão que retoma depois da parada** (o `"$T/antes"` já existe e a volta do revisor ainda não foi
+258:   conferida): recalcule só o `T` e vá para o item 4; refazer a cópia e o snapshot de antes agora tomaria por
+260:   `cp sdd/features/DEFINE_<F>.md "$T/DEFINE.antes"` (o snapshot só guarda o sha: é esta cópia que
+284:   a outra; com o `T` vazio, a cópia falha primeiro e o DEFINE fica onde está). A cópia vem **antes** do `rm`: se
+
+=== AT-028
+244:   `bash .agents/skills/sdd-new-session/scripts/copiar-docs.sh <checkout principal> <pasta das frentes>/<slug> <slug>`.
+[exit=0]

@@ -1,0 +1,17 @@
+$ T=$(mktemp -d); bash sdd/bin/sdd-fluxo.sh loop --review sdd/fixtures/fluxo/review-ok --ledger sdd/fixtures/fluxo/ledger-rebatida.md --rodada 1 --log "$T/L.log" >/dev/null; echo "1ª chamada rc=$?"; mkdir "$T/bin"; for f in bash dirname sed git cat mkdir; do ln -s "$(command -v $f)" "$T/bin/$f"; done; PATH="$T/bin" /bin/bash sdd/bin/sdd-fluxo.sh loop --review "$T/nao" --rodada 1 --log "$T/L.log"; rc=$?; echo "2ª chamada sem python3 no PATH rc=$rc; o --log ficou assim:"; cat "$T/L.log"; rm -rf "${T:?}"; test $rc -eq 64
+1ª chamada rc=0
+🛑 sdd-fluxo: python3 não encontrado no PATH.
+RESULTADO: ERRO DE USO
+→ instale o Python 3 (3.9 ou mais novo) e rode de novo.
+2ª chamada sem python3 no PATH rc=64; o --log ficou assim:
+$ sdd-fluxo.sh loop --review sdd/fixtures/fluxo/review-ok --ledger sdd/fixtures/fluxo/ledger-rebatida.md --rodada 1
+ESTADO: PRONTO
+rodada: 1 de 3
+graves_abertos: 0
+aplicadas: 0
+rebatidas: 1
+motivo: grave(s) rebatido(s) no ledger: R1@rev
+RESULTADO: PRONTO
+→ siga para o avaliador ou para a release.
+[exit=0]
+[exit=0]

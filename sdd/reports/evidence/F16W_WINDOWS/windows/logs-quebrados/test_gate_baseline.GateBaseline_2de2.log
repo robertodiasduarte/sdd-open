@@ -1,0 +1,42 @@
+test_crash_com_rc_2_nao_prova_dentes (test_gate_baseline.GateBaseline.test_crash_com_rc_2_nao_prova_dentes) ... ok
+
+test_hooks_e_assinatura_globais_nao_quebram_a_copia (test_gate_baseline.GateBaseline.test_hooks_e_assinatura_globais_nao_quebram_a_copia) ... FAIL
+
+test_marcadores_de_asssercao_provam_dentes (test_gate_baseline.GateBaseline.test_marcadores_de_asssercao_provam_dentes) ... ok
+
+test_sem_sobrepor_o_gate_novo_nao_existe_na_base (test_gate_baseline.GateBaseline.test_sem_sobrepor_o_gate_novo_nao_existe_na_base) ... ok
+
+test_uso (test_gate_baseline.GateBaseline.test_uso) ... ok
+
+
+
+======================================================================
+
+FAIL: test_hooks_e_assinatura_globais_nao_quebram_a_copia (test_gate_baseline.GateBaseline.test_hooks_e_assinatura_globais_nao_quebram_a_copia)
+
+----------------------------------------------------------------------
+
+Traceback (most recent call last):
+
+  File "D:\a\sdd-open\sdd-open\tests\test_gate_baseline.py", line 86, in test_hooks_e_assinatura_globais_nao_quebram_a_copia
+
+    self.assertEqual(rc, 0, out)
+
+AssertionError: 3 != 0 : \u26a0\ufe0f  n�o � um reposit�rio git
+
+RESULTADO: INCONCLUSIVO
+
+\u2192 rode dentro do projeto.
+
+
+
+
+
+----------------------------------------------------------------------
+
+Ran 5 tests in 19.123s
+
+
+
+FAILED (failures=1)
+

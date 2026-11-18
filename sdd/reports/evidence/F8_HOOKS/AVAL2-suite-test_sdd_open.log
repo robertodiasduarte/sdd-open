@@ -1,0 +1,7 @@
+$ cd /Users/robertoduarte/rdd-worktrees/sdd-open-f8-aval && SDD_TEST_BASH=/bin/bash /usr/bin/python3 -B -m unittest discover -s tests -p 'test_sdd_open.py'
+..............................
+----------------------------------------------------------------------
+Ran 30 tests in 265.916s
+
+OK
+[exit=0]

@@ -1,0 +1,4 @@
+$ cd /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.8ThIJgJWOa/base && TMPDIR=/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.8ThIJgJWOa/tmp bash sdd/bin/playbook-lint.sh --anti-collapse /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.8ThIJgJWOa/pb/head.md /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.8ThIJgJWOa/pb/stagedp.md
+⛔ anti-collapse: 1/4 bullets (25%) com conteúdo/seção reescritos num só commit (limite 20%).
+   Delta only: reescrita grande = 2+ commits; contadores/conf não contam.
+[exit=1]

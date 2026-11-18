@@ -1,0 +1,126 @@
+$ PATH=/usr/bin:/bin /bin/bash /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f21-f19/8ca3f42f-d684-434d-9f0b-19bdcf0aef88/scratchpad/aval-f19/tools/uso.sh /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f21-f19/8ca3f42f-d684-434d-9f0b-19bdcf0aef88/scratchpad/aval-f19/casos/uso
+=== /bin/bash sdd/bin/eval-revisores.sh /nao/existe
+🛑 eval-revisores: a pasta /nao/existe não existe
+RESULTADO: PAROU
+→ rode `eval-revisores.sh --help` para ver o uso.
+[exit=64]
+=== /bin/bash sdd/bin/eval-revisores.sh sdd/fixtures/revisao/custo --xyz
+🛑 eval-revisores: opção desconhecida: --xyz
+RESULTADO: PAROU
+→ rode `eval-revisores.sh --help` para ver o uso.
+[exit=64]
+=== /bin/bash sdd/bin/eval-revisores.sh sdd/fixtures/revisao/custo outra
+🛑 eval-revisores: argumento a mais: outra
+RESULTADO: PAROU
+→ rode `eval-revisores.sh --help` para ver o uso.
+[exit=64]
+=== /bin/bash sdd/bin/eval-revisores.sh sdd/fixtures/revisao/custo --ledgers
+🛑 eval-revisores: --ledgers pede um caminho
+RESULTADO: PAROU
+→ rode `eval-revisores.sh --help` para ver o uso.
+[exit=64]
+=== /bin/bash sdd/bin/eval-revisores.sh sdd/fixtures/revisao/custo --ledgers /nao/existe
+🛑 eval-revisores: o caminho de --ledgers não existe: /nao/existe
+RESULTADO: PAROU
+→ rode `eval-revisores.sh --help` para ver o uso.
+[exit=64]
+=== /bin/bash sdd/bin/eval-revisores.sh sdd/fixtures/revisao/custo --registry /nao/existe.tsv
+🛑 eval-revisores: o arquivo de --registry não existe: /nao/existe.tsv
+RESULTADO: PAROU
+→ rode `eval-revisores.sh --help` para ver o uso.
+[exit=64]
+=== /bin/bash sdd/bin/eval-revisores.sh sdd/fixtures/revisao/custo --ledgers=sdd/fixtures/revisao/custo
+🛑 eval-revisores: opção desconhecida: --ledgers=sdd/fixtures/revisao/custo
+RESULTADO: PAROU
+→ rode `eval-revisores.sh --help` para ver o uso.
+[exit=64]
+=== /bin/bash sdd/bin/eval-revisores.sh 
+eval-revisores — custo e resultado por papel, engine e modelo (0 pasta(s) lida(s) em /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f21-f19/8ca3f42f-d684-434d-9f0b-19bdcf0aef88/scratchpad/aval-f19/src; 0 ledger(s))
+RESULTADO: SEM DADOS
+→ nenhuma revisão com META.txt legível nesta pasta: rode adversarial-review.sh e meça de novo.
+[exit=2]
+=== /bin/bash sdd/bin/eval-revisores.sh sdd/fixtures/revisao/custo/EXTERNAL_REVIEW_20260201-000001/META.txt
+🛑 eval-revisores: a pasta /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f21-f19/8ca3f42f-d684-434d-9f0b-19bdcf0aef88/scratchpad/aval-f19/src/sdd/fixtures/revisao/custo/EXTERNAL_REVIEW_20260201-000001/META.txt não existe
+RESULTADO: PAROU
+→ rode `eval-revisores.sh --help` para ver o uso.
+[exit=64]
+=== /bin/bash sdd/bin/eval-revisores.sh --help
+  eval-revisores.sh [<pasta-das-revisões>] [--ledgers <pasta-ou-arquivo>] [--registry <registry.tsv>]
+      pasta: padrão review.output_dir do sdd/config.yaml da raiz git (sdd/reports/reviews se vazio)
+      --ledgers: padrão sdd/reviews da raiz git; numa pasta, lê os LEDGER_REVISAO_*.md
+      --registry: padrão review.registry do config, senão sdd/review/registry.tsv, senão o do pacote
+      pago    = custo numérico das chamadas de engine pay-per-token (o que saiu do saldo)
+      nominal = todo custo numérico, reportado ou estimado (≈), inclusive o de engine por assinatura
+      n/d     = chamada sem custo informado (assinatura sem valor, $?): nunca conta como zero
+      incerto = custo `US$ n + $?` (a engine estourou o tempo): o n entra na soma e a linha avisa
+      falhas  = chamadas com exit ≠ 0, por motivo; "trocada" = a engine prevista falhou e outra respondeu
+                (o custo da tentativa que falhou fica na linha da engine que respondeu: o META.txt não o separa)
+      fora da conta = o que não entrou nos números, com o motivo (linha de ledger sem par, pasta ilegível…)
+      0 MEDIDO · 2 SEM DADOS (nenhuma pasta com META.txt legível, ou a pasta padrão ainda não existe)
+      64 uso, ou pasta/arquivo passado não existe
+[exit=0]
+=== /bin/bash sdd/bin/eval-revisores.sh /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f21-f19/8ca3f42f-d684-434d-9f0b-19bdcf0aef88/scratchpad/aval-f19/casos/uso/vazia
+eval-revisores — custo e resultado por papel, engine e modelo (0 pasta(s) lida(s) em /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f21-f19/8ca3f42f-d684-434d-9f0b-19bdcf0aef88/scratchpad/aval-f19/casos/uso/vazia; 0 ledger(s))
+RESULTADO: SEM DADOS
+→ nenhuma revisão com META.txt legível nesta pasta: rode adversarial-review.sh e meça de novo.
+[exit=2]
+=== /bin/bash sdd/bin/eval-revisores.sh /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f21-f19/8ca3f42f-d684-434d-9f0b-19bdcf0aef88/scratchpad/aval-f19/casos/uso/so6
+eval-revisores — custo e resultado por papel, engine e modelo (0 pasta(s) lida(s) em /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f21-f19/8ca3f42f-d684-434d-9f0b-19bdcf0aef88/scratchpad/aval-f19/casos/uso/so6; 0 ledger(s))
+fora da conta: 1 (EXTERNAL_REVIEW_20260201-000006: META ilegível ou incompleto)
+RESULTADO: SEM DADOS
+→ nenhuma revisão com META.txt legível nesta pasta: rode adversarial-review.sh e meça de novo.
+[exit=2]
+=== projeto sem git, sem revisões (padrões): cwd = projeto
+eval-revisores — custo e resultado por papel, engine e modelo (0 pasta(s) lida(s) em /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f21-f19/8ca3f42f-d684-434d-9f0b-19bdcf0aef88/scratchpad/aval-f19/casos/uso/proj/sdd/reports/reviews; 0 ledger(s))
+RESULTADO: SEM DADOS
+→ nenhuma revisão com META.txt legível nesta pasta: rode adversarial-review.sh e meça de novo.
+[exit=2]
+=== mesmo projeto, com review.output_dir no config e ledgers em sdd/reviews (padrões)
+eval-revisores — custo e resultado por papel, engine e modelo (6 pasta(s) lida(s) em /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f21-f19/8ca3f42f-d684-434d-9f0b-19bdcf0aef88/scratchpad/aval-f19/casos/uso/proj/minhas; 1 ledger(s))
+
+| Papel | Engine (modelo) | Cobrança | Rodadas | Falhas | Pago US$ | Nominal US$ | Achados | Aplicados | Com dano | Falsos positivos | Fora de escopo | Sem classificar | Pago por dano | Nominal por dano | AGREE |
+| revisor | claude (claude-x) | assinatura | 6 | 0 | 0.0000 | ≈7.0000 | 9 | 6 de 9 | 3 de 9 | 1 de 9 | 1 de 9 | 1 de 9 | 0.0000 | ≈2.3333 | — |
+| 2º revisor | codex (-) | assinatura | 1 | 0 | 0.0000 | n/d | 1 | 1 de 1 | 1 de 1 | 0 de 1 | 0 de 1 | 0 de 1 | 0.0000 | — | — |
+| 2º revisor | gemini (-) | desconhecida | 0 | 1 (1 credencial) | n/d | n/d | 0 | 0 | 0 | 0 | 0 | 0 | — | — | — |
+| 2º revisor | openrouter (deep/seek) | pay-per-token | 0 | 1 (1 cota ou tempo) | 1.0000 (incerto em 1 de 1) | 1.0000 (incerto em 1 de 1) | 0 | 0 | 0 | 0 | 0 | 0 | — | — | — |
+| auditor | codex (-) | assinatura | 0 | 1 (1 trocada por outra engine) | 0.0000 | n/d | 0 | 0 | 0 | 0 | 0 | 0 | — | — | n/a |
+| auditor | openrouter (qwen/q-plus via ProvedorA) | pay-per-token | 4 | 0 | 0.1500 (n/d em 1 de 4) | 0.1500 (n/d em 1 de 4) | 0 | 0 | 0 | 0 | 0 | 0 | — | — | 71.4% (5 de 7) |
+| auditor | openrouter (qwen/q-plus via ProvedorB) | pay-per-token | 2 | 0 | 0.6100 | 0.6100 | 2 | 0 de 2 | 0 de 2 | 2 de 2 | 0 de 2 | 0 de 2 | — | — | 100.0% (3 de 3) |
+
+fora da conta: 4 (EXTERNAL_REVIEW_20260201-000006: META ilegível ou incompleto; EXTERNAL_REVIEW_20260201-000007: 2º revisor indisponível: nenhuma engine foi chamada; LEDGER_REVISAO_EXEMPLO.md:20: achado R1@codex: o rótulo @codex não é o da engine que respondeu como revisor (claude); LEDGER_REVISAO_EXEMPLO.md:21: achado R9@claude
+RESULTADO: MEDIDO
+→ leia cada taxa com a amostra ao lado: poucas rodadas dão número instável. O script conta o que está registrado; trocar a cadeia de revisão é decisão de quem lê.
+[exit=0]
+=== pasta padrão sdd/reports/reviews quando o slot está vazio
+eval-revisores — custo e resultado por papel, engine e modelo (1 pasta(s) lida(s) em /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f21-f19/8ca3f42f-d684-434d-9f0b-19bdcf0aef88/scratchpad/aval-f19/casos/uso/proj/sdd/reports/reviews; 1 ledger(s))
+
+| Papel | Engine (modelo) | Cobrança | Rodadas | Falhas | Pago US$ | Nominal US$ | Achados | Aplicados | Com dano | Falsos positivos | Fora de escopo | Sem classificar | Pago por dano | Nominal por dano | AGREE |
+| revisor | claude (claude-x) | assinatura | 1 | 0 | 0.0000 | 2.0000 | 3 | 2 de 3 | 1 de 3 | 1 de 3 | 0 de 3 | 0 de 3 | 0.0000 | 2.0000 | — |
+| auditor | openrouter (qwen/q-plus via ProvedorA) | pay-per-token | 1 | 0 | 0.0500 | 0.0500 | 0 | 0 | 0 | 0 | 0 | 0 | — | — | 66.7% (2 de 3) |
+
+fora da conta: 10 (LEDGER_REVISAO_EXEMPLO.md:12: achado R1 não está em EXTERNAL_REVIEW_20260201-000002; LEDGER_REVISAO_EXEMPLO.md:13: achado R2 não está em EXTERNAL_REVIEW_20260201-000002; LEDGER_REVISAO_EXEMPLO.md:14: achado N1 não está em EXTERNAL_REVIEW_20260201-000002; LEDGER_REVISAO_EXEMPLO.md:15: achado R1@claude não está 
+RESULTADO: MEDIDO
+→ leia cada taxa com a amostra ao lado: poucas rodadas dão número instável. O script conta o que está registrado; trocar a cadeia de revisão é decisão de quem lê.
+[exit=0]
+=== pasta de revisões sem permissão de leitura
+=== /bin/bash sdd/bin/eval-revisores.sh /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f21-f19/8ca3f42f-d684-434d-9f0b-19bdcf0aef88/scratchpad/aval-f19/casos/uso/trancada
+Traceback (most recent call last):
+  File "<stdin>", line 237, in <module>
+PermissionError: [Errno 13] Permission denied: '/private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f21-f19/8ca3f42f-d684-434d-9f0b-19bdcf0aef88/scratchpad/aval-f19/casos/uso/trancada'
+[exit=1]
+=== ledgers: pasta sem permissão
+=== /bin/bash sdd/bin/eval-revisores.sh sdd/fixtures/revisao/custo --ledgers /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f21-f19/8ca3f42f-d684-434d-9f0b-19bdcf0aef88/scratchpad/aval-f19/casos/uso/ltrancada
+Traceback (most recent call last):
+  File "<stdin>", line 134, in <module>
+PermissionError: [Errno 13] Permission denied: '/private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f21-f19/8ca3f42f-d684-434d-9f0b-19bdcf0aef88/scratchpad/aval-f19/casos/uso/ltrancada'
+[exit=1]
+=== sem python3 no PATH
+🛑 eval-revisores: python3 não encontrado no PATH.
+RESULTADO: PAROU
+→ instale o Python 3 (3.9 ou mais novo) e rode de novo.
+[exit=64]
+🛑 ledger-revisao-lint: python3 não encontrado no PATH.
+RESULTADO: ERRO DE USO
+→ instale o Python 3 (3.9 ou mais novo) e rode de novo.
+[exit=64]
+[exit=0]

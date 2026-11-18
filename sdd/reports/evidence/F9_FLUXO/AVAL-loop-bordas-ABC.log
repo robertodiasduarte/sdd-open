@@ -1,0 +1,29 @@
+$ F=sdd/fixtures/fluxo; T=$(mktemp -d); mkdir "$T/sem-jsonl"; cp $F/review-invalida/META.txt "$T/sem-jsonl/"; sed "s/rodada=1 | tests/rodada=3 | tests/" $F/ledger-rebatida.md > "$T/ledger-r3.md"; bash sdd/bin/sdd-fluxo.sh loop --review "$T/sem-jsonl" --rodada 1; a=$?; bash sdd/bin/sdd-fluxo.sh loop --review $F/review-ok --ledger "$T/ledger-r3.md" --rodada 3 --avaliacao $F/AVALIACAO_needs_work.md --ciclo-avaliador 1; b=$?; bash sdd/bin/sdd-fluxo.sh loop --review $F/review-ok --rodada 1 --avaliacao $F/AVALIACAO_recibo.md; c=$?; rm -rf "${T:?}"; echo "A=$a B=$b C=$c (esperado 10 10 10)"; [ "$a$b$c" = 101010 ]
+ESTADO: CONTINUAR
+rodada: 1 de 3
+graves_abertos: 0
+aplicadas: 0
+rebatidas: 0
+motivo: review inválida (reviewer_exit=0 auditor_exit=68) — refazer
+RESULTADO: CONTINUAR
+→ corrija, rode o Verify Gate e a revisão de novo com --rodada 2.
+ESTADO: CONTINUAR
+rodada: 3 de 3
+graves_abertos: 0
+aplicadas: 0
+rebatidas: 1
+motivo: grave(s) rebatido(s) no ledger: R1@rev
+motivo: avaliador: NEEDS_WORK (ciclo 1)
+RESULTADO: CONTINUAR
+→ corrija, rode o Verify Gate e a revisão de novo com --rodada 4.
+ESTADO: CONTINUAR
+rodada: 1 de 3
+graves_abertos: 1
+aplicadas: 0
+rebatidas: 0
+motivo: grave(s) sem veredito no ledger: R1@rev
+motivo: avaliador: PASS_PENDENTE_RECIBO — aguardando o recibo humano do roteiro (não é decisão)
+RESULTADO: CONTINUAR
+→ corrija, rode o Verify Gate e a revisão de novo com --rodada 2.
+A=10 B=10 C=10 (esperado 10 10 10)
+[exit=0]

@@ -1,0 +1,52 @@
+test_init_completa_e_nao_sobrescreve_e_sync_gera_o_adaptador (test_f13_textos.Instalacao.test_init_completa_e_nao_sobrescreve_e_sync_gera_o_adaptador) ... ERROR
+
+
+
+======================================================================
+
+ERROR: test_init_completa_e_nao_sobrescreve_e_sync_gera_o_adaptador (test_f13_textos.Instalacao.test_init_completa_e_nao_sobrescreve_e_sync_gera_o_adaptador)
+
+----------------------------------------------------------------------
+
+Traceback (most recent call last):
+
+  File "D:\a\sdd-open\sdd-open\tests\test_f13_textos.py", line 371, in test_init_completa_e_nao_sobrescreve_e_sync_gera_o_adaptador
+
+    rc, out, err = self.roda([BASH, cli, "init", "--yes", "--vendors", "claude"], repo)
+
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+  File "D:\a\sdd-open\sdd-open\tests\apoio.py", line 102, in roda
+
+    r = subprocess.run(
+
+        ^^^^^^^^^^^^^^^
+
+  File "C:\hostedtoolcache\windows\Python\3.12.10\x64\Lib\subprocess.py", line 550, in run
+
+    stdout, stderr = process.communicate(input, timeout=timeout)
+
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+  File "C:\hostedtoolcache\windows\Python\3.12.10\x64\Lib\subprocess.py", line 1209, in communicate
+
+    stdout, stderr = self._communicate(input, endtime, timeout)
+
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+  File "C:\hostedtoolcache\windows\Python\3.12.10\x64\Lib\subprocess.py", line 1630, in _communicate
+
+    raise TimeoutExpired(self.args, orig_timeout)
+
+subprocess.TimeoutExpired: Command '['C:\\Program Files\\Git\\usr\\bin\\bash.exe', 'D:\\a\\sdd-open\\sdd-open\\bin\\sdd-open.sh', 'init', '--yes', '--vendors', 'claude']' timed out after 120 seconds
+
+
+
+----------------------------------------------------------------------
+
+Ran 1 test in 222.473s
+
+
+
+FAILED (errors=1)
+

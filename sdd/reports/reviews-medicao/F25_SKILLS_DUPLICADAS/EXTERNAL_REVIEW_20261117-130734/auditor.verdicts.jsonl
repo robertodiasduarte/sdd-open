@@ -1,0 +1,4 @@
+{"achado": "R1", "veredito": "DISAGREE_CONCERN", "justificativa": "duplicadas.sh:22 instala um trap EXIT, mas o trecho que comprovaria um trap anterior no checar.sh está ausente."}
+{"achado": "R2", "veredito": "AGREE", "justificativa": "duplicadas.sh:606 imprime Nada foi tirado inclusive após falha de restauração ou remoção de pasta fora do plano."}
+{"achado": "R3", "veredito": "AGREE", "justificativa": "duplicadas.sh:91 passa RAIZ por awk -v, que interpreta escapes e pode impedir o reconhecimento de uma cópia salva no git."}
+{"achado": "N1", "veredito": "NOVO", "severidade": "MED", "arquivo": ".agents/skills/sdd-checar-ambiente/scripts/duplicadas.sh", "linha": 514, "resumo": "A limpeza pode informar sucesso após o npx apagar a pasta sem remover sua entrada do registro, fazendo a skill reaparecer no próximo update global."}

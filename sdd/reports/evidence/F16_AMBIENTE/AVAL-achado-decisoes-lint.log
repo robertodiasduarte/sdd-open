@@ -1,0 +1,14 @@
+$ T=$(mktemp -d) && git archive HEAD | tar -x -C $T && cd $T && SDD_TEST_BASH=/bin/bash /usr/bin/python3 -B -m unittest discover -s tests -p test_decisoes_lint.py -k AlvosReais
+..F
+======================================================================
+FAIL: test_skills_do_pacote_27_perguntas (test_decisoes_lint.AlvosReais)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.CKB8j1XsA4/tests/test_decisoes_lint.py", line 36, in test_skills_do_pacote_27_perguntas
+    self.assertIn("27 pergunta(s) em 22 arquivo(s)", out)
+AssertionError: '27 pergunta(s) em 22 arquivo(s)' not found in '🟢 sdd-decisoes-lint --sites: 28 pergunta(s) em 23 arquivo(s), cada uma com a marca de classe e no formato.\n'
+
+----------------------------------------------------------------------
+Ran 3 tests in 0.215s
+
+FAILED (failures=1)

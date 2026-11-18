@@ -1,0 +1,7 @@
+$ gh run view 40931927983 --json conclusion,jobs && gh run list --workflow release.yml --limit 1 && gh release list --limit 2
+publish-gate dd27ef6 success
+  gate: success
+  Testes no piso (macOS, só leitura): success
+última run de release.yml: 40926754472 em 303cc87 (nenhuma em dd27ef6)
+sdd-open v2.2.4	Latest	v2.2.4	2026-10-29T18:03:28Z
+sdd-open v2.2.3		v2.2.3	2026-10-29T16:50:33Z

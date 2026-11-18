@@ -1,0 +1,160 @@
+$ bash /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f16-ambiente/7a19ff14-fc44-4226-880f-204bc93851d3/scratchpad/sondas/at006.sh
+=== A: python3=atalho da Store (9009, msg no stderr) + python válido -> roda com python
+rc=0
+--- stdout (5 linhas):
+✅ ledger da revisão: 9 linha(s) e 0 rodada(s) sem achados em 1 arquivo(s), cada linha com veredito, dano e a pasta da revisão.
+RESULTADO: VERDE
+→ passe o arquivo ao `sdd-fluxo.sh loop --ledger` e ao `eval-revisores.sh`.
+--- stderr:
+--- traceback no stderr? 0
+--- chamadas:
+python3 store -c import sys; sys.stdout.write("%d.%d" % sys.version_info[:2])
+python real -c import sys; sys.stdout.write("%d.%d" % sys.ve
+python real -B - /Users/robertoduarte/rdd-worktrees/sdd-open
+=== B: python3=Store, sem python, py -3 válido
+rc=0
+--- stdout (5 linhas):
+✅ ledger da revisão: 9 linha(s) e 0 rodada(s) sem achados em 1 arquivo(s), cada linha com veredito, dano e a pasta da revisão.
+RESULTADO: VERDE
+→ passe o arquivo ao `sdd-fluxo.sh loop --ledger` e ao `eval-revisores.sh`.
+--- stderr:
+--- traceback no stderr? 0
+--- chamadas:
+python3 store -c import sys; sys.stdout.write("%d.%d" % sys.version_info[:2])
+py -3 -c import sys; sys.stdout.write("%d.%d" % sys.version_
+py -3 -B - /Users/robertoduarte/rdd-worktrees/sdd-open-f16-a
+=== C: python3=3.8 + python válido
+rc=0
+--- stdout (5 linhas):
+✅ ledger da revisão: 9 linha(s) e 0 rodada(s) sem achados em 1 arquivo(s), cada linha com veredito, dano e a pasta da revisão.
+RESULTADO: VERDE
+→ passe o arquivo ao `sdd-fluxo.sh loop --ledger` e ao `eval-revisores.sh`.
+--- stderr:
+--- traceback no stderr? 0
+--- chamadas:
+python3 v3.8 -c import sys; sys.stdout.write("%d.%d" % sys.v
+python real -c import sys; sys.stdout.write("%d.%d" % sys.ve
+python real -B - /Users/robertoduarte/rdd-worktrees/sdd-open
+=== D: só o atalho da Store -> a guarda diz a causa e o script para pelo próprio contrato
+rc=64
+--- stdout (5 linhas):
+--- stderr:
+⚠️  o python3 deste computador existe, mas não roda (no Windows, costuma ser o atalho da Microsoft Store).
+🛑 ledger-revisao-lint: python3 não encontrado no PATH.
+RESULTADO: ERRO DE USO
+→ instale o Python 3 (3.9 ou mais novo) e rode de novo.
+--- traceback no stderr? 0
+--- chamadas:
+python3 store -c import sys; sys.stdout.write("%d.%d" % sys.version_info[:2])
+=== E: só um 3.8 -> causa com a versão
+rc=64
+--- stdout (5 linhas):
+--- stderr:
+⚠️  o python3 deste computador é o Python 3.8; o SDD Open precisa do 3.9 ou mais novo.
+🛑 ledger-revisao-lint: python3 não encontrado no PATH.
+RESULTADO: ERRO DE USO
+→ instale o Python 3 (3.9 ou mais novo) e rode de novo.
+--- traceback no stderr? 0
+--- chamadas:
+python3 v3.8 -c import sys; sys.stdout.write("%d.%d" % sys.v
+=== F: atalho da Store que escreve a mensagem no STDOUT e sai 9009 + python válido
+rc=49
+--- stdout (5 linhas):
+Python was not found; run without arguments to install from the Microsoft Store, or disable this shortcut from Settings > Manage App Execution Aliases.
+--- stderr:
+--- traceback no stderr? 0
+--- chamadas:
+python3 store-stdout -c import sys; sys.stdout.write("%d.%d" % sys.version_info[:2])
+python3 store-stdout -B - /Users/robertoduarte/rdd-worktrees/sdd-open-f16-ambiente/sdd/reviews/LEDGER_REVISAO_F16_AMBIENTE.md
+=== G: SDD_PYTHON com espaço no caminho
+rc=0
+--- stdout (5 linhas):
+✅ ledger da revisão: 9 linha(s) e 0 rodada(s) sem achados em 1 arquivo(s), cada linha com veredito, dano e a pasta da revisão.
+RESULTADO: VERDE
+→ passe o arquivo ao `sdd-fluxo.sh loop --ledger` e ao `eval-revisores.sh`.
+--- stderr:
+--- traceback no stderr? 0
+--- chamadas:
+meu python real -c import sys; sys.stdout.write("%d.%d" % sy
+meu python real -B - /Users/robertoduarte/rdd-worktrees/sdd-
+=== H: nenhum serve: docs-extract-decisions.sh (sdd_python_exigir)
+rc=64
+--- stdout (5 linhas):
+--- stderr:
+⚠️  o python3 deste computador existe, mas não roda (no Windows, costuma ser o atalho da Microsoft Store).
+🛑 docs-extract-decisions.sh: precisa do Python 3.9 ou mais novo.
+RESULTADO: PAROU
+→ instale o Python 3.9 ou mais novo (Windows: winget install --id Python.Python.3.12 -e; macOS: brew install python; Linux: sudo apt install python3), feche e abra o terminal e rode de novo.
+--- traceback no stderr? 0
+--- chamadas:
+python3 store -c import sys; sys.stdout.write("%d.%d" % sys.version_info[:2])
+=== I: nenhum serve: governanca-fronteira.sh (sdd_python_exigir)
+rc=64
+--- stdout (5 linhas):
+--- stderr:
+⚠️  o python3 deste computador existe, mas não roda (no Windows, costuma ser o atalho da Microsoft Store).
+🛑 governanca-fronteira.sh: precisa do Python 3.9 ou mais novo.
+RESULTADO: PAROU
+→ instale o Python 3.9 ou mais novo (Windows: winget install --id Python.Python.3.12 -e; macOS: brew install python; Linux: sudo apt install python3), feche e abra o terminal e rode de novo.
+--- traceback no stderr? 0
+--- chamadas:
+python3 store -c import sys; sys.stdout.write("%d.%d" % sys.version_info[:2])
+=== J: calço que não se cria (TMPDIR sem escrita), python3=Store + python válido
+rc=64
+--- stdout (5 linhas):
+--- stderr:
+⚠️  não consegui criar o calço do Python na pasta temporária (/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.NKVC8gwpKS/ro): confira se ela existe e aceita escrita.
+🛑 ledger-revisao-lint: python3 não encontrado no PATH.
+RESULTADO: ERRO DE USO
+→ instale o Python 3 (3.9 ou mais novo) e rode de novo.
+--- traceback no stderr? 0
+--- chamadas:
+python3 store -c import sys; sys.stdout.write("%d.%d" % sys.version_info[:2])
+python real -c import sys; sys.stdout.write("%d.%d" % sys.ve
+=== K: quem não precisa de Python segue: sdd-open.sh init --vendors codex com só o atalho da Store
+rc=0
+✅ nenhum segredo salvo no git (.env, .pfx, .p12, .pem com chave privada)
+RESULTADO: INSTALADO
+→ abra seu agente e peça a fase Define (ex.: /sdd-define ou /skill:sdd-define).
+--- stderr:
+⚠️  o python3 deste computador existe, mas não roda (no Windows, costuma ser o atalho da Microsoft Store).
+--- traceback: 0
+=== L: init --vendors claude (precisa de Python) com só o atalho da Store
+rc=64
++ .agents/skills/sdd-prompt-builder (novo)
++ .agents/skills/sdd-release (novo)
++ .agents/skills/sdd-ux-review (novo)
+--- stderr:
+⚠️  o python3 deste computador existe, mas não roda (no Windows, costuma ser o atalho da Microsoft Store).
+🛑 o adaptador claude precisa de python3 para editar .claude/settings.json com segurança e para os guards de .claude/hooks/
+RESULTADO: ERRO
+→ instale python3 ou rode sem o vendor claude — nada foi alterado
+=== M: init --vendors claude com Store + python válido (calço) e o projeto instalado roda o lint com o calço
+rc=0
+RESULTADO: INSTALADO
+→ abra seu agente e peça a fase Define (ex.: /sdd-define ou /skill:sdd-define).
+--- stderr:
+/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.NKVC8gwpKS/proj3/sdd/bin/lib/python.sh
+RESULTADO: VERDE
+→ passe o arquivo ao `sdd-fluxo.sh loop --ledger` e ao `eval-revisores.sh`.
+chamadas:
+python3 store -c import sys; sys.stdout.write("%d.%d" % sys.version_info[:2])
+python real -c import sys; sys.stdout.write("%d.%d" % sys.ve
+python real -B - /Users/robertoduarte/rdd-worktrees/sdd-open
+=== N: calço visto por exec, env python3, shebang e bash -c filho
+direto
+env
+shebang
+filho RESOLVIDO=sdd-python.sURXm4
+bash -c
+exec
+rc=0
+chamadas:
+python3 store -c import sys; sys.stdout.write("%d.%d" % sys.version_info[:2])
+python real -c import sys; sys.stdout.write("%d.%d" % sys.ve
+python real -c print("direto")
+python real -c print("env")
+python real /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T
+python real -c print("bash -c")
+python real -c print("exec")
+=== calços deixados em TMPDIR por esta sonda:        7

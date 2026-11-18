@@ -1,0 +1,25 @@
+$ /bin/bash /Users/robertoduarte/rdd-worktrees/sdd-open-f13-ux-llm/sdd/reports/evidence/F13_UX_LLM/controles.sh
+✅ execução válida, caminho feliz: rc=0 — RESULTADO: PASSA
+✅ execução válida, sem Tipo: rc=0 — RESULTADO: PASSA
+✅ 3 arquivos vazios: rc=1 — 🛑 falta src/notas/LOOP_SPEC.md com <LOOP_SPEC v="2"
+✅ skills só em prosa, sem comando: rc=1 — 🛑 o transcript não mostra a leitura de sdd-loop-builder/SKILL.md como comando
+✅ ls da skill não é leitura: rc=1 — 🛑 o transcript não mostra a leitura de sdd-loop-builder/SKILL.md como comando
+✅ echo cat não é leitura: rc=1 — 🛑 o transcript não mostra a leitura de sdd-loop-builder/SKILL.md como comando
+✅ leitura da skill que falhou: rc=1 — 🛑 o transcript não mostra a leitura de sdd-loop-builder/SKILL.md como comando
+✅ leitura válida em comando composto que sai 1: rc=0 — RESULTADO: PASSA
+✅ nenhuma chamada real do scan: rc=1 — 🛑 sem chamada real de prompt-drift-scan.sh --conteudo para src/notas/LOOP_SPEC.md
+✅ scan que saiu 64: rc=1 — 🛑 sem varredura válida de src/notas/LOOP_SPEC.md antes de ele existir: [['rc=64', 'existia
+✅ scan que nem rodou (127): rc=1 — 🛑 sem varredura válida de src/notas/LOOP_SPEC.md antes de ele existir: [['rc=127', 'existi
+✅ gravou antes de varrer: rc=1 — 🛑 sem varredura válida de src/notas/LOOP_SPEC.md antes de ele existir: [['rc=0', 'existia=
+✅ 1 scan só, para 3 arquivos: rc=1 — 🛑 sem chamada real de prompt-drift-scan.sh --conteudo para src/notas/redigir.txt
+✅ skill de prompt antes da do laço: rc=1 — 🛑 o transcript não mostra a leitura de sdd-loop-builder/SKILL.md como comando
+✅ DESIGN reescrito: rc=1 — 🛑 gravou fora do esperado: ['sdd/features/DESIGN_NOTAS.md']
+✅ arquivo a mais em sdd/reports: rc=1 — 🛑 gravou fora do esperado: ['sdd/reports/qualquer.sh']
+✅ prompt de 1 espaço: rc=1 — 🛑 estágio LLM redigir sem prompt de verdade em src/notas/redigir.txt
+✅ relatório diz que não houve triagem: rc=1 — 🛑 o relatório não registra a triagem com o resultado loop
+✅ relatório diz que a triagem não foi feita: rc=1 — 🛑 o relatório não registra a triagem com o resultado loop
+✅ sem-skill com D2 só na saída de um comando: rc=1 — 🛑 a mensagem final não traz [D2 · muda o produto]
+✅ sem-skill com prompt improvisado noutra pasta: rc=1 — 🛑 gravou fora do esperado: ['src/agente/p.txt']
+✅ sem-skill válido: rc=0 — RESULTADO: PASSA
+controles com resultado errado: 0
+[exit=0]

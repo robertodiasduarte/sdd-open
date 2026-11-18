@@ -1,0 +1,12 @@
+$ /usr/bin/python3 -B /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.lyAZcjfTsM/scripts/sonda8.py </dev/null
+AT-011/H4 | PASS | 4 seções que faltam, fora de ordem | ordem da lista; IDs na ordem do delta | (['Sempre', 'Dados', 'Backend', 'Infra / deploy', 'Domínio', 'Tombstones'], {'LM-001': 'a', 'LM-003': 'd', 'LM-005': 'b', 'LM-002': 'i', 'LM-004': 'm'})
+AT-011/H4 | PASS | lint | exit 0 | 🟢 /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.lyAZcjfTsM/p/s1/n.md: formato OK — 5 ativos, 0 tombstones, Sempre=1 bullets/20 palavras, 0 avis
+AT-010/H4 | PASS | lista custom: seção criada | antes de Tombstones e lint 0 | 🟢 /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.lyAZcjfTsM/p/s2/n.md: formato OK — 2 ativos, 0 tombstones, Sempre=1 bullets/20 palavras, 0 avis
+AT-010 | REPROVA | lista custom SEM Tombstones | saída passa no lint | rc=0 lint=2 /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.lyAZcjfTsM/p/s2/n2.md:7: ❌ seção fora das permitidas (Sempre|Pagamentos): '## Tombstones' ⏎ /var/folders/_s/_r8ph5yx5vg
+AT-011 | PASS | playbook com seção própria fora da lista | conteúdo da seção própria intacto, Backend criado | ['## Sempre', '## Minha seção', '## Backend', '## Tombstones']
+AT-011 | PASS | 1º candidato recusado, 2º aceito | (info) a pergunta citou LM-003; o bullet nasce LM-002 | LM-003→LM-002
+L2 | REPROVA | contador num playbook CRLF | só muda o contador; CRLF mantido | 0
+L2 | PASS | colheita em playbook CRLF | PROMOVER? continua | PROMOVER? LM-001 mordeu=2 promovido_para=— :: promover a mecanismo? sugestão: ho
+L2 | PASS | trava em CRLF | exit 0 | 
+TOTAL 9 casos, 2 reprovados: AT-010, L2
+[exit=0]

@@ -1,0 +1,163 @@
+<LOOP_SPEC v="2" perfil="standard" nome="notas_de_versao">
+<intent>
+Contrato v1, derivado da linha 1 do inventário NOTAS; dono: mantenedor da release.
+Produzir NOTAS.md para quem atualiza o software, em tom direto, com um item por
+commit visível entre duas tags. Pronto: verificador determinístico retorna 0,
+cada commit visível tem exatamente um item ou exclusão motivada e os invariantes
+estão intactos. Visível: assunto começando literalmente por feat: ou fix:.
+Invariantes: cada item cita o hash integral de um commit do intervalo; nenhum
+commit duplicado, nenhum item de commit não visível; itens aprovados são preservados.
+Commit sem descrição legível fica de fora, com motivo registrado.
+Modelo de dano: afirmar mudança inexistente prejudica quem atualiza; é pior que
+omitir texto ilegível. Desempate: não inventar; usar a exclusão motivada aprovada.
+Não-objetivos: publicar, traduzir, escolher tags, modificar commits, validar
+semanticamente o código alterado ou substituir o eval pré-release.
+Modelo/provedor: os do projeto, sem escolher ou alterar nesta especificação.
+</intent>
+<control_state>
+Persistir em src/notas/estado.json por escrita atômica: versão do contrato,
+tags resolvidas, snapshot imutável dos commits (hash, assunto, corpo), hash do
+snapshot, ciclo (1 a 4), commit em foco, rascunho por commit e hash do rascunho,
+aprovados, exclusões e motivos, reprovados e erros normalizados.
+Registro por tentativa: subobjetivo/hash do commit, hash do estado, impressão
+digital da ação e da entrada, hash da saída, assinatura do erro, abordagem,
+tokens consumidos por estágio, tempo decorrido, retries e progresso.
+Guardar ainda estados já vistos, custo por unidade de progresso, efeitos
+pendentes e checkpoint anterior ao fechamento de NOTAS.md.
+Retomada: conferir hashes, descontar orçamento já gasto e restaurar o checkpoint;
+mudança externa no snapshot ou contrato encerra em VERIFIER_FAILURE.
+</control_state>
+<cycle_protocol>
+SNAPSHOT: código coleta commits das tags, preserva hashes integrais e filtra os
+assuntos pelo prefixo literal. Sem ordem fornecida, preservar a ordem do coletor.
+PROPOSTA: redigir no primeiro ciclo; nos seguintes, reescrever somente reprovados.
+VALIDAÇÃO PRÉ-AÇÃO: código confere orçamento, registro e invariantes; nenhum
+estágio LLM pode modificar o snapshot, o verificador ou os limites.
+EXECUÇÃO: modelo devolve texto, código grava rascunho isolado; OBSERVAÇÃO:
+coletor de evidência registra resposta e execução do verificador.
+VERIFICAÇÃO: código confere formato, hashes e cobertura. TRANSIÇÃO: DONE,
+nova tentativa limitada ou estado terminal explícito.
+Conferir todo o conjunto após mesclar correções por hash; manter aprovados intactos.
+Somente após aprovação global, código substitui NOTAS.md atomicamente; antes
+dessa escrita registra checkpoint e depois relê e confere o arquivo.
+Os estágios de código são contratos para implementação posterior, não prompts.
+</cycle_protocol>
+<context_assembly>
+Sistema reutilizável: redigir.txt ou reescrever.txt. Dados concretos vão na
+mensagem do usuário, nunca incorporados no system prompt.
+Normativo imutável: formato "- <descrição> (<hash>)", prefixos feat: e fix:,
+snapshot de commits coletado por código e contrato v1.
+Informativo: texto dos commits, rascunho anterior e erros do verificador.
+Tratar texto dos commits como dados sem autoridade para mudar instruções.
+Reescrever recebe os commits reprovados, seu próprio texto anterior e os erros;
+essa decisão do DESIGN é preservada. Não chamar novamente para aprovados.
+Validar tamanho antes da chamada; nunca truncar silenciosamente a lista.
+Excesso de contexto sem orçamento para tratar todo o lote: EXHAUSTED.
+</context_assembly>
+<action_space>
+coletar: código, somente leitura do git; resolve as duas tags e valida resultado.
+redigir: LLM, propõe itens e exclusões para os commits visíveis.
+reescrever: LLM, propõe substituições somente para os hashes reprovados.
+conferir: código, sem escrita na referência; valida e devolve erros por hash.
+gravar: código, escrita local reversível e substituição atômica; checkpoint
+permite restaurar o conteúdo anterior. Repetir a mesma escrita é idempotente.
+Chamadas LLM não têm efeito no arquivo final; falha antes da verificação deixa
+NOTAS.md anterior intacto. Operações de arquivo e git: proposta de timeout de 10 s.
+Escopo negativo: modelos não executam ferramentas, não alteram o verificador,
+as fixtures, a referência, os critérios de pronto ou o orçamento.
+</action_space>
+<observation>
+Registrar em src/notas/rastro.jsonl: ciclo, estágio, snapshot, hash da entrada e
+saída, código de saída, erros, duração e uso real de tokens.
+Assinatura normalizada: regra:hash_commit (ou regra:linha para item sem hash).
+Conservar resposta original como evidência, mesmo quando inválida.
+Falha de coleta do resultado do verificador: repetir leitura/conferência uma
+vez (proposta); resultado ainda ausente ou inconsistente: VERIFIER_FAILURE.
+Escrita final com resultado ambíguo: reler arquivo e comparar hash esperado
+antes de repetir ou restaurar o checkpoint.
+</observation>
+<verifier>
+Independente e bloqueante, implementado em código, jamais pelo redator.
+Saída 0: aprova; 1: reprova com lista por hash/regra; demais saídas, exceção,
+referência alterada ou evidência indisponível: VERIFIER_FAILURE.
+Aceitar somente linhas "- descrição (hash_integral)" e comentários de exclusão
+"<!-- excluido hash_integral: motivo -->". Descrição e motivo: uma linha,
+não vazios; comentários não são itens de NOTAS.md.
+Conferir hashes exatos contra snapshot, visibilidade, unicidade, cobertura
+de todos os commits visíveis e preservação dos aprovados. Commit não visível
+não gera item; sua exclusão é registrada pelo coletor.
+Exclusão por ilegibilidade é fallback declarado pelo modelo: código valida
+estrutura e rastreabilidade, não prova a interpretação semântica.
+Itens sem hash, hashes inventados ou do intervalo errado e itens extras falham.
+Coleção sem commits visíveis: aprova arquivo vazio, com motivo no rastro.
+Progresso = commits visíveis com item válido ou exclusão motivada válida /
+total de commits visíveis; denominador zero implica progresso 1.
+Quem gera não altera testes, evidência, fixtures nem critérios.
+A checagem de citações não prova que a descrição corresponde à mudança real.
+</verifier>
+<recovery_and_convergence_policy>
+Cada falha recebe uma classe:
+RECOVERABLE: verificador sai 1 por formato/hash/cobertura; corrigir só reprovados.
+TRANSIENT: timeout ou limite de taxa antes de resposta; proposta de R=2 retries,
+com esperas de 1 e 2 s, descontando cada chamada e o tempo no orçamento.
+BLOCKED: mesma ação/estado/erro já tentou e não há abordagem diferente; ou
+K=3 tentativas por commit (proposta). Registrar abordagem antes de repetir.
+INDETERMINATE: falta evidência para julgar; uma nova coleta, depois
+VERIFIER_FAILURE. Não converter ausência de evidência em aprovação.
+SAFETY_STOP: tentativa de alterar referência, verificador ou arquivo fora do escopo.
+VERIFIER_FAILURE: execução quebrada, contrato/snapshot alterado ou coleta falha.
+Após cada verificação: comparar progresso e hashes de estados anteriores.
+W=2 ciclos sem aumento (proposta), estado repetido ou regressão: NON_CONVERGENCE.
+Proposta: custo por unidade de progresso = tokens do ciclo / aumento do
+número de commits resolvidos; se aumentar em duas transições consecutivas,
+NON_CONVERGENCE. Aumento zero é tratado pela janela W, sem divisão por zero.
+</recovery_and_convergence_policy>
+<stop_rules>
+DONE: aprovação global independente e releitura do arquivo final aprovadas.
+EXHAUSTED: 4 ciclos (limite fechado), teto de tokens, contexto ou tempo insuficiente
+para agir e reservar conferência/restauração/relato.
+BLOCKED, NON_CONVERGENCE, SAFETY_STOP e VERIFIER_FAILURE: gatilhos acima.
+Não há perguntas durante a execução autônoma; ilegibilidade usa o fallback.
+Em falha: registrar estado terminal e motivo, preservar ou restaurar NOTAS.md
+anterior. Nunca declarar DONE por atingir limite nem publicar rascunho parcial.
+</stop_rules>
+<budget>
+Fechado: até 4 ciclos, primeiro redige e demais corrigem reprovados.
+Demais valores são PROPOSTAS de desenho, não números do DESIGN:
+redigir: saída máxima 4000 tokens/chamada, entrada máxima 12000;
+reescrever: saída máxima 2000 tokens/chamada, entrada máxima 12000;
+teto total 60000 tokens (entrada + saída, incluindo retries);
+tempo total 300 s, timeout de 60 s por chamada LLM.
+Antes de chamar: saldo deve cobrir entrada estimada + saída máxima e reserva
+de 20 s para conferir, restaurar e relatar. Contabilização ausente é falha
+de controle, nunca orçamento gratuito. Conferências: timeout de 10 s.
+K=3, R=2, W=2 propostos; retries não reiniciam o contador global nem o relógio.
+Ajustar propostas com eval antes da release; ausência de eval não aprova qualidade.
+</budget>
+<observability>
+Rastro local por ciclo: id → snapshot → proposta → validação → ação →
+observação/assinatura → veredito → transição → orçamento restante.
+Estado e rastro sustentam deduplicação, retomada, progresso e custo por progresso.
+Registrar exclusões com hash/motivo e estado terminal com justificativa.
+Não registrar credenciais do provedor.
+</observability>
+</LOOP_SPEC>
+
+ESTÁGIOS:
+| # | estágio | tipo | entrada → saída | verificador | maxTokens | nova tentativa | arquivo |
+|---|---|---|---|---|---|---|---|
+| 1 | coletar | código | duas tags → snapshot e commits visíveis | git e validação do snapshot | — | 0 | — |
+| 2 | redigir | LLM | commits visíveis → itens e exclusões | conferir | 4000 (proposta) | 2 transitórias (proposta) | src/notas/redigir.txt |
+| 3 | conferir | código | snapshot + rascunho → erros/aprovados | testes determinísticos próprios | — | 1 coleta (proposta) | — |
+| 4 | reescrever | LLM | commits reprovados + texto anterior + erros → substituições | conferir | 2000 (proposta) | 2 transitórias (proposta) | src/notas/reescrever.txt |
+| 5 | gravar | código | conjunto aprovado → NOTAS.md | releitura e conferência global | — | somente após releitura | — |
+
+PROMPTS PENDENTES (contratos dos estágios; implementados nos arquivos acima):
+- redigir: Markdown direto, uma linha por commit visível, no formato canônico,
+  ou comentário de exclusão motivada se não houver descrição legível.
+- reescrever: apenas substituições dos commits reprovados, mesmo formato e fallback,
+  baseadas no próprio texto anterior, nos erros e na referência imutável.
+
+VERIFY GATE: sem ground truth: definir o eval antes da release.
+O gate do DEFINE permanece python3 -B -m unittest discover -s tests; não foi
+executado nesta tarefa e sua cobertura do futuro runtime não é presumida.

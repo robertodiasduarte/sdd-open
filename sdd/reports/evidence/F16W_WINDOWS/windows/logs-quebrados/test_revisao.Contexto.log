@@ -1,0 +1,84 @@
+test_contexto_na_ordem_e_brainstorm_sai_primeiro (test_revisao.Contexto.test_contexto_na_ordem_e_brainstorm_sai_primeiro) ... FAIL
+
+test_pasta_nao_ignorada_e_64_com_o_comando_que_resolve_tambem_na_worktree (test_revisao.Contexto.test_pasta_nao_ignorada_e_64_com_o_comando_que_resolve_tambem_na_worktree) ... FAIL
+
+test_sem_feature_avisa (test_revisao.Contexto.test_sem_feature_avisa) ... FAIL
+
+
+
+======================================================================
+
+FAIL: test_contexto_na_ordem_e_brainstorm_sai_primeiro (test_revisao.Contexto.test_contexto_na_ordem_e_brainstorm_sai_primeiro)
+
+----------------------------------------------------------------------
+
+Traceback (most recent call last):
+
+  File "D:\a\sdd-open\sdd-open\tests\test_revisao.py", line 292, in test_contexto_na_ordem_e_brainstorm_sai_primeiro
+
+    self.assertEqual(rc, 0, out)
+
+AssertionError: 64 != 0 : D:\a\sdd-open\sdd-open\sdd\bin\adversarial-review.sh: line 37: cd: null directory
+
+\u26a0\ufe0f  o python3 deste computador existe, mas n�o roda (no Windows, costuma ser o atalho da Microsoft Store).
+
+\U0001f6d1 adversarial-review: python3 n�o encontrado no PATH.
+
+RESULTADO: PAROU
+
+\u2192 instale o Python 3 (3.9 ou mais novo) e rode de novo.
+
+
+
+
+
+======================================================================
+
+FAIL: test_pasta_nao_ignorada_e_64_com_o_comando_que_resolve_tambem_na_worktree (test_revisao.Contexto.test_pasta_nao_ignorada_e_64_com_o_comando_que_resolve_tambem_na_worktree)
+
+----------------------------------------------------------------------
+
+Traceback (most recent call last):
+
+  File "D:\a\sdd-open\sdd-open\tests\test_revisao.py", line 320, in test_pasta_nao_ignorada_e_64_com_o_comando_que_resolve_tambem_na_worktree
+
+    self.assertIn("\U0001f6d1 a pasta sdd/reports/reviews n�o est� ignorada pelo git: o diff e as respostas das "
+
+AssertionError: '\U0001f6d1 a pasta sdd/reports/reviews n�o est� ignorada pelo git: o diff e as respostas das engines iriam para o reposit�rio.' not found in 'D:\\a\\sdd-open\\sdd-open\\sdd\\bin\\adversarial-review.sh: line 37: cd: null directory\n\u26a0\ufe0f  o python3 deste computador existe, mas n�o roda (no Windows, costuma ser o atalho da Microsoft Store).\n\U0001f6d1 adversarial-review: python3 n�o encontrado no PATH.\nRESULTADO: PAROU\n\u2192 instale o Python 3 (3.9 ou mais novo) e rode de novo.\n'
+
+
+
+======================================================================
+
+FAIL: test_sem_feature_avisa (test_revisao.Contexto.test_sem_feature_avisa)
+
+----------------------------------------------------------------------
+
+Traceback (most recent call last):
+
+  File "D:\a\sdd-open\sdd-open\tests\test_revisao.py", line 307, in test_sem_feature_avisa
+
+    self.assertEqual(rc, 0, out)
+
+AssertionError: 64 != 0 : D:\a\sdd-open\sdd-open\sdd\bin\adversarial-review.sh: line 37: cd: null directory
+
+\u26a0\ufe0f  o python3 deste computador existe, mas n�o roda (no Windows, costuma ser o atalho da Microsoft Store).
+
+\U0001f6d1 adversarial-review: python3 n�o encontrado no PATH.
+
+RESULTADO: PAROU
+
+\u2192 instale o Python 3 (3.9 ou mais novo) e rode de novo.
+
+
+
+
+
+----------------------------------------------------------------------
+
+Ran 3 tests in 1.289s
+
+
+
+FAILED (failures=3)
+

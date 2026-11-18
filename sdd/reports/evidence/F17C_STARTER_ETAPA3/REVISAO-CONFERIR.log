@@ -1,0 +1,6 @@
+$ bash sdd/bin/adversarial-review.sh --conferir sdd/reports/reviews/EXTERNAL_REVIEW_20261114-083418 --aceitar-sem-revisor2 "codex sem cota; cadeia claude + qwen como na F16, F18+F20, F17 e F17b"
+✅ a revisão sdd/reports/reviews/EXTERNAL_REVIEW_20261114-083418 é desta versão do código (sha256 igual).
+review_externo: sdd/reports/reviews/EXTERNAL_REVIEW_20261114-083418 sha256=2af27564329e8f1ad4d222318cdbaeb14508f38595b6c928b789a7f967beda4b diversidade=vendor revisor2=dispensado — codex sem cota; cadeia claude + qwen como na F16, F18+F20, F17 e F17b
+RESULTADO: CONFERE
+→ copie a linha review_externo para o ledger da release.
+rc=0

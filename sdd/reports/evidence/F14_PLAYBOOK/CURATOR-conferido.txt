@@ -1,0 +1,14 @@
+AUTO LM-001 ajudou+1
+   simples: O desenho seguiu o aviso de que um teste precisa rodar o código com um caso que passa e outro que falha, e não só achar o texto. Foi contado 1 acerto para esse aviso.
+AUTO LM-002 ajudou+1
+   simples: O desenho seguiu o aviso de que todo teste precisa falhar antes na versão antiga, para provar que avalia alguma coisa. Foi contado 1 acerto para esse aviso.
+AUTO LM-003 ajudou+1
+   simples: O desenho seguiu o aviso de salvar tudo no git antes de uma revisão externa, para ela não olhar um conjunto vazio. Foi contado 1 acerto para esse aviso.
+PERGUNTA 7 add ADD Reviews / harness :: sup: `heurística` `regressão` `conserto` :: Conserto que estreita uma heurística sobre texto livre abre o caso vizinho: na F14, cada ajuste da regra que adivinhava a célula de veredito criou o defeito seguinte, em 3 ciclos seguidos do avaliador. **Do instead:** na 2ª regressão da mesma regra, pare de ajustar: troque a heurística por uma fonte estruturada (o cabeçalho da tabela, por exemplo) e recuse o que não tiver essa fonte. → ficha: — · promovido_para: —
+   simples: Na F14, cada ajuste na regra que adivinhava qual célula traz o veredito criou o defeito seguinte, e a saída foi ler o cabeçalho da tabela. Guardar a lição avisa quem consertar regra parecida a trocar de abordagem na 2ª recaída.
+PERGUNTA 8 add ADD Reviews / harness :: sup: `verify-gate` `git archive` `self-test` :: Script que só roda dentro de um repositório git passa no teste local e falha no gate, que roda numa cópia sem `.git`; e uma asserção de "bloqueou" que aceita qualquer exit diferente de 0 fica verde quando a ferramenta nem rodou. **Do instead:** rode o self-test novo numa cópia sem `.git` (extraída com `git archive`) antes do gate, e confira o exit exato do que deve reprovar. → ficha: — · promovido_para: —
+   simples: O teste final da F14 ficou vermelho porque um script exigia git e esse teste roda numa cópia sem git; o mesmo caso escondia uma checagem que aceitava qualquer falha como bloqueio. Guardar a lição avisa quem criar autoteste a rodá-lo numa cópia sem git antes do teste final.
+AVISO contaminação declarada pelo curador: sim — o ambiente anexou branch, status do git, 5 títulos de commit e 2 linhas de memória do usuário; nada da conversa da release; julguei só pelos arquivos
+resumo-bloco: auto=3 pergunta=2 descartar=3 nao_julgado=0 contaminacao=sim
+RESULTADO: BLOCO VÁLIDO
+→ aplique as linhas AUTO sem perguntar e leve as linhas PERGUNTA à pessoa.

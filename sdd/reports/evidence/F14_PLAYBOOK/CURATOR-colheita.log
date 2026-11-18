@@ -1,0 +1,22 @@
+$ bash sdd/bin/playbook-curator.sh --colher "$STG" sdd/playbook.md --inv sdd/invariants.md > "$STG/colheita.txt"
+DELTA LM-001 ajudou+1 · conf=2026-11-05 · evidencia=DESIGN_F14_PLAYBOOK.md:510 · fp=312d848fbf,89ea1550cc
+DELTA LM-002 ajudou+1 · conf=2026-11-05 · evidencia=DESIGN_F14_PLAYBOOK.md:511 · fp=e5efe377bf,939efabacc
+DELTA LM-003 ajudou+1 · conf=2026-11-05 · evidencia=DESIGN_F14_PLAYBOOK.md:512 · fp=6a45837f24,ee5415c625
+SUGESTAO mordeu? LM-003 — termo `review` em BUILD_REPORT_F14_PLAYBOOK.md:41 (achado sem LM explícito; confirmar a causa antes de virar delta) · fp=e77e708069,f1d5344dab
+CANDIDATO #1 → LM-005 · secao=Reviews / harness · sup=`heurística` `regressão` `conserto` · evidencia=sdd/reviews/AVALIACAO_F14_PLAYBOOK_20261105-ciclo3.md · fp=6bef193915
+   delta: ADD Reviews / harness :: sup: `heurística` `regressão` `conserto` :: Conserto que estreita uma heurística sobre texto livre abre o vizinho: nos ciclos 1, 2 e 3 do avaliador da F14, cada ajuste da regra que adivinhava a célula de veredito criou o defeito seguinte. **Do instead:** na 2ª regressão da mesma regra, pare de ajustar: troque a heurística por uma fonte estruturada (o cabeçalho da tabela) e recuse o que não tiver essa fonte. → ficha: — · promovido_para: —
+CANDIDATO #2 → LM-006 · secao=Reviews / harness · sup=`verify-gate` `git archive` `self-test` · evidencia=sdd/reports/evidence/F14_PLAYBOOK/verify-gate-864fd8d.log · fp=1c324275d7
+   delta: ADD Reviews / harness :: sup: `verify-gate` `git archive` `self-test` :: Script que só roda dentro de um repositório git passa no teste local e falha no gate, que roda numa cópia sem `.git`; e uma asserção de "bloqueou" que aceita qualquer exit diferente de 0 fica verde quando a ferramenta nem rodou. **Do instead:** rode o self-test novo numa cópia sem `.git` antes do gate, e confira o exit exato do que deve reprovar. → ficha: — · promovido_para: —
+IGNORADO LM-999 (não existe como bullet ativo em sdd/playbook.md)
+IGNORADO LM-005 (não existe como bullet ativo em sdd/playbook.md)
+IGNORADO LM-016 (não existe como bullet ativo em sdd/playbook.md)
+IGNORADO LM-030 (não existe como bullet ativo em sdd/playbook.md)
+IGNORADO LM-020 (não existe como bullet ativo em sdd/playbook.md)
+DELTA LM-001 mordeu+1 · conf=2026-11-05 · evidencia=AVAL2-V2-aposentar-e-bordas.log:40 · fp=8ea1f11743
+INV_PENDENTE LM-001 (mordeu 0→1) · delta: LM-001 mordeu+1
+   proposta A: - [INV-002] estado=<ok|auto|humano> origem=LM-001 :: <regra> · por quê: <…> · tarefa|motivo: <…>
+   proposta B: - [LM-001] descartado :: <motivo>
+resumo: deltas=4 (ajudou=3 mordeu=1) candidatos=2 rejeitados=0 promocoes=0 sugestoes=1
+RESULTADO: HÁ O QUE JULGAR
+→ despache o curador com esta colheita; nada foi aplicado.
+[exit=0]

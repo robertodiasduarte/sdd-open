@@ -1,0 +1,85 @@
+$ /usr/bin/python3 -B open/scripts/gerar-starter.py --tag v9.9.0 starter   # W=aval (repo temp com tag v9.9.0 = git archive HEAD 4b6a2df; starter = clone v1.5.16)
+✅ sdd-checar-ambiente: 5 arquivo(s), 1 troca(s)
+✅ sdd-iniciar-repo: 3 arquivo(s), 1 troca(s)
+✅ sdd-higiene-dado: 10 arquivo(s), 0 troca(s)
+✅ sdd-new-session: 6 arquivo(s), 1 troca(s)
+✅ sdd-kb: 38 arquivo(s), 0 troca(s)
+✅ sdd-seguranca: 9 arquivo(s), 6 troca(s)
+✅ sdd-auditoria-harness: 7 arquivo(s), 0 troca(s)
+✅ sdd-prompt-builder: 9 arquivo(s), 2 troca(s)
+✅ sdd-engenharia-reversa-saas: 15 arquivo(s), 3 troca(s)
+✅ sdd-loop-builder: 6 arquivo(s), 0 troca(s)
+RESULTADO: GERADO
+→ no starter: python3 scripts/check-gerado.py, os testes dele e um commit numa branch.
+rc=0
+$ git -C starter status --porcelain
+ M .github/workflows/auto-release.yml
+ M .github/workflows/ci.yml
+ M .github/workflows/release.yml
+ M README.md
+ M scripts/publish-check.sh
+ M skills/sdd-auditoria-harness/SKILL.md
+ M skills/sdd-auditoria-harness/references/AUDIT_PROTOCOL.md
+ M skills/sdd-auditoria-harness/scripts/collect_evidence.py
+ M skills/sdd-checar-ambiente/SKILL.md
+ M skills/sdd-checar-ambiente/scripts/checar.sh
+ D skills/sdd-checar-ambiente/tests/test_checar.py
+ M skills/sdd-engenharia-reversa-saas/CHANGELOG.md
+ M skills/sdd-engenharia-reversa-saas/SKILL.md
+ M skills/sdd-engenharia-reversa-saas/evals/cases.json
+ M skills/sdd-engenharia-reversa-saas/manifest.json
+ M skills/sdd-engenharia-reversa-saas/references/ORQUESTRACAO_SDD.md
+ M skills/sdd-engenharia-reversa-saas/references/como-falar.md
+ D skills/sdd-engenharia-reversa-saas/tests/test_validate_reverse.py
+ M skills/sdd-higiene-dado/CHANGELOG.md
+ M skills/sdd-higiene-dado/SKILL.md
+ M skills/sdd-higiene-dado/evals/cases.json
+ M skills/sdd-higiene-dado/manifest.json
+ M skills/sdd-higiene-dado/references/COMO_FUNCIONA.md
+ M skills/sdd-higiene-dado/references/RUNTIME_COMPATIBILITY.md
+ M skills/sdd-higiene-dado/scripts/alarme.sh
+ M skills/sdd-higiene-dado/scripts/pre-commit.sh
+ D skills/sdd-higiene-dado/tests/test_alarme.py
+ M skills/sdd-iniciar-repo/SKILL.md
+ M skills/sdd-iniciar-repo/scripts/inventario.sh
+ D skills/sdd-iniciar-repo/tests/test_inventario.py
+ M skills/sdd-kb/CHANGELOG.md
+ M skills/sdd-kb/SKILL.md
+ M skills/sdd-kb/assets/CATALOGO_FONTES_TEMPLATE.md
+ M skills/sdd-kb/assets/RULE_TEMPLATE.md
+ M skills/sdd-kb/references/como-falar.md
+ M skills/sdd-kb/references/kb-protocol.md
+ M skills/sdd-kb/references/normativo.md
+ M skills/sdd-kb/scripts/gate.sh
+ M skills/sdd-kb/scripts/kb_normativo.py
+ M skills/sdd-kb/scripts/validate_kb.py
+ M skills/sdd-new-session/SKILL.md
+ M skills/sdd-prompt-builder/SKILL.md
+ M skills/sdd-prompt-builder/references/sdd-integration.md
+?? .gitattributes
+?? GERADO.txt
+?? scripts/check-gerado.py
+?? skills/sdd-auditoria-harness/GERADO.txt
+?? skills/sdd-auditoria-harness/references/PERGUNTA_DECISAO.md
+?? skills/sdd-auditoria-harness/references/como-falar.md
+?? skills/sdd-checar-ambiente/GERADO.txt
+?? skills/sdd-checar-ambiente/references/
+?? skills/sdd-engenharia-reversa-saas/GERADO.txt
+?? skills/sdd-engenharia-reversa-saas/agents/
+?? skills/sdd-engenharia-reversa-saas/references/PERGUNTA_DECISAO.md
+?? skills/sdd-higiene-dado/GERADO.txt
+?? skills/sdd-iniciar-repo/GERADO.txt
+?? skills/sdd-kb/GERADO.txt
+?? skills/sdd-kb/references/PERGUNTA_DECISAO.md
+?? skills/sdd-loop-builder/
+?? skills/sdd-new-session/GERADO.txt
+?? skills/sdd-new-session/references/
+?? skills/sdd-new-session/scripts/
+?? skills/sdd-prompt-builder/GERADO.txt
+?? skills/sdd-prompt-builder/references/LLM_PROMPTS_BUILD_REPORT.md
+?? skills/sdd-prompt-builder/references/LLM_PROMPTS_DESIGN.md
+?? skills/sdd-prompt-builder/references/PERGUNTA_DECISAO.md
+?? skills/sdd-prompt-builder/references/como-falar.md
+?? skills/sdd-seguranca/
+$ git -C starter diff --stat v1.5.16 -- docs exemplos tests LICENSE NOTICE CONTRIBUTING.md skills/sdd-brainstorm skills/sdd-define skills/sdd-design skills/sdd-build skills/sdd-handoff skills/sdd-release skills/sdd-governanca skills/ux-review-builder
+rc_diff=0

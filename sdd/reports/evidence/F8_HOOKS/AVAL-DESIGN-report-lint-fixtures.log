@@ -1,0 +1,6 @@
+$ for f in sdd/fixtures/evidencia/BUILD_REPORT_*.md; do /usr/bin/python3 -B sdd/bin/report-lint.py --stdin "$f" < "$f" >/dev/null 2>&1; echo "$f -> exit $?"; done
+sdd/fixtures/evidencia/BUILD_REPORT_controle.md -> exit 1
+sdd/fixtures/evidencia/BUILD_REPORT_evidencia_ignorada.md -> exit 1
+sdd/fixtures/evidencia/BUILD_REPORT_pendente.md -> exit 1
+sdd/fixtures/evidencia/BUILD_REPORT_sem_avaliacao.md -> exit 1
+[exit=0]

@@ -1,0 +1,18 @@
+$ python3 -B scripts/testes-por-modulo.py --pasta /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f16w-windows/fd210694-ded6-4d95-a500-52e0521f4ae8/scratchpad/falsa/tests --teto-unidade nan --so test_verde 2>&1 | tail -12; echo exit=${PIPESTATUS[0]}; echo '--- inf com pendura (corte em 20s pelo timeout externo)'; perl -e 'alarm 20; exec @ARGV' python3 -B scripts/testes-por-modulo.py --pasta /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f16w-windows/fd210694-ded6-4d95-a500-52e0521f4ae8/scratchpad/falsa/tests --teto-unidade inf --so test_pendura 2>&1 | tail -3; echo exit=${PIPESTATUS[0]}; pkill -f 'neto vivo'; true
+Traceback (most recent call last):
+  File "/Users/robertoduarte/rdd-worktrees/sdd-open-f16w-windows/scripts/testes-por-modulo.py", line 274, in <module>
+    sys.exit(main(sys.argv[1:]))
+             ~~~~^^^^^^^^^^^^^^
+  File "/Users/robertoduarte/rdd-worktrees/sdd-open-f16w-windows/scripts/testes-por-modulo.py", line 232, in main
+    print("fatia %d/%d: %d unidade(s), %d teste(s); teto por unidade %ds; paralelo %d"
+          ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+          % (fatia, n, len(escolhidos), sum(pesos[x] for x in escolhidos), teto, paralelo), flush=True)
+          ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+ValueError: cannot convert float NaN to integer
+exit=1
+--- inf com pendura (corte em 20s pelo timeout externo)
+          % (fatia, n, len(escolhidos), sum(pesos[x] for x in escolhidos), teto, paralelo), flush=True)
+          ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+OverflowError: cannot convert float infinity to integer
+exit=1
+[exit=0]

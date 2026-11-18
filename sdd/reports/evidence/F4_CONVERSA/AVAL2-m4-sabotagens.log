@@ -1,0 +1,13 @@
+$ /usr/bin/python3 -B /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f4-conversa/5e736f5b-fdb5-4cdd-a304-706fff11b1bb/scratchpad/m4.py /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f4-conversa/5e736f5b-fdb5-4cdd-a304-706fff11b1bb/scratchpad/revisao-fd94876
+== design-lint: zero Decision -> exit=1; FAILED (failures=1); FAIL: test_sem_nenhuma_decisao_reprova (test_design_lint.DesignLint)
+== design-lint: {UPPER_SNAKE} -> exit=1; FAILED (failures=1); FAIL: test_cada_mutacao_reprova (test_design_lint.DesignLint) (caso='placeholder_maiusculo')
+== design-lint: autodependência -> exit=1; FAILED (failures=1); FAIL: test_cada_mutacao_reprova (test_design_lint.DesignLint) (caso='depende_de_si_mesma')
+== handoff-lint: linha Status -> exit=1; FAILED (failures=1); FAIL: test_cada_mutacao_reprova (test_handoff_lint.HandoffLint) (caso='ficha_sem_status')
+== handoff-lint: conforme combinado -> exit=1; FAILED (failures=1); FAIL: test_cada_mutacao_reprova (test_handoff_lint.HandoffLint) (caso='conforme_combinado')
+== handoff-lint: {UPPER} fora de código -> exit=1; FAILED (failures=1); FAIL: test_cada_mutacao_reprova (test_handoff_lint.HandoffLint) (caso='placeholder_maiusculo')
+== agnostico: TodoWrite -> exit=1; FAILED (failures=1); FAIL: test_os_8_termos_e_arquivo_sem_extensao_reprovam (test_agnostico.Agnostico)
+== agnostico: PostToolUse -> exit=1; FAILED (failures=1); FAIL: test_os_8_termos_e_arquivo_sem_extensao_reprovam (test_agnostico.Agnostico)
+== agnostico: Agent tool -> exit=1; FAILED (failures=1); FAIL: test_os_8_termos_e_arquivo_sem_extensao_reprovam (test_agnostico.Agnostico)
+== agnostico: subagent_type -> exit=1; FAILED (failures=1); FAIL: test_os_8_termos_e_arquivo_sem_extensao_reprovam (test_agnostico.Agnostico)
+== agnostico: caixa Task Tool -> exit=1; FAILED (failures=1); FAIL: test_os_8_termos_e_arquivo_sem_extensao_reprovam (test_agnostico.Agnostico)
+== agnostico: sem extensão (volta filtro) -> exit=1; FAILED (failures=1); FAIL: test_os_8_termos_e_arquivo_sem_extensao_reprovam (test_agnostico.Agnostico)

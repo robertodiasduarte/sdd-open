@@ -1,0 +1,23 @@
+$ /bin/bash /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f15-slots/80a83c1b-4077-4625-ba69-e27f11f530a1/scratchpad/c2b.sh
+---- comando: bash e.sh a\ #b
+     config:   before_push_cmd: 'bash e.sh a\ #b'
+     referência bash -c '<cmd> "$@"' slot f1.txt → RODOU n=2 args=[a #b f1.txt]
+🛑 sdd/config.yaml, linha 2: o comando de smoke.before_push_cmd tem um comentário (#); os arquivos cairiam dentro dele
+RESULTADO: ERRO DE USO
+→ tire o # do comando (o comentário vai numa linha própria do config) ou aponte para um script
+[exit=64]
+---- comando: bash e.sh $'it\'s' # c
+     config:   before_push_cmd: 'bash e.sh $'it\'s' # c'
+     referência bash -c '<cmd> "$@"' slot f1.txt → RODOU n=1 args=[it's]
+▶ smoke.before_push_cmd (before_push): bash e.sh $
+RODOU n=2 args=[$ f1.txt]
+RESULTADO: OK
+→ siga para o próximo passo.
+[exit=0]
+---- comando: bash e.sh a\\ #b
+     config:   before_push_cmd: 'bash e.sh a\\ #b'
+     referência bash -c '<cmd> "$@"' slot f1.txt → RODOU n=1 args=[a\]
+🛑 sdd/config.yaml, linha 2: o comando de smoke.before_push_cmd tem um comentário (#); os arquivos cairiam dentro dele
+RESULTADO: ERRO DE USO
+→ tire o # do comando (o comentário vai numa linha própria do config) ou aponte para um script
+[exit=64]

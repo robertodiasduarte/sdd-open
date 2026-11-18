@@ -1,0 +1,26 @@
+$ /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f16w-windows/b56e801b-0f18-49ee-b51c-5b9188b29c23/scratchpad/slotprobe.sh /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f16w-windows/b56e801b-0f18-49ee-b51c-5b9188b29c23/scratchpad/head; echo '=== baseline ad32fe1 ==='; /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f16w-windows/b56e801b-0f18-49ee-b51c-5b9188b29c23/scratchpad/slotprobe.sh /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f16w-windows/b56e801b-0f18-49ee-b51c-5b9188b29c23/scratchpad/base; echo "[rc=$?]"
+--- sem emulação
+▶ smoke.before_ok_cmd (before_ok): echo "SLOT RODOU ç"
+SLOT RODOU ç
+RESULTADO: OK
+→ siga para o próximo passo.
+rc=0
+--- com o stdout do Windows emulado (cp1252 + \r\n)
+▶ smoke.before_ok_cmd (before_ok): echo "SLOT RODOU ç"
+SLOT RODOU ç
+RESULTADO: OK
+→ siga para o próximo passo.
+rc=0
+=== baseline ad32fe1 ===
+--- sem emulação
+▶ smoke.before_ok_cmd (before_ok): echo "SLOT RODOU ç"
+SLOT RODOU ç
+RESULTADO: OK
+→ siga para o próximo passo.
+rc=0
+--- com o stdout do Windows emulado (cp1252 + \r\n)
+ℹ️  smoke.before_ok_cmd vazio: pulado (/private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.2GQwHYipby/sdd/config.yaml)
+RESULTADO: PULADO
+→ diga que o passo foi pulado porque o slot está vazio; para usá-lo, preencha smoke.before_ok_cmd em sdd/config.yaml.
+rc=11
+[rc=0]

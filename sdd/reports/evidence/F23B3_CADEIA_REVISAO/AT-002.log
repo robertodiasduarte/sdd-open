@@ -1,0 +1,15 @@
+$ python3 -B -m unittest -v test_f23b3_revisao.AT002Risco   # HEAD 5e110b2
+test_caminho_em_portugues_aciona_o_2o_revisor (test_f23b3_revisao.AT002Risco.test_caminho_em_portugues_aciona_o_2o_revisor) ... ok
+test_globs_de_security_globs_e_de_layers_sql (test_f23b3_revisao.AT002Risco.test_globs_de_security_globs_e_de_layers_sql) ... ok
+test_mutante_por_prefixo_cai_em_author (test_f23b3_revisao.AT002Risco.test_mutante_por_prefixo_cai_em_author) ... ok
+test_o_trecho_e_identico_nos_2_scripts (test_f23b3_revisao.AT002Risco.test_o_trecho_e_identico_nos_2_scripts) ... ok
+test_r2_o_meta_grava_o_termo_ou_glob_que_casou (test_f23b3_revisao.AT002Risco.test_r2_o_meta_grava_o_termo_ou_glob_que_casou) ... ok
+test_r4_caminho_em_nfd_casa_o_termo_acentuado (test_f23b3_revisao.AT002Risco.test_r4_caminho_em_nfd_casa_o_termo_acentuado) ... ok
+test_review_design_usa_a_mesma_lista (test_f23b3_revisao.AT002Risco.test_review_design_usa_a_mesma_lista) ... ok
+test_tabela_de_termos_nos_2_scripts (test_f23b3_revisao.AT002Risco.test_tabela_de_termos_nos_2_scripts) ... ok
+
+----------------------------------------------------------------------
+Ran 8 tests in 2.226s
+
+OK
+[exit=0]

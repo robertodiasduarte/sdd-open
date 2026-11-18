@@ -1,0 +1,25 @@
+$ bash /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f10-revisao/bd420f6e-558d-4962-a0c9-40cdfc2cbd27/scratchpad/p/at013.sh
+RESULTADO: REVIEW COMPLETA
+achados: 1 grave, 1 médio, 0 leves (+ 1 novo(s) do auditor)
+META.txt
+auditor.md
+auditor.verdicts.jsonl
+context-sdd.md
+diff.patch
+reviewer.md
+reviewer.verdicts.jsonl
+{"achado": "R1", "veredito": "AGREE"}
+{"achado": "R2", "veredito": "DISAGREE_CONCERN"}
+{"achado": "N1", "veredito": "NOVO", "severidade": "HIGH", "arquivo": "src/novo.sh", "linha": 1, "resumo": "x"}
+prompt do auditor: 1 contexto · 1 diff · 1 revisões · inclui reviewer.md? 2
+## /bin/bash /Users/robertoduarte/rdd-worktrees/sdd-open-f10-aval2/sdd/bin/sdd-fluxo.sh loop --review sdd/reports/reviews/EXTERNAL_REVIEW_20261101-002236 --ledger /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.x2xX9PhePL/l.md --rodada 1
+ESTADO: CONTINUAR
+rodada: 1 de 3
+graves_abertos: 2
+aplicadas: 0
+rebatidas: 0
+motivo: grave(s) sem veredito no ledger: N1 R1
+RESULTADO: CONTINUAR
+→ corrija, rode o Verify Gate e a revisão de novo com --rodada 2.
+[rc=10]
+[exit=0]

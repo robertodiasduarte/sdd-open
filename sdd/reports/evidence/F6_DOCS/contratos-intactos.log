@@ -1,0 +1,4 @@
+$ git diff --stat v2.2.6 HEAD -- sdd/bin sdd/fixtures sdd/templates sdd/playbook.md sdd/config.example.yaml scripts bin .github | grep . ; test ${PIPESTATUS[0]} -eq 0 && echo "(diff vazio: nenhum dos contratos mudou)" && bash sdd/bin/playbook-lint.sh --self-test >/dev/null && echo "playbook-lint --self-test: 0"
+(diff vazio: nenhum dos contratos mudou)
+playbook-lint --self-test: 0
+exit=0

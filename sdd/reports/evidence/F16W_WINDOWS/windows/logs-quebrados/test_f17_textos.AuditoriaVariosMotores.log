@@ -1,0 +1,112 @@
+test_projeto_so_com_agents_e_codex_nao_volta_vazio (test_f17_textos.AuditoriaVariosMotores.test_projeto_so_com_agents_e_codex_nao_volta_vazio) ... Exception in thread Thread-1 (_readerthread):
+
+Traceback (most recent call last):
+
+  File "C:\hostedtoolcache\windows\Python\3.12.10\x64\Lib\threading.py", line 1075, in _bootstrap_inner
+
+    self.run()
+
+  File "C:\hostedtoolcache\windows\Python\3.12.10\x64\Lib\threading.py", line 1012, in run
+
+    self._target(*self._args, **self._kwargs)
+
+  File "C:\hostedtoolcache\windows\Python\3.12.10\x64\Lib\subprocess.py", line 1599, in _readerthread
+
+    buffer.append(fh.read())
+
+                  ^^^^^^^^^
+
+  File "<frozen codecs>", line 322, in decode
+
+UnicodeDecodeError: 'utf-8' codec can't decode byte 0xe3 in position 565: invalid continuation byte
+
+ERROR
+
+test_prompt_do_codex_chamado_como_prompts_nome_tem_referencia (test_f17_textos.AuditoriaVariosMotores.test_prompt_do_codex_chamado_como_prompts_nome_tem_referencia) ... Exception in thread Thread-3 (_readerthread):
+
+Traceback (most recent call last):
+
+  File "C:\hostedtoolcache\windows\Python\3.12.10\x64\Lib\threading.py", line 1075, in _bootstrap_inner
+
+    self.run()
+
+  File "C:\hostedtoolcache\windows\Python\3.12.10\x64\Lib\threading.py", line 1012, in run
+
+    self._target(*self._args, **self._kwargs)
+
+  File "C:\hostedtoolcache\windows\Python\3.12.10\x64\Lib\subprocess.py", line 1599, in _readerthread
+
+    buffer.append(fh.read())
+
+                  ^^^^^^^^^
+
+  File "<frozen codecs>", line 322, in decode
+
+UnicodeDecodeError: 'utf-8' codec can't decode byte 0xe3 in position 599: invalid continuation byte
+
+ERROR
+
+test_protocolo_diz_que_copia_gerada_nao_e_duplicata (test_f17_textos.AuditoriaVariosMotores.test_protocolo_diz_que_copia_gerada_nao_e_duplicata) ... ok
+
+test_skill_cita_os_motores_e_a_precedencia (test_f17_textos.AuditoriaVariosMotores.test_skill_cita_os_motores_e_a_precedencia) ... ok
+
+
+
+======================================================================
+
+ERROR: test_projeto_so_com_agents_e_codex_nao_volta_vazio (test_f17_textos.AuditoriaVariosMotores.test_projeto_so_com_agents_e_codex_nao_volta_vazio)
+
+----------------------------------------------------------------------
+
+Traceback (most recent call last):
+
+  File "D:\a\sdd-open\sdd-open\tests\test_f17_textos.py", line 82, in test_projeto_so_com_agents_e_codex_nao_volta_vazio
+
+    inv = self.inventario()
+
+          ^^^^^^^^^^^^^^^^^
+
+  File "D:\a\sdd-open\sdd-open\tests\test_f17_textos.py", line 72, in inventario
+
+    return {i["path"]: i["type"] for i in json.loads(r.stdout)["items"]}
+
+                                          ^^^^^^^^^^^^^^^^^^^^
+
+  File "C:\hostedtoolcache\windows\Python\3.12.10\x64\Lib\json\__init__.py", line 339, in loads
+
+    raise TypeError(f'the JSON object must be str, bytes or bytearray, '
+
+TypeError: the JSON object must be str, bytes or bytearray, not NoneType
+
+
+
+======================================================================
+
+ERROR: test_prompt_do_codex_chamado_como_prompts_nome_tem_referencia (test_f17_textos.AuditoriaVariosMotores.test_prompt_do_codex_chamado_como_prompts_nome_tem_referencia)
+
+----------------------------------------------------------------------
+
+Traceback (most recent call last):
+
+  File "D:\a\sdd-open\sdd-open\tests\test_f17_textos.py", line 97, in test_prompt_do_codex_chamado_como_prompts_nome_tem_referencia
+
+    itens = {i["path"]: i for i in json.loads(r.stdout)["items"]}
+
+                                   ^^^^^^^^^^^^^^^^^^^^
+
+  File "C:\hostedtoolcache\windows\Python\3.12.10\x64\Lib\json\__init__.py", line 339, in loads
+
+    raise TypeError(f'the JSON object must be str, bytes or bytearray, '
+
+TypeError: the JSON object must be str, bytes or bytearray, not NoneType
+
+
+
+----------------------------------------------------------------------
+
+Ran 4 tests in 0.418s
+
+
+
+FAILED (errors=2)
+

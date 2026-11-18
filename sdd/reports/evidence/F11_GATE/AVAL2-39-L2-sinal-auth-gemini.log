@@ -1,0 +1,12 @@
+$ /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/aval2w.zHdF4lN0AJ/sabota.sh sinal-auth-gemini-inerte sdd/review/registry.tsv '(?i)(ProjectIdRequiredError|UNAUTHENTICATED|API key not valid|"code":\s*40[13]\b)' '(?i)(NUNCA-CASA-XYZ)'
+### sabotagem sinal-auth-gemini-inerte em sdd/review/registry.tsv
+  ❌ 86. falha de credencial (gemini): exit 65 e parou nela
+        → lido (67, 'claude'), esperado (65, 'gemini')
+  ❌ 87. falha de credencial (gemini): sem troca de engine: nenhuma engine fora do roteiro foi chamada
+  ❌ 88. falha de credencial (gemini): sem troca de engine: chamadas por engine
+        → lido {'claude': 1, 'gemini': 1}, esperado {'gemini': 1}
+103 asserções, 3 falha(s) em 6 s
+RESULTADO: GATE VERMELHO
+→ cada ❌ acima diz o campo e o valor lido; o adapter da engine citada não extrai mais o que a CLI devolve (ou o script mudou de comportamento). Corrija e rode o gate de novo.
+[gate_rc=2]
+[exit=2]

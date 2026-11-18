@@ -1,0 +1,18 @@
+$ bash /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f10-revisao/bd420f6e-558d-4962-a0c9-40cdfc2cbd27/scratchpad/p/c3.sh
+referência (config vazia): 536882531da2c99651f6705208fef34754cb181a78b3e776389b35877fabce54
+diff.context 10  sha igual
+diff.interHunkContext 20  sha igual
+diff.noprefix true  sha igual
+diff.mnemonicPrefix true  sha igual
+diff.algorithm patience  sha igual
+diff.renames copies  sha igual
+diff.indentHeuristic false  sha igual
+diff.orderFile /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.wd3OfLRSiL/ordem  SHA MUDOU (20b6b5c2ef66)
+diff.relative true  sha igual
+diff.suppressBlankEmpty true  sha igual
+core.quotePath false  sha igual
+diff.external /bin/false  sha igual
+core.attributesFile /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.wd3OfLRSiL/attrs|diff.up.textconv tr a-z A-Z  SHA MUDOU ()
+diff.srcPrefix X/  sha igual
+diff.dstPrefix Y/  sha igual
+[exit=0]

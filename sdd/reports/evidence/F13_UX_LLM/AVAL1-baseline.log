@@ -1,0 +1,7 @@
+$ T=$(mktemp -d); trap "rm -rf $T" EXIT; git archive v2.4.0 | tar -x -C $T; git archive HEAD tests/test_contraste.py tests/test_prompt_drift_scan.py tests/test_f13_textos.py tests/test_design_lint.py | tar -x -C $T; cd $T; export SDD_TEST_BASH=/bin/bash; for m in contraste prompt_drift_scan f13_textos design_lint; do /usr/bin/python3 -B -m unittest discover -s tests -p "test_$m.py" >$T/o 2>&1; rc=$?; echo "$m rc=$rc $(tail -1 $T/o)"; done; echo fim
+contraste rc=1 FAILED (failures=17, errors=10)
+prompt_drift_scan rc=1 FAILED (failures=65, errors=3)
+f13_textos rc=1 FAILED (errors=1)
+design_lint rc=1 FAILED (errors=11)
+fim
+[exit=0]

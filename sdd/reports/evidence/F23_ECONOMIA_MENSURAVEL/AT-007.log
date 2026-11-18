@@ -1,0 +1,9 @@
+$ cd tests && SDD_TEST_BASH=/bin/bash python3 -B -m unittest test_f23_custo.AT003Contador.test_tabela_por_fase_sem_fase_revisao_e_total test_f23_custo.AT003Contador.test_voltas_do_gate_avisos_e_nenhum_texto   # HEAD ef217b9
+test_tabela_por_fase_sem_fase_revisao_e_total (test_f23_custo.AT003Contador) ... ok
+test_voltas_do_gate_avisos_e_nenhum_texto (test_f23_custo.AT003Contador) ... ok
+
+----------------------------------------------------------------------
+Ran 2 tests in 0.330s
+
+OK
+[exit=0]

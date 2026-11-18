@@ -1,0 +1,16 @@
+$ /usr/bin/python3 -B -c "
+import re, subprocess
+for f in (\"F1_MANUTENCAO\", \"F2_TERRENO\", \"F3_BUILD_RELEASE\", \"F4_CONVERSA\", \"F5_CONHECIMENTO\", \"F6_DOCS\", \"M1\", \"W0\"):
+    p = subprocess.run([\"/usr/bin/python3\", \"-B\", \"sdd/bin/report-lint.py\", \"sdd/reports/BUILD_REPORT_%s.md\" % f], capture_output=True, text=True)
+    classes = sorted(set(re.findall(r\"^🛑 \[([^]]+)\]\", p.stderr, re.M)))
+    print(\"BUILD_REPORT_%s.md rc=%d classes=%s\" % (f, p.returncode, classes))
+"
+BUILD_REPORT_F1_MANUTENCAO.md rc=1 classes=['avaliação ausente']
+BUILD_REPORT_F2_TERRENO.md rc=1 classes=['avaliação ausente']
+BUILD_REPORT_F3_BUILD_RELEASE.md rc=1 classes=['avaliação ausente']
+BUILD_REPORT_F4_CONVERSA.md rc=0 classes=[]
+BUILD_REPORT_F5_CONHECIMENTO.md rc=0 classes=[]
+BUILD_REPORT_F6_DOCS.md rc=0 classes=[]
+BUILD_REPORT_M1.md rc=1 classes=['avaliação ausente']
+BUILD_REPORT_W0.md rc=1 classes=['avaliação ausente']
+[exit=0]

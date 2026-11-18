@@ -1,0 +1,48 @@
+$ PATH=/usr/bin:/bin /bin/bash /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f21-f19/8ca3f42f-d684-434d-9f0b-19bdcf0aef88/scratchpad/aval-f19/tools/loop.sh /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f21-f19/8ca3f42f-d684-434d-9f0b-19bdcf0aef88/scratchpad/aval-f19/casos/loop
+--- vereditos de review-ok
+{"achado":"R1@rev","arquivo":"src/relatorio/mensal.py","linha":10,"severidade":"HIGH","confianca":"CONFIRMED","resumo":"total do mês soma o mês anterior"}
+{"achado":"R2@rev","arquivo":"src/relatorio/anual.py","linha":3,"severidade":"MED","confianca":"PLAUSIBLE","resumo":"nome de variável enganoso"}
+=== loop --review sdd/fixtures/fluxo/review-ok --ledger /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f21-f19/8ca3f42f-d684-434d-9f0b-19bdcf0aef88/scratchpad/aval-f19/casos/loop/l5.md
+[exit=0]
+ESTADO: PRONTO
+rodada: 1 de 3
+graves_abertos: 0
+rebatidas: 1
+RESULTADO: PRONTO
+=== loop --review sdd/fixtures/fluxo/review-ok --ledger /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f21-f19/8ca3f42f-d684-434d-9f0b-19bdcf0aef88/scratchpad/aval-f19/casos/loop/LEDGER_REVISAO_L7.md
+[exit=0]
+ESTADO: PRONTO
+rodada: 1 de 3
+graves_abertos: 0
+rebatidas: 1
+RESULTADO: PRONTO
+>> saída do loop idêntica: 5 colunas x 7 colunas (ids rotulados)
+=== loop --review /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f21-f19/8ca3f42f-d684-434d-9f0b-19bdcf0aef88/scratchpad/aval-f19/casos/loop/review-sem-rotulo --ledger /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f21-f19/8ca3f42f-d684-434d-9f0b-19bdcf0aef88/scratchpad/aval-f19/casos/loop/s5.md
+[exit=0]
+ESTADO: PRONTO
+rodada: 1 de 3
+graves_abertos: 0
+rebatidas: 1
+RESULTADO: PRONTO
+=== loop --review /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f21-f19/8ca3f42f-d684-434d-9f0b-19bdcf0aef88/scratchpad/aval-f19/casos/loop/review-sem-rotulo --ledger /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f21-f19/8ca3f42f-d684-434d-9f0b-19bdcf0aef88/scratchpad/aval-f19/casos/loop/LEDGER_REVISAO_S7.md
+[exit=0]
+ESTADO: PRONTO
+rodada: 1 de 3
+graves_abertos: 0
+rebatidas: 1
+RESULTADO: PRONTO
+>> saída do loop idêntica: 5 colunas x 7 colunas (ids sem rótulo)
+=== o lint aprova os dois de 7 colunas
+✅ ledger da revisão: 1 linha(s) e 0 rodada(s) sem achados em 1 arquivo(s), cada linha com veredito, dano e a pasta da revisão.
+[exit=0]
+✅ ledger da revisão: 1 linha(s) e 0 rodada(s) sem achados em 1 arquivo(s), cada linha com veredito, dano e a pasta da revisão.
+[exit=0]
+=== sem ledger nenhum: o HIGH fica aberto (controle negativo)
+ESTADO: CONTINUAR
+graves_abertos: 1
+motivo: grave(s) sem veredito no ledger: R1@rev
+RESULTADO: CONTINUAR
+[exit=10]
+=== mudou sdd-fluxo.sh, eval-agree.sh ou adversarial-review.sh entre a base 9581740 e b7c967e?
+[linhas de diff: 0]
+[exit=0]

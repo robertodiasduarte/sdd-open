@@ -1,0 +1,6 @@
+test_drive: rc=1 · Ran 59 tests in 1.546s FAILED (failures=1, errors=58) 
+test_deploy_do_sha: rc=1 · Ran 27 tests in 4.879s FAILED (failures=40) 
+test_sdd_archive: rc=1 · Ran 17 tests in 2.643s FAILED (failures=21) 
+test_f14_drive_textos: rc=1 · Ran 1 test in 0.000s FAILED (errors=1) 
+testes novos que passam na base (tem de ser 0): 0
+[exit=0]

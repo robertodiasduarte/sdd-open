@@ -1,0 +1,4 @@
+$ (mutante: sessao-claude.py sem agrupar por message.id) python3 -m unittest test_f23_custo.AT003Contador.test_tabela_por_fase_sem_fase_revisao_e_total
+AssertionError: Lists differ: ['1', '130', '250', '3000', '600', '0.0000', '0.0073', '0h05m00s'] != ['1', '110', '110', '1000', '200', '0.0000', '0.0030', '0h05m00s']
+Ran 1 test in 0.139s
+FAILED (failures=1)

@@ -1,0 +1,2 @@
+{"achado": "R1", "arquivo": "bin/sdd-open.sh", "linha": 974, "severidade": "LOW", "confianca": "CONFIRMED", "resumo": "Com pacote de versão desconhecida e projeto com registro, o doctor manda rodar o upgrade, que sempre sai 64 por não saber a versão do pacote."}
+{"achado": "R2", "arquivo": "bin/lib/versao.sh", "linha": 67, "severidade": "LOW", "confianca": "PLAUSIBLE", "resumo": "instalaveis usa padrão fixo de skills em vez de skills_da_fonte, divergindo do DESIGN e podendo discordar do que o init instala."}

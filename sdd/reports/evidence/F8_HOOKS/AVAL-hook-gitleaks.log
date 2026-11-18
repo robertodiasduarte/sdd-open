@@ -1,0 +1,27 @@
+$ command -v gitleaks && gitleaks version
+/opt/homebrew/bin/gitleaks
+8.30.1
+[exit=0]
+$ cd /tmp/sdd-aval/hook-gitleaks && printf '{"aws": "AKIA%s"}\n' "$(LC_ALL=C tr -dc A-Z0-9 </dev/urandom | head -c 16)" > aws.json && git add aws.json && git commit -q -m gl; rc=$?; git rm -q --cached aws.json; rm -f aws.json; exit $rc
+[exit=0]
+$ cd /tmp/sdd-aval/hook-gitleaks && printf 'token="ghp_%s"\n' "$(LC_ALL=C tr -dc A-Za-z0-9 </dev/urandom | head -c 36)" > notes.md && git add notes.md && git commit -q -m gl-md; rc=$?; exit $rc
+
+sdd-open: commit recusado. Encontrei o que não pode entrar nesta versão:
+
+  🛑 [H3] gitleaks: RuleID:      github-pat File:        notes.md Line:        1 
+
+Por que importa:
+  [H3] o que entra no git fica no histórico e vai junto em todo push; depois disso, rotacionar a credencial é o único conserto
+
+RESULTADO: COMMIT RECUSADO
+→ [H3] troque o valor por um placeholder (${VAR}, CHANGEME, example) ou tire o arquivo desta versão: git restore --staged "<arquivo>"
+→ se você conferiu e quer gravar mesmo assim, só desta vez: git commit --no-verify
+  Agente de IA: não use --no-verify sem o OK explícito da pessoa.
+[exit=1]
+$ cd /tmp/sdd-aval/hook-gitleaks && PATH=/bin:/usr/bin git commit -q -m sem-gitleaks && echo PASSOU-sem-gitleaks-no-PATH && git reset -q --soft HEAD~1
+PASSOU-sem-gitleaks-no-PATH
+[exit=0]
+$ cd /tmp/sdd-aval/hook-gitleaks && mkdir -p /tmp/sdd-aval/fakegl && printf '#!/bin/sh\necho falso\nexit 3\n' > /tmp/sdd-aval/fakegl/gitleaks && chmod +x /tmp/sdd-aval/fakegl/gitleaks && PATH=/tmp/sdd-aval/fakegl:/bin:/usr/bin git commit -q -m gl-exit3 && echo PASSOU-com-aviso
+⚠️  sdd-open: gitleaks saiu 3 (não é vazamento): a conferência do gitleaks foi pulada neste commit
+PASSOU-com-aviso
+[exit=0]

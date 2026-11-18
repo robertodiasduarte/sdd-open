@@ -1,0 +1,14 @@
+$ bash sdd/bin/eval-revisores.sh --ledgers sdd/reviews
+eval-revisores — custo e resultado por papel, engine e modelo (14 pasta(s) lida(s) em /Users/robertoduarte/rdd-worktrees/sdd-open-f22-aviso-versao/sdd/reports/reviews; 2 ledger(s))
+
+| Papel | Engine (modelo) | Cobrança | Rodadas | Falhas | Pago US$ | Nominal US$ | Achados | Aplicados | Com dano | Falsos positivos | Fora de escopo | Sem classificar | Pago por dano | Nominal por dano | AGREE |
+|---|---|---|---:|---|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|
+| revisor | claude (claude-fable-5-2) | assinatura | 3 | 0 | 0.0000 | 1.0396 | 5 | 2 de 5 | 0 de 5 | 2 de 5 | 1 de 5 | 0 de 5 | — | — | — |
+| revisor | claude (claude-opus-5-5) | assinatura | 11 | 0 | 0.0000 | 20.7147 | 37 | 15 de 37 | 0 de 37 | 4 de 37 | 3 de 37 | 15 de 37 | — | — | — |
+| auditor | openrouter (-) | pay-per-token | 0 | 1 (1 cota ou tempo) | n/d | n/d | 0 | 0 | 0 | 0 | 0 | 0 | — | — | n/a |
+| auditor | openrouter (qwen/qwen3.7-plus via Alibaba) | pay-per-token | 12 | 1 (1 resposta inválida) | 0.3966 | 0.3966 | 0 | 0 | 0 | 0 | 0 | 0 | — | — | 88.9% (24 de 27) |
+
+fora da conta: 2 (EXTERNAL_REVIEW_20261115-054927: sem linha em nenhum ledger: os achados dela ficam em sem classificar; EXTERNAL_REVIEW_20261115-055723: sem linha em nenhum ledger: os achados dela ficam em sem classificar)
+RESULTADO: MEDIDO
+→ leia cada taxa com a amostra ao lado: poucas rodadas dão número instável. O script conta o que está registrado; trocar a cadeia de revisão é decisão de quem lê.
+rc=0

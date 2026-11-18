@@ -1,0 +1,16 @@
+$ cd tests && SDD_TEST_BASH=/bin/bash /usr/bin/python3 -B -m unittest -v test_revisao_adapters
+test_cada_adapter_define_as_4_funcoes (test_revisao_adapters.Extracao) ... ok
+test_os_4_formatos (test_revisao_adapters.Extracao) ... ok
+test_saida_de_erro_vira_texto_vazio (test_revisao_adapters.Extracao) ... ok
+test_claude_e_codex_com_as_flags_exatas (test_revisao_adapters.Invocacao) ... ok
+test_gemini_e_modelo_explicito (test_revisao_adapters.Invocacao) ... ok
+test_openrouter_401_e_auth (test_revisao_adapters.Invocacao) ... ok
+test_openrouter_401_sem_corpo_e_auth (test_revisao_adapters.Invocacao) ... ok
+test_openrouter_manda_data_collection_deny_e_le_o_custo (test_revisao_adapters.Invocacao) ... ok
+test_openrouter_sem_chave_e_65_com_onde_ela_mora (test_revisao_adapters.Invocacao) ... ok
+
+----------------------------------------------------------------------
+Ran 9 tests in 3.901s
+
+OK
+[exit=0]

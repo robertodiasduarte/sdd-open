@@ -266,7 +266,12 @@ case "${ATUAL#*-}" in
   07) MES=jul ;; 08) MES=ago ;; 09) MES=set ;; 10) MES=out ;; 11) MES=nov ;; 12) MES=dez ;; *) MES="" ;;
 esac
 IDENT=""
-[ -n "${VERSAO}" ] && [ -n "${MES}" ] && IDENT=" · sdd-checar-ambiente v${VERSAO} · ${MES}/${ATUAL%%-*} · versão atual: https://github.com/robertodiasduarte/sdd-open/releases/latest"
+# F26: o gerador do starter troca a URL do Open pela do starter em todo arquivo; a cópia que não aponta mais para o Open
+# diz que é do SDD Starter, como a linha de identificação da SKILL.md dela (revisão do código, R6; avaliador, A1: o
+# padrão nomeia o Open, para a skill portada não citar o starter)
+URL_ATUAL="https://github.com/robertodiasduarte/sdd-open/releases/latest"
+case "${URL_ATUAL}" in */sdd-open/*) MARCA="" ;; *) MARCA=" · SDD Starter" ;; esac
+[ -n "${VERSAO}" ] && [ -n "${MES}" ] && IDENT=" · sdd-checar-ambiente v${VERSAO}${MARCA} · ${MES}/${ATUAL%%-*} · versão atual: ${URL_ATUAL}"
 
 relatorio() {   # $1 = linha de resumo (sem o ✅)
   ARRUMAR="${ARRUMAR_DADO}${ARRUMAR_DUP}${ARRUMAR}"

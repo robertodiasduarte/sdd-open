@@ -1,0 +1,78 @@
+$ cd /tmp/sdd-aval/hook && V=$(LC_ALL=C tr -dc A-Za-z0-9 </dev/urandom | head -c 24) && printf '{"db_password": "%s"}\n' "$V" > cfg.json && git add cfg.json && out=$(git commit -q -m h3 2>&1); rc=$?; printf '%s\n' "$out" | grep -c "$V" | sed 's/^/vezes-que-o-valor-aparece=/'; printf '%s\n' "$out"; exit $rc
+vezes-que-o-valor-aparece=0
+
+sdd-open: commit recusado. Encontrei o que não pode entrar nesta versão:
+
+  🛑 [H3] cfg.json: credencial em texto claro (chave: db_password)
+  🛑 [H3] gitleaks: RuleID:      generic-api-key File:        cfg.json Line:        1 
+
+Por que importa:
+  [H3] o que entra no git fica no histórico e vai junto em todo push; depois disso, rotacionar a credencial é o único conserto
+
+RESULTADO: COMMIT RECUSADO
+→ [H3] troque o valor por um placeholder (${VAR}, CHANGEME, example) ou tire o arquivo desta versão: git restore --staged "<arquivo>"
+→ se você conferiu e quer gravar mesmo assim, só desta vez: git commit --no-verify
+  Agente de IA: não use --no-verify sem o OK explícito da pessoa.
+[exit=1]
+$ cd /tmp/sdd-aval/hook && V=$(LC_ALL=C tr -dc A-Za-z0-9 </dev/urandom | head -c 24) && printf 'smtp:\n  password: "%s"\n' "$V" > app.yml && printf 'API_KEY="%s"\n' "$V" > .env.local && printf '[s]\nsecret = "%s"\n' "$V" > s.toml && git rm -q --cached cfg.json && git add app.yml .env.local s.toml && out=$(git commit -q -m h3b 2>&1); rc=$?; printf '%s\n' "$out" | grep -c "$V" | sed 's/^/vezes-que-o-valor-aparece=/'; printf '%s\n' "$out"; exit $rc
+vezes-que-o-valor-aparece=0
+
+sdd-open: commit recusado. Encontrei o que não pode entrar nesta versão:
+
+  🛑 [H3] .env.local: credencial em texto claro (chave: API_KEY)
+  🛑 [H3] app.yml: credencial em texto claro (chave: password)
+  🛑 [H3] s.toml: credencial em texto claro (chave: secret)
+  🛑 [H3] gitleaks: RuleID:      generic-api-key File:        app.yml Line:        2 RuleID:      generic-api-key File:        .env.local Line:        1 
+
+Por que importa:
+  [H3] o que entra no git fica no histórico e vai junto em todo push; depois disso, rotacionar a credencial é o único conserto
+
+RESULTADO: COMMIT RECUSADO
+→ [H3] troque o valor por um placeholder (${VAR}, CHANGEME, example) ou tire o arquivo desta versão: git restore --staged "<arquivo>"
+→ se você conferiu e quer gravar mesmo assim, só desta vez: git commit --no-verify
+  Agente de IA: não use --no-verify sem o OK explícito da pessoa.
+[exit=1]
+$ cd /tmp/sdd-aval/hook && git rm -q --cached app.yml .env.local s.toml && rm -f app.yml .env.local s.toml cfg.json && cp /Users/robertoduarte/rdd-worktrees/sdd-open-f8-aval/sdd/fixtures/hooks/config-placeholder.json placeholders.json && printf '{"parse-passwd": "^1.0.0", "dependencies": {"token": "^2.0.0"}}\n' > package-lock.json && git add placeholders.json package-lock.json && git commit -q -m h3-placeholders && echo PASSOU-placeholders
+
+sdd-open: commit recusado. Encontrei o que não pode entrar nesta versão:
+
+  🛑 [H3] package-lock.json: credencial em texto claro (chave: token)
+
+Por que importa:
+  [H3] o que entra no git fica no histórico e vai junto em todo push; depois disso, rotacionar a credencial é o único conserto
+
+RESULTADO: COMMIT RECUSADO
+→ [H3] troque o valor por um placeholder (${VAR}, CHANGEME, example) ou tire o arquivo desta versão: git restore --staged "<arquivo>"
+→ se você conferiu e quer gravar mesmo assim, só desta vez: git commit --no-verify
+  Agente de IA: não use --no-verify sem o OK explícito da pessoa.
+[exit=1]
+$ cd /tmp/sdd-aval/hook && V=$(LC_ALL=C tr -dc A-Za-z0-9 </dev/urandom | head -c 24) && printf 'password="%s"\n' "$V" > notes.md && git add notes.md && git commit -q -m h3-md && echo PASSOU-md-nao-e-config
+
+sdd-open: commit recusado. Encontrei o que não pode entrar nesta versão:
+
+  🛑 [H3] package-lock.json: credencial em texto claro (chave: token)
+  🛑 [H3] gitleaks: RuleID:      generic-api-key File:        notes.md Line:        1 
+
+Por que importa:
+  [H3] o que entra no git fica no histórico e vai junto em todo push; depois disso, rotacionar a credencial é o único conserto
+
+RESULTADO: COMMIT RECUSADO
+→ [H3] troque o valor por um placeholder (${VAR}, CHANGEME, example) ou tire o arquivo desta versão: git restore --staged "<arquivo>"
+→ se você conferiu e quer gravar mesmo assim, só desta vez: git commit --no-verify
+  Agente de IA: não use --no-verify sem o OK explícito da pessoa.
+[exit=1]
+$ cd /tmp/sdd-aval/hook && V=$(LC_ALL=C tr -dc A-Za-z0-9 </dev/urandom | head -c 24) && printf 'PASSWORD=%s\n' "$V" > .env.prod && git add .env.prod && git commit -q -m h3-env-sem-aspas; rc=$?; git rm -q --cached .env.prod; rm -f .env.prod; exit $rc
+
+sdd-open: commit recusado. Encontrei o que não pode entrar nesta versão:
+
+  🛑 [H3] package-lock.json: credencial em texto claro (chave: token)
+  🛑 [H3] gitleaks: RuleID:      generic-api-key File:        .env.prod Line:        1 RuleID:      generic-api-key File:        notes.md Line:        1 
+
+Por que importa:
+  [H3] o que entra no git fica no histórico e vai junto em todo push; depois disso, rotacionar a credencial é o único conserto
+
+RESULTADO: COMMIT RECUSADO
+→ [H3] troque o valor por um placeholder (${VAR}, CHANGEME, example) ou tire o arquivo desta versão: git restore --staged "<arquivo>"
+→ se você conferiu e quer gravar mesmo assim, só desta vez: git commit --no-verify
+  Agente de IA: não use --no-verify sem o OK explícito da pessoa.
+[exit=1]

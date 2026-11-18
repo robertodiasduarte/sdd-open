@@ -1,0 +1,80 @@
+$ bash /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f16w-windows/fd210694-ded6-4d95-a500-52e0521f4ae8/scratchpad/uso.sh
+### --fatia 0/12 --lista
+🛑 testes-por-modulo: --fatia espera I/N com 1 ≤ I ≤ N, veio '0/12'
+RESULTADO: ERRO DE USO
+exit=64
+### --fatia 13/12 --lista
+🛑 testes-por-modulo: --fatia espera I/N com 1 ≤ I ≤ N, veio '13/12'
+RESULTADO: ERRO DE USO
+exit=64
+### --fatia 1/0 --lista
+🛑 testes-por-modulo: --fatia espera I/N com 1 ≤ I ≤ N, veio '1/0'
+RESULTADO: ERRO DE USO
+exit=64
+### --fatia a/12 --lista
+🛑 testes-por-modulo: --fatia espera I/N com 1 ≤ I ≤ N, veio 'a/12'
+RESULTADO: ERRO DE USO
+exit=64
+### --fatia 1/12x --lista
+🛑 testes-por-modulo: --fatia espera I/N com 1 ≤ I ≤ N, veio '1/12x'
+RESULTADO: ERRO DE USO
+exit=64
+### --teto-unidade abc
+🛑 testes-por-modulo: valor que não é número em --teto-unidade
+RESULTADO: ERRO DE USO
+exit=64
+### --teto-unidade -1
+🛑 testes-por-modulo: --teto-unidade espera segundos > 0
+RESULTADO: ERRO DE USO
+exit=64
+### --teto-unidade nan --so test_verde
+exit=1
+### --paralelo x
+🛑 testes-por-modulo: valor que não é número em --paralelo
+RESULTADO: ERRO DE USO
+exit=64
+### --paralelo 0
+🛑 testes-por-modulo: --paralelo espera um inteiro ≥ 1
+RESULTADO: ERRO DE USO
+exit=64
+### --so test_naoexiste
+🛑 testes-por-modulo: módulo ou unidade inexistente: test_naoexiste
+RESULTADO: ERRO DE USO
+exit=64
+### --so test_verde.Z
+🛑 testes-por-modulo: módulo ou unidade inexistente: test_verde.Z
+RESULTADO: ERRO DE USO
+exit=64
+### --so 
+fatia 1/1: 0 unidade(s), 0 teste(s); teto por unidade 900s; paralelo 1
+RESULTADO: VERDE
+exit=0
+### --so ,
+fatia 1/1: 0 unidade(s), 0 teste(s); teto por unidade 900s; paralelo 1
+RESULTADO: VERDE
+exit=0
+### --xyz
+🛑 testes-por-modulo: argumento desconhecido: --xyz
+RESULTADO: ERRO DE USO
+exit=64
+### --teto-modulo 5
+🛑 testes-por-modulo: argumento desconhecido: --teto-modulo
+RESULTADO: ERRO DE USO
+exit=64
+### --saida
+🛑 testes-por-modulo: falta o valor de --saida
+RESULTADO: ERRO DE USO
+exit=64
+### --fatia 12/12
+fatia 12/12: 0 unidade(s), 0 teste(s); teto por unidade 900s; paralelo 1
+RESULTADO: VERDE
+exit=0
+### pasta sem testes
+🛑 testes-por-modulo: nenhum test_*.py em /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f16w-windows/fd210694-ded6-4d95-a500-52e0521f4ae8/scratchpad/falsa/vazia
+RESULTADO: ERRO DE USO
+exit=64
+### pasta inexistente
+🛑 testes-por-modulo: pasta de testes não existe: /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f16w-windows/fd210694-ded6-4d95-a500-52e0521f4ae8/scratchpad/falsa/naoexiste
+RESULTADO: ERRO DE USO
+exit=64
+[exit=0]

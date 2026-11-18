@@ -1,0 +1,12 @@
+$ SDD_TEST_BASH=/bin/bash /usr/bin/python3 -B -m unittest discover -s tests -p 'test_revisao_gate.py' && SDD_TEST_BASH=/bin/bash /usr/bin/python3 -B -m unittest discover -s tests -p 'test_eval_agree.py'
+.................
+----------------------------------------------------------------------
+Ran 17 tests in 125.197s
+
+OK
+.......
+----------------------------------------------------------------------
+Ran 7 tests in 0.822s
+
+OK
+[exit=0]

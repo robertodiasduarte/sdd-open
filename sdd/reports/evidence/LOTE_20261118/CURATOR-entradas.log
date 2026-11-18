@@ -1,0 +1,12 @@
+$ (na worktree da branch de documentos, com o playbook-curator.sh, o playbook e as invariantes da F26) bash sdd/bin/playbook-curator.sh --conferir-entrada sdd/curadoria/fila/F23B2_MODELO_POR_PAPEL/20261117T145821Z sdd/playbook.md --inv sdd/invariants.md
+staging: /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/sdd-curadoria-44060cb8d0a1/LOTE_F23B2_MODELO_POR_PAPEL_20261117T145821Z
+RESULTADO: ENTRADA CONFERIDA
+→ sele o staging e despache o curador com a colheita.txt dele; nada foi aplicado.
+[exit=0]
+
+$ (na worktree da branch de documentos, com o playbook-curator.sh, o playbook e as invariantes da F26) bash sdd/bin/playbook-curator.sh --conferir-entrada sdd/curadoria/fila/F25_SKILLS_DUPLICADAS/20261118T013139Z sdd/playbook.md --inv sdd/invariants.md
+staging: /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/sdd-curadoria-44060cb8d0a1/LOTE_F25_SKILLS_DUPLICADAS_20261118T013139Z
+RESULTADO: ENTRADA CONFERIDA
+→ sele o staging e despache o curador com a colheita.txt dele; nada foi aplicado.
+[exit=0]
+

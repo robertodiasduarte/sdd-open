@@ -1,0 +1,26 @@
+$ T=$(mktemp -d) && git archive HEAD | tar -x -C $T && cp tests/*.py $T/tests/ && cp sdd/WORKFLOW_CONTRACTS.yaml $T/sdd/ && sed -i "" "s/clarificar: \"5\"/clarificar: \"6\"/" $T/sdd/WORKFLOW_CONTRACTS.yaml && cd $T/tests && SDD_TEST_BASH=/bin/bash /usr/bin/python3 -B -m unittest test_f12_textos.Contratos.test_exits_do_yaml_batem_com_o_verify_gate
+F
+======================================================================
+FAIL: test_exits_do_yaml_batem_com_o_verify_gate (test_f12_textos.Contratos)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.KvumhmXMjx/tests/test_f12_textos.py", line 163, in test_exits_do_yaml_batem_com_o_verify_gate
+    self.assertEqual(do_yaml, do_gate)
+AssertionError: Lists differ: [0, 2, 3, 4, 6, 64] != [0, 2, 3, 4, 5, 64]
+
+First differing element 4:
+6
+5
+
+- [0, 2, 3, 4, 6, 64]
+?              ^
+
++ [0, 2, 3, 4, 5, 64]
+?              ^
+
+
+----------------------------------------------------------------------
+Ran 1 test in 0.001s
+
+FAILED (failures=1)
+[exit=1]

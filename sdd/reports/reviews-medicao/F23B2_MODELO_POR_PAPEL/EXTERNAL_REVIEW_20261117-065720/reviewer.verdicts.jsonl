@@ -1,0 +1,1 @@
+{"achado": "R1", "arquivo": "sdd/bin/papel-serie.sh", "linha": 393, "severidade": "LOW", "confianca": "CONFIRMED", "resumo": "Na retomada de execução interrompida, da_serie() isenta da fronteira qualquer meta.txt/saida.txt/PARADA.txt etc. na pasta de medição, e a escrita forjada do agente nunca é acusada, ao contrário do que diz o comentário."}

@@ -1,0 +1,374 @@
+test_arquivo_gravado_nao_mexe_no_indice (test_governanca_fronteira.EstadoDoGit.test_arquivo_gravado_nao_mexe_no_indice) ... FAIL
+
+test_git_add_conta (test_governanca_fronteira.EstadoDoGit.test_git_add_conta) ... FAIL
+
+test_hook_exclude_e_config_contam (test_governanca_fronteira.EstadoDoGit.test_hook_exclude_e_config_contam) ... 
+
+  test_hook_exclude_e_config_contam (test_governanca_fronteira.EstadoDoGit.test_hook_exclude_e_config_contam) (caso='hook') ... FAIL
+
+  test_hook_exclude_e_config_contam (test_governanca_fronteira.EstadoDoGit.test_hook_exclude_e_config_contam) (caso='exclude') ... FAIL
+
+  test_hook_exclude_e_config_contam (test_governanca_fronteira.EstadoDoGit.test_hook_exclude_e_config_contam) (caso='config') ... FAIL
+
+test_hook_que_e_link_intocado_passa_e_link_quebrado_tambem (test_governanca_fronteira.EstadoDoGit.test_hook_que_e_link_intocado_passa_e_link_quebrado_tambem) ... FAIL
+
+test_hook_que_e_link_mede_o_conteudo_do_destino (test_governanca_fronteira.EstadoDoGit.test_hook_que_e_link_mede_o_conteudo_do_destino) ... FAIL
+
+test_leitura_pelo_git_nao_e_escrita (test_governanca_fronteira.EstadoDoGit.test_leitura_pelo_git_nao_e_escrita) ... FAIL
+
+test_marca_que_esconde_arquivo_editado (test_governanca_fronteira.EstadoDoGit.test_marca_que_esconde_arquivo_editado) ... 
+
+  test_marca_que_esconde_arquivo_editado (test_governanca_fronteira.EstadoDoGit.test_marca_que_esconde_arquivo_editado) (flag='--assume-unchanged') ... FAIL
+
+  test_marca_que_esconde_arquivo_editado (test_governanca_fronteira.EstadoDoGit.test_marca_que_esconde_arquivo_editado) (flag='--skip-worktree') ... FAIL
+
+
+
+======================================================================
+
+FAIL: test_arquivo_gravado_nao_mexe_no_indice (test_governanca_fronteira.EstadoDoGit.test_arquivo_gravado_nao_mexe_no_indice)
+
+----------------------------------------------------------------------
+
+Traceback (most recent call last):
+
+  File "D:\a\sdd-open\sdd-open\tests\test_governanca_fronteira.py", line 326, in test_arquivo_gravado_nao_mexe_no_indice
+
+    rc, out = self.despacho(relatorio)
+
+              ^^^^^^^^^^^^^^^^^^^^^^^^
+
+  File "D:\a\sdd-open\sdd-open\tests\test_governanca_fronteira.py", line 234, in despacho
+
+    self.snap("antes")
+
+  File "D:\a\sdd-open\sdd-open\tests\test_governanca_fronteira.py", line 36, in snap
+
+    self.assertEqual(rc, 0, out)
+
+AssertionError: 64 != 0 : incluir fora do worktree: C:\Users\runneradmin\AppData\Local\Temp\sdd-open-j6ye6s2h\w\sdd\reviews\REL.md
+
+uso: D:\a\sdd-open\sdd-open\sdd\bin\governanca-fronteira.sh --snapshot <raiz-do-worktree> <arquivo-do-snapshot> [incluir�] | --comparar <antes> <depois> <permitido>�
+
+RESULTADO: ERRO DE USO
+
+\u2192 a fronteira N�O foi verificada; corrija a chamada e rode de novo.
+
+
+
+
+
+======================================================================
+
+FAIL: test_git_add_conta (test_governanca_fronteira.EstadoDoGit.test_git_add_conta)
+
+----------------------------------------------------------------------
+
+Traceback (most recent call last):
+
+  File "D:\a\sdd-open\sdd-open\tests\test_governanca_fronteira.py", line 252, in test_git_add_conta
+
+    rc, out = self.despacho(lambda: self.git(self.w, "add", "-A"))
+
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+  File "D:\a\sdd-open\sdd-open\tests\test_governanca_fronteira.py", line 234, in despacho
+
+    self.snap("antes")
+
+  File "D:\a\sdd-open\sdd-open\tests\test_governanca_fronteira.py", line 36, in snap
+
+    self.assertEqual(rc, 0, out)
+
+AssertionError: 64 != 0 : incluir fora do worktree: C:\Users\runneradmin\AppData\Local\Temp\sdd-open-ro8bnpe6\w\sdd\reviews\REL.md
+
+uso: D:\a\sdd-open\sdd-open\sdd\bin\governanca-fronteira.sh --snapshot <raiz-do-worktree> <arquivo-do-snapshot> [incluir�] | --comparar <antes> <depois> <permitido>�
+
+RESULTADO: ERRO DE USO
+
+\u2192 a fronteira N�O foi verificada; corrija a chamada e rode de novo.
+
+
+
+
+
+======================================================================
+
+FAIL: test_hook_exclude_e_config_contam (test_governanca_fronteira.EstadoDoGit.test_hook_exclude_e_config_contam) (caso='hook')
+
+----------------------------------------------------------------------
+
+Traceback (most recent call last):
+
+  File "D:\a\sdd-open\sdd-open\tests\test_governanca_fronteira.py", line 277, in test_hook_exclude_e_config_contam
+
+    rc, out = self.despacho(acao)
+
+              ^^^^^^^^^^^^^^^^^^^
+
+  File "D:\a\sdd-open\sdd-open\tests\test_governanca_fronteira.py", line 234, in despacho
+
+    self.snap("antes")
+
+  File "D:\a\sdd-open\sdd-open\tests\test_governanca_fronteira.py", line 36, in snap
+
+    self.assertEqual(rc, 0, out)
+
+AssertionError: 64 != 0 : incluir fora do worktree: C:\Users\runneradmin\AppData\Local\Temp\sdd-open-48fcc_fd\w\sdd\reviews\REL.md
+
+uso: D:\a\sdd-open\sdd-open\sdd\bin\governanca-fronteira.sh --snapshot <raiz-do-worktree> <arquivo-do-snapshot> [incluir�] | --comparar <antes> <depois> <permitido>�
+
+RESULTADO: ERRO DE USO
+
+\u2192 a fronteira N�O foi verificada; corrija a chamada e rode de novo.
+
+
+
+
+
+======================================================================
+
+FAIL: test_hook_exclude_e_config_contam (test_governanca_fronteira.EstadoDoGit.test_hook_exclude_e_config_contam) (caso='exclude')
+
+----------------------------------------------------------------------
+
+Traceback (most recent call last):
+
+  File "D:\a\sdd-open\sdd-open\tests\test_governanca_fronteira.py", line 277, in test_hook_exclude_e_config_contam
+
+    rc, out = self.despacho(acao)
+
+              ^^^^^^^^^^^^^^^^^^^
+
+  File "D:\a\sdd-open\sdd-open\tests\test_governanca_fronteira.py", line 234, in despacho
+
+    self.snap("antes")
+
+  File "D:\a\sdd-open\sdd-open\tests\test_governanca_fronteira.py", line 36, in snap
+
+    self.assertEqual(rc, 0, out)
+
+AssertionError: 64 != 0 : incluir fora do worktree: C:\Users\runneradmin\AppData\Local\Temp\sdd-open-48fcc_fd\w\sdd\reviews\REL.md
+
+uso: D:\a\sdd-open\sdd-open\sdd\bin\governanca-fronteira.sh --snapshot <raiz-do-worktree> <arquivo-do-snapshot> [incluir�] | --comparar <antes> <depois> <permitido>�
+
+RESULTADO: ERRO DE USO
+
+\u2192 a fronteira N�O foi verificada; corrija a chamada e rode de novo.
+
+
+
+
+
+======================================================================
+
+FAIL: test_hook_exclude_e_config_contam (test_governanca_fronteira.EstadoDoGit.test_hook_exclude_e_config_contam) (caso='config')
+
+----------------------------------------------------------------------
+
+Traceback (most recent call last):
+
+  File "D:\a\sdd-open\sdd-open\tests\test_governanca_fronteira.py", line 277, in test_hook_exclude_e_config_contam
+
+    rc, out = self.despacho(acao)
+
+              ^^^^^^^^^^^^^^^^^^^
+
+  File "D:\a\sdd-open\sdd-open\tests\test_governanca_fronteira.py", line 234, in despacho
+
+    self.snap("antes")
+
+  File "D:\a\sdd-open\sdd-open\tests\test_governanca_fronteira.py", line 36, in snap
+
+    self.assertEqual(rc, 0, out)
+
+AssertionError: 64 != 0 : incluir fora do worktree: C:\Users\runneradmin\AppData\Local\Temp\sdd-open-48fcc_fd\w\sdd\reviews\REL.md
+
+uso: D:\a\sdd-open\sdd-open\sdd\bin\governanca-fronteira.sh --snapshot <raiz-do-worktree> <arquivo-do-snapshot> [incluir�] | --comparar <antes> <depois> <permitido>�
+
+RESULTADO: ERRO DE USO
+
+\u2192 a fronteira N�O foi verificada; corrija a chamada e rode de novo.
+
+
+
+
+
+======================================================================
+
+FAIL: test_hook_que_e_link_intocado_passa_e_link_quebrado_tambem (test_governanca_fronteira.EstadoDoGit.test_hook_que_e_link_intocado_passa_e_link_quebrado_tambem)
+
+----------------------------------------------------------------------
+
+Traceback (most recent call last):
+
+  File "D:\a\sdd-open\sdd-open\tests\test_governanca_fronteira.py", line 295, in test_hook_que_e_link_intocado_passa_e_link_quebrado_tambem
+
+    rc, out = self.despacho(lambda: None)
+
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+  File "D:\a\sdd-open\sdd-open\tests\test_governanca_fronteira.py", line 234, in despacho
+
+    self.snap("antes")
+
+  File "D:\a\sdd-open\sdd-open\tests\test_governanca_fronteira.py", line 36, in snap
+
+    self.assertEqual(rc, 0, out)
+
+AssertionError: 64 != 0 : incluir fora do worktree: C:\Users\runneradmin\AppData\Local\Temp\sdd-open-8phncn96\w\sdd\reviews\REL.md
+
+uso: D:\a\sdd-open\sdd-open\sdd\bin\governanca-fronteira.sh --snapshot <raiz-do-worktree> <arquivo-do-snapshot> [incluir�] | --comparar <antes> <depois> <permitido>�
+
+RESULTADO: ERRO DE USO
+
+\u2192 a fronteira N�O foi verificada; corrija a chamada e rode de novo.
+
+
+
+
+
+======================================================================
+
+FAIL: test_hook_que_e_link_mede_o_conteudo_do_destino (test_governanca_fronteira.EstadoDoGit.test_hook_que_e_link_mede_o_conteudo_do_destino)
+
+----------------------------------------------------------------------
+
+Traceback (most recent call last):
+
+  File "D:\a\sdd-open\sdd-open\tests\test_governanca_fronteira.py", line 286, in test_hook_que_e_link_mede_o_conteudo_do_destino
+
+    rc, out = self.despacho(lambda: alvo.write_text("#!/bin/sh\nexit 0\n", encoding="utf-8"))
+
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+  File "D:\a\sdd-open\sdd-open\tests\test_governanca_fronteira.py", line 234, in despacho
+
+    self.snap("antes")
+
+  File "D:\a\sdd-open\sdd-open\tests\test_governanca_fronteira.py", line 36, in snap
+
+    self.assertEqual(rc, 0, out)
+
+AssertionError: 64 != 0 : incluir fora do worktree: C:\Users\runneradmin\AppData\Local\Temp\sdd-open-bcrvfux2\w\sdd\reviews\REL.md
+
+uso: D:\a\sdd-open\sdd-open\sdd\bin\governanca-fronteira.sh --snapshot <raiz-do-worktree> <arquivo-do-snapshot> [incluir�] | --comparar <antes> <depois> <permitido>�
+
+RESULTADO: ERRO DE USO
+
+\u2192 a fronteira N�O foi verificada; corrija a chamada e rode de novo.
+
+
+
+
+
+======================================================================
+
+FAIL: test_leitura_pelo_git_nao_e_escrita (test_governanca_fronteira.EstadoDoGit.test_leitura_pelo_git_nao_e_escrita)
+
+----------------------------------------------------------------------
+
+Traceback (most recent call last):
+
+  File "D:\a\sdd-open\sdd-open\tests\test_governanca_fronteira.py", line 320, in test_leitura_pelo_git_nao_e_escrita
+
+    rc, out = self.despacho(leitura)
+
+              ^^^^^^^^^^^^^^^^^^^^^^
+
+  File "D:\a\sdd-open\sdd-open\tests\test_governanca_fronteira.py", line 234, in despacho
+
+    self.snap("antes")
+
+  File "D:\a\sdd-open\sdd-open\tests\test_governanca_fronteira.py", line 36, in snap
+
+    self.assertEqual(rc, 0, out)
+
+AssertionError: 64 != 0 : incluir fora do worktree: C:\Users\runneradmin\AppData\Local\Temp\sdd-open-s637wspr\w\sdd\reviews\REL.md
+
+uso: D:\a\sdd-open\sdd-open\sdd\bin\governanca-fronteira.sh --snapshot <raiz-do-worktree> <arquivo-do-snapshot> [incluir�] | --comparar <antes> <depois> <permitido>�
+
+RESULTADO: ERRO DE USO
+
+\u2192 a fronteira N�O foi verificada; corrija a chamada e rode de novo.
+
+
+
+
+
+======================================================================
+
+FAIL: test_marca_que_esconde_arquivo_editado (test_governanca_fronteira.EstadoDoGit.test_marca_que_esconde_arquivo_editado) (flag='--assume-unchanged')
+
+----------------------------------------------------------------------
+
+Traceback (most recent call last):
+
+  File "D:\a\sdd-open\sdd-open\tests\test_governanca_fronteira.py", line 245, in test_marca_que_esconde_arquivo_editado
+
+    rc, out = self.despacho(acao)
+
+              ^^^^^^^^^^^^^^^^^^^
+
+  File "D:\a\sdd-open\sdd-open\tests\test_governanca_fronteira.py", line 234, in despacho
+
+    self.snap("antes")
+
+  File "D:\a\sdd-open\sdd-open\tests\test_governanca_fronteira.py", line 36, in snap
+
+    self.assertEqual(rc, 0, out)
+
+AssertionError: 64 != 0 : incluir fora do worktree: C:\Users\runneradmin\AppData\Local\Temp\sdd-open-u09b00ns\w\sdd\reviews\REL.md
+
+uso: D:\a\sdd-open\sdd-open\sdd\bin\governanca-fronteira.sh --snapshot <raiz-do-worktree> <arquivo-do-snapshot> [incluir�] | --comparar <antes> <depois> <permitido>�
+
+RESULTADO: ERRO DE USO
+
+\u2192 a fronteira N�O foi verificada; corrija a chamada e rode de novo.
+
+
+
+
+
+======================================================================
+
+FAIL: test_marca_que_esconde_arquivo_editado (test_governanca_fronteira.EstadoDoGit.test_marca_que_esconde_arquivo_editado) (flag='--skip-worktree')
+
+----------------------------------------------------------------------
+
+Traceback (most recent call last):
+
+  File "D:\a\sdd-open\sdd-open\tests\test_governanca_fronteira.py", line 245, in test_marca_que_esconde_arquivo_editado
+
+    rc, out = self.despacho(acao)
+
+              ^^^^^^^^^^^^^^^^^^^
+
+  File "D:\a\sdd-open\sdd-open\tests\test_governanca_fronteira.py", line 234, in despacho
+
+    self.snap("antes")
+
+  File "D:\a\sdd-open\sdd-open\tests\test_governanca_fronteira.py", line 36, in snap
+
+    self.assertEqual(rc, 0, out)
+
+AssertionError: 64 != 0 : incluir fora do worktree: C:\Users\runneradmin\AppData\Local\Temp\sdd-open-u09b00ns\w\sdd\reviews\REL.md
+
+uso: D:\a\sdd-open\sdd-open\sdd\bin\governanca-fronteira.sh --snapshot <raiz-do-worktree> <arquivo-do-snapshot> [incluir�] | --comparar <antes> <depois> <permitido>�
+
+RESULTADO: ERRO DE USO
+
+\u2192 a fronteira N�O foi verificada; corrija a chamada e rode de novo.
+
+
+
+
+
+----------------------------------------------------------------------
+
+Ran 7 tests in 2.253s
+
+
+
+FAILED (failures=10)
+

@@ -1,0 +1,8 @@
+$ bash squash.sh   # clone; a F26 inteira num commit só sobre 304e60a (como a F25 e a F23B2 entraram); --conferir; depois um commit de papel
+squash: 66cd55b F26 (squash simulado) · pai 304e60a
+RESULTADO: VERDE
+→ siga.
+# depois do squash, o commit de papel da release mexe no PLANO e põe uma entrada na fila:
+RESULTADO: VERDE
+→ siga.
+[exit=0]

@@ -1,0 +1,20 @@
+$ bash sdd/bin/eval-revisores.sh <as 4 pastas da F23B3> --ledgers sdd/reviews/LEDGER_REVISAO_F23B3_CADEIA_REVISAO.md
+eval-revisores — custo e resultado por papel, engine e modelo (4 pasta(s) lida(s) em /Users/robertoduarte/rdd-worktrees/sdd-open-docs-f16/sdd/reports/reviews-medicao/F23B3_CADEIA_REVISAO; 1 ledger(s))
+
+| Papel | Engine (modelo) | Cobrança | Rodadas | Falhas | Pago US$ | Nominal US$ | Achados | Aplicados | Com dano | Falsos positivos | Fora de escopo | Sem classificar | Pago por dano | Nominal por dano | AGREE |
+|---|---|---|---:|---|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|
+| revisor | claude (claude-fable-5-1) | assinatura | 3 | 0 | 0.0000 | 11.6787 | 9 | 8 de 9 | 1 de 9 | 1 de 9 | 0 de 9 | 0 de 9 | 0.0000 | 11.6787 | — |
+| revisor | claude (claude-opus-5-5) | assinatura | 1 | 0 | 0.0000 | 0.7430 | 5 | 4 de 5 | 0 de 5 | 0 de 5 | 1 de 5 | 0 de 5 | — | — | — |
+| auditor | codex (-) | assinatura | 1 | 0 | 0.0000 | n/d | 1 | 1 de 1 | 0 de 1 | 0 de 1 | 0 de 1 | 0 de 1 | — | — | 0.0% (0 de 5) |
+| auditor | codex (gpt-6.1-sol) | assinatura | 3 | 0 | 0.0000 | n/d | 3 | 3 de 3 | 3 de 3 | 0 de 3 | 0 de 3 | 0 de 3 | 0.0000 | — | 55.6% (5 de 9) |
+
+Cadeia por frente (o 2º revisor só por risco ou revisor raso; evitado = a regra antiga o chamaria):
+
+| Frente | Rodadas | 2º revisor por risco | 2º revisor por raso | Evitado pela regra | Custo evitado US$ | Dispensas à mão | Escapes com dano |
+|---|---:|---:|---:|---:|---:|---|---:|
+| F23B3_CADEIA_REVISAO | 4 | 0 | 0 | 3 | 11.6787 | revisor2 0 · desempate 0 + n/d | 0 |
+
+fora da conta: 0
+RESULTADO: MEDIDO
+→ leia cada taxa com a amostra ao lado: poucas rodadas dão número instável. O script conta o que está registrado; trocar a cadeia de revisão é decisão de quem lê.
+[exit=0]

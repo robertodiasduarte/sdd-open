@@ -1,0 +1,6 @@
+{"achado": "R1", "veredito": "AGREE", "justificativa": "O ramo saiu=0 apaga a reserva mesmo quando a pasta real foi removida e apenas o atalho permaneceu."}
+{"achado": "R2", "veredito": "AGREE", "justificativa": "A resolução incompleta de caminhos com ancestrais simbólicos permite proteger e restaurar a própria cópia escolhida."}
+{"achado": "R3", "veredito": "AGREE", "justificativa": "A restauração usa o registro inicial da limpeza inteira e reintroduz entradas de itens anteriores já removidos."}
+{"achado": "R4", "veredito": "AGREE", "justificativa": "A lixeira não recebe a lista completa antes da primeira remoção, conforme exige o AT-009."}
+{"achado": "R5", "veredito": "DISAGREE_CONCERN", "justificativa": "Falta o trecho do checar.sh com seus eventuais traps EXIT para comprovar o conflito com duplicadas.sh:22."}
+{"achado": "N1", "veredito": "NOVO", "severidade": "MED", "arquivo": ".agents/skills/sdd-checar-ambiente/scripts/duplicadas.sh", "linha": 282, "resumo": "A remoção escolhida para o Claude pode eliminar a cópia mais nova do Codex, pois a conferência conjunta aceita qualquer versão restante."}

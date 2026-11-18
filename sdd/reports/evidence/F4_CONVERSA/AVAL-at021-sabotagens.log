@@ -1,0 +1,30 @@
+$ /bin/bash /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f4-conversa/5e736f5b-fdb5-4cdd-a304-706fff11b1bb/scratchpad/sonda-sabotagem.sh
+[VERMELHO] skill-lint: ignora falta de 'não sei' :: test_skill_lint rc=1 falhas=test_cada_fixture_reprova_pelo_seu_motivo (test_skill_lint.SkillLint) (fixture='conversa-sem-nao-sei');test_opcao_em_duas_linhas_nao_esconde_as_seguintes (test_skill_lint.SkillLint); · depois do git checkout rc=0
+[VERMELHO] skill-lint: ignora opção Outro :: test_skill_lint rc=1 falhas=test_cada_fixture_reprova_pelo_seu_motivo (test_skill_lint.SkillLint) (fixture='conversa-com-outro'); · depois do git checkout rc=0
+[VERMELHO] skill-lint: ignora 2 recomendados :: test_skill_lint rc=1 falhas=test_cada_fixture_reprova_pelo_seu_motivo (test_skill_lint.SkillLint) (fixture='conversa-dois-recomendados'); · depois do git checkout rc=0
+[VERMELHO] skill-lint: ignora recomendado fora do 1º :: test_skill_lint rc=1 falhas=test_recomendada_fora_do_primeiro_lugar_reprova (test_skill_lint.SkillLint); · depois do git checkout rc=0
+[VERMELHO] skill-lint: limite do Próximo passo 100→1000 :: test_skill_lint rc=1 falhas=test_proximo_passo_com_mais_de_100_caracteres_reprova (test_skill_lint.SkillLint); · depois do git checkout rc=0
+[VERMELHO] skill-lint: ignora seção repetida :: test_skill_lint rc=1 falhas=test_secao_repetida_reprova (test_skill_lint.SkillLint); · depois do git checkout rc=0
+[VERMELHO] skill-lint: ignora tabela Etapa :: test_skill_lint rc=1 falhas=test_secao_sem_tabela_de_etapas_reprova (test_skill_lint.SkillLint); · depois do git checkout rc=0
+[SOBREVIVEU (nenhum teste falhou)] skill-lint: ignora como-falar ausente :: test_skill_lint rc=0  · depois do git checkout rc=0
+[VERMELHO] skill-lint: ignora como-falar sem pergunta :: test_skill_lint rc=1 falhas=test_como_falar_sem_pergunta_de_decisao_reprova (test_skill_lint.SkillLint); · depois do git checkout rc=0
+[VERMELHO] skill-lint: --conversa ligado sempre (sem flag muda) :: test_skill_lint rc=1 falhas=test_description_com_1024_caracteres_passa (test_skill_lint.SkillLint);test_fixtures_passam_sem_conversa (test_skill_lint.SkillLint) (fixture='conversa-com-outro');test_fixtures_passam_sem_conversa (test_skill_lint.SkillLint) (fixture='conversa-dois-recomendados');test_fixtures_passam_sem_conversa (test_skill_lint.SkillLint) (fixture='conversa-sem-como-falar');test_fixtures_passam_sem_conversa (test_skill_lint.SkillLint) (fixture='conversa-sem-nao-sei');test_fixtures_passam_sem_conversa (test_skill_lint.SkillLint) (fixture='conversa-sem-recomendado');test_fixtures_passam_sem_conversa (test_skill_lint.SkillLint) (fixture='conversa-sem-secao');test_sem_flag_skill_sem_secao_passa (test_skill_lint.SkillLint);test_skill_minima_valida (test_skill_lint.SkillLint); · depois do git checkout rc=0
+[VERMELHO] design-lint: ignora ciclo :: test_design_lint rc=1 falhas=test_cada_mutacao_reprova (test_design_lint.DesignLint) (caso='ciclo'); · depois do git checkout rc=0
+[VERMELHO] design-lint: ignora dependência inexistente :: test_design_lint rc=1 falhas=test_cada_mutacao_reprova (test_design_lint.DesignLint) (caso='dependencia_inexistente'); · depois do git checkout rc=0
+[SOBREVIVEU (nenhum teste falhou)] design-lint: ignora autodependência :: test_design_lint rc=0  · depois do git checkout rc=0
+[VERMELHO] design-lint: ignora Total Files :: test_design_lint rc=1 falhas=test_cada_mutacao_reprova (test_design_lint.DesignLint) (caso='total_errado'); · depois do git checkout rc=0
+[SOBREVIVEU (nenhum teste falhou)] design-lint: ignora Key Decisions sem decisão :: test_design_lint rc=0  · depois do git checkout rc=0
+[SOBREVIVEU (nenhum teste falhou)] design-lint: placeholder sem {UPPER_SNAKE} :: test_design_lint rc=0  · depois do git checkout rc=0
+[VERMELHO] design-lint: uso sai 1 em vez de 64 :: test_design_lint rc=1 falhas=test_arquivo_ausente_e_64 (test_design_lint.DesignLint);test_sem_argumento_e_64 (test_design_lint.DesignLint); · depois do git checkout rc=0
+[SOBREVIVEU (nenhum teste falhou)] handoff-lint: Ficha não exige Status :: test_handoff_lint rc=0  · depois do git checkout rc=0
+[SOBREVIVEU (nenhum teste falhou)] handoff-lint: sem 'conforme combinado' :: test_handoff_lint rc=0  · depois do git checkout rc=0
+[VERMELHO] handoff-lint: sem 'como discutimos' :: test_handoff_lint rc=1 falhas=test_cada_mutacao_reprova (test_handoff_lint.HandoffLint) (caso='como_discutimos'); · depois do git checkout rc=0
+[SOBREVIVEU (nenhum teste falhou)] handoff-lint: placeholder {UPPER} fora de código :: test_handoff_lint rc=0  · depois do git checkout rc=0
+[VERMELHO] handoff-lint: aceita prompt sem bloco :: test_handoff_lint rc=1 falhas=test_cada_mutacao_reprova (test_handoff_lint.HandoffLint) (caso='prompt_sem_bloco'); · depois do git checkout rc=0
+[VERMELHO] test_agnostico: tira AskUserQuestion da lista :: test_agnostico rc=1 falhas=test_fixture_com_nome_de_ferramenta_reprova (test_agnostico.Agnostico); · depois do git checkout rc=0
+[SOBREVIVEU (nenhum teste falhou)] test_agnostico: tira subagent_type da lista :: test_agnostico rc=0  · depois do git checkout rc=0
+[SOBREVIVEU (nenhum teste falhou)] test_agnostico: tira Agent tool da lista :: test_agnostico rc=0  · depois do git checkout rc=0
+[SOBREVIVEU (nenhum teste falhou)] test_agnostico: tira PostToolUse da lista :: test_agnostico rc=0  · depois do git checkout rc=0
+[SOBREVIVEU (nenhum teste falhou)] test_agnostico: tira TodoWrite da lista :: test_agnostico rc=0  · depois do git checkout rc=0
+(cópia limpa no fim)
+exit=0

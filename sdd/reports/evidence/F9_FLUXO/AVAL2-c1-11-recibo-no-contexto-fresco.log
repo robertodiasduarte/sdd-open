@@ -1,0 +1,5 @@
+$ grep -n "PASS_PENDENTE_RECIBO" .agents/skills/sdd-build/references/contexto-fresco.md .agents/skills/sdd-build/SKILL.md; grep -n "sem recibo, tratar como NEEDS_WORK" .agents/skills/sdd-build/references/contexto-fresco.md; r=$?; grep -qn "AGUARDANDO_RECIBO\|exit 30" .agents/skills/sdd-build/references/contexto-fresco.md; f=$?; echo "texto antigo: $r (1=ausente) · exit 30 citado: $f (0=sim)"; test $r -eq 1 -a $f -eq 0
+.agents/skills/sdd-build/references/contexto-fresco.md:61:PASS_PENDENTE_RECIBO, tabela por AT (sonda · esperado · observado · resultado) e ACHADOS
+.agents/skills/sdd-build/references/contexto-fresco.md:73:| `PASS_PENDENTE_RECIBO` | só em gate manual-ux: mostrar o roteiro ao humano e colher `recibo: nome YYYY-MM-DD`; sem recibo, é parada que não é decisão (`sdd-fluxo.sh loop` sai 30 AGUARDANDO_RECIBO): o build espera o recibo e não avança |
+texto antigo: 1 (1=ausente) · exit 30 citado: 0 (0=sim)
+[exit=0]

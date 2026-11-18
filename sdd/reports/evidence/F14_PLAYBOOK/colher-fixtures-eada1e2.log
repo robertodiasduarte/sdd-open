@@ -1,0 +1,15 @@
+$ SDD_TRACE=off /bin/bash sdd/bin/playbook-curator.sh --colher sdd/fixtures/playbook/curadoria sdd/fixtures/playbook/curadoria/playbook-base.md
+DELTA LM-020 ajudou+1 · conf=2026-11-05 · evidencia=DESIGN_FIXTURE.md:16 · fp=165580f96c
+CANDIDATO #1 → LM-023 · secao=Reviews / harness · sup=`termo_candidato_a` `outro_termo` · evidencia=AVAL-AT-002.log:3 · fp=4d4e51c8fa
+   delta: ADD Reviews / harness :: sup: `termo_candidato_a` `outro_termo` :: Regra sintética com evidência. **Do instead:** ação sintética. → ficha: — · promovido_para: —
+REJEITADO candidato em BUILD_REPORT_FIXTURE.md:24 — sem linha 'evidencia:' (lição sem verificação piora o contexto) · fp=80c388e346
+CANDIDATO #2 → LM-024 · secao=Backend · sup=`termo_candidato_c` `chave_propria` · evidencia=AVAL-AT-002.log:3 (continuação da evidência) · fp=1e9b90650e
+   delta: ADD Backend :: sup: `termo_candidato_c` `chave_propria` :: Regra em duas linhas, com continuação indentada. **Do instead:** ação em chave própria, também em duas linhas. → ficha: — · promovido_para: —
+REJEITADO candidato em BUILD_REPORT_FIXTURE.md:47 — regra: sem 'Do instead:' · fp=74a7a4fdaa
+DELTA LM-016 mordeu+1 · conf=2026-11-05 · evidencia=AVAL-AT-002.log:3 · fp=91894795a1
+SUGESTAO mordeu? LM-020 — termo `fila_de_envio` em AVAL-AT-002.log:4 (achado sem LM explícito; confirmar a causa antes de virar delta) · fp=5610b93be0
+PROMOVER? LM-004 mordeu=2 promovido_para=— :: promover a mecanismo? sugestão: hook em sdd/hooks/, comando de release.landmines_cmd ou asserção no Verify Gate, com um caso que falha antes (seção Infra / deploy)
+resumo: deltas=2 (ajudou=1 mordeu=1) candidatos=2 rejeitados=2 promocoes=1 sugestoes=1
+RESULTADO: HÁ O QUE JULGAR
+→ despache o curador com esta colheita; nada foi aplicado.
+[exit=0]

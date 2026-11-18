@@ -1,0 +1,7 @@
+$ (sdd/bin/slot.sh de 2c9b6ad) cd tests && SDD_TEST_BASH=/bin/bash /usr/bin/python3 -B -m unittest test_slot.Cerquilha.test_redirecao_no_fim_roda test_slot.Cerquilha.test_ajuda_mostra_so_o_cabecalho
+FAIL: test_redirecao_no_fim_roda (test_slot.Cerquilha) (redir='2>&1')
+FAIL: test_redirecao_no_fim_roda (test_slot.Cerquilha) (redir='> saida.txt')
+FAIL: test_redirecao_no_fim_roda (test_slot.Cerquilha) (redir='< /dev/null')
+FAIL: test_ajuda_mostra_so_o_cabecalho (test_slot.Cerquilha)
+Ran 2 tests in 0.216s
+FAILED (failures=4)

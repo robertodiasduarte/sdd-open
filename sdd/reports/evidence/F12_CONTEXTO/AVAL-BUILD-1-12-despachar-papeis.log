@@ -1,0 +1,75 @@
+$ cd /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.iKg4zpjEH3 && for p in cartografo revisor-governanca avaliador revisor; do echo "### papel=$p"; bash sdd/bin/sdd-fluxo.sh despachar $p FX .agents/skills/sdd-define/references/cartografo.md; echo "[rc=$?]"; ls sdd/reports/briefs/BRIEF_${p}_FX.md; done; cmp .agents/skills/sdd-define/references/cartografo.md sdd/reports/briefs/BRIEF_cartografo_FX.md && echo copia-identica
+### papel=cartografo
+⏸️ sdd-open: esta etapa precisa de uma sessão nova do agente (papel: cartografo).
+
+**Por que parei:** a conferência precisa de alguém que não viu esta conversa, e este agente não abre essa sessão sozinho.
+**Onde:** numa janela nova do seu agente, na pasta /private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.iKg4zpjEH3.
+**Passos:**
+1. Abra uma sessão nova do agente nesta pasta → você vê o agente pronto, sem histórico.
+2. Cole o conteúdo de sdd/reports/briefs/BRIEF_cartografo_FX.md → o agente começa a ler o código do domínio.
+3. Quando ele terminar, copie o bloco que começa com `<<<CONTEXTO` até `>>>` e cole aqui → é o que eu preciso para continuar.
+**O que não foi feito:** nada foi gravado em sdd/contexto/.
+**Brief:** sdd/reports/briefs/BRIEF_cartografo_FX.md
+**Sessão nova:** abra o agente nesta pasta e cole o conteúdo do brief.
+
+Quando terminar, me peça de novo, eu continuo daqui.
+RESULTADO: AGUARDANDO_HUMANO
+→ quando a pessoa colar o retorno, continue do passo que parou.
+[rc=40]
+sdd/reports/briefs/BRIEF_cartografo_FX.md
+### papel=revisor-governanca
+⏸️ sdd-open: esta etapa precisa de uma sessão nova do agente (papel: revisor-governanca).
+
+**Por que parei:** a conferência precisa de alguém que não viu esta conversa, e este agente não abre essa sessão sozinho.
+**Onde:** numa janela nova do seu agente, na pasta /private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.iKg4zpjEH3.
+**Passos:**
+1. Abra uma sessão nova do agente nesta pasta → você vê o agente pronto, sem histórico.
+2. Cole o conteúdo de sdd/reports/briefs/BRIEF_revisor-governanca_FX.md → o agente começa a ler o DEFINE.
+3. Quando ele terminar, copie o bloco que começa com `<<<GOVERNANCA` até `>>>` e cole aqui → é o que eu preciso para continuar.
+**O que não foi feito:** o relatório de governança não foi gravado; o DEFINE está marcado como pendente (o build não passa até a revisão voltar).
+**Brief:** sdd/reports/briefs/BRIEF_revisor-governanca_FX.md
+**Sessão nova:** abra o agente nesta pasta e cole o conteúdo do brief.
+
+Quando terminar, me peça de novo, eu continuo daqui.
+RESULTADO: AGUARDANDO_HUMANO
+→ quando a pessoa colar o retorno, continue do passo que parou.
+[rc=40]
+sdd/reports/briefs/BRIEF_revisor-governanca_FX.md
+### papel=avaliador
+⏸️ sdd-open: esta etapa precisa de uma sessão nova do agente (papel: avaliador).
+
+**Por que parei:** a conferência precisa de alguém que não viu esta conversa, e este agente não abre essa sessão sozinho.
+**Onde:** numa janela nova do seu agente, na pasta /private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.iKg4zpjEH3.
+**Passos:**
+1. Abra uma sessão nova do agente nesta pasta → você vê o agente pronto, sem histórico.
+2. Cole o conteúdo de sdd/reports/briefs/BRIEF_avaliador_FX.md → o agente começa a ler o DEFINE.
+3. Quando ele terminar, copie o bloco inteiro da resposta, de `<<<AVALIACAO` até `>>>` (com a linha `VEREDITO: …`) e cole aqui → é o que eu preciso para continuar.
+**O que não foi feito:** nada foi publicado e o relatório não foi gravado.
+**Brief:** sdd/reports/briefs/BRIEF_avaliador_FX.md
+**Sessão nova:** abra o agente nesta pasta e cole o conteúdo do brief.
+
+Quando terminar, me peça de novo, eu continuo daqui.
+RESULTADO: AGUARDANDO_HUMANO
+→ quando a pessoa colar o retorno, continue do passo que parou.
+[rc=40]
+sdd/reports/briefs/BRIEF_avaliador_FX.md
+### papel=revisor
+⏸️ sdd-open: esta etapa precisa de uma sessão nova do agente (papel: revisor).
+
+**Por que parei:** a conferência precisa de alguém que não viu esta conversa, e este agente não abre essa sessão sozinho.
+**Onde:** numa janela nova do seu agente, na pasta /private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.iKg4zpjEH3.
+**Passos:**
+1. Abra uma sessão nova do agente nesta pasta → você vê o agente pronto, sem histórico.
+2. Cole o conteúdo de sdd/reports/briefs/BRIEF_revisor_FX.md → o agente começa a ler o DEFINE.
+3. Quando ele terminar, copie o bloco final da resposta (o que começa com <<<) e cole aqui → é o que eu preciso para continuar.
+**O que não foi feito:** nada foi publicado e o relatório não foi gravado.
+**Brief:** sdd/reports/briefs/BRIEF_revisor_FX.md
+**Sessão nova:** abra o agente nesta pasta e cole o conteúdo do brief.
+
+Quando terminar, me peça de novo, eu continuo daqui.
+RESULTADO: AGUARDANDO_HUMANO
+→ quando a pessoa colar o retorno, continue do passo que parou.
+[rc=40]
+sdd/reports/briefs/BRIEF_revisor_FX.md
+copia-identica
+[exit=0]

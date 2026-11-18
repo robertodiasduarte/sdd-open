@@ -26,6 +26,7 @@ from __future__ import annotations
 import argparse
 import hashlib
 import io
+import json
 import os
 import re
 import shutil
@@ -235,6 +236,70 @@ def identificacao(texto: str, skill: str) -> str:
     if trocadas != 1:
         raise Falha(65, "%s: a linha de identificação apareceu %d vez(es); esperado 1" % (skill, trocadas))
     return "\n".join(linhas)
+
+
+MARCA = "SDD Starter"
+DESC_MAX = 1024   # o upload do claude.ai e do ChatGPT recusa acima disso (o check-versions do starter também)
+
+
+def descricao_do(fm: list[str]) -> tuple[int, int, str]:
+    """(1ª linha, linha depois do bloco, texto) da description, contada como o check-versions do starter a conta."""
+    i = next((k for k, ln in enumerate(fm) if ln.startswith("description:")), -1)
+    if i < 0:
+        return -1, -1, ""
+    j = i + 1
+    while j < len(fm) and fm[j].startswith((" ", "\t")):
+        j += 1
+    v = fm[i][len("description:"):].strip()
+    if v[:1] in ("|", ">"):
+        return i, j, " ".join(ln.strip() for ln in fm[i + 1:j])
+    if v.startswith('"'):
+        try:
+            return i, j, json.loads(v)
+        except ValueError:
+            return i, j, v[1:-1]
+    return i, j, v.strip("'")
+
+
+def marcar(texto: str, skill: str) -> str:
+    """F26: a cópia do starter diz que é do SDD Starter, na descrição (o que a lista de skills mostra) e na linha de
+    identificação (a 1ª resposta). "SDD Open" nos 60 primeiros caracteres vira "SDD Starter"; sem ele ali, a descrição
+    começa com "SDD Starter — " e as outras ocorrências também viram. Acima de 1.024 caracteres, nada é gravado."""
+    if not texto.startswith("---\n"):
+        raise Falha(65, "%s/SKILL.md não começa pelo frontmatter" % skill)
+    fim = texto.index("\n---\n", 4)
+    fm, corpo = texto[4:fim].split("\n"), texto[fim:]
+    i, j, desc = descricao_do(fm)
+    if i < 0 or not desc:
+        raise Falha(65, "%s: a SKILL.md gerada não tem description" % skill)
+    pos = desc.find("SDD Open")
+    no_comeco = 0 <= pos and pos + len(MARCA) <= 60
+    bloco = [ln.replace("SDD Open", MARCA) for ln in fm[i:j]]
+    if not no_comeco:
+        v = bloco[0][len("description:"):].strip()
+        if v[:1] in ("|", ">"):
+            if len(bloco) < 2:
+                raise Falha(65, "%s: a description em bloco não tem linha" % skill)
+            recuo = bloco[1][:len(bloco[1]) - len(bloco[1].lstrip())]
+            bloco[1] = recuo + MARCA + " — " + bloco[1].lstrip()
+        elif v[:1] in ('"', "'"):   # entre aspas: a marca entra depois da aspa de abertura (revisão do código, R5)
+            bloco[0] = bloco[0].replace(v[0], v[0] + MARCA + " — ", 1)
+        else:
+            bloco[0] = "description: " + MARCA + " — " + v
+    fm = fm[:i] + bloco + fm[j:]
+    _, _, nova = descricao_do(fm)
+    if "SDD Open" in nova or MARCA not in nova[:60]:
+        raise Falha(65, "%s: a marca não ficou nos 60 primeiros caracteres da description (ou sobrou \"SDD Open\")" % skill)
+    if len(nova) > DESC_MAX:
+        raise Falha(65, "%s: a description com a marca tem %d caracteres; o limite é 1.024" % (skill, len(nova)))
+    linhas, trocadas = corpo.split("\n"), 0
+    for k, ln in enumerate(linhas):
+        if ln.startswith("`%s v" % skill) and URL_STARTER in ln:
+            linhas[k], n = re.subn(r"^(`%s v\d+\.\d+\.\d+)( · )" % re.escape(skill), r"\1 · %s\2" % MARCA, ln)
+            trocadas += n
+    if trocadas != 1:
+        raise Falha(65, "%s: a marca entrou %d vez(es) na linha de identificação; esperado 1" % (skill, trocadas))
+    return "---\n" + "\n".join(fm) + "\n".join(linhas)
 
 
 def sem_fluxo_encadeado(texto: str, skill: str) -> str:
@@ -480,7 +545,7 @@ def montar(arvore: Path, saida: Path, tag: str, commit: str) -> list[str]:
                 gravar_se_mudou(p, reescrever(ler(p), skill, lista, moldes, p.suffix == ".md",
                                               p.name == "CHANGELOG.md"))
         s = destino / "SKILL.md"
-        gravar_se_mudou(s, com_cabecalho(identificacao(ler(s), skill), skill, cabecalho, migrar))
+        gravar_se_mudou(s, com_cabecalho(marcar(identificacao(ler(s), skill), skill), skill, cabecalho, migrar))
         (destino / "agents").mkdir(exist_ok=True)
         (destino / "agents" / "openai.yaml").write_text(openai_yaml(tabela[skill]), encoding="utf-8")
         (destino / "GERADO.txt").write_bytes(lista_gerado(destino, nota))

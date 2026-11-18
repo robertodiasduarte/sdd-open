@@ -1,0 +1,9 @@
+$ /bin/bash sdd/reports/evidence/F14_PLAYBOOK/baseline.sh
+test_playbook_curator: rc=1 · Ran 75 tests in 1.111s FAILED (failures=123, errors=11) 
+test_playbook_invariantes: rc=1 · Ran 33 tests in 0.186s FAILED (failures=47, errors=1) 
+test_curadoria_bloco: rc=1 · Ran 1 test in 0.000s FAILED (errors=1) 
+test_copiar_docs: rc=1 · Ran 18 tests in 1.096s FAILED (failures=27) 
+test_f14_textos: rc=1 · Ran 1 test in 0.000s FAILED (errors=1) 
+test_apoio_ambiente: rc=1 · Ran 17 tests in 2.860s FAILED (failures=5, errors=4) Ran 2 tests in 5.109s FAILED (failures=2) 
+vermelhos: 6 de 6
+[exit=0]

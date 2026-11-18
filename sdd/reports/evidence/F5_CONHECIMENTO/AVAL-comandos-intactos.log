@@ -1,0 +1,7 @@
+$ /usr/bin/python3 -B $E/comandos-intactos.py   (cwd = worktree em 7e5b25c)
+OK    sdd-define: 12 → 14 linhas extraídas (passos, itens numerados e comandos), 2 diferença(s)
+        + passo ### 10. Conferir o KB Domains
+        + cmd python3 sdd/bin/kb-dominios.py sdd/features/DEFINE_{FEATURE}.md
+OK    sdd-ux-review: 8 → 8 linhas extraídas (passos, itens numerados e comandos), idêntico
+skills: 2 · com diferença não declarada: 0
+EXIT=0

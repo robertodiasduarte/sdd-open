@@ -1,0 +1,8 @@
+$ bash /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f10-revisao/bd420f6e-558d-4962-a0c9-40cdfc2cbd27/scratchpad/p/sab.sh desempate
+sabotado sdd/bin/sdd-fluxo.sh: 'DECISAO:REFUTADO' -> 'DECISAO:PROCEDE'
+FAIL: test_refutado_fecha_no_loop (test_revisao.Desempate)
+FAIL: test_desempate_refutado_fecha_e_procede_mantem_aberto (test_fluxo.LoopF10)
+Ran 122 tests in 64.477s
+FAILED (failures=2)
+[unittest rc=1]
+[exit=0]

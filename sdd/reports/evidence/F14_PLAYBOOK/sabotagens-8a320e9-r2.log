@@ -1,0 +1,82 @@
+$ bash sdd/reports/evidence/F14_PLAYBOOK/sabotagens.sh
+curator: AUTO por existência, sem a igualdade da evidência: rc=1 · FAILED (failures=3) 
+FAIL: test_arquivo_com_espaco_no_nome_passa_e_conta_igual (test_curadoria_bloco.Reprova) (evidencia='AVAL-a b.log:2')
+FAIL: test_arquivo_com_espaco_no_nome_passa_e_conta_igual (test_curadoria_bloco.Reprova) (evidencia='AVAL-a b.log:11')
+FAIL: test_auto_com_outra_linha_que_existe_nao_vale (test_curadoria_bloco.Reprova)
+curator: todo bullet conta como promovido: rc=1 · FAILED (failures=6, skipped=1) 
+FAIL: test_arquivo_de_outro_nome_nao_e_fonte (test_playbook_curator.Achados)
+FAIL: test_os_4_tipos (test_playbook_curator.Fixtures) (inicio='PROMOVER? ')
+FAIL: test_bullet_sem_o_campo_conta_como_nao_promovido (test_playbook_curator.Promocao)
+curator: --aplicar imprime mesmo com delta inválido: rc=1 · FAILED (failures=11, skipped=1) 
+FAIL: test_aposentar_e_alterar_o_mesmo_id_e_invalido (test_playbook_curator.Aplicar)
+FAIL: test_invalido_sai_2_com_stdout_vazio_e_todos_os_erros_com_a_linha (test_playbook_curator.Aplicar) (trecho='delta l
+FAIL: test_invalido_sai_2_com_stdout_vazio_e_todos_os_erros_com_a_linha (test_playbook_curator.Aplicar) (trecho='delta l
+curator: trava ignora origem aposentada: rc=1 · FAILED (failures=2) 
+FAIL: test_ajuste_proposto_destrava_e_sem_ele_trava (test_playbook_invariantes.Cruzar)
+FAIL: test_cada_defeito_sai_2_nomeando_o_id (test_playbook_invariantes.Trava) (caso='origem aposentada')
+curator: selo não confere o staging: rc=1 · FAILED (failures=9) 
+FAIL: test_arquivo_novo_e_arquivo_sumido_no_staging (test_curadoria_bloco.Fronteira)
+FAIL: test_colheita_mexida_depois_do_selo (test_curadoria_bloco.Fronteira)
+FAIL: test_derivado_plantado_depois_do_selo_reprova (test_curadoria_bloco.Fronteira) (arquivo='delta.txt')
+curator: contador repetido passa: rc=1 · FAILED (failures=1) 
+FAIL: test_contador_repetido_ou_com_outro_id_nao_soma (test_curadoria_bloco.Reprova)
+curator: 2ª linha da mesma lição não entra no registro: rc=1 · FAILED (failures=1, skipped=1) 
+FAIL: test_2_linhas_da_mesma_licao_nao_contam_em_2_releases (test_playbook_curator.JaJulgado)
+curator: seção que falta não nasce: rc=1 · FAILED (errors=1, skipped=1) 
+ERROR: test_secao_da_lista_que_falta_nasce_no_lugar_certo (test_playbook_curator.Aplicar)
+lint: anti-collapse sem o piso: rc=1 · FAILED (failures=1, skipped=1) 
+FAIL: test_um_alterado_passa_em_playbook_pequeno (test_playbook_curator.PisoDoAntiCollapse)
+curator: veredito só de célula curta (o conserto que regrediu): rc=1 · FAILED (failures=1, skipped=1) 
+FAIL: test_veredito_longo_de_mordeu_continua_mordeu (test_playbook_curator.LinhasQueNaoSaoAchado)
+curator: ID de qualquer célula da linha (a regressão do ciclo 3): rc=1 · FAILED (failures=4, skipped=1) 
+FAIL: test_id_na_nota_de_tabela_de_3_colunas_nao_conta (test_playbook_curator.LinhasQueNaoSaoAchado)
+FAIL: test_nota_que_cita_outra_licao_nao_recebe_contagem (test_playbook_curator.LinhasQueNaoSaoAchado) (texto='| Regra x
+FAIL: test_nota_que_cita_outra_licao_nao_recebe_contagem (test_playbook_curator.LinhasQueNaoSaoAchado) (texto='| Regra x
+curator: tabela sem cabeçalho conta do mesmo jeito: rc=1 · FAILED (failures=2, skipped=1) 
+FAIL: test_tabela_sem_as_colunas_nao_conta_e_e_relatada (test_playbook_curator.LinhasQueNaoSaoAchado) (corpo='| `LM-001`
+FAIL: test_tabela_sem_as_colunas_nao_conta_e_e_relatada (test_playbook_curator.LinhasQueNaoSaoAchado) (corpo='| A | B |\
+curator: check que sai da raiz passa: rc=1 · FAILED (failures=5) 
+FAIL: test_campo_vazio_e_check_que_nao_e_arquivo (test_playbook_invariantes.Trava) (caso='check absoluto')
+FAIL: test_check_e_promovido_que_nao_sao_arquivo_do_projeto (test_playbook_invariantes.Trava) (promovido='/etc/hosts')
+FAIL: test_check_e_promovido_que_nao_sao_arquivo_do_projeto (test_playbook_invariantes.Trava) (check='/etc/hosts')
+curator: check por link que sai da raiz passa: rc=1 · FAILED (failures=1) 
+FAIL: test_check_por_link_que_sai_da_raiz_reprova_e_link_interno_passa (test_playbook_invariantes.Trava)
+copiar-docs: prefixo no lugar de nome idêntico: rc=1 · FAILED (failures=2) 
+FAIL: test_parecido_dos_2_lados_nao_copia_e_diz_o_motivo (test_copiar_docs.NaoCopia) (feature='RELATORIO_MENSAL_V2')
+FAIL: test_parecido_dos_2_lados_nao_copia_e_diz_o_motivo (test_copiar_docs.NaoCopia) (feature='RELATORIO')
+fronteira: índice fora da comparação: rc=1 · FAILED (failures=4) 
+FAIL: test_git_add_conta (test_governanca_fronteira.EstadoDoGit)
+FAIL: test_marca_que_esconde_arquivo_editado (test_governanca_fronteira.EstadoDoGit) (flag='--assume-unchanged')
+FAIL: test_marca_que_esconde_arquivo_editado (test_governanca_fronteira.EstadoDoGit) (flag='--skip-worktree')
+bloco: FORA: não invalida: rc=1 · FAILED (failures=1) 
+FAIL: test_fronteira_vermelha_ou_nao_verificada_invalida_qualquer_bloco (test_governanca_bloco.Bloco) (caso='FORA')
+apoio: sandbox herda SDD_TRACE: rc=1 · FAILED (failures=5, errors=4) FAILED (failures=2) 
+FAIL: test_a_suite_de_trace_passa_com_as_2_variaveis_no_ambiente (test_apoio_ambiente.Ambiente) (padrao='test_verify_gat
+FAIL: test_uma_linha_por_execucao_com_os_campos (test_verify_gate_trace.Trace)
+FAIL: test_vermelho_conta_no_trace (test_verify_gate_trace.Trace)
+fronteira: branch.* volta a contar (R1 da rodada 3): rc=1 · FAILED (failures=1) 
+FAIL: test_outra_frente_abrindo_branch_nao_e_o_agente (test_governanca_fronteira.EstadoDoGit)
+fronteira: o config inteiro fora da medida (o outro lado de R1): rc=1 · FAILED (failures=4) 
+FAIL: test_hook_exclude_e_config_contam (test_governanca_fronteira.EstadoDoGit) (caso='config')
+FAIL: test_o_resto_do_config_continua_contando (test_governanca_fronteira.EstadoDoGit) (chave='core.hooksPath')
+FAIL: test_o_resto_do_config_continua_contando (test_governanca_fronteira.EstadoDoGit) (chave='core.fsmonitor')
+design-lint: JSON preenchido volta a ser chave (R2): rc=1 · FAILED (failures=1) 
+FAIL: test_json_preenchido_nao_e_chave_sem_preencher (test_design_lint.Prompts)
+design-lint: molde nunca conta nos campos extras (o outro lado de R2): rc=1 · FAILED (failures=6) 
+FAIL: test_chave_sem_preencher_nos_3_campos_do_contrato (test_design_lint.Prompts) (campo='Tom/audiência', valor='{tom}'
+FAIL: test_chave_sem_preencher_nos_3_campos_do_contrato (test_design_lint.Prompts) (campo='Tom/audiência', valor='`{tom}
+FAIL: test_chave_sem_preencher_nos_3_campos_do_contrato (test_design_lint.Prompts) (campo='Tipo de saída', valor='{tom}'
+curator: REFINE guarda a 1ª ocorrência (R3): rc=1 · FAILED (failures=1, skipped=1) 
+FAIL: test_refine_com_regra_que_cita_o_campo_nao_guarda_o_texto_velho (test_playbook_curator.Aplicar)
+curator: campo vazio passa (R4): rc=1 · FAILED (failures=2) 
+FAIL: test_campo_vazio_em_qualquer_estado_reprova (test_playbook_invariantes.Trava) (linha='- [INV-003] estado=ok origem
+FAIL: test_campo_vazio_em_qualquer_estado_reprova (test_playbook_invariantes.Trava) (linha='- [INV-003] estado=auto orig
+copiar-docs: só no índice some da lista (R5): rc=1 · FAILED (failures=1) 
+FAIL: test_so_no_indice_e_copiado_nao_e_commit_nao_enviado (test_copiar_docs.NaoCopia)
+copiar-docs: salvos voltam a incluir o índice (R5): rc=0 · OK 
+   ⚠️ VIVA CONHECIDA: pendência da F14_DRIVE; o teste que a derruba está em pendencia-r5-teste-lado2.patch (decisão D4 do Roberto: sem mudança de código depois da rodada 4)
+copiar-docs: seta sem o aviso do link (R6): rc=1 · FAILED (failures=2) 
+FAIL: test_frente_sdd_que_e_link_nao_recebe (test_copiar_docs.NaoCopia)
+FAIL: test_link_ignorado_aparece_na_seta_mesmo_com_copia (test_copiar_docs.NaoCopia)
+sabotagens vivas: 0 · vivas conhecidas: 1
+[exit=0]

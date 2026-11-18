@@ -1,0 +1,51 @@
+$ bash sdd/bin/verify-gate.sh --strict sdd/features/DEFINE_F10_REVISAO.md
+▶ Verify Gate [test]: T=$(mktemp -d) && git archive HEAD | tar -x -C $T && PUBLISH_GATE_MODE=ci bash scripts/publish-gate.sh $T && cd $T && SDD_TEST_BASH=/bin/bash /usr/bin/python3 -B -m unittest discover -s tests -p 'test_*.py'
+   │ publish-gate — tree: /private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.UMUX6Yppy6 — mode: ci
+   │ ──────────────────────────────────────────────────────────────────
+   │ G1 secrets (gitleaks)
+   │   ✅ no secrets detected
+   │ G2 forbidden patterns
+   │   ✅ no forbidden pattern matched
+   │ G3 allowlist (MANIFEST.txt)
+   │   ✅ tree and manifest match in both directions
+   │ G4 verify-gate exit contract
+   │   ✅ DEFINE_FIXTURE_NEEDS_CLARIFICATION.md → exit 5
+   │   ✅ DEFINE_FIXTURE_CONTROLE.md → exit 0
+   │   ✅ DEFINE_FIXTURE_SEM_BLOCO.md → exit 64
+   │ G5 documentation
+   │   ✅ docs present, cross-linked, attribution in place
+   │ ──────────────────────────────────────────────────────────────────
+   │ ✅ publish-gate GREEN — tree is publishable (human review of the file list still required)
+   │ ........................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................./Library/Developer/CommandLineTools/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/unittest/case.py:598: ResourceWarning: unclosed <socket.socket fd=15, family=AddressFamily.AF_INET, type=SocketKind.SOCK_STREAM, proto=0, laddr=('127.0.0.1', 59416)>
+   │   self.doCleanups()
+   │ ResourceWarning: Enable tracemalloc to get the object allocation traceback
+   │ ./Library/Developer/CommandLineTools/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/unittest/case.py:598: ResourceWarning: unclosed <socket.socket fd=15, family=AddressFamily.AF_INET, type=SocketKind.SOCK_STREAM, proto=0, laddr=('127.0.0.1', 59418)>
+   │   self.doCleanups()
+   │ ResourceWarning: Enable tracemalloc to get the object allocation traceback
+   │ .........................................................................................................................................................................................................
+   │ ----------------------------------------------------------------------
+   │ Ran 819 tests in 636.155s
+   │ 
+   │ OK
+   │ sys:1: ResourceWarning: unclosed <socket.socket fd=4, family=AddressFamily.AF_INET, type=SocketKind.SOCK_STREAM, proto=0, laddr=('127.0.0.1', 59136)>
+   │ sys:1: ResourceWarning: unclosed <socket.socket fd=5, family=AddressFamily.AF_INET, type=SocketKind.SOCK_STREAM, proto=0, laddr=('127.0.0.1', 59137)>
+   │ sys:1: ResourceWarning: unclosed <socket.socket fd=7, family=AddressFamily.AF_INET, type=SocketKind.SOCK_STREAM, proto=0, laddr=('127.0.0.1', 59138)>
+   │ sys:1: ResourceWarning: unclosed <socket.socket fd=8, family=AddressFamily.AF_INET, type=SocketKind.SOCK_STREAM, proto=0, laddr=('127.0.0.1', 59181)>
+   │ sys:1: ResourceWarning: unclosed <socket.socket fd=9, family=AddressFamily.AF_INET, type=SocketKind.SOCK_STREAM, proto=0, laddr=('127.0.0.1', 59182)>
+   │ sys:1: ResourceWarning: unclosed <socket.socket fd=10, family=AddressFamily.AF_INET, type=SocketKind.SOCK_STREAM, proto=0, laddr=('127.0.0.1', 59183)>
+   │ sys:1: ResourceWarning: unclosed <socket.socket fd=12, family=AddressFamily.AF_INET, type=SocketKind.SOCK_STREAM, proto=0, laddr=('127.0.0.1', 59202)>
+   │ sys:1: ResourceWarning: unclosed <socket.socket fd=13, family=AddressFamily.AF_INET, type=SocketKind.SOCK_STREAM, proto=0, laddr=('127.0.0.1', 59203)>
+   │ sys:1: ResourceWarning: unclosed <socket.socket fd=14, family=AddressFamily.AF_INET, type=SocketKind.SOCK_STREAM, proto=0, laddr=('127.0.0.1', 59204)>
+   │ sys:1: ResourceWarning: unclosed <socket.socket fd=11, family=AddressFamily.AF_INET, type=SocketKind.SOCK_STREAM, proto=0, laddr=('127.0.0.1', 59291)>
+   │ sys:1: ResourceWarning: unclosed <socket.socket fd=19, family=AddressFamily.AF_INET, type=SocketKind.SOCK_STREAM, proto=0, laddr=('127.0.0.1', 59292)>
+   │ sys:1: ResourceWarning: unclosed <socket.socket fd=20, family=AddressFamily.AF_INET, type=SocketKind.SOCK_STREAM, proto=0, laddr=('127.0.0.1', 59293)>
+   │ sys:1: ResourceWarning: unclosed <socket.socket fd=21, family=AddressFamily.AF_INET, type=SocketKind.SOCK_STREAM, proto=0, laddr=('127.0.0.1', 59296)>
+   │ sys:1: ResourceWarning: unclosed <socket.socket fd=22, family=AddressFamily.AF_INET, type=SocketKind.SOCK_STREAM, proto=0, laddr=('127.0.0.1', 59297)>
+   │ sys:1: ResourceWarning: unclosed <socket.socket fd=23, family=AddressFamily.AF_INET, type=SocketKind.SOCK_STREAM, proto=0, laddr=('127.0.0.1', 59298)>
+   │ sys:1: ResourceWarning: unclosed <socket.socket fd=24, family=AddressFamily.AF_INET, type=SocketKind.SOCK_STREAM, proto=0, laddr=('127.0.0.1', 59299)>
+   │ sys:1: ResourceWarning: unclosed <socket.socket fd=25, family=AddressFamily.AF_INET, type=SocketKind.SOCK_STREAM, proto=0, laddr=('127.0.0.1', 59300)>
+   │ sys:1: ResourceWarning: unclosed <socket.socket fd=26, family=AddressFamily.AF_INET, type=SocketKind.SOCK_STREAM, proto=0, laddr=('127.0.0.1', 59301)>
+✅ GATE VERDE (test) — pass_when: 'exit 0' satisfeito (rc=0).
+RESULTADO: VERDE
+→ siga para o próximo passo.
+[exit=0]

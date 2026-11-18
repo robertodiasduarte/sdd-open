@@ -1,0 +1,22 @@
+$ cd tests && python3 -B -m unittest -v test_testes_por_modulo 2>&1 | tail -40; echo '--- piso 3.9.6'; /usr/bin/python3 -B -m unittest test_testes_por_modulo 2>&1 | tail -5
+test_classes_viram_unidades_e_a_herdada_conta_uma_vez (test_testes_por_modulo.Executor.test_classes_viram_unidades_e_a_herdada_conta_uma_vez) ... ok
+test_falha_e_erro_saem_1_com_os_nomes (test_testes_por_modulo.Executor.test_falha_e_erro_saem_1_com_os_nomes) ... ok
+test_fatias_disjuntas_completas_e_estaveis (test_testes_por_modulo.Executor.test_fatias_disjuntas_completas_e_estaveis) ... ok
+test_saida_fora_do_cp1252_nao_derruba_o_executor (test_testes_por_modulo.Executor.test_saida_fora_do_cp1252_nao_derruba_o_executor) ... ok
+test_so_roda_os_escolhidos (test_testes_por_modulo.Executor.test_so_roda_os_escolhidos) ... ok
+test_teto_mata_a_arvore_e_segue (test_testes_por_modulo.Executor.test_teto_mata_a_arvore_e_segue) ... ok
+test_uso_errado_sai_64_sem_rodar (test_testes_por_modulo.Executor.test_uso_errado_sai_64_sem_rodar) ... ok
+test_verde_sai_0_com_a_linha_de_cada_modulo (test_testes_por_modulo.Executor.test_verde_sai_0_com_a_linha_de_cada_modulo) ... ok
+test_as_12_fatias_cobrem_a_suite (test_testes_por_modulo.SuiteReal.test_as_12_fatias_cobrem_a_suite) ... ok
+
+----------------------------------------------------------------------
+Ran 9 tests in 11.772s
+
+OK
+--- piso 3.9.6
+.........
+----------------------------------------------------------------------
+Ran 9 tests in 21.434s
+
+OK
+[exit=0]

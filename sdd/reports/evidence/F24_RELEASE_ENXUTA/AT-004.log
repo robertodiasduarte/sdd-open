@@ -1,0 +1,9 @@
+$ (cd tests && python3 -B -m unittest -v test_f24_release_enxuta.AT004_FalhaPorEntradaEPorLinha)   # HEAD 017f09a
+test_bloco_reprovado_e_envio (test_f24_release_enxuta.AT004_FalhaPorEntradaEPorLinha.test_bloco_reprovado_e_envio) ... ok
+test_log_que_o_projeto_nao_versiona_e_relatado_e_nao_segura_a_entrada (test_f24_release_enxuta.AT004_FalhaPorEntradaEPorLinha.test_log_que_o_projeto_nao_versiona_e_relatado_e_nao_segura_a_entrada) ... ok
+
+----------------------------------------------------------------------
+Ran 2 tests in 0.462s
+
+OK
+[exit=0]

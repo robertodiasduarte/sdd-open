@@ -1,0 +1,11 @@
+$ cd tests && SDD_TEST_BASH=/bin/bash /usr/bin/python3 -B -m unittest -v test_slot.Inconclusivo
+# commit: 9013b10
+test_comando_morto_por_sinal_e_inconclusivo (test_slot.Inconclusivo) ... ok
+test_saida_fora_do_contrato_e_inconclusivo (test_slot.Inconclusivo) ... ok
+test_term_no_proprio_slot_e_inconclusivo (test_slot.Inconclusivo) ... ok
+
+----------------------------------------------------------------------
+Ran 3 tests in 0.496s
+
+OK
+[exit=0]

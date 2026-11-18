@@ -1,0 +1,10 @@
+$ cd /tmp/sdd-aval/guards2 && printf 'sujo\n' > sujo.md && git status --short && printf '{"tool_name":"Task","tool_input":{"description":"VEREDITO final","prompt":"x"},"cwd":"%s"}' "$PWD" | CLAUDE_PROJECT_DIR=$PWD python3 -B .claude/hooks/sdd-avaliador-guard.py | cut -c1-160
+?? sujo.md
+{"hookSpecificOutput": {"hookEventName": "PreToolUse", "permissionDecision": "deny", "permissionDecisionReason": "🛑 sdd-open: despacho do avaliador negado — há 
+[exit=0]
+$ cd /tmp/sdd-aval/guards2 && printf '{"tool_name":"Agent","tool_input":{"description":"revisao","prompt":"modo: Veredito"},"cwd":"%s"}' "$PWD" | CLAUDE_PROJECT_DIR=$PWD python3 -B .claude/hooks/sdd-avaliador-guard.py | python3 -c "import json,sys;print(json.load(sys.stdin)['hookSpecificOutput']['permissionDecision'])"
+deny
+[exit=0]
+$ cd /tmp/sdd-aval/guards2 && rm sujo.md && git status --short; echo limpo
+limpo
+[exit=0]

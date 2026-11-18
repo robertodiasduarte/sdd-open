@@ -1,0 +1,36 @@
+▶ Verify Gate [test]: T=$(mktemp -d) && git archive HEAD | tar -x -C $T && PUBLISH_GATE_MODE=ci bash scripts/publish-gate.sh $T && cd $T && SDD_TEST_BASH=/bin/bash /usr/bin/python3 -B -m unittest discover -s tests -p 'test_*.py'
+   │ publish-gate — tree: /private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.z0nF3l6Cug — mode: ci
+   │ ──────────────────────────────────────────────────────────────────
+   │ G1 secrets (gitleaks)
+   │   ✅ no secrets detected
+   │ G2 forbidden patterns
+   │   ✅ no forbidden pattern matched
+   │ G3 allowlist (MANIFEST.txt)
+   │   ✅ tree and manifest match in both directions
+   │ G4 verify-gate exit contract
+   │   ✅ DEFINE_FIXTURE_NEEDS_CLARIFICATION.md → exit 5
+   │   ✅ DEFINE_FIXTURE_CONTROLE.md → exit 0
+   │   ✅ DEFINE_FIXTURE_SEM_BLOCO.md → exit 64
+   │ G5 documentation
+   │   ✅ docs present, cross-linked, attribution in place
+   │ ──────────────────────────────────────────────────────────────────
+   │ ✅ publish-gate GREEN — tree is publishable (human review of the file list still required)
+   │ ........................................................................................................................................................................................................................................................................................................................................................................................................F.................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................s...............................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................
+   │ ======================================================================
+   │ FAIL: test_dispatch_com_404_sai_2_e_nao_64 (test_deploy_do_sha.RespostasEstranhas)
+   │ ----------------------------------------------------------------------
+   │ Traceback (most recent call last):
+   │   File "/private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.z0nF3l6Cug/tests/test_deploy_do_sha.py", line 320, in test_dispatch_com_404_sai_2_e_nao_64
+   │     self.assertSai(self.sha("--transitorios", "Verify SSH"), 2, "o GitHub recusou")
+   │   File "/private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.z0nF3l6Cug/tests/test_deploy_do_sha.py", line 110, in assertSai
+   │     self.assertIn(t, out + err)
+   │ AssertionError: 'o GitHub recusou' not found in '🔴 falhou — run 1 ("Verify SSH"); não repeti: o teto de 0 min já passou, e repetir é decisão sua.\nRESULTADO: FALHOU\n→ abra o run citado; para repetir, um push novo ou gh workflow run na ponta, nunca gh run rerun.\n'
+   │ 
+   │ ----------------------------------------------------------------------
+   │ Ran 2090 tests in 1890.376s
+   │ 
+   │ FAILED (failures=1, skipped=1)
+🛑 GATE VERMELHO (test) — pass_when: 'exit 0' NÃO satisfeito (rc=1).
+RESULTADO: VERMELHO
+→ corrija o que o comando acima apontou e rode de novo.
+[exit=2] [segundos=1895] [commit=d813954]

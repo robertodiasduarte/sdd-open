@@ -1,0 +1,6 @@
+{"achado": "R1", "veredito": "AGREE", "justificativa": "sdd/bin/papel-serie.sh:434 cria sessão própria para o agente e só trata sua terminação no timeout, deixando-o vivo após Ctrl-C/SIGTERM na série."}
+{"achado": "R2", "veredito": "DISAGREE_CONCERN", "justificativa": "sdd/bin/sdd-fluxo.sh:96 não distingue o modo contrato, mas falta a chamada desse modo ao despachar para comprovar que usa o papel avaliador."}
+{"achado": "R3", "veredito": "DISAGREE_CONCERN", "justificativa": "sdd/bin/papel-medir.sh:214 perde multiplicidade nos conjuntos, mas falta o código do --aplicar para confirmar que duplicatas passam pela validação final."}
+{"achado": "R4", "veredito": "AGREE", "justificativa": "docs/model-per-role.md:131 descreve custo de até --limiar% da referência, divergindo da redução mínima exigida pelo DEFINE AT-006 e pelo código."}
+{"achado": "N1", "veredito": "NOVO", "severidade": "HIGH", "arquivo": "sdd/bin/papel-serie.sh", "linha": 372, "resumo": "Sem trava ou reserva atômica do orçamento compartilhado, duas séries simultâneas podem autorizar chamadas sobre o mesmo saldo e ultrapassar o teto."}
+{"achado": "N2", "veredito": "NOVO", "severidade": "MED", "arquivo": "sdd/bin/papel-serie.sh", "linha": 366, "resumo": "A retomada reutiliza meta.txt sem validar o modelo configurado, permitindo recomendar um modelo novo com respostas e custos de outro modelo."}

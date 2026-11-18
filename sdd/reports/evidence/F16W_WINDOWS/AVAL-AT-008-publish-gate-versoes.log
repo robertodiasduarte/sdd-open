@@ -1,0 +1,16 @@
+$ T=$(mktemp -d) && git archive HEAD | tar -x -C $T && PUBLISH_GATE_MODE=ci bash scripts/publish-gate.sh $T 2>&1 | tail -8; echo publish-gate rc=${PIPESTATUS[0]}; /usr/bin/python3 -B scripts/check-versions.py --base v2.15.0 2>&1 | tail -5; echo check-versions rc=${PIPESTATUS[0]}; git rev-parse --short HEAD
+G4 verify-gate exit contract
+  ✅ DEFINE_FIXTURE_NEEDS_CLARIFICATION.md → exit 5
+  ✅ DEFINE_FIXTURE_CONTROLE.md → exit 0
+  ✅ DEFINE_FIXTURE_SEM_BLOCO.md → exit 64
+G5 documentation
+  ✅ docs present, cross-linked, attribution in place
+──────────────────────────────────────────────────────────────────
+✅ publish-gate GREEN — tree is publishable (human review of the file list still required)
+publish-gate rc=0
+PASS: check-versions — 22 skills com versão coerente, comparadas a v2.15.0.
+RESULTADO: VERDE
+→ siga para o próximo passo.
+check-versions rc=0
+9e2ad33
+[exit=0]

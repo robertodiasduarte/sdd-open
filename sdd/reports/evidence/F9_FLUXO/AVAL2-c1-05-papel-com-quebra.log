@@ -1,0 +1,5 @@
+$ T=$(mktemp -d); cd "$T"; printf "brief\n" > b.md; bash /Users/robertoduarte/rdd-worktrees/sdd-open-f9-aval/sdd/bin/sdd-fluxo.sh despachar "$(printf "ava\nx")" F9 b.md >/dev/null 2>&1; rc=$?; bash /Users/robertoduarte/rdd-worktrees/sdd-open-f9-aval/sdd/bin/sdd-fluxo.sh despachar avaliador "$(printf "F9\nx")" b.md >/dev/null 2>&1; rc2=$?; bash /Users/robertoduarte/rdd-worktrees/sdd-open-f9-aval/sdd/bin/sdd-fluxo.sh despachar "ava x" F9 b.md >/dev/null 2>&1; rc3=$?; echo "conteúdo de sdd/reports/briefs (vazio = nada gravado):"; ls -A sdd/reports/briefs/ 2>&1; cd /Users/robertoduarte/rdd-worktrees/sdd-open-f9-aval; rm -rf "${T:?}"; echo "papel com LF rc=$rc · FEATURE com LF rc=$rc2 · papel com espaço rc=$rc3 (esperado 64 nos 3 e nada gravado)"; test $rc -eq 64 -a $rc2 -eq 64 -a $rc3 -eq 64
+conteúdo de sdd/reports/briefs (vazio = nada gravado):
+ls: sdd/reports/briefs/: No such file or directory
+papel com LF rc=64 · FEATURE com LF rc=64 · papel com espaço rc=64 (esperado 64 nos 3 e nada gravado)
+[exit=0]

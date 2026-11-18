@@ -1,0 +1,112 @@
+$ . /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.RRzJHrBpTz/lab.sh; V=$(novo); mkdep "$V/d"; T2=\"2026-01-02T00:00:00Z\"; 
+Q=\"; 
+echo == A1 run sem headSha na lista da branch \(mais novo\) e proprio falhou; Y=$(novoc); cen "dict(passos=[dict(runs=[R(1,X,c=\"cancelled\"),dict(databaseId=2,headBranch=\"main\",status=\"completed\",conclusion=\"success\",createdAt=\"2026-01-02T00:00:00Z\",event=\"push\")])])"; limpa; d1 | tail -n 6
+echo == A2 passo: gh run view devolve lista; X=$Y; cen "dict(view_bruto=\"[]\",passos=[dict(runs=[R(1,X,c=\"failure\")])])"; limpa; d1 --transitorios SSH | tail -n 4
+echo == A3 passo: gh run view ilegivel; cen "dict(view_bruto=\"xx\",passos=[dict(runs=[R(1,X,c=\"failure\")])])"; limpa; d1 --transitorios SSH | tail -n 4
+echo == A4 dois jobs: 1o passo passageiro falhou e 2o job falhou em passo real; cen "dict(jobs=[dict(steps=[dict(name=\"SSH\",conclusion=\"failure\")]),dict(steps=[dict(name=\"Testes\",conclusion=\"failure\")])],passos=[dict(runs=[R(1,X,c=\"failure\")])])"; limpa; d1 --transitorios SSH | head -n 3; grep -c "workflow run" "$GH_DIR/gh.log"
+Z=$(novoc); X=$Z; echo == A5 ordem invertida: passo real antes do passageiro; cen "dict(jobs=[dict(steps=[dict(name=\"Testes\",conclusion=\"failure\"),dict(name=\"SSH\",conclusion=\"failure\")])],passos=[dict(runs=[R(1,X,c=\"failure\")])])"; limpa; d1 --transitorios SSH | head -n 2; grep -c "workflow run" "$GH_DIR/gh.log"
+Z=$(novoc); X=$Z; echo == A6 conclusion nula em completed; cen "dict(passos=[dict(runs=[dict(databaseId=1,headSha=X,headBranch=\"main\",status=\"completed\",conclusion=None,createdAt=\"2026-01-02T00:00:00Z\",event=\"push\")])])"; limpa; d1 | head -n 3
+echo == A7 skipped/neutral/timed_out/startup_failure; for c in skipped neutral timed_out startup_failure action_required stale; do cen "dict(passos=[dict(runs=[R(1,X,c=\"$c\")])])"; limpa; d1 --transitorios SSH | grep -E "^(🔴|✅|⏳|\[rc)" | tr "\n" " "; echo; done
+echo == A8 redisparo: novo run falha de novo no passo passageiro; Z=$(novoc); X=$Z;  cen "dict(passo=\"SSH\",passos=[dict(runs=[R(1,X,c=\"failure\")]),dict(runs=[R(1,X,c=\"failure\"),R(2,X,c=\"failure\",e=\"workflow_dispatch\",t=\"2026-01-02T00:00:00Z\")])])"; limpa; dep --commit $X --workflow deploy.yml --intervalo 0 --teto 5 --sem-run 2 --transitorios SSH | tail -n 4; grep -c "workflow run" "$GH_DIR/gh.log"
+echo == A9 mesma SHA: push verde antigo, dispatch manual mais novo falhou; Z=$(novoc); X=$Z; cen "dict(passos=[dict(runs=[R(1,X),R(2,X,c=\"failure\",e=\"workflow_dispatch\",t=\"2026-01-02T00:00:00Z\")])])"; limpa; d1 | head -n 2
+echo == A10 verde do proprio mais antigo e run de outro evento mais novo em andamento; cen "dict(passos=[dict(runs=[R(1,X),R(2,X,st=\"in_progress\",c=None,e=\"workflow_dispatch\",t=\"2026-01-02T00:00:00Z\")])])"; limpa; d1 | tail -n 3
+echo == A11 consulta falhando: linhas de progresso por minuto; cen "dict(erro=\"HTTP 502 bad gateway\")"; limpa; dep --commit $X --workflow deploy.yml --intervalo 1 --teto 4 --sem-run 1 | grep -c "consulta falhou"; dep --commit $X --workflow deploy.yml --intervalo 1 --teto 3 --sem-run 1 | tail -n 3
+echo == A12 workflow errado; cen "dict(erro=\"could not find any workflows named nada.yml\")"; limpa; dep --commit $X --workflow nada.yml --intervalo 0 --teto 2 --sem-run 0 | tail -n 3; wc -l < "$GH_DIR/gh.log"
+echo == A13 sem login variantes; for m in "To get started with GitHub CLI, please run:  gh auth login" "HTTP 401: Bad credentials" "You are not logged into any GitHub hosts" "error connecting to api.github.com" "HTTP 403: rate limit"; do cen "dict(erro=\"$m\")"; limpa; dep --commit $X --workflow w --intervalo 0 --teto 0 --sem-run 0 | grep -E "^\[rc" | tr "\n" " "; echo " <= $m"; done
+echo == A14 dispatch 401 e 5xx; Z=$(novoc); X=$Z; cen "dict(passo=\"SSH\",dispatch_erro=\"HTTP 500: boom\",passos=[dict(runs=[R(1,X,c=\"failure\")])])"; limpa; d1 --transitorios SSH | tail -n 4; ls .git/deploy-do-sha 2>/dev/null | grep -c "$X"
+echo == A15 uso; for a in "--commit" "--commit naoexiste --workflow w" "--commit $X" "--commit $X --workflow w --teto x" "--commit $X --workflow w --repo /nao/existe" "--foo 1" "--commit $X --workflow w --intervalo -1"; do /bin/bash $PROJ/sdd/bin/deploy-do-sha.sh $a >/dev/null 2>&1; echo "$a => $?" | cut -c1-90; done; cd /; /bin/bash $PROJ/sdd/bin/deploy-do-sha.sh --commit HEAD --workflow w > /dev/null 2>&1; echo fora-de-repo=$?; cd - >/dev/null
+echo == A16 sem gh e sem git; (PATH=/nada; /bin/bash -c "exec /bin/bash $PROJ/sdd/bin/deploy-do-sha.sh --commit x --workflow w"; echo sem-tudo=$?) 2>&1 | tail -n 3
+echo == A17 commit local nao empurrado e sem clone conhecer substituto; git commit -q --allow-empty -m local; X=$(git rev-parse HEAD); cen "dict(passos=[dict(runs=[])])"; limpa; d1 | head -n 2;
+echo == A18 teto 0 com em andamento e --intervalo 0; cen "dict(passos=[dict(runs=[R(1,X,st=\"queued\",c=None)])])"; limpa; dep --commit $X --workflow w --intervalo 0 --teto 0 --sem-run 0 | head -n 2
+== A1 run sem headSha na lista da branch (mais novo) e proprio falhou
+  File "/Library/Developer/CommandLineTools/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/subprocess.py", line 951, in __init__
+    self._execute_child(args, executable, preexec_fn, close_fds,
+  File "/Library/Developer/CommandLineTools/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/subprocess.py", line 1754, in _execute_child
+    self.pid = _posixsubprocess.fork_exec(
+TypeError: expected str, bytes or os.PathLike object, not NoneType
+[rc=1]
+== A2 passo: gh run view devolve lista
+  File "<stdin>", line 306, in main
+  File "<stdin>", line 123, in passo_falho
+AttributeError: 'list' object has no attribute 'get'
+[rc=1]
+== A3 passo: gh run view ilegivel
+🔴 falhou — run 1; não repeti: este passo não está em deploy.transient_steps.
+RESULTADO: FALHOU
+→ abra o run citado; para repetir, um push novo ou gh workflow run na ponta, nunca gh run rerun.
+[rc=2]
+== A4 dois jobs: 1o passo passageiro falhou e 2o job falhou em passo real
+--- deploy-do-sha --commit 49157366de2bd4aa5838357a51cd1f0061be3524 --workflow deploy.yml --intervalo 0 --teto 1 --sem-run 0 --transitorios SSH
+🔁 o passo "SSH" é passageiro e 4915736 é a ponta: repetindo o deploy na ponta de main (1 vez).
+⏳ ainda não sei — repeti o deploy, e o run novo não apareceu em 0 s; isso não é falha.
+1
+== A5 ordem invertida: passo real antes do passageiro
+--- deploy-do-sha --commit b7f9dda064ce9be88250134f5a1d4005e6a145e2 --workflow deploy.yml --intervalo 0 --teto 1 --sem-run 0 --transitorios SSH
+🔴 falhou — run 1 ("Testes"); não repeti: este passo não está em deploy.transient_steps.
+0
+== A6 conclusion nula em completed
+--- deploy-do-sha --commit 02c33a6251bb7fad705fbdde5a4c32a7eb2d1f11 --workflow deploy.yml --intervalo 0 --teto 1 --sem-run 0
+🔴 não está no ar — o run 1 saiu sem conclusão, e nenhum deploy mais novo contém 02c33a6
+RESULTADO: NAO ESTA NO AR
+== A7 skipped/neutral/timed_out/startup_failure
+🔴 não está no ar — o run 1 saiu skipped, e nenhum deploy mais novo contém 02c33a6 [rc=2] 
+🔴 não está no ar — o run 1 saiu neutral, e nenhum deploy mais novo contém 02c33a6 [rc=2] 
+🔴 não está no ar — o run 1 saiu timed_out, e nenhum deploy mais novo contém 02c33a6 [rc=2] 
+🔴 não está no ar — o run 1 saiu startup_failure, e nenhum deploy mais novo contém 02c33a6 [rc=2] 
+🔴 não está no ar — o run 1 saiu action_required, e nenhum deploy mais novo contém 02c33a6 [rc=2] 
+🔴 não está no ar — o run 1 saiu stale, e nenhum deploy mais novo contém 02c33a6 [rc=2] 
+== A8 redisparo: novo run falha de novo no passo passageiro
+🔴 falhou — run 2 ("SSH"); não repeti: este commit já foi repetido 1 vez (este script).
+RESULTADO: FALHOU
+→ abra o run citado; para repetir, um push novo ou gh workflow run na ponta, nunca gh run rerun.
+[rc=2]
+1
+== A9 mesma SHA: push verde antigo, dispatch manual mais novo falhou
+--- deploy-do-sha --commit a0f5fd470e3fb3a1a733efb35df640e8ec5ae56d --workflow deploy.yml --intervalo 0 --teto 1 --sem-run 0
+🔴 falhou — run 2 ("x"); não repeti: este commit já foi repetido 1 vez (workflow_dispatch).
+== A10 verde do proprio mais antigo e run de outro evento mais novo em andamento
+RESULTADO: AINDA NAO SEI
+→ rode de novo para continuar esperando, ou abra o run citado; nada foi repetido por causa disso.
+[rc=4]
+== A11 consulta falhando: linhas de progresso por minuto
+5
+RESULTADO: AINDA NAO SEI
+→ rode de novo para continuar esperando, ou abra o run citado; nada foi repetido por causa disso.
+[rc=4]
+== A12 workflow errado
+RESULTADO: AINDA NAO SEI
+→ rode de novo para continuar esperando, ou abra o run citado; nada foi repetido por causa disso.
+[rc=4]
+      74
+== A13 sem login variantes
+[rc=3]  <= To get started with GitHub CLI, please run:  gh auth login
+[rc=3]  <= HTTP 401: Bad credentials
+[rc=3]  <= You are not logged into any GitHub hosts
+[rc=4]  <= error connecting to api.github.com
+[rc=4]  <= HTTP 403: rate limit
+== A14 dispatch 401 e 5xx
+🔴 falhou — run 1 ("SSH"); tentei repetir e o GitHub recusou: HTTP 500: boom. O workflow precisa de workflow_dispatch no on:; sem isso, um push novo.
+RESULTADO: FALHOU
+→ abra o run citado; para repetir, um push novo ou gh workflow run na ponta, nunca gh run rerun.
+[rc=2]
+0
+== A15 uso
+--commit => 64
+--commit naoexiste --workflow w => 64
+--commit 15c95cf937423a3c58ab160fda07faf338c102b1 => 64
+--commit 15c95cf937423a3c58ab160fda07faf338c102b1 --workflow w --teto x => 64
+--commit 15c95cf937423a3c58ab160fda07faf338c102b1 --workflow w --repo /nao/existe => 64
+--foo 1 => 64
+--commit 15c95cf937423a3c58ab160fda07faf338c102b1 --workflow w --intervalo -1 => 64
+fora-de-repo=64
+== A16 sem gh e sem git
+RESULTADO: ERRO DE USO
+→ instale o Python 3 (3.9 ou mais novo) e rode de novo.
+sem-tudo=64
+== A17 commit local nao empurrado e sem clone conhecer substituto
+--- deploy-do-sha --commit 1214ebe2b7f9096dfba97bd26ba5f81e68523654 --workflow deploy.yml --intervalo 0 --teto 1 --sem-run 0
+⏳ ainda não sei — não achei nenhum run de 1214ebe no workflow deploy.yml em 0 s; isso não diz que não há o que verificar.
+== A18 teto 0 com em andamento e --intervalo 0
+--- deploy-do-sha --commit 1214ebe2b7f9096dfba97bd26ba5f81e68523654 --workflow w --intervalo 0 --teto 0 --sem-run 0
+⏳ queued · 0/0 min · run 1
+[exit=0]

@@ -1,0 +1,22 @@
+$ git rev-parse --short HEAD && cd tests && SDD_TEST_BASH=/bin/bash /usr/bin/python3 -B -m unittest -v test_governanca_fronteira
+96a97ec
+test_m1_arquivo_limpo_editado_e_commitado_pelo_agente_e_fora (test_governanca_fronteira.Aval1) ... ok
+test_m1_snapshot_sem_head_nao_vale_como_nada_mudou (test_governanca_fronteira.Aval1) ... ok
+test_arvore_limpa_sem_incluir_compara (test_governanca_fronteira.Aval2) ... ok
+test_cada_escrita_fora_do_permitido_aparece (test_governanca_fronteira.Fronteira) ... ok
+test_permitido_por_link_simbolico_casa_com_a_raiz_canonica (test_governanca_fronteira.Fronteira) ... ok
+test_so_o_permitido_mudou (test_governanca_fronteira.Fronteira) ... ok
+test_r1_snapshot_dentro_do_worktree_nao_apaga_o_arquivo (test_governanca_fronteira.Real1) ... ok
+test_r2_arquivo_ilegivel_recusa_o_snapshot (test_governanca_fronteira.Real1) ... ok
+test_permitido_por_link_de_arquivo_casa_com_o_destino (test_governanca_fronteira.Real2) ... ok
+test_alias_por_link_do_permitido_casa_com_ele (test_governanca_fronteira.Real3) ... ok
+test_snapshot_dentro_do_git_e_recusado (test_governanca_fronteira.Real3) ... ok
+test_link_criado_no_permitido_nao_autoriza_outro_arquivo (test_governanca_fronteira.Real4) ... ok
+test_comparar_so_o_caminho_esconde_a_sobrescrita (test_governanca_fronteira.Sabotagem) ... ok
+test_fronteira_nao_verificada_sai_64 (test_governanca_fronteira.Uso) ... ok
+
+----------------------------------------------------------------------
+Ran 14 tests in 4.784s
+
+OK
+[exit=0]

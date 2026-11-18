@@ -1,0 +1,5 @@
+$ bash sdd/bin/test-baseline.sh --touched
+ℹ️  project.test_cmd vazio em sdd/config.yaml: não há comando de teste para comparar.
+RESULTADO: PULADO
+→ preencha project.test_cmd (ou passe --cmd) para usar o baseline de testes.
+rc=0

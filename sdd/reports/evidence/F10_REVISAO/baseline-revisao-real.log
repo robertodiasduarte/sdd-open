@@ -1,0 +1,11 @@
+$ cd <worktree em 7ecbc78 com o tests/test_revisao.py novo>/tests && SDD_TEST_BASH=/bin/bash /usr/bin/python3 -B -m unittest test_revisao.RevisaoReal
+FAIL: test_r1_conferir_recusa_revisao_so_de_paths_e_o_padrao_a_pula (test_revisao.RevisaoReal)
+FAIL: test_r2_conferir_recusa_revisao_rasa (test_revisao.RevisaoReal)
+FAIL: test_r3_caminho_com_acento_conta_e_aciona_seguranca (test_revisao.RevisaoReal)
+FAIL: test_r4_segundos_sao_da_chamada_que_respondeu (test_revisao.RevisaoReal)
+FAIL: test_r5_revisao_invalida_nao_grava_jsonl (test_revisao.RevisaoReal)
+FAIL: test_r6_achado_numerico_nao_derruba_o_script (test_revisao.RevisaoReal)
+FAIL: test_r7_custo_pequeno_nunca_aparece_como_zero (test_revisao.RevisaoReal)
+Ran 7 tests in 4.064s
+FAILED (failures=7)
+[exit=1]

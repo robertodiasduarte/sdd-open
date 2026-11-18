@@ -1,0 +1,26 @@
+$ (em tests/) /usr/bin/python3 -B -m unittest -v test_eval_revisores.Ledgers test_eval_revisores.Tabela.test_novo_do_auditor_rebatido_duas_vezes_e_falso_positivo_dele
+test_achado_repetido_conta_uma_vez_inclusive_com_interrogacao_e_em_dois_arquivos (test_eval_revisores.Ledgers) ... ok
+test_bloco_aberto_e_nao_fechado_e_avisado (test_eval_revisores.Ledgers) ... ok
+test_dano_fora_da_lista_e_avisado_e_nao_conta (test_eval_revisores.Ledgers) ... ok
+test_ledger_sem_rotulo_casa_com_id_rotulado_quando_nao_ha_ambiguidade (test_eval_revisores.Ledgers) ... ok
+test_linha_cuja_primeira_celula_comeca_por_achado_e_avisada (test_eval_revisores.Ledgers) ... ok
+test_linha_de_tabela_em_bloco_cercado_ou_comentario_conta_como_no_loop (test_eval_revisores.Ledgers) ... ok
+test_linha_do_ledger_fora_da_tabela_e_avisada (test_eval_revisores.Ledgers) ... ok
+test_linha_fora_do_formato_nunca_some_em_silencio (test_eval_revisores.Ledgers) ... ok
+test_linha_sem_barra_no_fim_conta (test_eval_revisores.Ledgers) ... ok
+test_linhas_depois_de_linha_em_branco_entram_na_conta_ou_no_aviso (test_eval_revisores.Ledgers) ... ok
+test_nenhuma_linha_de_tabela_some_em_silencio (test_eval_revisores.Ledgers) ... ok
+test_pasta_sem_linha_conta_custo_e_achados_e_e_avisada (test_eval_revisores.Ledgers) ... ok
+test_rebatida_marcada_sim_nao_conta_como_dano_e_e_avisada (test_eval_revisores.Ledgers) ... ok
+test_rotulo_da_engine_certa_casa_com_id_sem_rotulo (test_eval_revisores.Ledgers) ... ok
+test_rotulo_escrito_como_o_id_cru_da_engine_tambem_casa (test_eval_revisores.Ledgers) ... ok
+test_sem_achados_dito_para_revisao_que_tem_achados_e_avisado (test_eval_revisores.Ledgers) ... ok
+test_sem_ledger_tudo_fica_sem_classificar_e_a_saida_diz (test_eval_revisores.Ledgers) ... ok
+test_sem_registry_a_cobranca_e_desconhecida_e_o_pago_e_nd (test_eval_revisores.Ledgers) ... ok
+test_novo_do_auditor_rebatido_duas_vezes_e_falso_positivo_dele (test_eval_revisores.Tabela) ... ok
+
+----------------------------------------------------------------------
+Ran 19 tests in 1.055s
+
+OK
+[exit=0]

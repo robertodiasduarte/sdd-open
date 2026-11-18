@@ -1,0 +1,8 @@
+$ gh release view v2.2.3 -R robertodiasduarte/sdd-open && gh release download v2.2.3 && shasum -a 256 -c SHA256SUMS.txt
+tag=v2.2.3 alvo=1a54da5b30462834bd6ba7402a502be522550800 publicada=2026-10-29T16:50:33Z url=https://github.com/robertodiasduarte/sdd-open/releases/tag/v2.2.3
+asset=sdd-open-v2.2.3.tar.gz
+asset=SHA256SUMS.txt
+sdd-open-v2.2.3.tar.gz: OK
+635e30050b83188f5965ffa5ddd09fac496973dc4a66d7bbd6391c9eb1ffd777  sdd-open-v2.2.3.tar.gz
+run release 40915091971 (push, main): success · publish-gate 40915091663 (push): success · PR #3 CI 40912938021: success
+push: 41c6169..1a54da5 feat/incorporar-starter -> main (OK do Roberto: "push do sdd-open autorizado")

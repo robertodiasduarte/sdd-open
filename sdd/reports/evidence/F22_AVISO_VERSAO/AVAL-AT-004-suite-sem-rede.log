@@ -1,0 +1,74 @@
+$ bash /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f22-aviso-versao/89f76119-0a85-490f-a1ff-b57288611d99/scratchpad/probes/suite-rede.sh test_f22_versao.py test_f22_upgrade.py test_sdd_open.py test_matriz_new_session.py test_hooks.py
+
+$ cat "$T/spybin/git"
+#!/bin/bash
+for a in "$@"; do case "$a" in ls-remote|fetch|clone|pull|push) printf "%s\n" "$*" >> "/private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f22-aviso-versao/89f76119-0a85-490f-a1ff-b57288611d99/scratchpad/sonda.gUW6hA/git-rede.log";; esac; done
+exec "/usr/bin/git" "$@"
+[rc=0]
+
+$ mkdir "$T/pkg" && git -C "$P" archive HEAD | tar -x -C "$T/pkg"
+[rc=0]
+
+$ time (PATH="$T/spybin:$PATH" SDD_TEST_BASH=/bin/bash /usr/bin/python3 -B -m unittest discover -s tests -p test_f22_versao.py > "$T/test_f22_versao.py.out" 2>&1; echo "rc_unittest=$?"; tail -4 "$T/test_f22_versao.py.out")
+rc_unittest=0
+----------------------------------------------------------------------
+Ran 39 tests in 49.166s
+
+OK
+tempo=49.252s
+[rc=0]
+
+$ time (PATH="$T/spybin:$PATH" SDD_TEST_BASH=/bin/bash /usr/bin/python3 -B -m unittest discover -s tests -p test_f22_upgrade.py > "$T/test_f22_upgrade.py.out" 2>&1; echo "rc_unittest=$?"; tail -4 "$T/test_f22_upgrade.py.out")
+rc_unittest=0
+----------------------------------------------------------------------
+Ran 19 tests in 134.589s
+
+OK (skipped=1)
+tempo=134.675s
+[rc=0]
+
+$ time (PATH="$T/spybin:$PATH" SDD_TEST_BASH=/bin/bash /usr/bin/python3 -B -m unittest discover -s tests -p test_sdd_open.py > "$T/test_sdd_open.py.out" 2>&1; echo "rc_unittest=$?"; tail -4 "$T/test_sdd_open.py.out")
+rc_unittest=0
+----------------------------------------------------------------------
+Ran 56 tests in 380.619s
+
+OK
+tempo=1299.062s
+[rc=0]
+
+$ time (PATH="$T/spybin:$PATH" SDD_TEST_BASH=/bin/bash /usr/bin/python3 -B -m unittest discover -s tests -p test_matriz_new_session.py > "$T/test_matriz_new_session.py.out" 2>&1; echo "rc_unittest=$?"; tail -4 "$T/test_matriz_new_session.py.out")
+rc_unittest=0
+----------------------------------------------------------------------
+Ran 12 tests in 0.016s
+
+OK
+tempo=0.109s
+[rc=0]
+
+$ time (PATH="$T/spybin:$PATH" SDD_TEST_BASH=/bin/bash /usr/bin/python3 -B -m unittest discover -s tests -p test_hooks.py > "$T/test_hooks.py.out" 2>&1; echo "rc_unittest=$?"; tail -4 "$T/test_hooks.py.out")
+rc_unittest=0
+----------------------------------------------------------------------
+Ran 24 tests in 26.119s
+
+OK
+tempo=26.189s
+[rc=0]
+### toda consulta de rede do git vista pelo espião durante os módulos (URL):
+
+$ if [ -f "$T/git-rede.log" ]; then wc -l < "$T/git-rede.log"; grep -o "ls-remote.*" "$T/git-rede.log" | awk "{print \$NF}" | sort | uniq -c; echo "--- URLs não locais:"; grep -E "ls-remote|fetch|clone|pull|push" "$T/git-rede.log" | grep -Eio "(https?|ssh|git)://[^ ]+|[a-z0-9.-]+@[a-z0-9.-]+:[^ ]+" | sort | uniq -c || echo nenhuma; else echo "nenhuma chamada registrada"; fi
+      16
+   1 /private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/sdd-open-91vi9bh6/inexistente/
+   1 /private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/sdd-open-91vi9bh6/remoto
+   1 /private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/sdd-open-a947_2sb/nao-existe
+   1 /private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/sdd-open-dpxhjira/remoto-0
+   1 /private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/sdd-open-ekwuvcmm/remoto-0
+   1 /private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/sdd-open-ekwuvcmm/remoto-1
+   1 /private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/sdd-open-fq4f22vm/remoto-0
+   1 /private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/sdd-open-k1g483cd/remoto-0
+   1 /private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/sdd-open-mv7w1iss/remoto-0
+   1 /private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/sdd-open-p61153ai/remoto-0
+   5 /private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/sdd-open-vlvo529e/remoto
+   1 /private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/sdd-open-yezc9huv/inexistente/
+--- URLs não locais:
+[rc=0]
+rc=0

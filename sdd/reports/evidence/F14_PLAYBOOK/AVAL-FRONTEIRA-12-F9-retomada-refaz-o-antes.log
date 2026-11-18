@@ -1,0 +1,31 @@
+$ /bin/bash /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.Gg087dIi9J/ev/12.sh
+# F9: item 2 do passo 11 (cópia + snapshot de antes), despacho, e uma sessão nova que refaz o item 2 inteiro
+novo f9; cp sdd/features/DEFINE_F.md "$T/DEFINE.antes"; antes
+cd "$d/w" && pwd -P
+--- cenário f9 (W=/private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.Gg087dIi9J/e.f9/w) ---
+[--snapshot antes exit=0]
+printf 'define adulterado pelo revisor\n' > "$DEF"; printf 'relatorio\n' > "$REL"
+# --- sessão nova retoma: refaz T (mesmo nome), e com ele o cp e o snapshot de antes ---
+cp sdd/features/DEFINE_F.md "$T/DEFINE.antes"; antes
+[--snapshot antes exit=0]
+depois; comparar
+[--snapshot depois exit=0]
+RESULTADO: SÓ O PERMITIDO MUDOU
+→ siga com o arquivo que o agente gravou.
+[--comparar exit=0]
+cat "$T/DEFINE.antes"
+define adulterado pelo revisor
+# vizinho: sem refazer o item 2, o mesmo despacho é FORA
+novo f9b; cp sdd/features/DEFINE_F.md "$T/DEFINE.antes"; antes
+cd "$d/w" && pwd -P
+--- cenário f9b (W=/private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.Gg087dIi9J/e.f9b/w) ---
+[--snapshot antes exit=0]
+printf 'define adulterado pelo revisor\n' > "$DEF"; printf 'relatorio\n' > "$REL"
+depois; comparar
+[--snapshot depois exit=0]
+FORA: /private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.Gg087dIi9J/e.f9b/w/sdd/features/DEFINE_F.md
+MUDOU: /private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.Gg087dIi9J/e.f9b/w/sdd/reviews/GOVERNANCA_REVIEW_F.md
+RESULTADO: ESCRITA FORA DO PERMITIDO
+→ não apague nada: liste os caminhos FORA para a pessoa conferir, regrave o DEFINE se ele mudou e conte como falha (1 redespacho).
+[--comparar exit=1]
+[exit=0]

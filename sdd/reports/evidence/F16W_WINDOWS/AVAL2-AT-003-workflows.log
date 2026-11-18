@@ -1,0 +1,21 @@
+$ bash /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f16w-windows/fd210694-ded6-4d95-a500-52e0521f4ae8/scratchpad/aval2/at003.sh
+== diff do job testes-windows (publish-gate x release):
+63a64
+> 
+== publish-gate: runs-on=1 fail-fast-false=1 matriz=fatia: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16] timeout=timeout-minutes: 30 executor=testes-por-modulo.py --fatia "${{ matrix.fatia }}/16" --teto-unidade 600 --saida
+   publish-gate só na fatia:         env: |         if: matrix.fatia == 1
+   upload:         uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+   continue-on-error no job: 0
+   needs do job release: 
+   permissions: 15:permissions: 16-  contents: read 
+== release: runs-on=1 fail-fast-false=1 matriz=fatia: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16] timeout=timeout-minutes: 30 executor=testes-por-modulo.py --fatia "${{ matrix.fatia }}/16" --teto-unidade 600 --saida
+   publish-gate só na fatia:         env: |         if: matrix.fatia == 1
+   upload:         uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+   continue-on-error no job: 0
+   needs do job release:     needs: [testes, testes-macos]
+   permissions: 44:permissions: 45-  contents: read 
+== SHA do upload-artifact x tag v7.0.2 no repositório da action (só leitura):
+cf430e030ddbb5b0abf93d22962f4752f3646cd9	refs/tags/v7.0.2
+== unidades por fatia 16 e soma de testes:
+26 26 26 26 26 26 26 26 26 26 25 25 25 26 26 26 
+[exit=0]

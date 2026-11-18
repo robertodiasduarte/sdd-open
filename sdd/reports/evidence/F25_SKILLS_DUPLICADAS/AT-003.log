@@ -1,0 +1,10 @@
+$ cd <git archive HEAD>/tests && /usr/bin/python3 -B -m unittest -v test_f25_skills_duplicadas.AT003Npx
+test_copia_do_registro_e_atalho_contam_como_uma (test_f25_skills_duplicadas.AT003Npx) ... ok
+test_quem_veio_do_npx (test_f25_skills_duplicadas.AT003Npx) ... ok
+test_registro_de_outro_repositorio_nao_marca_a_copia_open (test_f25_skills_duplicadas.AT003Npx) ... ok
+
+----------------------------------------------------------------------
+Ran 3 tests in 2.387s
+
+OK
+[exit=0]

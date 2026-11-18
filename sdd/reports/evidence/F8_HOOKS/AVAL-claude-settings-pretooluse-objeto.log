@@ -1,0 +1,34 @@
+$ cd /tmp/sdd-aval/claude-inv-pretooluse-objeto && cat .claude/settings.json
+{"hooks": {"PreToolUse": {}}}
+[exit=0]
+$ cd /tmp/sdd-aval/claude-inv-pretooluse-objeto && bash /Users/robertoduarte/rdd-worktrees/sdd-open-f8-aval/bin/sdd-open.sh init --yes --vendors claude 2>&1 | grep -vE '^\+ (\.agents|\.claude/skills)'; echo rc=${PIPESTATUS[0]}
+▶ init — plano
++ AGENTS.md (novo)
++ sdd/ (templates, fixtures, bin, hooks, playbook, config) (novo)
++ core.hooksPath = sdd/hooks — 5 regras + relatório + alarme passam a conferir cada commit (teto do arquivo de contexto, credencial, playbook, byte NUL, branch padrão); git commit --no-verify pula uma vez (novo)
++ CLAUDE.md (novo)
++ .claude/hooks/sdd-avaliador-guard.py (novo)
++ .claude/hooks/sdd-report-guard.py (novo)
+~ .claude/settings.json (hooks += 2 guards do sdd-open) (atualizar)
+117 a criar · 1 a atualizar · 0 já corretos
+🛑 /private/tmp/sdd-aval/claude-inv-pretooluse-objeto/.claude/settings.json não é JSON válido (1: 'hooks.PreToolUse' não é uma lista)
+RESULTADO: ERRO
+→ corrija ou renomeie o arquivo e rode sync de novo — nada foi alterado
+rc=66
+[exit=0]
+$ cd /tmp/sdd-aval/claude-inv-pretooluse-objeto && git status --short | head; echo '--- o que foi escrito (esperado: nada)'; ls -d sdd .agents .claude/hooks CLAUDE.md AGENTS.md 2>&1; echo hooksPath="$(git config --get core.hooksPath)"; cat .claude/settings.json
+?? .agents/
+?? .claude/hooks/
+?? .claude/skills/
+?? AGENTS.md
+?? CLAUDE.md
+?? sdd/
+--- o que foi escrito (esperado: nada)
+.agents
+.claude/hooks
+AGENTS.md
+CLAUDE.md
+sdd
+hooksPath=sdd/hooks
+{"hooks": {"PreToolUse": {}}}
+[exit=0]

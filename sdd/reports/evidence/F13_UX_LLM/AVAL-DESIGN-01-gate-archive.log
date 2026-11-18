@@ -1,0 +1,14 @@
+$ echo "arquivos de sdd/features no git archive HEAD:"; git archive HEAD | tar -t | /usr/bin/grep -c "^sdd/features/"; test -f sdd/features/DESIGN_F12_CONTEXTO.md && echo "DESIGN_F12 existe so na arvore local"; git ls-files --error-unmatch sdd/features/DESIGN_F12_CONTEXTO.md 2>&1; echo "tracked rc=$?"; T=$(mktemp -d); git archive HEAD | tar -x -C $T; cd $T; git rev-parse --is-inside-work-tree 2>&1; echo "git dentro de T rc=$?"; /usr/bin/python3 -B scripts/check-versions.py --base v2.4.0 --base-obrigatoria 2>&1; echo "check-versions dentro de T rc=$?"; cd /; rm -rf "$T"
+arquivos de sdd/features no git archive HEAD:
+0
+DESIGN_F12 existe so na arvore local
+error: pathspec 'sdd/features/DESIGN_F12_CONTEXTO.md' did not match any file(s) known to git
+Did you forget to 'git add'?
+tracked rc=1
+fatal: not a git repository (or any of the parent directories): .git
+git dentro de T rc=128
+FAIL: base 'v2.4.0' indisponível — sem ela não dá para saber o que mudou desde a última release.
+RESULTADO: VERMELHO
+→ faça checkout com o histórico e as tags (fetch-depth: 0) e rode de novo.
+check-versions dentro de T rc=1
+[exit=0]

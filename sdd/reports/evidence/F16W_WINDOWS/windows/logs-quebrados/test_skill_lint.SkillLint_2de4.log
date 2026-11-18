@@ -1,0 +1,364 @@
+test_fixtures_passam_sem_conversa (test_skill_lint.SkillLint.test_fixtures_passam_sem_conversa) ... 
+
+  test_fixtures_passam_sem_conversa (test_skill_lint.SkillLint.test_fixtures_passam_sem_conversa) (fixture='conversa-controle') ... FAIL
+
+  test_fixtures_passam_sem_conversa (test_skill_lint.SkillLint.test_fixtures_passam_sem_conversa) (fixture='conversa-sem-secao') ... FAIL
+
+  test_fixtures_passam_sem_conversa (test_skill_lint.SkillLint.test_fixtures_passam_sem_conversa) (fixture='conversa-sem-como-falar') ... FAIL
+
+  test_fixtures_passam_sem_conversa (test_skill_lint.SkillLint.test_fixtures_passam_sem_conversa) (fixture='conversa-sem-recomendado') ... FAIL
+
+  test_fixtures_passam_sem_conversa (test_skill_lint.SkillLint.test_fixtures_passam_sem_conversa) (fixture='conversa-dois-recomendados') ... FAIL
+
+  test_fixtures_passam_sem_conversa (test_skill_lint.SkillLint.test_fixtures_passam_sem_conversa) (fixture='conversa-sem-nao-sei') ... FAIL
+
+  test_fixtures_passam_sem_conversa (test_skill_lint.SkillLint.test_fixtures_passam_sem_conversa) (fixture='conversa-com-outro') ... FAIL
+
+test_flag_desconhecida_e_64 (test_skill_lint.SkillLint.test_flag_desconhecida_e_64) ... ok
+
+test_name_diferente_da_pasta_reprova (test_skill_lint.SkillLint.test_name_diferente_da_pasta_reprova) ... ok
+
+test_opcao_em_duas_linhas_nao_esconde_as_seguintes (test_skill_lint.SkillLint.test_opcao_em_duas_linhas_nao_esconde_as_seguintes) ... FAIL
+
+test_opcoes_depois_de_linha_em_branco_ou_com_asterisco_sao_conferidas (test_skill_lint.SkillLint.test_opcoes_depois_de_linha_em_branco_ou_com_asterisco_sao_conferidas) ... ok
+
+test_outro_com_complemento_reprova (test_skill_lint.SkillLint.test_outro_com_complemento_reprova) ... ok
+
+test_outros_no_plural_reprova (test_skill_lint.SkillLint.test_outros_no_plural_reprova) ... ok
+
+test_pergunta_aberta_sem_opcoes_nao_e_conferida (test_skill_lint.SkillLint.test_pergunta_aberta_sem_opcoes_nao_e_conferida) ... FAIL
+
+
+
+======================================================================
+
+FAIL: test_fixtures_passam_sem_conversa (test_skill_lint.SkillLint.test_fixtures_passam_sem_conversa) (fixture='conversa-controle')
+
+----------------------------------------------------------------------
+
+Traceback (most recent call last):
+
+  File "D:\a\sdd-open\sdd-open\tests\test_skill_lint.py", line 109, in test_fixtures_passam_sem_conversa
+
+    self.assertEqual(rc, 0, out + err)
+
+AssertionError: 1 != 0 : Traceback (most recent call last):
+
+  File "D:\a\sdd-open\sdd-open\sdd\bin\skill-lint.py", line 247, in <module>
+
+    sys.exit(main(sys.argv))
+
+             ^^^^^^^^^^^^^^
+
+  File "D:\a\sdd-open\sdd-open\sdd\bin\skill-lint.py", line 234, in main
+
+    print(f"\u2705 {p}: frontmatter v\ufffdlido" + (" \ufffd camada de conversa ok" if conversa else ""))
+
+  File "C:\hostedtoolcache\windows\Python\3.12.10\x64\Lib\encodings\cp1252.py", line 19, in encode
+
+    return codecs.charmap_encode(input,self.errors,encoding_table)[0]
+
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+UnicodeEncodeError: 'charmap' codec can't encode character '\u2705' in position 0: character maps to <undefined>
+
+
+
+
+
+======================================================================
+
+FAIL: test_fixtures_passam_sem_conversa (test_skill_lint.SkillLint.test_fixtures_passam_sem_conversa) (fixture='conversa-sem-secao')
+
+----------------------------------------------------------------------
+
+Traceback (most recent call last):
+
+  File "D:\a\sdd-open\sdd-open\tests\test_skill_lint.py", line 109, in test_fixtures_passam_sem_conversa
+
+    self.assertEqual(rc, 0, out + err)
+
+AssertionError: 1 != 0 : Traceback (most recent call last):
+
+  File "D:\a\sdd-open\sdd-open\sdd\bin\skill-lint.py", line 247, in <module>
+
+    sys.exit(main(sys.argv))
+
+             ^^^^^^^^^^^^^^
+
+  File "D:\a\sdd-open\sdd-open\sdd\bin\skill-lint.py", line 234, in main
+
+    print(f"\u2705 {p}: frontmatter v\ufffdlido" + (" \ufffd camada de conversa ok" if conversa else ""))
+
+  File "C:\hostedtoolcache\windows\Python\3.12.10\x64\Lib\encodings\cp1252.py", line 19, in encode
+
+    return codecs.charmap_encode(input,self.errors,encoding_table)[0]
+
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+UnicodeEncodeError: 'charmap' codec can't encode character '\u2705' in position 0: character maps to <undefined>
+
+
+
+
+
+======================================================================
+
+FAIL: test_fixtures_passam_sem_conversa (test_skill_lint.SkillLint.test_fixtures_passam_sem_conversa) (fixture='conversa-sem-como-falar')
+
+----------------------------------------------------------------------
+
+Traceback (most recent call last):
+
+  File "D:\a\sdd-open\sdd-open\tests\test_skill_lint.py", line 109, in test_fixtures_passam_sem_conversa
+
+    self.assertEqual(rc, 0, out + err)
+
+AssertionError: 1 != 0 : Traceback (most recent call last):
+
+  File "D:\a\sdd-open\sdd-open\sdd\bin\skill-lint.py", line 247, in <module>
+
+    sys.exit(main(sys.argv))
+
+             ^^^^^^^^^^^^^^
+
+  File "D:\a\sdd-open\sdd-open\sdd\bin\skill-lint.py", line 234, in main
+
+    print(f"\u2705 {p}: frontmatter v\ufffdlido" + (" \ufffd camada de conversa ok" if conversa else ""))
+
+  File "C:\hostedtoolcache\windows\Python\3.12.10\x64\Lib\encodings\cp1252.py", line 19, in encode
+
+    return codecs.charmap_encode(input,self.errors,encoding_table)[0]
+
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+UnicodeEncodeError: 'charmap' codec can't encode character '\u2705' in position 0: character maps to <undefined>
+
+
+
+
+
+======================================================================
+
+FAIL: test_fixtures_passam_sem_conversa (test_skill_lint.SkillLint.test_fixtures_passam_sem_conversa) (fixture='conversa-sem-recomendado')
+
+----------------------------------------------------------------------
+
+Traceback (most recent call last):
+
+  File "D:\a\sdd-open\sdd-open\tests\test_skill_lint.py", line 109, in test_fixtures_passam_sem_conversa
+
+    self.assertEqual(rc, 0, out + err)
+
+AssertionError: 1 != 0 : Traceback (most recent call last):
+
+  File "D:\a\sdd-open\sdd-open\sdd\bin\skill-lint.py", line 247, in <module>
+
+    sys.exit(main(sys.argv))
+
+             ^^^^^^^^^^^^^^
+
+  File "D:\a\sdd-open\sdd-open\sdd\bin\skill-lint.py", line 234, in main
+
+    print(f"\u2705 {p}: frontmatter v\ufffdlido" + (" \ufffd camada de conversa ok" if conversa else ""))
+
+  File "C:\hostedtoolcache\windows\Python\3.12.10\x64\Lib\encodings\cp1252.py", line 19, in encode
+
+    return codecs.charmap_encode(input,self.errors,encoding_table)[0]
+
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+UnicodeEncodeError: 'charmap' codec can't encode character '\u2705' in position 0: character maps to <undefined>
+
+
+
+
+
+======================================================================
+
+FAIL: test_fixtures_passam_sem_conversa (test_skill_lint.SkillLint.test_fixtures_passam_sem_conversa) (fixture='conversa-dois-recomendados')
+
+----------------------------------------------------------------------
+
+Traceback (most recent call last):
+
+  File "D:\a\sdd-open\sdd-open\tests\test_skill_lint.py", line 109, in test_fixtures_passam_sem_conversa
+
+    self.assertEqual(rc, 0, out + err)
+
+AssertionError: 1 != 0 : Traceback (most recent call last):
+
+  File "D:\a\sdd-open\sdd-open\sdd\bin\skill-lint.py", line 247, in <module>
+
+    sys.exit(main(sys.argv))
+
+             ^^^^^^^^^^^^^^
+
+  File "D:\a\sdd-open\sdd-open\sdd\bin\skill-lint.py", line 234, in main
+
+    print(f"\u2705 {p}: frontmatter v\ufffdlido" + (" \ufffd camada de conversa ok" if conversa else ""))
+
+  File "C:\hostedtoolcache\windows\Python\3.12.10\x64\Lib\encodings\cp1252.py", line 19, in encode
+
+    return codecs.charmap_encode(input,self.errors,encoding_table)[0]
+
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+UnicodeEncodeError: 'charmap' codec can't encode character '\u2705' in position 0: character maps to <undefined>
+
+
+
+
+
+======================================================================
+
+FAIL: test_fixtures_passam_sem_conversa (test_skill_lint.SkillLint.test_fixtures_passam_sem_conversa) (fixture='conversa-sem-nao-sei')
+
+----------------------------------------------------------------------
+
+Traceback (most recent call last):
+
+  File "D:\a\sdd-open\sdd-open\tests\test_skill_lint.py", line 109, in test_fixtures_passam_sem_conversa
+
+    self.assertEqual(rc, 0, out + err)
+
+AssertionError: 1 != 0 : Traceback (most recent call last):
+
+  File "D:\a\sdd-open\sdd-open\sdd\bin\skill-lint.py", line 247, in <module>
+
+    sys.exit(main(sys.argv))
+
+             ^^^^^^^^^^^^^^
+
+  File "D:\a\sdd-open\sdd-open\sdd\bin\skill-lint.py", line 234, in main
+
+    print(f"\u2705 {p}: frontmatter v\ufffdlido" + (" \ufffd camada de conversa ok" if conversa else ""))
+
+  File "C:\hostedtoolcache\windows\Python\3.12.10\x64\Lib\encodings\cp1252.py", line 19, in encode
+
+    return codecs.charmap_encode(input,self.errors,encoding_table)[0]
+
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+UnicodeEncodeError: 'charmap' codec can't encode character '\u2705' in position 0: character maps to <undefined>
+
+
+
+
+
+======================================================================
+
+FAIL: test_fixtures_passam_sem_conversa (test_skill_lint.SkillLint.test_fixtures_passam_sem_conversa) (fixture='conversa-com-outro')
+
+----------------------------------------------------------------------
+
+Traceback (most recent call last):
+
+  File "D:\a\sdd-open\sdd-open\tests\test_skill_lint.py", line 109, in test_fixtures_passam_sem_conversa
+
+    self.assertEqual(rc, 0, out + err)
+
+AssertionError: 1 != 0 : Traceback (most recent call last):
+
+  File "D:\a\sdd-open\sdd-open\sdd\bin\skill-lint.py", line 247, in <module>
+
+    sys.exit(main(sys.argv))
+
+             ^^^^^^^^^^^^^^
+
+  File "D:\a\sdd-open\sdd-open\sdd\bin\skill-lint.py", line 234, in main
+
+    print(f"\u2705 {p}: frontmatter v\ufffdlido" + (" \ufffd camada de conversa ok" if conversa else ""))
+
+  File "C:\hostedtoolcache\windows\Python\3.12.10\x64\Lib\encodings\cp1252.py", line 19, in encode
+
+    return codecs.charmap_encode(input,self.errors,encoding_table)[0]
+
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+UnicodeEncodeError: 'charmap' codec can't encode character '\u2705' in position 0: character maps to <undefined>
+
+
+
+
+
+======================================================================
+
+FAIL: test_opcao_em_duas_linhas_nao_esconde_as_seguintes (test_skill_lint.SkillLint.test_opcao_em_duas_linhas_nao_esconde_as_seguintes)
+
+----------------------------------------------------------------------
+
+Traceback (most recent call last):
+
+  File "D:\a\sdd-open\sdd-open\tests\test_skill_lint.py", line 165, in test_opcao_em_duas_linhas_nao_esconde_as_seguintes
+
+    self.assertEqual(rc, 0, out)
+
+AssertionError: 1 != 0 : Traceback (most recent call last):
+
+  File "D:\a\sdd-open\sdd-open\sdd\bin\skill-lint.py", line 247, in <module>
+
+    sys.exit(main(sys.argv))
+
+             ^^^^^^^^^^^^^^
+
+  File "D:\a\sdd-open\sdd-open\sdd\bin\skill-lint.py", line 234, in main
+
+    print(f"\u2705 {p}: frontmatter v\ufffdlido" + (" \ufffd camada de conversa ok" if conversa else ""))
+
+  File "C:\hostedtoolcache\windows\Python\3.12.10\x64\Lib\encodings\cp1252.py", line 19, in encode
+
+    return codecs.charmap_encode(input,self.errors,encoding_table)[0]
+
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+UnicodeEncodeError: 'charmap' codec can't encode character '\u2705' in position 0: character maps to <undefined>
+
+
+
+
+
+======================================================================
+
+FAIL: test_pergunta_aberta_sem_opcoes_nao_e_conferida (test_skill_lint.SkillLint.test_pergunta_aberta_sem_opcoes_nao_e_conferida)
+
+----------------------------------------------------------------------
+
+Traceback (most recent call last):
+
+  File "D:\a\sdd-open\sdd-open\tests\test_skill_lint.py", line 216, in test_pergunta_aberta_sem_opcoes_nao_e_conferida
+
+    self.assertEqual(rc, 0, out)
+
+AssertionError: 1 != 0 : Traceback (most recent call last):
+
+  File "D:\a\sdd-open\sdd-open\sdd\bin\skill-lint.py", line 247, in <module>
+
+    sys.exit(main(sys.argv))
+
+             ^^^^^^^^^^^^^^
+
+  File "D:\a\sdd-open\sdd-open\sdd\bin\skill-lint.py", line 234, in main
+
+    print(f"\u2705 {p}: frontmatter v\ufffdlido" + (" \ufffd camada de conversa ok" if conversa else ""))
+
+  File "C:\hostedtoolcache\windows\Python\3.12.10\x64\Lib\encodings\cp1252.py", line 19, in encode
+
+    return codecs.charmap_encode(input,self.errors,encoding_table)[0]
+
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+UnicodeEncodeError: 'charmap' codec can't encode character '\u2705' in position 0: character maps to <undefined>
+
+
+
+
+
+----------------------------------------------------------------------
+
+Ran 8 tests in 0.611s
+
+
+
+FAILED (failures=9)
+

@@ -1,0 +1,5 @@
+$ grep -n "Brief:" sdd/templates/fragments/PERGUNTA_DECISAO.md; grep -n "evidence/[A-Z_]*/AVAL-brief" sdd/templates/fragments/*.md; r=$?; grep -qF "**Brief:** \`sdd/reports/briefs/BRIEF_avaliador_PAGAMENTOS.md\`" sdd/templates/fragments/PERGUNTA_DECISAO.md; f=$?; echo "brief antigo em evidence/: $r (1=ausente) · lugar fixo: $f (0=presente)"; test $r -eq 1 -a $f -eq 0
+95:**Brief:** `sdd/reports/briefs/BRIEF_avaliador_PAGAMENTOS.md`
+107:- **Brief:** e **Sessão nova:** só quando a parada é por uma sessão sem esta conversa: o caminho do
+brief antigo em evidence/: 1 (1=ausente) · lugar fixo: 0 (0=presente)
+[exit=0]

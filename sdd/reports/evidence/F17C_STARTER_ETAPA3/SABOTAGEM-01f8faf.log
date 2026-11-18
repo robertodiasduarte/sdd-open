@@ -1,0 +1,9 @@
+$ bash sabotagem.sh 01f8faf   # 6 mutantes, cada um numa cópia de git archive
+✅ morto  pasta-base ignorada (raiz da skill) (test_f17c_gerador.ModoWeb.test_at002_as_3_saem_so_do_modo_web)
+✅ morto  sem a guarda de .. no citado (test_f17c_gerador.ModoWeb.test_at003_modo_web_quebrado_sai_65_sem_gravar)
+✅ morto  modo web de volta a sdd/ plano (test_f17c_textos.ModoWebGerado.test_at004_pastas_do_open_e_entrega_no_chat)
+✅ morto  validador de volta no checklist do design (test_f17c_textos.ModoWebGerado.test_at005_nenhuma_das_3_cita_validador)
+✅ morto  molde do relatório sem Drift detectado (test_f17c_textos.MoldesDoOpen)
+✅ morto  validador da builder aceita a subpasta errada (test_f17c_textos.ValidadorDaBuilder)
+vivos=0
+rc=0

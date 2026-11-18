@@ -1,0 +1,11 @@
+$ python3 -I /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f17c-starter-etapa3/4be28bc9-cd19-4e52-baaf-378f21755723/scratchpad/at007.py
+sdd-define {'inspecionou/leu': True, 'escreveu/gravou': False, 'rodou': False, 'não inventa caminho': True}
+    **Sem acesso, não finja:** não diga que leu código, testes ou infraestrutura que não leu; sem o código à vista, não invente caminho, comando nem biblioteca: o que falta vira pergunta ou suposição rotulada.
+sdd-design {'inspecionou/leu': True, 'escreveu/gravou': False, 'rodou': False, 'não inventa caminho': True}
+    **Sem acesso, não finja:** sem o código à vista, não diga que o inspecionou e não invente caminho, biblioteca nem agente. Sem código e sem a stack escrita no projeto (`AGENTS.md`, `sdd/config.yaml`, README), pergunte a stack e a estrutura mínima (pastas, linguagem, como roda) antes do File Manifest; projeto novo só depois de a s
+sdd-build {'inspecionou/leu': False, 'escreveu/gravou': True, 'rodou': True, 'não inventa caminho': True}
+    **Sem acesso, não finja:** sem o projeto acessível, peça o projeto; não monte um BUILD_REPORT só a partir dos documentos e não diga que escreveu, rodou ou testou o que não escreveu, rodou ou testou. **Conte as camadas** do manifest usando `layers:` do config (ex.: `api`, `ui`, `sql`): ≥2 camadas distintas ⇒ os passos 1.5 e 5d sã
+define passo 8 tem a pergunta da 1a vez: True | manual-ux nunca atalho: True
+define tabela 'UX pura -> manual-ux' (sem a pergunta): True
+fragmento: exemplo manual-ux segue 'Eu abri … e vi …'?: False
+rc=1

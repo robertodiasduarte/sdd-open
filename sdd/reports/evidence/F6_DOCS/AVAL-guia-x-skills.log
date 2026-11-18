@@ -1,0 +1,29 @@
+# guia × texto das skills (worktree destacada em 963c47e)
+$ grep -n 'registra e libera' docs/pt-BR/guia-do-aluno.md; grep -n -A1 'dado fictício\*\* (' .agents/skills/sdd-higiene-dado/SKILL.md
+581:| **Commit recusado pelo alarme** | O arquivo tem CPF/CNPJ, senha ou certificado. Escolha: **corrigir** (tirar o dado), **é dado fictício** (ela registra e libera) ou **gravar mesmo assim** (só se você conferiu que pode sair do computador). |
+145:   **dado fictício** (troco o número por um inválido e salvo), **gravar mesmo assim** (você conferiu e o
+146-   dado é fictício ou autorizado: salvo passando por cima do alarme, só desta vez). **Nunca rode
+$ grep -n 'registra e libera' /Users/robertoduarte/rdd-public/sdd-starter/docs/guia-do-aluno.pt-BR.md   # origem (starter)
+413:| **Commit recusado pelo alarme** | O arquivo tem CPF/CNPJ, senha ou certifi
+exit=0
+$ grep -n 'devolve para responder' docs/pt-BR/guia-do-aluno.md; grep -n -i -E 'clarif|marcador|NEEDS|dúvida|exit 5|devolv' .agents/skills/sdd-design/SKILL.md | grep -v 'Resposta que não casa'
+365:| **Quando não usar** | Com o Define ainda cheio de dúvidas marcadas — ela devolve para responder antes. |
+exit=1 (1 = nenhuma regra de marcador/dúvida na sdd-design)
+$ grep -n 'nenhum corte' .agents/skills/sdd-brainstorm/SKILL.md; awk "/^## Por que cada regra existe/{f=1} /^## Encerramento/{f=0} !f" .agents/skills/sdd-brainstorm/SKILL.md | grep -n -i -E 'invent|corte'   # fora da seção nova
+160:- **O que sai pelo YAGNI fica registrado, e nenhum corte é inventado** — o registro impede que a ideia
+135:assunções em "O que precisa de você" no fechamento. Nunca invente uma resposta do usuário.
+sdd/templates/BRAINSTORM_TEMPLATE.md:48:## Sample Data Inventory
+exit=0
+$ grep -n 'encerra sem' docs/pt-BR/guia-do-aluno.md .agents/skills/sdd-release/SKILL.md; sed -n 145,153p .agents/skills/sdd-release/SKILL.md
+.agents/skills/sdd-release/SKILL.md:158:   só responde à última linha — **sim** publica exatamente o descrito, **não** encerra sem publicar.
+docs/pt-BR/guia-do-aluno.md:403:| **O que vai perguntar** | Uma pergunta só, no fim de um bloco que diz o que sobe (em palavras), o que muda em produção, se o envio publica sozinho e se a publicação e
+3. **Ledger** (dentro do commit atômico): `sdd/releases/{F}/{slice}_{versão-ou-data}.yaml` com
+   `feature_id`, `slice_id`, `versao`, `estado` (shipado | parcial | pausa), `dod`, `descricao`.
+   Sem SHA (deriva do git). Arquivo novo a cada release: append-only. Ver `references/ledger.md`.
+4. **Commit atômico.** `git add <arquivos específicos>` — **nunca `-A`**. Confira
+   `git diff --cached --name-only`.
+5. **Landar na branch padrão** via worktree temporário fresco de `origin/{default_branch}` +
+   cherry-pick. Conflito → tentar aplicar só o incremento por patch (`git apply --check`); só
+   abortar se os hunks se sobrepõem de verdade.
+6. **Gates pré-push:** diff contra `origin/{default_branch}` tem só os arquivos esperados;
+exit=0

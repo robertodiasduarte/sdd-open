@@ -1,0 +1,47 @@
+$ . /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f17-starter-gerado/ec173b46-ec5c-43da-887d-2b87a8b93fd4/scratchpad/estado.sh; fresh d; echo antes: $(estado d); python3 -B open/scripts/gerar-starter.py --tag v0.0.404 d; echo rc=$?; echo depois: $(estado d)
+echo '== destino sem skills/'; fresh d2; rm -rf d2/skills; git -C d2 add -A; git -C d2 -c user.name=t -c user.email=t@t commit -qm semskills; echo antes: $(estado d2); python3 -B open/scripts/gerar-starter.py --tag v9.9.0 d2; echo rc=$?; echo depois: $(estado d2)
+echo '== destino sem scripts/check-versions.py'; fresh d3; git -C d3 rm -q scripts/check-versions.py; git -C d3 -c user.name=t -c user.email=t@t commit -qm semcv; echo antes: $(estado d3); python3 -B open/scripts/gerar-starter.py --tag v9.9.0 d3; echo rc=$?; echo depois: $(estado d3)
+echo '== destino sujo (modificado)'; fresh d4; echo x >> d4/docs/README.md 2>/dev/null || echo x >> d4/NOTICE; echo antes: $(estado d4); python3 -B open/scripts/gerar-starter.py --tag v9.9.0 d4; echo rc=$?; echo depois: $(estado d4)
+echo '== destino sujo (arquivo novo não rastreado)'; fresh d5; echo x > d5/novo.txt; echo antes: $(estado d5); python3 -B open/scripts/gerar-starter.py --tag v9.9.0 d5; echo rc=$?; echo depois: $(estado d5)
+echo '== destino que não existe'; python3 -B open/scripts/gerar-starter.py --tag v9.9.0 nao-existe; echo rc=$?; ls nao-existe 2>&1
+antes: 04c15606a0f3a5b9 0
+🛑 a tag v0.0.404 não existe neste repositório (a geração parte sempre de uma tag publicada)
+RESULTADO: NADA FOI GRAVADO
+→ corrija a causa acima e rode de novo.
+rc=64
+depois: 04c15606a0f3a5b9 0
+== destino sem skills/
+antes: edd8fe58addf99c1 0
+🛑 /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f17-starter-gerado/ec173b46-ec5c-43da-887d-2b87a8b93fd4/scratchpad/aval2.XXgg/d2 não tem a forma do sdd-starter (skills/ e scripts/check-versions.py)
+RESULTADO: NADA FOI GRAVADO
+→ corrija a causa acima e rode de novo.
+rc=64
+depois: edd8fe58addf99c1 0
+== destino sem scripts/check-versions.py
+antes: 007d82cc7996c06e 0
+🛑 /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f17-starter-gerado/ec173b46-ec5c-43da-887d-2b87a8b93fd4/scratchpad/aval2.XXgg/d3 não tem a forma do sdd-starter (skills/ e scripts/check-versions.py)
+RESULTADO: NADA FOI GRAVADO
+→ corrija a causa acima e rode de novo.
+rc=64
+depois: 007d82cc7996c06e 0
+== destino sujo (modificado)
+antes: 4753555479109ef4 1
+🛑 /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f17-starter-gerado/ec173b46-ec5c-43da-887d-2b87a8b93fd4/scratchpad/aval2.XXgg/d4 tem mudança não commitada ou arquivo não rastreado: commite ou guarde antes
+RESULTADO: NADA FOI GRAVADO
+→ corrija a causa acima e rode de novo.
+rc=64
+depois: 4753555479109ef4 1
+== destino sujo (arquivo novo não rastreado)
+antes: 292821841b6e310c 1
+🛑 /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f17-starter-gerado/ec173b46-ec5c-43da-887d-2b87a8b93fd4/scratchpad/aval2.XXgg/d5 tem mudança não commitada ou arquivo não rastreado: commite ou guarde antes
+RESULTADO: NADA FOI GRAVADO
+→ corrija a causa acima e rode de novo.
+rc=64
+depois: 292821841b6e310c 1
+== destino que não existe
+🛑 /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f17-starter-gerado/ec173b46-ec5c-43da-887d-2b87a8b93fd4/scratchpad/aval2.XXgg/nao-existe não tem a forma do sdd-starter (skills/ e scripts/check-versions.py)
+RESULTADO: NADA FOI GRAVADO
+→ corrija a causa acima e rode de novo.
+rc=64
+ls: nao-existe: No such file or directory
+rc=1

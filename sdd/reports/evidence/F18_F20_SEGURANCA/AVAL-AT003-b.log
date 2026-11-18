@@ -1,0 +1,24 @@
+$ cat /tmp/aval-f18.SxgC/probes/at003b.sh; bash /tmp/aval-f18.SxgC/probes/at003b.sh
+. /tmp/aval-f18.SxgC/probes/lib.sh
+echo "### S14: formas comuns de CORS aberto, uma por arquivo"
+novo s14v
+printf "res.setHeader('Access-Control-Allow-Origin', '*');\n" > f1.js
+printf "const corsHeaders = { 'Access-Control-Allow-Origin': '*' };\n" > f2.ts
+printf "app.use(cors({ origin: '*' }));\n" > f3.js
+printf '{"headers":[{"source":"/(.*)","headers":[{"key":"Access-Control-Allow-Origin","value":"*"}]}]}\n' > vercel.json
+printf "headers['Access-Control-Allow-Origin'] = '*';\n" > f5.js
+printf 'response.headers["Access-Control-Allow-Origin"] = "*"\n' > f6.py
+printf "res.headers.set('Access-Control-Allow-Origin', \"*\");\n" > f7.ts
+printf 'CORS(app, origins="*")\n' > f8.py
+V
+### S14: formas comuns de CORS aberto, uma por arquivo
+▶ seguranca-varredura — stack: supabase, vercel, web (detectada) · base: origin/main · 10 arquivo(s) varrido(s), 0 pulado(s)
+⚠️ S14 media f1.js:1 — CORS aberto para qualquer origem
+   confira à mão: Procure `Access-Control-Allow-Origin` e `origin:` no código das funções de servidor e na configuração do host: o valor tem de ser o seu domínio, nunca `*`.
+⚠️ S14 media f2.ts:1 — CORS aberto para qualquer origem
+⚠️ S14 media f3.js:1 — CORS aberto para qualquer origem
+⚠️ S14 media f7.ts:1 — CORS aberto para qualquer origem
+⚠️ S14 media vercel.json:1 — CORS aberto para qualquer origem
+RESULTADO: AVISOS
+→ confira cada aviso pela prova à mão; o que for falso positivo leva a dispensa na linha, com motivo.
+exit=1

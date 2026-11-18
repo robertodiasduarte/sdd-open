@@ -1,0 +1,179 @@
+$ cat /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f12-contexto/ba201848-0f5b-4f61-8434-538b155d5260/scratchpad/gate.sh; echo ======; bash /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f12-contexto/ba201848-0f5b-4f61-8434-538b155d5260/scratchpad/gate.sh /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.1TRIWjgopM
+# sonda verify-gate: L2, L3, AT-012, AT-013 (forma da linha Governança e marcador)
+S="$1"; cd "$S"; mkdir -p sdd/features; C=sdd/fixtures/DEFINE_FIXTURE_CONTROLE.md
+mk() { # $1 nome  $2 linha Governança (ou vazio)  $3 extra (linha solta no Problem Statement)
+  awk -v g="$2" -v x="$3" '/\*\*Governança\*\*/{ if (g != "") print g; next } /^O envio/{print; if (x != "") print x; next} {print}' "$C" > "sdd/features/DEFINE_$1.md"; }
+run() { # $1 nome  $2 descrição  [flags]
+  local n="$1" d="$2"; shift 2
+  echo ">>> $d"; grep -nE 'Governan|NEEDS' "sdd/features/DEFINE_$n.md" | sed 's/^/    | /'
+  bash sdd/bin/verify-gate.sh "$@" "sdd/features/DEFINE_$n.md" > /tmp/../"$S"/.o 2>&1; rc=$?
+  grep -E 'GOVERNANÇA NÃO|encontrado|RESULTADO|│|Antes, responda|^→' "$S/.o"; echo "rc=$rc"; }
+mk ok '| **Governança** | N.A. — sem gatilho | x |';                     run ok 'controle N.A.'
+mk sem '';                                                            run sem 'sem a linha'
+run sem 'sem a linha, --strict' --strict
+run sem 'sem a linha, --print (isento)' --print
+mk rec '  | **Governança** | N.A. — sem gatilho | x |';                  run rec 'L3: recuo de 2 espaços'
+mk neg '| Governança | N.A. — sem gatilho | x |';                        run neg 'L3: sem negrito'
+mk cola '|**Governança**|N.A. — sem gatilho|x|';                         run cola 'sem espaços nas barras'
+mk dis '| **Governança** | dispensada — projeto interno | Roberto, 2026-11-03 |'; run dis 'dispensada — motivo'
+mk rev '| **Governança** | GOVERNANCA_REVIEW_X.md · 1 aplicadas · 0 recusadas · 0 adiadas | x |'; run rev 'GOVERNANCA_REVIEW_'
+mk ph1 '| **Governança** | N.A. — <motivo> | x |';                         run ph1 'placeholder N.A. — <motivo>'
+mk ph2 '| **Governança** | GOVERNANCA_REVIEW_{F}.md | x |';                 run ph2 'placeholder GOVERNANCA_REVIEW_{F}'
+mk pen '| **Governança** | pendente | x |';                                 run pen 'pendente'
+mk na2 '| **Governança** | N.A.— colado | x |';                             run na2 'N.A.— sem espaço'
+mk mk2 '| **Governança** | pendente | x |' '[NEEDS CLARIFICATION: governança não rodou] e [NEEDS CLARIFICATION: qual teto por minuto?]'
+run mk2 'L2: dois marcadores NA MESMA linha'
+awk '/^O envio/{print; print "[NEEDS CLARIFICATION: governança não rodou]"; print "[NEEDS CLARIFICATION: qual teto por minuto?]"; next} {print}' sdd/features/DEFINE_pen.md > sdd/features/DEFINE_mk3.md
+run mk3 'L2: dois marcadores em linhas separadas'
+awk '/^O envio/{print; print "[NEEDS CLARIFICATION: governança não rodou]"; next} {print}' sdd/features/DEFINE_ok.md > sdd/features/DEFINE_mk4.md
+run mk4 'marcador ativo com linha N.A. presente'
+mk fen '' ; awk '/^## Verify Gate/{print "```"; print "| **Governança** | N.A. — em cerca | x |"; print "```"; print ""} {print}' sdd/features/DEFINE_fen.md > sdd/features/DEFINE_fen2.md
+run fen2 'linha só dentro de cerca'
+mk fora ''; awk '/^## Problem Statement/{print "| **Governança** | N.A. — fora da seção | x |"; print ""} {print}' sdd/features/DEFINE_fora.md > sdd/features/DEFINE_fora2.md
+run fora2 'linha fora de ## Technical Context'
+for f in sdd/fixtures/DEFINE_FIXTURE_*.md; do bash sdd/bin/verify-gate.sh "$f" >/dev/null 2>&1; echo "fixture $(basename $f) rc=$?"; done
+rm -f "$S/.o"
+======
+>>> controle N.A.
+    | 3:> Fixture do `verify-gate.sh` — idêntica à FIXTURE_NEEDS_CLARIFICATION **sem** o marcador
+    | 15:| **Governança** | N.A. — sem gatilho | x |
+   │ 
+RESULTADO: VERDE
+→ siga para o próximo passo.
+rc=0
+>>> sem a linha
+    | 3:> Fixture do `verify-gate.sh` — idêntica à FIXTURE_NEEDS_CLARIFICATION **sem** o marcador
+🛑 GOVERNANÇA NÃO REVISADA (exit 5) — 'sdd/features/DEFINE_sem.md' não tem a linha Governança com um valor final
+   (encontrado: ausente).
+RESULTADO: CLARIFICAR
+→ rode a revisão de governança (passo 11 do sdd-define) ou dispense com motivo; o build e a release ficam parados até lá.
+rc=5
+>>> sem a linha, --strict
+    | 3:> Fixture do `verify-gate.sh` — idêntica à FIXTURE_NEEDS_CLARIFICATION **sem** o marcador
+🛑 GOVERNANÇA NÃO REVISADA (exit 5) — 'sdd/features/DEFINE_sem.md' não tem a linha Governança com um valor final
+   (encontrado: ausente).
+RESULTADO: CLARIFICAR
+→ rode a revisão de governança (passo 11 do sdd-define) ou dispense com motivo; o build e a release ficam parados até lá.
+rc=1
+>>> sem a linha, --print (isento)
+    | 3:> Fixture do `verify-gate.sh` — idêntica à FIXTURE_NEEDS_CLARIFICATION **sem** o marcador
+rc=0
+>>> L3: recuo de 2 espaços
+    | 3:> Fixture do `verify-gate.sh` — idêntica à FIXTURE_NEEDS_CLARIFICATION **sem** o marcador
+    | 15:  | **Governança** | N.A. — sem gatilho | x |
+   │ 
+RESULTADO: VERDE
+→ siga para o próximo passo.
+rc=0
+>>> L3: sem negrito
+    | 3:> Fixture do `verify-gate.sh` — idêntica à FIXTURE_NEEDS_CLARIFICATION **sem** o marcador
+    | 15:| Governança | N.A. — sem gatilho | x |
+   │ 
+RESULTADO: VERDE
+→ siga para o próximo passo.
+rc=0
+>>> sem espaços nas barras
+    | 3:> Fixture do `verify-gate.sh` — idêntica à FIXTURE_NEEDS_CLARIFICATION **sem** o marcador
+    | 15:|**Governança**|N.A. — sem gatilho|x|
+   │ 
+RESULTADO: VERDE
+→ siga para o próximo passo.
+rc=0
+>>> dispensada — motivo
+    | 3:> Fixture do `verify-gate.sh` — idêntica à FIXTURE_NEEDS_CLARIFICATION **sem** o marcador
+    | 15:| **Governança** | dispensada — projeto interno | Roberto, 2026-11-03 |
+   │ 
+RESULTADO: VERDE
+→ siga para o próximo passo.
+rc=0
+>>> GOVERNANCA_REVIEW_
+    | 3:> Fixture do `verify-gate.sh` — idêntica à FIXTURE_NEEDS_CLARIFICATION **sem** o marcador
+    | 15:| **Governança** | GOVERNANCA_REVIEW_X.md · 1 aplicadas · 0 recusadas · 0 adiadas | x |
+   │ 
+RESULTADO: VERDE
+→ siga para o próximo passo.
+rc=0
+>>> placeholder N.A. — <motivo>
+    | 3:> Fixture do `verify-gate.sh` — idêntica à FIXTURE_NEEDS_CLARIFICATION **sem** o marcador
+    | 15:| **Governança** | N.A. — <motivo> | x |
+🛑 GOVERNANÇA NÃO REVISADA (exit 5) — 'sdd/features/DEFINE_ph1.md' não tem a linha Governança com um valor final
+   (encontrado: N.A. — <motivo>).
+RESULTADO: CLARIFICAR
+→ rode a revisão de governança (passo 11 do sdd-define) ou dispense com motivo; o build e a release ficam parados até lá.
+rc=5
+>>> placeholder GOVERNANCA_REVIEW_{F}
+    | 3:> Fixture do `verify-gate.sh` — idêntica à FIXTURE_NEEDS_CLARIFICATION **sem** o marcador
+    | 15:| **Governança** | GOVERNANCA_REVIEW_{F}.md | x |
+🛑 GOVERNANÇA NÃO REVISADA (exit 5) — 'sdd/features/DEFINE_ph2.md' não tem a linha Governança com um valor final
+   (encontrado: GOVERNANCA_REVIEW_{F}.md).
+RESULTADO: CLARIFICAR
+→ rode a revisão de governança (passo 11 do sdd-define) ou dispense com motivo; o build e a release ficam parados até lá.
+rc=5
+>>> pendente
+    | 3:> Fixture do `verify-gate.sh` — idêntica à FIXTURE_NEEDS_CLARIFICATION **sem** o marcador
+    | 15:| **Governança** | pendente | x |
+🛑 GOVERNANÇA NÃO REVISADA (exit 5) — 'sdd/features/DEFINE_pen.md' não tem a linha Governança com um valor final
+   (encontrado: pendente).
+RESULTADO: CLARIFICAR
+→ rode a revisão de governança (passo 11 do sdd-define) ou dispense com motivo; o build e a release ficam parados até lá.
+rc=5
+>>> N.A.— sem espaço
+    | 3:> Fixture do `verify-gate.sh` — idêntica à FIXTURE_NEEDS_CLARIFICATION **sem** o marcador
+    | 15:| **Governança** | N.A.— colado | x |
+🛑 GOVERNANÇA NÃO REVISADA (exit 5) — 'sdd/features/DEFINE_na2.md' não tem a linha Governança com um valor final
+   (encontrado: N.A.— colado).
+RESULTADO: CLARIFICAR
+→ rode a revisão de governança (passo 11 do sdd-define) ou dispense com motivo; o build e a release ficam parados até lá.
+rc=5
+>>> L2: dois marcadores NA MESMA linha
+    | 3:> Fixture do `verify-gate.sh` — idêntica à FIXTURE_NEEDS_CLARIFICATION **sem** o marcador
+    | 10:[NEEDS CLARIFICATION: governança não rodou] e [NEEDS CLARIFICATION: qual teto por minuto?]
+    | 16:| **Governança** | pendente | x |
+🛑 GOVERNANÇA NÃO REVISADA (exit 5) — 'sdd/features/DEFINE_mk2.md' não tem a linha Governança com um valor final
+   (encontrado: o marcador "governança não rodou" na linha 10).
+RESULTADO: CLARIFICAR
+→ rode a revisão de governança (passo 11 do sdd-define) ou dispense com motivo; o build e a release ficam parados até lá.
+rc=5
+>>> L2: dois marcadores em linhas separadas
+    | 3:> Fixture do `verify-gate.sh` — idêntica à FIXTURE_NEEDS_CLARIFICATION **sem** o marcador
+    | 10:[NEEDS CLARIFICATION: governança não rodou]
+    | 11:[NEEDS CLARIFICATION: qual teto por minuto?]
+    | 17:| **Governança** | pendente | x |
+🛑 GOVERNANÇA NÃO REVISADA (exit 5) — 'sdd/features/DEFINE_mk3.md' não tem a linha Governança com um valor final
+   (encontrado: o marcador "governança não rodou" na linha 10).
+   Antes, responda também as dúvidas abertas (o passo 11 só roda sem elas):
+   │ 11: [NEEDS CLARIFICATION: qual teto por minuto?]
+RESULTADO: CLARIFICAR
+→ rode a revisão de governança (passo 11 do sdd-define) ou dispense com motivo; o build e a release ficam parados até lá.
+rc=5
+>>> marcador ativo com linha N.A. presente
+    | 3:> Fixture do `verify-gate.sh` — idêntica à FIXTURE_NEEDS_CLARIFICATION **sem** o marcador
+    | 10:[NEEDS CLARIFICATION: governança não rodou]
+    | 16:| **Governança** | N.A. — sem gatilho | x |
+🛑 GOVERNANÇA NÃO REVISADA (exit 5) — 'sdd/features/DEFINE_mk4.md' não tem a linha Governança com um valor final
+   (encontrado: o marcador "governança não rodou" na linha 10).
+RESULTADO: CLARIFICAR
+→ rode a revisão de governança (passo 11 do sdd-define) ou dispense com motivo; o build e a release ficam parados até lá.
+rc=5
+>>> linha só dentro de cerca
+    | 3:> Fixture do `verify-gate.sh` — idêntica à FIXTURE_NEEDS_CLARIFICATION **sem** o marcador
+    | 17:| **Governança** | N.A. — em cerca | x |
+🛑 GOVERNANÇA NÃO REVISADA (exit 5) — 'sdd/features/DEFINE_fen2.md' não tem a linha Governança com um valor final
+   (encontrado: ausente).
+RESULTADO: CLARIFICAR
+→ rode a revisão de governança (passo 11 do sdd-define) ou dispense com motivo; o build e a release ficam parados até lá.
+rc=5
+>>> linha fora de ## Technical Context
+    | 3:> Fixture do `verify-gate.sh` — idêntica à FIXTURE_NEEDS_CLARIFICATION **sem** o marcador
+    | 7:| **Governança** | N.A. — fora da seção | x |
+🛑 GOVERNANÇA NÃO REVISADA (exit 5) — 'sdd/features/DEFINE_fora2.md' não tem a linha Governança com um valor final
+   (encontrado: ausente).
+RESULTADO: CLARIFICAR
+→ rode a revisão de governança (passo 11 do sdd-define) ou dispense com motivo; o build e a release ficam parados até lá.
+rc=5
+fixture DEFINE_FIXTURE_CONTROLE.md rc=0
+fixture DEFINE_FIXTURE_GOVERNANCA.md rc=0
+fixture DEFINE_FIXTURE_NEEDS_CLARIFICATION.md rc=0
+fixture DEFINE_FIXTURE_SEM_BLOCO.md rc=0
+fixture DEFINE_FIXTURE_SEM_GOVERNANCA.md rc=0
+[exit=0]

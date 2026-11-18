@@ -1,0 +1,23 @@
+$ /usr/bin/python3 -B /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f7-evidencia/17ba90ab-414d-4dcc-9a02-576aad29f6c6/scratchpad/corpus_probe.py sdd/reports/evidence F7_EVIDENCIA
+logs=245 exit_lines=323 hits=19
+Counter({'tail': 10, 'cut': 3, 'tr': 2, 'sed': 2, 'head': 2})
+sdd/reports/evidence/F4_CONVERSA/AVAL-at006-017-grep.log:18 [tr] for d in .agents/skills/sdd-*/; do s=$(basename $d); f=$d/SKILL.md; v=$(sed -n "s/^  version: \"\(.*\)\"/\1/p"
+sdd/reports/evidence/F4_CONVERSA/AVAL-at013-uso-e-erros.log:28 [sed] T=$(mktemp -d); cp sdd/fixtures/handoff/HANDOFF_VALIDO.md $T/H.md; cp sdd/fixtures/design/DESIGN_VALIDO.md $T/
+sdd/reports/evidence/F4_CONVERSA/AVAL-at020-bytes-identicos.log:20 [tr] for f in sdd/bin/verify-gate.sh sdd/bin/report-lint.py sdd/bin/playbook-lint.sh scripts/publish-gate.sh script
+sdd/reports/evidence/F4_CONVERSA/AVAL-at022-integridade-e-skill-frontmatter.log:5 [tail] /usr/bin/python3 -B /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f4-conversa/5e736f5b-f
+sdd/reports/evidence/F4_CONVERSA/escopo.log:65 [tail] git diff --stat v2.2.4 HEAD | tail -1 && git diff --name-status v2.2.4 HEAD
+sdd/reports/evidence/F4_CONVERSA/linhas.log:6 [tail] wc -l .agents/skills/sdd-*/SKILL.md | sort -n | tail -4
+sdd/reports/evidence/F6_DOCS/AVAL-contratos-intactos.log:7 [tail] git diff --stat v2.2.6 HEAD -- sdd/bin sdd/fixtures sdd/templates sdd/playbook.md scripts bin .github; echo "l
+sdd/reports/evidence/F6_DOCS/AVAL-versoes-secao-lint.log:27 [head] for s in brainstorm define governanca ux-review design build release; do f=.agents/skills/sdd-$s/SKILL.md; old
+sdd/reports/evidence/F6_DOCS/AVAL2-achados-ciclo1.log:94 [head] grep -n 'def existe' -A15 tests/test_docs.py | head -16
+sdd/reports/evidence/F6_DOCS/AVAL2-achados-novos.log:17 [cut] sed -n 584p docs/pt-BR/guia-do-aluno.md | cut -c1-120
+sdd/reports/evidence/F6_DOCS/AVAL2-achados-novos.log:54 [cut] sed -n 582p docs/pt-BR/guia-do-aluno.md | cut -c1-110
+sdd/reports/evidence/F6_DOCS/AVAL2-achados-novos.log:57 [cut] sed -n 285p docs/pt-BR/guia-do-aluno.md | cut -c1-260
+sdd/reports/evidence/F6_DOCS/check-versions.log:12 [sed] python3 -B scripts/check-versions.py --base v2.2.6 --base-obrigatoria && for s in brainstorm define governanca
+sdd/reports/evidence/F6_DOCS/escopo.log:26 [tail] git diff --stat v2.2.6 HEAD | tail -1 && git diff --name-status v2.2.6 HEAD
+sdd/reports/evidence/F6_DOCS/linhas.log:6 [tail] wc -l .agents/skills/sdd-*/SKILL.md | sort -n | tail -4
+sdd/reports/evidence/F3_BUILD_RELEASE/AT-022.log:7 [tail] git diff --stat v2.2.2 HEAD -- sdd/bin/verify-gate.sh sdd/fixtures/ scripts/publish-gate.sh scripts/publish-ga
+sdd/reports/evidence/F5_CONHECIMENTO/escopo.log:53 [tail] git diff --stat v2.2.5 HEAD | tail -1 && git diff --name-status v2.2.5 HEAD
+sdd/reports/evidence/F5_CONHECIMENTO/linhas.log:6 [tail] wc -l .agents/skills/sdd-*/SKILL.md | sort -n | tail -4
+sdd/reports/evidence/W0/contratos-intactos.log:6 [tail] git diff --stat v2.2.3 HEAD -- sdd/bin/ sdd/fixtures/ scripts/ .github/ && echo "(diff vazio: sdd/bin, fixture
+[exit=0]

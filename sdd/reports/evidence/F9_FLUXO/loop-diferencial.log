@@ -1,0 +1,5 @@
+$ F=sdd/fixtures/fluxo; T=$(mktemp -d); mkdir "$T/inv"; cp $F/review-invalida/META.txt "$T/inv/"; printf "| a | s | v | r | e |\n|---|---|---|---|---|\n| R1 | HIGH | REBATIDA_EVIDENCIA | rodada=3 | x |\n" > "$T/led3.md"; for caso in "A|--review $T/inv --rodada 1" "B|--review $F/review-ok --ledger $T/led3.md --rodada 3 --avaliacao $F/AVALIACAO_needs_work.md --ciclo-avaliador 1" "C|--review $F/review-ok --rodada 1 --avaliacao $F/AVALIACAO_recibo.md"; do n=${caso%%|*}; a=${caso#*|}; /bin/bash sdd/bin/sdd-fluxo.sh loop $a >/dev/null 2>&1; p=$?; zsh "$FONTE" loop $a >/dev/null 2>&1; f=$?; echo "caso $n: porte=$p fonte=$f"; [ "$p" = "$f" ] || exit 1; done; rm -rf "${T:?}"
+caso A: porte=10 fonte=10
+caso B: porte=10 fonte=10
+caso C: porte=10 fonte=10
+[exit=0]

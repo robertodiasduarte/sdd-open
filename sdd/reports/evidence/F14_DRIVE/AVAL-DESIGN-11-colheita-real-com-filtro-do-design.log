@@ -1,0 +1,47 @@
+$ T=$(mktemp -d); mkdir $T/antes $T/depois; cp sdd/reports/evidence/F14_PLAYBOOK/AVAL*-*.log $T/antes/; /usr/bin/python3 -B -c "
+import glob,os,re,sys
+a,d=sys.argv[1],sys.argv[2]
+F=re.compile(r\"^(\\$ |❌ (delta|invariantes) linha \d+:|🔴 trava INV:)\")
+n=0
+for f in glob.glob(a+\"/*.log\"):
+    s=[]
+    for ln in open(f,encoding=\"utf-8\",errors=\"replace\").read().split(\"\n\"):
+        if F.match(ln): n+=1; s.append(\"\")
+        else: s.append(ln)
+    open(os.path.join(d,os.path.basename(f)),\"w\",encoding=\"utf-8\").write(\"\n\".join(s))
+print(\"linhas removidas pelo filtro do Decision 11:\",n)
+" $T/antes $T/depois; echo "=== colheita SEM filtro"; bash sdd/bin/playbook-curator.sh --colher $T/antes sdd/playbook.md; echo "exit=$?"; echo "=== colheita COM o filtro do Decision 11"; bash sdd/bin/playbook-curator.sh --colher $T/depois sdd/playbook.md; echo "exit=$?"; echo "=== linhas de origem de cada DELTA restante"; /usr/bin/python3 -B -c "
+import glob,re,subprocess,sys,os
+d=sys.argv[1]
+s=subprocess.run([\"bash\",\"sdd/bin/playbook-curator.sh\",\"--colher\",d,\"sdd/playbook.md\"],capture_output=True,text=True).stdout
+for ln in s.split(\"\n\"):
+    m=re.match(r\"^DELTA (LM-\d+) mordeu.*evidencia=(.+?):(\d+)\",ln)
+    if m:
+        t=open(os.path.join(d,m.group(2)),encoding=\"utf-8\",errors=\"replace\").read().split(\"\n\")[int(m.group(3))-1]
+        print(m.group(1),m.group(2)+\":\"+m.group(3),\"::\",t[:200])
+" $T/depois; rm -rf $T
+linhas removidas pelo filtro do Decision 11: 146
+=== colheita SEM filtro
+IGNORADO LM-999 (não existe como bullet ativo em sdd/playbook.md)
+DELTA LM-005 mordeu+1 · conf=2026-11-05 · evidencia=AVAL2-A6-envio-com-conflito.log:21 · fp=c79d9ccbca
+IGNORADO LM-016 (não existe como bullet ativo em sdd/playbook.md)
+IGNORADO LM-030 (não existe como bullet ativo em sdd/playbook.md)
+IGNORADO LM-020 (não existe como bullet ativo em sdd/playbook.md)
+DELTA LM-001 mordeu+1 · conf=2026-11-05 · evidencia=AVAL2-V2-aposentar-e-bordas.log:40 · fp=8ea1f11743
+resumo: deltas=2 (ajudou=0 mordeu=2) candidatos=0 rejeitados=0 promocoes=0 sugestoes=0
+RESULTADO: HÁ O QUE JULGAR
+→ despache o curador com esta colheita; nada foi aplicado.
+exit=0
+=== colheita COM o filtro do Decision 11
+DELTA LM-005 mordeu+1 · conf=2026-11-05 · evidencia=AVAL2-A6-envio-com-conflito.log:21 · fp=c79d9ccbca
+IGNORADO LM-016 (não existe como bullet ativo em sdd/playbook.md)
+IGNORADO LM-999 (não existe como bullet ativo em sdd/playbook.md)
+IGNORADO LM-030 (não existe como bullet ativo em sdd/playbook.md)
+IGNORADO LM-020 (não existe como bullet ativo em sdd/playbook.md)
+resumo: deltas=1 (ajudou=0 mordeu=1) candidatos=0 rejeitados=0 promocoes=0 sugestoes=0
+RESULTADO: HÁ O QUE JULGAR
+→ despache o curador com esta colheita; nada foi aplicado.
+exit=0
+=== linhas de origem de cada DELTA restante
+LM-005 AVAL2-A6-envio-com-conflito.log:21 :: /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.lyAZcjfTsM/x.md:0: ❌ ID duplicado: LM-005 (linhas 22 31 )
+[exit=0]

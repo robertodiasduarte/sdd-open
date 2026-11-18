@@ -1,0 +1,28 @@
+$ python3 -B open/scripts/gerar-starter.py --lint cru   # cópia crua das 10 de .agents/skills/ da tag
+🛑 skills/sdd-auditoria-harness/SKILL.md:19: sdd/templates/
+🛑 skills/sdd-auditoria-harness/references/como-falar.md:46: sdd/templates/
+🛑 skills/sdd-checar-ambiente/SKILL.md:19: sdd/templates/
+🛑 skills/sdd-checar-ambiente/references/como-falar.md:61: sdd/templates/
+🛑 skills/sdd-checar-ambiente/scripts/checar.sh:349: init do sdd-open
+🛑 skills/sdd-engenharia-reversa-saas/SKILL.md:50: sdd/templates/
+🛑 skills/sdd-engenharia-reversa-saas/SKILL.md:136: sdd/templates/
+🛑 skills/sdd-engenharia-reversa-saas/manifest.json:157: sdd/bin/
+🛑 skills/sdd-engenharia-reversa-saas/references/ORQUESTRACAO_SDD.md:33: sdd/templates/
+🛑 skills/sdd-engenharia-reversa-saas/references/como-falar.md:5: sdd/templates/
+🛑 skills/sdd-iniciar-repo/SKILL.md:248: `init` do sdd-open
+🛑 skills/sdd-kb/SKILL.md:78: sdd/templates/
+🛑 skills/sdd-kb/references/como-falar.md:5: sdd/templates/
+🛑 skills/sdd-loop-builder/SKILL.md:25: sdd/templates/
+🛑 skills/sdd-loop-builder/references/como-falar.md:53: sdd/templates/
+... (36 achados)
+RESULTADO: CITA ARQUIVO DO INIT
+→ troque a citação (scripts/starter/trocas/) e gere de novo.
+rc=65
+$ python3 -B open/scripts/gerar-starter.py --lint starter   # saída gerada
+RESULTADO: VERDE
+→ nenhuma citação a arquivo que só o init cria.
+rc=0
+$ python3 -B open/scripts/gerar-starter.py --lint starter/skills/sdd-kb (pasta isolada)
+RESULTADO: VERDE
+→ nenhuma citação a arquivo que só o init cria.
+rc=0

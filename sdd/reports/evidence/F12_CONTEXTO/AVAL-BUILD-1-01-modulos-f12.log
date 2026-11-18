@@ -1,0 +1,7 @@
+$ cd tests && SDD_TEST_BASH=/bin/bash /usr/bin/python3 -B -m unittest test_contexto_lint test_patterns_lint test_governanca_fronteira test_governanca_bloco test_governanca_gate test_docs_extract_decisions test_f12_textos test_fluxo test_verify_gate test_verify_gate_trace test_gate_baseline test_sdd_open test_docs test_decisoes_lint test_release_workflow test_contrato_build_release test_correcoes_w0 test_agnostico test_bash32 test_skill_lint test_check_versions 2>&1
+.................................................................................................................................................................................................................................................................................................................................................................
+----------------------------------------------------------------------
+Ran 353 tests in 506.689s
+
+OK
+[exit=0]

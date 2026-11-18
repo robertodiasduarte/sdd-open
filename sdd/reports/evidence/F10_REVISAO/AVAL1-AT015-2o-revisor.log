@@ -1,0 +1,105 @@
+$ bash /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f10-revisao/bd420f6e-558d-4962-a0c9-40cdfc2cbd27/scratchpad/p/a5.sh AT015
+--- escolhe a 1ª disponível fora do revisor e do auditor (stub-c) e rotula @engine
+▶ revisor: stub-a (revisor-ok) — até 1 min
+▶ 2º revisor: stub-c (revisor-ok) — até 1 min
+▶ auditor: stub-b (auditor-agree) — até 1 min
+RESULTADO: REVIEW COMPLETA
+[rc=0]
+gatilho_2o_revisor      : segurança (src/auth/token.sh)
+revisor2_engine         : stub-c
+revisor2_exit           : 0
+revisor2_achados        : 2
+reviewer.verdicts:
+{"achado": "R1@stub-a", "arquivo": "src/conta.sh", "linha": 12, "severidade": "HIGH", "confianca": "CONFIRMED", "resumo": "divisão por zero com lista vazia"}
+{"achado": "R2@stub-a", "arquivo": "src/conta.sh", "linha": 30, "severidade": "MED", "confianca": "PLAUSIBLE", "resumo": "arredondamento perde centavos"}
+reviewer2.verdicts:
+{"achado": "R1@stub-c", "arquivo": "src/conta.sh", "linha": 12, "severidade": "HIGH", "confianca": "CONFIRMED", "resumo": "divisão por zero com lista vazia"}
+{"achado": "R2@stub-c", "arquivo": "src/conta.sh", "linha": 30, "severidade": "MED", "confianca": "PLAUSIBLE", "resumo": "arredondamento perde centavos"}
+--- revisor efetivo por fallback é excluído (stub-a cai por cota; stub-c revisa; 2º revisor não pode ser stub-c)
+▶ revisor: stub-a:falha-quota (falha-quota) — até 1 min
+▶ revisor: stub-c (revisor-ok) — até 1 min
+▶ 2º revisor: stub-a (revisor-ok) — até 1 min
+▶ auditor: stub-b (auditor-agree) — até 1 min
+reviewer_engine_efetivo : stub-c
+revisor2_engine         : stub-a
+--- --revisor2 forçado
+▶ 2º revisor: stub-d:revisor-vazio (revisor-vazio) — até 1 min
+revisor2_engine         : stub-d:revisor-vazio
+revisor2_exit           : 0
+--- nenhuma disponível (stub-c e stub-d com modelo off*)
++ adversarial-review.sh --base main --reviewer a --auditor b
+▶ revisor: a (revisor-ok) — até 1 min
+▶ auditor: b (auditor-agree) — até 1 min
+⚠️ sem --feature: a revisão não leu BRAINSTORM, DEFINE nem DESIGN, e decisões já documentadas podem voltar como achado
+⚠️ o 2º revisor (nenhuma engine) não tinha engine disponível: a revisão vale só com a dispensa registrada no ledger
+RESULTADO: REVIEW COMPLETA
+pasta: sdd/reports/reviews/EXTERNAL_REVIEW_20261031-235716-2
+diff_sha256: c610dd1489afebf4d29b6605b870974652d8bcc773a1322b580b88619e789d34
+revisor: a (stub-modelo) — incluído na assinatura
+2º revisor: indisponível (n/d) — n/d
+auditor: b (stub-modelo) — incluído na assinatura
+diversidade: modelo
+achados: 1 grave, 1 médio, 0 leves
+custo total: US$ 0,0000
+→ rode: bash sdd/bin/sdd-fluxo.sh loop --review sdd/reports/reviews/EXTERNAL_REVIEW_20261031-235716-2 --ledger <ledger da revisão> --rodada <N>
+[rc=0]
+revisor2_engine         : indisponível
+revisor2_motivo         : nenhuma engine disponível fora do revisor e do auditor
+revisor2_exit           : 67
+auditor_exit            : 0
+convergencia_1o_passe   : sim
+--- 2º revisor falha: stub-c:sem-chave
+⚠️ o 2º revisor (stub-c:sem-chave) falhou (falha de credencial em stub-c:sem-chave): a revisão vale só com a dispensa registrada no ledger
+RESULTADO: REVIEW COMPLETA
+[rc=0]
+reviewer_exit           : 0
+revisor2_motivo         : falha de credencial em stub-c:sem-chave
+revisor2_exit           : 65
+auditor_exit            : 0
+reviewer2.verdicts existe? nao; ids no reviewer.verdicts: "achado": "R1" "achado": "R2" 
+--- 2º revisor falha: stub-c:sem-cli
+⚠️ o 2º revisor (-) falhou (CLI de stub-c:sem-cli fora do PATH): a revisão vale só com a dispensa registrada no ledger
+RESULTADO: REVIEW COMPLETA
+[rc=0]
+reviewer_exit           : 0
+revisor2_motivo         : CLI de stub-c:sem-cli fora do PATH
+revisor2_exit           : 66
+auditor_exit            : 0
+reviewer2.verdicts existe? nao; ids no reviewer.verdicts: "achado": "R1" "achado": "R2" 
+--- 2º revisor falha: stub-c:revisor-sem-bloco
+⚠️ o 2º revisor (stub-c:revisor-sem-bloco) falhou (stub-c:revisor-sem-bloco: bloco <<<VERDICTS ausente ou malformado): a revisão vale só com a dispensa registrada no ledger
+RESULTADO: REVIEW COMPLETA
+[rc=0]
+reviewer_exit           : 0
+revisor2_motivo         : stub-c:revisor-sem-bloco: bloco <<<VERDICTS ausente ou malformado
+revisor2_exit           : 68
+auditor_exit            : 0
+reviewer2.verdicts existe? nao; ids no reviewer.verdicts: "achado": "R1" "achado": "R2" 
+--- 2º revisor falha: stub-c:falha-quota
+⚠️ o 2º revisor (-) falhou (stub-c:falha-quota falhou (cota, cobrança ou erro)): a revisão vale só com a dispensa registrada no ledger
+RESULTADO: REVIEW COMPLETA
+[rc=0]
+reviewer_exit           : 0
+revisor2_motivo         : stub-c:falha-quota falhou (cota, cobrança ou erro)
+revisor2_exit           : 67
+auditor_exit            : 0
+reviewer2.verdicts existe? nao; ids no reviewer.verdicts: "achado": "R1" "achado": "R2" 
+--- 2º revisor falha: stub-c:falha-auth
+⚠️ o 2º revisor (stub-c:falha-auth) falhou (falha de credencial em stub-c:falha-auth): a revisão vale só com a dispensa registrada no ledger
+RESULTADO: REVIEW COMPLETA
+[rc=0]
+reviewer_exit           : 0
+revisor2_motivo         : falha de credencial em stub-c:falha-auth
+revisor2_exit           : 65
+auditor_exit            : 0
+reviewer2.verdicts existe? nao; ids no reviewer.verdicts: "achado": "R1" "achado": "R2" 
+--- 2º revisor falha: stub-c:dorme
+⚠️ o 2º revisor (-) falhou (stub-c:dorme passou do teto de tempo): a revisão vale só com a dispensa registrada no ledger
+RESULTADO: REVIEW COMPLETA
+[rc=0]
+reviewer_exit           : 0
+revisor2_motivo         : stub-c:dorme passou do teto de tempo
+revisor2_exit           : 67
+auditor_exit            : 0
+reviewer2.verdicts existe? nao; ids no reviewer.verdicts: "achado": "R1" "achado": "R2" 
+[exit=0]

@@ -1,0 +1,10 @@
+$ SDD_TEST_BASH=/bin/bash /usr/bin/python3 -B -m unittest -v -k at002 test_f26_docs_na_main
+# AT-002 · HEAD e99136d · cópia de git archive HEAD · piso (/usr/bin/python3, /bin/bash)
+test_at002_at003_publish_gate_sobre_o_pacote_verde_e_os_3_defeitos_vermelhos (test_f26_docs_na_main.Travas) ... ok
+test_at002_workflows_so_leem_o_pacote (test_f26_docs_na_main.Travas) ... ok
+
+----------------------------------------------------------------------
+Ran 2 tests in 8.120s
+
+OK
+[exit=0]

@@ -1,0 +1,101 @@
+$ /bin/bash /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f4-conversa/5e736f5b-fdb5-4cdd-a304-706fff11b1bb/scratchpad/sonda-handoff-lint.sh
+--- AT-011 fixture (sem ## Eventos) (esperado 0)
+✅ sdd/fixtures/handoff/HANDOFF_VALIDO.md: HANDOFF válido
+exit=0
+0
+--- AT-011 com secao extra ## Recomendações (esperado 0)
+✅ $T/H.md: HANDOFF válido
+exit=0
+--- AT-011 com ## Eventos (esperado 0)
+✅ $T/H.md: HANDOFF válido
+exit=0
+--- controle: template cru (esperado 1)
+🛑 $T/H.md: ## Histórico de slices sem nenhum '### <slice> — AAAA-MM-DD'
+🛑 $T/H.md: linha 1: placeholder do template sem preencher: {Feature Name}
+🛑 $T/H.md: linha 11: placeholder do template sem preencher: {FEATURE_NAME}
+🛑 $T/H.md: linha 12: placeholder do template sem preencher: {1 frase: o que muda para quem usa}
+🛑 $T/H.md: linha 13: placeholder do template sem preencher: {🔨 em andamento · 🚢 publicado · ✅ DoD fechado · ⏸ pausado}
+🛑 $T/H.md: linha 17: placeholder do template sem preencher: {🟢 0 · 🔴 2 · inconclusivo 3 · assinatura 4 · clarificar 5}
+🛑 $T/H.md: linha 21: placeholder do template sem preencher: {o que está pronto, com o comando ou arquivo que PROVA — nunca "acho que funciona"}
+🛑 $T/H.md: linha 25: placeholder do template sem preencher: {o que falta, em ordem, cada item começando por verbo}
+🛑 $T/H.md: linha 29: placeholder do template sem preencher: {critério verificável 1}
+🛑 $T/H.md: linha 30: placeholder do template sem preencher: {critério verificável 2}
+🛑 $T/H.md: linha 34: placeholder do template sem preencher: {armadilha que mordeu ou quase mordeu, com o "faça isto em vez disso"; candidata ao }
+🛑 $T/H.md: linha 38: placeholder do template sem preencher: {caso não coberto · teste que falha · smoke pendente}
+🛑 $T/H.md: linha 64: placeholder do template sem preencher: {slice/sessão mais recente}
+🛑 $T/H.md: linha 66: placeholder do template sem preencher: {o que aconteceu nesta sessão, em 3-6 linhas}
+🛑 $T/H.md: linha 68: placeholder do template sem preencher: {slice anterior}
+🛑 $T/H.md: linha 48: placeholder do template sem preencher: {FEATURE_NAME}
+RESULTADO: VERMELHO
+exit=1
+--- AT-012 sem # HANDOFF:
+🛑 $T/H.md: o 1º título não é '# HANDOFF: <feature>'
+RESULTADO: VERMELHO
+exit=1
+--- AT-012 Ficha sem Objetivo
+🛑 $T/H.md: ## Ficha sem a linha Objetivo
+RESULTADO: VERMELHO
+exit=1
+--- AT-012 Ficha sem Status
+🛑 $T/H.md: ## Ficha sem a linha Status
+RESULTADO: VERMELHO
+exit=1
+--- AT-012 Ficha sem Verify Gate
+🛑 $T/H.md: ## Ficha sem a linha Verify Gate
+RESULTADO: VERMELHO
+exit=1
+--- AT-012 sem ## Ficha
+🛑 $T/H.md: falta a seção ## Ficha
+RESULTADO: VERMELHO
+exit=1
+--- AT-012 sem ## Prompt de retomada
+🛑 $T/H.md: ## Prompt de retomada ausente ou sem o bloco de código que se cola na sessão nova
+RESULTADO: VERMELHO
+exit=1
+--- AT-012 Prompt sem bloco de codigo (as duas cercas removidas)
+🛑 $T/H.md: ## Prompt de retomada ausente ou sem o bloco de código que se cola na sessão nova
+RESULTADO: VERMELHO
+exit=1
+--- AT-012 slice sem data
+🛑 $T/H.md: ## Histórico de slices sem nenhum '### <slice> — AAAA-MM-DD'
+RESULTADO: VERMELHO
+exit=1
+--- AT-012 sem ## Histórico de slices
+🛑 $T/H.md: ## Histórico de slices sem nenhum '### <slice> — AAAA-MM-DD'
+RESULTADO: VERMELHO
+exit=1
+--- AT-012 placeholder {prosa}
+🛑 $T/H.md: linha 25: placeholder do template sem preencher: {o que falta, em ordem}
+RESULTADO: VERMELHO
+exit=1
+--- AT-012 placeholder {UPPER}
+🛑 $T/H.md: linha 25: placeholder do template sem preencher: {FEATURE_NAME}
+RESULTADO: VERMELHO
+exit=1
+--- AT-012 placeholder «»
+🛑 $T/H.md: linha 25: placeholder do template sem preencher: «o que falta»
+RESULTADO: VERMELHO
+exit=1
+--- AT-012 como discutimos
+🛑 $T/H.md: linha 25: frase que depende da conversa anterior: 'como discutimos'
+RESULTADO: VERMELHO
+exit=1
+--- AT-012 conforme combinado
+🛑 $T/H.md: linha 25: frase que depende da conversa anterior: 'conforme combinado'
+RESULTADO: VERMELHO
+exit=1
+--- AT-012 continue de onde paramos (no prompt)
+🛑 $T/H.md: linha 52: frase que depende da conversa anterior: 'continue de onde paramos'
+RESULTADO: VERMELHO
+exit=1
+===== adversariais =====
+--- ADV prompt de retomada legitimo com uma linha '## ' dentro do bloco de codigo (esperado 0)
+🛑 $T/H.md: ## Prompt de retomada ausente ou sem o bloco de código que se cola na sessão nova
+RESULTADO: VERMELHO
+exit=1
+--- ADV placeholder de prosa do template deixado DENTRO do prompt de retomada
+✅ $T/H.md: HANDOFF válido
+exit=0
+--- ADV Objetivo vazio
+✅ $T/H.md: HANDOFF válido
+exit=0

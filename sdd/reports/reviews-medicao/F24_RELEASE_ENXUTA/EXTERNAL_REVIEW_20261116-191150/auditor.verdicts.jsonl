@@ -1,0 +1,7 @@
+{"achado": "R1", "veredito": "DISAGREE_EVIDENCE", "justificativa": "O diff é da fase de Design; o Verify Gate e a Constraint de main aplicam-se à fase de Build, não aos artefatos de especificação."}
+{"achado": "R2", "veredito": "DISAGREE_EVIDENCE", "justificativa": "A constraint proíbe que os artefatos vão para a main, mas o diff é o branch da feature, que é o local correto para os artefatos SDD durante o desenvolvimento."}
+{"achado": "R3", "veredito": "AGREE", "justificativa": "O git log com 1 linha não impede a criação de uma entrada falsa inteira num único commit, burlando a verificação de S18."}
+{"achado": "R4", "veredito": "AGREE", "justificativa": "O Pattern 1 exclui as impressões das entradas falhas e depois as apaga, causando perda silenciosa de lições que não foram julgadas."}
+{"achado": "R5", "veredito": "AGREE", "justificativa": "Há contradição direta entre a Decision 3 (que isola linhas com evidência ausente) e o AT-004 (que recusa a entrada inteira e a prende na fila)."}
+{"achado": "R6", "veredito": "AGREE", "justificativa": "Há divergência entre o critério do AT-009 (que não cita sdd/archive) e o da Decision 6 (que exige ausência de DEFINE também em sdd/archive)."}
+{"achado": "N1", "veredito": "NOVO", "severidade": "MED", "arquivo": "sdd/features/DESIGN_F24_RELEASE_ENXUTA.md", "linha": 214, "resumo": "O DESIGN não especifica que o handoff-lint.py deve validar o limite de 20 linhas da ficha curta (AT-009), tornando o critério intestável."}

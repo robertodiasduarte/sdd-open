@@ -1,0 +1,15 @@
+$ python3 -I /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f16w-windows/b56e801b-0f18-49ee-b51c-5b9188b29c23/scratchpad/sabotagem.py /Users/robertoduarte/rdd-worktrees/sdd-open-f16w-windows /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f16w-windows/b56e801b-0f18-49ee-b51c-5b9188b29c23/scratchpad/sab
+S1 hook: NUL nunca achado → MORTO (FAILED (failures=4); rc=1)
+S2 embutido sem a troca da saída → MORTO (FAILED (failures=1); rc=1)
+S11 hook: git grep com cor → MORTO (FAILED (failures=2); rc=1)
+S12 hook: nome sem LC_ALL=C → MORTO (FAILED (failures=1); rc=1)
+S13 checar: TMPDIR sem escrita perde a saída → VIVO (OK; rc=0)
+S3 design-lint sem a troca da saída → MORTO (FAILED (failures=2); rc=1)
+S4 vigia sem a marca → MORTO (FAILED (failures=1); rc=1)
+S5 init: eh_binario nunca → MORTO (FAILED (failures=1); rc=1)
+S6 slot sem a rede do \r → MORTO (FAILED (failures=1); rc=1)
+S7 validate_kb sem o drive → MORTO (FAILED (failures=1); rc=1)
+S8 alarme distingue maiúscula → MORTO (FAILED (failures=1); rc=1)
+S9 report-lint lê o stdin em cp1252 → VIVO (OK; rc=0)
+S10 init: chmod +x esquecido → MORTO (FAILED (failures=2); rc=1)
+[exit=0]

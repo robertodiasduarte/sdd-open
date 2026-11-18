@@ -1,0 +1,79 @@
+$ /bin/bash /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f21-f19/8ca3f42f-d684-434d-9f0b-19bdcf0aef88/scratchpad/aval2-f19/ferr/textos.sh /Users/robertoduarte/rdd-worktrees/sdd-open-f21-f19 /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f21-f19/8ca3f42f-d684-434d-9f0b-19bdcf0aef88/scratchpad/aval2-f19/ferr 2>&1
+presente sdd/review/CRITERIO_DANO.md
+presente sdd/templates/LEDGER_REVISAO_TEMPLATE.md
+presente sdd/bin/eval-revisores.sh
+presente sdd/bin/ledger-revisao-lint.sh
+== CRITERIO_DANO: seções e termos
+8:## Por que existe
+14:## A regra
+34:## Os três valores
+42:## Quem marca
+49:## O que a medida chama de falso positivo
+55:## Exemplos
+66:## Limites
+sim: 6 ocorrência(s)
+nao: 7 ocorrência(s)
+?: 1 ocorrência(s)
+falso positivo: 2 ocorrência(s)
+Quem marca\|quem marca: 1 ocorrência(s)
+dado, dinheiro, acesso: 0 ocorrência(s)
+== versões das skills (base 9581740 → 661ef65)
+sdd-build:   version: "2.7.0" →   version: "2.8.0"
+sdd-release:   version: "2.9.1" →   version: "2.10.0"
+== sdd-build 5c e sdd-release item 8
+.agents/skills/sdd-build/SKILL.md:210:achado no **ledger da revisão**, `sdd/reviews/LEDGER_REVISAO_{F}.md` (molde:
+.agents/skills/sdd-build/SKILL.md:211:`sdd/templates/LEDGER_REVISAO_TEMPLATE.md`): o id copiado do arquivo de vereditos da rodada, a severidade,
+.agents/skills/sdd-build/SKILL.md:213:decide o achado, pelo `sdd/review/CRITERIO_DANO.md`: `sim` só quando o achado foi aplicado, o conserto tem
+.agents/skills/sdd-build/SKILL.md:216:Confira com `bash sdd/bin/ledger-revisao-lint.sh sdd/reviews/LEDGER_REVISAO_{F}.md` (exit 2 ⇒ corrija a linha
+.agents/skills/sdd-build/SKILL.md:218:sdd/reviews/LEDGER_REVISAO_{F}.md --rodada N`, que decide se segue, corrige ou pergunta. O Advisor Ledger do
+.agents/skills/sdd-release/SKILL.md:130:   também o ledger da revisão: `bash sdd/bin/ledger-revisao-lint.sh sdd/reviews/LEDGER_REVISAO_{F}.md` —
+.agents/skills/sdd-release/SKILL.md:133:   `sdd/templates/LEDGER_REVISAO_TEMPLATE.md` (rodada sem achados: `sem achados: rodada=N <pasta>`) e
+== nome de engine novo no texto das skills (linhas acrescentadas)?
+[exit do grep: 0  (1 = nenhum)]
+== docs: seção do medidor
+docs/adversarial-review.md:150:## eval-revisores
+docs/adversarial-review.md:153:bash sdd/bin/eval-revisores.sh [<reviews folder>] [--ledgers <folder or file>] [--registry <registry.tsv>]
+docs/pt-BR/adversarial-review.md:151:## eval-revisores
+docs/pt-BR/adversarial-review.md:154:bash sdd/bin/eval-revisores.sh [<pasta das revisões>] [--ledgers <pasta ou arquivo>] [--registry <registry.tsv>]
+docs/adversarial-review.md:169:| AGREE | auditor only: the same rate as `eval-agree.sh`, with the sample next to it |
+docs/adversarial-review.md:193:chain. Few rounds give unstable numbers: every rate comes with its sample. A subscription engine has a nomina
+docs/pt-BR/adversarial-review.md:170:| AGREE | só para o auditor: a mesma taxa do `eval-agree.sh`, com a amostra ao lado |
+docs/pt-BR/adversarial-review.md:194:rodadas dão número instável: toda taxa vem com a amostra. Engine por assinatura tem custo nominal e pag
+== cli-conventions
+80:| `eval-revisores.sh` | `0` MEDIDO · `2` SEM DADOS (inclusive sem a pasta padrão) · `64` uso, ou pasta, `--ledgers` ou `--registry` inexistente ([adversarial-review.md](adversarial-review.md)) |
+81:| `ledger-revisao-lint.sh` | `0` ok · `2` violação (`arquivo:linha — motivo`) · `64` uso, arquivo ilegível, ou arquivo sem linha de dados e sem linha `sem achados:` |
+== contratos
+206:ledger_revisao:
+207-  arquivo: "`sdd/reviews/LEDGER_REVISAO_{F}.md`"
+208-  molde: "`sdd/templates/LEDGER_REVISAO_TEMPLATE.md`"
+209-  criterio: "`sdd/review/CRITERIO_DANO.md`"
+210-  colunas:
+211-    - "achado"
+212-    - "sev"
+--
+235:eval_revisores:
+236-  script: "`sdd/bin/eval-revisores.sh`"
+237-  le:
+238-    - "<review.output_dir>/EXTERNAL_REVIEW_*/META.txt e os arquivos de vereditos"
+239-    - "`sdd/reviews/LEDGER_REVISAO_*.md`"
+240-    - "`sdd/review/registry.tsv` (coluna cobranca)"
+241-  escreve: "nada"
+== BUILD_REPORT_TEMPLATE
+161:**Ledger da revisão:** `sdd/reviews/LEDGER_REVISAO_{FEATURE}.md` (uma linha por achado, com a marca `dano`; conferido por `sdd/bin/ledger-revisao-lint.sh`) | N.A. (consulta fora do `adversarial-re
+== MANIFEST x git ls-tree 661ef65
+.agents/skills/sdd-auditoria-harness/SKILL.md
+.agents/skills/sdd-auditoria-harness/references/AUDIT_PROTOCOL.md
+.agents/skills/sdd-auditoria-harness/references/REPORT_TEMPLATE.md
+.agents/skills/sdd-auditoria-harness/references/como-falar.md
+.agents/skills/sdd-auditoria-harness/scripts/collect_evidence.py
+     511
+     511
+[diff exit 0]
+181:sdd/bin/eval-revisores.sh
+188:sdd/bin/ledger-revisao-lint.sh
+411:sdd/review/CRITERIO_DANO.md
+432:sdd/templates/LEDGER_REVISAO_TEMPLATE.md
+469:tests/test_eval_revisores.py
+475:tests/test_f19_textos.py
+487:tests/test_ledger_revisao_lint.py
+[exit 0]

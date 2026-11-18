@@ -1,0 +1,8 @@
+$ (sdd/bin/slot.sh e test-baseline.sh de d6c5ed1) cd tests && SDD_TEST_BASH=/bin/bash /usr/bin/python3 -B -m unittest test_slot.Cerquilha.test_bordas_do_bash test_slot.Uso.test_config_que_nao_da_para_rodar_e_64 test_slot.Ambiente.test_before_ok_vazio_tambem_esvazia test_test_baseline.TestBaseline.test_touched_id_relativo_a_subpasta_conta
+FAIL: test_bordas_do_bash (test_slot.Cerquilha)
+FAIL: test_config_que_nao_da_para_rodar_e_64 (test_slot.Uso) (caso='texto depois das aspas')
+FAIL: test_config_que_nao_da_para_rodar_e_64 (test_slot.Uso) (caso='texto depois das aspas simples')
+FAIL: test_before_ok_vazio_tambem_esvazia (test_slot.Ambiente)
+FAIL: test_touched_id_relativo_a_subpasta_conta (test_test_baseline.TestBaseline)
+Ran 4 tests in 0.685s
+FAILED (failures=5)

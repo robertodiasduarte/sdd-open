@@ -1,0 +1,119 @@
+$ /usr/bin/python3 -B sabota2.py $T/clone   # clone de aaae1b4; 1 mutação por vez, git checkout -- . entre elas
+AT-014a                      exit=1  link do sumário do guia com âncora inexistente  | falhou: test_todo_link_relativo_abre (test_docs.Links)
+AT-014b                      exit=1  seção apagada da sdd-build  | falhou: test_secao_com_itens (test_docs.PorQueCadaRegra)
+AT-014c                      exit=1  'em avaliação' -> ✅ na linha de deltas (PT)  | falhou: test_deltas_continua_em_avaliacao_na_coluna_do_open (test_docs.Comparison)
+AT-005e                      exit=1  ✅ ao lado do texto na célula do open (EN)  | falhou: test_deltas_continua_em_avaliacao_na_coluna_do_open (test_docs.Comparison)
+AT-008a                      exit=1  link para arquivo que não existe no README  | falhou: test_readme_cita_as_skills_a_kb_e_o_ok (test_docs.ReadmeEAgents), test_todo_link_relativo_abre (test_docs.Links)
+AT-008b                      exit=1  link com caixa trocada (ROADMAP.md) no CONTRIBUTING (fora do teste de README)  | falhou: test_todo_link_relativo_abre (test_docs.Links)
+AT-008b2                     exit=1  link com caixa trocada numa pasta (docs/PT-BR/roadmap.md) no guia  | falhou: test_todo_link_relativo_abre (test_docs.Links)
+AT-008c                      exit=1  âncora inexistente para outro .md (CONTRIBUTING)  | falhou: test_todo_link_relativo_abre (test_docs.Links)
+AT-002a                      exit=1  'npx skills update' no guia  | falhou: test_sem_as_premissas_do_starter (test_docs.Guia)
+AT-002b                      exit=1  'sdd/DEFINE_' no guia  | falhou: test_sem_as_premissas_do_starter (test_docs.Guia)
+AT-002c                      exit=1  frase do starter (linha 144) colada no guia  | falhou: test_sem_as_premissas_do_starter (test_docs.Guia)
+AT-002d                      exit=1  linha do glossário do starter (linha 459) colada no guia  | falhou: test_sem_as_premissas_do_starter (test_docs.Guia)
+AT-002e                      exit=1  'A pasta `sdd/` não entra no git' no guia  | falhou: test_sem_as_premissas_do_starter (test_docs.Guia)
+AT-002e2                     exit=0  'A pasta `sdd/` fica só no seu computador, fora do GitHub' no guia  | falhou: —
+AT-002e3                     exit=0  'A pasta `sdd/` está no `.gitignore`' no guia  | falhou: —
+AT-002e4                     exit=0  'Não suba a pasta `sdd/` para o GitHub' no guia  | falhou: —
+AT-002e5                     exit=0  'Os documentos (`sdd/`) não são enviados ao GitHub' no guia  | falhou: —
+AT-002e6                     exit=1  'NÃO VAI para o GitHub' em caixa alta, linha de tabela  | falhou: test_sem_as_premissas_do_starter (test_docs.Guia)
+AT-002f                      exit=1  literal W0 '/drive' no guia  | falhou: test_grep_da_w0_sem_achado (test_correcoes_w0.PacoteNaoPrometeOQueNaoTem)
+AT-002g                      exit=1  'registra e libera' no guia (H1 do ciclo 1)  | falhou: test_sem_as_premissas_do_starter (test_docs.Guia)
+AT-001a                      exit=1  guia sem a ficha da sdd-kb  | falhou: test_uma_ficha_por_skill (test_docs.Guia)
+AT-001b                      exit=1  guia sem 'Apague'/'apague' + init  | falhou: test_instalacao_e_atualizacao_do_open (test_docs.Guia)
+AT-003a                      exit=1  'Lovable' no quickstart EN  | falhou: test_regra_validacoes_tabela_e_atualizacao (test_docs.Quickstart)
+AT-003b                      exit=1  passo 5 do quickstart PT inteiro volta ao da v2.2.6 (git pull + sync)  | falhou: test_regra_validacoes_tabela_e_atualizacao (test_docs.Quickstart)
+AT-004a                      exit=1  ano no roadmap EN  | falhou: test_temas_status_e_sem_data (test_docs.Roadmap)
+AT-006a                      exit=1  README PT sem kb-dominios.py  | falhou: test_readme_cita_as_skills_a_kb_e_o_ok (test_docs.ReadmeEAgents)
+AT-007a                      exit=1  AGENTS.md.tmpl sem 'um OK só'  | falhou: test_agents_tmpl (test_docs.ReadmeEAgents)
+AT-009-sdd-brainstorm-sem    exit=1  seção apagada da sdd-brainstorm  | falhou: test_secao_com_itens (test_docs.PorQueCadaRegra)
+AT-009-sdd-define-sem        exit=1  seção apagada da sdd-define  | falhou: test_secao_com_itens (test_docs.PorQueCadaRegra)
+AT-009-sdd-governanca-sem    exit=1  seção apagada da sdd-governanca  | falhou: test_secao_com_itens (test_docs.PorQueCadaRegra)
+AT-009-sdd-ux-review-sem     exit=1  seção apagada da sdd-ux-review  | falhou: test_secao_com_itens (test_docs.PorQueCadaRegra)
+AT-009-sdd-design-sem        exit=1  seção apagada da sdd-design  | falhou: test_secao_com_itens (test_docs.PorQueCadaRegra)
+AT-009-sdd-build-sem         exit=1  seção apagada da sdd-build  | falhou: test_secao_com_itens (test_docs.PorQueCadaRegra)
+AT-009-sdd-release-sem       exit=1  seção apagada da sdd-release  | falhou: test_secao_com_itens (test_docs.PorQueCadaRegra)
+AT-009-sdd-new-session-sem   exit=1  seção apagada da sdd-new-session  | falhou: test_secao_com_itens (test_docs.PorQueCadaRegra)
+AT-009-sdd-iniciar-repo-sem  exit=1  seção apagada da sdd-iniciar-repo  | falhou: test_secao_com_itens (test_docs.PorQueCadaRegra)
+AT-009-sdd-define-2itens     exit=1  só 2 itens na sdd-define  | falhou: test_secao_com_itens (test_docs.PorQueCadaRegra)
+AT-009-sdd-define-dup        exit=1  título duplicado na sdd-define  | falhou: test_secao_com_itens (test_docs.PorQueCadaRegra)
+AT-009-sdd-iniciar-repo-2itens exit=1  só 2 itens na sdd-iniciar-repo  | falhou: test_secao_com_itens (test_docs.PorQueCadaRegra)
+AT-009-sdd-iniciar-repo-dup  exit=1  título duplicado na sdd-iniciar-repo  | falhou: test_secao_com_itens (test_docs.PorQueCadaRegra)
+clone limpo depois de git checkout: exit=0  OK
+exit=0
+--- script:
+"""Ciclo 2: uma mutação por vez num clone de aaae1b4; roda os módulos certos; git checkout -- . entre elas;
+no fim, clone limpo verde."""
+import re, subprocess, sys, pathlib
+C = pathlib.Path(sys.argv[1])
+ENV = dict(SDD_TEST_BASH="/bin/bash", PATH="/usr/bin:/bin")
+def sub(rel, old, new, count=1):
+    p = C / rel; t = p.read_text(encoding="utf-8"); assert old in t, (rel, old)
+    p.write_text(t.replace(old, new, count), encoding="utf-8")
+def app(rel, s):
+    p = C / rel; p.write_text(p.read_text(encoding="utf-8") + s, encoding="utf-8")
+def tira_secao(skill):
+    p = C / (".agents/skills/%s/SKILL.md" % skill); t = p.read_text(encoding="utf-8")
+    p.write_text(re.sub(r"\n## Por que cada regra existe[^\n]*\n.*?(?=\n## |\Z)", "", t, flags=re.S), encoding="utf-8")
+def dois_itens(skill):
+    p = C / (".agents/skills/%s/SKILL.md" % skill); t = p.read_text(encoding="utf-8")
+    m = re.search(r"(## Por que cada regra existe[^\n]*\n)(.*?)(?=\n## |\Z)", t, flags=re.S)
+    itens = [l for l in m.group(2).splitlines() if l.startswith("- **")][:2]
+    p.write_text(t[:m.start(2)] + "\n" + "\n".join(itens) + "\n" + t[m.end(2):], encoding="utf-8")
+def dup_secao(skill):
+    p = C / (".agents/skills/%s/SKILL.md" % skill); t = p.read_text(encoding="utf-8")
+    p.write_text(t + "\n## Por que cada regra existe\n\n- **a** — b\n", encoding="utf-8")
+G = "docs/pt-BR/guia-do-aluno.md"
+def volta_passo5():
+    velho = subprocess.run(["git", "show", "v2.2.6:docs/pt-BR/quickstart.md"], cwd=C, capture_output=True, text=True, check=True).stdout
+    novo = (C / "docs/pt-BR/quickstart.md").read_text(encoding="utf-8")
+    pega = lambda t: re.search(r"\n## 5\..*?(?=\n## )", t, flags=re.S).group(0)
+    (C / "docs/pt-BR/quickstart.md").write_text(novo.replace(pega(novo), pega(velho)), encoding="utf-8")
+STARTER_144 = ("\nOs documentos ficam na pasta `sdd/` do projeto: `BRAINSTORM_NOME.md`, `DEFINE_NOME.md`, `DESIGN_NOME.md`, "
+               "`BUILD_REPORT_NOME.md`, `HANDOFF_NOME.md`. Essa pasta **não vai para o GitHub** — é o seu caderno de trabalho.\n")
+STARTER_459 = "\n| **`sdd/`** | A pasta do projeto onde ficam os documentos das fases. Não vai para o GitHub. |\n"
+CASOS = [
+ ("AT-014a", "link do sumário do guia com âncora inexistente", lambda: sub(G, "(#8-quando-algo-dá-errado)", "(#8-quando-algo-da-errado)"), ["test_docs"]),
+ ("AT-014b", "seção apagada da sdd-build", lambda: tira_secao("sdd-build"), ["test_docs"]),
+ ("AT-014c", "'em avaliação' -> ✅ na linha de deltas (PT)", lambda: sub("docs/pt-BR/comparison.md", "❌ *(em avaliação)*", "✅"), ["test_docs"]),
+ ("AT-005e", "✅ ao lado do texto na célula do open (EN)", lambda: sub("docs/comparison.md", "❌ *(under evaluation)* |", "❌ *(under evaluation)* ✅ |"), ["test_docs"]),
+ ("AT-008a", "link para arquivo que não existe no README", lambda: sub("README.md", "(docs/roadmap.md)", "(docs/roadmapx.md)"), ["test_docs"]),
+ ("AT-008b", "link com caixa trocada (ROADMAP.md) no CONTRIBUTING (fora do teste de README)", lambda: app("CONTRIBUTING.md", "\n[r](docs/ROADMAP.md)\n"), ["test_docs"]),
+ ("AT-008b2", "link com caixa trocada numa pasta (docs/PT-BR/roadmap.md) no guia", lambda: app(G, "\n[r](../PT-BR/roadmap.md)\n"), ["test_docs"]),
+ ("AT-008c", "âncora inexistente para outro .md (CONTRIBUTING)", lambda: app("CONTRIBUTING.md", "\n[x](README.md#nao-existe)\n"), ["test_docs"]),
+ ("AT-002a", "'npx skills update' no guia", lambda: app(G, "\nRode `npx skills update`.\n"), ["test_docs"]),
+ ("AT-002b", "'sdd/DEFINE_' no guia", lambda: app(G, "\nO arquivo fica em sdd/DEFINE_X.md.\n"), ["test_docs"]),
+ ("AT-002c", "frase do starter (linha 144) colada no guia", lambda: app(G, STARTER_144), ["test_docs"]),
+ ("AT-002d", "linha do glossário do starter (linha 459) colada no guia", lambda: app(G, STARTER_459), ["test_docs"]),
+ ("AT-002e", "'A pasta `sdd/` não entra no git' no guia", lambda: app(G, "\nA pasta `sdd/` não entra no git.\n"), ["test_docs"]),
+ ("AT-002e2", "'A pasta `sdd/` fica só no seu computador, fora do GitHub' no guia", lambda: app(G, "\nA pasta `sdd/` fica só no seu computador, fora do GitHub.\n"), ["test_docs"]),
+ ("AT-002e3", "'A pasta `sdd/` está no `.gitignore`' no guia", lambda: app(G, "\nA pasta `sdd/` está no `.gitignore`: o git a ignora.\n"), ["test_docs"]),
+ ("AT-002e4", "'Não suba a pasta `sdd/` para o GitHub' no guia", lambda: app(G, "\nNão suba a pasta `sdd/` para o GitHub.\n"), ["test_docs"]),
+ ("AT-002e5", "'Os documentos (`sdd/`) não são enviados ao GitHub' no guia", lambda: app(G, "\nOs documentos em `sdd/` não são enviados ao GitHub.\n"), ["test_docs"]),
+ ("AT-002e6", "'NÃO VAI para o GitHub' em caixa alta, linha de tabela", lambda: app(G, "\n| `sdd/` | NÃO VAI para o GitHub |\n"), ["test_docs"]),
+ ("AT-002f", "literal W0 '/drive' no guia", lambda: app(G, "\nDepois, rode /drive.\n"), ["test_correcoes_w0"]),
+ ("AT-002g", "'registra e libera' no guia (H1 do ciclo 1)", lambda: app(G, "\nÉ dado fictício: ela registra e libera.\n"), ["test_docs"]),
+ ("AT-001a", "guia sem a ficha da sdd-kb", lambda: sub(G, "#### sdd-kb\n", "#### kb\n"), ["test_docs"]),
+ ("AT-001b", "guia sem 'Apague'/'apague' + init", lambda: (sub(G, "apague a pasta dela", "remova a pasta dela"), sub(G, "Apague a pasta da skill", "Remova a pasta da skill")), ["test_docs"]),
+ ("AT-003a", "'Lovable' no quickstart EN", lambda: app("docs/quickstart.md", "\nOr use Lovable.\n"), ["test_docs"]),
+ ("AT-003b", "passo 5 do quickstart PT inteiro volta ao da v2.2.6 (git pull + sync)", volta_passo5, ["test_docs"]),
+ ("AT-004a", "ano no roadmap EN", lambda: app("docs/roadmap.md", "\nExpected in 2027.\n"), ["test_docs"]),
+ ("AT-006a", "README PT sem kb-dominios.py", lambda: sub("README.pt-BR.md", "kb-dominios.py", "kb.py", 99), ["test_docs"]),
+ ("AT-007a", "AGENTS.md.tmpl sem 'um OK só'", lambda: sub("AGENTS.md.tmpl", "um OK só", "uma aprovação"), ["test_docs"]),
+]
+for s in ("sdd-brainstorm","sdd-define","sdd-governanca","sdd-ux-review","sdd-design","sdd-build","sdd-release","sdd-new-session","sdd-iniciar-repo"):
+    CASOS.append(("AT-009-%s-sem" % s, "seção apagada da %s" % s, (lambda s=s: tira_secao(s)), ["test_docs"]))
+for s in ("sdd-define","sdd-iniciar-repo"):
+    CASOS.append(("AT-009-%s-2itens" % s, "só 2 itens na %s" % s, (lambda s=s: dois_itens(s)), ["test_docs"]))
+    CASOS.append(("AT-009-%s-dup" % s, "título duplicado na %s" % s, (lambda s=s: dup_secao(s)), ["test_docs"]))
+def roda(mods):
+    r = subprocess.run(["/usr/bin/python3", "-B", "-m", "unittest"] + mods, cwd=C / "tests", env=ENV, capture_output=True, text=True)
+    nomes = sorted(set(re.findall(r"^(?:FAIL|ERROR): (\S+ \(\S+\))", r.stderr, re.M)))
+    return r.returncode, nomes, r.stderr
+for cid, desc, f, mods in CASOS:
+    f()
+    rc, nomes, err = roda(mods)
+    print("%-28s exit=%d  %s  | falhou: %s" % (cid, rc, desc, ", ".join(nomes) or "—"))
+    subprocess.run(["git", "checkout", "-q", "--", "."], cwd=C, check=True)
+rc, _, err = roda(["test_docs", "test_correcoes_w0"])
+print("clone limpo depois de git checkout: exit=%d  %s" % (rc, err.strip().splitlines()[-1]))

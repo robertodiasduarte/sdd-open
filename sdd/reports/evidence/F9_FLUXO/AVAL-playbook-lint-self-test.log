@@ -1,0 +1,21 @@
+$ /bin/bash sdd/bin/playbook-lint.sh --self-test
+self-test (/bin/bash: 3.2.57(1)-release) — fixtures em sdd/fixtures/playbook/
+  ✅ lint fixture INVÁLIDA ⇒ exit 2 com ≥5 motivos distintos → exit 2
+  ✅ fixture inválida acusa 7 classes de defeito distintas (≥5)
+  ✅ --grep termo INEXISTENTE ⇒ exit 1 e '0 bullets' → exit 1
+  ✅ --anti-collapse válido×COLAPSO ⇒ exit 1 citando LM-002 → exit 1
+  ✅ --anti-collapse válido×REESCRITA 3/6=50% (sem sumiço) ⇒ exit 1 por percentual → exit 1
+  ✅ --check-fichas com ficha inexistente ⇒ exit 2 → exit 2
+  ✅ --grep termo só no CORPO ("Deploy só em push") ⇒ exit 1 (não é superfície) → exit 1
+  ✅ --grep-all termo só no CORPO ⇒ exit 0 e LM-002 → exit 0
+  ✅ lint com Backend e Infra TROCADOS ⇒ exit 2 (ordem fixa) → exit 2
+  ✅ lint playbook VAZIO ⇒ exit 2 (seções ausentes + 0 ativos) → exit 2
+  ✅ lint fixture VÁLIDA ⇒ exit 0 → exit 0
+  ✅ --grep termo_fixture ⇒ exit 0 e LM-001 → exit 0
+  ✅ --anti-collapse válido×DELTA-OK (3 novos, contadores, 1 tombstone=20%) ⇒ exit 0 → exit 0
+  ✅ --anti-collapse arquivo idêntico ⇒ exit 0 → exit 0
+  ✅ --anti-collapse limite EXATO 1/5 = 20% ⇒ exit 0 (pega off-by-one >=) → exit 0
+  ✅ --anti-collapse 2/5 = 40% ⇒ exit 1 → exit 1
+  ✅ --anti-collapse só CONTINUAÇÃO de LM-005 reescrita (1/5) ⇒ conta como alterado (20%) → exit 0
+🟢 self-test: todos os baselines vermelhos e verdes confirmados
+[exit=0]

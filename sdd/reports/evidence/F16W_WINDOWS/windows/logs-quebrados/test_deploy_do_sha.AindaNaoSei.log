@@ -1,0 +1,64 @@
+test_consulta_falhando_cita_o_erro_no_teto (test_deploy_do_sha.AindaNaoSei.test_consulta_falhando_cita_o_erro_no_teto) ... FAIL
+
+test_sem_run_nunca_diz_que_nao_ha_o_que_verificar (test_deploy_do_sha.AindaNaoSei.test_sem_run_nunca_diz_que_nao_ha_o_que_verificar) ... FAIL
+
+test_teto_com_run_em_andamento_nao_e_falha (test_deploy_do_sha.AindaNaoSei.test_teto_com_run_em_andamento_nao_e_falha) ... FAIL
+
+
+
+======================================================================
+
+FAIL: test_consulta_falhando_cita_o_erro_no_teto (test_deploy_do_sha.AindaNaoSei.test_consulta_falhando_cita_o_erro_no_teto)
+
+----------------------------------------------------------------------
+
+Traceback (most recent call last):
+
+  File "D:\a\sdd-open\sdd-open\tests\test_deploy_do_sha.py", line 393, in test_consulta_falhando_cita_o_erro_no_teto
+
+    self.assertIn("HTTP 500", out)
+
+AssertionError: 'HTTP 500' not found in '\u23f3 ainda n�o sei � o deploy n�o terminou em 0 min (run �); isso n�o � falha. �ltimo erro de consulta: gh: To use GitHub CLI in a GitHub Actions workflow, set the GH_TOKEN environment variable. Example:.\nRESULTADO: AINDA NAO SEI\n\u2192 rode de novo para continuar esperando, ou abra o run citado; nada foi repetido por causa disso.\n'
+
+
+
+======================================================================
+
+FAIL: test_sem_run_nunca_diz_que_nao_ha_o_que_verificar (test_deploy_do_sha.AindaNaoSei.test_sem_run_nunca_diz_que_nao_ha_o_que_verificar)
+
+----------------------------------------------------------------------
+
+Traceback (most recent call last):
+
+  File "D:\a\sdd-open\sdd-open\tests\test_deploy_do_sha.py", line 379, in test_sem_run_nunca_diz_que_nao_ha_o_que_verificar
+
+    self.assertIn("n�o achei nenhum run", out)
+
+AssertionError: 'n�o achei nenhum run' not found in '\u23f3 ainda n�o sei � o deploy n�o terminou em 0 min (run �); isso n�o � falha. �ltimo erro de consulta: gh: To use GitHub CLI in a GitHub Actions workflow, set the GH_TOKEN environment variable. Example:.\nRESULTADO: AINDA NAO SEI\n\u2192 rode de novo para continuar esperando, ou abra o run citado; nada foi repetido por causa disso.\n'
+
+
+
+======================================================================
+
+FAIL: test_teto_com_run_em_andamento_nao_e_falha (test_deploy_do_sha.AindaNaoSei.test_teto_com_run_em_andamento_nao_e_falha)
+
+----------------------------------------------------------------------
+
+Traceback (most recent call last):
+
+  File "D:\a\sdd-open\sdd-open\tests\test_deploy_do_sha.py", line 386, in test_teto_com_run_em_andamento_nao_e_falha
+
+    self.assertIn("run 7", out)
+
+AssertionError: 'run 7' not found in '\u23f3 ainda n�o sei � o deploy n�o terminou em 0 min (run �); isso n�o � falha. �ltimo erro de consulta: gh: To use GitHub CLI in a GitHub Actions workflow, set the GH_TOKEN environment variable. Example:.\nRESULTADO: AINDA NAO SEI\n\u2192 rode de novo para continuar esperando, ou abra o run citado; nada foi repetido por causa disso.\n'
+
+
+
+----------------------------------------------------------------------
+
+Ran 3 tests in 5.424s
+
+
+
+FAILED (failures=3)
+

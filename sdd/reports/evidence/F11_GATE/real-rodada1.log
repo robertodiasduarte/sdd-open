@@ -1,0 +1,92 @@
+$ git rev-parse HEAD
+06e5a9d1517ef035e14d46646c9ad466c8c77f04
+$ bash sdd/bin/adversarial-review.sh --reviewer claude --auditor openrouter:qwen/qwen3.7-plus --feature F11_GATE
+▶ revisor: claude (-) — até 15 min
+▶ 2º revisor: codex (-) — até 15 min
+▶ auditor: openrouter:qwen/qwen3.7-plus (qwen/qwen3.7-plus) — até 15 min
+RESULTADO: REVIEW COMPLETA
+pasta: sdd/reports/reviews/EXTERNAL_REVIEW_20261101-081440
+diff_sha256: 6ccf99966fd5965b189c00aa187e00fd3150bad20257034fa90cbb72ac870e42
+revisor: claude (claude-opus-5-5) — US$ 1,1010
+2º revisor: codex (-) — incluído na assinatura
+auditor: openrouter:qwen/qwen3.7-plus (qwen/qwen3.7-plus via Alibaba) — US$ 0,0278
+diversidade: vendor
+achados: 0 graves, 3 médios, 2 leves
+custo total: US$ 1,1288
+→ rode: bash sdd/bin/sdd-fluxo.sh loop --review sdd/reports/reviews/EXTERNAL_REVIEW_20261101-081440 --ledger <ledger da revisão> --rodada <N>
+[exit=0]
+$ cat sdd/reports/reviews/EXTERNAL_REVIEW_20261101-081440/META.txt
+worktree                : /Users/robertoduarte/rdd-worktrees/sdd-open-f11-gate
+branch                  : feat/f11-gate
+protocolo               : cadeia REVISOR → AUDITOR; paralelo não existe
+base                    : origin/main
+merge_base              : 248301de856d3cd56bb231c83d89f4d985e6ed07
+head                    : 06e5a9d1517ef035e14d46646c9ad466c8c77f04
+paths                   : -
+diff_sha256             : 6ccf99966fd5965b189c00aa187e00fd3150bad20257034fa90cbb72ac870e42
+diff                    : 102KB (39 arquivo(s))
+contexto                : 48KB (2 doc SDD)
+docs_sdd                : DEFINE_F11_GATE.md, DESIGN_F11_GATE.md
+contexto_cortado        : -
+diversidade             : vendor
+reviewer_engine_default : claude
+reviewer_engine_efetivo : claude
+reviewer_fallback_usado : nao
+reviewer_motivo         : -
+reviewer_exit           : 0
+reviewer_segundos       : 217
+reviewer_achados        : 3
+reviewer_tokens_entrada : 79480
+reviewer_tokens_saida   : 23123
+reviewer_tokens_total   : 102603
+reviewer_modelo         : claude-opus-5-5
+reviewer_custo          : US$ 1.1010
+revisor1_raso           : nao
+gatilho_2o_revisor      : 39 arquivos (limiar 8)
+revisor2_engine         : codex
+revisor2_engine_default : codex
+revisor2_engine_efetivo : codex
+revisor2_fallback_usado : nao
+revisor2_motivo         : -
+revisor2_exit           : 0
+revisor2_segundos       : 144
+revisor2_achados        : 2
+revisor2_tokens_entrada : 73505
+revisor2_tokens_saida   : 4301
+revisor2_tokens_total   : 77806
+revisor2_modelo         : -
+revisor2_custo          : assinatura
+auditor_engine_default  : openrouter:qwen/qwen3.7-plus
+auditor_engine_efetivo  : openrouter:qwen/qwen3.7-plus
+auditor_fallback_usado  : nao
+auditor_motivo          : -
+auditor_exit            : 0
+auditor_segundos        : 128
+auditor_vereditos       : 5
+auditor_tokens_entrada  : 55627
+auditor_tokens_saida    : 7785
+auditor_tokens_total    : 63412
+auditor_modelo          : qwen/qwen3.7-plus via Alibaba
+auditor_custo           : US$ 0.0278
+convergencia_1o_passe   : sim
+desempate_alvo          : -
+desempate_engine        : -
+desempate_decisao       : -
+custo_total             : US$ 1.1288
+quando                  : 20261101-081440
+[exit=0]
+$ bash sdd/bin/sdd-fluxo.sh loop --review sdd/reports/reviews/EXTERNAL_REVIEW_20261101-081440 --ledger sdd/reports/evidence/F11_GATE/ledger-review.md --rodada 1
+ESTADO: PRONTO
+rodada: 1 de 3
+graves_abertos: 0
+aplicadas: 0
+rebatidas: 0
+RESULTADO: PRONTO
+→ siga para o avaliador ou para a release.
+[exit=0]
+$ bash sdd/bin/adversarial-review.sh --conferir sdd/reports/reviews/EXTERNAL_REVIEW_20261101-081440
+✅ a revisão sdd/reports/reviews/EXTERNAL_REVIEW_20261101-081440 é desta versão do código (sha256 igual).
+review_externo: sdd/reports/reviews/EXTERNAL_REVIEW_20261101-081440 sha256=6ccf99966fd5965b189c00aa187e00fd3150bad20257034fa90cbb72ac870e42 diversidade=vendor
+RESULTADO: CONFERE
+→ copie a linha review_externo para o ledger da release.
+[exit=0]

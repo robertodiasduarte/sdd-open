@@ -1,0 +1,14 @@
+$ cd /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f16w-windows/b56e801b-0f18-49ee-b51c-5b9188b29c23/scratchpad/head && PATH=/private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f16w-windows/b56e801b-0f18-49ee-b51c-5b9188b29c23/scratchpad/nofollow/bin:$PATH SDD_TEST_BASH=/bin/bash /usr/bin/python3 -B -m unittest discover -s tests -p test_drive.py -k test_trava_que_e_link_nao_cria_arquivo_fora -k test_trava_que_nao_abre_sai_2_sem_laco -v 2>&1 | tail -6; echo '--- sabotagem: sem a recusa do link (só o O_NOFOLLOW, que aqui não existe):'; cd /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f16w-windows/b56e801b-0f18-49ee-b51c-5b9188b29c23/scratchpad/sab2 && PATH=/private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f16w-windows/b56e801b-0f18-49ee-b51c-5b9188b29c23/scratchpad/nofollow/bin:$PATH SDD_TEST_BASH=/bin/bash /usr/bin/python3 -B -m unittest discover -s tests -p test_drive.py -k test_trava_que_e_link_nao_cria_arquivo_fora -v 2>&1 | grep -E 'ok$|FAIL|Error|nada é criado|^Ran|^OK|^FAILED' | head -6; echo "[rc=$?]"
+test_trava_que_nao_abre_sai_2_sem_laco (test_drive.EstadoSoUmPorVez) ... ok
+
+----------------------------------------------------------------------
+Ran 2 tests in 1.414s
+
+OK
+--- sabotagem: sem a recusa do link (só o O_NOFOLLOW, que aqui não existe):
+test_trava_que_e_link_nao_cria_arquivo_fora (test_drive.EstadoSoUmPorVez) ... FAIL
+FAIL: test_trava_que_e_link_nao_cria_arquivo_fora (test_drive.EstadoSoUmPorVez)
+AssertionError: 0 != 2 : ✅ anotado em sdd/reports/DRIVE_REPORT_F.md (Decidi sozinho).
+Ran 1 test in 0.501s
+FAILED (failures=1)
+[rc=0]

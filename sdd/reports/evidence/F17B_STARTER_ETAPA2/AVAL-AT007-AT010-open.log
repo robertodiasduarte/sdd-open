@@ -1,0 +1,46 @@
+$ bash /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f17b-starter-etapa2/4bd671df-4c34-431c-bf11-929368bfac1c/scratchpad/at007.sh
+### skills no Open:       22
+### skill-lint --conversa (todas)
+✅ .agents/skills/sdd-playbook/SKILL.md: frontmatter válido · camada de conversa ok
+✅ .agents/skills/sdd-prompt-builder/SKILL.md: frontmatter válido · camada de conversa ok
+✅ .agents/skills/sdd-release/SKILL.md: frontmatter válido · camada de conversa ok
+✅ .agents/skills/sdd-seguranca/SKILL.md: frontmatter válido · camada de conversa ok
+✅ .agents/skills/sdd-ux-review/SKILL.md: frontmatter válido · camada de conversa ok
+✅ .agents/skills/ux-review-builder/SKILL.md: frontmatter válido · camada de conversa ok
+rc=0
+### skill-lint --conversa ux-review-builder
+✅ .agents/skills/ux-review-builder/SKILL.md: frontmatter válido · camada de conversa ok
+rc=0
+### ux-review-builder: versão, seção, como-falar, identificação
+8:  version: "1.5.0"
+57:## Como falar com o aluno
+.agents/skills/ux-review-builder/references/como-falar.md
+15:`ux-review-builder v1.5.0 · nov/2026 · versão atual: https://github.com/robertodiasduarte/sdd-open/releases/latest`
+### sdd-ux-review lê UX_STANDARD.md
+89:   Se existir `sdd/UX_STANDARD.md` (o padrão de UX do projeto, feito pela skill `ux-review-builder`), ele é
+### check-versions --base v2.13.0
+PASS: check-versions — 22 skills com versão coerente, comparadas a v2.13.0.
+RESULTADO: VERDE
+→ siga para o próximo passo.
+rc=0
+### linhas do SKILL.md da sdd-release
+     500
+### caminho de hoje com sdd/bin presente
+38
+### contagens 22 nos testes
+tests/test_docs.py:233:        self.assertEqual(len(SKILLS), 22)  # F18/F20: sdd-seguranca · F17b: ux-review-builder
+tests/test_f21_textos.py:212:        casos = {"README.md": ("## The 22 skills", "(optional) · `sdd-brainstorm`", "20 skills"),   # F18/F20: +1
+tests/test_f21_textos.py:213:                 "README.pt-BR.md": ("## As 22 skills", "(opcional) · `sdd-brainstorm`", "20 skills")}
+tests/test_skill_lint.py:44:        self.assertEqual(len(skills), 22, [s.parent.name for s in skills])  # F17b: ux-review-builder
+tests/test_skill_lint.py:75:        self.assertEqual(len(skills), 22)
+### lint do starter gerado (--conversa) sobre as 15 geradas
+✅ /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f17b-starter-etapa2/4bd671df-4c34-431c-bf11-929368bfac1c/scratchpad/w1/st/skills/sdd-release/SKILL.md: frontmatter válido · camada de conversa ok
+✅ /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f17b-starter-etapa2/4bd671df-4c34-431c-bf11-929368bfac1c/scratchpad/w1/st/skills/sdd-seguranca/SKILL.md: frontmatter válido · camada de conversa ok
+✅ /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f17b-starter-etapa2/4bd671df-4c34-431c-bf11-929368bfac1c/scratchpad/w1/st/skills/ux-review-builder/SKILL.md: frontmatter válido · camada de conversa ok
+### testes AT-007/AT-010
+----------------------------------------------------------------------
+Ran 160 tests in 1051.765s
+
+OK
+rc=0
+rc=0

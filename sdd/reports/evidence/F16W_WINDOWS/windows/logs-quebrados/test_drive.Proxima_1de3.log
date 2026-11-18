@@ -1,0 +1,98 @@
+test_3a_repeticao_para_e_mudanca_de_head_zera (test_drive.Proxima.test_3a_repeticao_para_e_mudanca_de_head_zera) ... FAIL
+
+test_anotacao_de_erro_no_progress_nao_cria_tarefa (test_drive.Proxima.test_anotacao_de_erro_no_progress_nao_cria_tarefa) ... FAIL
+
+test_anotacao_nova_nao_zera_a_repeticao (test_drive.Proxima.test_anotacao_nova_nao_zera_a_repeticao) ... FAIL
+
+test_brief_ja_no_destino_para_em_40 (test_drive.Proxima.test_brief_ja_no_destino_para_em_40) ... ok
+
+test_design_que_nao_passa_no_lint_volta_ao_design_com_o_motivo (test_drive.Proxima.test_design_que_nao_passa_no_lint_volta_ao_design_com_o_motivo) ... ok
+
+test_linha_nova_com_nome_que_e_prefixo_de_outra_ainda_entra (test_drive.Proxima.test_linha_nova_com_nome_que_e_prefixo_de_outra_ainda_entra) ... FAIL
+
+
+
+======================================================================
+
+FAIL: test_3a_repeticao_para_e_mudanca_de_head_zera (test_drive.Proxima.test_3a_repeticao_para_e_mudanca_de_head_zera)
+
+----------------------------------------------------------------------
+
+Traceback (most recent call last):
+
+  File "D:\a\sdd-open\sdd-open\tests\test_drive.py", line 427, in test_3a_repeticao_para_e_mudanca_de_head_zera
+
+    self.assertAcao(self.drive("proximo", D), "RODADA")
+
+  File "D:\a\sdd-open\sdd-open\tests\test_drive.py", line 77, in assertAcao
+
+    self.assertRegex(out, r"(?m)^ACAO: %s$" % acao)
+
+AssertionError: Regex didn't match: '(?m)^ACAO: RODADA$' not found in 'ACAO: DESIGN\nrodada: 1/3\no DESIGN n\ufffdo passa no design-lint (saiu 1)\nRESULTADO: CONTINUAR\n\u2192 rode a fase Design sobre este DEFINE e chame proximo de novo.\n'
+
+
+
+======================================================================
+
+FAIL: test_anotacao_de_erro_no_progress_nao_cria_tarefa (test_drive.Proxima.test_anotacao_de_erro_no_progress_nao_cria_tarefa)
+
+----------------------------------------------------------------------
+
+Traceback (most recent call last):
+
+  File "D:\a\sdd-open\sdd-open\tests\test_drive.py", line 423, in test_anotacao_de_erro_no_progress_nao_cria_tarefa
+
+    self.assertIn("tarefa: 2 de 2 � a: falhou o teste X", res[1])
+
+AssertionError: 'tarefa: 2 de 2 � a: falhou o teste X' not found in 'ACAO: DESIGN\nrodada: 1/3\no DESIGN n\ufffdo passa no design-lint (saiu 1)\nRESULTADO: CONTINUAR\n\u2192 rode a fase Design sobre este DEFINE e chame proximo de novo.\n'
+
+
+
+======================================================================
+
+FAIL: test_anotacao_nova_nao_zera_a_repeticao (test_drive.Proxima.test_anotacao_nova_nao_zera_a_repeticao)
+
+----------------------------------------------------------------------
+
+Traceback (most recent call last):
+
+  File "D:\a\sdd-open\sdd-open\tests\test_drive.py", line 403, in test_anotacao_nova_nao_zera_a_repeticao
+
+    self.assertAcao(self.drive("proximo", D), "RODADA")
+
+  File "D:\a\sdd-open\sdd-open\tests\test_drive.py", line 77, in assertAcao
+
+    self.assertRegex(out, r"(?m)^ACAO: %s$" % acao)
+
+AssertionError: Regex didn't match: '(?m)^ACAO: RODADA$' not found in 'ACAO: DESIGN\nrodada: 1/3\no DESIGN n\ufffdo passa no design-lint (saiu 1)\nRESULTADO: CONTINUAR\n\u2192 rode a fase Design sobre este DEFINE e chame proximo de novo.\n'
+
+
+
+======================================================================
+
+FAIL: test_linha_nova_com_nome_que_e_prefixo_de_outra_ainda_entra (test_drive.Proxima.test_linha_nova_com_nome_que_e_prefixo_de_outra_ainda_entra)
+
+----------------------------------------------------------------------
+
+Traceback (most recent call last):
+
+  File "D:\a\sdd-open\sdd-open\tests\test_drive.py", line 357, in test_linha_nova_com_nome_que_e_prefixo_de_outra_ainda_entra
+
+    self.assertAcao(res, "RODADA")
+
+  File "D:\a\sdd-open\sdd-open\tests\test_drive.py", line 77, in assertAcao
+
+    self.assertRegex(out, r"(?m)^ACAO: %s$" % acao)
+
+AssertionError: Regex didn't match: '(?m)^ACAO: RODADA$' not found in 'ACAO: DESIGN\nrodada: 1/3\no DESIGN n\ufffdo passa no design-lint (saiu 1)\nRESULTADO: CONTINUAR\n\u2192 rode a fase Design sobre este DEFINE e chame proximo de novo.\n'
+
+
+
+----------------------------------------------------------------------
+
+Ran 6 tests in 17.448s
+
+
+
+FAILED (failures=4)
+

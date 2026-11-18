@@ -1,0 +1,158 @@
+test_auditor_sem_bloco_e_68 (test_revisao.Vereditos.test_auditor_sem_bloco_e_68) ... FAIL
+
+test_bloco_vazio_e_zero_achados (test_revisao.Vereditos.test_bloco_vazio_e_zero_achados) ... FAIL
+
+test_convergencia_nao_com_refutacao (test_revisao.Vereditos.test_convergencia_nao_com_refutacao) ... FAIL
+
+test_linha_de_inicio_por_papel (test_revisao.Vereditos.test_linha_de_inicio_por_papel) ... FAIL
+
+test_revisao_completa_grava_tudo_e_o_loop_le (test_revisao.Vereditos.test_revisao_completa_grava_tudo_e_o_loop_le) ... FAIL
+
+test_revisor_sem_bloco_e_68_e_nunca_zero_achados (test_revisao.Vereditos.test_revisor_sem_bloco_e_68_e_nunca_zero_achados) ... FAIL
+
+
+
+======================================================================
+
+FAIL: test_auditor_sem_bloco_e_68 (test_revisao.Vereditos.test_auditor_sem_bloco_e_68)
+
+----------------------------------------------------------------------
+
+Traceback (most recent call last):
+
+  File "D:\a\sdd-open\sdd-open\tests\test_revisao.py", line 378, in test_auditor_sem_bloco_e_68
+
+    self.assertEqual(rc, 68, out)
+
+AssertionError: 64 != 68 : D:\a\sdd-open\sdd-open\sdd\bin\adversarial-review.sh: line 37: cd: null directory
+
+\u26a0\ufe0f  o python3 deste computador existe, mas n�o roda (no Windows, costuma ser o atalho da Microsoft Store).
+
+\U0001f6d1 adversarial-review: python3 n�o encontrado no PATH.
+
+RESULTADO: PAROU
+
+\u2192 instale o Python 3 (3.9 ou mais novo) e rode de novo.
+
+
+
+
+
+======================================================================
+
+FAIL: test_bloco_vazio_e_zero_achados (test_revisao.Vereditos.test_bloco_vazio_e_zero_achados)
+
+----------------------------------------------------------------------
+
+Traceback (most recent call last):
+
+  File "D:\a\sdd-open\sdd-open\tests\test_revisao.py", line 358, in test_bloco_vazio_e_zero_achados
+
+    self.assertEqual(rc, 0, out)
+
+AssertionError: 64 != 0 : D:\a\sdd-open\sdd-open\sdd\bin\adversarial-review.sh: line 37: cd: null directory
+
+\u26a0\ufe0f  o python3 deste computador existe, mas n�o roda (no Windows, costuma ser o atalho da Microsoft Store).
+
+\U0001f6d1 adversarial-review: python3 n�o encontrado no PATH.
+
+RESULTADO: PAROU
+
+\u2192 instale o Python 3 (3.9 ou mais novo) e rode de novo.
+
+
+
+
+
+======================================================================
+
+FAIL: test_convergencia_nao_com_refutacao (test_revisao.Vereditos.test_convergencia_nao_com_refutacao)
+
+----------------------------------------------------------------------
+
+Traceback (most recent call last):
+
+  File "D:\a\sdd-open\sdd-open\tests\test_revisao.py", line 388, in test_convergencia_nao_com_refutacao
+
+    self.assertEqual(rc, 0)
+
+AssertionError: 64 != 0
+
+
+
+======================================================================
+
+FAIL: test_linha_de_inicio_por_papel (test_revisao.Vereditos.test_linha_de_inicio_por_papel)
+
+----------------------------------------------------------------------
+
+Traceback (most recent call last):
+
+  File "D:\a\sdd-open\sdd-open\tests\test_revisao.py", line 395, in test_linha_de_inicio_por_papel
+
+    self.assertIn("\u25b6 revisor: stub-a (revisor-ok) � at� 1 min", out)
+
+AssertionError: '\u25b6 revisor: stub-a (revisor-ok) � at� 1 min' not found in 'D:\\a\\sdd-open\\sdd-open\\sdd\\bin\\adversarial-review.sh: line 37: cd: null directory\n\u26a0\ufe0f  o python3 deste computador existe, mas n�o roda (no Windows, costuma ser o atalho da Microsoft Store).\n\U0001f6d1 adversarial-review: python3 n�o encontrado no PATH.\nRESULTADO: PAROU\n\u2192 instale o Python 3 (3.9 ou mais novo) e rode de novo.\n'
+
+
+
+======================================================================
+
+FAIL: test_revisao_completa_grava_tudo_e_o_loop_le (test_revisao.Vereditos.test_revisao_completa_grava_tudo_e_o_loop_le)
+
+----------------------------------------------------------------------
+
+Traceback (most recent call last):
+
+  File "D:\a\sdd-open\sdd-open\tests\test_revisao.py", line 337, in test_revisao_completa_grava_tudo_e_o_loop_le
+
+    self.assertEqual(rc, 0, out)
+
+AssertionError: 64 != 0 : D:\a\sdd-open\sdd-open\sdd\bin\adversarial-review.sh: line 37: cd: null directory
+
+\u26a0\ufe0f  o python3 deste computador existe, mas n�o roda (no Windows, costuma ser o atalho da Microsoft Store).
+
+\U0001f6d1 adversarial-review: python3 n�o encontrado no PATH.
+
+RESULTADO: PAROU
+
+\u2192 instale o Python 3 (3.9 ou mais novo) e rode de novo.
+
+
+
+
+
+======================================================================
+
+FAIL: test_revisor_sem_bloco_e_68_e_nunca_zero_achados (test_revisao.Vereditos.test_revisor_sem_bloco_e_68_e_nunca_zero_achados)
+
+----------------------------------------------------------------------
+
+Traceback (most recent call last):
+
+  File "D:\a\sdd-open\sdd-open\tests\test_revisao.py", line 365, in test_revisor_sem_bloco_e_68_e_nunca_zero_achados
+
+    self.assertEqual(rc, 68, out)
+
+AssertionError: 64 != 68 : D:\a\sdd-open\sdd-open\sdd\bin\adversarial-review.sh: line 37: cd: null directory
+
+\u26a0\ufe0f  o python3 deste computador existe, mas n�o roda (no Windows, costuma ser o atalho da Microsoft Store).
+
+\U0001f6d1 adversarial-review: python3 n�o encontrado no PATH.
+
+RESULTADO: PAROU
+
+\u2192 instale o Python 3 (3.9 ou mais novo) e rode de novo.
+
+
+
+
+
+----------------------------------------------------------------------
+
+Ran 6 tests in 2.021s
+
+
+
+FAILED (failures=6)
+

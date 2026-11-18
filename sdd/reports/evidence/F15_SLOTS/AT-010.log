@@ -1,0 +1,14 @@
+$ cd tests && SDD_TEST_BASH=/bin/bash /usr/bin/python3 -B -m unittest -v test_f15_slots_textos.Build test_contrato_build_release.SddBuild
+# commit: 9013b10
+test_aplicar_migration_checa_antes_da_previa (test_f15_slots_textos.Build) ... ok
+test_versao_e_4b (test_f15_slots_textos.Build) ... ok
+test_passo_4b_manda_ler_a_referencia (test_contrato_build_release.SddBuild) ... ok
+test_referencia_sem_arquivo_de_ambiente_do_starter (test_contrato_build_release.SddBuild) ... ok
+test_referencia_tem_as_regras_do_starter (test_contrato_build_release.SddBuild) ... ok
+test_versao (test_contrato_build_release.SddBuild) ... ok
+
+----------------------------------------------------------------------
+Ran 6 tests in 0.001s
+
+OK
+[exit=0]

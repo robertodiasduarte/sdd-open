@@ -1,0 +1,10 @@
+$ (em tests/) /usr/bin/python3 -B -m unittest -v test_validate_reverse.ReportTests.test_partial_documented_report_is_valid test_validate_reverse.ReportTests.test_observed_with_session_is_structurally_valid test_validate_reverse.ReportTests.test_cli_works_outside_bundle_and_does_not_write_report
+test_partial_documented_report_is_valid (test_validate_reverse.ReportTests) ... ok
+test_observed_with_session_is_structurally_valid (test_validate_reverse.ReportTests) ... ok
+test_cli_works_outside_bundle_and_does_not_write_report (test_validate_reverse.ReportTests) ... ok
+
+----------------------------------------------------------------------
+Ran 3 tests in 0.034s
+
+OK
+[exit=0]

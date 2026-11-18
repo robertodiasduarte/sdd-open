@@ -1,0 +1,7 @@
+$ python3 -B scripts/check-versions.py --base v2.2.7 --base-obrigatoria && for s in build release; do printf "sdd-%s %s → %s\n" "$s" "$(sed -n "s/^  version: \"\(.*\)\"$/\1/p" <(git show v2.2.7:.agents/skills/sdd-$s/SKILL.md))" "$(sed -n "s/^  version: \"\(.*\)\"$/\1/p" .agents/skills/sdd-$s/SKILL.md)"; done
+PASS: check-versions — 17 skills com versão coerente, comparadas a v2.2.7.
+RESULTADO: VERDE
+→ siga para o próximo passo.
+sdd-build 2.2.1 → 2.3.0
+sdd-release 2.3.1 → 2.4.0
+[exit=0]

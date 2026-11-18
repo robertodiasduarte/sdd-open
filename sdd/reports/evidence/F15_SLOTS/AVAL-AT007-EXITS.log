@@ -1,0 +1,97 @@
+$ /bin/bash /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f15-slots/80a83c1b-4077-4625-ba69-e27f11f530a1/scratchpad/p5.sh
+################ NEW
+== PULADO (test_cmd vazio)
+ℹ️  project.test_cmd vazio em sdd/config.yaml: não há comando de teste para comparar.
+RESULTADO: PULADO
+→ preencha project.test_cmd (ou passe --cmd) para usar o baseline de testes.
+[exit=0]
+== 64 argumento inesperado
+🛑 argumento inesperado: --xyz
+RESULTADO: ERRO DE USO
+→ uso: sdd/bin/test-baseline.sh [--cmd <comando>] [--touched [--base <ref>]] [--aceitar <id>]
+[exit=64]
+== 64 --touched com base invalida
+🛑 --touched: git diff nao/existe...HEAD falhou (base inválida?)
+RESULTADO: ERRO DE USO
+→ uso: sdd/bin/test-baseline.sh [--cmd <comando>] [--touched [--base <ref>]] [--aceitar <id>]
+[exit=64]
+== 3 saida nao reconhecida
+▶ testes: echo boom; exit 1
+⚠️  o comando saiu 1 e nenhuma falha foi reconhecida (formatos: unittest, pytest, jest, vitest, go, deno).
+RESULTADO: INCONCLUSIVO
+→ rode onde a ferramenta exista, ou confira a saída do comando; isto não é verde.
+[exit=3]
+== 2 falha nova (completo)
+▶ testes: echo "FAIL: test_a (m.T)"; exit 1
+🛑 nova: m.T.test_a
+🛑 1 falha(s) nova(s); 0 conhecida(s).
+RESULTADO: VERMELHO
+→ corrija as falhas novas; aceitar uma é decisão sua: bash sdd/bin/test-baseline.sh --aceitar '<id>'
+[exit=2]
+== poda: baseline com m.T.test_velho + m.T.test_a; completo so falha test_a
+▶ testes: echo \"FAIL: test_a (m.T)\"; exit 1
+⚠️  o comando saiu 2 e nenhuma falha foi reconhecida (formatos: unittest, pytest, jest, vitest, go, deno).
+⚠️  baseline não podado (execução parcial)
+RESULTADO: INCONCLUSIVO
+→ rode onde a ferramenta exista, ou confira a saída do comando; isto não é verde.
+[exit=3]
+baseline agora:
+m.T.test_velho
+m.T.test_a
+== --touched nao poda
+▶ testes: echo \"FAIL: test_a (m.T)\"; exit 1
+⚠️  o comando saiu 2 e nenhuma falha foi reconhecida (formatos: unittest, pytest, jest, vitest, go, deno).
+⚠️  baseline não podado (execução parcial)
+RESULTADO: INCONCLUSIVO
+→ rode onde a ferramenta exista, ou confira a saída do comando; isto não é verde.
+[exit=3]
+m.T.test_velho
+m.T.test_a
+################ OLD
+== PULADO (test_cmd vazio)
+ℹ️  project.test_cmd vazio em sdd/config.yaml: não há comando de teste para comparar.
+RESULTADO: PULADO
+→ preencha project.test_cmd (ou passe --cmd) para usar o baseline de testes.
+[exit=0]
+== 64 argumento inesperado
+🛑 argumento inesperado: --xyz
+RESULTADO: ERRO DE USO
+→ uso: sdd/bin/test-baseline.sh [--cmd <comando>] [--touched [--base <ref>]] [--aceitar <id>]
+[exit=64]
+== 64 --touched com base invalida
+🛑 --touched: git diff nao/existe...HEAD falhou (base inválida?)
+RESULTADO: ERRO DE USO
+→ uso: sdd/bin/test-baseline.sh [--cmd <comando>] [--touched [--base <ref>]] [--aceitar <id>]
+[exit=64]
+== 3 saida nao reconhecida
+▶ testes: echo boom; exit 1
+⚠️  o comando saiu 1 e nenhuma falha foi reconhecida (formatos: unittest, pytest, jest, vitest, go, deno).
+RESULTADO: INCONCLUSIVO
+→ rode onde a ferramenta exista, ou confira a saída do comando; isto não é verde.
+[exit=3]
+== 2 falha nova (completo)
+▶ testes: echo "FAIL: test_a (m.T)"; exit 1
+🛑 nova: m.T.test_a
+🛑 1 falha(s) nova(s); 0 conhecida(s).
+RESULTADO: VERMELHO
+→ corrija as falhas novas; aceitar uma é decisão sua: bash sdd/bin/test-baseline.sh --aceitar '<id>'
+[exit=2]
+== poda: baseline com m.T.test_velho + m.T.test_a; completo so falha test_a
+▶ testes: echo \"FAIL: test_a (m.T)\"; exit 1
+⚠️  o comando saiu 2 e nenhuma falha foi reconhecida (formatos: unittest, pytest, jest, vitest, go, deno).
+⚠️  baseline não podado (execução parcial)
+RESULTADO: INCONCLUSIVO
+→ rode onde a ferramenta exista, ou confira a saída do comando; isto não é verde.
+[exit=3]
+baseline agora:
+m.T.test_velho
+m.T.test_a
+== --touched nao poda
+▶ testes: echo \"FAIL: test_a (m.T)\"; exit 1
+⚠️  o comando saiu 2 e nenhuma falha foi reconhecida (formatos: unittest, pytest, jest, vitest, go, deno).
+⚠️  baseline não podado (execução parcial)
+RESULTADO: INCONCLUSIVO
+→ rode onde a ferramenta exista, ou confira a saída do comando; isto não é verde.
+[exit=3]
+m.T.test_velho
+m.T.test_a

@@ -1,0 +1,4 @@
+$ grep -n '| Papel |' sdd/templates/UX_REVIEW_TEMPLATE.md
+119:| Share | Papel | Token do projeto (se houver) | UX Rationale |
+145:| Surface (funcional) | Papel | Justificativa | Nova no design system? |
+[exit=0]

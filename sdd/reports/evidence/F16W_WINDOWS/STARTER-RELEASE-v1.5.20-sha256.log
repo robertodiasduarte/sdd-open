@@ -1,0 +1,20 @@
+$ bash sdd/reports/evidence/F16W_WINDOWS/scripts/release-sha.sh /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f16w-windows/fd210694-ded6-4d95-a500-52e0521f4ae8/scratchpad/rel-starter
+sdd-auditoria-harness.zip: OK
+sdd-brainstorm.zip: OK
+sdd-build.zip: OK
+sdd-checar-ambiente.zip: OK
+sdd-define.zip: OK
+sdd-design.zip: OK
+sdd-engenharia-reversa-saas.zip: OK
+sdd-governanca.zip: OK
+sdd-handoff.zip: OK
+sdd-higiene-dado.zip: OK
+sdd-iniciar-repo.zip: OK
+sdd-kb.zip: OK
+sdd-loop-builder.zip: OK
+sdd-new-session.zip: OK
+sdd-prompt-builder.zip: OK
+sdd-release.zip: OK
+sdd-seguranca.zip: OK
+ux-review-builder.zip: OK
+[exit=0]

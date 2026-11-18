@@ -1,0 +1,40 @@
+$ python3 -B -m unittest -v test_f16w2_processos test_f16w2_render test_hooks
+test_commit_de_600_arquivos_lanca_no_maximo_3_programas_por_arquivo (test_f16w2_processos.Contagem.test_commit_de_600_arquivos_lanca_no_maximo_3_programas_por_arquivo) ... ok
+test_init_lanca_no_maximo_3_programas_por_arquivo_gerado (test_f16w2_processos.Contagem.test_init_lanca_no_maximo_3_programas_por_arquivo_gerado) ... ok
+test_commit_grande_com_cor_ligada_acha_o_nul (test_f16w2_processos.Recusas.test_commit_grande_com_cor_ligada_acha_o_nul) ... ok
+test_cpf_cnpj_certificado_env_planilha_e_credencial_continuam_recusados (test_f16w2_processos.Recusas.test_cpf_cnpj_certificado_env_planilha_e_credencial_continuam_recusados) ... ok
+test_nome_com_byte_que_nao_e_utf8_ainda_e_conferido (test_f16w2_processos.Recusas.test_nome_com_byte_que_nao_e_utf8_ainda_e_conferido) ... ok
+test_nul_depois_de_8_kb_e_extensao_maiuscula_sao_recusados (test_f16w2_processos.Recusas.test_nul_depois_de_8_kb_e_extensao_maiuscula_sao_recusados) ... ok
+test_sem_pcre_o_caminho_por_arquivo_recusa_igual (test_f16w2_processos.Recusas.test_sem_pcre_o_caminho_por_arquivo_recusa_igual) ... ok
+test_utf16_com_bom_e_binario_passam (test_f16w2_processos.Recusas.test_utf16_com_bom_e_binario_passam) ... ok
+test_os_casos_de_borda_saem_byte_a_byte_como_antes (test_f16w2_render.Render.test_os_casos_de_borda_saem_byte_a_byte_como_antes) ... ok
+test_commit_limpo_passa_em_silencio (test_hooks.Hooks.test_commit_limpo_passa_em_silencio) ... ok
+test_h2_default_100kb_com_slot_vazio_ou_invalido (test_hooks.Hooks.test_h2_default_100kb_com_slot_vazio_ou_invalido) ... ok
+test_h2_teto_do_arquivo_de_contexto (test_hooks.Hooks.test_h2_teto_do_arquivo_de_contexto) ... ok
+test_h3_credencial_em_config_mostra_a_chave_e_nunca_o_valor (test_hooks.Hooks.test_h3_credencial_em_config_mostra_a_chave_e_nunca_o_valor) ... ok
+test_h3_gitleaks_quando_instalado (test_hooks.Hooks.test_h3_gitleaks_quando_instalado) ... ok
+test_h3_placeholder_antes_nao_absolve_a_credencial_real (test_hooks.Hooks.test_h3_placeholder_antes_nao_absolve_a_credencial_real) ... ok
+test_h3_placeholder_e_package_lock_passam (test_hooks.Hooks.test_h3_placeholder_e_package_lock_passam) ... ok
+test_h4_apagar_ou_renomear_o_playbook_e_recusado (test_hooks.Hooks.test_h4_apagar_ou_renomear_o_playbook_e_recusado) ... ok
+test_h4_playbook_que_perde_conhecimento_e_recusado (test_hooks.Hooks.test_h4_playbook_que_perde_conhecimento_e_recusado) ... ok
+test_h4_sem_playbook_lint_avisa_e_segue (test_hooks.Hooks.test_h4_sem_playbook_lint_avisa_e_segue) ... ok
+test_h5_byte_nul_em_texto_e_recusado_e_binario_passa (test_hooks.Hooks.test_h5_byte_nul_em_texto_e_recusado_e_binario_passa) ... ok
+test_h5_sem_extensao_so_com_shebang (test_hooks.Hooks.test_h5_sem_extensao_so_com_shebang) ... ok
+test_h6_le_default_branch_do_config (test_hooks.Hooks.test_h6_le_default_branch_do_config) ... ok
+test_h6_recusa_so_na_branch_padrao_com_remoto (test_hooks.Hooks.test_h6_recusa_so_na_branch_padrao_com_remoto) ... ok
+test_higiene_desligada_ou_sem_script (test_hooks.Hooks.test_higiene_desligada_ou_sem_script) ... ok
+test_higiene_ligada_recusa_cpf_env_e_diz_como_desinstalar_sem_rm (test_hooks.Hooks.test_higiene_ligada_recusa_cpf_env_e_diz_como_desinstalar_sem_rm) ... ok
+test_lista_de_arquivos_de_contexto_igual_a_do_pacote (test_hooks.Hooks.test_lista_de_arquivos_de_contexto_igual_a_do_pacote) ... ok
+test_pre_push_avisa_base_velha_e_sai_0 (test_hooks.Hooks.test_pre_push_avisa_base_velha_e_sai_0) ... ok
+test_report_confere_o_staged_e_nao_o_disco (test_hooks.Hooks.test_report_confere_o_staged_e_nao_o_disco) ... ok
+test_report_pula_fixtures_e_template_copiados_pelo_init (test_hooks.Hooks.test_report_pula_fixtures_e_template_copiados_pelo_init) ... ok
+test_report_sem_python3_ou_sem_lint_avisa_e_segue (test_hooks.Hooks.test_report_sem_python3_ou_sem_lint_avisa_e_segue) ... ok
+test_report_so_julga_o_relatorio_em_sdd_reports (test_hooks.Hooks.test_report_so_julga_o_relatorio_em_sdd_reports) ... ok
+test_report_staged_passa_pelo_report_lint (test_hooks.Hooks.test_report_staged_passa_pelo_report_lint) ... ok
+test_varios_achados_numa_recusa_so_e_no_verify_grava (test_hooks.Hooks.test_varios_achados_numa_recusa_so_e_no_verify_grava) ... ok
+
+----------------------------------------------------------------------
+Ran 33 tests in 46.352s
+
+OK
+[exit=0]

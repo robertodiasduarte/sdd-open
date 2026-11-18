@@ -1,0 +1,11 @@
+$ for s in sdd-ux-review sdd-build sdd-design sdd-prompt-builder; do a=$(git show v2.4.0:.agents/skills/$s/SKILL.md | grep -m1 'version:'); b=$(grep -m1 'version:' .agents/skills/$s/SKILL.md); echo "$s: $a -> $b"; done; /usr/bin/python3 -B scripts/check-versions.py --base v2.4.0 --base-obrigatoria; echo versoes_rc=$?; git diff --quiet v2.4.0 HEAD -- sdd/hooks sdd/bin/report-lint.py sdd/bin/verify-gate.sh .agents/skills/sdd-release; echo at034_rc=$?
+sdd-ux-review:   version: "2.4.0" ->   version: "2.5.0"
+sdd-build:   version: "2.5.1" ->   version: "2.6.0"
+sdd-design:   version: "2.4.0" ->   version: "2.5.0"
+sdd-prompt-builder:   version: "2.1.1" ->   version: "2.1.2"
+PASS: check-versions — 18 skills com versão coerente, comparadas a v2.4.0.
+RESULTADO: VERDE
+→ siga para o próximo passo.
+versoes_rc=0
+at034_rc=0
+[exit=0]

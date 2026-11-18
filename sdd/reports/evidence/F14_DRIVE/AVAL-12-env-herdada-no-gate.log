@@ -1,0 +1,12 @@
+$ . /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.RRzJHrBpTz/lab.sh; V=$(novo); mkrepo $V/x "env > env.txt; echo \$SDD_DRIVE_TRAVA_HERDADA > herdada.txt; true"; printf "env.txt\nherdada.txt\n" >> .gitignore; git add -A; git commit -qm i; drv iniciar $D > /dev/null; feito; drv verificar $D --fundo >/dev/null; sleep 2; echo "gate via --fundo ve SDD_DRIVE_TRAVA_HERDADA=[$(cat herdada.txt)]"
+T=$(mktemp -d); (cd $PROJ && git archive HEAD) | tar -x -C $T; cd $T; echo "== suite do proprio projeto com a var herdada (o caso do gate deste repo rodado com verificar --fundo)"; SDD_DRIVE_TRAVA_HERDADA=1 SDD_TEST_BASH=/bin/bash /usr/bin/python3 -B -m unittest discover -s tests -p test_drive.py 2>&1 | grep -E "^(FAIL|ERROR|Ran|OK|FAILED)"; echo unittest-rc=${PIPESTATUS[0]}
+gate via --fundo ve SDD_DRIVE_TRAVA_HERDADA=[1]
+== suite do proprio projeto com a var herdada (o caso do gate deste repo rodado com verificar --fundo)
+FAIL: test_duas_chamadas_juntas_rodam_um_gate_so (test_drive.SegundoPlano)
+FAIL: test_fundo_devolve_na_hora_e_o_resultado_chega_pelo_proximo (test_drive.SegundoPlano)
+FAIL: test_sem_mudanca_de_codigo_nao_roda_de_novo_nem_gasta (test_drive.Verificar)
+FAIL: test_tarefa_pendente_nao_roda_o_gate (test_drive.Verificar)
+Ran 59 tests in 89.763s
+FAILED (failures=4)
+unittest-rc=1
+[exit=0]

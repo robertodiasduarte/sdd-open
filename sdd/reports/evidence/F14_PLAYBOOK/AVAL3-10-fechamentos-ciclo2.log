@@ -1,0 +1,29 @@
+$ S=/private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f14-playbook/712319f2-9f99-446d-ba48-ead3df6c700d/scratchpad/aval3.qzV7tu /bin/bash /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f14-playbook/712319f2-9f99-446d-ba48-ead3df6c700d/scratchpad/aval3.qzV7tu/scripts/s10.sh </dev/null
+=== N-H1
+DELTA LM-901 mordeu+1 · conf=2
+rc=0
+DELTA LM-901 mordeu+1 · conf=2
+rc=0
+DELTA LM-901 ajudou+1 · conf=2
+=== N-L5: self-test sem git no PATH; e com git
+self-test — fixtures em /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f14-playbook/712319f2-9f99-4
+RESULTADO: SELF-TEST FALHOU
+→ confira se o git está instalado e rode de novo.
+rc sem git=2
+rc com git=0
+=== N-L8: 2 novas de mesmo ID; legitimo: troca da mesma regra + outra nova
+rc=2 (esperado 2)
+❌ invariantes linha 2: INV-009 aparece 2 vezes nas linhas aprovadas: cada ID entra uma vez
+rc=0 (esperado 0)
+troca da mesma regra rc=0 (esperado 0)
+a mesma linha 2 vezes rc=2 (2 aposentadorias que levam o mesmo ajuste)
+=== N-L8 legitimo vizinho: 2 aposentadorias da mesma invariante, cada item leva o ajuste do seu --cruzar
+   ajuste: - [INV-009] estado=humano origem=LM-902,LM-903 :: Regra · por quê: p · motivo: 
+   ajuste: - [INV-009] estado=humano origem=LM-901,LM-903 :: Regra · por quê: p · motivo: 
+--- as 2 respostas, 1 a 1, viram 2 linhas do mesmo ID em inv-linhas.txt:
+rc=2
+❌ invariantes linha 2: INV-009 aparece 2 vezes nas linhas aprovadas: cada ID entra uma vez
+--- e o que o 17b manda (o --cruzar com todos juntos) da 1 linha so:
+- [INV-009] estado=humano origem=LM-903 :: Regra · por quê: p · motivo: m
+rc=0
+[exit=0]

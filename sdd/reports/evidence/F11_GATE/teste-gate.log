@@ -1,0 +1,21 @@
+$ SDD_TEST_BASH=/bin/bash /usr/bin/python3 -B -m unittest discover -s tests -p 'test_revisao_gate.py' -v
+test_bash_env_e_funcao_exportada_nao_chamam_a_cli_real (test_revisao_gate.Gate) ... ok
+test_extracao_nula_derruba_uma_assercao_de_cada_engine (test_revisao_gate.Gate) ... ok
+test_pacote_intacto_sai_0_sem_rede (test_revisao_gate.Gate) ... ok
+test_preco_atualizado_no_projeto_nao_quebra_o_gate (test_revisao_gate.Gate) ... ok
+test_registry_sem_engine_sai_3 (test_revisao_gate.Gate) ... ok
+test_sabotagem_custo_da_openrouter (test_revisao_gate.Gate) ... ok
+test_sabotagem_custo_do_claude (test_revisao_gate.Gate) ... ok
+test_sabotagem_exclusao_dentro_do_papel (test_revisao_gate.Gate) ... ok
+test_sabotagem_modelo_do_gemini (test_revisao_gate.Gate) ... ok
+test_sabotagem_tarifa_do_modelo_configurado (test_revisao_gate.Gate) ... ok
+test_sabotagem_tokens_do_codex (test_revisao_gate.Gate) ... ok
+test_sem_stub_sai_3_antes_de_chamar (test_revisao_gate.Gate) ... ok
+test_uso (test_revisao_gate.Gate) ... ok
+test_verboso_mostra_o_valor_lido (test_revisao_gate.Gate) ... ok
+
+----------------------------------------------------------------------
+Ran 14 tests in 76.495s
+
+OK
+[exit=0]

@@ -1,0 +1,21 @@
+$ bash sdd/bin/playbook-curator.sh --aplicar "$STG/delta.txt" sdd/playbook.md conf=2026-11-11
+LM-001 ajudou+1
+LM-002 ajudou+1
+LM-003 ajudou+1
+LM-005 ajudou+1
+LM-006 ajudou+1
+LM-007 ajudou+1
+LM-008 ajudou+1
+LM-009 ajudou+1
+LM-010 ajudou+1
+LM-011 ajudou+1
+LM-012 ajudou+1
+LM-013 ajudou+1
+LM-014 ajudou+1
+LM-015 ajudou+1
+LM-017 ajudou+1
+ADD Reviews / harness :: sup: `PIPESTATUS` `zsh` `[exit=` `evidência` :: No zsh (o shell padrão do macOS), `${PIPESTATUS[0]}` não existe: o log de evidência grava `[exit=]` vazio e parece válido sem provar nada (na F18/F20, os logs dos ATs tiveram de ser refeitos). **Do instead:** grave o log por um script executado com `bash`, rodando o comando sem pipe e guardando `rc=$?`; antes de citar um log, confira que ele termina em `[exit=<número>]`. → ficha: — · promovido_para: —
+ADD Reviews / harness :: sup: `2>/dev/null` `dito uma vez` `sdd_python_pronto` `aviso` :: Calar com `2>/dev/null` uma função que avisa uma vez por processo (como `sdd_python_pronto`, que marca `SDD_PYTHON_DITO`) gasta o aviso no silêncio: na F18/F20, o bloco do `AGENTS.md` sumiu com a causa do Python que o `doctor` e os adaptadores deviam dizer depois. **Do instead:** chame a função sem calar o stderr (ela já evita repetir) e teste a frase no fluxo completo (`init`), não só no comando isolado. → ficha: — · promovido_para: —
+ADD Reviews / harness :: sup: `chave falsa` `evidência` `AVAL` `varredura` :: Sonda de segurança que escreve a chave falsa por extenso (ou um cabeçalho PEM) no log de evidência leva ao repositório o que a varredura de segredos do próprio pacote bloqueia: na F18/F20, os logs do avaliador do ciclo 1 travaram a varredura. **Do instead:** no brief do avaliador, peça que a chave seja montada em tempo de execução e que o log mostre só o comando que a monta; rode a varredura sobre as evidências antes de commitá-las. → ficha: — · promovido_para: —
+ADD Reviews / harness :: sup: `DISAGREE_EVIDENCE` `auditor` `premissa` `git diff` :: O auditor rebateu 2 achados do revisor com premissa falsa sobre o git (que `+++ b/<nome com espaço>` não leva TAB no fim; que `git -C <subpasta> diff` devolve caminho relativo à subpasta): medido num repositório temporário, os 2 achados eram reais. **Do instead:** desacordo sobre o comportamento de uma ferramenta se decide por medição num repositório temporário, com o comando e a saída registrados no ledger, nunca pela palavra do revisor nem do auditor. → ficha: — · promovido_para: —
+[exit=0]

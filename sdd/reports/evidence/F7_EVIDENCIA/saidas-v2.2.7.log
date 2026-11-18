@@ -1,0 +1,18 @@
+$ S=$(mktemp -d) && git init -q "$S" && mkdir -p "$S/sdd/bin" && cp sdd/fixtures/DEFINE_FIXTURE_*.md "$S/" && git show v2.2.7:sdd/bin/verify-gate.sh > "$S/velho.sh" && cp sdd/bin/verify-gate.sh "$S/novo.sh" && cd "$S" && for f in DEFINE_FIXTURE_*.md; do for fl in "" --strict --print; do bash velho.sh $fl $f > a.txt 2>&1; ra=$?; SDD_TRACE=off bash novo.sh $fl $f > b.txt 2>&1; rb=$?; bash novo.sh $fl $f > c.txt 2>&1; rc=$?; if cmp -s a.txt b.txt && cmp -s a.txt c.txt && [ $ra = $rb ] && [ $ra = $rc ]; then r=igual; else r=DIFERENTE; fi; echo "$f [$fl] v2.2.7=$ra off=$rb on=$rc saida=$r"; done; done; ls sdd/traces; cd /; rm -rf "${S:?}"
+DEFINE_FIXTURE_CONTROLE.md [] v2.2.7=0 off=0 on=0 saida=igual
+DEFINE_FIXTURE_CONTROLE.md [--strict] v2.2.7=0 off=0 on=0 saida=igual
+DEFINE_FIXTURE_CONTROLE.md [--print] v2.2.7=0 off=0 on=0 saida=igual
+DEFINE_FIXTURE_GOVERNANCA.md [] v2.2.7=0 off=0 on=0 saida=igual
+DEFINE_FIXTURE_GOVERNANCA.md [--strict] v2.2.7=0 off=0 on=0 saida=igual
+DEFINE_FIXTURE_GOVERNANCA.md [--print] v2.2.7=0 off=0 on=0 saida=igual
+DEFINE_FIXTURE_NEEDS_CLARIFICATION.md [] v2.2.7=5 off=5 on=5 saida=igual
+DEFINE_FIXTURE_NEEDS_CLARIFICATION.md [--strict] v2.2.7=1 off=1 on=1 saida=igual
+DEFINE_FIXTURE_NEEDS_CLARIFICATION.md [--print] v2.2.7=0 off=0 on=0 saida=igual
+DEFINE_FIXTURE_SEM_BLOCO.md [] v2.2.7=64 off=64 on=64 saida=igual
+DEFINE_FIXTURE_SEM_BLOCO.md [--strict] v2.2.7=64 off=64 on=64 saida=igual
+DEFINE_FIXTURE_SEM_BLOCO.md [--print] v2.2.7=64 off=64 on=64 saida=igual
+FIXTURE_CONTROLE.jsonl
+FIXTURE_GOVERNANCA.jsonl
+FIXTURE_NEEDS_CLARIFICATION.jsonl
+FIXTURE_SEM_BLOCO.jsonl
+[exit=0]

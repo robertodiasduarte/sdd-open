@@ -1,0 +1,72 @@
+$ bash /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f22-aviso-versao/89f76119-0a85-490f-a1ff-b57288611d99/scratchpad/probes/at008.sh
+
+$ pkg_atual "$T/pkg" && novo_proj "$T/repo" && cd "$T/repo" && bash "$T/pkg/bin/sdd-open.sh" init --vendors claude --yes >/dev/null 2>&1; git add -A && git commit -qm i && git config core.hooksPath
+sdd/hooks
+[rc=0]
+
+$ git worktree add -q "$T/wt2" -b frente2 && git worktree list
+/private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f22-aviso-versao/89f76119-0a85-490f-a1ff-b57288611d99/scratchpad/sonda.qIsdGG/repo 552c2da [main]
+/private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f22-aviso-versao/89f76119-0a85-490f-a1ff-b57288611d99/scratchpad/sonda.qIsdGG/wt2  552c2da [frente2]
+[rc=0]
+### (1) core.hooksPath absoluto para o sdd/hooks da OUTRA worktree do mesmo repositório
+
+$ git config core.hooksPath "$T/wt2/sdd/hooks" && git config core.hooksPath && doc && ini
+/private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f22-aviso-versao/89f76119-0a85-490f-a1ff-b57288611d99/scratchpad/sonda.qIsdGG/wt2/sdd/hooks
+8:✅ hooks ligados (pelo sdd/hooks de outra worktree deste repositório: /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f22-aviso-versao/89f76119-0a85-490f-a1ff-b57288611d99/scratchpad/sonda.qIsdGG/wt2)
+9:✅ claude: gerado (.claude/skills · CLAUDE.md · .claude/hooks + settings.json) · CLI encontrado · cobre também Grok Build e GLM
+RESULTADO: DIAGNÓSTICO CONCLUÍDO
+exit_doctor=0
+10:✅ hooks ligados (pelo sdd/hooks de outra worktree deste repositório: /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f22-aviso-versao/89f76119-0a85-490f-a1ff-b57288611d99/scratchpad/sonda.qIsdGG/wt2)
+11:✅ claude: gerado (.claude/skills · CLAUDE.md · .claude/hooks + settings.json) · CLI encontrado · cobre também Grok Build e GLM
+RESULTADO: EM DIA
+exit_init=0
+[rc=0]
+### (1b) a mesma coisa, rodando de dentro da outra worktree (o caminho é o da worktree atual)
+
+$ (cd "$T/wt2" && doc)
+8:✅ hooks ligados (sdd/hooks: pre-commit com 5 regras + relatório + alarme da higiene off, pre-push)
+9:✅ claude: gerado (.claude/skills · CLAUDE.md · .claude/hooks + settings.json) · CLI encontrado · cobre também Grok Build e GLM
+RESULTADO: DIAGNÓSTICO CONCLUÍDO
+exit_doctor=0
+[rc=0]
+### (1c) caminho absoluto com symlink (/tmp -> /private/tmp) e barra final
+
+$ git config core.hooksPath "$(echo "$T" | sed "s#^/private/tmp/#/tmp/#")/wt2/sdd/hooks/" && git config core.hooksPath && doc
+/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f22-aviso-versao/89f76119-0a85-490f-a1ff-b57288611d99/scratchpad/sonda.qIsdGG/wt2/sdd/hooks/
+8:✅ hooks ligados (pelo sdd/hooks de outra worktree deste repositório: /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f22-aviso-versao/89f76119-0a85-490f-a1ff-b57288611d99/scratchpad/sonda.qIsdGG/wt2)
+9:✅ claude: gerado (.claude/skills · CLAUDE.md · .claude/hooks + settings.json) · CLI encontrado · cobre também Grok Build e GLM
+RESULTADO: DIAGNÓSTICO CONCLUÍDO
+exit_doctor=0
+[rc=0]
+### (2) caminho absoluto para o sdd/hooks de OUTRO repositório: continua OUTRO
+
+$ novo_proj "$T/outro" && (cd "$T/outro" && bash "$T/pkg/bin/sdd-open.sh" init --vendors claude --yes >/dev/null 2>&1) && git config core.hooksPath "$T/outro/sdd/hooks" && git config core.hooksPath && doc && ini
+/private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f22-aviso-versao/89f76119-0a85-490f-a1ff-b57288611d99/scratchpad/sonda.qIsdGG/outro/sdd/hooks
+8:⚠️  hooks do open não ligados: já existe core.hooksPath = /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f22-aviso-versao/89f76119-0a85-490f-a1ff-b57288611d99/scratchpad/sonda.qIsdGG/outro/sdd/hooks (husky, lefthook ou outro gerenciador). Para ter as 5 regras + relatório, acrescente a ele a linha: bash sdd/hooks/pre-commit || exit 1
+9:✅ claude: gerado (.claude/skills · CLAUDE.md · .claude/hooks + settings.json) · CLI encontrado · cobre também Grok Build e GLM
+RESULTADO: DIAGNÓSTICO CONCLUÍDO
+exit_doctor=0
+2:⚠️  hooks do open não ligados: já existe core.hooksPath = /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f22-aviso-versao/89f76119-0a85-490f-a1ff-b57288611d99/scratchpad/sonda.qIsdGG/outro/sdd/hooks (husky, lefthook ou outro gerenciador). Nada foi alterado nele.
+3:⚠️  para ter as 5 regras + relatório, acrescente a ele a linha: bash sdd/hooks/pre-commit || exit 1
+12:⚠️  hooks do open não ligados: já existe core.hooksPath = /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f22-aviso-versao/89f76119-0a85-490f-a1ff-b57288611d99/scratchpad/sonda.qIsdGG/outro/sdd/hooks (husky, lefthook ou outro gerenciador). Para ter as 5 regras + relatório, acrescente a ele a linha: bash sdd/hooks/pre-commit || exit 1
+13:✅ claude: gerado (.claude/skills · CLAUDE.md · .claude/hooks + settings.json) · CLI encontrado · cobre também Grok Build e GLM
+RESULTADO: EM DIA
+exit_init=0
+[rc=0]
+### (3) controle: um gerenciador de verdade (.husky) continua OUTRO
+
+$ mkdir -p .husky && git config core.hooksPath .husky && doc
+8:⚠️  hooks do open não ligados: já existe core.hooksPath = .husky (husky, lefthook ou outro gerenciador). Para ter as 5 regras + relatório, acrescente a ele a linha: bash sdd/hooks/pre-commit || exit 1
+9:✅ claude: gerado (.claude/skills · CLAUDE.md · .claude/hooks + settings.json) · CLI encontrado · cobre também Grok Build e GLM
+RESULTADO: DIAGNÓSTICO CONCLUÍDO
+exit_doctor=0
+[rc=0]
+### (4) worktree removida (caminho não existe mais): não vale como ligado
+
+$ git config core.hooksPath "$T/wt2/sdd/hooks" && git worktree remove --force "$T/wt2" && doc
+8:⚠️  hooks do open não ligados: já existe core.hooksPath = /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f22-aviso-versao/89f76119-0a85-490f-a1ff-b57288611d99/scratchpad/sonda.qIsdGG/wt2/sdd/hooks (husky, lefthook ou outro gerenciador). Para ter as 5 regras + relatório, acrescente a ele a linha: bash sdd/hooks/pre-commit || exit 1
+9:✅ claude: gerado (.claude/skills · CLAUDE.md · .claude/hooks + settings.json) · CLI encontrado · cobre também Grok Build e GLM
+RESULTADO: DIAGNÓSTICO CONCLUÍDO
+exit_doctor=0
+[rc=0]
+rc=0

@@ -1,0 +1,7 @@
+$ SDD_TEST_BASH=/bin/bash /usr/bin/python3 -B -m unittest discover -s tests -p 'test_prompt_drift_scan.py'
+..............................................................
+----------------------------------------------------------------------
+Ran 62 tests in 46.269s
+
+OK
+[exit=0]

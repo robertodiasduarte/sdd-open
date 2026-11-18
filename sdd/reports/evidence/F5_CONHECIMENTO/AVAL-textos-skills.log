@@ -1,0 +1,38 @@
+$ python3 -B -c '<perguntas() de skill-lint.py>' entrevista-publico.md sdd-kb/references/como-falar.md sdd-kb/SKILL.md
+.agents/skills/sdd-ux-review/references/entrevista-publico.md 1
+  L105 '**Posso gravar este público em User and Context?**' -> ['sim', 'ajustar', 'não sei']
+.agents/skills/sdd-kb/references/como-falar.md 1
+  L50 '**Este domínio tem regra que vale por período, como lei, alíquota, prazo ou leiaute de documento fiscal?**' -> ['não', 'sim', 'não sei']
+.agents/skills/sdd-kb/SKILL.md 0
+$ grep -c 'não sei' entrevista-publico.md; grep -n '^\*\*.*?\*\*' entrevista-publico.md
+7
+26:**Quem vai usar esta parte do sistema na maior parte do tempo?** Responda com quem é e o que faz (por exemplo: contador ou equipe contábil, cliente do escritório, empresário ou gestor, equipe administrativa interna, ou público misto), ou "não sei": aí eu proponho um público a partir do DEFINE e você corrige.
+32:**Com que frequência essa pessoa vai usar, e em qual aparelho?** Responda com a frequência e o aparelho (por exemplo: "todo dia, no computador do escritório" ou "uma vez por mês, pelo celular"), ou "não sei": aí eu sigo com o caso mais exigente e marco como suposição.
+36:**Em que estágio está o projeto: novo, em desenvolvimento, sistema que já existe ou redesenho?** Responda com o estágio, ou "não sei": aí eu olho o que já existe no repositório e digo o que encontrei.
+43:**Qual destas referências mais se aproxima da sensação que você quer?** Responda com uma ou duas linhas do catálogo abaixo, com uma referência sua, ou "não sei": aí eu pergunto por sensações (sério ou amigável, compacto ou espaçoso, calmo ou energético) e sugiro 2 ou 3 para comparar.
+47:**Tem algum site ou sistema cuja experiência você gostaria que o projeto lembrasse?** Responda com o endereço, ou "não sei": a URL é opcional, e a revisão segue sem ela.
+105:**Sua decisão** — **Posso gravar este público em User and Context?**
+$ /usr/bin/python3 -B sdd/bin/skill-lint.py --conversa .agents/skills/sdd-*/SKILL.md
+✅ .agents/skills/sdd-auditoria-harness/SKILL.md: frontmatter válido · camada de conversa ok
+✅ .agents/skills/sdd-brainstorm/SKILL.md: frontmatter válido · camada de conversa ok
+✅ .agents/skills/sdd-build/SKILL.md: frontmatter válido · camada de conversa ok
+✅ .agents/skills/sdd-checar-ambiente/SKILL.md: frontmatter válido · camada de conversa ok
+✅ .agents/skills/sdd-define/SKILL.md: frontmatter válido · camada de conversa ok
+✅ .agents/skills/sdd-design/SKILL.md: frontmatter válido · camada de conversa ok
+✅ .agents/skills/sdd-governanca/SKILL.md: frontmatter válido · camada de conversa ok
+✅ .agents/skills/sdd-handoff/SKILL.md: frontmatter válido · camada de conversa ok
+✅ .agents/skills/sdd-higiene-dado/SKILL.md: frontmatter válido · camada de conversa ok
+✅ .agents/skills/sdd-iniciar-repo/SKILL.md: frontmatter válido · camada de conversa ok
+✅ .agents/skills/sdd-iterate/SKILL.md: frontmatter válido · camada de conversa ok
+✅ .agents/skills/sdd-kb/SKILL.md: frontmatter válido · camada de conversa ok
+✅ .agents/skills/sdd-new-session/SKILL.md: frontmatter válido · camada de conversa ok
+✅ .agents/skills/sdd-playbook/SKILL.md: frontmatter válido · camada de conversa ok
+✅ .agents/skills/sdd-prompt-builder/SKILL.md: frontmatter válido · camada de conversa ok
+✅ .agents/skills/sdd-release/SKILL.md: frontmatter válido · camada de conversa ok
+✅ .agents/skills/sdd-ux-review/SKILL.md: frontmatter válido · camada de conversa ok
+EXIT=0
+$ ls -d .agents/skills/sdd-*/ | wc -l; wc -l .agents/skills/sdd-*/SKILL.md | sort -n | tail -3
+      17
+     336 .agents/skills/sdd-kb/SKILL.md
+     376 .agents/skills/sdd-iniciar-repo/SKILL.md
+    3656 total

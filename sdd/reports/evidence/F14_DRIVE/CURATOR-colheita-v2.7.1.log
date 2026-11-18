@@ -1,0 +1,8 @@
+$ bash sdd/bin/playbook-curator.sh --colher "/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/sdd-curadoria-379cc7ebce5f/F14_DRIVE" sdd/playbook.md --inv sdd/invariants.md > "$STG/colheita.txt"
+IGNORADO LM-009 (não existe como bullet ativo em sdd/playbook.md)
+SUGESTAO mordeu? LM-007 — termo `rename` em AVALIACAO_F14_DRIVE_20261105-ciclo1.md:38 (achado sem LM explícito; confirmar a causa antes de virar delta) · fp=debb3f9d4f,c145002594,be7fd47f1e,12db634299
+JA_JULGADO 56 linha(s) já julgada(s) numa curadoria anterior desta feature (CURATOR-colhidos.txt): não contam de novo
+resumo: deltas=0 (ajudou=0 mordeu=0) candidatos=0 rejeitados=0 promocoes=0 sugestoes=1
+RESULTADO: HÁ O QUE JULGAR
+→ despache o curador com esta colheita; nada foi aplicado.
+[exit=0]

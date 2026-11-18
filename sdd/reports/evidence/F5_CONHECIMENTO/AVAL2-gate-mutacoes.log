@@ -1,0 +1,101 @@
+$ bash gate2.sh   (gate.sh de 0e0dba5 numa cópia mktemp de .agents/skills/sdd-kb, uma mutação por bloco)
+### controle-sem-mutacao
+$ (mutação: true) /bin/bash $C/sdd-kb/scripts/gate.sh
+RESULTADO: VERDE — 4 aceitas, 12 rejeitadas pelo motivo certo, RULE_MAP do exemplo em dia
+EXIT=0
+
+== M2: RULE_MAP do exemplo derivado (reprodução original)
+### rulemap-derivou
+$ (mutação: sed -i '' 's/UB12-10-CRT3/UB12-10-CRTX/' assets/example-kb-normativo/RULE_MAP.md) /bin/bash $C/sdd-kb/scripts/gate.sh
+🛑 RULE_MAP do exemplo: assets/example-kb-normativo/RULE_MAP.md não bate com rules/
+    FAIL: RULE_MAP.md differs from rules/ — run `python3 .agents/skills/sdd-kb/scripts/kb_normativo.py rule-map <domain>`
+RESULTADO: VERMELHO
+→ rode python3 .agents/skills/sdd-kb/scripts/kb_normativo.py rule-map .agents/skills/sdd-kb/assets/example-kb-normativo
+EXIT=2
+
+== L1: âncora ausente não pode mostrar a saída do caso anterior (reprodução original)
+### ancora
+$ (mutação: sed -i '' 's/prática consolidada do escritório/pratica do escritorio/' assets/example-kb/concepts/regime-de-competencia.md) /bin/bash $C/sdd-kb/scripts/gate.sh
+🛑 placeholder: âncora ausente: prática consolidada do escritório
+RESULTADO: VERMELHO
+→ o exemplo mudou; atualize a âncora no gate.sh
+EXIT=2
+
+### ancora-normativo
+$ (mutação: sed -i '' 's/  id: NT2025002-151/  id: NT2025002-15X/' assets/example-kb-normativo/rules/UB12-10-EXC1.md) /bin/bash $C/sdd-kb/scripts/gate.sh
+🛑 RULE_MAP do exemplo: assets/example-kb-normativo/RULE_MAP.md não bate com rules/
+    FAIL: RULE_MAP.md differs from rules/ — run `python3 .agents/skills/sdd-kb/scripts/kb_normativo.py rule-map <domain>`
+RESULTADO: VERMELHO
+→ rode python3 .agents/skills/sdd-kb/scripts/kb_normativo.py rule-map .agents/skills/sdd-kb/assets/example-kb-normativo
+EXIT=2
+
+== M3: os gatilhos de AT-003 continuam disparando
+### aceita-ruim
+$ (mutação: sed -i '' 's/"concept": 150/"concept": 151/' scripts/validate_kb.py) /bin/bash $C/sdd-kb/scripts/gate.sh
+🛑 limite-conceito: caso ruim ACEITO
+    PASS: KB lint passed (1 concept(s), 1 pattern(s))
+RESULTADO: VERMELHO
+→ o validador deixou de conferir isto
+EXIT=2
+
+### rejeita-bom
+$ (mutação: /usr/bin/python3 -c "p='scripts/validate_kb.py'; t=open(p).read(); t=t.replace('\"quick_reference\": 100','\"quick_reference\": 10',1); open(p,'w').write(t)") /bin/bash $C/sdd-kb/scripts/gate.sh
+🛑 geral: caso bom REJEITADO
+    FAIL: quick-reference.md has 35 lines, limit is 10
+RESULTADO: VERMELHO
+→ o validador passou a reprovar conteúdo válido
+EXIT=2
+
+### razao-errada
+$ (mutação: sed -i '' 's/is not registered in/is missing from/' scripts/validate_kb.py) /bin/bash $C/sdd-kb/scripts/gate.sh
+🛑 nao-registrado: rejeitado por outro motivo (esperado: is not registered)
+    FAIL: domain 'dom' is missing from _index.yaml — an unregistered KB is invisible to whoever consults the index
+RESULTADO: VERMELHO
+→ confira a mutação e o validador
+EXIT=2
+
+== regressões: rule-map --check agora roda primeiro
+### kb_normativo-quebrado
+$ (mutação: echo 'raise SystemExit(2)' > scripts/kb_normativo.py) /bin/bash $C/sdd-kb/scripts/gate.sh
+🛑 RULE_MAP do exemplo: assets/example-kb-normativo/RULE_MAP.md não bate com rules/
+RESULTADO: VERMELHO
+→ rode python3 .agents/skills/sdd-kb/scripts/kb_normativo.py rule-map .agents/skills/sdd-kb/assets/example-kb-normativo
+EXIT=2
+
+### kb_normativo-sintaxe
+$ (mutação: echo 'def (' >> scripts/kb_normativo.py) /bin/bash $C/sdd-kb/scripts/gate.sh
+🛑 RULE_MAP do exemplo: assets/example-kb-normativo/RULE_MAP.md não bate com rules/
+      File "/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.J2xHggJlbJ/sdd-kb/scripts/kb_normativo.py", line 247
+        def (
+            ^
+    SyntaxError: invalid syntax
+RESULTADO: VERMELHO
+→ rode python3 .agents/skills/sdd-kb/scripts/kb_normativo.py rule-map .agents/skills/sdd-kb/assets/example-kb-normativo
+EXIT=2
+
+### rules-sem-RULE_MAP
+$ (mutação: rm assets/example-kb-normativo/RULE_MAP.md) /bin/bash $C/sdd-kb/scripts/gate.sh
+🛑 RULE_MAP do exemplo: assets/example-kb-normativo/RULE_MAP.md não bate com rules/
+    FAIL: RULE_MAP.md differs from rules/ — run `python3 .agents/skills/sdd-kb/scripts/kb_normativo.py rule-map <domain>`
+RESULTADO: VERMELHO
+→ rode python3 .agents/skills/sdd-kb/scripts/kb_normativo.py rule-map .agents/skills/sdd-kb/assets/example-kb-normativo
+EXIT=2
+
+== L6: cópia gerada mostra o caminho
+$ cd $C/sdd-kb/scripts && /bin/bash gate.sh   (cópia com o cabeçalho sdd-open:generated)
+🛑 cópia gerada pelo sync: gate.sh tem o cabeçalho da cópia; os exemplos daqui não valem como prova
+RESULTADO: VERMELHO
+→ rode bash .agents/skills/sdd-kb/scripts/gate.sh
+EXIT=2
+$ /bin/bash $C/sdd-kb/scripts/gate.sh
+🛑 cópia gerada pelo sync: /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.6WN3mH9yw0/sdd-kb/scripts/gate.sh tem o cabeçalho da cópia; os exemplos daqui não valem como prova
+RESULTADO: VERMELHO
+→ rode bash .agents/skills/sdd-kb/scripts/gate.sh
+EXIT=2
+== caminhos: link simbólico /var → /private/var, espaço, ./
+$ cd "$C/sdd-kb/scripts" && /bin/bash ./gate.sh   (C=/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.JebZaPMykw/com espaço)
+RESULTADO: VERDE — 4 aceitas, 12 rejeitadas pelo motivo certo, RULE_MAP do exemplo em dia
+EXIT=0
+$ /bin/bash "/private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.JebZaPMykw/com espaço/sdd-kb/scripts/gate.sh"   (caminho físico /private/var)
+RESULTADO: VERDE — 4 aceitas, 12 rejeitadas pelo motivo certo, RULE_MAP do exemplo em dia
+EXIT=0

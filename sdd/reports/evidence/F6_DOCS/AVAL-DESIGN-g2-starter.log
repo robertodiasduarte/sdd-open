@@ -1,0 +1,12 @@
+$ for rx in $(scripts/publish-gate-patterns.txt sem comentários); do grep -nEi "$rx" <starter>/docs/guia-do-aluno.pt-BR.md <starter>/docs/quickstart.pt-BR.md <starter>/skills/sdd-release/SKILL.md; done
+/[0-9]{11,}/ → 0 hit(s)
+/[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}/ → 1 hit(s)
+<starter>/skills/sdd-release/SKILL.md:151:   `git config --global user.email "voce@exemplo.com"`: o commit da Fase 3 falharia **depois** do OK, e o
+/\+[0-9]{2}[ -]?\(?[0-9]{2}\)?[ -]?[0-9]{4,5}[ -]?[0-9]{4}/ → 0 hit(s)
+/[0-9]{3}\.[0-9]{3}\.[0-9]{3}-[0-9]{2}/ → 0 hit(s)
+/[0-9]{2}\.[0-9]{3}\.[0-9]{3}/[0-9]{4}-[0-9]{2}/ → 0 hit(s)
+/\(?[0-9]{2}\)?[ -]?(9[0-9]{4}|[2-5][0-9]{3})-[0-9]{4}/ → 0 hit(s)
+/\[\[[a-z0-9_-]+\]\]/ → 0 hit(s)
+/(feedback|reference|project)_[a-z0-9_]+\.md/ → 0 hit(s)
+//Users/[a-z]+// → 0 hit(s)
+//home/[a-z]+// → 0 hit(s)

@@ -1,0 +1,4 @@
+$ python3 -B conta-perguntas.py .agents/skills sdd/templates/fragments
+.agents/skills: 15 pergunta(s) de decisão em 15 arquivo(s); fora (sem Sua decisão): ['.agents/skills/sdd-kb/references/kb-protocol.md:11 **Depois de ler isto, a pessoa vai ENTENDER alguma coisa, ou vai FAZER alguma coisa?**', '.agents/skills/sdd-release/SKILL.md:183 **Posso finalizar (push + deploy + verificar)?**', '.agents/skills/sdd-release/references/como-falar.md:52 **Posso finalizar (push + deploy + verificar)?**']
+sdd/templates/fragments: 1 pergunta(s) de decisão em 1 arquivo(s); fora (sem Sua decisão): []
+[exit=0]

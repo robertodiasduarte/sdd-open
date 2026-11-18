@@ -1,0 +1,23 @@
+$ python3 sdd/bin/skill-lint.py --conversa .agents/skills/sdd-*/SKILL.md && bash sdd/bin/sdd-decisoes-lint.sh --sites .agents/skills sdd/templates/fragments && /usr/bin/python3 scripts/check-versions.py --base v2.3.1 --base-obrigatoria
+✅ .agents/skills/sdd-auditoria-harness/SKILL.md: frontmatter válido · camada de conversa ok
+✅ .agents/skills/sdd-brainstorm/SKILL.md: frontmatter válido · camada de conversa ok
+✅ .agents/skills/sdd-build/SKILL.md: frontmatter válido · camada de conversa ok
+✅ .agents/skills/sdd-checar-ambiente/SKILL.md: frontmatter válido · camada de conversa ok
+✅ .agents/skills/sdd-define/SKILL.md: frontmatter válido · camada de conversa ok
+✅ .agents/skills/sdd-design/SKILL.md: frontmatter válido · camada de conversa ok
+✅ .agents/skills/sdd-governanca/SKILL.md: frontmatter válido · camada de conversa ok
+✅ .agents/skills/sdd-handoff/SKILL.md: frontmatter válido · camada de conversa ok
+✅ .agents/skills/sdd-higiene-dado/SKILL.md: frontmatter válido · camada de conversa ok
+✅ .agents/skills/sdd-iniciar-repo/SKILL.md: frontmatter válido · camada de conversa ok
+✅ .agents/skills/sdd-iterate/SKILL.md: frontmatter válido · camada de conversa ok
+✅ .agents/skills/sdd-kb/SKILL.md: frontmatter válido · camada de conversa ok
+✅ .agents/skills/sdd-new-session/SKILL.md: frontmatter válido · camada de conversa ok
+✅ .agents/skills/sdd-playbook/SKILL.md: frontmatter válido · camada de conversa ok
+✅ .agents/skills/sdd-prompt-builder/SKILL.md: frontmatter válido · camada de conversa ok
+✅ .agents/skills/sdd-release/SKILL.md: frontmatter válido · camada de conversa ok
+✅ .agents/skills/sdd-ux-review/SKILL.md: frontmatter válido · camada de conversa ok
+🟢 sdd-decisoes-lint --sites: 20 pergunta(s) em 20 arquivo(s), cada uma com a marca de classe e no formato.
+PASS: check-versions — 17 skills com versão coerente, comparadas a v2.3.1.
+RESULTADO: VERDE
+→ siga para o próximo passo.
+[exit=0]

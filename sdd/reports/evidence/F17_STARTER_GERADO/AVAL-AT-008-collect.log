@@ -1,0 +1,17 @@
+$ # repositório só com AGENTS.md, .agents/{skills,agents,scripts} e .codex/ (sem .claude/)
+$ python3 -I .agents/skills/sdd-auditoria-harness/scripts/collect_evidence.py <repo> | conta.py   # HEAD da branch
+minha-skill/SKILL.md         ACHADO
+AGENTS.md                    ACHADO
+.agents/agents/a.md          ACHADO
+.agents/scripts/a.sh         ACHADO
+.codex/config.toml           ACHADO
+chaves: ['cautions', 'inventory_count', 'items', 'read_only', 'repo_root']
+rc=0
+$ python3 -I <main:collect_evidence.py> <repo> | conta.py   # baseline: a versão de main
+minha-skill/SKILL.md         ausente
+AGENTS.md                    ausente
+.agents/agents/a.md          ausente
+.agents/scripts/a.sh         ausente
+.codex/config.toml           ausente
+chaves: ['cautions', 'inventory_count', 'items', 'read_only', 'repo_root']
+rc=0

@@ -1,0 +1,17 @@
+$ bad=0; for p in "F1_MANUTENCAO 13" "F2_TERRENO 17" "F3_BUILD_RELEASE 4" "F4_CONVERSA 10" "F5_CONHECIMENTO 17" "F6_DOCS 7" "F7_EVIDENCIA 25" "F8_HOOKS 13"; do set -- $p; out=$(bash sdd/bin/sdd-fluxo.sh review-design "sdd/features/DESIGN_$1.md"); rc=$?; n=$(printf "%s" "$out" | sed -n "s/^EXIGIDO: \([0-9]*\) arquivo.*/\1/p"); echo "DESIGN_$1 rc=$rc porte=$n fonte=$2 · $out"; [ "$rc" = 0 ] && [ "$n" = "$2" ] || bad=$((bad+1)); done; for f in sdd/fixtures/fluxo/DESIGN_*.md; do bash sdd/bin/sdd-fluxo.sh review-design "$f" > /dev/null 2>&1; echo "$f rc=$?"; done; test $bad -eq 0
+DESIGN_F1_MANUTENCAO rc=0 porte=13 fonte=13 · EXIGIDO: 13 arquivo(s) novo(s) (limiar 3)
+DESIGN_F2_TERRENO rc=0 porte=17 fonte=17 · EXIGIDO: 17 arquivo(s) novo(s) (limiar 3)
+DESIGN_F3_BUILD_RELEASE rc=0 porte=4 fonte=4 · EXIGIDO: 4 arquivo(s) novo(s) (limiar 3)
+DESIGN_F4_CONVERSA rc=0 porte=10 fonte=10 · EXIGIDO: 10 arquivo(s) novo(s) (limiar 3)
+DESIGN_F5_CONHECIMENTO rc=0 porte=17 fonte=17 · EXIGIDO: 17 arquivo(s) novo(s) (limiar 3)
+DESIGN_F6_DOCS rc=0 porte=7 fonte=7 · EXIGIDO: 7 arquivo(s) novo(s) (limiar 3)
+DESIGN_F7_EVIDENCIA rc=0 porte=25 fonte=25 · EXIGIDO: 25 arquivo(s) novo(s) (limiar 3)
+DESIGN_F8_HOOKS rc=0 porte=13 fonte=13 · EXIGIDO: 13 arquivo(s) novo(s) (limiar 3)
+sdd/fixtures/fluxo/DESIGN_dispensavel.md rc=1
+sdd/fixtures/fluxo/DESIGN_ledger_vazio.md rc=0
+sdd/fixtures/fluxo/DESIGN_novos.md rc=0
+sdd/fixtures/fluxo/DESIGN_numerado.md rc=0
+sdd/fixtures/fluxo/DESIGN_pronto.md rc=0
+sdd/fixtures/fluxo/DESIGN_seguranca.md rc=0
+sdd/fixtures/fluxo/DESIGN_sem_manifest.md rc=64
+[exit=0]

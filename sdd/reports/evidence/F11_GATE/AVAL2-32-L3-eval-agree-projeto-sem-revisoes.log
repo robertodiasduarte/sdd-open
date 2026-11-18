@@ -1,0 +1,22 @@
+$ P=/Users/robertoduarte/rdd-worktrees/sdd-open-f11-gate; R=$(mktemp -d) && cd $R && GIT_CONFIG_GLOBAL=/dev/null git init -q && echo '### sem argumento, projeto sem sdd/reports/reviews'; /bin/bash $P/sdd/bin/eval-agree.sh; echo "[rc=$?]"; echo '### pasta passada que não existe (uso: 64)'; /bin/bash $P/sdd/bin/eval-agree.sh $R/nao-existe; echo "[rc=$?]"; echo '### pasta vazia existente'; mkdir -p $R/vazia; /bin/bash $P/sdd/bin/eval-agree.sh $R/vazia; echo "[rc=$?]"; echo '### flag inválida'; /bin/bash $P/sdd/bin/eval-agree.sh --xyz; echo "[rc=$?]"
+### sem argumento, projeto sem sdd/reports/reviews
+eval-agree — taxa de AGREE por auditor (0 pasta(s) lida(s) em /private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.TpWlIk7ImV/sdd/reports/reviews)
+RESULTADO: SEM DADOS
+→ nenhuma revisão com auditoria completa nesta pasta: rode adversarial-review.sh e meça de novo.
+[rc=2]
+### pasta passada que não existe (uso: 64)
+🛑 eval-agree: a pasta /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.TpWlIk7ImV/nao-existe não existe
+RESULTADO: PAROU
+→ rode `eval-agree.sh --help` para ver o uso.
+[rc=64]
+### pasta vazia existente
+eval-agree — taxa de AGREE por auditor (0 pasta(s) lida(s) em /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.TpWlIk7ImV/vazia)
+RESULTADO: SEM DADOS
+→ nenhuma revisão com auditoria completa nesta pasta: rode adversarial-review.sh e meça de novo.
+[rc=2]
+### flag inválida
+🛑 eval-agree: opção desconhecida: --xyz
+RESULTADO: PAROU
+→ rode `eval-agree.sh --help` para ver o uso.
+[rc=64]
+[exit=0]

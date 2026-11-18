@@ -1,0 +1,238 @@
+$ /bin/bash fluxo.sh $T/clone   # script no fim
+## 1. pasta sem git
+$ bash /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.4lLsuRpvAy/home/sdd-open/bin/sdd-open.sh init --vendors codex --dry-run
+🛑 este comando precisa de um repositório git
+RESULTADO: ERRO
+→ rode 'git init' aqui, ou entre na pasta do seu projeto
+exit=64
+## 2. --dry-run (guia :75-76: '+' e '~', mais a contagem do que já está certo; nada escrito)
+$ bash /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.4lLsuRpvAy/home/sdd-open/bin/sdd-open.sh init --vendors codex --dry-run
+▶ init — plano
++ AGENTS.md (novo)
++ sdd/ (templates, fixtures, bin, playbook, config) (novo)
++ .agents/skills/sdd-auditoria-harness (novo)
++ .agents/skills/sdd-brainstorm (novo)
++ .agents/skills/sdd-build (novo)
++ .agents/skills/sdd-checar-ambiente (novo)
++ .agents/skills/sdd-define (novo)
++ .agents/skills/sdd-design (novo)
++ .agents/skills/sdd-governanca (novo)
++ .agents/skills/sdd-handoff (novo)
++ .agents/skills/sdd-higiene-dado (novo)
++ .agents/skills/sdd-iniciar-repo (novo)
++ .agents/skills/sdd-iterate (novo)
++ .agents/skills/sdd-kb (novo)
++ .agents/skills/sdd-new-session (novo)
++ .agents/skills/sdd-playbook (novo)
++ .agents/skills/sdd-prompt-builder (novo)
++ .agents/skills/sdd-release (novo)
++ .agents/skills/sdd-ux-review (novo)
+19 a criar · 0 a atualizar · 0 já corretos
+RESULTADO: DRY-RUN
+→ nada foi escrito; rode sem --dry-run para aplicar.
+exit=0
+arquivos depois do dry-run:        0
+## 3. sem --yes e sem terminal (guia :77-78)
+$ bash /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.4lLsuRpvAy/home/sdd-open/bin/sdd-open.sh init --vendors codex
+▶ init — plano
++ AGENTS.md (novo)
++ sdd/ (templates, fixtures, bin, playbook, config) (novo)
++ .agents/skills/sdd-auditoria-harness (novo)
++ .agents/skills/sdd-brainstorm (novo)
++ .agents/skills/sdd-build (novo)
++ .agents/skills/sdd-checar-ambiente (novo)
++ .agents/skills/sdd-define (novo)
++ .agents/skills/sdd-design (novo)
++ .agents/skills/sdd-governanca (novo)
++ .agents/skills/sdd-handoff (novo)
++ .agents/skills/sdd-higiene-dado (novo)
++ .agents/skills/sdd-iniciar-repo (novo)
++ .agents/skills/sdd-iterate (novo)
++ .agents/skills/sdd-kb (novo)
++ .agents/skills/sdd-new-session (novo)
++ .agents/skills/sdd-playbook (novo)
++ .agents/skills/sdd-prompt-builder (novo)
++ .agents/skills/sdd-release (novo)
++ .agents/skills/sdd-ux-review (novo)
+19 a criar · 0 a atualizar · 0 já corretos
+RESULTADO: CANCELADO
+→ nenhum arquivo foi escrito; sem terminal interativo, use --yes para aplicar.
+exit=0
+arquivos depois:        0
+## 4. --yes com o pacote v2.2.6
+init --yes exit=0
+## 5. 'Quando sair versão nova', passo 1: git pull (simulado: checkout de aaae1b4 no clone do pacote)
+aaae1b4 fix(f6): revisão de contexto fresco, ciclo 1 — 3 HIGH, 3 MEDIUM e 6 LOW
+## simula sdd/bin de versão anterior (1 linha a mais em kb-dominios.py)
+## passo 2: doctor
+$ bash /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.4lLsuRpvAy/home/sdd-open/bin/sdd-open.sh doctor
+▶ sdd-open doctor — projeto: /private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.4lLsuRpvAy/Honorarios
+  bash 3.2 · git 2.54.0 (Apple Git-157) · python3 3.15
+✅ sdd/ presente (0 feature(s) em sdd/features/)
+✅ AGENTS.md com o bloco sdd-open
+✅ .agents/skills/ com 17 skill(s) sdd-*
+✅ codex: nativo — nada a gerar (lê .agents/skills/ e AGENTS.md nativamente) · CLI encontrado
+⚠️  sdd-brainstorm 2.1.0 no projeto, 2.1.1 no pacote — para receber: apague .agents/skills/sdd-brainstorm e rode init (edições suas nela se perdem)
+⚠️  sdd-build 2.2.0 no projeto, 2.2.1 no pacote — para receber: apague .agents/skills/sdd-build e rode init (edições suas nela se perdem)
+⚠️  sdd-define 2.3.0 no projeto, 2.3.1 no pacote — para receber: apague .agents/skills/sdd-define e rode init (edições suas nela se perdem)
+⚠️  sdd-design 2.1.0 no projeto, 2.1.1 no pacote — para receber: apague .agents/skills/sdd-design e rode init (edições suas nela se perdem)
+⚠️  sdd-governanca 2.2.0 no projeto, 2.2.1 no pacote — para receber: apague .agents/skills/sdd-governanca e rode init (edições suas nela se perdem)
+⚠️  sdd-release 2.3.0 no projeto, 2.3.1 no pacote — para receber: apague .agents/skills/sdd-release e rode init (edições suas nela se perdem)
+⚠️  sdd-ux-review 2.3.0 no projeto, 2.3.1 no pacote — para receber: apague .agents/skills/sdd-ux-review e rode init (edições suas nela se perdem)
+⚠️  sdd/bin/kb-dominios.py difere do pacote — se você não editou, apague e rode init
+✅ nenhum segredo salvo no git (.env, .pfx, .p12, .pem com chave privada)
+RESULTADO: DIAGNÓSTICO CONCLUÍDO
+→ se algum item está ⚠️, a linha diz qual comando resolve.
+exit=0
+## passo 3: apagar as skills e o sdd/bin apontados
+apagado .agents/skills/sdd-brainstorm
+apagado .agents/skills/sdd-build
+apagado .agents/skills/sdd-define
+apagado .agents/skills/sdd-design
+apagado .agents/skills/sdd-governanca
+apagado .agents/skills/sdd-release
+apagado .agents/skills/sdd-ux-review
+apagado sdd/bin/kb-dominios.py
+## passo 4: init de novo com --yes (guia: 'copia de volta só o que você apagou')
+$ bash /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.4lLsuRpvAy/home/sdd-open/bin/sdd-open.sh init --vendors codex --yes --verbose
+▶ init — plano
+~ AGENTS.md (só o bloco entre os marcadores) (atualizar)
+~ sdd/ (já existe — completar 1 arquivo(s) do pacote ausente(s); o que existe não será tocado) (atualizar)
+   = .agents/skills/sdd-auditoria-harness (já existe — fonte do usuário, não será tocada) (já correto)
++ .agents/skills/sdd-brainstorm (novo)
++ .agents/skills/sdd-build (novo)
+   = .agents/skills/sdd-checar-ambiente (já existe — fonte do usuário, não será tocada) (já correto)
++ .agents/skills/sdd-define (novo)
++ .agents/skills/sdd-design (novo)
++ .agents/skills/sdd-governanca (novo)
+   = .agents/skills/sdd-handoff (já existe — fonte do usuário, não será tocada) (já correto)
+   = .agents/skills/sdd-higiene-dado (já existe — fonte do usuário, não será tocada) (já correto)
+   = .agents/skills/sdd-iniciar-repo (já existe — fonte do usuário, não será tocada) (já correto)
+   = .agents/skills/sdd-iterate (já existe — fonte do usuário, não será tocada) (já correto)
+   = .agents/skills/sdd-kb (já existe — fonte do usuário, não será tocada) (já correto)
+   = .agents/skills/sdd-new-session (já existe — fonte do usuário, não será tocada) (já correto)
+   = .agents/skills/sdd-playbook (já existe — fonte do usuário, não será tocada) (já correto)
+   = .agents/skills/sdd-prompt-builder (já existe — fonte do usuário, não será tocada) (já correto)
++ .agents/skills/sdd-release (novo)
++ .agents/skills/sdd-ux-review (novo)
+   = codex: nada a gerar (lê .agents/skills/ e AGENTS.md nativamente)
+7 a criar · 2 a atualizar · 10 já corretos
+▶ sdd-open doctor — projeto: /private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.4lLsuRpvAy/Honorarios
+  bash 3.2 · git 2.54.0 (Apple Git-157) · python3 3.15
+✅ sdd/ presente (0 feature(s) em sdd/features/)
+✅ AGENTS.md com o bloco sdd-open
+✅ .agents/skills/ com 17 skill(s) sdd-*
+✅ codex: nativo — nada a gerar (lê .agents/skills/ e AGENTS.md nativamente) · CLI encontrado
+✅ skills e sdd/bin/ em dia com o pacote
+✅ nenhum segredo salvo no git (.env, .pfx, .p12, .pem com chave privada)
+RESULTADO: INSTALADO
+→ abra seu agente e peça a fase Define (ex.: /sdd-define ou /skill:sdd-define).
+exit=0
+## o que o init mudou além do que foi apagado (git status)
+ M .agents/skills/sdd-brainstorm/SKILL.md
+ M .agents/skills/sdd-build/SKILL.md
+ M .agents/skills/sdd-define/SKILL.md
+ M .agents/skills/sdd-design/SKILL.md
+ M .agents/skills/sdd-governanca/SKILL.md
+ M .agents/skills/sdd-release/SKILL.md
+ M .agents/skills/sdd-ux-review/SKILL.md
+ M AGENTS.md
+## passo 5: sync --yes
+$ bash /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.4lLsuRpvAy/home/sdd-open/bin/sdd-open.sh sync --yes
+▶ sync — plano
+0 a criar · 0 a atualizar · 1 já corretos
+RESULTADO: EM DIA
+→ nada a fazer.
+exit=0
+$ bash /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.4lLsuRpvAy/home/sdd-open/bin/sdd-open.sh sync --check
+RESULTADO: EM DIA
+→ todos os adaptadores refletem .agents/skills/.
+exit=0
+$ bash /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.4lLsuRpvAy/home/sdd-open/bin/sdd-open.sh doctor
+▶ sdd-open doctor — projeto: /private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.4lLsuRpvAy/Honorarios
+  bash 3.2 · git 2.54.0 (Apple Git-157) · python3 3.15
+✅ sdd/ presente (0 feature(s) em sdd/features/)
+✅ AGENTS.md com o bloco sdd-open
+✅ .agents/skills/ com 17 skill(s) sdd-*
+✅ codex: nativo — nada a gerar (lê .agents/skills/ e AGENTS.md nativamente) · CLI encontrado
+✅ skills e sdd/bin/ em dia com o pacote
+✅ nenhum segredo salvo no git (.env, .pfx, .p12, .pem com chave privada)
+RESULTADO: DIAGNÓSTICO CONCLUÍDO
+→ se algum item está ⚠️, a linha diz qual comando resolve.
+exit=0
+## versões no projeto depois
+  version: "2.1.1"
+  version: "2.1.1"
+  version: "2.3.1"
+## L2: sync sem --yes num projeto com adaptador claude desatualizado
+init claude exit=0
+$ bash /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.4lLsuRpvAy/home/sdd-open/bin/sdd-open.sh sync
+▶ sync — plano
+~ .claude/skills/sdd-build/SKILL.md (atualizar)
+0 a criar · 1 a atualizar · 95 já corretos
+RESULTADO: CANCELADO
+→ nenhum arquivo foi escrito; sem terminal interativo, use --yes para aplicar.
+exit=0
+$ bash /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.4lLsuRpvAy/home/sdd-open/bin/sdd-open.sh sync --yes
+▶ sync — plano
+~ .claude/skills/sdd-build/SKILL.md (atualizar)
+0 a criar · 1 a atualizar · 95 já corretos
+RESULTADO: SINCRONIZADO
+→ adaptadores regenerados a partir de .agents/skills/.
+exit=0
+## M1: starter global (HOME/.claude/skills, .agents/skills, .codex/skills com agents/openai.yaml)
+$ bash ~/sdd-open/bin/sdd-open.sh doctor | grep -c starter
+0
+$ (marca do starter dentro do projeto) doctor | grep starter
+⚠️  skills do sdd-starter detectadas no mesmo projeto: os nomes sdd-* colidem — use um ou outro por projeto
+exit=0
+--- script:
+#!/bin/bash
+# Segue o guia (seção 2 e seção 8) num HOME falso: instala com o pacote v2.2.6 e atualiza para aaae1b4.
+set -u
+C="$1"; W="$(mktemp -d)"; export HOME="$W/home"; mkdir -p "$HOME"
+export GIT_CONFIG_GLOBAL="$W/gitconfig"; git config --global user.name t; git config --global user.email t@example.invalid
+git clone -q "$C" "$HOME/sdd-open" && git -C "$HOME/sdd-open" checkout -q v2.2.6
+P="$W/Honorarios"; mkdir -p "$P"; cd "$P"
+run() { echo "\$ $*"; "$@" </dev/null 2>&1; echo "exit=$?"; }
+echo "## 1. pasta sem git"
+run bash ~/sdd-open/bin/sdd-open.sh init --vendors codex --dry-run
+git init -q -b main
+echo "## 2. --dry-run (guia :75-76: '+' e '~', mais a contagem do que já está certo; nada escrito)"
+run bash ~/sdd-open/bin/sdd-open.sh init --vendors codex --dry-run
+echo "arquivos depois do dry-run: $(ls -A | grep -v '^.git$' | wc -l)"
+echo "## 3. sem --yes e sem terminal (guia :77-78)"
+run bash ~/sdd-open/bin/sdd-open.sh init --vendors codex
+echo "arquivos depois: $(ls -A | grep -v '^.git$' | wc -l)"
+echo "## 4. --yes com o pacote v2.2.6"
+bash ~/sdd-open/bin/sdd-open.sh init --vendors codex --yes </dev/null >/dev/null 2>&1; echo "init --yes exit=$?"
+git add -A >/dev/null; git commit -qm base --no-verify
+echo "## 5. 'Quando sair versão nova', passo 1: git pull (simulado: checkout de aaae1b4 no clone do pacote)"
+git -C ~/sdd-open checkout -q aaae1b4; git -C ~/sdd-open log --oneline -1
+echo "## simula sdd/bin de versão anterior (1 linha a mais em kb-dominios.py)"
+echo '# antiga' >> sdd/bin/kb-dominios.py
+echo "## passo 2: doctor"
+run bash ~/sdd-open/bin/sdd-open.sh doctor
+echo "## passo 3: apagar as skills e o sdd/bin apontados"
+for s in $(bash ~/sdd-open/bin/sdd-open.sh doctor 2>&1 | sed -n 's/^⚠️  \(sdd-[a-z-]*\) .* no projeto, .*/\1/p'); do rm -r ".agents/skills/$s"; echo "apagado .agents/skills/$s"; done
+rm sdd/bin/kb-dominios.py; echo "apagado sdd/bin/kb-dominios.py"
+echo "## passo 4: init de novo com --yes (guia: 'copia de volta só o que você apagou')"
+run bash ~/sdd-open/bin/sdd-open.sh init --vendors codex --yes --verbose
+echo "## o que o init mudou além do que foi apagado (git status)"; git status --short | head -20
+echo "## passo 5: sync --yes"
+run bash ~/sdd-open/bin/sdd-open.sh sync --yes
+run bash ~/sdd-open/bin/sdd-open.sh sync --check
+run bash ~/sdd-open/bin/sdd-open.sh doctor
+echo "## versões no projeto depois"
+grep -h '^  version:' .agents/skills/sdd-{brainstorm,design,release}/SKILL.md
+echo "## L2: sync sem --yes num projeto com adaptador claude desatualizado"
+bash ~/sdd-open/bin/sdd-open.sh init --vendors claude --yes </dev/null >/dev/null 2>&1; echo "init claude exit=$?"
+echo "x" >> .claude/skills/sdd-build/SKILL.md
+run bash ~/sdd-open/bin/sdd-open.sh sync
+run bash ~/sdd-open/bin/sdd-open.sh sync --yes
+echo "## M1: starter global (HOME/.claude/skills, .agents/skills, .codex/skills com agents/openai.yaml)"
+for d in .claude/skills .agents/skills .codex/skills; do mkdir -p "$HOME/$d/sdd-define/agents"; : > "$HOME/$d/sdd-define/agents/openai.yaml"; done
+echo "\$ bash ~/sdd-open/bin/sdd-open.sh doctor | grep -c starter"; bash ~/sdd-open/bin/sdd-open.sh doctor 2>&1 | grep -c starter
+mkdir -p .agents/skills/sdd-define/agents; : > .agents/skills/sdd-define/agents/openai.yaml
+echo "\$ (marca do starter dentro do projeto) doctor | grep starter"; bash ~/sdd-open/bin/sdd-open.sh doctor 2>&1 | grep starter
+rm -rf "$W"

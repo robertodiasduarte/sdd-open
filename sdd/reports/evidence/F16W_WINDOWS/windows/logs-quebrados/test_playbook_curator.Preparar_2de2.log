@@ -1,0 +1,118 @@
+test_o_nome_da_pasta_se_refaz_igual_e_depende_da_raiz (test_playbook_curator.Preparar.test_o_nome_da_pasta_se_refaz_igual_e_depende_da_raiz) ... ok
+
+test_pasta_de_evidencia_que_e_link_nao_e_seguida (test_playbook_curator.Preparar.test_pasta_de_evidencia_que_e_link_nao_e_seguida) ... ok
+
+test_pasta_exclusiva_segue_valendo_para_preparar_e_retomar (test_playbook_curator.Preparar.test_pasta_exclusiva_segue_valendo_para_preparar_e_retomar) ... FAIL
+
+test_pasta_previsivel_aberta_a_outros_e_recusada (test_playbook_curator.Preparar.test_pasta_previsivel_aberta_a_outros_e_recusada) ... 
+
+  test_pasta_previsivel_aberta_a_outros_e_recusada (test_playbook_curator.Preparar.test_pasta_previsivel_aberta_a_outros_e_recusada) (pasta='F_A') ... FAIL
+
+  test_pasta_previsivel_aberta_a_outros_e_recusada (test_playbook_curator.Preparar.test_pasta_previsivel_aberta_a_outros_e_recusada) (pasta='sdd-curadoria-a7b4db9b87e2') ... FAIL
+
+test_procura_no_archive_e_sem_documento_sai_1 (test_playbook_curator.Preparar.test_procura_no_archive_e_sem_documento_sai_1) ... ok
+
+test_release_seguinte_limpa_o_que_sobrou_e_retomar_nao_mexe (test_playbook_curator.Preparar.test_release_seguinte_limpa_o_que_sobrou_e_retomar_nao_mexe) ... ok
+
+test_seta_da_retomada_nao_manda_refazer_a_linha_de_base (test_playbook_curator.Preparar.test_seta_da_retomada_nao_manda_refazer_a_linha_de_base) ... ok
+
+test_staging_ou_pasta_pai_que_e_link_recusa (test_playbook_curator.Preparar.test_staging_ou_pasta_pai_que_e_link_recusa) ... ok
+
+
+
+======================================================================
+
+FAIL: test_pasta_exclusiva_segue_valendo_para_preparar_e_retomar (test_playbook_curator.Preparar.test_pasta_exclusiva_segue_valendo_para_preparar_e_retomar)
+
+----------------------------------------------------------------------
+
+Traceback (most recent call last):
+
+  File "D:\a\sdd-open\sdd-open\tests\test_playbook_curator.py", line 904, in test_pasta_exclusiva_segue_valendo_para_preparar_e_retomar
+
+    self.assertEqual(s.stat().st_mode & 0o777, 0o700)
+
+AssertionError: 511 != 448
+
+
+
+======================================================================
+
+FAIL: test_pasta_previsivel_aberta_a_outros_e_recusada (test_playbook_curator.Preparar.test_pasta_previsivel_aberta_a_outros_e_recusada) (pasta='F_A')
+
+----------------------------------------------------------------------
+
+Traceback (most recent call last):
+
+  File "D:\a\sdd-open\sdd-open\tests\test_playbook_curator.py", line 892, in test_pasta_previsivel_aberta_a_outros_e_recusada
+
+    self.assertEqual(rc, 2, out + err)
+
+AssertionError: 0 != 2 : staging: C:\Users\runneradmin\AppData\Local\Temp\sdd-open-37vb5u5y\temp\sdd-curadoria-a7b4db9b87e2\F_A
+
+copiado: sdd\features\DESIGN_F_A.md
+
+copiado: sdd\reports\BUILD_REPORT_F_A.md
+
+copiado: sdd\reports\evidence\F_A\AVAL-1.log
+
+copiado: sdd\reports\evidence\F_A\AVAL2-x.log
+
+copiado: sdd\reviews\AVALIACAO_F_A_20261105.md
+
+copiado: sdd\releases\F_A\s1.yaml
+
+copiado: sdd\handoffs\HANDOFF_F_A.md
+
+RESULTADO: STAGING PRONTO (7 arquivo(s))
+
+\u2192 os originais n�o foram tocados; rode --colher "C:\Users\runneradmin\AppData\Local\Temp\sdd-open-37vb5u5y\temp\sdd-curadoria-a7b4db9b87e2\F_A" sdd/playbook.md e guarde a sa�da em colheita.txt nessa pasta.
+
+
+
+
+
+======================================================================
+
+FAIL: test_pasta_previsivel_aberta_a_outros_e_recusada (test_playbook_curator.Preparar.test_pasta_previsivel_aberta_a_outros_e_recusada) (pasta='sdd-curadoria-a7b4db9b87e2')
+
+----------------------------------------------------------------------
+
+Traceback (most recent call last):
+
+  File "D:\a\sdd-open\sdd-open\tests\test_playbook_curator.py", line 892, in test_pasta_previsivel_aberta_a_outros_e_recusada
+
+    self.assertEqual(rc, 2, out + err)
+
+AssertionError: 0 != 2 : staging: C:\Users\runneradmin\AppData\Local\Temp\sdd-open-37vb5u5y\temp\sdd-curadoria-a7b4db9b87e2\F_A
+
+copiado: sdd\features\DESIGN_F_A.md
+
+copiado: sdd\reports\BUILD_REPORT_F_A.md
+
+copiado: sdd\reports\evidence\F_A\AVAL-1.log
+
+copiado: sdd\reports\evidence\F_A\AVAL2-x.log
+
+copiado: sdd\reviews\AVALIACAO_F_A_20261105.md
+
+copiado: sdd\releases\F_A\s1.yaml
+
+copiado: sdd\handoffs\HANDOFF_F_A.md
+
+RESULTADO: STAGING PRONTO (7 arquivo(s))
+
+\u2192 os originais n�o foram tocados; rode --colher "C:\Users\runneradmin\AppData\Local\Temp\sdd-open-37vb5u5y\temp\sdd-curadoria-a7b4db9b87e2\F_A" sdd/playbook.md e guarde a sa�da em colheita.txt nessa pasta.
+
+
+
+
+
+----------------------------------------------------------------------
+
+Ran 8 tests in 5.760s
+
+
+
+FAILED (failures=3)
+

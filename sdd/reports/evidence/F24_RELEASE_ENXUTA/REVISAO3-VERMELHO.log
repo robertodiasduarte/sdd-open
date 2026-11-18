@@ -1,0 +1,9 @@
+$ (código de 4b3f4b2, com os testes novos) cd tests && python3 -B -m unittest test_f24_release_enxuta.Revisao3 test_f24_release_enxuta.Revisao3Textos
+FAIL: test_r1_entrada_recusada_nao_prende_as_impressoes (test_f24_release_enxuta.Revisao3.test_r1_entrada_recusada_nao_prende_as_impressoes)
+FAIL: test_r4_linha_sem_evidencia_volta_na_colheita_seguinte (test_f24_release_enxuta.Revisao3.test_r4_linha_sem_evidencia_volta_na_colheita_seguinte)
+FAIL: test_lote_marca_a_recusa (test_f24_release_enxuta.Revisao3Textos.test_lote_marca_a_recusa)
+FAIL: test_r3_contrato_do_curador_por_entrada (test_f24_release_enxuta.Revisao3Textos.test_r3_contrato_do_curador_por_entrada)
+FAIL: test_r5_branch_integrada_por_conteudo (test_f24_release_enxuta.Revisao3Textos.test_r5_branch_integrada_por_conteudo)
+Ran 5 tests in 0.749s
+FAILED (failures=5)
+[exit=1]

@@ -1,0 +1,102 @@
+test_lista_de_arquivos_de_contexto_igual_a_do_pacote (test_hooks.Hooks.test_lista_de_arquivos_de_contexto_igual_a_do_pacote) ... ok
+
+test_pre_push_avisa_base_velha_e_sai_0 (test_hooks.Hooks.test_pre_push_avisa_base_velha_e_sai_0) ... ok
+
+test_report_confere_o_staged_e_nao_o_disco (test_hooks.Hooks.test_report_confere_o_staged_e_nao_o_disco) ... FAIL
+
+test_report_pula_fixtures_e_template_copiados_pelo_init (test_hooks.Hooks.test_report_pula_fixtures_e_template_copiados_pelo_init) ... ok
+
+test_report_sem_python3_ou_sem_lint_avisa_e_segue (test_hooks.Hooks.test_report_sem_python3_ou_sem_lint_avisa_e_segue) ... FAIL
+
+test_report_so_julga_o_relatorio_em_sdd_reports (test_hooks.Hooks.test_report_so_julga_o_relatorio_em_sdd_reports) ... ok
+
+test_report_staged_passa_pelo_report_lint (test_hooks.Hooks.test_report_staged_passa_pelo_report_lint) ... FAIL
+
+test_varios_achados_numa_recusa_so_e_no_verify_grava (test_hooks.Hooks.test_varios_achados_numa_recusa_so_e_no_verify_grava) ... ok
+
+
+
+======================================================================
+
+FAIL: test_report_confere_o_staged_e_nao_o_disco (test_hooks.Hooks.test_report_confere_o_staged_e_nao_o_disco)
+
+----------------------------------------------------------------------
+
+Traceback (most recent call last):
+
+  File "D:\a\sdd-open\sdd-open\tests\test_hooks.py", line 315, in test_report_confere_o_staged_e_nao_o_disco
+
+    self.assertEqual(rc, 0, out + err)
+
+AssertionError: 1 != 0 : 
+
+sdd-open: commit recusado. Encontrei o que n�o pode entrar nesta vers�o:
+
+
+
+  \U0001f6d1 [REPORT] sdd/reports/BUILD_REPORT_X.md n�o passa no report-lint:
+
+
+
+
+
+Por que importa:
+
+  [REPORT] um relat�rio de build que n�o prova a evid�ncia vira verde falso na fase Release
+
+
+
+RESULTADO: COMMIT RECUSADO
+
+\u2192 [REPORT] acrescente a tabela de crit�rios e a linha do avaliador (sdd/templates/fragments/EVIDENCIA.md) ou corrija a evid�ncia citada; python3 sdd/bin/report-lint.py <arquivo> mostra cada classe
+
+\u2192 se voc� conferiu e quer gravar mesmo assim, s� desta vez: git commit --no-verify
+
+  Agente de IA: n�o use --no-verify sem o OK expl�cito da pessoa.
+
+
+
+
+
+======================================================================
+
+FAIL: test_report_sem_python3_ou_sem_lint_avisa_e_segue (test_hooks.Hooks.test_report_sem_python3_ou_sem_lint_avisa_e_segue)
+
+----------------------------------------------------------------------
+
+Traceback (most recent call last):
+
+  File "D:\a\sdd-open\sdd-open\tests\test_hooks.py", line 346, in test_report_sem_python3_ou_sem_lint_avisa_e_segue
+
+    self.assertEqual(rc, 0, saida)
+
+AssertionError: 1 != 0 : error: cannot spawn sdd/hooks/pre-commit: No such file or directory
+
+
+
+
+
+======================================================================
+
+FAIL: test_report_staged_passa_pelo_report_lint (test_hooks.Hooks.test_report_staged_passa_pelo_report_lint)
+
+----------------------------------------------------------------------
+
+Traceback (most recent call last):
+
+  File "D:\a\sdd-open\sdd-open\tests\test_hooks.py", line 304, in test_report_staged_passa_pelo_report_lint
+
+    self.assertIn("[avalia��o ausente]", saida)
+
+AssertionError: '[avalia��o ausente]' not found in '\nsdd-open: commit recusado. Encontrei o que n�o pode entrar nesta vers�o:\n\n  \U0001f6d1 [REPORT] sdd/reports/BUILD_REPORT_X.md n�o passa no report-lint:\n\n\nPor que importa:\n  [REPORT] um relat�rio de build que n�o prova a evid�ncia vira verde falso na fase Release\n\nRESULTADO: COMMIT RECUSADO\n\u2192 [REPORT] acrescente a tabela de crit�rios e a linha do avaliador (sdd/templates/fragments/EVIDENCIA.md) ou corrija a evid�ncia citada; python3 sdd/bin/report-lint.py <arquivo> mostra cada classe\n\u2192 se voc� conferiu e quer gravar mesmo assim, s� desta vez: git commit --no-verify\n  Agente de IA: n�o use --no-verify sem o OK expl�cito da pessoa.\n'
+
+
+
+----------------------------------------------------------------------
+
+Ran 8 tests in 82.032s
+
+
+
+FAILED (failures=3)
+

@@ -1,0 +1,9 @@
+$ cd <git archive e583889>/tests && SDD_TEST_BASH=/bin/bash python3 -B -m unittest -v test_gerar_starter.CaminhoDoIniciante test_f17b_textos.CaminhoCurto
+test_at006_sem_comando_no_caminho_sem_terminal (test_gerar_starter.CaminhoDoIniciante.test_at006_sem_comando_no_caminho_sem_terminal) ... ok
+test_skills_geradas_citam_o_molde_pelo_caminho_inteiro (test_f17b_textos.CaminhoCurto.test_skills_geradas_citam_o_molde_pelo_caminho_inteiro) ... ok
+
+----------------------------------------------------------------------
+Ran 2 tests in 2.770s
+
+OK
+rc=0

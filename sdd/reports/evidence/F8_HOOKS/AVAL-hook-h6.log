@@ -1,0 +1,40 @@
+$ cd /tmp/sdd-aval/hook-h6 && printf 'a\n' > a.txt && git add a.txt && git commit -q -m em-main
+
+sdd-open: commit recusado. Encontrei o que não pode entrar nesta versão:
+
+  🛑 [H6] commit direto em main (a branch padrão do projeto, que já tem origin/main)
+
+Por que importa:
+  [H6] a branch padrão é o que está publicado; trabalho novo nasce numa frente e chega lá por PR
+
+RESULTADO: COMMIT RECUSADO
+→ [H6] leve o que está preparado para uma frente nova: git switch -c <nome> (o que está staged vai junto) e commite lá; para a próxima feature, peça a sdd-new-session
+→ se você conferiu e quer gravar mesmo assim, só desta vez: git commit --no-verify
+  Agente de IA: não use --no-verify sem o OK explícito da pessoa.
+[exit=1]
+$ cd /tmp/sdd-aval/hook-h6 && git switch -q -c frente && git commit -q -m na-frente && echo PASSOU-na-frente
+PASSOU-na-frente
+[exit=0]
+$ cd /tmp/sdd-aval/hook-h6 && git switch -q main && git update-ref -d refs/remotes/origin/main && printf 'b\n' > b.txt && git add b.txt && git commit -q -m main-sem-remoto && echo PASSOU-sem-ref-remoto
+PASSOU-sem-ref-remoto
+[exit=0]
+$ cd /tmp/sdd-aval/hook-h6 && git fetch -q origin && git checkout -q --detach && printf 'c\n' > c.txt && git add c.txt && git commit -q -m detached && echo PASSOU-detached
+PASSOU-detached
+[exit=0]
+$ cd /tmp/sdd-aval/hook-h6 && git switch -q main && sed -i '' 's/^  default_branch:.*/  default_branch: trunk/' sdd/config.yaml && git add sdd/config.yaml && git commit -q -m main-com-default-trunk && echo PASSOU-default-branch-diferente
+PASSOU-default-branch-diferente
+[exit=0]
+$ cd /tmp/sdd-aval/hook-h6 && git checkout -q -- . ; git switch -q -c trunk && git push -q origin trunk && printf 'd\n' > d.txt && git add d.txt && git commit -q -m em-trunk
+
+sdd-open: commit recusado. Encontrei o que não pode entrar nesta versão:
+
+  🛑 [H6] commit direto em trunk (a branch padrão do projeto, que já tem origin/trunk)
+
+Por que importa:
+  [H6] a branch padrão é o que está publicado; trabalho novo nasce numa frente e chega lá por PR
+
+RESULTADO: COMMIT RECUSADO
+→ [H6] leve o que está preparado para uma frente nova: git switch -c <nome> (o que está staged vai junto) e commite lá; para a próxima feature, peça a sdd-new-session
+→ se você conferiu e quer gravar mesmo assim, só desta vez: git commit --no-verify
+  Agente de IA: não use --no-verify sem o OK explícito da pessoa.
+[exit=1]

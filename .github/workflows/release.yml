@@ -64,10 +64,14 @@ jobs:
             | tar -xz -C /usr/local/bin gitleaks
           gitleaks version
 
-      - name: Run publish gate
+      # F26: o gate confere o PACOTE (montado pelo git archive, como a Release), não o checkout: os documentos das
+      # frentes vivem na main e o export-ignore os tira do pacote. Em 2 linhas: um montador que falha derruba o passo.
+      - name: Run publish gate (on the package assembled by git archive)
         env:
           PUBLISH_GATE_MODE: ci
-        run: bash scripts/publish-gate.sh "$GITHUB_WORKSPACE"
+        run: |
+          P="$(bash scripts/montar-pacote.sh)" || exit 1
+          bash scripts/publish-gate.sh "$P"
 
       # A published skill is code the agent obeys: a change that hides text (invisible, bidi, tag or
       # variation-selector Unicode) or fetches and runs remote code must not reach a Release.
@@ -114,9 +118,11 @@ jobs:
 
       # Same step as publish-gate.yml: that workflow runs alongside this one, not before it, so a
       # red publish-gate would not stop a Release.
-      - name: Shell syntax, no zsh, no symlinks
+      - name: Shell syntax, no zsh, no symlinks (on the package)
         run: |
           set -u +e
+          P="$(bash scripts/montar-pacote.sh)" || exit 1
+          cd "$P" || exit 1
           fail=0
           for f in $(find . -name '*.sh' -not -path './.git/*'); do bash -n "$f" || { echo "bash -n failed: $f"; fail=1; }; done
           if grep -rl '^#!/bin/zsh' --include='*.sh' . ; then echo "zsh shebang found"; fail=1; fi
@@ -231,11 +237,13 @@ jobs:
           echo "SDD_TEST_BASH=$(cygpath -w "$(command -v bash)")" >> "$GITHUB_ENV"
 
       # O publish-gate não depende da fatia: roda numa só.
-      - name: Run publish gate
+      - name: Run publish gate (on the package assembled by git archive)
         if: matrix.fatia == 1
         env:
           PUBLISH_GATE_MODE: ci
-        run: bash scripts/publish-gate.sh "$(pwd)"
+        run: |
+          P="$(bash scripts/montar-pacote.sh)" || exit 1
+          bash scripts/publish-gate.sh "$P"
 
       # Uma linha por módulo (estado, testes, falhas, erros, pulados, segundos) e os nomes do que caiu; a saída
       # inteira de cada módulo vai para o artefato do run.

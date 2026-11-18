@@ -1,0 +1,26 @@
+$ /usr/bin/python3 -B /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f10-revisao/bd420f6e-558d-4962-a0c9-40cdfc2cbd27/scratchpad/p/at027_033.py && SDD_TEST_BASH=/bin/bash /usr/bin/python3 -B -m unittest discover -s tests -p test_contrato_build_release.py
+## AT-033: nenhum nome de engine nas seções da F10
+  sdd-design 'Review adversarial do DESIGN'  1810 bytes · nomes de engine: nenhum
+  sdd-build 0                                758 bytes · nomes de engine: nenhum
+  sdd-build 5c                               894 bytes · nomes de engine: nenhum
+  sdd-release 0a item 8                      843 bytes · nomes de engine: nenhum
+  sdd-release fase 1 passos 3-4              834 bytes · nomes de engine: nenhum
+  como-falar D3                              450 bytes · nomes de engine: nenhum
+## AT-033: design e 5c mandam rodar o script, em cadeia, nunca em paralelo, alimentar o loop, Advisor Ledger
+  sdd-design 'Review adversarial do DESIGN': script=True · nunca em paralelo=True · loop=True · Advisor Ledger=True
+  sdd-build 5c: script=True · nunca em paralelo=True · loop=True · Advisor Ledger=True
+  5c diz que a release exige: True
+## AT-027
+  0a roda --conferir: True
+  pergunta D3 exata em como-falar.md: True
+  opções: rodar agora (recomendado)=True · 2 a 15 minutos=True · custo no fim=True · publicar sem revisão + motivo em uma frase + registro=True · não sei=True
+  passo 3 grava review_externo: True
+  passo 4 roda --ledger depois do commit, antes do 5, aborta ≠0: True
+  bloco do OK (passo 7) — pergunta do OK continua uma só (linhas com '?' de decisão no bloco):
+     ['**Posso finalizar (push + deploy + verificar)?**']
+.............................
+----------------------------------------------------------------------
+Ran 29 tests in 0.108s
+
+OK
+[exit=0]

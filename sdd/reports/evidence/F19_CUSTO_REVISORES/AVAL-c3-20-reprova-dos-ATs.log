@@ -1,0 +1,173 @@
+$ /bin/bash casos/ats.sh <rascunho> <repo> <PATH original> <reais>   (reprova direta dos ATs na cópia de git archive 0d4a730; PATH=/usr/bin:/bin salvo onde dito)
+### AT-001/002/003/004 — fixtures do pacote (py3.9 + bash 3.2)
+[exit 0]
+eval-revisores — custo e resultado por papel, engine e modelo (6 pasta(s) lida(s) em sdd/fixtures/revisao/custo; 1 ledger(s))
+
+| Papel | Engine (modelo) | Cobrança | Rodadas | Falhas | Pago US$ | Nominal US$ | Achados | Aplicados | Com dano | Falsos positivos | Fora de escopo | Sem classificar | Pago por dano | Nominal por dano | AGREE |
+|---|---|---|---:|---|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|
+| revisor | claude (claude-x) | assinatura | 6 | 0 | 0.0000 | ≈7.0000 | 9 | 6 de 9 | 3 de 9 | 1 de 9 | 1 de 9 | 1 de 9 | 0.0000 | ≈2.3333 | — |
+| 2º revisor | codex (-) | assinatura | 1 | 0 | 0.0000 | n/d | 1 | 1 de 1 | 1 de 1 | 0 de 1 | 0 de 1 | 0 de 1 | 0.0000 | — | — |
+| 2º revisor | gemini (-) | desconhecida | 0 | 1 (1 credencial) | n/d | n/d | 0 | 0 | 0 | 0 | 0 | 0 | — | — | — |
+| 2º revisor | openrouter (deep/seek) | pay-per-token | 0 | 1 (1 cota ou tempo) | 1.0000 (incerto em 1 de 1) | 1.0000 (incerto em 1 de 1) | 0 | 0 | 0 | 0 | 0 | 0 | — | — | — |
+| auditor | codex (-) | assinatura | 0 | 1 (1 trocada por outra engine) | 0.0000 | n/d | 0 | 0 | 0 | 0 | 0 | 0 | — | — | n/a |
+| auditor | openrouter (qwen/q-plus via ProvedorA) | pay-per-token | 4 | 0 | 0.1500 (n/d em 1 de 4) | 0.1500 (n/d em 1 de 4) | 0 | 0 | 0 | 0 | 0 | 0 | — | — | 71.4% (5 de 7) |
+| auditor | openrouter (qwen/q-plus via ProvedorB) | pay-per-token | 2 | 0 | 0.6100 | 0.6100 | 2 | 0 de 2 | 0 de 2 | 2 de 2 | 0 de 2 | 0 de 2 | — | — | 100.0% (3 de 3) |
+
+fora da conta: 4 (EXTERNAL_REVIEW_20260201-000006: META ilegível ou incompleto; EXTERNAL_REVIEW_20260201-000007: 2º revisor indisponível: nenhuma engine foi chamada; LEDGER_REVISAO_EXEMPLO.md:20: achado R1@codex: o rótulo @codex não é o da engine que respondeu como revisor (claude); LEDGER_REVISAO_EXEMPLO.md:21: achado R9@claude não está em EXTERNAL_REVIEW_20260201-000005)
+RESULTADO: MEDIDO
+→ leia cada taxa com a amostra ao lado: poucas rodadas dão número instável. O script conta o que está registrado; trocar a cadeia de revisão é decisão de quem lê.
+[exit py3.15 0]
+saída idêntica nos dois pythons
+0725ee13f651d4d0e8351b8124d67deb148c0c0e50c340f39114a7b70ddd64f0 (hash das fixtures depois de rodar)
+
+### AT-001 — padrões: projeto sem git, review.output_dir no config, ledgers em sdd/reviews
+eval-revisores — custo e resultado por papel, engine e modelo (1 pasta(s) lida(s) em ats/proj/minhas; 1 ledger(s))
+| revisor | claude (claude-x) | assinatura | 1 | 0 | 0.0000 | 2.0000 | 3 | 2 de 3 | 1 de 3 | 1 de 3 | 0 de 3 | 0 de 3 | 0.0000 | 2.0000 | — |
+| auditor | openrouter (qwen/q-plus via ProvedorA) | pay-per-token | 1 | 0 | 0.0500 | 0.0500 | 0 | 0 | 0 | 0 | 0 | 0 | — | — | 66.7% (2 de 3) |
+RESULTADO: MEDIDO
+→ leia cada taxa com a amostra ao lado: poucas rodadas dão número instável. O script conta o que está registrado; trocar a cadeia de revisão é decisão de quem lê.
+[exit 0]
+eval-revisores — custo e resultado por papel, engine e modelo (1 pasta(s) lida(s) em ats/proj/sdd/reports/reviews; 1 ledger(s))
+RESULTADO: MEDIDO
+[slot vazio → sdd/reports/reviews: exit 0]
+
+### AT-002 — soma decimal: 0.3100 + 0.3000 e 0.1 + 0.2 (duas pastas, auditor pay-per-token)
+| revisor | openrouter (m) | pay-per-token | 2 | 0 | 0.6100 | 0.6100 | 0 | 0 | 0 | 0 | 0 | 0 | — | — | — |
+| revisor | openrouter (m) | pay-per-token | 2 | 0 | 0.3000 | 0.3000 | 0 | 0 | 0 | 0 | 0 | 0 | — | — | — |
+| revisor | openrouter (m) | pay-per-token | 2 | 0 | 0.000090 | 0.000090 | 0 | 0 | 0 | 0 | 0 | 0 | — | — | — |
+
+### AT-005 — uso, SEM DADOS, pasta ilegível, rede negada
+$ eval-revisores.sh /nao/existe
+🛑 eval-revisores: a pasta /nao/existe não existe
+RESULTADO: PAROU
+→ rode `eval-revisores.sh --help` para ver o uso.
+[exit 64]
+$ eval-revisores.sh --xyz
+🛑 eval-revisores: opção desconhecida: --xyz
+RESULTADO: PAROU
+→ rode `eval-revisores.sh --help` para ver o uso.
+[exit 64]
+$ eval-revisores.sh sdd/fixtures/revisao/custo extra
+🛑 eval-revisores: argumento a mais: extra
+RESULTADO: PAROU
+→ rode `eval-revisores.sh --help` para ver o uso.
+[exit 64]
+$ eval-revisores.sh 
+🛑 eval-revisores: o caminho da pasta veio vazio
+RESULTADO: PAROU
+→ rode `eval-revisores.sh --help` para ver o uso.
+[exit 64]
+$ eval-revisores.sh sdd/fixtures/revisao/custo --ledgers /nao/existe.md
+🛑 eval-revisores: o caminho de --ledgers não existe: /nao/existe.md
+RESULTADO: PAROU
+→ rode `eval-revisores.sh --help` para ver o uso.
+[exit 64]
+$ eval-revisores.sh sdd/fixtures/revisao/custo --registry /nao/existe.tsv
+🛑 eval-revisores: o arquivo de --registry não existe: /nao/existe.tsv
+RESULTADO: PAROU
+→ rode `eval-revisores.sh --help` para ver o uso.
+[exit 64]
+$ eval-revisores.sh /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f21-f19/8ca3f42f-d684-434d-9f0b-19bdcf0aef88/scratchpad/aval3-f19/ats/vazia
+eval-revisores — custo e resultado por papel, engine e modelo (0 pasta(s) lida(s) em ats/vazia; 0 ledger(s))
+RESULTADO: SEM DADOS
+→ nenhuma revisão com META.txt legível nesta pasta: rode adversarial-review.sh e meça de novo.
+[exit 2]
+$ eval-revisores.sh /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f21-f19/8ca3f42f-d684-434d-9f0b-19bdcf0aef88/scratchpad/aval3-f19/ats/trancada
+🛑 eval-revisores: não consegui ler a pasta ats/trancada (Permission denied)
+RESULTADO: PAROU
+→ rode `eval-revisores.sh --help` para ver o uso.
+[exit 64]
+$ eval-revisores.sh sdd/fixtures/revisao/custo --ledgers /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f21-f19/8ca3f42f-d684-434d-9f0b-19bdcf0aef88/scratchpad/aval3-f19/ats/ltranc
+🛑 eval-revisores: não consegui ler a pasta ats/ltranc (Permission denied)
+RESULTADO: PAROU
+→ rode `eval-revisores.sh --help` para ver o uso.
+[exit 64]
+eval-revisores — custo e resultado por papel, engine e modelo (0 pasta(s) lida(s) em ats/vazia/sdd/reports/reviews; 0 ledger(s))
+RESULTADO: SEM DADOS
+→ nenhuma revisão com META.txt legível nesta pasta: rode adversarial-review.sh e meça de novo.
+[sem argumentos, projeto sem revisões: exit 2]
+[com a rede negada por sandbox-exec: exit 0]
+saída idêntica com a rede negada
+nenhum módulo ou comando de rede nos dois scripts
+
+### AT-006 — lint: uso
+$ ledger-revisao-lint.sh 
+🛑 ledger-revisao-lint: faltou o arquivo do ledger
+RESULTADO: ERRO DE USO
+[exit 64]
+$ ledger-revisao-lint.sh --xyz
+🛑 ledger-revisao-lint: opção desconhecida: --xyz
+RESULTADO: ERRO DE USO
+[exit 64]
+$ ledger-revisao-lint.sh /nao/existe.md
+🛑 ledger-revisao-lint: não consegui ler /nao/existe.md
+RESULTADO: ERRO DE USO
+[exit 64]
+$ ledger-revisao-lint.sh sdd/fixtures/revisao/ledger/controle.md /nao/existe.md
+🛑 ledger-revisao-lint: não consegui ler /nao/existe.md
+RESULTADO: ERRO DE USO
+[exit 64]
+$ ledger-revisao-lint.sh sdd/fixtures/revisao/ledger/sim-sem-teste.md sdd/fixtures/revisao/ledger/sem-linhas.md
+🛑 sdd/fixtures/revisao/ledger/sim-sem-teste.md:5 — dano = sim sem `teste: <nome>` na evidência: cite o teste que falha no código antigo (test_…, arquivo::teste ou tests/…)
+🛑 sdd/fixtures/revisao/ledger/sem-linhas.md — nenhuma linha de dados nem linha `sem achados:`: nada conferido nunca é verde
+[exit 2]
+$ ledger-revisao-lint.sh sdd/fixtures/revisao/ledger/controle.md sdd/fixtures/revisao/ledger/controle.md
+🛑 sdd/fixtures/revisao/ledger/controle.md:5 — achado R1@claude repetido na revisão EXTERNAL_REVIEW_20260201-000001 (1ª vez em sdd/fixtures/revisao/ledger/controle.md:5)
+🛑 sdd/fixtures/revisao/ledger/controle.md:6 — achado R3 repetido na revisão EXTERNAL_REVIEW_20260201-000001 (1ª vez em sdd/fixtures/revisao/ledger/controle.md:6)
+[exit 2]
+  ledger-revisao-lint.sh <LEDGER_REVISAO_F.md>…
+      o arquivo é só do ledger: toda linha de tabela é o cabeçalho abaixo ou uma linha de dados de 7 células
+      (outra tabela no arquivo reprova; texto corrido, bloco cercado e comentário podem ficar):
+[--help exit 0]
+  eval-revisores.sh [<pasta-das-revisões>] [--ledgers <pasta-ou-arquivo>] [--registry <registry.tsv>]
+      pasta: padrão review.output_dir do sdd/config.yaml da raiz git (sdd/reports/reviews se vazio)
+[--help exit 0]
+
+### AT-007 — loop --ledger: 5 colunas x 7 colunas; scripts que não podiam mudar
+5 colunas, rotulado: ESTADO: PRONTO;rodada: 1 de 3;graves_abertos: 0;rebatidas: 1;motivo: grave(s) rebatido(s) no ledger: R1@rev;RESULTADO: PRONTO; [exit 0]
+7 colunas, rotulado: ESTADO: PRONTO;rodada: 1 de 3;graves_abertos: 0;rebatidas: 1;motivo: grave(s) rebatido(s) no ledger: R1@rev;RESULTADO: PRONTO; [exit 0]
+5 colunas, sem rótulo: ESTADO: PRONTO;rodada: 1 de 3;graves_abertos: 0;rebatidas: 1;motivo: grave(s) rebatido(s) no ledger: R1;RESULTADO: PRONTO; [exit 0]
+7 colunas, sem rótulo: ESTADO: PRONTO;rodada: 1 de 3;graves_abertos: 0;rebatidas: 1;motivo: grave(s) rebatido(s) no ledger: R1;RESULTADO: PRONTO; [exit 0]
+✅ ledger da revisão: 2 linha(s) e 0 rodada(s) sem achados em 2 arquivo(s), cada linha com veredito, dano e a pasta da revisão.
+sem ledger: exit 10
+git diff 9581740 0d4a730 -- sdd-fluxo.sh eval-agree.sh adversarial-review.sh sdd/review/adapters: 0 linha(s)
+
+### AT-003 — AGREE igual ao eval-agree.sh nas 25 pastas reais
+eval-agree — taxa de AGREE por auditor (26 pasta(s) lida(s) em /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f21-f19/8ca3f42f-d684-434d-9f0b-19bdcf0aef88/scratchpad/f19/reais)
+| Auditor | Revisões | Vereditos | AGREE | DISAGREE_EVIDENCE | DISAGREE_CONCERN | NOVO | taxa_agree |
+| openrouter (qwen/qwen3.7-plus) | 23 | 105 | 78 | 12 | 10 | 5 | 78.0% |
+RESULTADO: MEDIDO
+→ uma taxa_agree alta com poucos DISAGREE pode ser auditor complacente: compare com outra engine no papel de auditor.
+
+### AT-008 — textos e MANIFEST
+presente: sdd/review/CRITERIO_DANO.md (71 linhas)
+presente: sdd/templates/LEDGER_REVISAO_TEMPLATE.md (34 linhas)
+.agents/skills/sdd-build/SKILL.md:8:  version: "2.8.0"
+.agents/skills/sdd-release/SKILL.md:9:  version: "2.10.0"
+  version: "2.7.0"
+  version: "2.9.1"
+.agents/skills/sdd-build/SKILL.md: LEDGER_REVISAO 4 · ledger-revisao-lint 1 · eval-revisores 1
+.agents/skills/sdd-release/SKILL.md: LEDGER_REVISAO 2 · ledger-revisao-lint 1 · eval-revisores 1
+docs/adversarial-review.md: LEDGER_REVISAO 3 · ledger-revisao-lint 1 · eval-revisores 2
+docs/pt-BR/adversarial-review.md: LEDGER_REVISAO 3 · ledger-revisao-lint 1 · eval-revisores 2
+docs/cli-conventions.md: LEDGER_REVISAO 0 · ledger-revisao-lint 1 · eval-revisores 1
+sdd/WORKFLOW_CONTRACTS.yaml: LEDGER_REVISAO 3 · ledger-revisao-lint 1 · eval-revisores 2
+sdd/templates/BUILD_REPORT_TEMPLATE.md: LEDGER_REVISAO 1 · ledger-revisao-lint 1 · eval-revisores 0
+165:| Nominal US$ | every numeric cost, reported or estimated (`≈`), including the list price a subscription engine reports |
+168:| Pago por dano · Nominal por dano | cost divided by findings with damage, on both bases; `—` when there are none |
+169:| AGREE | auditor only: the same rate as `eval-agree.sh`, with the sample next to it |
+193:chain. Few rounds give unstable numbers: every rate comes with its sample. A subscription engine has a nominal
+git ls-tree: 511 · MANIFEST: 511 · diferenças: 0
+
+### AT-009 — init num projeto novo
+[init exit 0]
+✅ nenhum segredo salvo no git (.env, .pfx, .p12, .pem com chave privada)
+RESULTADO: INSTALADO
+→ abra seu agente e peça a fase Define (ex.: /sdd-define ou /skill:sdd-define).
+chegou e é idêntico: sdd/bin/eval-revisores.sh
+chegou e é idêntico: sdd/bin/ledger-revisao-lint.sh
+chegou e é idêntico: sdd/review/CRITERIO_DANO.md
+chegou e é idêntico: sdd/templates/LEDGER_REVISAO_TEMPLATE.md
+RESULTADO: SEM DADOS
+→ nenhuma revisão com META.txt legível nesta pasta: rode adversarial-review.sh e meça de novo.
+[exit 2]

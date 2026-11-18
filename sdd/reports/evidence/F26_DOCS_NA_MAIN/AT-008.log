@@ -1,0 +1,11 @@
+$ SDD_TEST_BASH=/bin/bash /usr/bin/python3 -B -m unittest -v -k at008 test_f26_marca_starter
+# AT-008 · HEAD e99136d · cópia de git archive HEAD · piso (/usr/bin/python3, /bin/bash)
+test_at008_check_versions_do_starter_aceita_a_nova_e_recusa_a_antiga (test_f26_marca_starter.Marca) ... ok
+test_at008_descricao_e_linha_com_a_marca_nas_18 (test_f26_marca_starter.Marca) ... ok
+test_at008_where_skill_de_modo_e_sem_modo (test_f26_marca_starter.Marca) ... ok
+
+----------------------------------------------------------------------
+Ran 3 tests in 7.487s
+
+OK
+[exit=0]

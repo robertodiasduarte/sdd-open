@@ -1,0 +1,35 @@
+NOTA DO BUILD (2026-11-10): registro do avaliador, guardado como veio. O gate-shell-evidencia.sh acusou este arquivo: os números de exit gravados aqui são do formatador depois do pipe (ou saíram vazios), não do comando. Por isso deixou de ser .log e não vale como prova de exit; o que prova o mesmo ponto é AT-007.log, AT-009.log e VERIFY-GATE.log.
+
+$ PATH=/usr/bin:/bin:/usr/sbin:/sbin /bin/bash /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f21-f19/8ca3f42f-d684-434d-9f0b-19bdcf0aef88/scratchpad/aval2-f19/ferr/init.sh /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f21-f19/8ca3f42f-d684-434d-9f0b-19bdcf0aef88/scratchpad/aval2-f19/casos/projnovo 2>&1 | sed 's#/private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f21-f19/8ca3f42f-d684-434d-9f0b-19bdcf0aef88/scratchpad/aval2-f19#<rascunho>#g' | cut -c1-260
+[init exit=0]
+✅ nenhum segredo salvo no git (.env, .pfx, .p12, .pem com chave privada)
+RESULTADO: INSTALADO
+→ abra seu agente e peça a fase Define (ex.: /sdd-define ou /skill:sdd-define).
+presente  ec791f87a7e8  sdd/bin/eval-revisores.sh
+          idêntico ao do pacote
+presente  7119085cc45d  sdd/bin/ledger-revisao-lint.sh
+          idêntico ao do pacote
+presente  b81445f8ab59  sdd/review/CRITERIO_DANO.md
+          idêntico ao do pacote
+presente  9b0e453ed62f  sdd/templates/LEDGER_REVISAO_TEMPLATE.md
+          idêntico ao do pacote
+presente  adcae399a092  sdd/review/registry.tsv
+          idêntico ao do pacote
+sdd/fixtures
+sdd/reviews
+=== eval-revisores no projeto novo, sem revisões
+eval-revisores — custo e resultado por papel, engine e modelo (0 pasta(s) lida(s) em <rascunho>/casos/projnovo/sdd/reports/reviews; 0 ledger(s))
+RESULTADO: SEM DADOS
+→ nenhuma revisão com META.txt legível nesta pasta: rode adversarial-review.sh e meça de novo.
+[exit=2]
+=== lint no molde recém-instalado (sem linhas → 64)
+🛑 sdd/templates/LEDGER_REVISAO_TEMPLATE.md — nenhuma linha de dados nem linha `sem achados:`: nada conferido nunca é verde
+RESULTADO: ERRO DE USO
+→ grave as linhas do ledger pelo molde (sdd/templates/LEDGER_REVISAO_TEMPLATE.md) e rode de novo.
+[exit=64]
+=== --help dos dois
+  ledger-revisao-lint.sh <LEDGER_REVISAO_F.md>…
+      o arquivo é só do ledger: toda linha de tabela é o cabeçalho abaixo ou uma linha de dados de 7 células
+      (outra tabela no arquivo reprova; texto corrido, bloco cercado e comentário podem ficar):
+[exit=0]
+[exit 0]

@@ -1,0 +1,9 @@
+$ (sdd/bin/slot.sh de 9013b10) cd tests && SDD_TEST_BASH=/bin/bash /usr/bin/python3 -B -m unittest test_slot.Uso.test_config_que_nao_da_para_rodar_e_64 test_slot.Ambiente.test_caminhos_relativos_valem_de_onde_foi_chamado
+FAIL: test_config_que_nao_da_para_rodar_e_64 (test_slot.Uso) (caso='termina em ponto e virgula')
+FAIL: test_config_que_nao_da_para_rodar_e_64 (test_slot.Uso) (caso='termina em e comercial')
+FAIL: test_config_que_nao_da_para_rodar_e_64 (test_slot.Uso) (caso='termina em pipe')
+FAIL: test_config_que_nao_da_para_rodar_e_64 (test_slot.Uso) (caso='termina em e logico')
+FAIL: test_config_que_nao_da_para_rodar_e_64 (test_slot.Uso) (caso='texto depois das aspas simples')
+FAIL: test_caminhos_relativos_valem_de_onde_foi_chamado (test_slot.Ambiente)
+Ran 2 tests in 0.714s
+FAILED (failures=6)

@@ -1,0 +1,11 @@
+▶ seguranca-varredura — stack: nenhuma (detectada) · base: origin/main · 777 arquivo(s) varrido(s), 0 pulado(s)
+✔ aceito S16 tests/test_seguranca_varredura.py:241 — expressão fixa da planilha\n"
+✔ aceito S16 tests/test_seguranca_varredura.py:358 — caso de teste da varredura, nunca executado
+✔ aceito S16 tests/test_seguranca_varredura.py:369 — caso de teste da varredura, nunca executado
+✔ aceito S16 tests/test_seguranca_varredura.py:429 — caso de teste da varredura, nunca executado
+✔ aceito S16 tests/test_seguranca_varredura.py:448 — caso de teste da varredura, nunca executado
+✔ aceito S16 tests/test_seguranca_varredura.py:493 — expressão fixa da planilha de teste\nconst r = eval('1+1');\n")
+✔ aceito S16 tests/test_seguranca_varredura.py:510 — caso de teste da varredura, nunca executado
+✔ aceito S16 tests/test_seguranca_varredura.py:591 — caso de teste, nunca executado
+✔ aceito S16 tests/test_seguranca_varredura.py:648 — caso de teste da varredura, nunca executado
+RESULTADO: NADA ACHADO

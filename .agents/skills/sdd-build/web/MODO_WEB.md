@@ -6,7 +6,7 @@ compatibility: "Requer um agente com acesso gravável ao projeto; não precisa d
 # SDD Build
 
 Na primeira resposta desta skill, comece com esta linha, uma vez só:
-`sdd-build v2.13.0 · nov/2026 · versão atual: https://github.com/robertodiasduarte/sdd-open/releases/latest`
+`sdd-build v2.13.1 · nov/2026 · versão atual: https://github.com/robertodiasduarte/sdd-open/releases/latest`
 
 Executar implementação real. Não tratar Build como geração de um documento isolado.
 

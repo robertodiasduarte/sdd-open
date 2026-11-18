@@ -1,0 +1,10 @@
+$ (cd tests && python3 -B -m unittest -v test_f24_release_enxuta.AT007_UmaParadaSo)   # HEAD 017f09a
+test_arquivamento_pelo_ledger_e_recibo (test_f24_release_enxuta.AT007_UmaParadaSo.test_arquivamento_pelo_ledger_e_recibo) ... ok
+test_branch_remota_so_se_ancestral_e_com_recibo (test_f24_release_enxuta.AT007_UmaParadaSo.test_branch_remota_so_se_ancestral_e_com_recibo) ... ok
+test_uma_pergunta_depois_do_ok (test_f24_release_enxuta.AT007_UmaParadaSo.test_uma_pergunta_depois_do_ok) ... ok
+
+----------------------------------------------------------------------
+Ran 3 tests in 0.000s
+
+OK
+[exit=0]

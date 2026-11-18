@@ -1,0 +1,37 @@
+$ cat /tmp/aval2-f18.hrKa/probes/at009.sh; bash /tmp/aval2-f18.hrKa/probes/at009.sh
+PKG=/Users/robertoduarte/rdd-worktrees/sdd-open-f18-f20-seguranca; D=/tmp/aval2-f18.hrKa/dl; rm -rf $D; mkdir -p $D
+cp $PKG/sdd/features/DESIGN_F18_F20_SEGURANCA.md $D/DESIGN_X.md
+python3 - $D/DESIGN_X.md <<'PY'
+import sys,re; p=sys.argv[1]; t=open(p,encoding='utf-8').read(); t=re.sub(r'\n## Segurança\n.*?(?=\n---\n)', '\n', t, flags=re.S); open(p.replace('DESIGN_X','DESIGN_SEM'),'w',encoding='utf-8').write(t)
+PY
+mv $D/DESIGN_SEM.md $D/DESIGN_Y.md
+printf '| **Segurança** | 2 aplicados (S01, S07) · 1 recusado (S13) · 0 adiados | sessão do Define |\n' > $D/DEFINE_X.md; cp $D/DEFINE_X.md $D/DEFINE_Y.md
+echo "### (a) DEFINE com 2 aplicados, DESIGN sem ## Segurança => ⚠️ e exit 0"; python3 $PKG/sdd/bin/design-lint.py $D/DESIGN_Y.md; echo "exit=$?"
+echo "### (b) DEFINE com 2 aplicados, DESIGN com ## Segurança => sem ⚠️"; python3 $PKG/sdd/bin/design-lint.py $D/DESIGN_X.md; echo "exit=$?"
+echo "### (c) DEFINE com N.A., DESIGN sem a seção => sem ⚠️"; printf '| **Segurança** | N.A. — sem gatilho | x |\n' > $D/DEFINE_Y.md; python3 $PKG/sdd/bin/design-lint.py $D/DESIGN_Y.md; echo "exit=$?"
+echo "### (d) --regras e --checklist no pacote (stack supabase,web via slot)"
+cd /tmp/aval2-f18.hrKa/c/a/proj && printf 'security:\n  stack: supabase, web\n' > sdd/config.yaml && bash sdd/bin/seguranca-varredura.sh --regras | head -3; echo "..."; bash sdd/bin/seguranca-varredura.sh --checklist | grep -c '^[0-9]*\.\|^- ' ; bash sdd/bin/seguranca-varredura.sh --checklist | head -8
+### (a) DEFINE com 2 aplicados, DESIGN sem ## Segurança => ⚠️ e exit 0
+⚠️ /tmp/aval2-f18.hrKa/dl/DESIGN_Y.md: o DEFINE tem 2 item(ns) de segurança aplicado(s) e este DESIGN não tem a seção ## Segurança com o "como evitar" de cada um (molde: sdd/templates/DESIGN_TEMPLATE.md); não reprova
+✅ /tmp/aval2-f18.hrKa/dl/DESIGN_Y.md: DESIGN válido
+exit=0
+### (b) DEFINE com 2 aplicados, DESIGN com ## Segurança => sem ⚠️
+✅ /tmp/aval2-f18.hrKa/dl/DESIGN_X.md: DESIGN válido
+exit=0
+### (c) DEFINE com N.A., DESIGN sem a seção => sem ⚠️
+✅ /tmp/aval2-f18.hrKa/dl/DESIGN_Y.md: DESIGN válido
+exit=0
+### (d) --regras e --checklist no pacote (stack supabase,web via slot)
+Regras de segurança da stack deste projeto — stack: supabase, web (slot security.stack)
+- S01 Tabela sem RLS: Toda tabela nasce com RLS ligada e uma política por operação (ler, gravar, alterar, apagar) restrita ao dono da linha; nenhuma política usa `true` como condição.
+- S06 Registro de outra pessoa pelo id: Toda rota que recebe um id confere, no servidor, que o registro pertence ao usuário logado; ids são aleatórios (UUID), nunca sequenciais.
+...
+20
+Conferência antes de publicar — stack: supabase, web (slot security.stack) · 20 item(ns), os de maior risco primeiro
+1. [S01] Tabela sem RLS — confira: No painel do banco, cada tabela mostra se a segurança por linha está ligada; abra cada política e leia a condição: `true`, ou condição que não cita o usuário logado, é aberta. Depois, numa janela anônima, chame a API da tabela com a chave pública: tem de voltar vazio.
+2. [S07] Sem limite de tentativas nem de uso — confira: Erre a senha 20 vezes seguidas: tem de bloquear. Clique 30 vezes em um minuto no botão que chama a IA: tem de recusar.
+3. [S08] Cadastro aberto e e-mail sem confirmação — confira: Numa janela anônima, tente criar conta e entrar: não pode conseguir. Peça a troca de senha 10 vezes seguidas: tem de limitar.
+4. [S11] Chave secreta no código — confira: Procure no código e no histórico do repositório por `sk-`, `sk_live_`, `service_role`, `PRIVATE KEY` e `secret`: nada pode aparecer com valor. Achou uma chave real? Ela vazou: troque-a antes de qualquer outra coisa (modo incidente).
+5. [S13] Cabeçalhos de segurança ausentes — confira: Abra a página publicada, ferramentas do navegador, aba de rede, clique no documento HTML e leia os cabeçalhos de resposta; um verificador público de cabeçalhos dá a nota.
+6. [S03] Função de banco que qualquer um chama — confira: Para cada função: quem pode chamá-la sem login? Ela confere quem está chamando antes de agir? Ela roda com mais poder que quem chamou? Uma resposta errada é falha.
+7. [S05] Texto do usuário montado dentro de SQL — confira: Digite `' OR 1=1 --` em cada campo de busca e de filtro: o resultado não pode mudar nem mostrar erro de banco.

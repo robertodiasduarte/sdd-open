@@ -1,0 +1,43 @@
+$ python3 -V; for t in test_eval_revisores test_ledger_revisao_lint test_f19_textos test_fluxo test_eval_agree test_contrato_build_release test_docs test_bash32; do echo "== $t"; python3 -B -m unittest discover -s tests -p "$t.py" 2>&1 | tail -4; done
+Python 3.15.0
+== test_eval_revisores
+----------------------------------------------------------------------
+Ran 42 tests in 3.220s
+
+OK
+== test_ledger_revisao_lint
+----------------------------------------------------------------------
+Ran 17 tests in 1.597s
+
+OK
+== test_f19_textos
+----------------------------------------------------------------------
+Ran 17 tests in 28.896s
+
+OK
+== test_fluxo
+----------------------------------------------------------------------
+Ran 69 tests in 13.894s
+
+OK
+== test_eval_agree
+----------------------------------------------------------------------
+Ran 9 tests in 0.594s
+
+OK
+== test_contrato_build_release
+----------------------------------------------------------------------
+Ran 29 tests in 0.153s
+
+OK
+== test_docs
+----------------------------------------------------------------------
+Ran 23 tests in 0.039s
+
+OK
+== test_bash32
+----------------------------------------------------------------------
+Ran 3 tests in 0.036s
+
+OK
+[exit 0]

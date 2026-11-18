@@ -1,0 +1,3 @@
+$ /bin/bash sdd/bin/sdd-decisoes-lint.sh --sites .agents/skills sdd/templates/fragments
+🟢 sdd-decisoes-lint --sites: 17 pergunta(s) em 17 arquivo(s), cada uma com a marca de classe e no formato.
+[exit=0]

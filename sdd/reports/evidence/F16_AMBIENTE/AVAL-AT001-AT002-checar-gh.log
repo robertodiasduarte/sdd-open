@@ -1,0 +1,117 @@
+$ bash /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f16-ambiente/7a19ff14-fc44-4226-880f-204bc93851d3/scratchpad/sondas/at001_002.sh
+##### AT-001: sem gh no PATH (PATH=/usr/bin:/bin:/usr/sbin:/sbin)
+=== normal, sem remoto, uname=Darwin
+⚠️ Vale arrumar
+- O repositório não tem remoto — nada que você fizer sai desta máquina, e as frentes nascem dele.
+  git remote add origin <url do repositório>   (projeto ainda sem repositório no GitHub? a skill sdd-iniciar-repo cria um privado e envia)
+- O programa do GitHub para o terminal (gh) não está instalado — sem ele, publicar o projeto e logar no GitHub ficam manuais.
+  brew install gh   (sem Homebrew: instalador em https://cli.github.com); depois feche e abra o terminal
+
+✅ Repo semremoto, branch main, nenhuma frente aberta, nenhum agente de código no terminal, editor open -a "Visual Studio Code" · sdd-checar-ambiente v1.5.0 · nov/2026 · versão atual: https://github.com/robertodiasduarte/sdd-open/releases/latest
+rc=0
+=== normal, sem remoto, uname=MINGW64_NT-10.0
+⚠️ Vale arrumar
+- O repositório não tem remoto — nada que você fizer sai desta máquina, e as frentes nascem dele.
+  git remote add origin <url do repositório>   (projeto ainda sem repositório no GitHub? a skill sdd-iniciar-repo cria um privado e envia)
+- O programa do GitHub para o terminal (gh) não está instalado — sem ele, publicar o projeto e logar no GitHub ficam manuais.
+  winget install --id GitHub.cli -e   (depois feche e abra o terminal)
+
+✅ Repo semremoto, branch main, nenhuma frente aberta, nenhum agente de código no terminal · sdd-checar-ambiente v1.5.0 · nov/2026 · versão atual: https://github.com/robertodiasduarte/sdd-open/releases/latest
+rc=0
+=== normal, sem remoto, uname=Linux
+⚠️ Vale arrumar
+- O repositório não tem remoto — nada que você fizer sai desta máquina, e as frentes nascem dele.
+  git remote add origin <url do repositório>   (projeto ainda sem repositório no GitHub? a skill sdd-iniciar-repo cria um privado e envia)
+- O programa do GitHub para o terminal (gh) não está instalado — sem ele, publicar o projeto e logar no GitHub ficam manuais.
+  siga https://github.com/cli/cli/blob/trunk/docs/install_linux.md   (depois feche e abra o terminal)
+
+✅ Repo semremoto, branch main, nenhuma frente aberta, nenhum agente de código no terminal · sdd-checar-ambiente v1.5.0 · nov/2026 · versão atual: https://github.com/robertodiasduarte/sdd-open/releases/latest
+rc=0
+=== normal, remoto GitHub, uname=Darwin
+⚠️ Vale arrumar
+- O programa do GitHub para o terminal (gh) não está instalado — sem ele, publicar o projeto e logar no GitHub ficam manuais.
+  brew install gh   (sem Homebrew: instalador em https://cli.github.com); depois feche e abra o terminal
+
+✅ Repo github, branch main, nenhuma frente aberta, nenhum agente de código no terminal, editor open -a "Visual Studio Code" · sdd-checar-ambiente v1.5.0 · nov/2026 · versão atual: https://github.com/robertodiasduarte/sdd-open/releases/latest
+rc=0
+--- --frente sem gh (remoto GitHub):
+=== --frente
+✅ Pronto para abrir a frente: repo github, principal main · sdd-checar-ambiente v1.5.0 · nov/2026 · versão atual: https://github.com/robertodiasduarte/sdd-open/releases/latest
+rc=0
+ocorrências de 'gh' (palavra) na saída do --frente: 0
+=== --frente sem remoto
+🔴 Impede o trabalho
+- O repositório não tem remoto — nada que você fizer sai desta máquina, e as frentes nascem dele.
+  git remote add origin <url do repositório>   (projeto ainda sem repositório no GitHub? a skill sdd-iniciar-repo cria um privado e envia)
+
+Nada foi criado. Depois de resolver, peça a frente de novo.
+rc=1
+ocorrências de 'gh' (palavra): 0
+
+##### AT-002
+=== gh-logado, github
+✅ Pronto: repo github, branch main, nenhuma frente aberta, nenhum agente de código no terminal, editor open -a "Visual Studio Code" · sdd-checar-ambiente v1.5.0 · nov/2026 · versão atual: https://github.com/robertodiasduarte/sdd-open/releases/latest
+rc=0
+chamadas ao stub: 1 -> gh auth status --hostname github.com;
+=== gh-logado, semremoto
+⚠️ Vale arrumar
+- O repositório não tem remoto — nada que você fizer sai desta máquina, e as frentes nascem dele.
+  git remote add origin <url do repositório>   (projeto ainda sem repositório no GitHub? a skill sdd-iniciar-repo cria um privado e envia)
+
+✅ Repo semremoto, branch main, nenhuma frente aberta, nenhum agente de código no terminal, editor open -a "Visual Studio Code" · sdd-checar-ambiente v1.5.0 · nov/2026 · versão atual: https://github.com/robertodiasduarte/sdd-open/releases/latest
+rc=0
+chamadas ao stub: 1 -> gh auth status --hostname github.com;
+=== gh-deslogado, github
+⚠️ Vale arrumar
+- O gh está instalado, mas nenhuma conta do GitHub está logada nele — publicar o projeto vai pedir esse login.
+  gh auth login   (GitHub.com → HTTPS → Yes → Login with a web browser)
+
+✅ Repo github, branch main, nenhuma frente aberta, nenhum agente de código no terminal, editor open -a "Visual Studio Code" · sdd-checar-ambiente v1.5.0 · nov/2026 · versão atual: https://github.com/robertodiasduarte/sdd-open/releases/latest
+rc=0
+chamadas ao stub: 1 -> gh auth status --hostname github.com;
+=== gh-deslogado, semremoto
+⚠️ Vale arrumar
+- O repositório não tem remoto — nada que você fizer sai desta máquina, e as frentes nascem dele.
+  git remote add origin <url do repositório>   (projeto ainda sem repositório no GitHub? a skill sdd-iniciar-repo cria um privado e envia)
+- O gh está instalado, mas nenhuma conta do GitHub está logada nele — publicar o projeto vai pedir esse login.
+  gh auth login   (GitHub.com → HTTPS → Yes → Login with a web browser)
+
+✅ Repo semremoto, branch main, nenhuma frente aberta, nenhum agente de código no terminal, editor open -a "Visual Studio Code" · sdd-checar-ambiente v1.5.0 · nov/2026 · versão atual: https://github.com/robertodiasduarte/sdd-open/releases/latest
+rc=0
+chamadas ao stub: 1 -> gh auth status --hostname github.com;
+--- gh lento (30 s), remoto GitHub: tempo
+=== gh-lento, github
+⚠️ Vale arrumar
+- Não deu para conferir o login do gh no GitHub agora (o GitHub não respondeu em 10 s).
+  Rode de novo quando a conexão voltar; para ver na hora: gh auth status
+
+✅ Repo github, branch main, nenhuma frente aberta, nenhum agente de código no terminal, editor open -a "Visual Studio Code" · sdd-checar-ambiente v1.5.0 · nov/2026 · versão atual: https://github.com/robertodiasduarte/sdd-open/releases/latest
+rc=0
+segundos=10
+=== gh-lento, sem remoto
+⚠️ Vale arrumar
+- O repositório não tem remoto — nada que você fizer sai desta máquina, e as frentes nascem dele.
+  git remote add origin <url do repositório>   (projeto ainda sem repositório no GitHub? a skill sdd-iniciar-repo cria um privado e envia)
+- Não deu para conferir o login do gh no GitHub agora (o GitHub não respondeu em 10 s).
+  Rode de novo quando a conexão voltar; para ver na hora: gh auth status
+
+✅ Repo semremoto, branch main, nenhuma frente aberta, nenhum agente de código no terminal, editor open -a "Visual Studio Code" · sdd-checar-ambiente v1.5.0 · nov/2026 · versão atual: https://github.com/robertodiasduarte/sdd-open/releases/latest
+rc=0
+segundos=11
+=== gh-logado, remoto gitlab
+✅ Pronto: repo gitlab, branch main, nenhuma frente aberta, nenhum agente de código no terminal, editor open -a "Visual Studio Code" · sdd-checar-ambiente v1.5.0 · nov/2026 · versão atual: https://github.com/robertodiasduarte/sdd-open/releases/latest
+rc=0
+chamadas ao stub: 0
+=== gh-deslogado, remoto gitlab
+✅ Pronto: repo gitlab, branch main, nenhuma frente aberta, nenhum agente de código no terminal, editor open -a "Visual Studio Code" · sdd-checar-ambiente v1.5.0 · nov/2026 · versão atual: https://github.com/robertodiasduarte/sdd-open/releases/latest
+rc=0
+chamadas ao stub: 0
+=== gh-lento, remoto gitlab
+✅ Pronto: repo gitlab, branch main, nenhuma frente aberta, nenhum agente de código no terminal, editor open -a "Visual Studio Code" · sdd-checar-ambiente v1.5.0 · nov/2026 · versão atual: https://github.com/robertodiasduarte/sdd-open/releases/latest
+rc=0
+chamadas ao stub: 0
+--- --frente com gh-deslogado, remoto GitHub (stub não pode ser chamado):
+=== --frente gh-deslogado
+✅ Pronto para abrir a frente: repo github, principal main · sdd-checar-ambiente v1.5.0 · nov/2026 · versão atual: https://github.com/robertodiasduarte/sdd-open/releases/latest
+rc=0
+chamadas ao stub: 0

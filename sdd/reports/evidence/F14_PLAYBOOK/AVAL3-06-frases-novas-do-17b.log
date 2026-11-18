@@ -1,0 +1,68 @@
+$ S=/private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f14-playbook/712319f2-9f99-446d-ba48-ead3df6c700d/scratchpad/aval3.qzV7tu /bin/bash /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f14-playbook/712319f2-9f99-446d-ba48-ead3df6c700d/scratchpad/aval3.qzV7tu/scripts/s06.sh </dev/null
+=== 1. item 3: as pastas nao existem antes; mkdir da frase nova cria todas
+  ls: sdd/releases/FX: No such file or directory
+  ls: sdd/reports/briefs: No such file or directory
+  ls: sdd/reports/evidence/FX: No such file or directory
+mkdir rc=0
+=== 2. --retomar antes de existir staging: exit 1 e a seta
+staging: /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f14-playbook/712319f2-9f99-446d-ba48-ead3df6c700d/scratchpad/aval3.qzV7tu/tmp/sdd-curadoria-687c2ead92bd/FX
+RETOMADA: não há colheita nesta pasta; rode sem --retomar
+RESULTADO: NADA A RETOMAR
+→ a pasta temporária se perdeu: recomece a curadoria do início, com --preparar FX; nada foi aplicado.
+rc=1
+=== 3. preparar, colher, selar, snapshot; parada do curador; sessao nova
+colher rc=0
+antes rc=0
+staging: /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f14-playbook/712319f2-9f99-446d-ba48-ead3df6c700d/scratchpad/aval3.qzV7tu/tmp/sdd-curadoria-687c2ead92bd/FX
+RETOMADA: colheita anterior encontrada em /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f14-playbook/712319f2-9f99-446d-ba48-ead3df6c700d/scratchpad/aval3.qzV7tu/tmp/sdd-curadoria-687c2ead92bd/FX/colheita.txt
+RESULTADO: RETOMADA
+→ recalcule as pastas e vá direto para a volta do curador; não refaça o selo nem o snapshot de antes.
+retomar rc=0
+T/antes existe rc=0
+=== 4. o caminho da retomada a letra (Na volta), sem nada novo no staging: conferir rc
+comparar rc=0
+conferir rc=0
+=== 5. item 5 comeca: 2 arquivos vazios; sessao cai enquanto a pessoa responde; nova retomada a letra
+→ recalcule as pastas e vá direto para a volta do curador; não refaça o selo nem o snapshot de antes.
+🔴 bloco: o staging mudou depois do selo: delta.txt apareceu
+🔴 bloco: o staging mudou depois do selo: inv-linhas.txt apareceu
+RESULTADO: BLOCO INVÁLIDO
+→ despache o curador de novo com as linhas acima; nada foi aplicado.
+conferir na retomada rc=2
+=== 6. item 6 com delta vazio e inv-linhas com 1 linha (so aceitou o descarte)
+⚠️ delta vazio: a saída é igual à entrada.
+RESULTADO: NADA A APLICAR
+→ nenhuma linha de delta fora de comentário; o playbook não muda.
+aplicar rc=0
+lint rc=0
+anti-collapse rc=0
+RESULTADO: INVARIANTES APLICADAS
+→ o stdout é o arquivo novo: rode --validar-inv com o playbook novo antes de copiar por cima.
+aplicar-inv rc=0
+🟢 trava INV: par válido (1 invariante(s), 1 descartado(s), pendentes=0)
+RESULTADO: PAR VÁLIDO
+→ copie os 2 arquivos por cima dos originais.
+validar-inv rc=0
+=== 7. item 6 com delta com linha e inv-linhas vazio (AUTO so): o ramo 'sem linha aprovada, cp'
+aplicar rc=0
+aplicar-inv vazio rc=0
+igual rc=0
+=== 8. 2a release: T/antes velho e snapshot de novo
+snapshot por cima rc=0
+=== 9. pasta temporaria perdida: --retomar e a seta; recomecar sem --retomar
+staging: /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f14-playbook/712319f2-9f99-446d-ba48-ead3df6c700d/scratchpad/aval3.qzV7tu/tmp/sdd-curadoria-687c2ead92bd/FX
+RETOMADA: não há colheita nesta pasta; rode sem --retomar
+RESULTADO: NADA A RETOMAR
+→ a pasta temporária se perdeu: recomece a curadoria do início, com --preparar FX; nada foi aplicado.
+rc=1
+RESULTADO: STAGING PRONTO (1 arquivo(s))
+preparar rc=0
+=== 10. grep do curador (frase nova do brief) num bullet real de 1 linha e num de 5 linhas (o lint aceita ate 12)
+15:- [LM-902] ajudou=0 mordeu=0 · conf=2026-09-05 · sup: `so
+lint do bullet de 6 linhas rc=0
+15:- [LM-902] ajudou=0 mordeu=0 · conf=2
+16-  linha 2
+17-  linha 3
+18-  linha 4
+o grep mostra Do instead? 0
+[exit=0]

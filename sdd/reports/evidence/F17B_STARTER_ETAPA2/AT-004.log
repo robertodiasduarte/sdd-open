@@ -1,0 +1,17 @@
+$ cd <git archive e583889>/tests && SDD_TEST_BASH=/bin/bash python3 -B -m unittest -v test_f17b_textos.ModoIniciante
+test_confere_a_vercel_pelo_status_e_diz_a_url (test_f17b_textos.ModoIniciante.test_confere_a_vercel_pelo_status_e_diz_a_url) ... ok
+test_description_do_modo_cabe_no_upload (test_f17b_textos.ModoIniciante.test_description_do_modo_cabe_no_upload) ... ok
+test_duas_fontes_independentes_para_saber_se_a_vercel_publica (test_f17b_textos.ModoIniciante.test_duas_fontes_independentes_para_saber_se_a_vercel_publica) ... ok
+test_falha_da_vercel_nao_refaz_o_deploy (test_f17b_textos.ModoIniciante.test_falha_da_vercel_nao_refaz_o_deploy) ... ok
+test_identificacao_do_modo_igual_a_do_skill_md (test_f17b_textos.ModoIniciante.test_identificacao_do_modo_igual_a_do_skill_md) ... ok
+test_nenhum_token (test_f17b_textos.ModoIniciante.test_nenhum_token) ... ok
+test_o_caminho_do_workflow_continua (test_f17b_textos.ModoIniciante.test_o_caminho_do_workflow_continua) ... ok
+test_o_open_aponta_o_modo_e_a_release_fica_no_teto (test_f17b_textos.ModoIniciante.test_o_open_aponta_o_modo_e_a_release_fica_no_teto) ... ok
+test_sem_consultar_o_github_nunca_conclui_que_o_push_nao_publica (test_f17b_textos.ModoIniciante.test_sem_consultar_o_github_nunca_conclui_que_o_push_nao_publica) ... ok
+test_um_ponto_de_aprovacao (test_f17b_textos.ModoIniciante.test_um_ponto_de_aprovacao) ... ok
+
+----------------------------------------------------------------------
+Ran 10 tests in 0.001s
+
+OK
+rc=0

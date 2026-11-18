@@ -1,0 +1,62 @@
+$ # no clone do starter v1.5.16 com a saída gerada commitada (branch gerado), passos do ci.yml na ordem
+$ /usr/bin/python3 scripts/check-gerado.py
+✅ 10 skill(s) gerada(s) e a infra conferidas: tudo igual ao que o sdd-open gerou
+RESULTADO: VERDE
+rc=0
+$ bash scripts/publish-check.sh
+PASS: publish-check found no forbidden content.
+rc=0
+$ /usr/bin/python3 scripts/check-versions.py --base v1.5.16
+PASS: check-versions — 18 skills com versão coerente, comparadas a v1.5.16.
+rc=0
+$ /usr/bin/python3 scripts/check-versions.py --base v1.5.16 --base-obrigatoria
+PASS: check-versions — 18 skills com versão coerente, comparadas a v1.5.16.
+rc=0
+$ /usr/bin/python3 -m py_compile skills/sdd-auditoria-harness/scripts/collect_evidence.py skills/sdd-build/scripts/validate_build_report.py skills/sdd-define/scripts/validate_define.py skills/sdd-design/scripts/validate_design.py skills/sdd-engenharia-reversa-saas/scripts/validate_reverse.py skills/sdd-handoff/scripts/validate_handoff.py skills/sdd-kb/scripts/kb_normativo.py skills/sdd-kb/scripts/validate_kb.py skills/ux-review-builder/scripts/validate_generated_bundle.py scripts/check-gerado.py scripts/check-versions.py
+rc=0
+$ for f in scripts/package.sh scripts/publish-check.sh skills/*/scripts/*.sh; do bash -n "$f"; done
+rc=0
+$ for t in skills/*/tests; do python3 -B -m unittest discover -s "$t"; done
+== skills/sdd-build/tests
+Ran 8 tests in 0.608s
+
+OK
+== skills/sdd-define/tests
+Ran 15 tests in 2.081s
+
+OK
+== skills/ux-review-builder/tests
+Ran 16 tests in 0.055s
+
+OK
+$ bash skills/sdd-kb/scripts/gate.sh
+RESULTADO: VERDE — 4 aceitas, 12 rejeitadas pelo motivo certo, RULE_MAP do exemplo em dia
+rc=0
+$ /usr/bin/python3 -B -m unittest discover -s tests -p test_*.py
+..............................................................
+----------------------------------------------------------------------
+Ran 62 tests in 2.580s
+
+OK
+rc=0
+$ bash scripts/package.sh
+packaged dist/sdd-auditoria-harness.zip
+packaged dist/sdd-brainstorm.zip
+packaged dist/sdd-build.zip
+packaged dist/sdd-checar-ambiente.zip
+packaged dist/sdd-define.zip
+packaged dist/sdd-design.zip
+packaged dist/sdd-engenharia-reversa-saas.zip
+packaged dist/sdd-governanca.zip
+packaged dist/sdd-handoff.zip
+packaged dist/sdd-higiene-dado.zip
+packaged dist/sdd-iniciar-repo.zip
+packaged dist/sdd-kb.zip
+packaged dist/sdd-loop-builder.zip
+packaged dist/sdd-new-session.zip
+packaged dist/sdd-prompt-builder.zip
+packaged dist/sdd-release.zip
+packaged dist/sdd-seguranca.zip
+packaged dist/ux-review-builder.zip
+PASS: 18 skill zips built in dist/
+rc=0

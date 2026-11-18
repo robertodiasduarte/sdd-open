@@ -1,0 +1,14 @@
+$ python3 -B -m unittest discover -v -s tests -p test_inventario.py -k TestGh
+  test_a_linha_vem_logo_depois_do_cabecalho (test_inventario.TestGh.test_a_linha_vem_logo_depois_do_cabecalho) ... ok
+  test_os_quatro_valores (test_inventario.TestGh.test_os_quatro_valores) ... ok
+  Ran 2 tests in 0.954s
+  OK
+$ python3 -B -m unittest discover -v -s tests -p test_f16_textos.py -k IniciarRepo -k Instalacao
+  test_passo_0_avisa_do_gh_cedo_sem_parar (test_f16_textos.IniciarRepo.test_passo_0_avisa_do_gh_cedo_sem_parar) ... ok
+  test_passo_2_le_a_linha_gh_e_passo_6_mantem_a_checagem (test_f16_textos.IniciarRepo.test_passo_2_le_a_linha_gh_e_passo_6_mantem_a_checagem) ... ok
+  test_as_funcoes_do_gh_sao_iguais_nos_2_scripts (test_f16_textos.Instalacao.test_as_funcoes_do_gh_sao_iguais_nos_2_scripts) ... ok
+  test_o_bloco_de_instalacao_e_igual_nas_3_skills (test_f16_textos.Instalacao.test_o_bloco_de_instalacao_e_igual_nas_3_skills) ... ok
+  test_o_bloco_tem_os_comandos_de_cada_sistema_e_o_login (test_f16_textos.Instalacao.test_o_bloco_tem_os_comandos_de_cada_sistema_e_o_login) ... ok
+  test_o_comando_que_o_script_imprime_esta_na_tabela (test_f16_textos.Instalacao.test_o_comando_que_o_script_imprime_esta_na_tabela) ... ok
+  Ran 6 tests in 0.002s
+  OK

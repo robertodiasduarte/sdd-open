@@ -1,0 +1,15 @@
+$ T=$(mktemp -d) && git archive HEAD | tar -x -C $T && git show v2.2.4:tests/test_skill_lint.py > $T/tests/test_skill_lint.py && cd $T/tests && SDD_TEST_BASH=/bin/bash /usr/bin/python3 -B -m unittest -v test_skill_lint
+test_as_16_skills_reais_passam (test_skill_lint.SkillLint) ... ok
+test_description_com_1024_caracteres_passa (test_skill_lint.SkillLint) ... ok
+test_description_com_1025_caracteres_reprova (test_skill_lint.SkillLint) ... ok
+test_description_vazia_reprova (test_skill_lint.SkillLint) ... ok
+test_name_diferente_da_pasta_reprova (test_skill_lint.SkillLint) ... ok
+test_sem_argumento_e_64 (test_skill_lint.SkillLint) ... ok
+test_sem_frontmatter_reprova (test_skill_lint.SkillLint) ... ok
+test_skill_minima_valida (test_skill_lint.SkillLint) ... ok
+
+----------------------------------------------------------------------
+Ran 8 tests in 0.436s
+
+OK
+exit=0

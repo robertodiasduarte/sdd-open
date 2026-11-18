@@ -1,0 +1,5 @@
+$ B=$(mktemp -d) && git archive 938ce47 | tar -x -C "$B" && cp tests/test_hooks.py tests/test_alarme.py tests/test_sdd_open.py "$B/tests/" && cd "$B" && for m in "test_hooks.Hooks.test_h3_placeholder_antes_nao_absolve_a_credencial_real" "test_sdd_open.Hooks.test_hooks_path_relativo_com_barra_ou_ponto_e_nosso" "test_alarme.TestModoHooks.test_hooks_path_relativo_com_barra_ou_ponto_e_modo_hooks"; do (cd tests && SDD_TEST_BASH=/bin/bash /usr/bin/python3 -B -m unittest "$m" > ../r.txt 2>&1); rc=$?; printf "%s em 938ce47: rc=%s · %s\n" "$m" "$rc" "$(grep -E "^Ran|^(OK|FAILED)" r.txt | tr "\n" " ")"; done; cd /; rm -rf "${B:?}"
+test_hooks.Hooks.test_h3_placeholder_antes_nao_absolve_a_credencial_real em 938ce47: rc=1 · Ran 1 test in 1.708s FAILED (failures=2) 
+test_sdd_open.Hooks.test_hooks_path_relativo_com_barra_ou_ponto_e_nosso em 938ce47: rc=1 · Ran 1 test in 1.407s FAILED (failures=2) 
+test_alarme.TestModoHooks.test_hooks_path_relativo_com_barra_ou_ponto_e_modo_hooks em 938ce47: rc=1 · Ran 1 test in 0.173s FAILED (failures=2) 
+[exit=0]

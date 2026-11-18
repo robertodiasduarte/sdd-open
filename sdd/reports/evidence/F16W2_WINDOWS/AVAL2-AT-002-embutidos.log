@@ -1,0 +1,8 @@
+$ /usr/bin/python3 -I /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f16w-windows/b56e801b-0f18-49ee-b51c-5b9188b29c23/scratchpad/embutidos.py /Users/robertoduarte/rdd-worktrees/sdd-open-f16w-windows; echo "[rc=$?]"
+heredocs python: 21 com troca no início: 21
+OK   bin/sdd-open.sh:519: saida=$(python3 -I -c 'import json,sys; sys.stdout.reconfigure(encoding="utf-8", newline="\n")   # F16W2
+OK   bin/sdd-open.sh:537: saida=$(python3 -I -c 'import json,sys; sys.stdout.reconfigure(encoding="utf-8", newline="\n")   # F16W2
+OK   bin/sdd-open.sh:811: if sdd_python_pronto; then pyv="$(python3 -I -c 'import sys;sys.stdout.write(".".join(map(str,sys.version_info[:2])))' 2>/dev/null)" || pyv=ausente; fi
+OK   sdd/bin/docs-extract-decisions.sh:46: pre="$(python3 -c 'import os, sys; sys.stdout.write(os.path.relpath(sys.argv[1], os.path.dirname(os.path.abspath(sys.argv[2]))).replace(os.sep, "/"))' "${root}" "${out}")
+python3 -c em $( ): 4
+[rc=0]

@@ -1,0 +1,2 @@
+{"achado": "R1", "veredito": "AGREE", "justificativa": "O script não isola a configuração local do git (.git/config), permitindo que insteadOf ou extraheader do projeto vazem na consulta anônima."}
+{"achado": "R2", "veredito": "AGREE", "justificativa": "A forma tag do --de não confere MANIFEST.txt antes de calcular impressões, fazendo o upgrade sair 1 em vez de 64 quando o arquivo falta."}

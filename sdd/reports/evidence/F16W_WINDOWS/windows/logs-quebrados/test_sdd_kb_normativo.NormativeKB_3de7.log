@@ -1,0 +1,46 @@
+test_mut_d_index_without_notice (test_sdd_kb_normativo.NormativeKB.test_mut_d_index_without_notice) ... ok
+
+test_mut_e_table_ate_not_a_scalar_fails_cleanly (test_sdd_kb_normativo.NormativeKB.test_mut_e_table_ate_not_a_scalar_fails_cleanly) ... ok
+
+test_mut_e_table_folder_not_a_date (test_sdd_kb_normativo.NormativeKB.test_mut_e_table_folder_not_a_date) ... ok
+
+test_mut_e_table_fonte_id_list (test_sdd_kb_normativo.NormativeKB.test_mut_e_table_fonte_id_list) ... ok
+
+test_mut_e_table_vigencia_differs_from_folder (test_sdd_kb_normativo.NormativeKB.test_mut_e_table_vigencia_differs_from_folder) ... ok
+
+test_mut_f_case_outside_rule_vigencia (test_sdd_kb_normativo.NormativeKB.test_mut_f_case_outside_rule_vigencia) ... FAIL
+
+test_mut_f_case_regra_list (test_sdd_kb_normativo.NormativeKB.test_mut_f_case_regra_list) ... ok
+
+test_mut_f_case_source_not_catalogued (test_sdd_kb_normativo.NormativeKB.test_mut_f_case_source_not_catalogued) ... ok
+
+
+
+======================================================================
+
+FAIL: test_mut_f_case_outside_rule_vigencia (test_sdd_kb_normativo.NormativeKB.test_mut_f_case_outside_rule_vigencia)
+
+----------------------------------------------------------------------
+
+Traceback (most recent call last):
+
+  File "D:\a\sdd-open\sdd-open\tests\test_sdd_kb_normativo.py", line 250, in test_mut_f_case_outside_rule_vigencia
+
+    self.assert_fails(r"data_fato 2026-07-15 is outside the vig�ncia of UB12-10-CRT3")
+
+  File "D:\a\sdd-open\sdd-open\tests\test_sdd_kb_normativo.py", line 73, in assert_fails
+
+    self.assertRegex(out, reason)
+
+AssertionError: Regex didn't match: 'data_fato 2026-07-15 is outside the vig�ncia of UB12-10-CRT3' not found in "WARN: index.md: PENDENTE DE REVIS\ufffdO \ufffd do not let software consume this KB before review (validate with --strict)\nFAIL: normative check stopped on unexpected content (UnicodeEncodeError: 'charmap' codec can't encode character '\\u2192' in position 109: character maps to <undefined>) \ufffd check field types against RULE_TEMPLATE.md and report this message\n"
+
+
+
+----------------------------------------------------------------------
+
+Ran 8 tests in 0.703s
+
+
+
+FAILED (failures=1)
+

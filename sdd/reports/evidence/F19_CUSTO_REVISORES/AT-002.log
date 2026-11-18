@@ -1,0 +1,24 @@
+$ (em tests/) /usr/bin/python3 -B -m unittest -v test_eval_revisores.Custo test_eval_revisores.Tabela.test_soma_decimal_exata test_eval_revisores.Tabela.test_sem_custo_informado_nunca_vira_zero test_eval_revisores.Tabela.test_estimado_leva_o_sinal_tambem_no_custo_por_dano
+test_achado_que_nao_e_texto_no_arquivo_de_vereditos_nao_derruba (test_eval_revisores.Custo) ... ok
+test_assinatura_tem_pago_zero_e_nominal_do_que_a_engine_reporta (test_eval_revisores.Custo) ... ok
+test_cerca_segue_o_commonmark (test_eval_revisores.Custo) ... ok
+test_custo_que_existe_nunca_aparece_como_zero (test_eval_revisores.Custo) ... ok
+test_dado_corrompido_e_64_com_a_causa_nunca_traceback (test_eval_revisores.Custo) ... ok
+test_desempate_e_lido_pelos_campos_que_o_adversarial_review_grava (test_eval_revisores.Custo) ... ok
+test_erro_inesperado_diz_o_que_estava_lendo (test_eval_revisores.Custo) ... ok
+test_exit_ausente_com_custo_e_avisado (test_eval_revisores.Custo) ... ok
+test_exit_ilegivel_e_papel_sem_arquivo_de_vereditos_sao_avisados (test_eval_revisores.Custo) ... ok
+test_formas_do_custo (test_eval_revisores.Custo) ... ok
+test_papel_com_exit_ausente_ou_engine_traco_nao_rodou (test_eval_revisores.Custo) ... ok
+test_papel_sem_engine_e_com_custo_vai_para_fora_da_conta (test_eval_revisores.Custo) ... ok
+test_pasta_com_sufixo_de_colisao_e_lida_e_casa_com_o_ledger (test_eval_revisores.Custo) ... ok
+test_saida_nao_depende_do_locale (test_eval_revisores.Custo) ... ok
+test_soma_decimal_exata (test_eval_revisores.Tabela) ... ok
+test_sem_custo_informado_nunca_vira_zero (test_eval_revisores.Tabela) ... ok
+test_estimado_leva_o_sinal_tambem_no_custo_por_dano (test_eval_revisores.Tabela) ... ok
+
+----------------------------------------------------------------------
+Ran 17 tests in 1.771s
+
+OK
+[exit=0]

@@ -1,0 +1,112 @@
+$ bash /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f22-aviso-versao/89f76119-0a85-490f-a1ff-b57288611d99/scratchpad/probes/at004.sh
+
+$ pkg_atual "$T/pkg" && novo_proj "$T/proj" && cd "$T/proj" && bash "$T/pkg/bin/sdd-open.sh" init --vendors claude --yes >/dev/null 2>&1; echo rc_init=$?
+rc_init=0
+[rc=0]
+
+$ printf "#!/bin/sh\necho \"\$\$ \$*\" >> %s/pendurado.log\nexec sleep 40\n" "$T" > "$T/pendura.sh" && chmod +x "$T/pendura.sh"
+[rc=0]
+### (0) referência: doctor com a checagem desligada (tempo base)
+
+$ time doc
+3:✅ versão: projeto v2.16.1-7-g258287d · pacote v2.16.1-7-g258287d
+4:ℹ️  versão nova: checagem desligada (SDD_OPEN_CHECK_UPDATES=0 no ambiente)
+RESULTADO: DIAGNÓSTICO CONCLUÍDO
+exit_doctor=0
+tempo=0.444s
+[rc=0]
+### (1) remoto pendurado (ssh cujo transporte dorme 40 s): não conferido em <= 7 s, mesmo exit
+
+$ time (GIT_SSH_COMMAND="$T/pendura.sh" SDD_OPEN_CHECK_UPDATES=1 SDD_OPEN_REMOTO="ssh://pendurado/x.git" doc)
+3:✅ versão: projeto v2.16.1-7-g258287d · pacote v2.16.1-7-g258287d
+4:ℹ️  versão nova: não conferida — sem resposta em 5 s (o resto do diagnóstico vale)
+RESULTADO: DIAGNÓSTICO CONCLUÍDO
+exit_doctor=0
+tempo=5.797s
+[rc=0]
+
+$ time (GIT_SSH_COMMAND="$T/pendura.sh" SDD_OPEN_CHECK_UPDATES=1 SDD_OPEN_REMOTO="ssh://pendurado/x.git" bash sdd/bin/versao-nova.sh; echo "exit_script=$?")
+ℹ️  versão nova: não conferida — sem resposta em 5 s (o resto do diagnóstico vale)
+exit_script=20
+tempo=5.316s
+[rc=0]
+
+$ sleep 1; cat "$T/pendurado.log"; ps -p "$(cut -d" " -f1 "$T/pendurado.log" | paste -sd, -)" -o pid,command || echo "nenhum processo pendurado sobrou (pids acima não existem mais)"
+53327 -G -o SendEnv=GIT_PROTOCOL pendurado
+53847 -G -o SendEnv=GIT_PROTOCOL pendurado
+  PID COMMAND
+nenhum processo pendurado sobrou (pids acima não existem mais)
+[rc=0]
+### (2) remoto que recusa (pasta que não é repositório)
+
+$ SDD_OPEN_CHECK_UPDATES=1 SDD_OPEN_REMOTO="$T/nao-existe" doc
+3:✅ versão: projeto v2.16.1-7-g258287d · pacote v2.16.1-7-g258287d
+4:ℹ️  versão nova: não conferida — o endereço recusou a consulta (o resto do diagnóstico vale)
+RESULTADO: DIAGNÓSTICO CONCLUÍDO
+exit_doctor=0
+[rc=0]
+### (3) remoto inalcançável (porta local fechada, sem sair da máquina)
+
+$ time (SDD_OPEN_CHECK_UPDATES=1 SDD_OPEN_REMOTO="http://127.0.0.1:9/x.git" doc)
+3:✅ versão: projeto v2.16.1-7-g258287d · pacote v2.16.1-7-g258287d
+4:ℹ️  versão nova: não conferida — não alcancei o endereço (sem internet?) (o resto do diagnóstico vale)
+RESULTADO: DIAGNÓSTICO CONCLUÍDO
+exit_doctor=0
+tempo=0.696s
+[rc=0]
+### (4) lista sem nenhuma tag vX.Y.Z
+
+$ mkremoto "$T/remoto-sem-versao" foo v1.2 v1.2.3-rc1 release-2 && SDD_OPEN_CHECK_UPDATES=1 SDD_OPEN_REMOTO="$T/remoto-sem-versao" doc
+3:✅ versão: projeto v2.16.1-7-g258287d · pacote v2.16.1-7-g258287d
+4:ℹ️  versão nova: não conferida — nenhuma versão na lista (o resto do diagnóstico vale)
+RESULTADO: DIAGNÓSTICO CONCLUÍDO
+exit_doctor=0
+[rc=0]
+
+$ mkremoto "$T/remoto-vazio" && SDD_OPEN_CHECK_UPDATES=1 SDD_OPEN_REMOTO="$T/remoto-vazio" doc
+3:✅ versão: projeto v2.16.1-7-g258287d · pacote v2.16.1-7-g258287d
+4:ℹ️  versão nova: não conferida — nenhuma versão na lista (o resto do diagnóstico vale)
+RESULTADO: DIAGNÓSTICO CONCLUÍDO
+exit_doctor=0
+[rc=0]
+### (5) desligada: variável =0 e slot open.check_updates: false — com remoto espião (prova que nada é consultado)
+
+$ printf "#!/bin/sh\necho \"CONSULTOU \$*\" >> %s/espiao.log\nexit 1\n" "$T" > "$T/espiao.sh" && chmod +x "$T/espiao.sh"
+[rc=0]
+
+$ GIT_SSH_COMMAND="$T/espiao.sh" SDD_OPEN_CHECK_UPDATES=0 SDD_OPEN_REMOTO="ssh://espiao/x.git" doc; cat "$T/espiao.log" 2>/dev/null || echo "espião não foi chamado"
+3:✅ versão: projeto v2.16.1-7-g258287d · pacote v2.16.1-7-g258287d
+4:ℹ️  versão nova: checagem desligada (SDD_OPEN_CHECK_UPDATES=0 no ambiente)
+RESULTADO: DIAGNÓSTICO CONCLUÍDO
+exit_doctor=0
+espião não foi chamado
+[rc=0]
+
+$ cp sdd/config.yaml "$T/cfg.bak" && sed -i "" "s/^  check_updates: true/  check_updates: false   # desligado/" sdd/config.yaml && grep -n -A1 "^open:" sdd/config.yaml && (unset SDD_OPEN_CHECK_UPDATES; GIT_SSH_COMMAND="$T/espiao.sh" SDD_OPEN_REMOTO="ssh://espiao/x.git" doc); cat "$T/espiao.log" 2>/dev/null || echo "espião não foi chamado"
+145:open:
+146-  check_updates: false   # desligado
+3:✅ versão: projeto v2.16.1-7-g258287d · pacote v2.16.1-7-g258287d
+4:ℹ️  versão nova: checagem desligada (open.check_updates: false em sdd/config.yaml)
+RESULTADO: DIAGNÓSTICO CONCLUÍDO
+exit_doctor=0
+espião não foi chamado
+[rc=0]
+
+$ GIT_SSH_COMMAND="$T/espiao.sh" SDD_OPEN_CHECK_UPDATES=1 SDD_OPEN_REMOTO="ssh://espiao/x.git" doc; cat "$T/espiao.log" 2>/dev/null || echo "espião não foi chamado"; cp "$T/cfg.bak" sdd/config.yaml
+3:✅ versão: projeto v2.16.1-7-g258287d · pacote v2.16.1-7-g258287d
+4:ℹ️  versão nova: checagem desligada (open.check_updates: false em sdd/config.yaml)
+RESULTADO: DIAGNÓSTICO CONCLUÍDO
+exit_doctor=0
+espião não foi chamado
+[rc=0]
+### (6) controle: ligada por padrão (variável ausente, sem slot) — o espião É chamado
+
+$ (unset SDD_OPEN_CHECK_UPDATES; GIT_SSH_COMMAND="$T/espiao.sh" SDD_OPEN_REMOTO="ssh://espiao/x.git" doc); cat "$T/espiao.log" 2>/dev/null || echo "espião não foi chamado"
+3:✅ versão: projeto v2.16.1-7-g258287d · pacote v2.16.1-7-g258287d
+4:ℹ️  versão nova: não conferida — o endereço recusou a consulta (o resto do diagnóstico vale)
+RESULTADO: DIAGNÓSTICO CONCLUÍDO
+exit_doctor=0
+CONSULTOU -G -o SendEnv=GIT_PROTOCOL espiao
+CONSULTOU espiao git-upload-pack '/x.git'
+[rc=0]
+rc=0

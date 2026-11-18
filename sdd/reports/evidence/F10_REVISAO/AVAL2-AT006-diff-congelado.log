@@ -1,0 +1,28 @@
+$ bash /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f10-revisao/bd420f6e-558d-4962-a0c9-40cdfc2cbd27/scratchpad/p/at006.sh
+=== base: main avança depois do branch (merge-base, não a ponta de main)
+pasta=sdd/reports/reviews/EXTERNAL_REVIEW_20261101-002106
+sha META: diff_sha256             : 854e486a975d6c6b5209ede887a696232b86d3c82a3143c719e2707f9650998f
+sha real : 854e486a975d6c6b5209ede887a696232b86d3c82a3143c719e2707f9650998f
+arquivos no diff:
+diff --git a/sdd/config.yaml b/sdd/config.yaml
+diff --git a/src/conta.sh b/src/conta.sh
+diff --git a/src/novo.sh b/src/novo.sh
+so-main.sh no diff? 0
+índice real intacto
+git status igual
+=== --paths nomeando sdd/features: entra; restringe
+diff --git a/sdd/features/ARQ.md b/sdd/features/ARQ.md
+diff --git a/src/novo.sh b/src/novo.sh
+paths                   : sdd/features src/novo.sh
+=== worktree ligada
+index via --git-path: /private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.BmbgWRoDMb/r1/.git/worktrees/wt/index
+  diff: 4 arquivo(s), 0 KB, base main, merge-base 4475d9a6852d
+RESULTADO: PLANO
+=== índice ausente (conta como vazio)
+  diff: 4 arquivo(s), 0 KB, base main, merge-base 4475d9a6852d
+RESULTADO: PLANO
+=== -c pin no comando git diff
+329:                             "--no-renames", "--diff-algorithm=myers", "--src-prefix=a/", "--dst-prefix=b/",
+330:                             "-U3", "--inter-hunk-context=0",
+336:        _, nomes_z, _ = git(raiz, "diff", "--name-only", "-z", "--no-renames", mb, "--", *spec, env=env)
+[exit=0]

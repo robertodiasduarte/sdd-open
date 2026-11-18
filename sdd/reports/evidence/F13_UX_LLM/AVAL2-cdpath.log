@@ -1,0 +1,5 @@
+$ R=$PWD; T=$(mktemp -d); mkdir -p $T/sdd/bin; sed "/^unset CDPATH$/d" $R/sdd/bin/contraste.sh > $T/sdd/bin/contraste.sh; cd $T; CDPATH=. bash sdd/bin/contraste.sh --self-test >/dev/null 2>&1; echo "mutante, caminho relativo, CDPATH=. rc=$?"; CDPATH=. bash sdd/bin/contraste.sh "#777777" "#ffffff" 2>&1 | sed -n 1p; cd $R; CDPATH=. bash sdd/bin/contraste.sh --self-test >/dev/null 2>&1; echo "HEAD, caminho relativo, CDPATH=. rc=$?"; rm -rf $T
+mutante, caminho relativo, CDPATH=. rc=2
+4.47:1 REPROVA (piso 4.5:1)
+HEAD, caminho relativo, CDPATH=. rc=0
+[exit=0]

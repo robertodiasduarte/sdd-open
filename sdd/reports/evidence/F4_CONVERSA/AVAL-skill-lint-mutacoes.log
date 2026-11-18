@@ -1,0 +1,59 @@
+$ /bin/bash /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f4-conversa/5e736f5b-fdb5-4cdd-a304-706fff11b1bb/scratchpad/sonda-skill-lint.sh
+--- AT-003 secao repetida (esperado 1)
+🛑 $T/conversa-controle/SKILL.md: seção '## Como falar com o aluno' repetida (2 vezes)
+RESULTADO: VERMELHO
+exit=1
+--- AT-003 sem coluna Etapa (esperado 1)
+🛑 $T/conversa-controle/SKILL.md: seção sem a tabela de etapas (coluna 'Etapa')
+RESULTADO: VERMELHO
+exit=1
+--- AT-003 sem parte Sua decisao (esperado 1)
+🛑 $T/conversa-controle/SKILL.md: seção sem a parte **Sua decisão**
+RESULTADO: VERMELHO
+exit=1
+--- AT-004 recomendado nao e o 1o (esperado 1)
+🛑 $T/conversa-controle/SKILL.md: references/como-falar.md:19 **Posso gravar o resultado?** — a opção (recomendado) não é a primeira
+RESULTADO: VERMELHO
+exit=1
+--- AT-004 sem pergunta (esperado 1)
+🛑 $T/conversa-controle/SKILL.md: references/como-falar.md sem nenhuma pergunta de decisão (negrito com '?' seguido de opções)
+RESULTADO: VERMELHO
+exit=1
+--- AT-005 Proximo passo 101 chars (esperado 1)
+🛑 $T/conversa-controle/SKILL.md: references/como-falar.md:24 **Próximo passo** com 101 caracteres (limite 100)
+RESULTADO: VERMELHO
+exit=1
+--- AT-005 Proximo passo 100 chars acentuados (esperado 0)
+✅ $T/conversa-controle/SKILL.md: frontmatter válido · camada de conversa ok
+exit=0
+===== sondas adversariais =====
+--- ADV linha em branco entre a pergunta e as opcoes, com Outro e sem recomendado/nao sei (esperado 1)
+🛑 $T/conversa-controle/SKILL.md: references/como-falar.md sem nenhuma pergunta de decisão (negrito com '?' seguido de opções)
+RESULTADO: VERMELHO
+exit=1
+--- ADV rotulo 'Outra coisa' (esperado 1: opcao Outro)
+✅ $T/conversa-controle/SKILL.md: frontmatter válido · camada de conversa ok
+exit=0
+--- ADV rotulo 'Outro (descreva)' (esperado 1: opcao Outro)
+✅ $T/conversa-controle/SKILL.md: frontmatter válido · camada de conversa ok
+exit=0
+--- ADV rotulo 'Não sei.' (variante pontuada)
+🛑 $T/conversa-controle/SKILL.md: references/como-falar.md:19 **Posso gravar o resultado?** — sem a opção **não sei**
+RESULTADO: VERMELHO
+exit=1
+--- ADV '**Próximo passo:**' com 150 chars (esperado 1)
+✅ $T/conversa-controle/SKILL.md: frontmatter válido · camada de conversa ok
+exit=0
+--- ADV Proximo passo em citacao '>' com 150 chars (esperado 1)
+✅ $T/conversa-controle/SKILL.md: frontmatter válido · camada de conversa ok
+exit=0
+--- ADV opcoes com marcador '*' em vez de '-', com Outro e sem nao sei (unica pergunta)
+🛑 $T/conversa-controle/SKILL.md: references/como-falar.md sem nenhuma pergunta de decisão (negrito com '?' seguido de opções)
+RESULTADO: VERMELHO
+exit=1
+--- ADV 2a pergunta separada das opcoes por linha em branco: Outro, sem (recomendado), sem nao sei (esperado 1)
+✅ $T/conversa-controle/SKILL.md: frontmatter válido · camada de conversa ok
+exit=0
+--- ADV 2a pergunta com marcador '*': Outro, sem (recomendado), sem nao sei (esperado 1)
+✅ $T/conversa-controle/SKILL.md: frontmatter válido · camada de conversa ok
+exit=0

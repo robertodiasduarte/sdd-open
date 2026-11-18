@@ -1,0 +1,16 @@
+$ T=$(mktemp -d); cd $T; printf "%s\n" "NUCLEO=\"\$(cat <<'PY'" "# it's um comentario com apostrofo e ) parentese" "print(\"ok\")" "PY" ")\"" "python3 -B -c \"\$NUCLEO\"" > a.sh; echo "--- A) NUCLEO=\$(cat heredoc) em /bin/bash 3.2:"; /bin/bash --version | /usr/bin/awk "NR==1"; /bin/bash a.sh; echo "exit_A=$?"; printf "%s\n" "python3 -B /dev/fd/3 \"\$@\" 3<<'PY' </dev/null" "# it's um comentario com apostrofo e ) parentese" "import sys,subprocess" "print(\"ok-fd3\", sys.argv[1:], sys.path[0])" "PY" > b.sh; echo "--- B) fd 3 em /bin/bash 3.2:"; /bin/bash b.sh um dois; echo "exit_B=$?"; echo "print(\"SOMBRA: json.py do projeto importado\")" > json.py; echo "--- C) -c com json.py na pasta:"; python3 -B -c "import json"; echo "exit_C=$?"; echo "--- D) fd 3 com json.py na pasta:"; printf "%s\n" "python3 -B /dev/fd/3 3<<'PY' </dev/null" "import json; print(\"sem sombra\", json.__file__ != \"json.py\")" "PY" > d.sh; /bin/bash d.sh; echo "exit_D=$?"; cd /; rm -rf $T
+--- A) NUCLEO=$(cat heredoc) em /bin/bash 3.2:
+GNU bash, version 3.2.57(1)-release (arm64-apple-darwin25)
+a.sh: line 2: unexpected EOF while looking for matching `''
+a.sh: line 7: syntax error: unexpected end of file
+exit_A=2
+--- B) fd 3 em /bin/bash 3.2:
+ok-fd3 ['um', 'dois'] /dev/fd
+exit_B=0
+--- C) -c com json.py na pasta:
+SOMBRA: json.py do projeto importado
+exit_C=0
+--- D) fd 3 com json.py na pasta:
+sem sombra True
+exit_D=0
+[exit=0]

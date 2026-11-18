@@ -6,7 +6,7 @@ compatibility: "Funciona na web (claude.ai, ChatGPT), onde o documento sai no ch
 # SDD Define
 
 Na primeira resposta desta skill, comece com esta linha, uma vez só:
-`sdd-define v2.8.0 · nov/2026 · versão atual: https://github.com/robertodiasduarte/sdd-open/releases/latest`
+`sdd-define v2.8.1 · nov/2026 · versão atual: https://github.com/robertodiasduarte/sdd-open/releases/latest`
 
 ## Quick start
 

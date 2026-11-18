@@ -1,0 +1,22 @@
+$ cd /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f8-hooks/8e011512-3e64-4505-a0ff-235ac598d20c/scratchpad/aval2/at006 || exit 99; echo '== ligado'; /bin/bash /Users/robertoduarte/rdd-worktrees/sdd-open-f8-aval/bin/sdd-open.sh doctor 2>&1 | grep -i hooks; echo '== hooksPath vazio'; git config --unset core.hooksPath; /bin/bash /Users/robertoduarte/rdd-worktrees/sdd-open-f8-aval/bin/sdd-open.sh doctor 2>&1 | grep -i hooks; echo '== hooksPath alheio'; git config core.hooksPath .husky/_; /bin/bash /Users/robertoduarte/rdd-worktrees/sdd-open-f8-aval/bin/sdd-open.sh doctor 2>&1 | grep -i hooks; git config core.hooksPath sdd/hooks; echo '== pre-push ausente'; mv sdd/hooks/pre-push /tmp/.aval2-pp.$$; /bin/bash /Users/robertoduarte/rdd-worktrees/sdd-open-f8-aval/bin/sdd-open.sh doctor 2>&1 | grep -i hooks; mv /tmp/.aval2-pp.$$ sdd/hooks/pre-push; echo '== pre-commit sem bit x'; chmod -x sdd/hooks/pre-commit; /bin/bash /Users/robertoduarte/rdd-worktrees/sdd-open-f8-aval/bin/sdd-open.sh doctor 2>&1 | grep -i hooks; chmod +x sdd/hooks/pre-commit; echo '== de novo ligado'; /bin/bash /Users/robertoduarte/rdd-worktrees/sdd-open-f8-aval/bin/sdd-open.sh doctor 2>&1 | grep -iE 'hooks|RESULTADO'
+== ligado
+▶ sdd-open doctor — projeto: /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f8-hooks/8e011512-3e64-4505-a0ff-235ac598d20c/scratchpad/aval2/at006
+✅ hooks ligados (sdd/hooks: pre-commit com 5 regras + relatório + alarme da higiene off, pre-push)
+== hooksPath vazio
+▶ sdd-open doctor — projeto: /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f8-hooks/8e011512-3e64-4505-a0ff-235ac598d20c/scratchpad/aval2/at006
+⚠️  hooks do open não ligados (core.hooksPath vazio) — rode init
+== hooksPath alheio
+▶ sdd-open doctor — projeto: /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f8-hooks/8e011512-3e64-4505-a0ff-235ac598d20c/scratchpad/aval2/at006
+⚠️  hooks do open não ligados: já existe core.hooksPath = .husky/_ (husky, lefthook ou outro gerenciador). Para ter as 5 regras + relatório, acrescente a ele a linha: bash sdd/hooks/pre-commit || exit 1
+== pre-push ausente
+▶ sdd-open doctor — projeto: /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f8-hooks/8e011512-3e64-4505-a0ff-235ac598d20c/scratchpad/aval2/at006
+⚠️  sdd/ incompleto — 1 arquivo(s) do pacote ausente(s), ex.: sdd/hooks/pre-push — rode init de novo (completa sem tocar o que existe)
+⚠️  hooks: sdd/hooks/pre-push ausente — rode init (completa sdd/hooks)
+== pre-commit sem bit x
+▶ sdd-open doctor — projeto: /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f8-hooks/8e011512-3e64-4505-a0ff-235ac598d20c/scratchpad/aval2/at006
+⚠️  hooks: sdd/hooks/pre-commit sem permissão de execução (o git o ignora em silêncio) — rode: chmod +x sdd/hooks/pre-commit
+== de novo ligado
+▶ sdd-open doctor — projeto: /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f8-hooks/8e011512-3e64-4505-a0ff-235ac598d20c/scratchpad/aval2/at006
+✅ hooks ligados (sdd/hooks: pre-commit com 5 regras + relatório + alarme da higiene off, pre-push)
+RESULTADO: DIAGNÓSTICO CONCLUÍDO
+[exit=0]

@@ -1,0 +1,22 @@
+$ cd <proj> && env -i PATH="$PATH" HOME=<home-teste> [CODEX_HOME=<codexhome-teste>] codex debug prompt-input oi   # depois: grep -oE "f25-[a-z-]+: MARCA-[A-Z_-]+" | sort -u
+# codex-cli 0.163.0 · 2026-11-17T15:24:30Z · uma skill própria por pasta candidata + f25-repetida em 4 pastas
+# pastas semeadas: home/.agents/skills home/.codex/skills codexhome/skills proj/.agents/skills proj/.codex/skills proj/.claude/skills home/.claude/skills
+## com CODEX_HOME=<codexhome-teste>
+f25-repetida: MARCA-REPETIDA-CODEX_HOME
+f25-repetida: MARCA-REPETIDA-HOME-AGENTS
+f25-repetida: MARCA-REPETIDA-PROJ-AGENTS
+f25-so-codex-home: MARCA-CODEX_HOME
+f25-so-home-agents: MARCA-HOME-AGENTS
+f25-so-proj-agents: MARCA-PROJ-AGENTS
+f25-so-proj-codex: MARCA-PROJ-CODEX
+## sem CODEX_HOME (padrão ~/.codex)
+f25-repetida: MARCA-REPETIDA-HOME-AGENTS
+f25-repetida: MARCA-REPETIDA-HOME-CODEX
+f25-repetida: MARCA-REPETIDA-PROJ-AGENTS
+f25-so-home-agents: MARCA-HOME-AGENTS
+f25-so-home-codex: MARCA-HOME-CODEX
+f25-so-proj-agents: MARCA-PROJ-AGENTS
+f25-so-proj-codex: MARCA-PROJ-CODEX
+# ausentes nas duas: HOME-CLAUDE, PROJ-CLAUDE (o Codex não lê .claude); com CODEX_HOME definido, ~/.codex/skills (HOME-CODEX) some
+# exit do codex: com CODEX_HOME=0 · sem CODEX_HOME=0
+[exit=0]

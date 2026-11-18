@@ -1,0 +1,15 @@
+$ cd tests && SDD_TEST_BASH=/bin/bash /usr/bin/python3 -B -m unittest -v test_deploy_espera_testes.DeployEsperaTestes.test_workflow_run_e_nao_sei test_deploy_espera_testes.DeployEsperaTestes.test_workflow_reutilizavel_e_nao_sei test_deploy_espera_testes.DeployEsperaTestes.test_teste_em_script_proprio_e_nao_sei_nunca_nao test_deploy_espera_testes.DeployEsperaTestes.test_yaml_que_nao_consigo_ler_e_nao_sei test_deploy_espera_testes.DeployEsperaTestes.test_teste_com_if_nao_garante_e_nao_sei test_deploy_espera_testes.DeployEsperaTestes.test_set_e_sem_exit_0_no_fim_e_nao_sei test_deploy_espera_testes.DeployEsperaTestes.test_job_com_nome_de_deploy_nao_reconhecido_impede_o_sim test_deploy_espera_testes.DeployEsperaTestes.test_workflow_so_de_workflow_call_e_avaliado_por_quem_chama test_deploy_espera_testes.DeployEsperaTestes.test_arquivo_que_nao_abre_e_nao_sei_com_resultado
+test_workflow_run_e_nao_sei (test_deploy_espera_testes.DeployEsperaTestes) ... ok
+test_workflow_reutilizavel_e_nao_sei (test_deploy_espera_testes.DeployEsperaTestes) ... ok
+test_teste_em_script_proprio_e_nao_sei_nunca_nao (test_deploy_espera_testes.DeployEsperaTestes) ... ok
+test_yaml_que_nao_consigo_ler_e_nao_sei (test_deploy_espera_testes.DeployEsperaTestes) ... ok
+test_teste_com_if_nao_garante_e_nao_sei (test_deploy_espera_testes.DeployEsperaTestes) ... ok
+test_set_e_sem_exit_0_no_fim_e_nao_sei (test_deploy_espera_testes.DeployEsperaTestes) ... ok
+test_job_com_nome_de_deploy_nao_reconhecido_impede_o_sim (test_deploy_espera_testes.DeployEsperaTestes) ... ok
+test_workflow_so_de_workflow_call_e_avaliado_por_quem_chama (test_deploy_espera_testes.DeployEsperaTestes) ... ok
+test_arquivo_que_nao_abre_e_nao_sei_com_resultado (test_deploy_espera_testes.DeployEsperaTestes) ... ok
+
+----------------------------------------------------------------------
+Ran 9 tests in 0.508s
+
+OK

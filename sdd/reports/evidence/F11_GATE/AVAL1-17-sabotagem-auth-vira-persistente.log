@@ -1,0 +1,14 @@
+$ /tmp/aval1-f11.wvW4zp/sabota.sh auth-vira-persistente sdd/bin/adversarial-review.sh '        return "auth"' '        return "persistente"'
+### sabotagem auth-vira-persistente em sdd/bin/adversarial-review.sh
+  ❌ 75. falha de credencial: exit 65
+        → lido 67, esperado 65
+  ❌ 76. falha de credencial: parou no claude
+        → lido 'codex', esperado 'claude'
+  ❌ 77. 65 (sem troca de engine): nenhuma engine fora do roteiro foi chamada
+  ❌ 78. 65 (sem troca de engine): chamadas por engine
+        → lido {'claude': 1, 'codex': 1}, esperado {'claude': 1}
+90 asserções, 4 falha(s) em 9 s
+RESULTADO: GATE VERMELHO
+→ cada ❌ acima diz o campo e o valor lido; o adapter da engine citada não extrai mais o que a CLI devolve (ou o script mudou de comportamento). Corrija e rode o gate de novo.
+[gate_rc=2]
+[exit=2]

@@ -1,0 +1,126 @@
+test_doctor_diz_o_estado_dos_hooks_com_o_comando (test_sdd_open.Hooks.test_doctor_diz_o_estado_dos_hooks_com_o_comando) ... FAIL
+
+test_dry_run_mostra_a_linha_e_nao_liga (test_sdd_open.Hooks.test_dry_run_mostra_a_linha_e_nao_liga) ... ok
+
+test_gancho_encadeado_no_outro_gerenciador_e_reconhecido (test_sdd_open.Hooks.test_gancho_encadeado_no_outro_gerenciador_e_reconhecido) ... 
+
+  test_gancho_encadeado_no_outro_gerenciador_e_reconhecido (test_sdd_open.Hooks.test_gancho_encadeado_no_outro_gerenciador_e_reconhecido) (texto='#!/bin/sh\nif [ -f sdd/hooks/pre-commit ]; then\n  bash sdd/hooks/pre-commit || exit 1\nfi\n') ... FAIL
+
+test_gancho_encadeado_no_outro_gerenciador_e_reconhecido (test_sdd_open.Hooks.test_gancho_encadeado_no_outro_gerenciador_e_reconhecido) ... FAIL
+
+test_hooks_path_absoluto_por_link_simbolico_e_nosso (test_sdd_open.Hooks.test_hooks_path_absoluto_por_link_simbolico_e_nosso) ... FAIL
+
+test_hooks_path_com_til_e_expandido (test_sdd_open.Hooks.test_hooks_path_com_til_e_expandido) ... FAIL
+
+test_hooks_path_relativo_com_barra_ou_ponto_e_nosso (test_sdd_open.Hooks.test_hooks_path_relativo_com_barra_ou_ponto_e_nosso) ... ok
+
+test_husky_v9_linha_no_script_e_bit_no_stub (test_sdd_open.Hooks.test_husky_v9_linha_no_script_e_bit_no_stub) ... FAIL
+
+test_init_liga_os_hooks_e_a_linha_do_plano_diz_o_efeito (test_sdd_open.Hooks.test_init_liga_os_hooks_e_a_linha_do_plano_diz_o_efeito) ... ok
+
+
+
+======================================================================
+
+FAIL: test_doctor_diz_o_estado_dos_hooks_com_o_comando (test_sdd_open.Hooks.test_doctor_diz_o_estado_dos_hooks_com_o_comando)
+
+----------------------------------------------------------------------
+
+Traceback (most recent call last):
+
+  File "D:\a\sdd-open\sdd-open\tests\test_sdd_open.py", line 459, in test_doctor_diz_o_estado_dos_hooks_com_o_comando
+
+    self.assertIn("\u26a0\ufe0f  hooks: sdd/hooks/pre-commit sem permiss�o de execu��o (o git o ignora em sil�ncio) � rode: chmod +x sdd/hooks/pre-commit", out)
+
+AssertionError: '\u26a0\ufe0f  hooks: sdd/hooks/pre-commit sem permiss�o de execu��o (o git o ignora em sil�ncio) � rode: chmod +x sdd/hooks/pre-commit' not found in '\u25b6 sdd-open doctor � projeto: C:/Users/runneradmin/AppData/Local/Temp/sdd-open-9hg2itf4/projeto\n  bash 5.3 � git 2.56.0.windows.4 � python3 3.12\n\u2705 sdd/ presente (0 feature(s) em sdd/features/)\n\u2705 AGENTS.md com o bloco sdd-open\n\u2705 .agents/skills/ com 22 skill(s) do pacote\n\u2705 hooks ligados (sdd/hooks: pre-commit com 5 regras + relat�rio + alarme da higiene off, pre-push)\n\u2705 codex: nativo � nada a gerar (l� .agents/skills/ e AGENTS.md nativamente) � CLI n�o encontrado no PATH\n\u2705 skills e sdd/bin/ em dia com o pacote\n\u2705 nenhum segredo salvo no git (.env, .pfx, .p12, .pem com chave privada)\nRESULTADO: DIAGN�STICO CONCLU�DO\n\u2192 se algum item est� \u26a0\ufe0f, a linha diz qual comando resolve.\n'
+
+
+
+======================================================================
+
+FAIL: test_gancho_encadeado_no_outro_gerenciador_e_reconhecido (test_sdd_open.Hooks.test_gancho_encadeado_no_outro_gerenciador_e_reconhecido) (texto='#!/bin/sh\nif [ -f sdd/hooks/pre-commit ]; then\n  bash sdd/hooks/pre-commit || exit 1\nfi\n')
+
+----------------------------------------------------------------------
+
+Traceback (most recent call last):
+
+  File "D:\a\sdd-open\sdd-open\tests\test_sdd_open.py", line 513, in test_gancho_encadeado_no_outro_gerenciador_e_reconhecido
+
+    self.assertIn("\u2705 hooks encadeados (%s chama sdd/hooks/pre-commit" % pc, out)
+
+AssertionError: '\u2705 hooks encadeados (C:\\Users\\runneradmin\\AppData\\Local\\Temp\\sdd-open-c2zssyhj\\projeto\\.githooks\\pre-commit chama sdd/hooks/pre-commit' not found in '\u25b6 sdd-open doctor � projeto: C:/Users/runneradmin/AppData/Local/Temp/sdd-open-c2zssyhj/projeto\n  bash 5.3 � git 2.56.0.windows.4 � python3 3.12\n\u2705 sdd/ presente (0 feature(s) em sdd/features/)\n\u2705 AGENTS.md com o bloco sdd-open\n\u2705 .agents/skills/ com 22 skill(s) do pacote\n\u2705 hooks encadeados (C:/Users/runneradmin/AppData/Local/Temp/sdd-open-c2zssyhj/projeto/.githooks/pre-commit chama sdd/hooks/pre-commit: 5 regras + relat�rio + alarme da higiene off)\n\u2705 codex: nativo � nada a gerar (l� .agents/skills/ e AGENTS.md nativamente) � CLI n�o encontrado no PATH\n\u2705 skills e sdd/bin/ em dia com o pacote\n\u2705 nenhum segredo salvo no git (.env, .pfx, .p12, .pem com chave privada)\nRESULTADO: DIAGN�STICO CONCLU�DO\n\u2192 se algum item est� \u26a0\ufe0f, a linha diz qual comando resolve.\n'
+
+
+
+======================================================================
+
+FAIL: test_gancho_encadeado_no_outro_gerenciador_e_reconhecido (test_sdd_open.Hooks.test_gancho_encadeado_no_outro_gerenciador_e_reconhecido)
+
+----------------------------------------------------------------------
+
+Traceback (most recent call last):
+
+  File "D:\a\sdd-open\sdd-open\tests\test_sdd_open.py", line 520, in test_gancho_encadeado_no_outro_gerenciador_e_reconhecido
+
+    self.assertIn("= hooks encadeados (%s chama sdd/hooks/pre-commit) (j� correto)" % pc, out)
+
+AssertionError: '= hooks encadeados (C:\\Users\\runneradmin\\AppData\\Local\\Temp\\sdd-open-c2zssyhj\\projeto\\.githooks\\pre-commit chama sdd/hooks/pre-commit) (j� correto)' not found in '\u25b6 init � plano\n   = AGENTS.md (bloco sdd-open) (j� correto)\n   = sdd/ (j� existe � n�o ser� tocado) (j� correto)\n   = hooks encadeados (C:/Users/runneradmin/AppData/Local/Temp/sdd-open-c2zssyhj/projeto/.githooks/pre-commit chama sdd/hooks/pre-commit) (j� correto)\n   = .agents/skills/sdd-auditoria-harness (j� existe � fonte do usu�rio, n�o ser� tocada) (j� correto)\n   = .agents/skills/sdd-brainstorm (j� existe � fonte do usu�rio, n�o ser� tocada) (j� correto)\n   = .agents/skills/sdd-build (j� existe � fonte do usu�rio, n�o ser� tocada) (j� correto)\n   = .agents/skills/sdd-checar-ambiente (j� existe � fonte do usu�rio, n�o ser� tocada) (j� correto)\n   = .agents/skills/sdd-define (j� existe � fonte do usu�rio, n�o ser� tocada) (j� correto)\n   = .agents/skills/sdd-design (j� existe � fonte do usu�rio, n�o ser� tocada) (j� correto)\n   = .agents/skills/sdd-drive (j� existe � fonte do usu�rio, n�o ser� tocada) (j� correto)\n   = .agents/skills/sdd-engenharia-reversa-saas (j� existe � fonte do usu�rio, n�o ser� tocada) (j� correto)\n   = .agents/skills/sdd-governanca (j� existe � fonte do usu�rio, n�o ser� tocada) (j� correto)\n   = .agents/skills/sdd-handoff (j� existe � fonte do usu�rio, n�o ser� tocada) (j� correto)\n   = .agents/skills/sdd-higiene-dado (j� existe � fonte do usu�rio, n�o ser� tocada) (j� correto)\n   = .agents/skills/sdd-iniciar-repo (j� existe � fonte do usu�rio, n�o ser� tocada) (j� correto)\n   = .agents/skills/sdd-iterate (j� existe � fonte do usu�rio, n�o ser� tocada) (j� correto)\n   = .agents/skills/sdd-kb (j� existe � fonte do usu�rio, n�o ser� tocada) (j� correto)\n   = .agents/skills/sdd-loop-builder (j� existe � fonte do usu�rio, n�o ser� tocada) (j� correto)\n   = .agents/skills/sdd-new-session (j� existe � fonte do usu�rio, n�o ser� tocada) (j� correto)\n   = .agents/skills/sdd-playbook (j� existe � fonte do usu�rio, n�o ser� tocada) (j� correto)\n   = .agents/skills/sdd-prompt-builder (j� existe � fonte do usu�rio, n�o ser� tocada) (j� correto)\n   = .agents/skills/sdd-release (j� existe � fonte do usu�rio, n�o ser� tocada) (j� correto)\n   = .agents/skills/sdd-seguranca (j� existe � fonte do usu�rio, n�o ser� tocada) (j� correto)\n   = .agents/skills/sdd-ux-review (j� existe � fonte do usu�rio, n�o ser� tocada) (j� correto)\n   = .agents/skills/ux-review-builder (j� existe � fonte do usu�rio, n�o ser� tocada) (j� correto)\n   = codex: nada a gerar (l� .agents/skills/ e AGENTS.md nativamente)\n0 a criar � 0 a atualizar � 25 j� corretos\n\u25b6 sdd-open doctor � projeto: C:/Users/runneradmin/AppData/Local/Temp/sdd-open-c2zssyhj/projeto\n  bash 5.3 � git 2.56.0.windows.4 � python3 3.12\n\u2705 sdd/ presente (0 feature(s) em sdd/features/)\n\u2705 AGENTS.md com o bloco sdd-open\n\u2705 .agents/skills/ com 22 skill(s) do pacote\n\u2705 hooks encadeados (C:/Users/runneradmin/AppData/Local/Temp/sdd-open-c2zssyhj/projeto/.githooks/pre-commit chama sdd/hooks/pre-commit: 5 regras + relat�rio + alarme da higiene off)\n\u2705 codex: nativo � nada a gerar (l� .agents/skills/ e AGENTS.md nativamente) � CLI n�o encontrado no PATH\n\u2705 skills e sdd/bin/ em dia com o pacote\n\u2705 nenhum segredo salvo no git (.env, .pfx, .p12, .pem com chave privada)\nRESULTADO: EM DIA\n\u2192 nada a fazer.\n'
+
+
+
+======================================================================
+
+FAIL: test_hooks_path_absoluto_por_link_simbolico_e_nosso (test_sdd_open.Hooks.test_hooks_path_absoluto_por_link_simbolico_e_nosso)
+
+----------------------------------------------------------------------
+
+Traceback (most recent call last):
+
+  File "D:\a\sdd-open\sdd-open\tests\test_sdd_open.py", line 478, in test_hooks_path_absoluto_por_link_simbolico_e_nosso
+
+    self.assertIn("\u2705 hooks ligados (sdd/hooks:", out)
+
+AssertionError: '\u2705 hooks ligados (sdd/hooks:' not found in '\u25b6 sdd-open doctor � projeto: C:/Users/runneradmin/AppData/Local/Temp/sdd-open-sl_z9voj/projeto\n  bash 5.3 � git 2.56.0.windows.4 � python3 3.12\n\u2705 sdd/ presente (0 feature(s) em sdd/features/)\n\u2705 AGENTS.md com o bloco sdd-open\n\u2705 .agents/skills/ com 22 skill(s) do pacote\n\u2705 codex: nativo � nada a gerar (l� .agents/skills/ e AGENTS.md nativamente) � CLI n�o encontrado no PATH\n\u2705 skills e sdd/bin/ em dia com o pacote\n\u2705 nenhum segredo salvo no git (.env, .pfx, .p12, .pem com chave privada)\nRESULTADO: DIAGN�STICO CONCLU�DO\n\u2192 se algum item est� \u26a0\ufe0f, a linha diz qual comando resolve.\n\u26a0\ufe0f  hooks do open n�o ligados: j� existe core.hooksPath = C:\\Users\\runneradmin\\AppData\\Local\\Temp\\sdd-open-sl_z9voj\\link-para-o-projeto\\sdd\\hooks (husky, lefthook ou outro gerenciador). Para ter as 5 regras + relat�rio, acrescente a ele a linha: bash sdd/hooks/pre-commit || exit 1\n'
+
+
+
+======================================================================
+
+FAIL: test_hooks_path_com_til_e_expandido (test_sdd_open.Hooks.test_hooks_path_com_til_e_expandido)
+
+----------------------------------------------------------------------
+
+Traceback (most recent call last):
+
+  File "D:\a\sdd-open\sdd-open\tests\test_sdd_open.py", line 581, in test_hooks_path_com_til_e_expandido
+
+    self.assertIn("\u2705 hooks encadeados (%s chama sdd/hooks/pre-commit" % pc, out + err)
+
+AssertionError: '\u2705 hooks encadeados (C:\\Users\\runneradmin\\AppData\\Local\\Temp\\sdd-open-7ns40u56\\casa\\.githooks\\pre-commit chama sdd/hooks/pre-commit' not found in '\u25b6 sdd-open doctor � projeto: C:/Users/runneradmin/AppData/Local/Temp/sdd-open-7ns40u56/projeto\n  bash 5.3 � git 2.56.0.windows.4 � python3 3.12\n\u2705 sdd/ presente (0 feature(s) em sdd/features/)\n\u2705 AGENTS.md com o bloco sdd-open\n\u2705 .agents/skills/ com 22 skill(s) do pacote\n\u2705 hooks encadeados (/c/Users/runneradmin/AppData/Local/Temp/sdd-open-7ns40u56/casa/.githooks/pre-commit chama sdd/hooks/pre-commit: 5 regras + relat�rio + alarme da higiene off)\n\u2705 codex: nativo � nada a gerar (l� .agents/skills/ e AGENTS.md nativamente) � CLI n�o encontrado no PATH\n\u2705 skills e sdd/bin/ em dia com o pacote\n\u2705 nenhum segredo salvo no git (.env, .pfx, .p12, .pem com chave privada)\nRESULTADO: DIAGN�STICO CONCLU�DO\n\u2192 se algum item est� \u26a0\ufe0f, a linha diz qual comando resolve.\n'
+
+
+
+======================================================================
+
+FAIL: test_husky_v9_linha_no_script_e_bit_no_stub (test_sdd_open.Hooks.test_husky_v9_linha_no_script_e_bit_no_stub)
+
+----------------------------------------------------------------------
+
+Traceback (most recent call last):
+
+  File "D:\a\sdd-open\sdd-open\tests\test_sdd_open.py", line 560, in test_husky_v9_linha_no_script_e_bit_no_stub
+
+    self.assertIn("\u2705 hooks encadeados (%s chama sdd/hooks/pre-commit" % script, out)
+
+AssertionError: '\u2705 hooks encadeados (C:\\Users\\runneradmin\\AppData\\Local\\Temp\\sdd-open-jdnxmfgc\\projeto\\.husky\\pre-commit chama sdd/hooks/pre-commit' not found in '\u25b6 sdd-open doctor � projeto: C:/Users/runneradmin/AppData/Local/Temp/sdd-open-jdnxmfgc/projeto\n  bash 5.3 � git 2.56.0.windows.4 � python3 3.12\n\u2705 sdd/ presente (0 feature(s) em sdd/features/)\n\u2705 AGENTS.md com o bloco sdd-open\n\u2705 .agents/skills/ com 22 skill(s) do pacote\n\u2705 hooks encadeados (C:/Users/runneradmin/AppData/Local/Temp/sdd-open-jdnxmfgc/projeto/.husky/pre-commit chama sdd/hooks/pre-commit: 5 regras + relat�rio + alarme da higiene off)\n\u2705 codex: nativo � nada a gerar (l� .agents/skills/ e AGENTS.md nativamente) � CLI n�o encontrado no PATH\n\u2705 skills e sdd/bin/ em dia com o pacote\n\u2705 nenhum segredo salvo no git (.env, .pfx, .p12, .pem com chave privada)\nRESULTADO: DIAGN�STICO CONCLU�DO\n\u2192 se algum item est� \u26a0\ufe0f, a linha diz qual comando resolve.\n'
+
+
+
+----------------------------------------------------------------------
+
+Ran 8 tests in 289.831s
+
+
+
+FAILED (failures=6)
+

@@ -1,0 +1,54 @@
+test_stdin_com_nome_errado_e_64 (test_report_lint_evidencia.Stdin.test_stdin_com_nome_errado_e_64) ... ok
+
+test_stdin_confere_como_o_arquivo (test_report_lint_evidencia.Stdin.test_stdin_confere_como_o_arquivo) ... Exception in thread Thread-8 (_readerthread):
+
+Traceback (most recent call last):
+
+  File "C:\hostedtoolcache\windows\Python\3.12.10\x64\Lib\threading.py", line 1075, in _bootstrap_inner
+
+    self.run()
+
+  File "C:\hostedtoolcache\windows\Python\3.12.10\x64\Lib\threading.py", line 1012, in run
+
+    self._target(*self._args, **self._kwargs)
+
+  File "C:\hostedtoolcache\windows\Python\3.12.10\x64\Lib\subprocess.py", line 1599, in _readerthread
+
+    buffer.append(fh.read())
+
+                  ^^^^^^^^^
+
+  File "<frozen codecs>", line 322, in decode
+
+UnicodeDecodeError: 'utf-8' codec can't decode byte 0xe7 in position 62: invalid continuation byte
+
+ERROR
+
+
+
+======================================================================
+
+ERROR: test_stdin_confere_como_o_arquivo (test_report_lint_evidencia.Stdin.test_stdin_confere_como_o_arquivo)
+
+----------------------------------------------------------------------
+
+Traceback (most recent call last):
+
+  File "D:\a\sdd-open\sdd-open\tests\test_report_lint_evidencia.py", line 273, in test_stdin_confere_como_o_arquivo
+
+    self.assertEqual(p.returncode, 1, p.stdout + p.stderr)
+
+                                      ~~~~~~~~~^~~~~~~~~~
+
+TypeError: can only concatenate str (not "NoneType") to str
+
+
+
+----------------------------------------------------------------------
+
+Ran 2 tests in 0.240s
+
+
+
+FAILED (errors=1)
+

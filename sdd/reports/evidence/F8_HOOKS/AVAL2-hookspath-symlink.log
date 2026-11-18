@@ -1,0 +1,32 @@
+$ cd /tmp/aval2sym.NN5ql7/repo || exit 99; echo toplevel-real=$(pwd -P); git config core.hooksPath /tmp/aval2sym.NN5ql7/repo/sdd/hooks && git config --get core.hooksPath && /bin/bash /Users/robertoduarte/rdd-worktrees/sdd-open-f8-aval/bin/sdd-open.sh doctor 2>&1 | grep -i hooks
+toplevel-real=/private/tmp/aval2sym.NN5ql7/repo
+/tmp/aval2sym.NN5ql7/repo/sdd/hooks
+✅ hooks ligados (sdd/hooks: pre-commit com 5 regras + relatório + alarme da higiene off, pre-push)
+[exit=0]
+$ cd /tmp/aval2sym.NN5ql7/repo || exit 99; /bin/bash /Users/robertoduarte/rdd-worktrees/sdd-open-f8-aval/bin/sdd-open.sh init --yes --vendors codex --verbose 2>&1 | grep -E 'core.hooksPath|RESULTADO'; exit ${PIPESTATUS[0]}
+   = core.hooksPath = sdd/hooks (já correto)
+RESULTADO: EM DIA
+[exit=0]
+$ cd /tmp/aval2sym.NN5ql7/repo || exit 99; bash .agents/skills/sdd-higiene-dado/scripts/alarme.sh verificar; echo; git config sdd.higieneDado on && bash .agents/skills/sdd-higiene-dado/scripts/alarme.sh verificar
+Estado: o projeto usa os hooks do sdd-open (sdd/hooks) e o alarme desta skill está desligado neles.
+Dá para ligar: o alarme passa a rodar pelos hooks do projeto (sdd/hooks) a cada commit, sem gravar nada em .git/.
+
+Estado: o alarme desta skill está ligado pelos hooks do projeto (sdd/hooks), versão 1.2.0 da skill.
+Ligar de novo não muda nada. Para desligar: bash "/tmp/aval2sym.NN5ql7/repo/.agents/skills/sdd-higiene-dado/scripts/alarme.sh" desinstalar
+[exit=0]
+$ cd /tmp/aval2sym.NN5ql7/repo || exit 99; printf 'X=1\n' > .env && git add .env && PATH=/bin:/usr/bin git commit -q -m env 2>&1 | grep -E 'recusado|RESULTADO'; echo rc-commit=${PIPESTATUS[0]}; git reset -q HEAD -- .env; rm -f .env
+sdd-open: commit recusado pelo alarme da sdd-higiene-dado:
+sdd-higiene-dado: commit recusado. Encontrei o que não deveria ir para o git:
+RESULTADO: COMMIT RECUSADO
+rc-commit=1
+[exit=0]
+$ cd /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f8-hooks/8e011512-3e64-4505-a0ff-235ac598d20c/scratchpad/aval2/s4-lnrepo || exit 99; git config core.hooksPath /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f8-hooks/8e011512-3e64-4505-a0ff-235ac598d20c/scratchpad/aval2/s4-link/sdd/hooks && git config --get core.hooksPath && readlink /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f8-hooks/8e011512-3e64-4505-a0ff-235ac598d20c/scratchpad/aval2/s4-link && /bin/bash /Users/robertoduarte/rdd-worktrees/sdd-open-f8-aval/bin/sdd-open.sh doctor 2>&1 | grep -i hooks; /bin/bash /Users/robertoduarte/rdd-worktrees/sdd-open-f8-aval/bin/sdd-open.sh init --yes --vendors codex --verbose 2>&1 | grep -E 'core.hooksPath|RESULTADO'; bash .agents/skills/sdd-higiene-dado/scripts/alarme.sh verificar
+/private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f8-hooks/8e011512-3e64-4505-a0ff-235ac598d20c/scratchpad/aval2/s4-link/sdd/hooks
+/private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f8-hooks/8e011512-3e64-4505-a0ff-235ac598d20c/scratchpad/aval2/s4-lnrepo
+▶ sdd-open doctor — projeto: /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f8-hooks/8e011512-3e64-4505-a0ff-235ac598d20c/scratchpad/aval2/s4-lnrepo
+✅ hooks ligados (sdd/hooks: pre-commit com 5 regras + relatório + alarme da higiene off, pre-push)
+   = core.hooksPath = sdd/hooks (já correto)
+RESULTADO: EM DIA
+Estado: o projeto usa os hooks do sdd-open (sdd/hooks) e o alarme desta skill está desligado neles.
+Dá para ligar: o alarme passa a rodar pelos hooks do projeto (sdd/hooks) a cada commit, sem gravar nada em .git/.
+[exit=0]

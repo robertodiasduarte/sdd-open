@@ -1,0 +1,26 @@
+$ TMPDIR=/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.EtLBvkbLco SDD_TEST_BASH=/bin/bash /usr/bin/python3 -B -m unittest discover -s tests -p 'test_contraste.py' 2>&1; echo rc1=$?; TMPDIR=/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.EtLBvkbLco SDD_TEST_BASH=/bin/bash /usr/bin/python3 -B -m unittest discover -s tests -p 'test_prompt_drift_scan.py' 2>&1; echo rc2=$?; TMPDIR=/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.EtLBvkbLco SDD_TEST_BASH=/bin/bash /usr/bin/python3 -B -m unittest discover -s tests -p 'test_design_lint.py' 2>&1; echo rc3=$?; TMPDIR=/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.EtLBvkbLco SDD_TEST_BASH=/bin/bash /usr/bin/python3 -B -m unittest discover -s tests -p 'test_f13_textos.py' 2>&1; echo rc4=$?
+....................
+----------------------------------------------------------------------
+Ran 20 tests in 1.388s
+
+OK
+rc1=0
+....................................................
+----------------------------------------------------------------------
+Ran 52 tests in 20.965s
+
+OK
+rc2=0
+........................
+----------------------------------------------------------------------
+Ran 24 tests in 2.957s
+
+OK
+rc3=0
+.......................................
+----------------------------------------------------------------------
+Ran 39 tests in 11.333s
+
+OK
+rc4=0
+[exit=0]

@@ -1,0 +1,52 @@
+NOTA DO BUILD (2026-11-10): registro do avaliador, guardado como veio. O gate-shell-evidencia.sh acusou este arquivo: os números de exit gravados aqui são do formatador depois do pipe (ou saíram vazios), não do comando. Por isso deixou de ser .log e não vale como prova de exit; o que prova o mesmo ponto é AT-007.log, AT-009.log e VERIFY-GATE.log.
+
+$ idem, com python3 e bash do PATH: python3 -B -m unittest discover -s tests -p "$t.py"
+Python 3.15.0
+--- test_eval_revisores
+----------------------------------------------------------------------
+Ran 51 tests in 3.987s
+
+OK
+exit=
+--- test_ledger_revisao_lint
+----------------------------------------------------------------------
+Ran 24 tests in 2.356s
+
+OK
+exit=
+--- test_f19_textos
+----------------------------------------------------------------------
+Ran 17 tests in 29.855s
+
+OK
+exit=
+--- test_fluxo
+----------------------------------------------------------------------
+Ran 69 tests in 14.537s
+
+OK
+exit=
+--- test_eval_agree
+----------------------------------------------------------------------
+Ran 9 tests in 0.619s
+
+OK
+exit=
+--- test_contrato_build_release
+----------------------------------------------------------------------
+Ran 29 tests in 0.167s
+
+OK
+exit=
+--- test_docs
+----------------------------------------------------------------------
+Ran 23 tests in 0.039s
+
+OK
+exit=
+--- test_bash32
+----------------------------------------------------------------------
+Ran 3 tests in 0.036s
+
+OK
+exit=

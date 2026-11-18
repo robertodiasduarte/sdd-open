@@ -1,0 +1,73 @@
+$ bash sabotagem.sh  # scratchpad da sessão; conteúdo reproduzido no BUILD_REPORT
+════ sdd/bin/verify-gate.sh — marcador ativo de clarificação sai 2 em vez de 5
+-- diff da sabotagem:
+-    finalizar 5
++    finalizar 2
+-- suíte test_verify_gate.py com a sabotagem: rc=1
+FAIL: test_fixtures_canonicas (test_verify_gate.FixturesDoRepositorio) (fixture='DEFINE_FIXTURE_NEEDS_CLARIFICATION.md')
+FAIL: test_5_marcador_ativo_fora_de_fence (test_verify_gate.VerifyGate)
+FAIL: test_strict_remapeia_3_4_5_para_1 (test_verify_gate.VerifyGate) (exit_original='5')
+Ran 23 tests in 1.317s
+FAILED (failures=3)
+-- depois de git checkout -- sdd/bin/verify-gate.sh: rc=0
+Ran 23 tests in 1.375s
+OK
+════ sdd/bin/report-lint.py — 'deve funcionar' deixa de ser negado
+-- diff da sabotagem:
+-    if FAKE_RE.search(cell):
++    if False and FAKE_RE.search(cell):
+-- suíte test_report_lint.py com a sabotagem: rc=1
+FAIL: test_declaracao_nega_mesmo_com_log_valido_na_celula (test_report_lint.ReportLint)
+Ran 14 tests in 1.510s
+FAILED (failures=1)
+-- depois de git checkout -- sdd/bin/report-lint.py: rc=0
+Ran 14 tests in 1.505s
+OK
+════ sdd/bin/skill-lint.py — limite da description vai de 1024 para 2048
+-- diff da sabotagem:
+-    elif len(desc) > 1024:
++    elif len(desc) > 2048:
+-- suíte test_skill_lint.py com a sabotagem: rc=1
+FAIL: test_description_com_1025_caracteres_reprova (test_skill_lint.SkillLint)
+Ran 8 tests in 0.409s
+FAILED (failures=1)
+-- depois de git checkout -- sdd/bin/skill-lint.py: rc=0
+Ran 8 tests in 0.411s
+OK
+════ sdd/bin/playbook-lint.sh — playbook com formato inválido sai 0
+-- diff da sabotagem:
+-    return 2
++    return 0
+-- suíte test_playbook_lint.py com a sabotagem: rc=1
+FAIL: test_fixture_invalida_reprova_com_2 (test_playbook_lint.PlaybookLint)
+FAIL: test_self_test_passa (test_playbook_lint.PlaybookLint)
+Ran 8 tests in 2.307s
+FAILED (failures=2)
+-- depois de git checkout -- sdd/bin/playbook-lint.sh: rc=0
+Ran 8 tests in 2.209s
+OK
+════ bin/sdd-open.sh — sync --check deixa de contar cópia gerada desatualizada
+-- diff da sabotagem:
+-            printf '%s (desatualizado: rode sync)\n' "${alvo}"; DIVERGENTES=$((DIVERGENTES + 1))
++            printf '%s (desatualizado: rode sync)\n' "${alvo}"; DIVERGENTES=$((DIVERGENTES + 0))
+-- suíte test_sdd_open.py com a sabotagem: rc=1
+FAIL: test_check_acusa_copia_gerada_editada_a_mao (test_sdd_open.Projeto)
+Ran 12 tests in 20.917s
+FAILED (failures=1)
+-- depois de git checkout -- bin/sdd-open.sh: rc=0
+Ran 12 tests in 22.219s
+OK
+════ scripts/check-versions.py — skill alterada com a mesma versão passa
+-- diff da sabotagem:
+-            if ov and SEMVER.match(ov) and semver(v) <= semver(ov):
++            if ov and SEMVER.match(ov) and semver(v) < semver(ov):
+-- suíte test_check_versions.py com a sabotagem: rc=1
+FAIL: test_skill_mudada_sem_bump_reprova (test_check_versions.CheckVersions)
+Ran 16 tests in 2.785s
+FAILED (failures=1)
+-- depois de git checkout -- scripts/check-versions.py: rc=0
+Ran 16 tests in 3.130s
+OK
+════
+sabotagens sem prova: 0
+exit=0

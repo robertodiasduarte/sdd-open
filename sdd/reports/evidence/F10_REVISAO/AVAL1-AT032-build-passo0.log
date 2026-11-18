@@ -1,0 +1,45 @@
+$ bash /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f10-revisao/bd420f6e-558d-4962-a0c9-40cdfc2cbd27/scratchpad/p/a10.sh
++ sdd-fluxo.sh review-design DESIGN_novos.md
+EXIGIDO: 3 arquivo(s) novo(s) (limiar 3)
+[rc=0]
++ sdd-fluxo.sh review-design DESIGN_dispensavel.md
+DISPENSAVEL: 2 arquivo(s) novo(s), sem superfície de segurança no manifest
+[rc=1]
++ sdd-fluxo.sh review-design DESIGN_sem_manifest.md
+RESULTADO: MANIFEST ILEGÍVEL
+→ rode a revisão do DESIGN mesmo assim (default seguro) e registre o motivo no Advisor Ledger.
+[rc=64]
++ sdd-fluxo.sh review-design DESIGN_seguranca.md
+EXIGIDO: 1 linha(s) do manifest em superfície de segurança (termo login)
+[rc=0]
+--- a revisão do DESIGN que o passo 0 manda rodar (DEFINE e DESIGN commitados na frente)
+▶ revisor: stub-a (revisor-ok) — até 1 min
+▶ auditor: stub-b (auditor-agree) — até 1 min
+RESULTADO: REVIEW COMPLETA
+[rc=0]
+diff --git a/sdd/features/DEFINE_FX.md b/sdd/features/DEFINE_FX.md
+diff --git a/sdd/features/DESIGN_FX.md b/sdd/features/DESIGN_FX.md
+paths                   : sdd/features/DEFINE_FX.md sdd/features/DESIGN_FX.md
+diff                    : 1KB (2 arquivo(s))
+docs_sdd                : DEFINE_FX.md, DESIGN_FX.md
+--- --conferir pula a revisão só de --paths (não serve de review da release)
++ adversarial-review.sh --conferir
+🛑 adversarial-review: nenhuma revisão em sdd/reports/reviews
+RESULTADO: NÃO CONFERE
+→ rode adversarial-review.sh nesta frente, ou registre a dispensa (pergunta D3).
+[rc=2]
+--- texto do passo 0 no sdd-build
+### 0. Revisão do DESIGN
+
+Antes da 1ª tarefa, rode `bash sdd/bin/sdd-fluxo.sh review-design sdd/features/DESIGN_{F}.md`:
+
+| Exit | Ação |
+|---|---|
+| `0` exigida | se o Advisor Ledger do DESIGN não tem nenhuma linha de revisão, rode a revisão do DESIGN antes de codar — revisor e depois auditor, `bash sdd/bin/adversarial-review.sh --feature {F} --paths "sdd/features/DEFINE_{F}.md sdd/features/DESIGN_{F}.md"`, como na `sdd-design` — e registre cada nota no ledger |
+| `1` dispensável | registre no relatório `revisão do DESIGN: dispensável (<o motivo que o script imprimiu>)` |
+| `64` manifest ilegível | rode a revisão assim mesmo (o lado seguro) e registre por quê |
+
+Mudar a abordagem depois do código custa uma reescrita; antes, uma edição no DESIGN.
+
+### 1. Contexto e landmines
+[exit=0]

@@ -1,0 +1,46 @@
+test_mut_f_case_with_unknown_rule (test_sdd_kb_normativo.NormativeKB.test_mut_f_case_with_unknown_rule) ... ok
+
+test_mut_g_rule_change_without_regenerating (test_sdd_kb_normativo.NormativeKB.test_mut_g_rule_change_without_regenerating) ... ok
+
+test_mut_g_rule_map_drift (test_sdd_kb_normativo.NormativeKB.test_mut_g_rule_map_drift) ... ok
+
+test_mut_h_concept_without_vale_para (test_sdd_kb_normativo.NormativeKB.test_mut_h_concept_without_vale_para) ... ok
+
+test_mut_i_confirmed_on_doctrine (test_sdd_kb_normativo.NormativeKB.test_mut_i_confirmed_on_doctrine) ... ok
+
+test_mut_j_perfil_with_trailing_comment_stays_normativo (test_sdd_kb_normativo.NormativeKB.test_mut_j_perfil_with_trailing_comment_stays_normativo) ... ok
+
+test_mut_j_unknown_perfil_fails (test_sdd_kb_normativo.NormativeKB.test_mut_j_unknown_perfil_fails) ... FAIL
+
+test_mut_k_conflict_id_is_prefix_of_cited_id (test_sdd_kb_normativo.NormativeKB.test_mut_k_conflict_id_is_prefix_of_cited_id) ... ok
+
+
+
+======================================================================
+
+FAIL: test_mut_j_unknown_perfil_fails (test_sdd_kb_normativo.NormativeKB.test_mut_j_unknown_perfil_fails)
+
+----------------------------------------------------------------------
+
+Traceback (most recent call last):
+
+  File "D:\a\sdd-open\sdd-open\tests\test_sdd_kb_normativo.py", line 379, in test_mut_j_unknown_perfil_fails
+
+    self.assert_fails(r"perfil 'fiscal' for 'kb_norm' � use `normativo` or `geral`")
+
+  File "D:\a\sdd-open\sdd-open\tests\test_sdd_kb_normativo.py", line 73, in assert_fails
+
+    self.assertRegex(out, reason)
+
+AssertionError: Regex didn't match: "perfil 'fiscal' for 'kb_norm' � use `normativo` or `geral`" not found in "FAIL: _index.yaml: perfil 'fiscal' for 'kb_norm' \ufffd use `normativo` or `geral`\n"
+
+
+
+----------------------------------------------------------------------
+
+Ran 8 tests in 0.707s
+
+
+
+FAILED (failures=1)
+

@@ -1,0 +1,10 @@
+$ (cd tests && python3 -B -m unittest -v test_f24_release_enxuta.AT009_Trilha)   # HEAD 017f09a
+test_a_skill_decide_por_comando_e_as_fases_0_a_2_nao_mudam (test_f24_release_enxuta.AT009_Trilha.test_a_skill_decide_por_comando_e_as_fases_0_a_2_nao_mudam) ... ok
+test_ficha_curta (test_f24_release_enxuta.AT009_Trilha.test_ficha_curta) ... ok
+test_matriz (test_f24_release_enxuta.AT009_Trilha.test_matriz) ... ok
+
+----------------------------------------------------------------------
+Ran 3 tests in 1.673s
+
+OK
+[exit=0]

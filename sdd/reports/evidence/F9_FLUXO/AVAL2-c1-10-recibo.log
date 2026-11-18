@@ -1,0 +1,20 @@
+$ fx="--review sdd/fixtures/fluxo/review-ok --ledger sdd/fixtures/fluxo/ledger-rebatida.md --rodada 1 --avaliacao sdd/fixtures/fluxo/AVALIACAO_recibo.md"; bad=0; for r in "2026-10-31" "Ana 2026-99-99" "Ana 2026-02-30" "Ana 31/10/2026" "Ana" "123 2026-10-31" "  2026-10-31" "Ana 2026-10-31" "Ana Souza 2024-02-29"; do bash sdd/bin/sdd-fluxo.sh loop $fx --recibo "$r" > /tmp/.x 2>&1; rc=$?; rm -f /tmp/.x; case "$r" in "Ana 2026-10-31"|"Ana Souza 2024-02-29") want=0;; *) want=30;; esac; echo "recibo=[$r] rc=$rc esperado=$want"; [ $rc -eq $want ] || bad=$((bad+1)); done; bash sdd/bin/sdd-fluxo.sh loop $fx --recibo "Ana 2026-10-31"; test $bad -eq 0
+recibo=[2026-10-31] rc=30 esperado=30
+recibo=[Ana 2026-99-99] rc=30 esperado=30
+recibo=[Ana 2026-02-30] rc=30 esperado=30
+recibo=[Ana 31/10/2026] rc=30 esperado=30
+recibo=[Ana] rc=30 esperado=30
+recibo=[123 2026-10-31] rc=30 esperado=30
+recibo=[  2026-10-31] rc=30 esperado=30
+recibo=[Ana 2026-10-31] rc=0 esperado=0
+recibo=[Ana Souza 2024-02-29] rc=0 esperado=0
+ESTADO: PRONTO
+rodada: 1 de 3
+graves_abertos: 0
+aplicadas: 0
+rebatidas: 1
+motivo: grave(s) rebatido(s) no ledger: R1@rev
+motivo: avaliador: recibo humano — Ana 2026-10-31
+RESULTADO: PRONTO
+→ siga para o avaliador ou para a release.
+[exit=0]

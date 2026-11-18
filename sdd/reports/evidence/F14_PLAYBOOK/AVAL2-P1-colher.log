@@ -1,0 +1,67 @@
+$ /usr/bin/python3 -B /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.lyAZcjfTsM/scripts/sonda1.py </dev/null
+AT-001 | PASS | tabela 3 colunas ✔, **mordeu**, N.A., e linha fora da seção | ajudou LM-020; mordeu LM-016; nada LM-021 | DELTA LM-020 ajudou+1 · conf=2026-11-05 · evidencia=DESIGN_X.md:5 · fp=05f8fe7ca5 ⏎ DELTA LM-016 mordeu+1 · conf=2026-11-05 · evidencia=DESIGN_X.md:6 · fp=f1061b2cef ⏎ resumo: deltas=2 (ajudou=1 mordeu=1)
+AT-001 | PASS | tabela 4 colunas, seção 'lidas no build' | ajudou LM-020; mordeu LM-016 | DELTA LM-020 ajudou+1 · conf=2026-11-05 · evidencia=BUILD_REPORT_X.md:9 · fp=0d8b77836b ⏎ DELTA LM-016 mordeu+1 · conf=2026-11-05 · evidencia=BUILD_REPORT_X.md:10
+AT-001 | REPROVA | célula de veredito longa que começa com **mordeu** (forma análoga a '✔ tratado: …') | DELTA LM-016 mordeu+1 (o AT diz 'starts with mordeu') | rc=1 resumo: deltas=0 (ajudou=0 mordeu=0) candidatos=0 rejeitados=0 promocoes=0 sugestoes=0 ⏎ RESULTADO: NADA A COLHER ⏎ → registre "Curadoria: 0 deltas": esta feature não trouxe lição, contagem nem promoção p
+AT-001 | PASS | célula de REGRA que começa com a palavra mordeu, ✔ depois (L1, lado do ataque) | ajudou, nunca mordeu | DELTA LM-016 ajudou+1 · conf=2026-11-05 · evidencia=BUILD_REPORT_X.md:9 · fp=0bba4b2e3e ⏎ resumo: deltas=1 (ajudou=1 mordeu=0) candidatos=0 rejeitados=0 promocoes
+AT-001 | PASS | célula de REGRA curta que começa com a palavra mordeu, ✔ depois | ajudou, nunca mordeu | DELTA LM-016 ajudou+1 · conf=2026-11-05 · evidencia=BUILD_REPORT_X.md:9 · fp=4065d37211 ⏎ resumo: deltas=1 (ajudou=1 mordeu=0) candidatos=0 rejeitados=0 promocoes
+AT-001 | REPROVA | tabela com a coluna de veredito ANTES da coluna LM | DELTA LM-020 ajudou+1 ('has a table row citing LM-nnn') | rc=1 resumo: deltas=0 (ajudou=0 mordeu=0) candidatos=0 rejeitados=0 promocoes=0 sugestoes=0 ⏎ RESULTADO: NADA A COLHER ⏎ → registre "Curadoria: 0 deltas": esta feature n
+AT-001 | PASS | nota depois do veredito cita outra LM (L1) | só LM-020 | DELTA LM-020 ajudou+1 · conf=2026-11-05 · evidencia=DESIGN_X.md:5 · fp=aa87310065 ⏎ resumo: deltas=1 (ajudou=1 mordeu=0) candidatos=0 rejeitados=0 promocoes=0 sug
+AT-001 | PASS | ID sem fronteira: LM-0201, XLM-020, LM-02 (L1) | nenhum delta | rc=1 resumo: deltas=0 (ajudou=0 mordeu=0) candidatos=0 rejeitados=0 promocoes=0 sugestoes=0 ⏎ RESULTADO: NADA A COLHER ⏎ → registre "Curadoria: 0 deltas": esta feature n
+AT-002 | PASS | achado '❌ falhou' + LM-016 | conta | DELTA LM-016 mordeu+1 · conf=2026-11-05 · evidencia=AVAL-1-x.log:2 · fp=2f36e6da04 ⏎ resumo:
+AT-002 | PASS | achado 'NEEDS_WORK' + LM-016 | conta | DELTA LM-016 mordeu+1 · conf=2026-11-05 · evidencia=AVAL-1-x.log:2 · fp=a78a224f98 ⏎ resumo:
+AT-002 | PASS | achado 'FAIL aqui' + LM-016 | conta | DELTA LM-016 mordeu+1 · conf=2026-11-05 · evidencia=AVAL-1-x.log:2 · fp=691d4ef9a1 ⏎ resumo:
+AT-002 | PASS | achado 'FAILED' + LM-016 | conta | DELTA LM-016 mordeu+1 · conf=2026-11-05 · evidencia=AVAL-1-x.log:2 · fp=0df305b161 ⏎ resumo:
+AT-002 | PASS | achado '**FAIL**' + LM-016 | conta | DELTA LM-016 mordeu+1 · conf=2026-11-05 · evidencia=AVAL-1-x.log:2 · fp=3a6ef1deb7 ⏎ resumo:
+AT-002 | PASS | achado 'WAIVED' + LM-016 | conta | DELTA LM-016 mordeu+1 · conf=2026-11-05 · evidencia=AVAL-1-x.log:2 · fp=ebca72a83f ⏎ resumo:
+AT-002 | PASS | achado 'mordeu_antes: x' + LM-016 | conta | DELTA LM-016 mordeu+1 · conf=2026-11-05 · evidencia=AVAL-1-x.log:2 · fp=4ffc1db328 ⏎ resumo:
+AT-002 | PASS | achado 'FORCE_FAIL' + LM-016 | não conta | resumo: deltas=0 (ajudou=0 mordeu=0) candidatos=0 rejeitados=0 promocoes=0 sugestoes=0 ⏎ RES
+AT-002 | PASS | achado 'FAIL-FAST' + LM-016 | não conta | resumo: deltas=0 (ajudou=0 mordeu=0) candidatos=0 rejeitados=0 promocoes=0 sugestoes=0 ⏎ RES
+AT-002 | PASS | achado 'FAILSAFE' + LM-016 | não conta | resumo: deltas=0 (ajudou=0 mordeu=0) candidatos=0 rejeitados=0 promocoes=0 sugestoes=0 ⏎ RES
+AT-002 | PASS | achado '❌ e ✅' + LM-016 | não conta | resumo: deltas=0 (ajudou=0 mordeu=0) candidatos=0 rejeitados=0 promocoes=0 sugestoes=0 ⏎ RES
+AT-002 | PASS | achado 'FAIL_x' + LM-016 | não conta | resumo: deltas=0 (ajudou=0 mordeu=0) candidatos=0 rejeitados=0 promocoes=0 sugestoes=0 ⏎ RES
+AT-002 | PASS | fonte AVALIACAO_X_2026.md | conta com evidencia=AVALIACAO_X_2026.md:2 | DELTA LM-016 mordeu+1 · conf=2026-11-05 · evidencia=AVALIACAO_X_2026.md:2 · fp=a227cddbe7 ⏎ 
+AT-002 | PASS | fonte x.yaml | conta com evidencia=x.yaml:2 | DELTA LM-016 mordeu+1 · conf=2026-11-05 · evidencia=x.yaml:2 · fp=f2d6f61eb4 ⏎ resumo: delta
+AT-002 | PASS | fonte HANDOFF_X.md | conta com evidencia=HANDOFF_X.md:2 | DELTA LM-016 mordeu+1 · conf=2026-11-05 · evidencia=HANDOFF_X.md:2 · fp=cd89ed370c ⏎ resumo:
+AT-002 | PASS | achado dentro da tabela de landmines de fonte de achado | não conta | resumo: deltas=0 (ajudou=0 mordeu=0) candidatos=0 rejeitados=0 promocoes=0 sugestoes=0 ⏎ RES
+AT-002 | PASS | arquivo fora da lista | não conta | resumo: deltas=0 (ajudou=0 mordeu=0) candidatos=0 rejeitados=0 promocoes=0 sugestoes=0 ⏎ RES
+AT-003 | PASS | achado sem LM com termo de sup 6+ chars | SUGESTAO e sem DELTA | SUGESTAO mordeu? LM-020 — termo `fila_de_envio` em AVAL-1-x.log:1 (achado sem LM explícito; confirmar a causa antes de v
+AT-003 | PASS | termo curto (abc) e só dígitos (123456) | sem SUGESTAO | resumo: deltas=0 (ajudou=0 mordeu=0) candidatos=0 rejeitados=0 promocoes=0 sugestoes=0 ⏎ RESULTADO: NADA A COLHER ⏎ → regist
+AT-004 | PASS | candidato com Do instead em chave própria e continuação | CANDIDATO #1 → LM-031 (acima do tombstone 030) e delta numa linha | CANDIDATO #1 → LM-031 · secao=Backend · sup=`t1` · evidencia=x.log:1 · fp=6dbe889bae ⏎    delta: ADD Backend :: sup: `t1` :: Regra em duas linhas. **Do instead:** faça assim. → ficha: — · promovido_para
+AT-005 | PASS | sem evidencia | REJEITADO com motivo, sem CANDIDATO | REJEITADO candidato em HANDOFF_X.md:1 — sem linha 'evidencia:' (lição sem verificação piora o contexto) · fp=e9e6c9622d ⏎ resumo: deltas=0 (aj
+AT-005 | PASS | seção inexistente | REJEITADO com motivo, sem CANDIDATO | REJEITADO candidato em HANDOFF_X.md:1 — secao: 'Nada' não é uma das seções ativas · fp=193281c4fb ⏎ resumo: deltas=0 (ajudou=0 mordeu=0) candi
+AT-005 | PASS | seção Tombstones | REJEITADO com motivo, sem CANDIDATO | REJEITADO candidato em HANDOFF_X.md:1 — secao: 'Tombstones' não é uma das seções ativas · fp=739ac3406d ⏎ resumo: deltas=0 (ajudou=0 mordeu=0)
+AT-005 | PASS | sup sem crase | REJEITADO com motivo, sem CANDIDATO | REJEITADO candidato em HANDOFF_X.md:1 — sup: sem termo em crase · fp=2623cb5e27 ⏎ resumo: deltas=0 (ajudou=0 mordeu=0) candidatos=0 rejeitados
+AT-005 | PASS | sem Do instead | REJEITADO com motivo, sem CANDIDATO | REJEITADO candidato em HANDOFF_X.md:1 — regra: sem 'Do instead:' · fp=e9a1d991e6 ⏎ resumo: deltas=0 (ajudou=0 mordeu=0) candidatos=0 rejeitado
+AT-006 | PASS | mordeu=3 sem promoção, pasta vazia | PROMOVER? com os 3 destinos, exit 0 | PROMOVER? LM-021 mordeu=3 promovido_para=— :: promover a mecanismo? sugestão: hook em sdd/hooks/, comando de release.landmines_cmd ou asserção no Verify Gate, com um caso que falha antes (seção Sempre
+AT-006/M1 | PASS | promovido_para na continuação | sem PROMOVER? | rc=1 resumo: deltas=0 (ajudou=0 mordeu=0) candidatos=0 rejeitados=0 promocoes=0 sugestoes=0 ⏎ RESULTADO: NADA A COLHER ⏎ → regist
+AT-006 | PASS | promovido_para em crase na 1ª linha | sem PROMOVER? | resumo: deltas=0 (ajudou=0 mordeu=0) candidatos=0 rejeitados=0 promocoes=0 sugestoes=0 ⏎ RESULTADO: NADA A COLHER ⏎ → regist
+AT-007/M2 | PASS | só IGNORADO | exit 0, IGNORADO 1 vez | rc=0
+AT-007/M2 | PASS | só JA_COLHIDO | exit 0 | rc=0
+AT-007 | PASS | nada | exit 1, stderr 0 deltas colhidos, resumo antes de RESULTADO | rc=1
+AT-007 | PASS | playbook ausente | exit 2 | 2
+AT-007 | PASS | playbook sem bullet | exit 2 | 2
+AT-007 | PASS | --inv ausente | exit 2 | 2
+AT-007 | PASS | uso | exit 64 | 64
+AT-007 | PASS | pasta ausente | exit 64 | 64
+AT-007 | PASS | --desde sem valor | exit 64 | 64
+AT-007 | PASS | 1 delta por bullet e tipo por rodada | 1 linha, com as 2 impressões | DELTA LM-016 mordeu+1 · conf=2026-11-05 · evidencia=AVAL-1-x.log:1 · fp=5e8730b8eb,ba0eb95c0d ⏎ resumo: deltas=1 (ajudou=0
+AT-008/L2 | PASS | --desde 2026-02-30 | exit 64 | 64
+AT-008/L2 | PASS | --desde 2026-13-01 | exit 64 | 64
+AT-008/L2 | PASS | --desde 26-1-1 | exit 64 | 64
+AT-008/L2 | PASS | --desde 2026-02-28 | aceita | 1
+AT-008 | PASS | data igual ao --desde | conta | DELTA LM-020 ajudou+1 · conf=2026-11-05 · evidencia=DESIGN_X.md:4 · fp=b5b8c6b28a ⏎ resumo: deltas=1 (
+AT-008 | PASS | BUILD_REPORT anterior | JA_COLHIDO, sem delta | JA_COLHIDO BUILD_REPORT_X.md (data 2026-11-05 < --desde 2026-11-06) ⏎ resumo: deltas=0 (ajudou=0 morde
+AT-009 | PASS | 2 features na pasta | 1 linha por feature, 7 contadores | ['Y.jsonl', 'Z.jsonl'] {'ts': '2026-11-05T14:13:39Z', 'feature': 'Y', 'src': 'curator', 'kind': 'colher', 'exit': 1, 'deltas': 0, 'ajudou': 0, 'mordeu': 0, 'candidatos': 0, 'rejeitados': 0, 'promocoes': 0, 'sugestoes': 0}
+AT-009 | PASS | SDD_TRACE=off | nada | False
+AT-009 | PASS | sem report nem design | nada | False
+AT-009 | PASS | nome esquisito e ponto inicial | sanitizado, sem arquivo oculto | ['_.oculto.jsonl', 'a_b_.jsonl']
+AT-010 | PASS | PLAYBOOK_SECTIONS custom | Pagamentos aceita, Backend rejeitada | CANDIDATO #1 → LM-031 · secao=Pagamentos · sup=`t` · evidencia=e · fp=a979fa736e ⏎    delta: ADD Pagamentos :: sup: `t` :: r. **Do instead:** x. → ficha: — · promovido_para: — ⏎ REJEIT
+AT-010 | PASS | default do curador = default do lint | iguais | ('Sempre|Dados|Backend|Frontend|Infra / deploy|Reviews / harness|Domínio|Tombstones', 'Sempre|Dados|Backend|Frontend|Infra / deploy|Reviews / harness|Domínio|Tombstones')
+AT-040 | PASS | --preparar nome ruim | RESULTADO: + → | rc=64
+AT-040 | PASS | --colher uso | RESULTADO: + → | rc=64
+AT-040 | PASS | --cruzar uso | RESULTADO: + → | rc=64
+AT-040 | PASS | --validar-inv ausente | RESULTADO: + → | rc=2
+AT-040 | PASS | --conferir uso | RESULTADO: + → | rc=64
+AT-040 | PASS | --selar uso | RESULTADO: + → | rc=64
+TOTAL 64 casos, 2 reprovados: AT-001, AT-001
+[exit=0]

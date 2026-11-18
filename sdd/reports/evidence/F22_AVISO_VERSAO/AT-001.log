@@ -1,0 +1,7 @@
+$ cd tests && SDD_TEST_BASH=/bin/bash /usr/bin/python3 -B -m unittest test_f22_versao.VersaoDoPacote
+.......
+----------------------------------------------------------------------
+Ran 7 tests in 0.416s
+
+OK
+rc=0

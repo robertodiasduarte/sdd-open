@@ -1,0 +1,28 @@
+$ /bin/bash /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.Gg087dIi9J/ev/07.sh
+# F4: o agente grava numa pasta e tira a permissão dela; o git status avisa no stderr e sai 0
+novo f4a; antes
+cd "$d/w" && pwd -P
+--- cenário f4a (W=/private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.Gg087dIi9J/e.f4a/w) ---
+[--snapshot antes exit=0]
+mkdir oculto; printf 'payload\n' > oculto/p.txt; chmod 000 oculto
+depois; comparar
+warning: could not open directory 'oculto/': Permission denied
+[--snapshot depois exit=0]
+RESULTADO: SÓ O PERMITIDO MUDOU
+→ siga com o arquivo que o agente gravou.
+[--comparar exit=0]
+chmod 755 oculto; cat oculto/p.txt
+payload
+# vizinho legítimo: a mesma pasta, legível, é FORA
+novo f4b; antes
+cd "$d/w" && pwd -P
+--- cenário f4b (W=/private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.Gg087dIi9J/e.f4b/w) ---
+[--snapshot antes exit=0]
+mkdir oculto; printf 'payload\n' > oculto/p.txt
+depois; comparar
+[--snapshot depois exit=0]
+FORA: /private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.Gg087dIi9J/e.f4b/w/oculto/p.txt
+RESULTADO: ESCRITA FORA DO PERMITIDO
+→ não apague nada: liste os caminhos FORA para a pessoa conferir, regrave o DEFINE se ele mudou e conte como falha (1 redespacho).
+[--comparar exit=1]
+[exit=0]

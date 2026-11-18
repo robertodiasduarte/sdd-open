@@ -1,0 +1,14 @@
+$ PATH=/usr/bin:/bin /bin/bash sdd/bin/eval-revisores.sh /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f21-f19/8ca3f42f-d684-434d-9f0b-19bdcf0aef88/scratchpad/aval-f19/casos/troca --ledgers /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f21-f19/8ca3f42f-d684-434d-9f0b-19bdcf0aef88/scratchpad/aval-f19/casos/troca --registry /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f21-f19/8ca3f42f-d684-434d-9f0b-19bdcf0aef88/scratchpad/aval-f19/casos/troca/registry.tsv
+eval-revisores — custo e resultado por papel, engine e modelo (1 pasta(s) lida(s) em /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f21-f19/8ca3f42f-d684-434d-9f0b-19bdcf0aef88/scratchpad/aval-f19/casos/troca; 0 ledger(s))
+
+| Papel | Engine (modelo) | Cobrança | Rodadas | Falhas | Pago US$ | Nominal US$ | Achados | Aplicados | Com dano | Falsos positivos | Fora de escopo | Sem classificar | Pago por dano | Nominal por dano | AGREE |
+|---|---|---|---:|---|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|
+| revisor | claude (c) | assinatura | 1 | 0 | 0.0000 | 1.0000 | 1 | 0 de 1 | 0 de 1 | 0 de 1 | 0 de 1 | 1 de 1 | — | — | — |
+| auditor | codex (-) | assinatura | 1 | 0 | 0.0000 | n/d | 0 | 0 | 0 | 0 | 0 | 0 | — | — | 0.0% (0 de 1) |
+| auditor | openrouter (qwen/q) | pay-per-token | 0 | 1 (1 trocada por outra engine) | n/d | n/d | 0 | 0 | 0 | 0 | 0 | 0 | — | — | n/a |
+| desempate | gemini (g-9) | desconhecida | 1 | 0 | n/d | ≈0.4000 | 0 | 0 | 0 | 0 | 0 | 0 | — | — | — |
+
+fora da conta: 2 (EXTERNAL_REVIEW_20260301-000001: 2º revisor indisponível: nenhuma engine foi chamada; ledgers: nenhum ledger lido: os achados das 1 pasta(s) ficam em sem classificar)
+RESULTADO: MEDIDO
+→ leia cada taxa com a amostra ao lado: poucas rodadas dão número instável. O script conta o que está registrado; trocar a cadeia de revisão é decisão de quem lê.
+[exit=0]

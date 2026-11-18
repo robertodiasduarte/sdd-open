@@ -1,0 +1,63 @@
+$ bash /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f10-revisao/bd420f6e-558d-4962-a0c9-40cdfc2cbd27/scratchpad/p/a5.sh AT019
+--- quota avança
++ adversarial-review.sh --base main --reviewer stub-a:falha-quota,stub-c --auditor stub-b --no-revisor2
+▶ revisor: stub-a:falha-quota (falha-quota) — até 1 min
+▶ revisor: stub-c (revisor-ok) — até 1 min
+▶ auditor: stub-b (auditor-agree) — até 1 min
+⚠️ sem --feature: a revisão não leu BRAINSTORM, DEFINE nem DESIGN, e decisões já documentadas podem voltar como achado
+⚠️ o revisor previsto (stub-a:falha-quota) falhou (stub-a:falha-quota falhou (cota, cobrança ou erro)); quem revisou foi stub-c
+RESULTADO: REVIEW COMPLETA
+pasta: sdd/reports/reviews/EXTERNAL_REVIEW_20261031-235836
+diff_sha256: b7fb048c0c3864cb429ecb37b9358aae3b23ae86e922bb0199c98a7e4773e6ff
+revisor: stub-c (stub-modelo) (troca de engine) — custo desconhecido
+auditor: stub-b (stub-modelo) — custo desconhecido
+diversidade: modelo
+achados: 1 grave, 1 médio, 0 leves
+custo total: US$ 0,0000 (+ 2 papel(is) com custo desconhecido)
+→ rode: bash sdd/bin/sdd-fluxo.sh loop --review sdd/reports/reviews/EXTERNAL_REVIEW_20261031-235836 --ledger <ledger da revisão> --rodada <N>
+[rc=0]
+reviewer_engine_default : stub-a:falha-quota
+reviewer_engine_efetivo : stub-c
+reviewer_fallback_usado : sim
+reviewer_motivo         : stub-a:falha-quota falhou (cota, cobrança ou erro)
+reviewer_exit           : 0
+--- tempo esgotado (timeout_s=5) avança
+⚠️ o revisor previsto (stub-a:dorme) falhou (stub-a:dorme passou do teto de tempo); quem revisou foi stub-c
+RESULTADO: REVIEW COMPLETA
+[rc=0]
+segundos=5
+reviewer_engine_efetivo : stub-c
+reviewer_motivo         : stub-a:dorme passou do teto de tempo
+--- CLI ausente avança
+⚠️ o revisor previsto (stub-a:sem-cli) falhou (CLI de stub-a:sem-cli fora do PATH); quem revisou foi stub-c
+RESULTADO: REVIEW COMPLETA
+[rc=0]
+--- auditor: quota avança (verbo auditou)
+⚠️ o auditor previsto (stub-b:falha-quota) falhou (stub-b:falha-quota falhou (cota, cobrança ou erro)); quem auditou foi stub-d:auditor-agree
+RESULTADO: REVIEW COMPLETA
+[rc=0]
+auditor_engine_default  : stub-b:falha-quota
+auditor_engine_efetivo  : stub-d:auditor-agree
+auditor_fallback_usado  : sim
+auditor_motivo          : stub-b:falha-quota falhou (cota, cobrança ou erro)
+auditor_exit            : 0
+--- lista esgotada → 67
++ adversarial-review.sh --base main --reviewer stub-a:falha-quota,stub-c:sem-cli --auditor stub-b --no-revisor2
+▶ revisor: stub-a:falha-quota (falha-quota) — até 1 min
+▶ revisor: stub-c:sem-cli (sem-cli) — até 1 min
+⚠️ sem --feature: a revisão não leu BRAINSTORM, DEFINE nem DESIGN, e decisões já documentadas podem voltar como achado
+RESULTADO: PAROU
+revisor: stub-a:falha-quota falhou (cota, cobrança ou erro); CLI de stub-c:sem-cli fora do PATH
+pasta: sdd/reports/reviews/EXTERNAL_REVIEW_20261031-235842-3
+diff_sha256: b7fb048c0c3864cb429ecb37b9358aae3b23ae86e922bb0199c98a7e4773e6ff
+diversidade: modelo
+custo total: US$ 0,0000
+→ acrescente outra engine à lista ou tente mais tarde
+[rc=67]
+reviewer_motivo         : stub-a:falha-quota falhou (cota, cobrança ou erro); CLI de stub-c:sem-cli fora do PATH
+reviewer_exit           : 67
+--- só CLI ausente → 66
+RESULTADO: PAROU
+→ instale a CLI da engine ou acrescente outra engine à lista (review.revisor1 / review.auditor)
+[rc=66]
+[exit=0]

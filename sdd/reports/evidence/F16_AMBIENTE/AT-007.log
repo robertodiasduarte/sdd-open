@@ -1,0 +1,5 @@
+$ python3 -B -m unittest discover -v -s tests -p test_release_workflow.py -k Windows
+  test_frases_dizem_o_que_o_workflow_prova (test_release_workflow.Windows.test_frases_dizem_o_que_o_workflow_prova) ... ok
+  test_job_windows_nos_dois_workflows (test_release_workflow.Windows.test_job_windows_nos_dois_workflows) ... ok
+  Ran 2 tests in 0.002s
+  OK

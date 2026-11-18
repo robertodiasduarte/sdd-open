@@ -1,0 +1,102 @@
+$ cat /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f12-contexto/ba201848-0f5b-4f61-8434-538b155d5260/scratchpad/at18.sh; echo ======; /bin/bash /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f12-contexto/ba201848-0f5b-4f61-8434-538b155d5260/scratchpad/at18.sh /Users/robertoduarte/rdd-worktrees/sdd-open-f12-contexto
+# sonda AT-015 (dominio.md na pasta de patterns), AT-018 (extrator de ADR), AT-021 (init)
+PRJ="$1"; W=$(mktemp -d); R="$W/r"; mkdir "$R"; (cd "$PRJ" && git archive HEAD) | tar -x -C "$R"; cd "$R"
+G='git -c user.email=a@b -c user.name=a -c commit.gpgsign=false'; git init -q; $G add -A; $G commit -qm b
+echo '=== AT-015: pasta com o pattern verde + dominio.md de fixture + README'
+mkdir -p "$W/pat"; sed "s/__HOJE__/$(date +%F)/" sdd/fixtures/patterns/valido-completo.md > "$W/pat/pedidos.md"; cp sdd/fixtures/contexto/dominio.md "$W/pat/dominio.md"; cp sdd/patterns/README.md "$W/pat/"
+/bin/bash sdd/bin/patterns-lint.sh --playbook sdd/fixtures/contexto/playbook.md "$W/pat"; echo "rc=$?"
+echo '=== AT-018'
+mkdir -p sdd/features
+printf '# DESIGN: A\n\n### Decision 1: um\n\nx\n\n### Decision 1: repetido\n\ny\n\n### Decision 2: dois\n' > sdd/features/DESIGN_A.md
+printf '# DESIGN: B\n\nsem bloco\n' > sdd/features/DESIGN_B.md
+printf '# DESIGN: C\n\n### ADR-7 — sete\n\n### Decisão 3: três\n' > sdd/features/DESIGN_C.md
+/bin/bash sdd/bin/docs-extract-decisions.sh; echo "rc=$?"; cat docs/adr/index.md
+/bin/bash sdd/bin/docs-extract-decisions.sh --root "$R" --out "$W/idx.md" >/dev/null; echo "--out rc=$? $(test -f "$W/idx.md" && echo gravado)"
+/bin/bash sdd/bin/docs-extract-decisions.sh --flag-x >/dev/null 2>&1; echo "flag desconhecida rc=$?"
+echo '=== AT-021: init num projeto vazio e de novo sem sobrescrever'
+P2="$W/novo"; mkdir "$P2"; (cd "$P2" && git init -q)
+/bin/bash bin/sdd-open.sh init "$P2" >/dev/null 2>&1; echo "init rc=$?"; ls "$P2/sdd/patterns/README.md" "$P2/sdd/WORKFLOW_CONTRACTS.yaml"
+echo 'MEU' > "$P2/sdd/patterns/README.md"; echo 'MEU' > "$P2/sdd/WORKFLOW_CONTRACTS.yaml"
+/bin/bash bin/sdd-open.sh init "$P2" >/dev/null 2>&1; echo "init 2 rc=$?"; cat "$P2/sdd/patterns/README.md" "$P2/sdd/WORKFLOW_CONTRACTS.yaml"
+for f in sdd/bin/contexto-lint.sh sdd/bin/patterns-lint.sh sdd/bin/governanca-fronteira.sh sdd/bin/governanca-bloco.py sdd/bin/docs-extract-decisions.sh sdd/patterns/README.md sdd/WORKFLOW_CONTRACTS.yaml .agents/skills/sdd-define/references/cartografo.md .agents/skills/sdd-governanca/references/revisor.md sdd/fixtures/contexto/cabecalho-fora-de-ordem.md sdd/fixtures/contexto/superficies-com-crase.md sdd/fixtures/contexto/superficies-sem-arquivo.md docs/context-and-governance.md; do grep -qxF "$f" MANIFEST.txt && echo "MANIFEST ok $f" || echo "MANIFEST FALTA $f"; done
+grep -nE 'sdd/patterns|WORKFLOW_CONTRACTS' .github/workflows/release.yml
+======
+=== AT-015: pasta com o pattern verde + dominio.md de fixture + README
+✅ patterns-lint: 2 pattern(s) OK, 0 aviso(s)
+RESULTADO: VERDE
+→ os patterns podem ser citados.
+rc=0
+=== AT-018
+docs-extract-decisions: lidos=3 extraidos=2 orfaos=1 decisoes=5 corrigidas=0
+RESULTADO: VERDE
+→ índice gravado em /private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.6GB11lLacq/r/docs/adr/index.md.
+rc=0
+# Índice de decisões (ADR)
+
+<!-- markdownlint-disable MD038 -->
+
+> **Gerado** por `sdd/bin/docs-extract-decisions.sh` a partir dos blocos de decisão dos `DESIGN_*.md` em
+> `sdd/features/`. **Não editar à mão**: a fonte da verdade é o DESIGN; este arquivo é só o índice.
+>
+> **Como citar:** `STEM#DN` (ex.: `PEDIDOS#D3`). STEM é o nome do DESIGN sem `DESIGN_` e `.md`; um número
+> repetido no mesmo arquivo recebe sufixo `b`, `c`…
+> **⚠️ revisar** = o bloco menciona `CORREÇÃO`/`falsa`: pode ser uma decisão corrigida. Leia o bloco antes de reusar.
+
+**5 decisões** em **2 DESIGNs** · 0 marcadas ⚠️ revisar · 1 DESIGNs órfãos (ver [Órfãos](#órfãos)).
+
+| ID | Decisão | Feature | Data | Status | Consequences | Fonte |
+|----|---------|---------|------|--------|--------------|-------|
+| `A#D1` | um | A | — | — | — | [DESIGN_A.md:3](../../sdd/features/DESIGN_A.md) |
+| `A#D1b` | repetido | A | — | — | — | [DESIGN_A.md:7](../../sdd/features/DESIGN_A.md) |
+| `A#D2` | dois | A | — | — | — | [DESIGN_A.md:11](../../sdd/features/DESIGN_A.md) |
+| `C#D7` | sete | C | — | — | — | [DESIGN_C.md:3](../../sdd/features/DESIGN_C.md) |
+| `C#D3` | três | C | — | — | — | [DESIGN_C.md:5](../../sdd/features/DESIGN_C.md) |
+
+## Órfãos
+
+DESIGNs lidos em que **nenhum** bloco da lista fechada casou. Não somem em silêncio: cada um está
+aqui com o motivo. Um DESIGN novo deve usar `### Decision N: <nome>` sob `## Key Decisions`.
+
+| DESIGN | Motivo |
+|--------|--------|
+| [DESIGN_B.md](../../sdd/features/DESIGN_B.md) | nenhum bloco de decisão reconhecido |
+
+## Avisos de Metadata
+
+DESIGNs **extraídos** cuja tabela Metadata não tem `**Feature**` ou `**Date**`; a coluna Feature usa o STEM.
+
+| STEM | Aviso |
+|------|-------|
+| `A` | sem **Feature** e sem **Date** |
+| `C` | sem **Feature** e sem **Date** |
+
+## Conservação
+
+extraídos (2) + órfãos (1) = lidos (3) ✓ · decisões = 5 · avisos de Metadata = 2
+--out rc=0 gravado
+flag desconhecida rc=64
+=== AT-021: init num projeto vazio e de novo sem sobrescrever
+init rc=64
+ls: /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.6GB11lLacq/novo/sdd/WORKFLOW_CONTRACTS.yaml: No such file or directory
+ls: /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.6GB11lLacq/novo/sdd/patterns/README.md: No such file or directory
+/private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f12-contexto/ba201848-0f5b-4f61-8434-538b155d5260/scratchpad/at18.sh: line 18: /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.6GB11lLacq/novo/sdd/patterns/README.md: No such file or directory
+/private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f12-contexto/ba201848-0f5b-4f61-8434-538b155d5260/scratchpad/at18.sh: line 18: /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.6GB11lLacq/novo/sdd/WORKFLOW_CONTRACTS.yaml: No such file or directory
+init 2 rc=64
+cat: /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.6GB11lLacq/novo/sdd/patterns/README.md: No such file or directory
+cat: /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.6GB11lLacq/novo/sdd/WORKFLOW_CONTRACTS.yaml: No such file or directory
+MANIFEST ok sdd/bin/contexto-lint.sh
+MANIFEST ok sdd/bin/patterns-lint.sh
+MANIFEST ok sdd/bin/governanca-fronteira.sh
+MANIFEST ok sdd/bin/governanca-bloco.py
+MANIFEST ok sdd/bin/docs-extract-decisions.sh
+MANIFEST ok sdd/patterns/README.md
+MANIFEST ok sdd/WORKFLOW_CONTRACTS.yaml
+MANIFEST ok .agents/skills/sdd-define/references/cartografo.md
+MANIFEST ok .agents/skills/sdd-governanca/references/revisor.md
+MANIFEST ok sdd/fixtures/contexto/cabecalho-fora-de-ordem.md
+MANIFEST ok sdd/fixtures/contexto/superficies-com-crase.md
+MANIFEST ok sdd/fixtures/contexto/superficies-sem-arquivo.md
+MANIFEST ok docs/context-and-governance.md
+36:      - 'sdd/patterns/**'
+37:      - 'sdd/WORKFLOW_CONTRACTS.yaml'
+[exit=0]

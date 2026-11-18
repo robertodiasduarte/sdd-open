@@ -1,0 +1,3 @@
+$ shasum -a 256 -c SHA256SUMS.txt   # v2.12.1
+sdd-open-v2.12.1.tar.gz: OK
+[exit=0]

@@ -1,0 +1,31 @@
+$ bash -c cd /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f16w-windows/b56e801b-0f18-49ee-b51c-5b9188b29c23/scratchpad/bl2/tests && python3 -B -m unittest -v test_f16w2_processos
+test_commit_de_600_arquivos_lanca_no_maximo_3_programas_por_arquivo (test_f16w2_processos.Contagem.test_commit_de_600_arquivos_lanca_no_maximo_3_programas_por_arquivo) ... FAIL
+test_init_lanca_no_maximo_3_programas_por_arquivo_gerado (test_f16w2_processos.Contagem.test_init_lanca_no_maximo_3_programas_por_arquivo_gerado) ... FAIL
+test_cpf_cnpj_certificado_env_planilha_e_credencial_continuam_recusados (test_f16w2_processos.Recusas.test_cpf_cnpj_certificado_env_planilha_e_credencial_continuam_recusados) ... ok
+test_nul_depois_de_8_kb_e_extensao_maiuscula_sao_recusados (test_f16w2_processos.Recusas.test_nul_depois_de_8_kb_e_extensao_maiuscula_sao_recusados) ... ok
+test_sem_pcre_o_caminho_por_arquivo_recusa_igual (test_f16w2_processos.Recusas.test_sem_pcre_o_caminho_por_arquivo_recusa_igual) ... ok
+test_utf16_com_bom_e_binario_passam (test_f16w2_processos.Recusas.test_utf16_com_bom_e_binario_passam) ... ok
+
+======================================================================
+FAIL: test_commit_de_600_arquivos_lanca_no_maximo_3_programas_por_arquivo (test_f16w2_processos.Contagem.test_commit_de_600_arquivos_lanca_no_maximo_3_programas_por_arquivo)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f16w-windows/b56e801b-0f18-49ee-b51c-5b9188b29c23/scratchpad/bl2/tests/test_f16w2_processos.py", line 61, in test_commit_de_600_arquivos_lanca_no_maximo_3_programas_por_arquivo
+    self.assertLessEqual(n, 3 * 600, "o hook lançou %d programas para 600 arquivos" % n)
+    ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 8030 not less than or equal to 1800 : o hook lançou 8030 programas para 600 arquivos
+
+======================================================================
+FAIL: test_init_lanca_no_maximo_3_programas_por_arquivo_gerado (test_f16w2_processos.Contagem.test_init_lanca_no_maximo_3_programas_por_arquivo_gerado)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f16w-windows/b56e801b-0f18-49ee-b51c-5b9188b29c23/scratchpad/bl2/tests/test_f16w2_processos.py", line 73, in test_init_lanca_no_maximo_3_programas_por_arquivo_gerado
+    self.assertLessEqual(n, 3 * gerados, "o init lançou %d programas para %d arquivos" % (n, gerados))
+    ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 5037 not less than or equal to 1887 : o init lançou 5037 programas para 629 arquivos
+
+----------------------------------------------------------------------
+Ran 6 tests in 59.146s
+
+FAILED (failures=2)
+[exit=1]

@@ -1,0 +1,94 @@
+$ git rev-parse HEAD
+cdb85a9cf9c0982a140471f37b03cf9590d05e88
+$ bash sdd/bin/adversarial-review.sh --reviewer claude --auditor openrouter:qwen/qwen3.7-plus --feature F13_UX_LLM
+▶ revisor: claude (-) — até 15 min
+▶ 2º revisor: codex (-) — até 15 min
+▶ auditor: openrouter:qwen/qwen3.7-plus (qwen/qwen3.7-plus) — até 15 min
+⚠️ o 2º revisor (codex) falhou (codex falhou (cota, cobrança ou erro)): a revisão vale só com a dispensa registrada no ledger
+RESULTADO: REVIEW COMPLETA
+pasta: sdd/reports/reviews/EXTERNAL_REVIEW_20261104-162100
+diff_sha256: f0b072487e17559835065d1631e187ee46c9722caea8e01d28c8574cfe978d2c
+revisor: claude (claude-opus-5-5) — US$ 2,3433
+2º revisor: falhou (exit 67) — última engine tentada: codex
+auditor: openrouter:qwen/qwen3.7-plus (qwen/qwen3.7-plus via Alibaba) — US$ 0,0481
+diversidade: vendor
+achados: 0 graves, 0 médios, 2 leves
+custo total: US$ 2,3914 (+ 1 papel(is) com custo desconhecido)
+→ rode: bash sdd/bin/sdd-fluxo.sh loop --review sdd/reports/reviews/EXTERNAL_REVIEW_20261104-162100 --ledger <ledger da revisão> --rodada <N>
+[exit=0]
+$ cat sdd/reports/reviews/EXTERNAL_REVIEW_20261104-162100/META.txt
+worktree                : /Users/robertoduarte/rdd-worktrees/sdd-open-f13-ux-llm
+branch                  : feat/f13-ux-llm
+protocolo               : cadeia REVISOR → AUDITOR; paralelo não existe
+base                    : origin/main
+merge_base              : 6b7633cd90c93ecb7892eb430a0091820ec2fff2
+head                    : cdb85a9cf9c0982a140471f37b03cf9590d05e88
+paths                   : -
+diff_sha256             : f0b072487e17559835065d1631e187ee46c9722caea8e01d28c8574cfe978d2c
+diff                    : 206KB (40 arquivo(s))
+contexto                : 88KB (3 doc SDD)
+docs_sdd                : BRAINSTORM_F13_UX_LLM.md, DEFINE_F13_UX_LLM.md, DESIGN_F13_UX_LLM.md
+contexto_cortado        : -
+diversidade             : vendor
+reviewer_engine_default : claude
+reviewer_engine_efetivo : claude
+reviewer_fallback_usado : nao
+reviewer_motivo         : -
+reviewer_exit           : 0
+reviewer_segundos       : 512
+reviewer_achados        : 2
+reviewer_tokens_entrada : 150674
+reviewer_tokens_saida   : 53452
+reviewer_tokens_total   : 204126
+reviewer_modelo         : claude-opus-5-5
+reviewer_custo          : US$ 2.3433
+revisor1_raso           : nao
+gatilho_2o_revisor      : 40 arquivos (limiar 8)
+revisor2_engine         : codex
+revisor2_engine_default : codex
+revisor2_engine_efetivo : codex
+revisor2_fallback_usado : nao
+revisor2_motivo         : codex falhou (cota, cobrança ou erro)
+revisor2_exit           : 67
+revisor2_segundos       : 9
+revisor2_achados        : 0
+revisor2_tokens_entrada : n/d
+revisor2_tokens_saida   : n/d
+revisor2_tokens_total   : n/d
+revisor2_modelo         : n/d
+revisor2_custo          : $?
+auditor_engine_default  : openrouter:qwen/qwen3.7-plus
+auditor_engine_efetivo  : openrouter:qwen/qwen3.7-plus
+auditor_fallback_usado  : nao
+auditor_motivo          : -
+auditor_exit            : 0
+auditor_segundos        : 210
+auditor_vereditos       : 2
+auditor_tokens_entrada  : 99233
+auditor_tokens_saida    : 12774
+auditor_tokens_total    : 112007
+auditor_modelo          : qwen/qwen3.7-plus via Alibaba
+auditor_custo           : US$ 0.0481
+convergencia_1o_passe   : sim
+desempate_alvo          : -
+desempate_engine        : -
+desempate_decisao       : -
+custo_total             : US$ 2.3914 (+ 1 papel(is) com custo $?)
+quando                  : 20261104-162100
+[exit=0]
+$ bash sdd/bin/sdd-fluxo.sh loop --review sdd/reports/reviews/EXTERNAL_REVIEW_20261104-162100 --ledger sdd/reports/evidence/F13_UX_LLM/ledger-review.md --rodada 4 (teto ${TETO:-3})
+ESTADO: BLOQUEADO
+rodada: 4 de 4
+graves_abertos: 0
+aplicadas: 0
+rebatidas: 0
+motivo: 2º revisor acionado e falhou (codex, exit 67) — refazer a review
+motivo: D4 teto: 4 rodadas de review atingido
+RESULTADO: BLOQUEADO
+→ pare e faça a pergunta D4 ou D5 de sdd/templates/fragments/FLUXO_ENCADEADO.md.
+[exit=20]
+$ bash sdd/bin/adversarial-review.sh --conferir sdd/reports/reviews/EXTERNAL_REVIEW_20261104-162100
+🛑 adversarial-review: o 2º revisor foi acionado e não deu resultado (revisor2_exit=67)
+RESULTADO: NÃO CONFERE
+→ rode de novo com outra engine (--revisor2) ou registre a dispensa com --aceitar-sem-revisor2 "<motivo>".
+[exit=2]

@@ -1,0 +1,5 @@
+# linha de base vermelha dos testes do raio de impacto sobre 28caf3a
+FAIL: test_o_sandbox_nao_herda_o_python_resolvido (test_python_resolver.HerancaDoPai.test_o_sandbox_nao_herda_o_python_resolvido)
+FAIL: test_python3_herdado_sem_python3_no_path_nao_vale (test_python_resolver.HerancaDoPai.test_python3_herdado_sem_python3_no_path_nao_vale)
+Ran 3 tests in 0.058s
+FAILED (failures=2)

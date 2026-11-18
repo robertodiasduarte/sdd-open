@@ -1,0 +1,20 @@
+$ git rev-parse --short HEAD; /bin/bash sdd/bin/adversarial-review.sh --conferir sdd/reports/reviews/EXTERNAL_REVIEW_20261104-164103; echo conferir_rc=$?; /bin/bash sdd/bin/sdd-fluxo.sh loop --review sdd/reports/reviews/EXTERNAL_REVIEW_20261104-164103 --ledger /Users/robertoduarte/rdd-worktrees/sdd-open-f13-ux-llm/sdd/reports/evidence/F13_UX_LLM/ledger-review.md --rodada 5; echo loop_rc=$?; git status --short
+5ddc433
+🛑 adversarial-review: o 2º revisor era exigido (40 arquivos (limiar 8)) e foi dispensado por --no-revisor2
+RESULTADO: NÃO CONFERE
+→ registre o motivo com --aceitar-sem-revisor2 "<motivo>" ou rode a revisão sem --no-revisor2.
+conferir_rc=2
+ESTADO: PRONTO
+rodada: 5 de 3
+graves_abertos: 0
+aplicadas: 0
+rebatidas: 0
+RESULTADO: PRONTO
+→ siga para o avaliador ou para a release.
+loop_rc=0
+?? sdd/features/
+?? sdd/handoffs/
+?? sdd/reports/
+?? sdd/reviews/
+?? sdd/traces/
+[exit=0]

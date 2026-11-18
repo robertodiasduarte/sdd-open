@@ -1,0 +1,17 @@
+$ # projeto de aluno do starter (Claude Code): skill gerada em .claude/skills/sdd-kb; RULE_MAP.md fora de dia
+python3 .claude/skills/sdd-kb/scripts/validate_kb.py sdd/kb/dom >/dev/null; echo "rc antes de estragar=$?"; echo '' >> sdd/kb/dom/RULE_MAP.md; python3 .claude/skills/sdd-kb/scripts/validate_kb.py sdd/kb/dom | grep -i rule_map; echo '== o comando que a mensagem manda, com <pasta da skill sdd-kb> = .claude/skills/sdd-kb'; python3 .claude/skills/sdd-kb/scripts/kb_normativo.py rule-map sdd/kb/dom; echo rc=$?; python3 .claude/skills/sdd-kb/scripts/validate_kb.py sdd/kb/dom | tail -2; echo rc=${PIPESTATUS[0]}
+echo '== restos do Open na kb e na engenharia-reversa geradas'; grep -rnI -e '.agents/skills/sdd-kb' -e '.agents/skills/sdd-engenharia' -e 'sync' .claude/skills/sdd-kb ../ci/skills/sdd-engenharia-reversa-saas | grep -v CHANGELOG.md | cut -c1-200; echo fim
+rc antes de estragar=0
+FAIL: RULE_MAP.md: missing or differs from rules/ — run `python3 <pasta da skill sdd-kb>/scripts/kb_normativo.py rule-map <domain>` (never edit it by hand)
+== o comando que a mensagem manda, com <pasta da skill sdd-kb> = .claude/skills/sdd-kb
+wrote sdd/kb/dom/RULE_MAP.md
+rc=0
+WARN: index.md: PENDENTE DE REVISÃO — do not let software consume this KB before review (validate with --strict)
+PASS: KB lint passed (1 concept(s), 1 pattern(s); normativo: 3 rule(s), 4 source(s), 1 table(s), 1 case(s))
+rc=0
+== restos do Open na kb e na engenharia-reversa geradas
+.claude/skills/sdd-kb/scripts/gate.sh:11:# Exit: 0 verde · 2 vermelho. A cópia gerada pelo sync (.claude/skills, .cursor/skills) não serve de
+.claude/skills/sdd-kb/scripts/gate.sh:30:  falha "cópia gerada pelo sync" "$0 tem o cabeçalho da cópia; os exemplos daqui não valem como prova" \
+.claude/skills/sdd-kb/scripts/validate_kb.py:29:sys.dont_write_bytecode = True  # no __pycache__ inside the skill: init and sync copy the whole folder
+fim
+rc=0

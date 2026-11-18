@@ -1,0 +1,40 @@
+$ cat /tmp/aval-f18.SxgC/probes/at001b.sh; bash /tmp/aval-f18.SxgC/probes/at001b.sh
+. /tmp/aval-f18.SxgC/probes/lib.sh
+echo "### (f) sem remoto, segredo em arquivo já commitado ⇒ conta como novo e bloqueia"
+novo at001f; git remote remove origin; printf 'k = "sk_live_%s"\n' "$(rnd 24)" > pay.py; git add pay.py; git commit -qm p --no-verify; V
+echo; echo "### (g) .env NÃO ignorado e acrescentado"
+novo at001g; printf 'STRIPE_SECRET=sk_live_%s\n' "$(rnd 24)" > .env; git check-ignore -q .env && echo ".env ignorado" || echo ".env não ignorado"; V
+echo; echo "### (h) segredo acrescentado em pastas fora da varredura: sdd/ (log de evidência, ficha de handoff) e .claude/"
+novo at001h; mkdir -p sdd/reports/evidence/X sdd/handoffs .claude
+printf '$ curl -H "Authorization: Bearer sk_live_%s" https://api\n' "$(rnd 24)" > sdd/reports/evidence/X/AVAL-1.log
+printf 'export GH_TOKEN=ghp_%s\n' "$(rnd 36)" > sdd/handoffs/HANDOFF_X.md
+printf '{"env":{"OPENAI_API_KEY":"sk-proj-%s7%s"}}\n' "$(rnd 20)" "$(rnd 20)" > .claude/settings.json
+git add -A; git commit -qm "evid" --no-verify
+git ls-files sdd/reports/evidence/X sdd/handoffs .claude | cat
+V
+### (f) sem remoto, segredo em arquivo já commitado ⇒ conta como novo e bloqueia
+▶ seguranca-varredura — stack: supabase, web (detectada) · base: origin/main · 3 arquivo(s) varrido(s), 0 pulado(s)
+⚠️ base origin/main não existe: tudo conta como novo (sem remoto ou sem a branch padrão)
+🛑 S11 alta pay.py:1 — Chave secreta no código (bloqueia: novo nesta publicação)
+   confira à mão: Procure no código e no histórico do repositório por `sk-`, `sk_live_`, `service_role`, `PRIVATE KEY` e `secret`: nada pode aparecer com valor. Achou uma chave real? Ela vazou: troque-a antes de qualquer outra coisa (modo incidente).
+RESULTADO: BLOQUEADO
+→ tire o segredo do código (se era real, ele vazou: troque-o) ou ligue a RLS na tabela, e rode de novo; achado falso leva a dispensa na linha, com motivo.
+exit=2
+
+### (g) .env NÃO ignorado e acrescentado
+.env não ignorado
+▶ seguranca-varredura — stack: supabase, web (detectada) · base: origin/main · 3 arquivo(s) varrido(s), 0 pulado(s)
+🛑 S11 alta .env:1 — Chave secreta no código (bloqueia: novo nesta publicação)
+   confira à mão: Procure no código e no histórico do repositório por `sk-`, `sk_live_`, `service_role`, `PRIVATE KEY` e `secret`: nada pode aparecer com valor. Achou uma chave real? Ela vazou: troque-a antes de qualquer outra coisa (modo incidente).
+RESULTADO: BLOQUEADO
+→ tire o segredo do código (se era real, ele vazou: troque-o) ou ligue a RLS na tabela, e rode de novo; achado falso leva a dispensa na linha, com motivo.
+exit=2
+
+### (h) segredo acrescentado em pastas fora da varredura: sdd/ (log de evidência, ficha de handoff) e .claude/
+.claude/settings.json
+sdd/handoffs/HANDOFF_X.md
+sdd/reports/evidence/X/AVAL-1.log
+▶ seguranca-varredura — stack: supabase, web (detectada) · base: origin/main · 2 arquivo(s) varrido(s), 0 pulado(s)
+RESULTADO: NADA ACHADO
+→ siga; a varredura só acha o que dá para ver por texto: a conferência à mão (--checklist) continua.
+exit=0

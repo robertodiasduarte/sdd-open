@@ -1,0 +1,85 @@
+$ cat /tmp/aval2-f18.hrKa/probes/at006.sh /tmp/aval2-f18.hrKa/probes/at006b.sh; bash /tmp/aval2-f18.hrKa/probes/at006.sh; bash /tmp/aval2-f18.hrKa/probes/at006b.sh
+. /tmp/aval2-f18.hrKa/probes/lib.sh
+S() { bash sdd/bin/seguranca-varredura.sh --stack | head -1; echo "exit=${PIPESTATUS[0]}"; }
+echo "### (1) pasta supabase/ sem package.json"; novo s1; git rm -q package.json; touch supabase/config.toml; S
+echo "### (2) @supabase/ no package.json só"; novo s2; rm -rf supabase; git rm -rq supabase 2>/dev/null; S
+echo "### (3) vercel.json"; novo s3; git rm -q package.json; echo '{}' > vercel.json; S
+echo "### (4) pasta .vercel/"; novo s4; git rm -q package.json; mkdir .vercel; echo '{}' > .vercel/project.json; S
+echo "### (5) vercel no package.json"; novo s5; echo '{"devDependencies":{"vercel":"1"}}' > package.json; S
+echo "### (6) só .html rastreado"; novo s6; git rm -q package.json; echo '<p>x</p>' > index.html; git add index.html; S
+echo "### (7) nada (sem package.json, sem html, sem supabase/)"; novo s7; git rm -q package.json; S
+echo "### (8) slot preenchido passa por cima: vercel,web"; novo s8; printf 'security:\n  stack: vercel, web\n' > sdd/config.yaml; S
+echo "### (9) slot nenhuma: só itens 'todas'"; novo s9; printf 'security:\n  stack: nenhuma\n' > sdd/config.yaml; S; mkdir -p src; printf "el.innerHTML = t;\nconst v = eval(x);\n" > src/x.js; printf 'create table p (id int);\n' > supabase/migrations/1.sql; git add -A; V | grep -v '^   confira'
+echo "### (10) slot inválido"; novo s10; printf 'security:\n  stack: firebase\n' > sdd/config.yaml; bash sdd/bin/seguranca-varredura.sh --stack; echo "exit=$?"
+echo "### (11) --regras sem supabase não traz regra de supabase; com supabase traz"
+novo s11; printf 'security:\n  stack: nenhuma\n' > sdd/config.yaml; bash sdd/bin/seguranca-varredura.sh --regras | grep -ci -E 'rls|supabase|service_role' ; printf 'security:\n  stack: supabase\n' > sdd/config.yaml; bash sdd/bin/seguranca-varredura.sh --regras | grep -ci -E 'rls|supabase|service_role'
+. /tmp/aval2-f18.hrKa/probes/lib.sh
+S() { bash sdd/bin/seguranca-varredura.sh --stack | head -1; echo "exit=${PIPESTATUS[0]}"; }
+echo "(fixture: a pasta vazia supabase/migrations do repositório-modelo é apagada em cada caso abaixo)"
+echo "### (3) vercel.json"; novo t3; rm -rf supabase; git rm -q package.json; echo '{}' > vercel.json; S
+echo "### (4) pasta .vercel/"; novo t4; rm -rf supabase; git rm -q package.json; mkdir .vercel; echo '{}' > .vercel/project.json; S
+echo "### (5) vercel no package.json"; novo t5; rm -rf supabase; echo '{"devDependencies":{"vercel":"1"}}' > package.json; S
+echo "### (6) só .html rastreado"; novo t6; rm -rf supabase; git rm -q package.json; echo '<p>x</p>' > index.html; git add index.html; S
+echo "### (7) nada"; novo t7; rm -rf supabase; git rm -q package.json; S
+echo "### (7b) sem Supabase: varredura não avalia S01 nem S02/S03/S04"; mkdir -p db; printf "const r = s.from('t').select('*');\n" > x.js; git add -A; V | grep -v '^   confira'
+### (1) pasta supabase/ sem package.json
+stack: supabase (detectada)
+exit=0
+### (2) @supabase/ no package.json só
+stack: supabase, web (detectada)
+exit=0
+### (3) vercel.json
+stack: supabase, vercel (detectada)
+exit=0
+### (4) pasta .vercel/
+stack: supabase, vercel (detectada)
+exit=0
+### (5) vercel no package.json
+stack: supabase, vercel, web (detectada)
+exit=0
+### (6) só .html rastreado
+stack: supabase, web (detectada)
+exit=0
+### (7) nada (sem package.json, sem html, sem supabase/)
+stack: supabase (detectada)
+exit=0
+### (8) slot preenchido passa por cima: vercel,web
+stack: vercel, web (slot security.stack)
+exit=0
+### (9) slot nenhuma: só itens 'todas'
+stack: nenhuma (slot security.stack)
+exit=0
+▶ seguranca-varredura — stack: nenhuma (slot security.stack) · base: origin/main · 41 arquivo(s) varrido(s), 1 pulado(s)
+⚠️ S16 alta src/x.js:2 — Texto virando código
+RESULTADO: AVISOS
+→ confira cada aviso pela prova à mão; o que for falso positivo leva a dispensa na linha, com motivo.
+exit=1
+### (10) slot inválido
+🛑 seguranca-varredura: security.stack em sdd/config.yaml tem valor desconhecido: firebase
+RESULTADO: ERRO DE USO
+→ use supabase, vercel e web (separados por vírgula), nenhuma, ou deixe vazio para detectar.
+exit=64
+### (11) --regras sem supabase não traz regra de supabase; com supabase traz
+0
+2
+(fixture: a pasta vazia supabase/migrations do repositório-modelo é apagada em cada caso abaixo)
+### (3) vercel.json
+stack: vercel (detectada)
+exit=0
+### (4) pasta .vercel/
+stack: vercel (detectada)
+exit=0
+### (5) vercel no package.json
+stack: vercel, web (detectada)
+exit=0
+### (6) só .html rastreado
+stack: web (detectada)
+exit=0
+### (7) nada
+stack: nenhuma (detectada)
+exit=0
+### (7b) sem Supabase: varredura não avalia S01 nem S02/S03/S04
+▶ seguranca-varredura — stack: nenhuma (detectada) · base: origin/main · 38 arquivo(s) varrido(s), 1 pulado(s)
+RESULTADO: NADA ACHADO
+→ siga; a varredura só acha o que dá para ver por texto: a conferência à mão (--checklist) continua.
+exit=0

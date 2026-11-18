@@ -1,0 +1,23 @@
+$ /bin/bash /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f7-evidencia/17ba90ab-414d-4dcc-9a02-576aad29f6c6/scratchpad/p/sab.sh /Users/robertoduarte/rdd-worktrees/sdd-open-f7-aval
+✅ report-lint: git_ignorado sempre False → vermelho (test_avaliacao_citada_e_ignorada_reprova (test_report_lint_evidencia.EvidenciaIgnorada);test_avaliacao_ignorada_pelo_git_nao_prova (test_report_lint_evidencia.Existencia);test_evidencia_ignorada_reprova (test_report_lint_evidencia.Fixtures);test_log_ignorado_pelo_git_reprova (test_report_lint_evidencia.EvidenciaIgnorada);) · restaurado → verde
+✅ report-lint: limite de camadas > em vez de >= → vermelho (test_limite_1_reprova_uma_camada (test_report_lint_evidencia.Existencia);test_na_com_duas_camadas_reprova (test_report_lint_evidencia.Existencia);test_na_no_formato_do_template_tambem_e_conferido (test_report_lint_evidencia.Existencia);) · restaurado → verde
+✅ report-lint: declaração sem motivo aceita → vermelho (test_declaracao_sem_motivo_reprova (test_report_lint_evidencia.Existencia) (linha='avaliador: N.A.\n');test_declaracao_sem_motivo_reprova (test_report_lint_evidencia.Existencia) (linha='avaliador: PENDENTE ()\n');) · restaurado → verde
+✅ report-lint: --pendente ignora bloco cercado não mais (lê tudo) → vermelho (test_declaracao_dentro_de_bloco_cercado_nao_vale (test_report_lint_evidencia.Existencia);test_modo_pendente_ignora_bloco_cercado (test_report_lint_evidencia.Pendente);) · restaurado → verde
+✅ report-lint: --stdin lê o arquivo do disco → vermelho (test_stdin_confere_como_o_arquivo (test_report_lint_evidencia.Stdin);) · restaurado → verde
+✅ verify-gate: trace grava o exit DEPOIS do --strict → vermelho (test_grava_o_exit_original_mesmo_com_strict (test_verify_gate_trace.Trace);) · restaurado → verde
+✅ verify-gate: --print também grava → vermelho (test_print_nao_grava (test_verify_gate_trace.Trace);) · restaurado → verde
+✗ verify-gate: --sem-define sai 1: trecho não encontrado (ou não único)
+✅ gate-baseline: qualquer 2 conta como dentes → vermelho (test_crash_com_rc_2_nao_prova_dentes (test_gate_baseline.GateBaseline) (cmd="echo 'FAILED (errors=1)'; exit 2");test_crash_com_rc_2_nao_prova_dentes (test_gate_baseline.GateBaseline) (cmd='grep -q ok nao_existe.txt');test_crash_com_rc_2_nao_prova_dentes (test_gate_baseline.GateBaseline) (cmd='if then fi');) · restaurado → verde
+✅ gate-baseline: sem --sobrepor (ignora) → vermelho (test_base_default_vem_do_config (test_gate_baseline.GateBaseline);test_base_reprova_avaliando_sai_0_e_grava_evidencia (test_gate_baseline.GateBaseline);test_hooks_e_assinatura_globais_nao_quebram_a_copia (test_gate_baseline.GateBaseline);) · restaurado → verde
+✅ gate-shell: [exit=$?] literal aceito → vermelho (test_falso_verde_acusa_exatamente_as_linhas_esperadas (test_gate_shell_evidencia.GateShellEvidencia);) · restaurado → verde
+✅ gate-shell: rc=$? depois do pipe também isenta → vermelho (test_falso_verde_acusa_exatamente_as_linhas_esperadas (test_gate_shell_evidencia.GateShellEvidencia);test_rc_capturado_depois_do_pipe_nao_salva (test_gate_shell_evidencia.GateShellEvidencia);) · restaurado → verde
+✅ gate-shell: --base inválida vira 0 → vermelho (test_base_invalida_e_64 (test_gate_shell_evidencia.ModoDiff);) · restaurado → verde
+✗ guard: renomeação só o lado novo → rc sabotado=0, rc restaurado=0 (sabotagem NÃO pega)
+✅ guard: sdd/traces/ não permitido por default → vermelho (test_trace_do_gate_nao_suja (test_avaliador_guard.AvaliadorGuard);) · restaurado → verde
+✅ guard: git falhou vira 0 → vermelho (test_fora_de_git_sai_2 (test_avaliador_guard.AvaliadorGuard);) · restaurado → verde
+✅ test-baseline: poda também em execução parcial → vermelho (test_execucao_parcial_nao_poda (test_test_baseline.TestBaseline);) · restaurado → verde
+✅ test-baseline: --touched não filtra → vermelho (test_touched_so_aborta_por_arquivo_tocado (test_test_baseline.TestBaseline);) · restaurado → verde
+✅ test-baseline: inconclusivo vira verde → vermelho (test_comando_ausente_e_inconclusivo (test_test_baseline.TestBaseline);test_saida_nao_reconhecida_e_inconclusivo (test_test_baseline.TestBaseline);) · restaurado → verde
+✗ test-baseline: --aceitar roda os testes antes → rc sabotado=0, rc restaurado=0 (sabotagem NÃO pega)
+falhas=3
+[exit=1]

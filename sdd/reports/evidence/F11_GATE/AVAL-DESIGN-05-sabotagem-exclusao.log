@@ -1,0 +1,6 @@
+$ /bin/bash /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.iNp6lMZaXH/sonda_67.sh /Users/robertoduarte/rdd-worktrees/sdd-open-f11-gate
+intacto  --reviewer claude --auditor claude → exit=67 | claude chamado: não
+S1       --reviewer claude --auditor claude → exit=67 | claude chamado: sim
+S2       --reviewer claude --auditor claude → exit=67 | claude chamado: não
+(S1 = sem o 67 antecipado da linha 435; S2 = sem a exclusão dentro de papel(), linha 869)
+[exit=0]

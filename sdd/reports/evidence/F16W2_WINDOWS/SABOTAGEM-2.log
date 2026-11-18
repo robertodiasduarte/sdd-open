@@ -1,0 +1,4 @@
+$ python3 -I /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f16w-windows/b56e801b-0f18-49ee-b51c-5b9188b29c23/scratchpad/sab-2.py /Users/robertoduarte/rdd-worktrees/sdd-open-f16w-windows /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f16w-windows/b56e801b-0f18-49ee-b51c-5b9188b29c23/scratchpad/sab
+S13 checar: TMPDIR sem escrita perde a saída → MORTO (FAILED (failures=1); rc=1)
+S9 report-lint lê o stdin em cp1252 → MORTO (FAILED (failures=1); rc=1)
+[exit=0]

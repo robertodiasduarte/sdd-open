@@ -1,0 +1,16 @@
+$ cd /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f8-hooks/8e011512-3e64-4505-a0ff-235ac598d20c/scratchpad/aval2/at014 || exit 99; git config sdd.higieneDado on; printf 'X=1\n' > .env; git add .env; out=$(PATH=/bin:/usr/bin git commit -q -m env 2>&1); rc=$?; printf '%s\n' "$out" | grep -E 'desinstalar|rm |RESULTADO'; echo "linhas-com-rm-espaco=$(printf '%s\n' "$out" | grep -c 'rm ')"; echo "ultima-linha-do-alarme=$(printf '%s\n' "$out" | grep -B1 '^RESULTADO' | head -1)"; git ls-files --error-unmatch .env >/dev/null 2>&1 && echo env-ainda-staged; exit $rc
+Para desinstalar o alarme: bash .agents/skills/sdd-higiene-dado/scripts/alarme.sh desinstalar
+RESULTADO: COMMIT RECUSADO
+linhas-com-rm-espaco=0
+ultima-linha-do-alarme=
+env-ainda-staged
+[exit=1]
+$ cd /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f8-hooks/8e011512-3e64-4505-a0ff-235ac598d20c/scratchpad/aval2/at014 || exit 99; git config --unset sdd.higieneDado; echo higieneDado="$(git config --get sdd.higieneDado)"; out=$(PATH=/bin:/usr/bin git commit -q -m env-sem-alarme 2>&1); rc=$?; echo "bytes-de-saida=${#out} rc=$rc"; git log --oneline -1; git reset -q --hard HEAD~1; exit $rc
+higieneDado=
+bytes-de-saida=0 rc=0
+e032ed1 env-sem-alarme
+[exit=0]
+$ cd /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f8-hooks/8e011512-3e64-4505-a0ff-235ac598d20c/scratchpad/aval2/at014 || exit 99; git config sdd.higieneDado on; mv .agents/skills/sdd-higiene-dado/scripts/pre-commit.sh /tmp/.aval2-pc.$$; printf 'X=1\n' > .env; git add .env; out=$(PATH=/bin:/usr/bin git commit -q -m env-script-ausente 2>&1); rc=$?; printf '%s\n' "$out"; echo rc=$rc; mv /tmp/.aval2-pc.$$ .agents/skills/sdd-higiene-dado/scripts/pre-commit.sh; git reset -q --hard HEAD~1; exit $rc
+⚠️  sdd-open: alarme da sdd-higiene-dado ligado (sdd.higieneDado=on), mas .agents/skills/sdd-higiene-dado/scripts/pre-commit.sh não existe — rode init
+rc=0
+[exit=0]

@@ -1,0 +1,44 @@
+$ /bin/bash /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.Gg087dIi9J/ev/08.sh
+# F5a: repositório aninhado não rastreado que já existia; o agente edita e cria arquivos dentro
+novo f5a; git init -q vendor/lib; printf 'v1\n' > vendor/lib/f.txt; antes
+cd "$d/w" && pwd -P
+--- cenário f5a (W=/private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.Gg087dIi9J/e.f5a/w) ---
+[--snapshot antes exit=0]
+printf 'v2 adulterado\n' > vendor/lib/f.txt; printf 'novo\n' > vendor/lib/novo.txt
+depois; comparar; git status --porcelain; cat "$T/depois"
+[--snapshot depois exit=0]
+RESULTADO: SÓ O PERMITIDO MUDOU
+→ siga com o arquivo que o agente gravou.
+[--comparar exit=0]
+?? sdd/
+?? vendor/
+27cd139542582b8f73470dee1a91f3d1fabc83609a1cbee382fc53cfe6a0b389	/private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.Gg087dIi9J/e.f5a/w/sdd/features/DEFINE_F.md
+AUSENTE	/private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.Gg087dIi9J/e.f5a/w/sdd/reviews/GOVERNANCA_REVIEW_F.md
+AUSENTE	/private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.Gg087dIi9J/e.f5a/w/vendor/lib
+#HEAD	e837f0e9117d385119410a429319f72e8039e5a4	/private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.Gg087dIi9J/e.f5a/w
+#PERMITIDO	/private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.Gg087dIi9J/e.f5a/w/sdd/reviews/GOVERNANCA_REVIEW_F.md	/private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.Gg087dIi9J/e.f5a/w/sdd/reviews/GOVERNANCA_REVIEW_F.md
+# F5b: worktree aninhado que já existia
+novo f5b; git worktree add -q wt2 -b outra; antes
+cd "$d/w" && pwd -P
+--- cenário f5b (W=/private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.Gg087dIi9J/e.f5b/w) ---
+[--snapshot antes exit=0]
+printf 'adulterado\n' > wt2/a.txt
+depois; comparar
+[--snapshot depois exit=0]
+RESULTADO: SÓ O PERMITIDO MUDOU
+→ siga com o arquivo que o agente gravou.
+[--comparar exit=0]
+# vizinho legítimo: a mesma pasta SEM .git dentro é FORA arquivo a arquivo
+novo f5c; mkdir -p vendor/lib; printf 'v1\n' > vendor/lib/f.txt; antes
+cd "$d/w" && pwd -P
+--- cenário f5c (W=/private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.Gg087dIi9J/e.f5c/w) ---
+[--snapshot antes exit=0]
+printf 'v2 adulterado\n' > vendor/lib/f.txt; printf 'novo\n' > vendor/lib/novo.txt
+depois; comparar
+[--snapshot depois exit=0]
+FORA: /private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.Gg087dIi9J/e.f5c/w/vendor/lib/f.txt
+FORA: /private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.Gg087dIi9J/e.f5c/w/vendor/lib/novo.txt
+RESULTADO: ESCRITA FORA DO PERMITIDO
+→ não apague nada: liste os caminhos FORA para a pessoa conferir, regrave o DEFINE se ele mudou e conte como falha (1 redespacho).
+[--comparar exit=1]
+[exit=0]

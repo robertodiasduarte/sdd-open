@@ -1,0 +1,9 @@
+$ python3 -B sdd/bin/design-lint.py sdd/features/DESIGN_F5_CONHECIMENTO.md; bash sdd/bin/verify-gate.sh --print sdd/features/DEFINE_F5_CONHECIMENTO.md
+✅ sdd/features/DESIGN_F5_CONHECIMENTO.md: DESIGN válido
+rc=0
+── Verify Gate de sdd/features/DEFINE_F5_CONHECIMENTO.md ──
+kind:       test
+cmd:        T=$(mktemp -d) && git archive HEAD | tar -x -C $T && PUBLISH_GATE_MODE=ci bash scripts/publish-gate.sh $T && cd $T && SDD_TEST_BASH=/bin/bash /usr/bin/python3 -B -m unittest discover -s tests -p 'test_*.py'
+pass_when:  exit 0
+threshold:  —
+rc=0

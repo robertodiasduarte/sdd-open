@@ -1,0 +1,23 @@
+$ bash sdd/bin/verify-gate.sh --strict sdd/features/DEFINE_F14_DRIVE.md
+▶ Verify Gate [test]: T=$(mktemp -d) && git archive HEAD | tar -x -C $T && PUBLISH_GATE_MODE=ci bash scripts/publish-gate.sh $T && cd $T && SDD_TEST_BASH=/bin/bash /usr/bin/python3 -B -m unittest discover -s tests -p 'test_*.py'
+   │ publish-gate — tree: /private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.aGGv2HnnHj — mode: ci
+   │ ──────────────────────────────────────────────────────────────────
+   │ G1 secrets (gitleaks)
+   │   ✅ no secrets detected
+   │ G2 forbidden patterns
+   │   ⛔ pattern matched: /[0-9]{11,}/
+   │      /private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.aGGv2HnnHj/tests/test_drive.py:715:        self.escreve(self.r, "sdd/reports/progress/DRIVE_F.lock", "99999999999999999999")
+   │ G3 allowlist (MANIFEST.txt)
+   │   ✅ tree and manifest match in both directions
+   │ G4 verify-gate exit contract
+   │   ✅ DEFINE_FIXTURE_NEEDS_CLARIFICATION.md → exit 5
+   │   ✅ DEFINE_FIXTURE_CONTROLE.md → exit 0
+   │   ✅ DEFINE_FIXTURE_SEM_BLOCO.md → exit 64
+   │ G5 documentation
+   │ ──────────────────────────────────────────────────────────────────
+   │ ⛔ publish-gate BLOCKED — fix the findings above. Never retry silently, never loosen a
+   │    pattern without adding an equivalent one.
+🛑 GATE VERMELHO (test) — pass_when: 'exit 0' NÃO satisfeito (rc=1).
+RESULTADO: VERMELHO
+→ corrija o que o comando acima apontou e rode de novo.
+[exit=2]

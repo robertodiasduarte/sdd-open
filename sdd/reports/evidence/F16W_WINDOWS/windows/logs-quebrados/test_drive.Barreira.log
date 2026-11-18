@@ -1,0 +1,30 @@
+test_nenhum_verbo_publica (test_drive.Barreira.test_nenhum_verbo_publica) ... FAIL
+
+test_o_script_nao_cita_comando_que_publica (test_drive.Barreira.test_o_script_nao_cita_comando_que_publica) ... ok
+
+
+
+======================================================================
+
+FAIL: test_nenhum_verbo_publica (test_drive.Barreira.test_nenhum_verbo_publica)
+
+----------------------------------------------------------------------
+
+Traceback (most recent call last):
+
+  File "D:\a\sdd-open\sdd-open\tests\test_drive.py", line 1373, in test_nenhum_verbo_publica
+
+    self.assertEqual(self.drive("concluir", D, env=env)[0], 0)
+
+AssertionError: 10 != 0
+
+
+
+----------------------------------------------------------------------
+
+Ran 2 tests in 17.973s
+
+
+
+FAILED (failures=1)
+

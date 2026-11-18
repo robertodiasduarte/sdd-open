@@ -1,0 +1,13 @@
+$ python3 -B -I /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f17b-starter-etapa2/4bd671df-4c34-431c-bf11-929368bfac1c/scratchpad/at006b.py /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f17b-starter-etapa2/4bd671df-4c34-431c-bf11-929368bfac1c/scratchpad/w1/st/skills
+sdd-governanca/SKILL.md:84: '2. acrescente `psql -v ON_ERROR_STOP=1 -f sdd/tests/governanca/{FEATURE}_<Gnn>.sql` ao `cmd` do bloco'
+sdd-governanca/references/CATALOGO_GOVERNANCA.md:88: '> Rodar com: `psql -v ON_ERROR_STOP=1 -f <arquivo>.sql` **contra um banco de desenvolvimento, de teste ou um'
+sdd-governanca/references/CATALOGO_GOVERNANCA.md:109: '```sql'
+sdd-governanca/references/CATALOGO_GOVERNANCA.md:158: '```sql'
+sdd-governanca/references/CATALOGO_GOVERNANCA.md:207: '```sql'
+sdd-governanca/references/CATALOGO_GOVERNANCA.md:281: '```sql'
+sdd-governanca/references/CATALOGO_GOVERNANCA.md:357: '```sql'
+sdd-governanca/references/CATALOGO_GOVERNANCA.md:428: '```sql'
+sdd-governanca/references/CATALOGO_GOVERNANCA.md:470: '```sql'
+sdd-governanca/references/CATALOGO_GOVERNANCA.md:511: '```sql'
+trecho condicionado em SKILL.md: linhas 79-93
+rc=0

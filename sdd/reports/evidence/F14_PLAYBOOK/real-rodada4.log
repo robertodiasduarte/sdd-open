@@ -1,0 +1,93 @@
+$ git rev-parse HEAD
+8a320e9d27d4471f5352e3861a277865ded2d1ed
+$ bash sdd/bin/adversarial-review.sh --reviewer claude --auditor openrouter:qwen/qwen3.7-plus --feature F14_PLAYBOOK --revisor2 openrouter:deepseek/deepseek-v4-pro
+▶ revisor: claude (-) — até 15 min
+▶ 2º revisor: openrouter:deepseek/deepseek-v4-pro (deepseek/deepseek-v4-pro) — até 15 min
+▶ auditor: openrouter:qwen/qwen3.7-plus (qwen/qwen3.7-plus) — até 15 min
+RESULTADO: REVIEW COMPLETA
+pasta: sdd/reports/reviews/EXTERNAL_REVIEW_20261105-132615
+diff_sha256: 5a73f1893155458b8b3cb880086ad3335fbcd61ac9cc4543682749348d617a84
+revisor: claude (claude-opus-5-5) — US$ 3,7014
+2º revisor: openrouter:deepseek/deepseek-v4-pro (deepseek/deepseek-v4-pro via Relace) — US$ 0,1827
+auditor: openrouter:qwen/qwen3.7-plus (qwen/qwen3.7-plus via Alibaba) — US$ 0,0633
+diversidade: vendor
+achados: 1 grave, 1 médio, 4 leves
+custo total: US$ 3,9474
+→ rode: bash sdd/bin/sdd-fluxo.sh loop --review sdd/reports/reviews/EXTERNAL_REVIEW_20261105-132615 --ledger <ledger da revisão> --rodada <N>
+[exit=0]
+$ cat sdd/reports/reviews/EXTERNAL_REVIEW_20261105-132615/META.txt
+worktree                : /Users/robertoduarte/rdd-worktrees/sdd-open-f14-playbook
+branch                  : feat/f14-playbook
+protocolo               : cadeia REVISOR → AUDITOR; paralelo não existe
+base                    : origin/main
+merge_base              : b1348bd28a3bc774fd6b9b3f323093ec5ca92c40
+head                    : 8a320e9d27d4471f5352e3861a277865ded2d1ed
+paths                   : -
+diff_sha256             : 5a73f1893155458b8b3cb880086ad3335fbcd61ac9cc4543682749348d617a84
+diff                    : 386KB (61 arquivo(s))
+contexto                : 130KB (4 doc SDD)
+docs_sdd                : BRAINSTORM_F14_PLAYBOOK.md, DEFINE_F14_PLAYBOOK.md, DESIGN_F14_PLAYBOOK.md, BUILD_REPORT_F14_PLAYBOOK.md
+contexto_cortado        : -
+diversidade             : vendor
+reviewer_engine_default : claude
+reviewer_engine_efetivo : claude
+reviewer_fallback_usado : nao
+reviewer_motivo         : -
+reviewer_exit           : 0
+reviewer_segundos       : 716
+reviewer_achados        : 5
+reviewer_tokens_entrada : 260031
+reviewer_tokens_saida   : 75488
+reviewer_tokens_total   : 335519
+reviewer_modelo         : claude-opus-5-5
+reviewer_custo          : US$ 3.7014
+revisor1_raso           : nao
+gatilho_2o_revisor      : 61 arquivos (limiar 8)
+revisor2_engine         : openrouter:deepseek/deepseek-v4-pro
+revisor2_engine_default : openrouter:deepseek/deepseek-v4-pro
+revisor2_engine_efetivo : openrouter:deepseek/deepseek-v4-pro
+revisor2_fallback_usado : nao
+revisor2_motivo         : -
+revisor2_exit           : 0
+revisor2_segundos       : 174
+revisor2_achados        : 1
+revisor2_tokens_entrada : 176174
+revisor2_tokens_saida   : 16124
+revisor2_tokens_total   : 192298
+revisor2_modelo         : deepseek/deepseek-v4-pro via Relace
+revisor2_custo          : US$ 0.1827
+auditor_engine_default  : openrouter:qwen/qwen3.7-plus
+auditor_engine_efetivo  : openrouter:qwen/qwen3.7-plus
+auditor_fallback_usado  : nao
+auditor_motivo          : -
+auditor_exit            : 0
+auditor_segundos        : 100
+auditor_vereditos       : 6
+auditor_tokens_entrada  : 176772
+auditor_tokens_saida    : 5225
+auditor_tokens_total    : 181997
+auditor_modelo          : qwen/qwen3.7-plus via Alibaba
+auditor_custo           : US$ 0.0633
+convergencia_1o_passe   : nao
+desempate_alvo          : -
+desempate_engine        : -
+desempate_decisao       : -
+custo_total             : US$ 3.9474
+quando                  : 20261105-132615
+[exit=0]
+$ bash sdd/bin/sdd-fluxo.sh loop --review sdd/reports/reviews/EXTERNAL_REVIEW_20261105-132615 --ledger sdd/reports/evidence/F14_PLAYBOOK/ledger-review.md --rodada 4 (teto ${TETO:-3})
+ESTADO: BLOQUEADO
+rodada: 4 de 4
+graves_abertos: 1
+aplicadas: 0
+rebatidas: 0
+motivo: grave(s) sem veredito no ledger: R1@openrouter-deepseek-deepseek-v4-pro
+motivo: D4 teto: 4 rodadas de review atingido
+RESULTADO: BLOQUEADO
+→ pare e faça a pergunta D4 ou D5 de sdd/templates/fragments/FLUXO_ENCADEADO.md.
+[exit=20]
+$ bash sdd/bin/adversarial-review.sh --conferir sdd/reports/reviews/EXTERNAL_REVIEW_20261105-132615
+🛑 adversarial-review: o código mudou depois da revisão sdd/reports/reviews/EXTERNAL_REVIEW_20261105-132615 (sha256 diferente)
+RESULTADO: NÃO CONFERE
+→ rode a revisão de novo sobre esta versão.
+[exit=2]

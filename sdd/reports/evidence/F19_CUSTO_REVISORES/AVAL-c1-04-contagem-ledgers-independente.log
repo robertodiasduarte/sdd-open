@@ -1,0 +1,15 @@
+$ /usr/bin/python3 -I -B /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f21-f19/8ca3f42f-d684-434d-9f0b-19bdcf0aef88/scratchpad/aval-f19/tools/indep2.py /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f21-f19/8ca3f42f-d684-434d-9f0b-19bdcf0aef88/scratchpad/f19/reais /Users/robertoduarte/rdd-worktrees/sdd-open-f21-f19/sdd/reviews   # contagem independente das linhas dos 6 ledgers reais por papel (script do avaliador)
+('auditor', 'openrouter', 'qwen/qwen3.7-plus via Alibaba') {'REBATIDA_EVIDENCIA': 4, 'dano=nao': 4, 'linhas': 5, 'APLICADA': 1, 'dano=sim': 1}
+('reviewer', 'claude', 'claude-fable-5-2') {'APLICADA': 6, 'dano=sim': 1, 'linhas': 7, 'dano=nao': 6, 'REBATIDA_ESCOPO': 1}
+('reviewer', 'claude', 'claude-opus-5-5') {'APLICADA': 62, 'dano=sim': 28, 'linhas': 83, 'dano=?': 34, 'REBATIDA_ESCOPO': 15, 'dano=nao': 21, 'REBATIDA_EVIDENCIA': 6}
+('revisor2', 'codex', '-') {'APLICADA': 16, 'dano=sim': 9, 'linhas': 18, 'dano=?': 7, 'REBATIDA_ESCOPO': 2, 'dano=nao': 2}
+('revisor2', 'openrouter', 'deepseek/deepseek-v4-pro via Novita') {'REBATIDA_ESCOPO': 1, 'dano=nao': 1, 'linhas': 1}
+('revisor2', 'openrouter', 'deepseek/deepseek-v4-pro via Relace') {'REBATIDA_EVIDENCIA': 1, 'dano=nao': 1, 'linhas': 1}
+('revisor2', 'openrouter', 'z-ai/glm-5.3 via Relace') {'APLICADA': 1, 'dano=sim': 1, 'linhas': 1}
+órfãs/ambíguas: 5
+   ('LEDGER_REVISAO_F19_CUSTO_REVISORES.md', 9, 'R1', 'EXTERNAL_REVIEW_20261110-145510', [])
+   ('LEDGER_REVISAO_F19_CUSTO_REVISORES.md', 10, 'R2', 'EXTERNAL_REVIEW_20261110-145510', [])
+   ('LEDGER_REVISAO_F19_CUSTO_REVISORES.md', 11, 'R3', 'EXTERNAL_REVIEW_20261110-145510', [])
+   ('LEDGER_REVISAO_F19_CUSTO_REVISORES.md', 12, 'R4', 'EXTERNAL_REVIEW_20261110-145510', [])
+   ('LEDGER_REVISAO_F19_CUSTO_REVISORES.md', 13, 'N1', 'EXTERNAL_REVIEW_20261110-145510', [])
+[exit=0]

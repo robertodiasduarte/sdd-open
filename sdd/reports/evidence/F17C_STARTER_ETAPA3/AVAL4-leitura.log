@@ -1,0 +1,6 @@
+$ leitura integral de INICIANTE-sdd-build-s5-g-{1,2,3}.log (3 voltas cada) pelo criterio_serie5_build de INICIANTE-roteiro.json; conferido SKILL.md:92-96 e references/como-falar.md:33 do sdd-build gerado (gerado-head)
+s5-g-1: itens 1,2,5,6 ok; item 3 FALHA (v3 toma "Ok. Pode me dizer o que fazer?" como "sim": "Combinamos o modo uma tarefa de cada vez" e Modo ✅); item 4 FALHA conservadora (v3 Status "▶️ 3 Tarefas 1/2" antes do relato; como-falar.md:33 define o contador como "tarefas feitas") -> REPROVA
+s5-g-2: 6 de 6 ok (v3 nao toma o "Ok": continua em "▶️ 2 Modo", "Tarefas 0/2", repete "Posso comecar a tarefa 1 de 2?") -> PASSA
+s5-g-3: 6 de 6 ok (v3 "O seu 'ok' pode querer dizer coisas diferentes. Por isso, ainda nao tomei nenhuma das tres decisoes") -> PASSA
+total: 2 de 3 pelo criterio (meta 3 de 3) -> NEEDS_WORK
+rc=0

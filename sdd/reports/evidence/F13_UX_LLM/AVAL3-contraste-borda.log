@@ -1,0 +1,31 @@
+$ /bin/bash /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.VE6HeN93zy/c2.sh
+#000 #fff --piso=3                 rc=64 
+#000 #fff --piso .5                rc=0 21.00:1 PASSA (piso .5:1)
+#000 #fff --piso 3.                rc=64 
+#000 #fff --piso -1                rc=64 
+#000 #fff --piso 21                rc=0 21.00:1 PASSA (piso 21:1)
+#000 #fff --piso 21.01             rc=2 21.00:1 REPROVA (piso 21.01:1)
+#000 #fff --piso 4.50              rc=0 21.00:1 PASSA (piso 4.50:1)
+#71796f #fff --piso 4.50           rc=0 4.50:1 PASSA (piso 4.50:1)
+#71796f #fff --piso 4.51           rc=2 4.50:1 REPROVA (piso 4.51:1)
+#000 #fff 1.0                      rc=0 21.00:1 PASSA (piso 4.5:1)
+#000 #fff 0.50                     rc=2 3.97:1 REPROVA (piso 4.5:1)
+#000 #fff .                        rc=64 
+#000 #fff 1.                       rc=0 21.00:1 PASSA (piso 4.5:1)
+#000 #fff 00.5                     rc=64 
+#000 #fff +.5                      rc=64 
+#000 #fff 1e-1                     rc=64 
+#000 #fff 0x1                      rc=64 
+#000 #fff                          rc=64 
+#000 #fff                          rc=64 
+#000 #fff 1,5                      rc=64 
+#000 #fff ,5                       rc=64 
+000 fff                            rc=64 
+#FFF #000                          rc=0 21.00:1 PASSA (piso 4.5:1)
+#fff #000 1                        rc=0 21.00:1 PASSA (piso 4.5:1)
+#abcdef #ABCDEF                    rc=2 1.00:1 REPROVA (piso 4.5:1)
+ #fff                              rc=64 
+--help                             rc=0 contraste.sh — razão de contraste WCAG entre 2 cores, com veredito.
+-h                                 rc=0 contraste.sh — razão de contraste WCAG entre 2 cores, com veredito.
+--self-test x                      rc=64 
+[exit=0]

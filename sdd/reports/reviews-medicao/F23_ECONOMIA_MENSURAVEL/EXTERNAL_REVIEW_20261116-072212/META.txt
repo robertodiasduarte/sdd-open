@@ -1,0 +1,35 @@
+worktree                : /Users/robertoduarte/rdd-worktrees/sdd-open-f23-economia-mensuravel
+branch                  : feat/f23-economia-mensuravel
+protocolo               : cadeia REVISOR → AUDITOR; paralelo não existe
+base                    : origin/main
+merge_base              : 8f944fc417f8d558ded925b0f33605ee32d7ae75
+head                    : b4948103360fe1c517c0ac8173f18780ba3ea07e
+paths                   : -
+diff_sha256             : 424ad8816ddcd4dc02bc5e7d27cd813cd0f06c14a2c875911ae2f3217d034974
+diff                    : 125KB (42 arquivo(s))
+contexto                : 76KB (4 doc SDD)
+docs_sdd                : BRAINSTORM_F23_ECONOMIA_MENSURAVEL.md, DEFINE_F23_ECONOMIA_MENSURAVEL.md, DESIGN_F23_ECONOMIA_MENSURAVEL.md, BUILD_REPORT_F23_ECONOMIA_MENSURAVEL.md
+contexto_cortado        : -
+diversidade             : -
+reviewer_engine_default : claude
+reviewer_engine_efetivo : claude
+reviewer_fallback_usado : nao
+reviewer_motivo         : claude falhou (cota, cobrança ou erro)
+reviewer_exit           : 67
+reviewer_segundos       : 71
+reviewer_achados        : 0
+reviewer_tokens_entrada : n/d
+reviewer_tokens_saida   : n/d
+reviewer_tokens_total   : n/d
+reviewer_modelo         : n/d
+reviewer_custo          : $?
+revisor1_raso           : nao
+gatilho_2o_revisor      : -
+revisor2_engine         : -
+auditor_exit            : -
+convergencia_1o_passe   : n/a (auditor não rodou)
+desempate_alvo          : -
+desempate_engine        : -
+desempate_decisao       : -
+custo_total             : $?
+quando                  : 20261116-072212

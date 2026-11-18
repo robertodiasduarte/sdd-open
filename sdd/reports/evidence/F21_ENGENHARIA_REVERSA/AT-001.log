@@ -1,0 +1,11 @@
+$ (em tests/) /usr/bin/python3 -B -m unittest -v test_f21_textos.Pacote
+test_arquivos_presentes_e_ausentes (test_f21_textos.Pacote) ... ok
+test_frontmatter_e_versao_iguais_nos_tres_lugares (test_f21_textos.Pacote) ... ok
+test_lint_e_molde_iguais_aos_do_pacote_de_origem (test_f21_textos.Pacote) ... ok
+test_manifest_txt_lista_cada_arquivo (test_f21_textos.Pacote) ... ok
+
+----------------------------------------------------------------------
+Ran 4 tests in 0.003s
+
+OK
+[exit=0]

@@ -1,0 +1,11 @@
+$ (código de 84267e9, com os testes novos) cd tests && python3 -B -m unittest test_f24_release_enxuta.Revisao4a test_f24_release_enxuta.Revisao4aTextos
+ERROR: test_r2_codex_registrar_desconta_ausentes_da_antiga (test_f24_release_enxuta.Revisao4a.test_r2_codex_registrar_desconta_ausentes_da_antiga)
+FAIL: test_r1_claude_arquivo_desconhecido_recusa_a_entrada (test_f24_release_enxuta.Revisao4a.test_r1_claude_arquivo_desconhecido_recusa_a_entrada)
+FAIL: test_r5_claude_marca_de_recusa_sai_junto (test_f24_release_enxuta.Revisao4a.test_r5_claude_marca_de_recusa_sai_junto)
+FAIL: test_r1_codex_playbook_limpo_inclui_o_staged (test_f24_release_enxuta.Revisao4aTextos.test_r1_codex_playbook_limpo_inclui_o_staged)
+FAIL: test_r2_claude_sem_workflow_que_publica_e_nao_sei (test_f24_release_enxuta.Revisao4aTextos.test_r2_claude_sem_workflow_que_publica_e_nao_sei)
+FAIL: test_r3_codex_temporarios_por_feature_e_entrada (test_f24_release_enxuta.Revisao4aTextos.test_r3_codex_temporarios_por_feature_e_entrada)
+FAIL: test_r4_claude_branch_local_com_D (test_f24_release_enxuta.Revisao4aTextos.test_r4_claude_branch_local_com_D)
+Ran 7 tests in 1.252s
+FAILED (failures=6, errors=1)
+[exit=1]

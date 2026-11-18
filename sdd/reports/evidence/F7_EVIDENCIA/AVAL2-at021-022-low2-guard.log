@@ -1,0 +1,107 @@
+$ P=$PWD; T=$(mktemp -d); cd "$T" && git init -q -b main r && cd r && git config user.email a@b.c && git config user.name t
+mkdir -p sdd/bin && cp "$P"/sdd/bin/avaliador-guard.sh "$P"/sdd/bin/verify-gate.sh sdd/bin/ && echo a > sdd/bin/x.sh && echo b > "sdd/bin/com espaço.sh" && echo c > sdd/bin/apagar.sh
+printf "## Verify Gate\n\n\`\`\`yaml\nverify_gate:\n  kind: test\n  cmd: \"true\"\n  pass_when: \"exit 0\"\n\`\`\`\n" > DEFINE_G.md
+git add -A && git commit -qm base
+PERM="--permitir sdd/features/ --permitir sdd/handoffs/ --permitir sdd/reports/ --permitir sdd/reviews/"
+G() { bash sdd/bin/avaliador-guard.sh "$@"; echo "exit=$?"; }
+echo "== AT-021 limpa"; G $PERM
+echo "== AT-021 depois do trace do verify-gate + evidência + specs permitidas"; bash sdd/bin/verify-gate.sh DEFINE_G.md >/dev/null; ls sdd/traces; mkdir -p sdd/reports/evidence/F sdd/features; echo l > sdd/reports/evidence/F/a.log; echo d > sdd/features/DEFINE_F.md; G $PERM
+echo "== AT-022 modificado fora"; echo a2 > sdd/bin/x.sh; G $PERM
+echo "== AT-022 staged + não rastreado + espaço"; git add sdd/bin/x.sh; echo n > sdd/bin/novo.sh; echo b2 > "sdd/bin/com espaço.sh"; G $PERM
+echo "-- executa o comando sugerido:"; CMDSUG=$(bash sdd/bin/avaliador-guard.sh $PERM | sed -n "s/^→ //p"); echo "$CMDSUG"; /bin/bash -c "$CMDSUG" >/dev/null; echo "rc do comando sugerido=$?"; G $PERM
+echo "== LOW-2 renomeação staged"; git mv sdd/bin/x.sh sdd/bin/y.sh; G $PERM
+CMDSUG=$(bash sdd/bin/avaliador-guard.sh $PERM | sed -n "s/^→ //p"); echo "$CMDSUG"; /bin/bash -c "$CMDSUG" >/dev/null; echo "rc do comando sugerido=$?"; G $PERM
+echo "== renomeação com edição não staged do destino"; git mv sdd/bin/y.sh sdd/bin/z.sh; echo z2 > sdd/bin/z.sh; CMDSUG=$(bash sdd/bin/avaliador-guard.sh $PERM | sed -n "s/^→ //p"); echo "$CMDSUG"; /bin/bash -c "$CMDSUG" >/dev/null; echo "rc=$?"; G $PERM
+echo "== achado: só uma remoção STAGED (git rm) — o comando sugerido vira add -A sem caminho"
+git rm -q sdd/bin/apagar.sh; G $PERM
+CMDSUG=$(bash sdd/bin/avaliador-guard.sh $PERM | sed -n "s/^→ //p"); echo "$CMDSUG"; /bin/bash -c "$CMDSUG" >/dev/null; echo "rc=$?"
+echo "-- arquivos que entraram no commit sugerido:"; git show --name-status --format= HEAD
+echo "== AT-022 git falha"; G --root /
+echo "== off"; SDD_AVALIADOR_GUARD=off bash sdd/bin/avaliador-guard.sh; echo "exit=$?"
+echo "== uso"; G --bogus
+cd /; rm -rf "${T:?}"
+== AT-021 limpa
+✅ árvore commitada (fora de sdd/reports/evidence/, sdd/traces/ e dos prefixos permitidos).
+RESULTADO: VERDE
+→ o avaliador pode ser despachado.
+exit=0
+== AT-021 depois do trace do verify-gate + evidência + specs permitidas
+G.jsonl
+✅ árvore commitada (fora de sdd/reports/evidence/, sdd/traces/ e dos prefixos permitidos).
+RESULTADO: VERDE
+→ o avaliador pode ser despachado.
+exit=0
+== AT-022 modificado fora
+🛑 1 arquivo(s) com mudança não commitada: o avaliador usa o terminal e pode restaurar arquivos do
+   último commit — o que não foi commitado se perde. Commite antes de despachar (é rotina, não decisão):
+   - sdd/bin/x.sh
+RESULTADO: VERMELHO
+→ git -C /private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.e0tFCbSFZx/r add -A -- 'sdd/bin/x.sh' && git -C /private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.e0tFCbSFZx/r commit -m "wip(build): congelado para o avaliador"
+exit=1
+== AT-022 staged + não rastreado + espaço
+🛑 3 arquivo(s) com mudança não commitada: o avaliador usa o terminal e pode restaurar arquivos do
+   último commit — o que não foi commitado se perde. Commite antes de despachar (é rotina, não decisão):
+   - sdd/bin/com espaço.sh
+   - sdd/bin/x.sh
+   - sdd/bin/novo.sh
+RESULTADO: VERMELHO
+→ git -C /private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.e0tFCbSFZx/r add -A -- 'sdd/bin/com espaço.sh' 'sdd/bin/x.sh' 'sdd/bin/novo.sh' && git -C /private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.e0tFCbSFZx/r commit -m "wip(build): congelado para o avaliador"
+exit=1
+-- executa o comando sugerido:
+git -C /private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.e0tFCbSFZx/r add -A -- 'sdd/bin/com espaço.sh' 'sdd/bin/x.sh' 'sdd/bin/novo.sh' && git -C /private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.e0tFCbSFZx/r commit -m "wip(build): congelado para o avaliador"
+rc do comando sugerido=0
+✅ árvore commitada (fora de sdd/reports/evidence/, sdd/traces/ e dos prefixos permitidos).
+RESULTADO: VERDE
+→ o avaliador pode ser despachado.
+exit=0
+== LOW-2 renomeação staged
+🛑 2 arquivo(s) com mudança não commitada: o avaliador usa o terminal e pode restaurar arquivos do
+   último commit — o que não foi commitado se perde. Commite antes de despachar (é rotina, não decisão):
+   - sdd/bin/x.sh
+   - sdd/bin/y.sh
+RESULTADO: VERMELHO
+→ git -C /private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.e0tFCbSFZx/r add -A -- 'sdd/bin/y.sh' && git -C /private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.e0tFCbSFZx/r commit -m "wip(build): congelado para o avaliador"
+exit=1
+git -C /private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.e0tFCbSFZx/r add -A -- 'sdd/bin/y.sh' && git -C /private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.e0tFCbSFZx/r commit -m "wip(build): congelado para o avaliador"
+rc do comando sugerido=0
+✅ árvore commitada (fora de sdd/reports/evidence/, sdd/traces/ e dos prefixos permitidos).
+RESULTADO: VERDE
+→ o avaliador pode ser despachado.
+exit=0
+== renomeação com edição não staged do destino
+git -C /private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.e0tFCbSFZx/r add -A -- 'sdd/bin/z.sh' && git -C /private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.e0tFCbSFZx/r commit -m "wip(build): congelado para o avaliador"
+rc=0
+✅ árvore commitada (fora de sdd/reports/evidence/, sdd/traces/ e dos prefixos permitidos).
+RESULTADO: VERDE
+→ o avaliador pode ser despachado.
+exit=0
+== achado: só uma remoção STAGED (git rm) — o comando sugerido vira add -A sem caminho
+🛑 1 arquivo(s) com mudança não commitada: o avaliador usa o terminal e pode restaurar arquivos do
+   último commit — o que não foi commitado se perde. Commite antes de despachar (é rotina, não decisão):
+   - sdd/bin/apagar.sh
+RESULTADO: VERMELHO
+→ git -C /private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.e0tFCbSFZx/r add -A -- && git -C /private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.e0tFCbSFZx/r commit -m "wip(build): congelado para o avaliador"
+exit=1
+git -C /private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.e0tFCbSFZx/r add -A -- && git -C /private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.e0tFCbSFZx/r commit -m "wip(build): congelado para o avaliador"
+rc=0
+-- arquivos que entraram no commit sugerido:
+D	sdd/bin/apagar.sh
+A	sdd/features/DEFINE_F.md
+A	sdd/reports/evidence/F/a.log
+A	sdd/traces/G.jsonl
+== AT-022 git falha
+⚠️  não consegui conferir a árvore: / não é um repositório git
+RESULTADO: INCONCLUSIVO
+→ não despache o avaliador até o guard conferir; rode dentro do repositório do projeto.
+exit=2
+== off
+⚠️  guard desligado (SDD_AVALIADOR_GUARD=off) — declare no BUILD_REPORT.
+RESULTADO: VERDE
+→ o avaliador pode ser despachado; o bypass é decisão sua e fica registrado.
+exit=0
+== uso
+🛑 argumento inesperado: --bogus
+RESULTADO: ERRO DE USO
+→ uso: sdd/bin/avaliador-guard.sh [--root <dir>] [--permitir <prefixo>]…
+exit=64
+[exit=0]

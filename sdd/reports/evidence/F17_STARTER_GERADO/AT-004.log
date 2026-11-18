@@ -1,0 +1,10 @@
+$ (cd tests && python3 -B -m unittest -v test_gerar_starter.Lint)   # AT-004, commit d813954
+test_at004_a_copia_crua_reprova_e_a_gerada_passa (test_gerar_starter.Lint.test_at004_a_copia_crua_reprova_e_a_gerada_passa) ... ok
+test_aval1_lint_pega_caminho_da_skill_gerada_fora_do_par (test_gerar_starter.Lint.test_aval1_lint_pega_caminho_da_skill_gerada_fora_do_par) ... ok
+test_r4_aceite_nao_isenta_outra_citacao_na_mesma_linha (test_gerar_starter.Lint.test_r4_aceite_nao_isenta_outra_citacao_na_mesma_linha) ... ok
+
+----------------------------------------------------------------------
+Ran 3 tests in 6.458s
+
+OK
+[exit=0]

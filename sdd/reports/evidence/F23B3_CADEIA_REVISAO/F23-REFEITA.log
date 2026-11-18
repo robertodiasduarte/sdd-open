@@ -1,0 +1,21 @@
+$ bash sdd/bin/eval-revisores.sh sdd/reports/reviews-medicao/F23_ECONOMIA_MENSURAVEL --ledgers <ledger da F23 com as linhas D1 e sem resultado>   # HEAD 0c21571
+eval-revisores — custo e resultado por papel, engine e modelo (7 pasta(s) lida(s) em /Users/robertoduarte/rdd-worktrees/sdd-open-f23b3-cadeia-revisao/sdd/reports/reviews-medicao/F23_ECONOMIA_MENSURAVEL; 1 ledger(s))
+
+| Papel | Engine (modelo) | Cobrança | Rodadas | Falhas | Pago US$ | Nominal US$ | Achados | Aplicados | Com dano | Falsos positivos | Fora de escopo | Sem classificar | Pago por dano | Nominal por dano | AGREE |
+|---|---|---|---:|---|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|
+| revisor | claude (-) | assinatura | 0 | 1 (1 cota ou tempo) | 0.0000 | n/d | 0 | 0 | 0 | 0 | 0 | 0 | — | — | — |
+| revisor | claude (claude-opus-5-5) | assinatura | 6 | 0 | 0.0000 | 8.1219 | 26 | 20 de 26 | 13 de 26 | 3 de 26 | 3 de 26 | 0 de 26 | 0.0000 | 0.6248 | — |
+| auditor | codex (-) | assinatura | 1 | 0 | 0.0000 | n/d | 1 | 0 de 1 | 0 de 1 | 0 de 1 | 1 de 1 | 0 de 1 | — | — | 100.0% (2 de 2) |
+| auditor | openrouter (-) | pay-per-token | 0 | 2 (2 cota ou tempo) | n/d | n/d | 0 | 0 | 0 | 0 | 0 | 0 | — | — | n/a |
+| auditor | openrouter (qwen/qwen3.7-plus via Alibaba) | pay-per-token | 3 | 0 | 0.0871 | 0.0871 | 1 | 0 de 1 | 0 de 1 | 1 de 1 | 0 de 1 | 0 de 1 | — | — | 56.2% (9 de 16) |
+
+Cadeia por frente (o 2º revisor só por risco ou revisor raso; evitado = a regra antiga o chamaria):
+
+| Frente | Rodadas | 2º revisor por risco | 2º revisor por raso | Evitado pela regra | Custo evitado US$ | Dispensas à mão | Escapes com dano |
+|---|---:|---:|---:|---:|---:|---|---:|
+| F23_ECONOMIA_MENSURAVEL | 7 | 0 | 0 | 0 | — | revisor2 5 · desempate 0 + n/d | 0 |
+
+fora da conta: 0
+RESULTADO: MEDIDO
+→ leia cada taxa com a amostra ao lado: poucas rodadas dão número instável. O script conta o que está registrado; trocar a cadeia de revisão é decisão de quem lê.
+[exit=0]

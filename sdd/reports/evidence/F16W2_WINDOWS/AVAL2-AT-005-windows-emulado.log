@@ -1,0 +1,6 @@
+$ /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f16w-windows/b56e801b-0f18-49ee-b51c-5b9188b29c23/scratchpad/at005w.sh; echo "[rc=$?]"
+head  checar      12s rc=0 taskkill=2 | - Não deu para conferir o login do gh no GitHub agora (o GitHub não respondeu em 10 s).   Rode de novo quando a conexão voltar; para ver na hora: gh auth status 
+head  inventario  10s rc=0 taskkill=2 | gh_estado=sem resposta
+base  checar      60s rc=0 taskkill=2 | 
+base  inventario  60s rc=0 taskkill=2 | gh_estado=ok
+[rc=0]

@@ -1,0 +1,44 @@
+test_implementacao_sem_teste_reprova (test_sdd_kb.Strict.test_implementacao_sem_teste_reprova) ... ok
+
+test_link_dentro_do_projeto_para_fora_passa (test_sdd_kb.Strict.test_link_dentro_do_projeto_para_fora_passa) ... ok
+
+test_revisado_sem_implementacao_passa (test_sdd_kb.Strict.test_revisado_sem_implementacao_passa) ... ok
+
+test_sem_strict_nao_confere_teste (test_sdd_kb.Strict.test_sem_strict_nao_confere_teste) ... ok
+
+test_teste_de_arquivo_inexistente_reprova (test_sdd_kb.Strict.test_teste_de_arquivo_inexistente_reprova) ... ok
+
+test_teste_fora_da_raiz_reprova (test_sdd_kb.Strict.test_teste_fora_da_raiz_reprova) ... 
+
+  test_teste_fora_da_raiz_reprova (test_sdd_kb.Strict.test_teste_fora_da_raiz_reprova) (teste='C:\\Users\\runneradmin\\AppData\\Local\\Temp\\sdd-open-9_tdxxcn\\fora.py') ... FAIL
+
+test_teste_que_existe_passa (test_sdd_kb.Strict.test_teste_que_existe_passa) ... ok
+
+test_uso_errado_e_64 (test_sdd_kb.Strict.test_uso_errado_e_64) ... ok
+
+
+
+======================================================================
+
+FAIL: test_teste_fora_da_raiz_reprova (test_sdd_kb.Strict.test_teste_fora_da_raiz_reprova) (teste='C:\\Users\\runneradmin\\AppData\\Local\\Temp\\sdd-open-9_tdxxcn\\fora.py')
+
+----------------------------------------------------------------------
+
+Traceback (most recent call last):
+
+  File "D:\a\sdd-open\sdd-open\tests\test_sdd_kb.py", line 194, in test_teste_fora_da_raiz_reprova
+
+    self.assertIn("is outside the project root", out)
+
+AssertionError: 'is outside the project root' not found in "FAIL: rules/UB12-10-CRT3.md: teste 'C:\\\\Users\\\\runneradmin\\\\AppData\\\\Local\\\\Temp\\\\sdd-open-9_tdxxcn\\\\fora.py': C not found from the project root C:\\Users\\runneradmin\\AppData\\Local\\Temp\\sdd-open-9_tdxxcn\\proj\n"
+
+
+
+----------------------------------------------------------------------
+
+Ran 8 tests in 0.940s
+
+
+
+FAILED (failures=1)
+

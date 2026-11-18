@@ -1,0 +1,17 @@
+$ GIT_TERMINAL_PROMPT=0 git push origin HEAD:main  # 7e19462..1c9bbc7 fast-forward, OK do Roberto citando sdd-open
+origin/main=1c9bbc7d3280a44d3452c6411ba8c8e40b4329a0
+$ gh run view 41025735985 (release, event push)
+headSha=1c9bbc7d3280a44d3452c6411ba8c8e40b4329a0 conclusion=success
+  Testes no piso (macOS, só leitura): success
+  Testes (só leitura): success
+  Publicar release: success
+$ gh run view 41025736350 (publish-gate, event push)
+conclusion=success
+$ gh release view v2.2.7
+v2.2.7
+1c9bbc7d3280a44d3452c6411ba8c8e40b4329a0
+sdd-open-v2.2.7.tar.gz
+SHA256SUMS.txt
+$ shasum -a 256 -c SHA256SUMS.txt
+sdd-open-v2.2.7.tar.gz: OK
+exit=0

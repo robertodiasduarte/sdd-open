@@ -1,0 +1,4 @@
+$ /usr/bin/python3 -B sdd/bin/kb-dominios.py sdd/features/DEFINE_F5_CONHECIMENTO.md
+✅ sdd/features/DEFINE_F5_CONHECIMENTO.md: KB Domains válido (nenhum)
+RESULTADO: VERDE
+exit=0

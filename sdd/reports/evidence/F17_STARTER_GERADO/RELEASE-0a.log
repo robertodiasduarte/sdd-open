@@ -1,0 +1,37 @@
+# FASE 0a sobre 0396642
+== itens 1-3: slots landmines_cmd, drift_check_cmd e lint_cmd vazios (o pacote não tem sdd/config.yaml): pulados
+== item 4: Verify Gate — VERIFY-GATE-0396642.log [exit=0]
+== item 5a: $ python3 sdd/bin/report-lint.py sdd/reports/BUILD_REPORT_F17_STARTER_GERADO.md
+✅ sdd/reports/BUILD_REPORT_F17_STARTER_GERADO.md: todo `true` tem evidência abrível e a avaliação está provada ou declarada
+RESULTADO: VERDE
+→ o relatório pode ser commitado.
+[item 5a exit=0]
+== item 5b: $ python3 sdd/bin/report-lint.py --pendente sdd/reports/BUILD_REPORT_F17_STARTER_GERADO.md
+✅ nenhuma avaliação PENDENTE em 1 relatório(s)
+RESULTADO: VERDE
+→ siga para o próximo passo.
+[item 5b exit=0]
+== item 6: $ bash sdd/bin/playbook-lint.sh sdd/playbook.md
+🟢 sdd/playbook.md: formato OK — 21 ativos, 0 tombstones, Sempre=4 bullets/322 palavras, 0 aviso(s)
+[item 6 exit=0]
+== item 7: $ bash sdd/bin/gate-shell-evidencia.sh
+✅ 50 log(s) sem exit de formatador.
+RESULTADO: VERDE
+→ siga para o próximo passo.
+[item 7 exit=0]
+== item 8a: $ bash sdd/bin/adversarial-review.sh --conferir
+🛑 adversarial-review: a revisão sdd/reports/reviews/EXTERNAL_REVIEW_20261112-202310 foi rasa (n/a (revisor1 raso: 0 achados em 25s)): não conta como revisão
+RESULTADO: NÃO CONFERE
+→ rode a revisão de novo, com outra engine se preciso.
+[item 8a exit=2]
+== item 8b: $ bash sdd/bin/ledger-revisao-lint.sh sdd/reviews/LEDGER_REVISAO_F17_STARTER_GERADO.md
+✅ ledger da revisão: 12 linha(s) e 1 rodada(s) sem achados em 1 arquivo(s), cada linha com veredito, dano e a pasta da revisão.
+RESULTADO: VERDE
+→ passe o arquivo ao `sdd-fluxo.sh loop --ledger` e ao `eval-revisores.sh`.
+[item 8b exit=0]
+== item 10: $ bash sdd/bin/seguranca-varredura.sh --saida sdd/reports/evidence/F17_STARTER_GERADO/SEGURANCA.log
+✔ aceito S16 tests/test_seguranca_varredura.py:591 — caso de teste, nunca executado
+✔ aceito S16 tests/test_seguranca_varredura.py:648 — caso de teste da varredura, nunca executado
+RESULTADO: NADA ACHADO
+→ siga; a varredura só acha o que dá para ver por texto: a conferência à mão (--checklist) continua.
+[item 10 exit=0]

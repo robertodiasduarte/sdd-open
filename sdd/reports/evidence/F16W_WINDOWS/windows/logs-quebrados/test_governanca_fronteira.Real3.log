@@ -1,0 +1,42 @@
+test_alias_por_link_do_permitido_casa_com_ele (test_governanca_fronteira.Real3.test_alias_por_link_do_permitido_casa_com_ele) ... FAIL
+
+test_snapshot_dentro_do_git_e_recusado (test_governanca_fronteira.Real3.test_snapshot_dentro_do_git_e_recusado) ... ok
+
+
+
+======================================================================
+
+FAIL: test_alias_por_link_do_permitido_casa_com_ele (test_governanca_fronteira.Real3.test_alias_por_link_do_permitido_casa_com_ele)
+
+----------------------------------------------------------------------
+
+Traceback (most recent call last):
+
+  File "D:\a\sdd-open\sdd-open\tests\test_governanca_fronteira.py", line 167, in test_alias_por_link_do_permitido_casa_com_ele
+
+    self.snap("antes")
+
+  File "D:\a\sdd-open\sdd-open\tests\test_governanca_fronteira.py", line 36, in snap
+
+    self.assertEqual(rc, 0, out)
+
+AssertionError: 64 != 0 : incluir fora do worktree: C:\Users\runneradmin\AppData\Local\Temp\sdd-open-n0t9gjq1\w\sdd\reviews\REL.md
+
+uso: D:\a\sdd-open\sdd-open\sdd\bin\governanca-fronteira.sh --snapshot <raiz-do-worktree> <arquivo-do-snapshot> [incluir�] | --comparar <antes> <depois> <permitido>�
+
+RESULTADO: ERRO DE USO
+
+\u2192 a fronteira N�O foi verificada; corrija a chamada e rode de novo.
+
+
+
+
+
+----------------------------------------------------------------------
+
+Ran 2 tests in 0.801s
+
+
+
+FAILED (failures=1)
+

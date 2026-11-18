@@ -1,0 +1,19 @@
+$ T=$(mktemp -d) && git archive 363d8bc | tar -x -C $T && cp tests/*.py $T/tests/ && cd $T/tests && SDD_TEST_BASH=/bin/bash /usr/bin/python3 -B -m unittest test_governanca_fronteira.Real3.test_alias_por_link_do_permitido_casa_com_ele
+F
+======================================================================
+FAIL: test_alias_por_link_do_permitido_casa_com_ele (test_governanca_fronteira.Real3)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.xM4r8ShYNR/tests/test_governanca_fronteira.py", line 174, in test_alias_por_link_do_permitido_casa_com_ele
+    self.assertEqual(rc, 0, out)
+AssertionError: 1 != 0 : FORA: /private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/sdd-open-isdgpiir/w/atalho.md
+MUDOU: /private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/sdd-open-isdgpiir/w/sdd/reviews/REL.md
+RESULTADO: ESCRITA FORA DO PERMITIDO
+→ não apague nada: liste os caminhos FORA para a pessoa conferir, regrave o DEFINE se ele mudou e conte como falha (1 redespacho).
+
+
+----------------------------------------------------------------------
+Ran 1 test in 0.406s
+
+FAILED (failures=1)
+[exit=1]

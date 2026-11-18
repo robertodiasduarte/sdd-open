@@ -1,0 +1,6 @@
+$ T=$(mktemp -d) && git archive d816f77 | tar -x -C $T && cp tests/*.py $T/tests/ && cd $T/tests && for t in test_contexto_lint.Real5 test_patterns_lint.Real5 test_docs_extract_decisions.Extrator.test_links_relativos_a_pasta_do_out test_f12_textos.Passo11.test_restauracao_do_define_desfaz_link_antes_do_cp; do SDD_TEST_BASH=/bin/bash /usr/bin/python3 -B -m unittest $t > $T/o.txt 2>&1; echo "$t: exit=$? $(grep -cE "^(FAIL|ERROR):" $T/o.txt) falha(s)"; done
+test_contexto_lint.Real5: exit=1 1 falha(s)
+test_patterns_lint.Real5: exit=1 1 falha(s)
+test_docs_extract_decisions.Extrator.test_links_relativos_a_pasta_do_out: exit=1 1 falha(s)
+test_f12_textos.Passo11.test_restauracao_do_define_desfaz_link_antes_do_cp: exit=1 1 falha(s)
+[exit=0]

@@ -1,0 +1,534 @@
+test_report_guard_le_o_payload_em_utf8_cru_num_sistema_cp1252 (test_claude_adapter.Projeto.test_report_guard_le_o_payload_em_utf8_cru_num_sistema_cp1252) ... ERROR
+
+test_report_guard_nega_write_que_o_lint_reprova (test_claude_adapter.Projeto.test_report_guard_nega_write_que_o_lint_reprova) ... ERROR
+
+test_report_guard_simula_o_edit (test_claude_adapter.Projeto.test_report_guard_simula_o_edit) ... ERROR
+
+test_report_guard_so_julga_o_relatorio_em_sdd_reports (test_claude_adapter.Projeto.test_report_guard_so_julga_o_relatorio_em_sdd_reports) ... 
+
+  test_report_guard_so_julga_o_relatorio_em_sdd_reports (test_claude_adapter.Projeto.test_report_guard_so_julga_o_relatorio_em_sdd_reports) (controle='C:\\Users\\runneradmin\\AppData\\Local\\Temp\\sdd-open-nbe_ytb2\\projeto\\sdd\\reports\\BUILD_REPORT_X.md') ... ERROR
+
+  test_report_guard_so_julga_o_relatorio_em_sdd_reports (test_claude_adapter.Projeto.test_report_guard_so_julga_o_relatorio_em_sdd_reports) (controle='sdd/reports/BUILD_REPORT_X.md') ... ERROR
+
+  test_report_guard_so_julga_o_relatorio_em_sdd_reports (test_claude_adapter.Projeto.test_report_guard_so_julga_o_relatorio_em_sdd_reports) (fora='.claude/sdd/reports/BUILD_REPORT_X.md') ... ERROR
+
+  test_report_guard_so_julga_o_relatorio_em_sdd_reports (test_claude_adapter.Projeto.test_report_guard_so_julga_o_relatorio_em_sdd_reports) (fora='docs/BUILD_REPORT_X.md') ... ERROR
+
+  test_report_guard_so_julga_o_relatorio_em_sdd_reports (test_claude_adapter.Projeto.test_report_guard_so_julga_o_relatorio_em_sdd_reports) (fora='sdd/archive/X/BUILD_REPORT_X.md') ... ERROR
+
+  test_report_guard_so_julga_o_relatorio_em_sdd_reports (test_claude_adapter.Projeto.test_report_guard_so_julga_o_relatorio_em_sdd_reports) (fora='sdd/reports/antigos/BUILD_REPORT_X.md') ... ERROR
+
+  test_report_guard_so_julga_o_relatorio_em_sdd_reports (test_claude_adapter.Projeto.test_report_guard_so_julga_o_relatorio_em_sdd_reports) (fora='BUILD_REPORT_X.md') ... ERROR
+
+  test_report_guard_so_julga_o_relatorio_em_sdd_reports (test_claude_adapter.Projeto.test_report_guard_so_julga_o_relatorio_em_sdd_reports) (fora='sdd/reports/BUILD_REPORT_velhos/BUILD_REPORT_X.md') ... ERROR
+
+test_sem_python3_o_vendor_claude_para_antes_de_escrever (test_claude_adapter.Projeto.test_sem_python3_o_vendor_claude_para_antes_de_escrever) ... FAIL
+
+test_settings_com_forma_errada_aborta_antes_de_escrever (test_claude_adapter.Projeto.test_settings_com_forma_errada_aborta_antes_de_escrever) ... ok
+
+test_settings_invalido_aborta_antes_de_escrever (test_claude_adapter.Projeto.test_settings_invalido_aborta_antes_de_escrever) ... ok
+
+
+
+======================================================================
+
+ERROR: test_report_guard_le_o_payload_em_utf8_cru_num_sistema_cp1252 (test_claude_adapter.Projeto.test_report_guard_le_o_payload_em_utf8_cru_num_sistema_cp1252)
+
+----------------------------------------------------------------------
+
+Traceback (most recent call last):
+
+  File "D:\a\sdd-open\sdd-open\tests\test_claude_adapter.py", line 200, in test_report_guard_le_o_payload_em_utf8_cru_num_sistema_cp1252
+
+    cru = json.dumps(self.payload("payload-write-build-report.json", FILE=alvo, CONTENT=ruim + "\n\u26a0\ufe0f � ��o\n"),
+
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+  File "D:\a\sdd-open\sdd-open\tests\test_claude_adapter.py", line 59, in payload
+
+    return json.loads(texto.replace("__CWD__", str(self.p)))
+
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+  File "C:\hostedtoolcache\windows\Python\3.12.10\x64\Lib\json\__init__.py", line 346, in loads
+
+    return _default_decoder.decode(s)
+
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+  File "C:\hostedtoolcache\windows\Python\3.12.10\x64\Lib\json\decoder.py", line 338, in decode
+
+    obj, end = self.raw_decode(s, idx=_w(s, 0).end())
+
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+  File "C:\hostedtoolcache\windows\Python\3.12.10\x64\Lib\json\decoder.py", line 354, in raw_decode
+
+    obj, end = self.scan_once(s, idx)
+
+               ^^^^^^^^^^^^^^^^^^^^^^
+
+json.decoder.JSONDecodeError: Invalid \escape: line 7 column 13 (char 876)
+
+
+
+======================================================================
+
+ERROR: test_report_guard_nega_write_que_o_lint_reprova (test_claude_adapter.Projeto.test_report_guard_nega_write_que_o_lint_reprova)
+
+----------------------------------------------------------------------
+
+Traceback (most recent call last):
+
+  File "D:\a\sdd-open\sdd-open\tests\test_claude_adapter.py", line 167, in test_report_guard_nega_write_que_o_lint_reprova
+
+    rc, out, err = self.guard("sdd-report-guard.py", self.payload("payload-write-build-report.json", FILE=alvo, CONTENT=ruim))
+
+                                                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+  File "D:\a\sdd-open\sdd-open\tests\test_claude_adapter.py", line 59, in payload
+
+    return json.loads(texto.replace("__CWD__", str(self.p)))
+
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+  File "C:\hostedtoolcache\windows\Python\3.12.10\x64\Lib\json\__init__.py", line 346, in loads
+
+    return _default_decoder.decode(s)
+
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+  File "C:\hostedtoolcache\windows\Python\3.12.10\x64\Lib\json\decoder.py", line 338, in decode
+
+    obj, end = self.raw_decode(s, idx=_w(s, 0).end())
+
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+  File "C:\hostedtoolcache\windows\Python\3.12.10\x64\Lib\json\decoder.py", line 354, in raw_decode
+
+    obj, end = self.scan_once(s, idx)
+
+               ^^^^^^^^^^^^^^^^^^^^^^
+
+json.decoder.JSONDecodeError: Invalid \escape: line 7 column 13 (char 839)
+
+
+
+======================================================================
+
+ERROR: test_report_guard_simula_o_edit (test_claude_adapter.Projeto.test_report_guard_simula_o_edit)
+
+----------------------------------------------------------------------
+
+Traceback (most recent call last):
+
+  File "D:\a\sdd-open\sdd-open\tests\test_claude_adapter.py", line 217, in test_report_guard_simula_o_edit
+
+    rc, out, err = self.guard("sdd-report-guard.py", self.payload("payload-edit-build-report.json", FILE=str(alvo),
+
+                                                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+  File "D:\a\sdd-open\sdd-open\tests\test_claude_adapter.py", line 59, in payload
+
+    return json.loads(texto.replace("__CWD__", str(self.p)))
+
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+  File "C:\hostedtoolcache\windows\Python\3.12.10\x64\Lib\json\__init__.py", line 346, in loads
+
+    return _default_decoder.decode(s)
+
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+  File "C:\hostedtoolcache\windows\Python\3.12.10\x64\Lib\json\decoder.py", line 338, in decode
+
+    obj, end = self.raw_decode(s, idx=_w(s, 0).end())
+
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+  File "C:\hostedtoolcache\windows\Python\3.12.10\x64\Lib\json\decoder.py", line 354, in raw_decode
+
+    obj, end = self.scan_once(s, idx)
+
+               ^^^^^^^^^^^^^^^^^^^^^^
+
+json.decoder.JSONDecodeError: Invalid \escape: line 8 column 13 (char 255)
+
+
+
+======================================================================
+
+ERROR: test_report_guard_so_julga_o_relatorio_em_sdd_reports (test_claude_adapter.Projeto.test_report_guard_so_julga_o_relatorio_em_sdd_reports) (controle='C:\\Users\\runneradmin\\AppData\\Local\\Temp\\sdd-open-nbe_ytb2\\projeto\\sdd\\reports\\BUILD_REPORT_X.md')
+
+----------------------------------------------------------------------
+
+Traceback (most recent call last):
+
+  File "D:\a\sdd-open\sdd-open\tests\test_claude_adapter.py", line 245, in test_report_guard_so_julga_o_relatorio_em_sdd_reports
+
+    rc, out, err = self.guard("sdd-report-guard.py", self.payload("payload-write-build-report.json", FILE=alvo, CONTENT=ruim))
+
+                                                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+  File "D:\a\sdd-open\sdd-open\tests\test_claude_adapter.py", line 59, in payload
+
+    return json.loads(texto.replace("__CWD__", str(self.p)))
+
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+  File "C:\hostedtoolcache\windows\Python\3.12.10\x64\Lib\json\__init__.py", line 346, in loads
+
+    return _default_decoder.decode(s)
+
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+  File "C:\hostedtoolcache\windows\Python\3.12.10\x64\Lib\json\decoder.py", line 338, in decode
+
+    obj, end = self.raw_decode(s, idx=_w(s, 0).end())
+
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+  File "C:\hostedtoolcache\windows\Python\3.12.10\x64\Lib\json\decoder.py", line 354, in raw_decode
+
+    obj, end = self.scan_once(s, idx)
+
+               ^^^^^^^^^^^^^^^^^^^^^^
+
+json.decoder.JSONDecodeError: Invalid \escape: line 7 column 13 (char 839)
+
+
+
+======================================================================
+
+ERROR: test_report_guard_so_julga_o_relatorio_em_sdd_reports (test_claude_adapter.Projeto.test_report_guard_so_julga_o_relatorio_em_sdd_reports) (controle='sdd/reports/BUILD_REPORT_X.md')
+
+----------------------------------------------------------------------
+
+Traceback (most recent call last):
+
+  File "D:\a\sdd-open\sdd-open\tests\test_claude_adapter.py", line 245, in test_report_guard_so_julga_o_relatorio_em_sdd_reports
+
+    rc, out, err = self.guard("sdd-report-guard.py", self.payload("payload-write-build-report.json", FILE=alvo, CONTENT=ruim))
+
+                                                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+  File "D:\a\sdd-open\sdd-open\tests\test_claude_adapter.py", line 59, in payload
+
+    return json.loads(texto.replace("__CWD__", str(self.p)))
+
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+  File "C:\hostedtoolcache\windows\Python\3.12.10\x64\Lib\json\__init__.py", line 346, in loads
+
+    return _default_decoder.decode(s)
+
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+  File "C:\hostedtoolcache\windows\Python\3.12.10\x64\Lib\json\decoder.py", line 338, in decode
+
+    obj, end = self.raw_decode(s, idx=_w(s, 0).end())
+
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+  File "C:\hostedtoolcache\windows\Python\3.12.10\x64\Lib\json\decoder.py", line 354, in raw_decode
+
+    obj, end = self.scan_once(s, idx)
+
+               ^^^^^^^^^^^^^^^^^^^^^^
+
+json.decoder.JSONDecodeError: Invalid \escape: line 7 column 13 (char 763)
+
+
+
+======================================================================
+
+ERROR: test_report_guard_so_julga_o_relatorio_em_sdd_reports (test_claude_adapter.Projeto.test_report_guard_so_julga_o_relatorio_em_sdd_reports) (fora='.claude/sdd/reports/BUILD_REPORT_X.md')
+
+----------------------------------------------------------------------
+
+Traceback (most recent call last):
+
+  File "D:\a\sdd-open\sdd-open\tests\test_claude_adapter.py", line 251, in test_report_guard_so_julga_o_relatorio_em_sdd_reports
+
+    rc, out, err = self.guard("sdd-report-guard.py", self.payload("payload-write-build-report.json",
+
+                                                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+  File "D:\a\sdd-open\sdd-open\tests\test_claude_adapter.py", line 59, in payload
+
+    return json.loads(texto.replace("__CWD__", str(self.p)))
+
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+  File "C:\hostedtoolcache\windows\Python\3.12.10\x64\Lib\json\__init__.py", line 346, in loads
+
+    return _default_decoder.decode(s)
+
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+  File "C:\hostedtoolcache\windows\Python\3.12.10\x64\Lib\json\decoder.py", line 338, in decode
+
+    obj, end = self.raw_decode(s, idx=_w(s, 0).end())
+
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+  File "C:\hostedtoolcache\windows\Python\3.12.10\x64\Lib\json\decoder.py", line 354, in raw_decode
+
+    obj, end = self.scan_once(s, idx)
+
+               ^^^^^^^^^^^^^^^^^^^^^^
+
+json.decoder.JSONDecodeError: Invalid \escape: line 7 column 13 (char 848)
+
+
+
+======================================================================
+
+ERROR: test_report_guard_so_julga_o_relatorio_em_sdd_reports (test_claude_adapter.Projeto.test_report_guard_so_julga_o_relatorio_em_sdd_reports) (fora='docs/BUILD_REPORT_X.md')
+
+----------------------------------------------------------------------
+
+Traceback (most recent call last):
+
+  File "D:\a\sdd-open\sdd-open\tests\test_claude_adapter.py", line 251, in test_report_guard_so_julga_o_relatorio_em_sdd_reports
+
+    rc, out, err = self.guard("sdd-report-guard.py", self.payload("payload-write-build-report.json",
+
+                                                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+  File "D:\a\sdd-open\sdd-open\tests\test_claude_adapter.py", line 59, in payload
+
+    return json.loads(texto.replace("__CWD__", str(self.p)))
+
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+  File "C:\hostedtoolcache\windows\Python\3.12.10\x64\Lib\json\__init__.py", line 346, in loads
+
+    return _default_decoder.decode(s)
+
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+  File "C:\hostedtoolcache\windows\Python\3.12.10\x64\Lib\json\decoder.py", line 338, in decode
+
+    obj, end = self.raw_decode(s, idx=_w(s, 0).end())
+
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+  File "C:\hostedtoolcache\windows\Python\3.12.10\x64\Lib\json\decoder.py", line 354, in raw_decode
+
+    obj, end = self.scan_once(s, idx)
+
+               ^^^^^^^^^^^^^^^^^^^^^^
+
+json.decoder.JSONDecodeError: Invalid \escape: line 7 column 13 (char 831)
+
+
+
+======================================================================
+
+ERROR: test_report_guard_so_julga_o_relatorio_em_sdd_reports (test_claude_adapter.Projeto.test_report_guard_so_julga_o_relatorio_em_sdd_reports) (fora='sdd/archive/X/BUILD_REPORT_X.md')
+
+----------------------------------------------------------------------
+
+Traceback (most recent call last):
+
+  File "D:\a\sdd-open\sdd-open\tests\test_claude_adapter.py", line 251, in test_report_guard_so_julga_o_relatorio_em_sdd_reports
+
+    rc, out, err = self.guard("sdd-report-guard.py", self.payload("payload-write-build-report.json",
+
+                                                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+  File "D:\a\sdd-open\sdd-open\tests\test_claude_adapter.py", line 59, in payload
+
+    return json.loads(texto.replace("__CWD__", str(self.p)))
+
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+  File "C:\hostedtoolcache\windows\Python\3.12.10\x64\Lib\json\__init__.py", line 346, in loads
+
+    return _default_decoder.decode(s)
+
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+  File "C:\hostedtoolcache\windows\Python\3.12.10\x64\Lib\json\decoder.py", line 338, in decode
+
+    obj, end = self.raw_decode(s, idx=_w(s, 0).end())
+
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+  File "C:\hostedtoolcache\windows\Python\3.12.10\x64\Lib\json\decoder.py", line 354, in raw_decode
+
+    obj, end = self.scan_once(s, idx)
+
+               ^^^^^^^^^^^^^^^^^^^^^^
+
+json.decoder.JSONDecodeError: Invalid \escape: line 7 column 13 (char 842)
+
+
+
+======================================================================
+
+ERROR: test_report_guard_so_julga_o_relatorio_em_sdd_reports (test_claude_adapter.Projeto.test_report_guard_so_julga_o_relatorio_em_sdd_reports) (fora='sdd/reports/antigos/BUILD_REPORT_X.md')
+
+----------------------------------------------------------------------
+
+Traceback (most recent call last):
+
+  File "D:\a\sdd-open\sdd-open\tests\test_claude_adapter.py", line 251, in test_report_guard_so_julga_o_relatorio_em_sdd_reports
+
+    rc, out, err = self.guard("sdd-report-guard.py", self.payload("payload-write-build-report.json",
+
+                                                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+  File "D:\a\sdd-open\sdd-open\tests\test_claude_adapter.py", line 59, in payload
+
+    return json.loads(texto.replace("__CWD__", str(self.p)))
+
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+  File "C:\hostedtoolcache\windows\Python\3.12.10\x64\Lib\json\__init__.py", line 346, in loads
+
+    return _default_decoder.decode(s)
+
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+  File "C:\hostedtoolcache\windows\Python\3.12.10\x64\Lib\json\decoder.py", line 338, in decode
+
+    obj, end = self.raw_decode(s, idx=_w(s, 0).end())
+
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+  File "C:\hostedtoolcache\windows\Python\3.12.10\x64\Lib\json\decoder.py", line 354, in raw_decode
+
+    obj, end = self.scan_once(s, idx)
+
+               ^^^^^^^^^^^^^^^^^^^^^^
+
+json.decoder.JSONDecodeError: Invalid \escape: line 7 column 13 (char 848)
+
+
+
+======================================================================
+
+ERROR: test_report_guard_so_julga_o_relatorio_em_sdd_reports (test_claude_adapter.Projeto.test_report_guard_so_julga_o_relatorio_em_sdd_reports) (fora='BUILD_REPORT_X.md')
+
+----------------------------------------------------------------------
+
+Traceback (most recent call last):
+
+  File "D:\a\sdd-open\sdd-open\tests\test_claude_adapter.py", line 251, in test_report_guard_so_julga_o_relatorio_em_sdd_reports
+
+    rc, out, err = self.guard("sdd-report-guard.py", self.payload("payload-write-build-report.json",
+
+                                                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+  File "D:\a\sdd-open\sdd-open\tests\test_claude_adapter.py", line 59, in payload
+
+    return json.loads(texto.replace("__CWD__", str(self.p)))
+
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+  File "C:\hostedtoolcache\windows\Python\3.12.10\x64\Lib\json\__init__.py", line 346, in loads
+
+    return _default_decoder.decode(s)
+
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+  File "C:\hostedtoolcache\windows\Python\3.12.10\x64\Lib\json\decoder.py", line 338, in decode
+
+    obj, end = self.raw_decode(s, idx=_w(s, 0).end())
+
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+  File "C:\hostedtoolcache\windows\Python\3.12.10\x64\Lib\json\decoder.py", line 354, in raw_decode
+
+    obj, end = self.scan_once(s, idx)
+
+               ^^^^^^^^^^^^^^^^^^^^^^
+
+json.decoder.JSONDecodeError: Invalid \escape: line 7 column 13 (char 825)
+
+
+
+======================================================================
+
+ERROR: test_report_guard_so_julga_o_relatorio_em_sdd_reports (test_claude_adapter.Projeto.test_report_guard_so_julga_o_relatorio_em_sdd_reports) (fora='sdd/reports/BUILD_REPORT_velhos/BUILD_REPORT_X.md')
+
+----------------------------------------------------------------------
+
+Traceback (most recent call last):
+
+  File "D:\a\sdd-open\sdd-open\tests\test_claude_adapter.py", line 251, in test_report_guard_so_julga_o_relatorio_em_sdd_reports
+
+    rc, out, err = self.guard("sdd-report-guard.py", self.payload("payload-write-build-report.json",
+
+                                                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+  File "D:\a\sdd-open\sdd-open\tests\test_claude_adapter.py", line 59, in payload
+
+    return json.loads(texto.replace("__CWD__", str(self.p)))
+
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+  File "C:\hostedtoolcache\windows\Python\3.12.10\x64\Lib\json\__init__.py", line 346, in loads
+
+    return _default_decoder.decode(s)
+
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+  File "C:\hostedtoolcache\windows\Python\3.12.10\x64\Lib\json\decoder.py", line 338, in decode
+
+    obj, end = self.raw_decode(s, idx=_w(s, 0).end())
+
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+  File "C:\hostedtoolcache\windows\Python\3.12.10\x64\Lib\json\decoder.py", line 354, in raw_decode
+
+    obj, end = self.scan_once(s, idx)
+
+               ^^^^^^^^^^^^^^^^^^^^^^
+
+json.decoder.JSONDecodeError: Invalid \escape: line 7 column 13 (char 860)
+
+
+
+======================================================================
+
+FAIL: test_sem_python3_o_vendor_claude_para_antes_de_escrever (test_claude_adapter.Projeto.test_sem_python3_o_vendor_claude_para_antes_de_escrever)
+
+----------------------------------------------------------------------
+
+Traceback (most recent call last):
+
+  File "D:\a\sdd-open\sdd-open\tests\test_claude_adapter.py", line 157, in test_sem_python3_o_vendor_claude_para_antes_de_escrever
+
+    self.assertEqual(rc, 64, out)
+
+AssertionError: 1 != 64 : D:\a\sdd-open\sdd-open\bin\sdd-open.sh: line 22: //bin/lib/say.sh: No such file or directory
+
+D:\a\sdd-open\sdd-open\bin\sdd-open.sh: line 23: //bin/lib/vendors.sh: No such file or directory
+
+D:\a\sdd-open\sdd-open\bin\sdd-open.sh: line 24: //bin/lib/merge.sh: No such file or directory
+
+D:\a\sdd-open\sdd-open\bin\sdd-open.sh: line 25: //bin/lib/plan.sh: No such file or directory
+
+D:\a\sdd-open\sdd-open\bin\sdd-open.sh: line 79: die: command not found
+
+D:\a\sdd-open\sdd-open\bin\sdd-open.sh: line 82: die: command not found
+
+D:\a\sdd-open\sdd-open\bin\sdd-open.sh: line 101: vendores_da_lista: command not found
+
+D:\a\sdd-open\sdd-open\bin\sdd-open.sh: line 111: VENDORS_SUPORTADOS: unbound variable
+
+
+
+
+
+----------------------------------------------------------------------
+
+Ran 7 tests in 288.631s
+
+
+
+FAILED (failures=1, errors=11)
+

@@ -1,0 +1,9 @@
+$ /tmp/aval1-f11.wvW4zp/sabota.sh data-collection-allow sdd/bin/adapters/openrouter.sh '"data_collection": "deny"' '"data_collection": "allow"'
+### sabotagem data-collection-allow em sdd/bin/adapters/openrouter.sh
+  ❌ 89. a OpenRouter recebeu provider.data_collection = deny
+        → lido False, esperado True
+90 asserções, 1 falha(s) em 10 s
+RESULTADO: GATE VERMELHO
+→ cada ❌ acima diz o campo e o valor lido; o adapter da engine citada não extrai mais o que a CLI devolve (ou o script mudou de comportamento). Corrija e rode o gate de novo.
+[gate_rc=2]
+[exit=2]

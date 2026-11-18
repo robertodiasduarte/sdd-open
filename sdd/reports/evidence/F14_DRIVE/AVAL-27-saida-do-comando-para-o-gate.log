@@ -1,0 +1,20 @@
+$ . /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.RRzJHrBpTz/lab.sh; V=$(novo); mkrepo $V/x "exit \$(cat .rc)"; printf ".rc\n" >> .gitignore; git add -A; git commit -qm i; git status --porcelain; echo 0 > .rc; git status --porcelain; drv iniciar $D --max 99; feito; git status --porcelain
+for c in 1 2 3 4 5 64 126 127 137; do echo $c > .rc; echo x$c >> c.txt; git add c.txt; git commit -qm c$c; /bin/bash sdd/bin/sdd-drive.sh --resume $D >/dev/null; /bin/bash sdd/bin/sdd-drive.sh verificar $D > $V/o 2>&1; rc=$?; echo "cmd sai $c => drive rc=$rc $(grep -E "^(motivo|ACAO|   - )" $V/o | head -n 3 | tr "\n" ";") gate=$(tail -n 1 "sdd/reports/evidence/F/$(ls -t sdd/reports/evidence/F | head -n 1)")"; done
+--- sdd-drive iniciar sdd/features/DEFINE_F.md --max 99
+ACAO: RODADA
+rodada: 1/99
+tarefa: 1 de 2 — a
+RESULTADO: CONTINUAR
+→ despache o executor (references/executor.md) só para esta tarefa, em contexto fresco, e chame proximo.
+[rc=10]
+?? sdd/reports/
+cmd sai 1 => drive rc=10 ACAO: CORRIGIR; gate=[exit=2]
+cmd sai 2 => drive rc=10 ACAO: CORRIGIR; gate=[exit=2]
+cmd sai 3 => drive rc=10 ACAO: CORRIGIR; gate=[exit=2]
+cmd sai 4 => drive rc=10 ACAO: CORRIGIR; gate=[exit=2]
+cmd sai 5 => drive rc=10 ACAO: CORRIGIR; gate=[exit=2]
+cmd sai 64 => drive rc=10 ACAO: CORRIGIR; gate=[exit=2]
+cmd sai 126 => drive rc=10 ACAO: CORRIGIR; gate=[exit=2]
+cmd sai 127 => drive rc=20 motivo: gate-inconclusivo; gate=[exit=3]
+cmd sai 137 => drive rc=10 ACAO: CORRIGIR; gate=[exit=2]
+[exit=0]

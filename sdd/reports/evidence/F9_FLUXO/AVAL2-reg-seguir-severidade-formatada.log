@@ -1,0 +1,24 @@
+$ T=$(mktemp -d); W=$PWD; S="$W/sdd/bin/sdd-fluxo.sh"; fails=0; caso() { R="$T/$1"; mkdir -p "$R/sdd/features"; cp sdd/fixtures/fluxo/DEFINE_pronto.md "$R/sdd/features/DEFINE_X.md"; cp sdd/fixtures/fluxo/config-autonomo.yaml "$R/sdd/config.yaml"; sed "$2" sdd/fixtures/fluxo/DESIGN_pronto.md > "$R/sdd/features/DESIGN_X.md"; grep -F "| A1 |" "$R/sdd/features/DESIGN_X.md"; (cd "$R" && git init -q && bash "$S" seguir design sdd/features/DEFINE_X.md build); rc=$?; echo "[$1] rc=$rc (esperado $3: HIGH A1 sem veredito)"; echo; [ $rc -eq $3 ] || fails=$((fails+1)); }; caso negrito "s/| HIGH | APLICADA (Decision 1)/| **HIGH** | PENDENTE/" 1; caso emoji "s/| HIGH | APLICADA (Decision 1)/| 🔴 HIGH | PENDENTE/" 1; caso crase "s/| HIGH | APLICADA (Decision 1)/| \`HIGH\` | PENDENTE/" 1; caso minusculo "s/| HIGH | APLICADA (Decision 1)/| high | PENDENTE/" 1; rm -rf "${T:?}"; echo "casos que seguiram com HIGH aberto: $fails"; test $fails -eq 0
+| A1 | O contador ignora a última linha sem quebra | **HIGH** | PENDENTE | `tests/test_conta.py` |
+✅ DESIGN pronto → seguindo para o BUILD (encadeamento ligado em sdd/config.yaml)
+→ /sdd-build sdd/features/DESIGN_X.md
+[negrito] rc=0 (esperado 1: HIGH A1 sem veredito)
+
+| A1 | O contador ignora a última linha sem quebra | 🔴 HIGH | PENDENTE | `tests/test_conta.py` |
+✅ DESIGN pronto → seguindo para o BUILD (encadeamento ligado em sdd/config.yaml)
+→ /sdd-build sdd/features/DESIGN_X.md
+[emoji] rc=0 (esperado 1: HIGH A1 sem veredito)
+
+| A1 | O contador ignora a última linha sem quebra | `HIGH` | PENDENTE | `tests/test_conta.py` |
+✅ DESIGN pronto → seguindo para o BUILD (encadeamento ligado em sdd/config.yaml)
+→ /sdd-build sdd/features/DESIGN_X.md
+[crase] rc=0 (esperado 1: HIGH A1 sem veredito)
+
+| A1 | O contador ignora a última linha sem quebra | high | PENDENTE | `tests/test_conta.py` |
+PARAR: HIGH aberto no Advisor Ledger: A1
+RESULTADO: PARAR
+→ Próximo passo: /sdd-build sdd/features/DESIGN_X.md
+[minusculo] rc=1 (esperado 1: HIGH A1 sem veredito)
+
+casos que seguiram com HIGH aberto: 3
+[exit=1]

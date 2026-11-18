@@ -1,0 +1,22 @@
+$ /bin/bash /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.lyAZcjfTsM/scripts/volta.sh a /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.lyAZcjfTsM/blocos/a.txt
+RESULTADO: SNAPSHOT GRAVADO
+→ despache o agente e, logo que ele voltar, tire o snapshot de depois sem editar nada no meio.
+[snapshot exit=0]
+[comparar exit=0]
+RESULTADO: SÓ O PERMITIDO MUDOU
+→ siga com o arquivo que o agente gravou.
+[conferir rc=0]
+AUTO LM-001 ajudou+1
+   simples: O aviso sobre conferir só a fiação foi seguido no desenho e evitou o erro: contei mais um uso.
+AUTO LM-003 ajudou+1
+   simples: O aviso sobre revisar sem commit foi seguido: contei mais um uso.
+PERGUNTA 3 contador LM-002 mordeu+1
+   simples: A asserção sem baseline aconteceu de novo nesta feature: contar registra que o aviso não bastou.
+PERGUNTA 4 inv - [INV-002] estado=humano origem=LM-002 :: Toda asserção nova tem baseline vermelho · por quê: asserção sem baseline fica verde sem avaliar nada · motivo: máquina não sabe se o baseline é honesto
+   simples: Como o erro já aconteceu, a lição vira regra permanente que alguém confere; aceitar a contagem e a regra andam juntas.
+PERGUNTA 5 add ADD Backend :: sup: `fila_de_envio` `idempotencia` :: Fila sem chave de idempotência duplica o envio no reprocessamento. **Do instead:** grave a chave antes de enviar e confira antes de reenviar. → ficha: — · promovido_para: —
+   simples: O envio duplicou quando a fila reprocessou. Guardar a lição avisa toda sessão que mexer na fila.
+resumo-bloco: auto=2 pergunta=3 descartar=0 nao_julgado=0 contaminacao=nao
+RESULTADO: BLOCO VÁLIDO
+→ aplique as linhas AUTO sem perguntar e leve as linhas PERGUNTA à pessoa.
+[exit=0]

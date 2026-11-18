@@ -1,0 +1,19 @@
+$ (em tests/) /usr/bin/python3 -B -m unittest -v test_eval_revisores.SemDadosEUso test_eval_revisores.Ledgers.test_linha_fora_do_formato_nunca_some_em_silencio test_eval_revisores.Ledgers.test_pasta_sem_linha_conta_custo_e_achados_e_e_avisada
+test_ajuda_mostra_so_o_uso (test_eval_revisores.SemDadosEUso) ... ok
+test_fora_de_git_usa_a_pasta_atual (test_eval_revisores.SemDadosEUso) ... ok
+test_le_o_output_dir_do_config (test_eval_revisores.SemDadosEUso) ... ok
+test_nao_escreve_nada_na_pasta_lida (test_eval_revisores.SemDadosEUso) ... ok
+test_o_script_nao_tem_rede_nem_chama_engine (test_eval_revisores.SemDadosEUso) ... ok
+test_os_dois_scripts_leem_o_ledger_com_a_mesma_funcao (test_eval_revisores.SemDadosEUso) ... ok
+test_pasta_padrao_que_ainda_nao_existe_e_2 (test_eval_revisores.SemDadosEUso) ... ok
+test_pasta_sem_permissao_de_leitura_e_64_sem_traceback (test_eval_revisores.SemDadosEUso) ... ok
+test_pasta_sem_revisao_e_2_sem_dados (test_eval_revisores.SemDadosEUso) ... ok
+test_uso_errado_e_64_com_causa_e_conserto (test_eval_revisores.SemDadosEUso) ... ok
+test_linha_fora_do_formato_nunca_some_em_silencio (test_eval_revisores.Ledgers) ... ok
+test_pasta_sem_linha_conta_custo_e_achados_e_e_avisada (test_eval_revisores.Ledgers) ... ok
+
+----------------------------------------------------------------------
+Ran 12 tests in 1.001s
+
+OK
+[exit=0]

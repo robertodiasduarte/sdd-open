@@ -1,0 +1,5 @@
+{"achado": "R1", "veredito": "AGREE", "justificativa": "sdd/bin/papel-serie.sh:410 pula também execuções inválidas com meta.txt, impedindo que a retomada recomendada resolva o PARCIAL."}
+{"achado": "R2", "veredito": "AGREE", "justificativa": "A Decision 4 prevê --casos, mas sdd/bin/papel-serie.sh:131 não inclui essa opção."}
+{"achado": "R3", "veredito": "DISAGREE_CONCERN", "justificativa": "contexto-fresco.md:38 permite deixar início sem fechamento no exit 64, mas falta intervalos() para comprovar a distorção da conta."}
+{"achado": "R4", "veredito": "DISAGREE_CONCERN", "justificativa": "A associação do modo contrato a revisao_design está documentada, mas faltam le/retorno e os leitores do brief para comprovar a incompatibilidade."}
+{"achado": "N1", "veredito": "NOVO", "severidade": "HIGH", "arquivo": "sdd/bin/papel-serie.sh", "linha": 502, "resumo": "Uma interrupção após escrita externa pula a comparação de fronteira; a retomada registra apenas o custo e pode aceitar o projeto alterado como novo baseline."}

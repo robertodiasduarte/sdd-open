@@ -1,0 +1,6 @@
+$ /tmp/aval1-f11.wvW4zp/sabota.sh auditor-so-aceita-AGREE sdd/bin/adversarial-review.sh 'j.get("veredito") in ("AGREE", "DISAGREE_EVIDENCE", "DISAGREE_CONCERN", "NOVO")' 'j.get("veredito") in ("AGREE",)'
+### sabotagem auditor-so-aceita-AGREE em sdd/bin/adversarial-review.sh
+90 asserções, 0 falha(s) em 10 s
+RESULTADO: GATE VERDE
+[gate_rc=0]
+[exit=0]

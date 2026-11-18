@@ -1,0 +1,17 @@
+$ bash /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f10-revisao/bd420f6e-558d-4962-a0c9-40cdfc2cbd27/scratchpad/p/c3c.sh
+referência (config vazia): 373d6a164c040c00b4bf57ea64e213b7c97f40de1713e69304d2712f607e2417
+com textconv do usuário: 42e5142aa9e5858b881bbe5b1004e824e60a7bb7aebf22ec72f3cd1ac43ba004
+SHA MUDOU
+diff --git a/sdd/config.yaml b/sdd/config.yaml
+new file mode 100644
+index 0000000..b2b3748
+--- /dev/null
++++ b/sdd/config.yaml
+@@ -0,0 +1,2 @@
++review:
++  registry: /Users/robertoduarte/rdd-worktrees/sdd-open-f10-aval2/sdd/fixtures/revisao/registry-stub.tsv
+diff --git a/src/conta.sh b/src/conta.sh
+index 7898192..422c2b7 100644
+--- a/src/conta.sh
++++ b/src/conta.sh
+[exit=0]

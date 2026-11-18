@@ -1,0 +1,21 @@
+$ W=$(mktemp -d); R=$W/repo; mkdir $R; cd $R; git init -q; G='git -c user.email=a@b -c user.name=a -c commit.gpgsign=false'; echo v1 > limpo.txt; mkdir -p sdd/contexto; $G add limpo.txt; $G commit -qm c1; bash /Users/robertoduarte/rdd-worktrees/sdd-open-f12-contexto/sdd/bin/governanca-fronteira.sh --snapshot $R $W/antes.snap $R/sdd/contexto/x.md; echo v2 > limpo.txt; $G commit -qam 'agente commitou'; echo ok > sdd/contexto/x.md; bash /Users/robertoduarte/rdd-worktrees/sdd-open-f12-contexto/sdd/bin/governanca-fronteira.sh --snapshot $R $W/depois.snap $R/sdd/contexto/x.md; echo '--- comparar'; bash /Users/robertoduarte/rdd-worktrees/sdd-open-f12-contexto/sdd/bin/governanca-fronteira.sh --comparar $W/antes.snap $W/depois.snap $R/sdd/contexto/x.md; echo rc=$?; echo '--- caso: commit+reset --soft volta o HEAD, arquivo staged'; $G reset -q --soft HEAD~1; bash /Users/robertoduarte/rdd-worktrees/sdd-open-f12-contexto/sdd/bin/governanca-fronteira.sh --snapshot $R $W/d2.snap $R/sdd/contexto/x.md; bash /Users/robertoduarte/rdd-worktrees/sdd-open-f12-contexto/sdd/bin/governanca-fronteira.sh --comparar $W/antes.snap $W/d2.snap $R/sdd/contexto/x.md; echo rc=$?
+RESULTADO: SNAPSHOT GRAVADO
+→ despache o agente e, logo que ele voltar, tire o snapshot de depois sem editar nada no meio.
+RESULTADO: SNAPSHOT GRAVADO
+→ despache o agente e, logo que ele voltar, tire o snapshot de depois sem editar nada no meio.
+--- comparar
+FORA: HEAD mudou durante o despacho (b8ad5cec932546f57a1fec99cab963ca8de0d2bd → 996ca9cda4c49fc14387d5b6e488afd592a91828): o agente commitou
+FORA: /private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.Yq1yVHqIjv/repo/limpo.txt
+MUDOU: /private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.Yq1yVHqIjv/repo/sdd/contexto/x.md
+RESULTADO: ESCRITA FORA DO PERMITIDO
+→ não apague nada: liste os caminhos FORA para a pessoa conferir, regrave o DEFINE se ele mudou e conte como falha (1 redespacho).
+rc=1
+--- caso: commit+reset --soft volta o HEAD, arquivo staged
+RESULTADO: SNAPSHOT GRAVADO
+→ despache o agente e, logo que ele voltar, tire o snapshot de depois sem editar nada no meio.
+FORA: /private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.Yq1yVHqIjv/repo/limpo.txt
+MUDOU: /private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.Yq1yVHqIjv/repo/sdd/contexto/x.md
+RESULTADO: ESCRITA FORA DO PERMITIDO
+→ não apague nada: liste os caminhos FORA para a pessoa conferir, regrave o DEFINE se ele mudou e conte como falha (1 redespacho).
+rc=1
+[exit=0]

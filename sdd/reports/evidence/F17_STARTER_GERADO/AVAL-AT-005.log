@@ -1,0 +1,31 @@
+$ python3 -B open/scripts/gerar-starter.py --tag v9.9.0 a/x/st; TMPDIR=<outro> python3 -B open/scripts/gerar-starter.py --tag v9.9.0 b/y/z/st; diff -r -x .git a/x/st b/y/z/st
+→ no starter: python3 scripts/check-gerado.py, os testes dele e um commit numa branch.
+rc=0
+→ no starter: python3 scripts/check-gerado.py, os testes dele e um commit numa branch.
+rc=0
+diff_rc=0
+$ diff -r -x .git a/x/st starter  (vs. a 1ª geração)
+diff_rc=0
+$ grep -rn "aval\.\|/private/\|/Users/\|scratchpad" a/x/st --include=* -l | grep -v "/.git/"
+grep_rc=1
+$ ls -l modo dos .sh/.py gerados vs. a tag
+$ for f in a/x/st/skills/<10>/scripts/*: modo gerado vs. modo na tag (git ls-tree)
+644 100644 skills/sdd-checar-ambiente/scripts/checar.sh
+644 100644 skills/sdd-iniciar-repo/scripts/inventario.sh
+644 100644 skills/sdd-higiene-dado/scripts/alarme.sh
+644 100644 skills/sdd-higiene-dado/scripts/pre-commit.sh
+644 100644 skills/sdd-new-session/scripts/copiar-docs.sh
+644 100644 skills/sdd-kb/scripts/gate.sh
+644 100644 skills/sdd-kb/scripts/kb_normativo.py
+644 100644 skills/sdd-kb/scripts/validate_kb.py
+$ for f in a/x/st/skills/<10>/scripts/*: modo gerado vs. modo na tag (git ls-tree)
+644 100644 skills/sdd-checar-ambiente/scripts/checar.sh
+644 100644 skills/sdd-iniciar-repo/scripts/inventario.sh
+644 100644 skills/sdd-higiene-dado/scripts/alarme.sh
+644 100644 skills/sdd-higiene-dado/scripts/pre-commit.sh
+644 100644 skills/sdd-new-session/scripts/copiar-docs.sh
+644 100644 skills/sdd-kb/scripts/gate.sh
+644 100644 skills/sdd-kb/scripts/kb_normativo.py
+644 100644 skills/sdd-kb/scripts/validate_kb.py
+644 100644 skills/sdd-auditoria-harness/scripts/collect_evidence.py
+644 100644 skills/sdd-engenharia-reversa-saas/scripts/validate_reverse.py

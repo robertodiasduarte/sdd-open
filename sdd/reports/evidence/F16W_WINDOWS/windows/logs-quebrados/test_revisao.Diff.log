@@ -1,0 +1,166 @@
+test_config_do_usuario_nao_muda_o_sha (test_revisao.Diff.test_config_do_usuario_nao_muda_o_sha) ... ERROR
+
+test_diff_vazio_base_invalida_e_acima_de_8_mb_sao_64 (test_revisao.Diff.test_diff_vazio_base_invalida_e_acima_de_8_mb_sao_64) ... FAIL
+
+test_dry_run_nao_chama_engine_nem_cria_pasta (test_revisao.Diff.test_dry_run_nao_chama_engine_nem_cria_pasta) ... FAIL
+
+test_funciona_numa_worktree (test_revisao.Diff.test_funciona_numa_worktree) ... FAIL
+
+test_inclui_nao_rastreado_exclui_artefatos_sdd_e_a_pasta_de_saida (test_revisao.Diff.test_inclui_nao_rastreado_exclui_artefatos_sdd_e_a_pasta_de_saida) ... FAIL
+
+test_paths_inclui_o_que_nomeia (test_revisao.Diff.test_paths_inclui_o_que_nomeia) ... FAIL
+
+
+
+======================================================================
+
+ERROR: test_config_do_usuario_nao_muda_o_sha (test_revisao.Diff.test_config_do_usuario_nao_muda_o_sha)
+
+----------------------------------------------------------------------
+
+Traceback (most recent call last):
+
+  File "D:\a\sdd-open\sdd-open\tests\test_revisao.py", line 244, in test_config_do_usuario_nao_muda_o_sha
+
+    self.assertEqual(sha(a), sha(b))
+
+                     ^^^^^^
+
+  File "D:\a\sdd-open\sdd-open\tests\test_revisao.py", line 243, in <lambda>
+
+    sha = lambda s: re.search(r"diff_sha256: ([0-9a-f]{64})", s).group(1)
+
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+AttributeError: 'NoneType' object has no attribute 'group'
+
+
+
+======================================================================
+
+FAIL: test_diff_vazio_base_invalida_e_acima_de_8_mb_sao_64 (test_revisao.Diff.test_diff_vazio_base_invalida_e_acima_de_8_mb_sao_64)
+
+----------------------------------------------------------------------
+
+Traceback (most recent call last):
+
+  File "D:\a\sdd-open\sdd-open\tests\test_revisao.py", line 261, in test_diff_vazio_base_invalida_e_acima_de_8_mb_sao_64
+
+    self.assertIn("est� vazio", out)
+
+AssertionError: 'est� vazio' not found in 'D:\\a\\sdd-open\\sdd-open\\sdd\\bin\\adversarial-review.sh: line 37: cd: null directory\n\u26a0\ufe0f  o python3 deste computador existe, mas n�o roda (no Windows, costuma ser o atalho da Microsoft Store).\n\U0001f6d1 adversarial-review: python3 n�o encontrado no PATH.\nRESULTADO: PAROU\n\u2192 instale o Python 3 (3.9 ou mais novo) e rode de novo.\n'
+
+
+
+======================================================================
+
+FAIL: test_dry_run_nao_chama_engine_nem_cria_pasta (test_revisao.Diff.test_dry_run_nao_chama_engine_nem_cria_pasta)
+
+----------------------------------------------------------------------
+
+Traceback (most recent call last):
+
+  File "D:\a\sdd-open\sdd-open\tests\test_revisao.py", line 274, in test_dry_run_nao_chama_engine_nem_cria_pasta
+
+    self.assertEqual(rc, 0, out)
+
+AssertionError: 64 != 0 : D:\a\sdd-open\sdd-open\sdd\bin\adversarial-review.sh: line 37: cd: null directory
+
+\u26a0\ufe0f  o python3 deste computador existe, mas n�o roda (no Windows, costuma ser o atalho da Microsoft Store).
+
+\U0001f6d1 adversarial-review: python3 n�o encontrado no PATH.
+
+RESULTADO: PAROU
+
+\u2192 instale o Python 3 (3.9 ou mais novo) e rode de novo.
+
+
+
+
+
+======================================================================
+
+FAIL: test_funciona_numa_worktree (test_revisao.Diff.test_funciona_numa_worktree)
+
+----------------------------------------------------------------------
+
+Traceback (most recent call last):
+
+  File "D:\a\sdd-open\sdd-open\tests\test_revisao.py", line 253, in test_funciona_numa_worktree
+
+    self.assertEqual(rc, 0, out)
+
+AssertionError: 64 != 0 : D:\a\sdd-open\sdd-open\sdd\bin\adversarial-review.sh: line 37: cd: null directory
+
+\u26a0\ufe0f  o python3 deste computador existe, mas n�o roda (no Windows, costuma ser o atalho da Microsoft Store).
+
+\U0001f6d1 adversarial-review: python3 n�o encontrado no PATH.
+
+RESULTADO: PAROU
+
+\u2192 instale o Python 3 (3.9 ou mais novo) e rode de novo.
+
+
+
+
+
+======================================================================
+
+FAIL: test_inclui_nao_rastreado_exclui_artefatos_sdd_e_a_pasta_de_saida (test_revisao.Diff.test_inclui_nao_rastreado_exclui_artefatos_sdd_e_a_pasta_de_saida)
+
+----------------------------------------------------------------------
+
+Traceback (most recent call last):
+
+  File "D:\a\sdd-open\sdd-open\tests\test_revisao.py", line 215, in test_inclui_nao_rastreado_exclui_artefatos_sdd_e_a_pasta_de_saida
+
+    self.assertEqual(rc, 0, out)
+
+AssertionError: 64 != 0 : D:\a\sdd-open\sdd-open\sdd\bin\adversarial-review.sh: line 37: cd: null directory
+
+\u26a0\ufe0f  o python3 deste computador existe, mas n�o roda (no Windows, costuma ser o atalho da Microsoft Store).
+
+\U0001f6d1 adversarial-review: python3 n�o encontrado no PATH.
+
+RESULTADO: PAROU
+
+\u2192 instale o Python 3 (3.9 ou mais novo) e rode de novo.
+
+
+
+
+
+======================================================================
+
+FAIL: test_paths_inclui_o_que_nomeia (test_revisao.Diff.test_paths_inclui_o_que_nomeia)
+
+----------------------------------------------------------------------
+
+Traceback (most recent call last):
+
+  File "D:\a\sdd-open\sdd-open\tests\test_revisao.py", line 231, in test_paths_inclui_o_que_nomeia
+
+    self.assertEqual(rc, 0, out)
+
+AssertionError: 64 != 0 : D:\a\sdd-open\sdd-open\sdd\bin\adversarial-review.sh: line 37: cd: null directory
+
+\u26a0\ufe0f  o python3 deste computador existe, mas n�o roda (no Windows, costuma ser o atalho da Microsoft Store).
+
+\U0001f6d1 adversarial-review: python3 n�o encontrado no PATH.
+
+RESULTADO: PAROU
+
+\u2192 instale o Python 3 (3.9 ou mais novo) e rode de novo.
+
+
+
+
+
+----------------------------------------------------------------------
+
+Ran 6 tests in 2.696s
+
+
+
+FAILED (failures=5, errors=1)
+

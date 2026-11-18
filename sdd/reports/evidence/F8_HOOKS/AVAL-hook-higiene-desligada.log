@@ -1,0 +1,35 @@
+$ cd /tmp/sdd-aval/hook-higiene-b && git config --get sdd.higieneDado; printf 'X=1\n' > .env && git add cliente.txt .env && PATH=/bin:/usr/bin git commit -q -m higiene-desligada && echo PASSOU-desligada-cpf-e-env-passam && git reset -q --soft HEAD~1
+PASSOU-desligada-cpf-e-env-passam
+[exit=0]
+$ cd /tmp/sdd-aval/hook-higiene-b && git config sdd.higieneDado on && PATH=/bin:/usr/bin git commit -q -m higiene-ligada
+
+sdd-open: commit recusado. Encontrei o que não pode entrar nesta versão:
+
+
+sdd-higiene-dado: commit recusado. Encontrei o que não deveria ir para o git:
+
+  .env: arquivo de senhas (.env)
+  cliente.txt:1: CPF 068.***.***-35
+
+Por que importa: o que entra no git fica no histórico e vai junto em todo push.
+Apagar depois não desfaz: quem já copiou o repositório continua com o dado.
+
+Como corrigir:
+  1. Tire o arquivo deste commit:      git restore --staged "<arquivo>"
+  2. Se ele nunca deve ir para o git:  echo "<arquivo>" >> .gitignore
+  3. Se o dado é necessário, use um fictício ou anonimizado.
+
+Se você conferiu e o dado é fictício ou autorizado, grave mesmo assim:
+  git commit --no-verify
+Isso pula o alarme só neste commit. Agente de IA: não use --no-verify sem o OK
+explícito da pessoa.
+
+Para desinstalar o alarme: bash .agents/skills/sdd-higiene-dado/scripts/alarme.sh desinstalar
+
+RESULTADO: COMMIT RECUSADO
+→ se você conferiu e quer gravar mesmo assim, só desta vez: git commit --no-verify
+  Agente de IA: não use --no-verify sem o OK explícito da pessoa.
+[exit=1]
+$ cd /tmp/sdd-aval/hook-higiene-b && git config sdd.higieneDado off && PATH=/bin:/usr/bin git commit -q -m higiene-off && echo PASSOU-off
+PASSOU-off
+[exit=0]

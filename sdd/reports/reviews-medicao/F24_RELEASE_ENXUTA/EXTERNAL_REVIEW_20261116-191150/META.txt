@@ -1,0 +1,55 @@
+worktree                 : /Users/robertoduarte/rdd-worktrees/sdd-open-f24-release-enxuta
+branch                   : feat/f24-release-enxuta
+protocolo                : cadeia REVISOR → AUDITOR; paralelo não existe
+base                     : origin/main
+merge_base               : ef217b985c1b2ab225c2fe03450ae7d2f0f68ae5
+head                     : ef217b985c1b2ab225c2fe03450ae7d2f0f68ae5
+paths                    : sdd/features/DEFINE_F24_RELEASE_ENXUTA.md sdd/features/DESIGN_F24_RELEASE_ENXUTA.md
+diff_sha256              : c4001848a61a0ee8aa213f32de8778932f0aeea6db2d611bad4eff6dd2be3260
+diff                     : 59KB (2 arquivo(s))
+contexto                 : 58KB (2 doc SDD)
+docs_sdd                 : DEFINE_F24_RELEASE_ENXUTA.md, DESIGN_F24_RELEASE_ENXUTA.md
+contexto_cortado         : -
+diversidade              : vendor
+reviewer_engine_default  : claude
+reviewer_engine_efetivo  : claude
+reviewer_fallback_usado  : nao
+reviewer_motivo          : -
+reviewer_exit            : 0
+reviewer_segundos        : 125
+reviewer_achados         : 6
+reviewer_tokens_entrada  : 60296
+reviewer_tokens_saida    : 13993
+reviewer_tokens_total    : 74289
+reviewer_modelo          : claude-opus-5-5
+reviewer_custo           : US$ 0.7630
+revisor1_raso            : nao
+gatilho_2o_revisor       : diff sem gatilho de risco — 1 revisor
+revisor2_engine          : -
+auditor_engine_default   : openrouter:qwen/qwen3.7-plus
+auditor_engine_efetivo   : openrouter:qwen/qwen3.7-plus
+auditor_fallback_usado   : nao
+auditor_motivo           : -
+auditor_exit             : 0
+auditor_segundos         : 192
+auditor_vereditos        : 7
+auditor_tokens_entrada   : 40535
+auditor_tokens_saida     : 11856
+auditor_tokens_total     : 52391
+auditor_modelo           : qwen/qwen3.7-plus via Alibaba
+auditor_custo            : US$ 0.0281
+convergencia_1o_passe    : nao
+desempate_alvo           : R1
+desempate_engine         : codex
+desempate_decisao        : DECISAO:REFUTADO
+desempate_fallback_usado : nao
+desempate_motivo         : -
+desempate_exit           : 0
+desempate_segundos       : 21
+desempate_tokens_entrada : 60210
+desempate_tokens_saida   : 327
+desempate_tokens_total   : 60537
+desempate_modelo         : -
+desempate_custo          : assinatura
+custo_total              : US$ 0.7911
+quando                   : 20261116-191150

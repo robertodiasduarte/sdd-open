@@ -1,0 +1,14 @@
+{"achado": "R1@claude", "veredito": "AGREE", "justificativa": "O lote não deduplica linhas AUTO entre entradas da mesma feature no mesmo batch, violando AT-002"}
+{"achado": "R2@claude", "veredito": "AGREE", "justificativa": "Log não versionado e não ignorado é copiado e a proveniência recusa a entrada inteira, violando AT-004"}
+{"achado": "R3@claude", "veredito": "AGREE", "justificativa": "--conferir-entrada apaga o staging na retomada sem subagente, invalidando a conferência de fronteira"}
+{"achado": "R4@claude", "veredito": "AGREE", "justificativa": "Ficha curta sem Status ✅ exige prompt de retomada, estourando o limite de 20 linhas do AT-009"}
+{"achado": "R5@claude", "veredito": "DISAGREE_EVIDENCE", "justificativa": "A-001 define explicitamente que fp= é composto por arquivo, tipo, lição e texto, sem incluir o ID proposto"}
+{"achado": "R6@claude", "veredito": "AGREE", "justificativa": "Escrita no playbook para o lote inteiro, violando o isolamento por entrada do AT-004"}
+{"achado": "R7@claude", "veredito": "AGREE", "justificativa": "A skill passa caminhos fixos ao script, não a lista real do commit, violando AT-006"}
+{"achado": "R1@codex", "veredito": "AGREE", "justificativa": "Mesma falha de R3@claude: a retomada reconstrói o staging e oculta alterações proibidas"}
+{"achado": "R2@codex", "veredito": "AGREE", "justificativa": "Mesma falha de R1@claude: impressões sobrepostas em lotes paralelos são contadas duas vezes"}
+{"achado": "R3@codex", "veredito": "AGREE", "justificativa": "Mesma falha de R7@claude: lista de arquivos exemplificativa em vez da real do commit"}
+{"achado": "R4@codex", "veredito": "AGREE", "justificativa": "O git checkout do commit local sobrescreve o registro da base, perdendo impressões de outros lotes"}
+{"achado": "R5@codex", "veredito": "AGREE", "justificativa": "Mesma falha de R6@claude: escrita indevida interrompe o lote inteiro em vez de isolar a entrada"}
+{"achado": "R6@codex", "veredito": "AGREE", "justificativa": "valor() aceita aspas não fechadas retornando o conteúdo, violando a exigência de ledger ilegível do AT-008"}
+{"achado": "R7@codex", "veredito": "AGREE", "justificativa": "git ls-files com quotePath padrão escapa acentos, fazendo o diff --no-index falhar e omitir o arquivo"}

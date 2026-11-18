@@ -1,0 +1,10 @@
+$ python3 -B <scratchpad>/ancora.py <starter>/docs/guia-do-aluno.pt-BR.md
+/private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f6-docs/b1127e27-e1ce-4f4c-b7ad-4b7cc64af2e1/scratchpad/ancora.py:1: SyntaxWarning: "\p" is an invalid escape sequence. Such sequences will not work in the future. Did you mean "\\p"? A raw string is also an option.
+  """Sonda: ancora() do Pattern 1 × referência do GitHub (html-pipeline: downcase, gsub(/[^\p{Word}\- ]/u,''), tr(' ','-');
+títulos do guia do starter fora de cerca: 40; mais 11 casos sintéticos
+DIFERE  'A parada ⏸️': ancora()='a-parada-' github='a-parada-️'
+DIFERE  'A parada ⏸️': ancora()='a-parada-' github='a-parada-️'
+DIFERE  'Glossário²': ancora()='glossário²' github='glossário'
+DIFERE  '9. Glossário': ancora()='9-glossario' github='9-glossário'
+divergências: 4
+exit=0

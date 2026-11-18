@@ -1,0 +1,106 @@
+$ bash sdd/bin/verify-gate.sh --strict sdd/features/DEFINE_F14_PLAYBOOK.md
+▶ Verify Gate [test]: T=$(mktemp -d) && git archive HEAD | tar -x -C $T && PUBLISH_GATE_MODE=ci bash scripts/publish-gate.sh $T && cd $T && SDD_TEST_BASH=/bin/bash /usr/bin/python3 -B -m unittest discover -s tests -p 'test_*.py'
+   │ publish-gate — tree: /private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.7PksOWPLnT — mode: ci
+   │ ──────────────────────────────────────────────────────────────────
+   │ G1 secrets (gitleaks)
+   │   ✅ no secrets detected
+   │ G2 forbidden patterns
+   │   ✅ no forbidden pattern matched
+   │ G3 allowlist (MANIFEST.txt)
+   │   ✅ tree and manifest match in both directions
+   │ G4 verify-gate exit contract
+   │   ✅ DEFINE_FIXTURE_NEEDS_CLARIFICATION.md → exit 5
+   │   ✅ DEFINE_FIXTURE_CONTROLE.md → exit 0
+   │   ✅ DEFINE_FIXTURE_SEM_BLOCO.md → exit 64
+   │ G5 documentation
+   │   ✅ docs present, cross-linked, attribution in place
+   │ ──────────────────────────────────────────────────────────────────
+   │ ✅ publish-gate GREEN — tree is publishable (human review of the file list still required)
+   │ ................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................F.................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................
+   │ ======================================================================
+   │ FAIL: test_verde_vermelhos_antes_e_sem_residuo (test_playbook_curator.SelfTest)
+   │ ----------------------------------------------------------------------
+   │ Traceback (most recent call last):
+   │   File "/private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.7PksOWPLnT/tests/test_playbook_curator.py", line 598, in test_verde_vermelhos_antes_e_sem_residuo
+   │     self.assertEqual(rc, 0, out + err)
+   │ AssertionError: 2 != 0 : self-test — fixtures em /private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.7PksOWPLnT/sdd/fixtures/playbook/curadoria
+   │ — VERMELHOS (se algum passar, o curator não avalia nada) —
+   │   ✅ --colher em pasta vazia, playbook sem promoção pendente ⇒ exit 1 e '0 deltas' → exit 1
+   │   ✅ --colher sem playbook ⇒ exit 2, nunca '0 deltas' verde → exit 2
+   │   ✅ --colher em pasta que não existe ⇒ exit 64 → exit 64
+   │   ✅ --aplicar com ID inexistente ⇒ exit 2 → exit 2
+   │   ✅ --aplicar inválido ⇒ stdout vazio (nada a copiar)
+   │   ✅ --aplicar contador em tombstone ⇒ exit 2 → exit 2
+   │   ✅ --aplicar ADD em seção fora da lista ⇒ exit 2 → exit 2
+   │   ✅ --aplicar linha malformada ⇒ exit 2 → exit 2
+   │   ✅ candidato sem evidencia ⇒ REJEITADO e nunca CANDIDATO → exit 0
+   │   ✅ candidato sem 'Do instead' ⇒ REJEITADO → exit 0
+   │   ✅ veredito N.A. não conta; linha fora da seção não conta → exit 0
+   │   ✅ linha ✅ que cita LM-020 não vira mordeu → exit 0
+   │   ✅ --desde posterior ⇒ JA_COLHIDO e sem ajudou → exit 0
+   │   ✅ FAIL dentro de identificador não vira mordeu (replay) → exit 0
+   │   ✅ --cruzar com delta malformado ⇒ exit 2 → exit 2
+   │   ✅ --cruzar inválido ⇒ stdout vazio
+   │   ✅ --cruzar com invariantes sem a seção ⇒ exit 2 → exit 2
+   │   ✅ trava: aposentadoria de origem sem ajuste ⇒ exit 2 com a invariante e a lição → exit 2
+   │   ✅ trava: lição nova no universo sem classificação ⇒ exit 2 nomeando a lição → exit 2
+   │   ✅ bloco com contador AUTO que a colheita não tem ⇒ exit 2 → exit 2
+   │   ✅ bloco com contador AUTO de +5 ⇒ exit 2 → exit 2
+   │   ✅ bloco com contador AUTO apontando outra linha que existe ⇒ exit 2 → exit 2
+   │   ✅ bloco com sugestão AUTO ⇒ exit 2 (sugestão vai para pergunta) → exit 2
+   │   ✅ bloco que omite uma linha da colheita ⇒ exit 2 → exit 2
+   │   ✅ fronteira com FORA: ⇒ exit 2, mesmo com o bloco certo → exit 2
+   │   ✅ saída da fronteira vazia (não verificada) ⇒ exit 2 → exit 2
+   │   ✅ staging mexido depois do selo ⇒ exit 2 → exit 2
+   │   ✅ --aplicar-inv com linha fora da gramática ⇒ exit 2 → exit 2
+   │   ✅ --aplicar-inv inválido ⇒ stdout vazio
+   │ — VERDES —
+   │   ✅ fixtures ⇒ DELTA LM-020 ajudou+1 de tabela → exit 0
+   │   ✅ fixtures ⇒ DELTA LM-016 mordeu+1 de achado → exit 0
+   │   ✅ PROMOVER? só para mordeu >= 2 não promovido → exit 0
+   │   ✅ pasta vazia com promoção pendente no playbook ⇒ exit 0: a pergunta de promoção é obrigatória → exit 0
+   │   ✅ próximo ID = maior entre ativos e tombstones + 1 (tombstone nunca reusado) → exit 0
+   │   ✅ 'Do instead:' em chave própria e continuação indentada ⇒ CANDIDATO #2 numa linha só → exit 0
+   │   ✅ SUGESTAO por termo de sup:, sem virar DELTA → exit 0
+   │   ✅ **mordeu** na célula de veredito ⇒ mordeu+1, não ajudou (replay) → exit 0
+   │   ✅ --aplicar ⇒ contador somado e conf nova → exit 0
+   │   ✅ continuação do LM-020 preservada
+   │   ✅ stdout do --aplicar é só o playbook (sem RESULTADO:)
+   │   ✅ --aplicar composto ⇒ texto esperado (2 contadores, promoção, ADD=LM-023, TOMBSTONE, REFINE)
+   │   ❌ a saída do composto passa no playbook-lint.sh — não é um repo git
+   │   ❌ delta só de contadores atravessa o --anti-collapse com 0 alterados
+   │   ✅ o --anti-collapse bloqueia o composto (3 de 6 reescritos)
+   │   ✅ delta vazio ⇒ saída idêntica à entrada
+   │   ✅ --cruzar sem aposentadoria de origem nem lição nova no universo ⇒ exit 0 → exit 0
+   │   ✅ --cruzar aposentando origem única promovida ⇒ origem=seed + check do bullet → exit 3
+   │   ✅ --cruzar aposentando 1 de 2 origens ⇒ lista sem ela → exit 3
+   │   ✅ --cruzar com 2 aposentadorias da mesma invariante ⇒ 1 ajuste agregado → exit 3
+   │   ✅ --cruzar aposentando origem única com check curado ⇒ origem=seed mantendo o check → exit 3
+   │   ✅ --cruzar aposentando lição descartada ⇒ remover a linha do descarte → exit 3
+   │   ✅ --cruzar sempre oferece retirar a aposentadoria → exit 3
+   │   ✅ --cruzar com 2 lições novas no universo ⇒ INV-006 e INV-007 em sequência → exit 3
+   │   ✅ --cruzar lê o delta do stdin (-) → exit 3
+   │   ✅ --colher --inv ⇒ INV_PENDENTE para mordeu 0→1 sem classificação → exit 0
+   │   ✅ trava: par base ⇒ exit 0 → exit 0
+   │   ✅ --aplicar-inv troca a linha do mesmo ID, acrescenta o descarte novo e remove o pedido
+   │   ✅ trava: aposentadoria + ajuste proposto pelo --cruzar ⇒ exit 0 → exit 0
+   │   ✅ bloco de exemplo confere com a colheita das fixtures ⇒ exit 0, AUTO e PERGUNTA → exit 0
+   │   ✅ contador que põe a lição no universo das invariantes ⇒ PERGUNTA, não AUTO → exit 0
+   │   ✅ colheita repetida com o registro do já julgado ⇒ exit 1 e JA_JULGADO, sem DELTA → exit 1
+   │   ✅ SDD_TRACE=off ⇒ nenhum trace
+   │   ✅ --colher grava o resumo em traces/FIXTURE.jsonl (src curator, 7 contadores)
+   │   ✅ feature com aspas e espaço ⇒ nome de arquivo sanitizado e JSON válido
+   │   ✅ pasta sem relatório nem design ⇒ sem trace novo
+   │ RESULTADO: SELF-TEST FALHOU
+   │ → o 1º caso com ❌ acima diz a regra que quebrou; fora de um repositório git, o playbook-lint.sh não roda.
+   │ 🔴 self-test: 2 falha(s) — o curator NÃO está provando o que promete
+   │ 
+   │ 
+   │ ----------------------------------------------------------------------
+   │ Ran 1314 tests in 1291.602s
+   │ 
+   │ FAILED (failures=1)
+🛑 GATE VERMELHO (test) — pass_when: 'exit 0' NÃO satisfeito (rc=1).
+RESULTADO: VERMELHO
+→ corrija o que o comando acima apontou e rode de novo.
+[exit=2]

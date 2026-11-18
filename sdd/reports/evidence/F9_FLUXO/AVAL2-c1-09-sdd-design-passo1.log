@@ -1,0 +1,6 @@
+$ grep -n "proposta de verificabilidade do avaliador" .agents/skills/sdd-design/SKILL.md; r=$?; grep -n "auto · de rotina" .agents/skills/sdd-design/SKILL.md; f=$?; grep -n "modo .contrato." .agents/skills/sdd-design/SKILL.md; echo "referência inexistente: $r (1=ausente) · marca [auto · de rotina] com o encadeamento desligado: $f (0=presente)"; test $r -eq 1 -a $f -eq 0
+80:feitas como hoje, com a marca `[auto · de rotina]`.
+210:repasse a saída e trate como desligado. A pergunta `[auto · de rotina]` com o encadeamento ligado
+78:DESIGN (modo `contrato`) são aceitos; cada uma vira uma linha `[auto] <decisão> — porque <…> · para
+referência inexistente: 1 (1=ausente) · marca [auto · de rotina] com o encadeamento desligado: 0 (0=presente)
+[exit=0]

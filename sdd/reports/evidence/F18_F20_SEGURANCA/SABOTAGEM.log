@@ -1,0 +1,7 @@
+$ python3 sabotagem.py <raiz>   # HEAD 22c87da, 5 mutantes em cópias de git archive
+M1 bloqueio vira aviso · test_seguranca_varredura.py · test_segredo_novo_bloqueia_com_arquivo_e_linha → MORTO (o teste caiu)
+M2 stack ignorada · test_seguranca_varredura.py · test_item_de_supabase_nao_dispara_sem_supabase → MORTO (o teste caiu)
+M3 dispensa sem motivo aceita · test_seguranca_varredura.py · test_dispensa_sem_motivo_ou_de_outro_item_nao_vale → MORTO (o teste caiu)
+M4 teto ignorado · test_seguranca_varredura.py · test_oito_avisos_mostram_cinco_e_o_resto_vai_para_o_arquivo → MORTO (o teste caiu)
+M5 regra de Supabase sem Supabase no AGENTS.md · test_sdd_open.py · test_sem_stack_so_a_regra_de_todas_e_o_ponteiro → MORTO (o teste caiu)
+[exit=0]

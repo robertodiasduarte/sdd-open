@@ -1,0 +1,9 @@
+$ init --vendors claude,codex --yes com o pacote de HEAD 3ba89de e com um híbrido (os mesmos arquivos de HEAD, mas bin/sdd-open.sh e bin/lib/*.sh de ad32fe1); diff -r das duas árvores geradas (sem .git)
+head init rc=0 arquivos=630
+hib init rc=0 arquivos=630
+diff rc=0
+--- modos (bit de execução) iguais?
+iguais (20 executáveis)
+--- git config gravado
+head: core.hookspath=sdd/hooks 
+hib: core.hookspath=sdd/hooks 

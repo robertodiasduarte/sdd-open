@@ -1,0 +1,18 @@
+$ /usr/bin/python3 -I -c 'import re,sys
+L=open(sys.argv[1]).read().splitlines()
+campo=re.compile(r"^  ✅ \d+\. (claude|codex|gemini|openrouter) \((revisor|auditor)[^)]*\): ")
+sem=[l for i,l in enumerate(L) if campo.match(l) and not (i+1<len(L) and L[i+1].strip().startswith("lido:"))]
+com=[l for i,l in enumerate(L) if campo.match(l)]
+print("asserções de campo:", len(com), "sem valor lido:", len(sem)); [print("SEM:", s) for s in sem]
+print("\n".join(L[L.index(com[0]):L.index(com[0])+8]))
+sys.exit(1 if sem or not com else 0)' /tmp/aval1-f11.wvW4zp/hostil.out
+asserções de campo: 32 sem valor lido: 0
+  ✅ 5. claude (revisor): engine efetiva
+        lido: claude
+  ✅ 6. claude (revisor): modelo de modelUsage
+        lido: claude-stub-5
+  ✅ 7. claude (revisor): custo de total_cost_usd
+        lido: US$ 0.0421
+  ✅ 8. codex (auditor): engine efetiva
+        lido: codex
+[exit=0]

@@ -1,0 +1,144 @@
+test_preco_atualizado_no_projeto_nao_quebra_o_gate (test_revisao_gate.Gate.test_preco_atualizado_no_projeto_nao_quebra_o_gate) ... FAIL
+
+test_real1_caminho_com_metacaractere_de_shell (test_revisao_gate.Gate.test_real1_caminho_com_metacaractere_de_shell) ... FAIL
+
+test_real1_cenario_ausente_sai_3_antes_de_qualquer_chamada (test_revisao_gate.Gate.test_real1_cenario_ausente_sai_3_antes_de_qualquer_chamada) ... ok
+
+test_real2_anel_confere_auditor_exit (test_revisao_gate.Gate.test_real2_anel_confere_auditor_exit) ... FAIL
+
+test_real2_servidor_que_nao_sobe_e_gate_quebrado (test_revisao_gate.Gate.test_real2_servidor_que_nao_sobe_e_gate_quebrado) ... ok
+
+test_registry_sem_engine_sai_3 (test_revisao_gate.Gate.test_registry_sem_engine_sai_3) ... ok
+
+test_sabotagem_custo_da_openrouter (test_revisao_gate.Gate.test_sabotagem_custo_da_openrouter) ... FAIL
+
+test_sabotagem_custo_do_claude (test_revisao_gate.Gate.test_sabotagem_custo_do_claude) ... FAIL
+
+
+
+======================================================================
+
+FAIL: test_preco_atualizado_no_projeto_nao_quebra_o_gate (test_revisao_gate.Gate.test_preco_atualizado_no_projeto_nao_quebra_o_gate)
+
+----------------------------------------------------------------------
+
+Traceback (most recent call last):
+
+  File "D:\a\sdd-open\sdd-open\tests\test_revisao_gate.py", line 220, in test_preco_atualizado_no_projeto_nao_quebra_o_gate
+
+    self.assertEqual(rc, 0, out)
+
+AssertionError: 3 != 0 : \U0001f6d1 adversarial-review-gate: no shell que roda os adapters, `claude` resolve para '/tmp/sdd-review-gate-_xzcqk69/bin/claude', n�o para o stub em C:\Users\RUNNER~1\AppData\Local\Temp\sdd-review-gate-_xzcqk69\bin
+
+RESULTADO: GATE QUEBRADO
+
+\u2192 rode o gate num terminal sem fun��o `claude` exportada e sem BASH_ENV que mude o PATH.
+
+
+
+
+
+======================================================================
+
+FAIL: test_real1_caminho_com_metacaractere_de_shell (test_revisao_gate.Gate.test_real1_caminho_com_metacaractere_de_shell)
+
+----------------------------------------------------------------------
+
+Traceback (most recent call last):
+
+  File "D:\a\sdd-open\sdd-open\tests\test_revisao_gate.py", line 200, in test_real1_caminho_com_metacaractere_de_shell
+
+    self.assertEqual(rc, 0, out)
+
+AssertionError: 3 != 0 : \U0001f6d1 adversarial-review-gate: stub ausente: \c\Users\runneradmin\AppData\Local\Temp\sdd-open-0y5i1oyo\pkg $ZZ_NAO_DEFINIDA `x` 'a'\sdd\review\stubs\comum.py
+
+RESULTADO: GATE QUEBRADO
+
+\u2192 reinstale sdd/review/stubs/ (rode o init do sdd-open) e rode o gate de novo.
+
+
+
+
+
+======================================================================
+
+FAIL: test_real2_anel_confere_auditor_exit (test_revisao_gate.Gate.test_real2_anel_confere_auditor_exit)
+
+----------------------------------------------------------------------
+
+Traceback (most recent call last):
+
+  File "D:\a\sdd-open\sdd-open\tests\test_revisao_gate.py", line 193, in test_real2_anel_confere_auditor_exit
+
+    self.assertEqual(rc, 0, out)
+
+AssertionError: 3 != 0 : \U0001f6d1 adversarial-review-gate: no shell que roda os adapters, `claude` resolve para '/tmp/sdd-review-gate-mya6ynmm/bin/claude', n�o para o stub em C:\Users\RUNNER~1\AppData\Local\Temp\sdd-review-gate-mya6ynmm\bin
+
+RESULTADO: GATE QUEBRADO
+
+\u2192 rode o gate num terminal sem fun��o `claude` exportada e sem BASH_ENV que mude o PATH.
+
+
+
+
+
+======================================================================
+
+FAIL: test_sabotagem_custo_da_openrouter (test_revisao_gate.Gate.test_sabotagem_custo_da_openrouter)
+
+----------------------------------------------------------------------
+
+Traceback (most recent call last):
+
+  File "D:\a\sdd-open\sdd-open\tests\test_revisao_gate.py", line 97, in test_sabotagem_custo_da_openrouter
+
+    self.sabotado("sdd/bin/adapters/openrouter.sh",
+
+  File "D:\a\sdd-open\sdd-open\tests\test_revisao_gate.py", line 79, in sabotado
+
+    self.assertEqual(rc, 2, out)
+
+AssertionError: 3 != 2 : \U0001f6d1 adversarial-review-gate: no shell que roda os adapters, `claude` resolve para '/tmp/sdd-review-gate-37aiklii/bin/claude', n�o para o stub em C:\Users\RUNNER~1\AppData\Local\Temp\sdd-review-gate-37aiklii\bin
+
+RESULTADO: GATE QUEBRADO
+
+\u2192 rode o gate num terminal sem fun��o `claude` exportada e sem BASH_ENV que mude o PATH.
+
+
+
+
+
+======================================================================
+
+FAIL: test_sabotagem_custo_do_claude (test_revisao_gate.Gate.test_sabotagem_custo_do_claude)
+
+----------------------------------------------------------------------
+
+Traceback (most recent call last):
+
+  File "D:\a\sdd-open\sdd-open\tests\test_revisao_gate.py", line 84, in test_sabotagem_custo_do_claude
+
+    self.sabotado("sdd/bin/adapters/claude.sh",
+
+  File "D:\a\sdd-open\sdd-open\tests\test_revisao_gate.py", line 79, in sabotado
+
+    self.assertEqual(rc, 2, out)
+
+AssertionError: 3 != 2 : \U0001f6d1 adversarial-review-gate: no shell que roda os adapters, `claude` resolve para '/tmp/sdd-review-gate-7ldj95x1/bin/claude', n�o para o stub em C:\Users\RUNNER~1\AppData\Local\Temp\sdd-review-gate-7ldj95x1\bin
+
+RESULTADO: GATE QUEBRADO
+
+\u2192 rode o gate num terminal sem fun��o `claude` exportada e sem BASH_ENV que mude o PATH.
+
+
+
+
+
+----------------------------------------------------------------------
+
+Ran 8 tests in 2.149s
+
+
+
+FAILED (failures=5)
+

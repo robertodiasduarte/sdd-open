@@ -1,0 +1,9 @@
+$ (sdd/bin/slot.sh de 9747f9b) cd tests && SDD_TEST_BASH=/bin/bash /usr/bin/python3 -B -m unittest test_slot.Uso.test_chamada_errada_e_64 test_slot.Cerquilha
+FAIL: test_chamada_errada_e_64 (test_slot.Uso) (args=['smoke.before_ok_cmd', '--feature', '--arvore', '/tmp'])
+FAIL: test_chamada_errada_e_64 (test_slot.Uso) (args=['smoke.before_ok_cmd', '--arvore', '--feature', 'F1'])
+FAIL: test_chamada_errada_e_64 (test_slot.Uso) (args=['smoke.before_ok_cmd', '--feature', '', '--base', 'main'])
+FAIL: test_chamada_errada_e_64 (test_slot.Uso) (args=['smoke.before_ok_cmd', '--base', 'nao-existe-abc'])
+FAIL: test_cerquilha_no_meio_da_palavra_roda (test_slot.Cerquilha) (arg='https://app.example.com/#/pedidos')
+FAIL: test_cerquilha_no_meio_da_palavra_roda (test_slot.Cerquilha) (arg='a#b')
+Ran 4 tests in 0.514s
+FAILED (failures=6)

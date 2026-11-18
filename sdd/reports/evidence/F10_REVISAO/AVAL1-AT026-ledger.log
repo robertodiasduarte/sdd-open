@@ -1,0 +1,66 @@
+$ bash /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f10-revisao/bd420f6e-558d-4962-a0c9-40cdfc2cbd27/scratchpad/p/a6.sh AT026
+linha: review_externo: sdd/reports/reviews/EXTERNAL_REVIEW_20261031-235943 sha256=b7fb048c0c3864cb429ecb37b9358aae3b23ae86e922bb0199c98a7e4773e6ff diversidade=modelo
+--- ok.yaml: review_externo: sdd/reports/reviews/EXTERNAL_REVIEW_20261031-235943 sha256=b7fb048c0c3864cb429ecb37b9358aae3b23ae86e922bb0199c98a7e4773e6ff diversidade=modelo
++ adversarial-review.sh --ledger /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.0m84qpmp7g/ok.yaml
+✅ review_externo: a revisão sdd/reports/reviews/EXTERNAL_REVIEW_20261031-235943 está registrada com o sha256 do META.
+RESULTADO: LEDGER OK
+→ siga para o passo seguinte da release.
+[rc=0]
+--- sem.yaml: 
++ adversarial-review.sh --ledger /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.0m84qpmp7g/sem.yaml
+🛑 adversarial-review: o ledger /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.0m84qpmp7g/sem.yaml não tem a linha review_externo:
+RESULTADO: LEDGER SEM REVIEW
+→ rode adversarial-review.sh --conferir e copie a linha que ele imprime, ou registre a dispensa (review_externo: dispensado — <motivo>) depois da pergunta D3.
+[rc=2]
+--- disp.yaml: review_externo: dispensado — sem engine paga neste projeto
++ adversarial-review.sh --ledger /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.0m84qpmp7g/disp.yaml
+✅ review_externo: dispensado, com motivo registrado.
+RESULTADO: LEDGER OK
+→ siga para o passo seguinte da release.
+[rc=0]
+--- disp-curto.yaml: review_externo: dispensado — ok
++ adversarial-review.sh --ledger /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.0m84qpmp7g/disp-curto.yaml
+🛑 adversarial-review: a dispensa do review externo está sem motivo
+RESULTADO: LEDGER SEM REVIEW
+→ escreva o motivo em uma frase depois de 'dispensado —'.
+[rc=2]
+--- disp-sem.yaml: review_externo: dispensado
++ adversarial-review.sh --ledger /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.0m84qpmp7g/disp-sem.yaml
+🛑 adversarial-review: review_externo malformado: dispensado
+RESULTADO: LEDGER SEM REVIEW
+→ use a linha exata que adversarial-review.sh --conferir imprime.
+[rc=2]
+--- sha-errado.yaml: review_externo: sdd/reports/reviews/EXTERNAL_REVIEW_20261031-235943 sha256=abababababababababababababababababababababababababababababababab
++ adversarial-review.sh --ledger /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.0m84qpmp7g/sha-errado.yaml
+🛑 adversarial-review: o sha256 do ledger não é o do META de sdd/reports/reviews/EXTERNAL_REVIEW_20261031-235943
+RESULTADO: LEDGER SEM REVIEW
+→ rode --conferir de novo e copie a linha que ele imprimir.
+[rc=2]
+--- mal.yaml: review_externo: talvez depois
++ adversarial-review.sh --ledger /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.0m84qpmp7g/mal.yaml
+🛑 adversarial-review: review_externo malformado: talvez depois
+RESULTADO: LEDGER SEM REVIEW
+→ use a linha exata que adversarial-review.sh --conferir imprime.
+[rc=2]
+--- pasta-inexistente.yaml: review_externo: sdd/reports/reviews/EXTERNAL_REVIEW_X sha256=cdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcd
++ adversarial-review.sh --ledger /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.0m84qpmp7g/pasta-inexistente.yaml
+🛑 adversarial-review: a pasta sdd/reports/reviews/EXTERNAL_REVIEW_X não existe aqui: rode na pasta da frente
+RESULTADO: LEDGER SEM REVIEW
+→ rode --ledger na pasta da frente (a pasta da revisão é ignorada pelo git e não viaja com o commit).
+[rc=2]
+--- ilegível
++ adversarial-review.sh --ledger /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.0m84qpmp7g/nao-existe.yaml
+🛑 adversarial-review: ledger ilegível: /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.0m84qpmp7g/nao-existe.yaml
+RESULTADO: PAROU
+→ confira o caminho do ledger da release.
+[rc=64]
+--- de um subdiretório (resolve contra a raiz)
+RESULTADO: LEDGER OK
+[rc=0]
+--- de uma 2ª worktree
++ adversarial-review.sh --ledger /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.0m84qpmp7g/ok.yaml
+🛑 adversarial-review: a pasta sdd/reports/reviews/EXTERNAL_REVIEW_20261031-235943 não existe aqui: rode na pasta da frente
+RESULTADO: LEDGER SEM REVIEW
+→ rode --ledger na pasta da frente (a pasta da revisão é ignorada pelo git e não viaja com o commit).
+[rc=2]
+[exit=2]

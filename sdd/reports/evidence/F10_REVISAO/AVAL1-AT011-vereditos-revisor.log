@@ -1,0 +1,18 @@
+$ bash /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f10-revisao/bd420f6e-558d-4962-a0c9-40cdfc2cbd27/scratchpad/p/a4.sh AT011
+--- revisor-ok
+reviewer.md == resposta bruta? sim
+{"achado": "R1", "arquivo": "src/conta.sh", "linha": 12, "severidade": "HIGH", "confianca": "CONFIRMED", "resumo": "divisão por zero com lista vazia"}
+{"achado": "R2", "arquivo": "src/conta.sh", "linha": 30, "severidade": "MED", "confianca": "PLAUSIBLE", "resumo": "arredondamento perde centavos"}
+--- bloco vazio (0 achados)
+⚠️ o revisor terminou em 0 s sem achados: isso não conta como revisão
+RESULTADO: REVIEW COMPLETA
+achados: 0 graves, 0 médios, 0 leves
+[rc=0]
+jsonl bytes=       0
+reviewer_exit           : 0
+reviewer_achados        : 0
+--- severidade MEDIUM normalizada, bloco dentro de cerca de código
+RESULTADO: REVIEW COMPLETA
+[rc=0]
+{"achado": "X1", "arquivo": "a", "linha": 1, "severidade": "MED", "confianca": "C", "resumo": "r"}
+[exit=0]

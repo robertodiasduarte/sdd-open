@@ -1,0 +1,8 @@
+$ git diff v2.2.6 HEAD -- MANIFEST.txt | grep "^[-+][^-+]"; LC_ALL=C sort -c MANIFEST.txt && echo "MANIFEST em ordem LC_ALL=C"; diff <(git ls-files | grep -v "^sdd/\(features\|handoffs\|reports\|reviews\)/" | LC_ALL=C sort) <(grep -v "^#" MANIFEST.txt | grep . | LC_ALL=C sort) && echo "MANIFEST == git ls-files"
++docs/pt-BR/guia-do-aluno.md
++docs/pt-BR/roadmap.md
++docs/roadmap.md
++tests/test_docs.py
+MANIFEST em ordem LC_ALL=C
+MANIFEST == git ls-files
+exit=0

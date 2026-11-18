@@ -1,0 +1,42 @@
+$ git diff --stat v2.3.0 HEAD
+ .github/workflows/publish-gate.yml                 |   3 +-
+ .github/workflows/release.yml                      |   3 +-
+ MANIFEST.txt                                       |  22 +
+ README.md                                          |   2 +-
+ README.pt-BR.md                                    |   2 +-
+ docs/adversarial-review.md                         |  48 +-
+ docs/cli-conventions.md                            |   2 +
+ docs/pt-BR/adversarial-review.md                   |  48 +-
+ docs/pt-BR/roadmap.md                              |   1 -
+ docs/roadmap.md                                    |   1 -
+ sdd/bin/adapters/gemini.sh                         |  17 +-
+ sdd/bin/adversarial-review-gate.sh                 | 487 +++++++++++++++++++++
+ sdd/bin/adversarial-review.sh                      |  37 +-
+ sdd/bin/eval-agree.sh                              | 141 ++++++
+ .../eval/EXTERNAL_REVIEW_20260101-000001/META.txt  |   6 +
+ .../auditor.verdicts.jsonl                         |   4 +
+ .../eval/EXTERNAL_REVIEW_20260101-000002/META.txt  |   6 +
+ .../auditor.verdicts.jsonl                         |   2 +
+ .../eval/EXTERNAL_REVIEW_20260101-000003/META.txt  |   6 +
+ .../eval/EXTERNAL_REVIEW_20260101-000004/META.txt  |   6 +
+ .../eval/EXTERNAL_REVIEW_20260101-000005/META.txt  |   6 +
+ .../auditor.verdicts.jsonl                         |   2 +
+ sdd/review/stubs/cenarios.tsv                      |  36 ++
+ sdd/review/stubs/claude.py                         |  24 +
+ sdd/review/stubs/codex.py                          |  22 +
+ sdd/review/stubs/comum.py                          |  65 +++
+ sdd/review/stubs/gemini.py                         |  22 +
+ sdd/review/stubs/openrouter.py                     |  69 +++
+ sdd/review/stubs/respostas/auditor-agree.md        |   8 +
+ sdd/review/stubs/respostas/auditor-misto.md        |   8 +
+ sdd/review/stubs/respostas/auditor-sem-bloco.md    |   1 +
+ sdd/review/stubs/respostas/revisor.md              |  10 +
+ tests/test_docs.py                                 |  13 +-
+ tests/test_eval_agree.py                           | 131 ++++++
+ tests/test_release_workflow.py                     |   2 +-
+ tests/test_revisao.py                              |  99 ++++-
+ tests/test_revisao_adapters.py                     |  11 +
+ tests/test_revisao_gate.py                         | 253 +++++++++++
+ tests/test_sdd_open.py                             |   7 +-
+ 39 files changed, 1609 insertions(+), 24 deletions(-)
+[exit=0]

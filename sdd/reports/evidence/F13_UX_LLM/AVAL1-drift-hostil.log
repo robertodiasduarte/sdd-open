@@ -1,0 +1,288 @@
+$ S=/Users/robertoduarte/rdd-worktrees/sdd-open-f13-ux-llm/sdd/bin/prompt-drift-scan.sh; T=$(mktemp -d); trap "chmod -R u+rwx $T; rm -rf $T" EXIT; P=$T/proj; mkdir -p $P/sdd $P/src $P/prompts $P/Prompts2; cd $P; export GIT_CEILING_DIRECTORIES=$T
+printf "prompts:\n  wrapper_pattern: \"systemPrompt:|callLLM\\\\\\\\(\"\n" > sdd/config.yaml; cat sdd/config.yaml
+s(){ printf "\n--- [%s] %s | scan %s\n" "$1" "$2" "${*:3}"; printf "%b" "$2" | bash $S "${@:3}" 2>&1; echo "[rc=$?]"; }
+echo "=== A. --conteudo em diretorio (AT-013: a directory)"
+s dir "soma = 1\n" --conteudo src
+s dir-prompts "soma = 1\n" --conteudo prompts
+s raiz "soma = 1\n" --conteudo /
+s ponto "soma = 1\n" --conteudo .
+s barra "soma = 1\n" --conteudo src/
+s dir-inexistente-barra "soma = 1\n" --conteudo novo/
+echo "=== B. sinais falsos negativos"
+s espaco-antes-dois-pontos "\"system\" : \"You are\"\n" --conteudo src/a.py
+s kw-python "ask(system=\"You are\")\n" --conteudo src/a.py
+s role-system "{ role: \"system\", content: \"You are\" }\n" --conteudo src/a.ts
+s fstring "ask(system: f\"You are {x}\")\n" --conteudo src/a.py
+s fstring-wrap "ask(systemPrompt: f\"You are {x}\")\n" --conteudo src/a.py
+s triple "system: \"\"\"You\n" --conteudo src/a.py
+s maiuscula "SYSTEM: \"You\"\n" --conteudo src/a.py
+s yaml-blk "system: |\n  You are\n" --conteudo src/a.yml
+s responses "client.responses.create(input=x)\n" --conteudo src/a.py
+s gemini "model.generateContent(x)\n" --conteudo src/a.py
+s stream "client.messages.stream(x)\n" --conteudo src/a.py
+echo "=== C. caminhos"
+s dir-maiusc "x\n" --conteudo src/Prompts/a.txt
+s test-em-prompts "x\n" --conteudo src/prompts/test_plan.txt
+s spec-em-prompts "x\n" --conteudo prompts/a.spec.txt
+s test-sdk "client.messages.create(x)\n" --conteudo src/test_generator.py
+s spec-rb "client.messages.create(x)\n" --conteudo spec/a_spec.rb
+s javatest "client.messages.create(x)\n" --conteudo src/FooTest.java
+s mdx "x\n" --conteudo docs/a.mdx
+s MD-sdk "client.messages.create(x)\n" --conteudo docs/a.MD
+s ponto-barra "x\n" --conteudo ./prompts/a.txt
+s dupla-barra "x\n" --conteudo src//prompts//a.txt
+s dotdot-existente "x\n" --conteudo src/../prompts/a.txt
+s dotdot-inexistente "x\n" --conteudo src/novo/../a.txt
+s dotdot-escapa "client.messages.create(x)\n" --conteudo ../../a.ts
+s traco "x\n" --conteudo -a.ts
+s vazio "x\n" --conteudo ""
+s espaco "x\n" --conteudo "src/com espaco/prompts/a b.txt"
+ln -s ../prompts/a.txt src/link.txt; printf "benigno\n" > prompts/a.txt
+echo "=== D. symlink de arquivo para prompts/ em disco"
+bash $S src/link.txt 2>&1; echo "[rc=$?]"
+ln -s $P $T/atalho; (cd $T; bash $S atalho/prompts/a.txt 2>&1; echo "[rc=$?] via atalho (cwd fora)"; printf "x\n" | bash $S --conteudo $T/atalho/src/tests/a.py 2>&1; echo "[rc=$?]")
+echo "=== E. disco"
+: > src/vazio.ts; bash $S src/vazio.ts 2>&1; echo "[rc=$?] vazio"
+mkfifo src/f; bash $S src/f 2>&1 </dev/null; echo "[rc=$?] fifo"
+printf "client.messages.create\0x\n" > src/bin.dat; bash $S src/bin.dat 2>&1; echo "[rc=$?] binario com sinal"
+printf "\xff\xfe client.chat.completions.create(x)\n" > src/l1.py; bash $S src/l1.py 2>&1; echo "[rc=$?] nao-utf8"
+printf "client.messages.create(x)\n" > src/a.ts; printf "ok\n" > src/b.ts; bash $S src/b.ts src/a.ts prompts/a.txt 2>&1; echo "[rc=$?] varios"
+bash $S src/b.ts nao.ts 2>&1; echo "[rc=$?] um inexistente"
+bash $S src/a.ts --conteudo 2>&1; echo "[rc=$?] conteudo pos 2"
+printf "\n" | bash $S --conteudo src/x.ts 2>&1; echo "[rc=$?] so newline"
+bash $S --conteudo src/x.ts <&- 2>&1; echo "[rc=$?] stdin fechado"
+
+prompts:
+  wrapper_pattern: "systemPrompt:|callLLM\\("
+=== A. --conteudo em diretorio (AT-013: a directory)
+
+--- [dir] soma = 1\n | scan --conteudo src
+RESULTADO: LIMPO
+→ nenhum sinal de prompt de produção; siga
+[rc=0]
+
+--- [dir-prompts] soma = 1\n | scan --conteudo prompts
+prompts :: nome com prompt
+RESULTADO: DRIFT
+→ se é prompt de produção, inventarie no DESIGN; se não é, registre o falso positivo no relatório
+[rc=2]
+
+--- [raiz] soma = 1\n | scan --conteudo /
+RESULTADO: LIMPO
+→ nenhum sinal de prompt de produção; siga
+[rc=0]
+
+--- [ponto] soma = 1\n | scan --conteudo .
+RESULTADO: LIMPO
+→ nenhum sinal de prompt de produção; siga
+[rc=0]
+
+--- [barra] soma = 1\n | scan --conteudo src/
+RESULTADO: LIMPO
+→ nenhum sinal de prompt de produção; siga
+[rc=0]
+
+--- [dir-inexistente-barra] soma = 1\n | scan --conteudo novo/
+RESULTADO: LIMPO
+→ nenhum sinal de prompt de produção; siga
+[rc=0]
+=== B. sinais falsos negativos
+
+--- [espaco-antes-dois-pontos] "system" : "You are"\n | scan --conteudo src/a.py
+RESULTADO: LIMPO
+→ nenhum sinal de prompt de produção; siga
+[rc=0]
+
+--- [kw-python] ask(system="You are")\n | scan --conteudo src/a.py
+RESULTADO: LIMPO
+→ nenhum sinal de prompt de produção; siga
+[rc=0]
+
+--- [role-system] { role: "system", content: "You are" }\n | scan --conteudo src/a.ts
+RESULTADO: LIMPO
+→ nenhum sinal de prompt de produção; siga
+[rc=0]
+
+--- [fstring] ask(system: f"You are {x}")\n | scan --conteudo src/a.py
+RESULTADO: LIMPO
+→ nenhum sinal de prompt de produção; siga
+[rc=0]
+
+--- [fstring-wrap] ask(systemPrompt: f"You are {x}")\n | scan --conteudo src/a.py
+RESULTADO: LIMPO
+→ nenhum sinal de prompt de produção; siga
+[rc=0]
+
+--- [triple] system: """You\n | scan --conteudo src/a.py
+src/a.py :: system: com texto fixo
+RESULTADO: DRIFT
+→ se é prompt de produção, inventarie no DESIGN; se não é, registre o falso positivo no relatório
+[rc=2]
+
+--- [maiuscula] SYSTEM: "You"\n | scan --conteudo src/a.py
+RESULTADO: LIMPO
+→ nenhum sinal de prompt de produção; siga
+[rc=0]
+
+--- [yaml-blk] system: |\n  You are\n | scan --conteudo src/a.yml
+RESULTADO: LIMPO
+→ nenhum sinal de prompt de produção; siga
+[rc=0]
+
+--- [responses] client.responses.create(input=x)\n | scan --conteudo src/a.py
+RESULTADO: LIMPO
+→ nenhum sinal de prompt de produção; siga
+[rc=0]
+
+--- [gemini] model.generateContent(x)\n | scan --conteudo src/a.py
+RESULTADO: LIMPO
+→ nenhum sinal de prompt de produção; siga
+[rc=0]
+
+--- [stream] client.messages.stream(x)\n | scan --conteudo src/a.py
+RESULTADO: LIMPO
+→ nenhum sinal de prompt de produção; siga
+[rc=0]
+=== C. caminhos
+
+--- [dir-maiusc] x\n | scan --conteudo src/Prompts/a.txt
+RESULTADO: LIMPO
+→ nenhum sinal de prompt de produção; siga
+[rc=0]
+
+--- [test-em-prompts] x\n | scan --conteudo src/prompts/test_plan.txt
+RESULTADO: LIMPO
+→ nenhum sinal de prompt de produção; siga
+[rc=0]
+
+--- [spec-em-prompts] x\n | scan --conteudo prompts/a.spec.txt
+RESULTADO: LIMPO
+→ nenhum sinal de prompt de produção; siga
+[rc=0]
+
+--- [test-sdk] client.messages.create(x)\n | scan --conteudo src/test_generator.py
+RESULTADO: LIMPO
+→ nenhum sinal de prompt de produção; siga
+[rc=0]
+
+--- [spec-rb] client.messages.create(x)\n | scan --conteudo spec/a_spec.rb
+spec/a_spec.rb :: chamada direta ao SDK
+RESULTADO: DRIFT
+→ se é prompt de produção, inventarie no DESIGN; se não é, registre o falso positivo no relatório
+[rc=2]
+
+--- [javatest] client.messages.create(x)\n | scan --conteudo src/FooTest.java
+src/FooTest.java :: chamada direta ao SDK
+RESULTADO: DRIFT
+→ se é prompt de produção, inventarie no DESIGN; se não é, registre o falso positivo no relatório
+[rc=2]
+
+--- [mdx] x\n | scan --conteudo docs/a.mdx
+RESULTADO: LIMPO
+→ nenhum sinal de prompt de produção; siga
+[rc=0]
+
+--- [MD-sdk] client.messages.create(x)\n | scan --conteudo docs/a.MD
+RESULTADO: LIMPO
+→ nenhum sinal de prompt de produção; siga
+[rc=0]
+
+--- [ponto-barra] x\n | scan --conteudo ./prompts/a.txt
+./prompts/a.txt :: pasta prompts/
+RESULTADO: DRIFT
+→ se é prompt de produção, inventarie no DESIGN; se não é, registre o falso positivo no relatório
+[rc=2]
+
+--- [dupla-barra] x\n | scan --conteudo src//prompts//a.txt
+src//prompts//a.txt :: pasta prompts/
+RESULTADO: DRIFT
+→ se é prompt de produção, inventarie no DESIGN; se não é, registre o falso positivo no relatório
+[rc=2]
+
+--- [dotdot-existente] x\n | scan --conteudo src/../prompts/a.txt
+src/../prompts/a.txt :: pasta prompts/
+RESULTADO: DRIFT
+→ se é prompt de produção, inventarie no DESIGN; se não é, registre o falso positivo no relatório
+[rc=2]
+
+--- [dotdot-inexistente] x\n | scan --conteudo src/novo/../a.txt
+🛑 caminho com .. numa pasta que não existe: src/novo/../a.txt
+RESULTADO: ERRO DE USO
+→ passe o caminho final, sem ..
+[rc=64]
+
+--- [dotdot-escapa] client.messages.create(x)\n | scan --conteudo ../../a.ts
+../../a.ts :: chamada direta ao SDK
+RESULTADO: DRIFT
+→ se é prompt de produção, inventarie no DESIGN; se não é, registre o falso positivo no relatório
+[rc=2]
+
+--- [traco] x\n | scan --conteudo -a.ts
+RESULTADO: LIMPO
+→ nenhum sinal de prompt de produção; siga
+[rc=0]
+
+--- [vazio] x\n | scan --conteudo 
+🛑 --conteudo precisa de exatamente 1 caminho
+RESULTADO: ERRO DE USO
+→ bash sdd/bin/prompt-drift-scan.sh --conteudo <caminho> (texto na entrada padrão), ou <caminho>... para arquivos em disco
+[rc=64]
+
+--- [espaco] x\n | scan --conteudo src/com espaco/prompts/a b.txt
+src/com espaco/prompts/a b.txt :: pasta prompts/
+RESULTADO: DRIFT
+→ se é prompt de produção, inventarie no DESIGN; se não é, registre o falso positivo no relatório
+[rc=2]
+=== D. symlink de arquivo para prompts/ em disco
+RESULTADO: LIMPO
+→ nenhum sinal de prompt de produção; siga
+[rc=0]
+atalho/prompts/a.txt :: pasta prompts/
+⚠️ prompts.wrapper_pattern vazio: procurei só os sinais genéricos; se o projeto chama a IA por uma função própria, esta varredura não a vê.
+   Preencha o slot em sdd/config.yaml (ex.: systemPrompt:), ou ignore se o projeto usa o SDK direto.
+RESULTADO: DRIFT
+→ se é prompt de produção, inventarie no DESIGN; se não é, registre o falso positivo no relatório
+[rc=2] via atalho (cwd fora)
+⚠️ prompts.wrapper_pattern vazio: procurei só os sinais genéricos; se o projeto chama a IA por uma função própria, esta varredura não a vê.
+   Preencha o slot em sdd/config.yaml (ex.: systemPrompt:), ou ignore se o projeto usa o SDK direto.
+RESULTADO: LIMPO
+→ nenhum sinal de prompt de produção; siga
+[rc=0]
+=== E. disco
+RESULTADO: LIMPO
+→ nenhum sinal de prompt de produção; siga
+[rc=0] vazio
+🛑 não é um arquivo: src/f
+RESULTADO: ERRO DE USO
+→ passe os arquivos, um por um
+[rc=64] fifo
+src/bin.dat :: chamada direta ao SDK
+RESULTADO: DRIFT
+→ se é prompt de produção, inventarie no DESIGN; se não é, registre o falso positivo no relatório
+[rc=2] binario com sinal
+src/l1.py :: chamada direta ao SDK
+RESULTADO: DRIFT
+→ se é prompt de produção, inventarie no DESIGN; se não é, registre o falso positivo no relatório
+[rc=2] nao-utf8
+src/a.ts :: chamada direta ao SDK
+prompts/a.txt :: pasta prompts/
+RESULTADO: DRIFT
+→ se é prompt de produção, inventarie no DESIGN; se não é, registre o falso positivo no relatório
+[rc=2] varios
+🛑 caminho inexistente: nao.ts
+RESULTADO: ERRO DE USO
+→ confira o caminho do manifest, ou use --conteudo para arquivo novo
+[rc=64] um inexistente
+🛑 caminho inexistente: --conteudo
+RESULTADO: ERRO DE USO
+→ confira o caminho do manifest, ou use --conteudo para arquivo novo
+[rc=64] conteudo pos 2
+RESULTADO: LIMPO
+→ nenhum sinal de prompt de produção; siga
+[rc=0] so newline
+cat: stdin: Bad file descriptor
+🛑 nada chegou pela entrada padrão
+RESULTADO: ERRO DE USO
+→ passe o texto pela entrada padrão; arquivo vazio não precisa de varredura
+[rc=64] stdin fechado
+[exit=0]

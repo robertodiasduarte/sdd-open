@@ -1,0 +1,9 @@
+$ bash /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f10-revisao/bd420f6e-558d-4962-a0c9-40cdfc2cbd27/scratchpad/p/a8.sh AT029
+rasa (esperado 10): ESTADO: CONTINUAR motivo: review rasa (n/a (revisor1 raso: 0 achados em 6s)) — não conta como review, refazer RESULTADO: CONTINUAR [rc=10]
+2º revisor raso (esperado 10): ESTADO: CONTINUAR motivo: review rasa (n/a (2º revisor raso: 0 achados em 3s)) — não conta como review, refazer RESULTADO: CONTINUAR [rc=10]
+revisor1_raso: sim sem 2º revisor e convergência sim (esperado 10): ESTADO: CONTINUAR motivo: review rasa (sim) — não conta como review, refazer RESULTADO: CONTINUAR [rc=10]
+2 revisores ok, ledger vazio: ESTADO: CONTINUAR motivo: grave(s) sem veredito no ledger: R1@engine-c RESULTADO: CONTINUAR [rc=10]
+2 revisores, HIGH de reviewer2 aplicada: ESTADO: CONTINUAR motivo: grave(s) corrigido(s) — código mudou, exige nova review: R1@engine-c RESULTADO: CONTINUAR [rc=10]
+{"achado":"R1@engine-a","arquivo":"src/a
+mesmo id nos 2 arquivos (esperado 64): RESULTADO: ENTRADA ILEGÍVEL [rc=64]
+[exit=0]

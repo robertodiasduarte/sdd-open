@@ -1,0 +1,27 @@
+$ /bin/bash /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f13-ux-llm/78ae1e97-e8f5-4e7a-aec5-ff37409eac82/scratchpad/conf.sh
+esp=1 rc=0 controle: valido (esp real 0)  <<<<< PASSA
+esp=1 rc=0 leitura so por echo com a palavra cat  <<<<< PASSA
+esp=1 rc=0 leitura que falhou (exited 1)  <<<<< PASSA
+esp=1 rc=0 leitura so por grep -c  <<<<< PASSA
+esp=1 rc=0 scan so por printf  <<<<< PASSA
+esp=1 rc=0 scan so por leitura do script (grep --conteudo)  <<<<< PASSA
+esp=1 rc=0 scan com saida 127 (script nao achado)  <<<<< PASSA
+esp=1 rc=0 scan que saiu 64 mascarado por ; echo $?  <<<<< PASSA
+esp=1 rc=0 scan que saiu 64 mascarado por || true  <<<<< PASSA
+esp=1 rc=0 um so scan, os outros arquivos so citados  <<<<< PASSA
+esp=1 rc=0 gravou com cp antes de varrer  <<<<< PASSA
+esp=1 rc=0 gravou com python open(w) antes de varrer  <<<<< PASSA
+esp=1 rc=0 gravou por apply_patch/file update antes de varrer  <<<<< PASSA
+esp=1 rc=0 relatorio "A triagem nao foi feita; loop ignorado"
+esp=1 rc=0 relatorio "Sem triagem; o loop veio do DESIGN"
+esp=1 rc=0 sem-skill: marca sem a pergunta (Sua decisao, as opcoes)
+esp=1 rc=0 sem-skill: copia sem .git com prompt improvisado
+--- o que o transcript real faz (scan e gravacao nos ensaios)
+1771:#   bash sdd/bin/prompt-drift-scan.sh --conteudo <caminho>   # avalia o texto da entrada padrão
+1804:USO="bash sdd/bin/prompt-drift-scan.sh --conteudo <caminho> (texto na entrada padrão), ou <caminho>... para arquivos em disco"
+1810:  bash sdd/bin/prompt-drift-scan.sh --conteudo <caminho>   avalia o texto da entrada padrão, antes de gravar
+2334:🛑 sem prompt-drift-scan.sh --conteudo executado para src/notas/LOOP_SPEC.md
+2335:🛑 sem prompt-drift-scan.sh --conteudo executado para src/notas/corrigir.txt
+2336:🛑 sem prompt-drift-scan.sh --conteudo executado para src/notas/redigir.txt
+2285:    path.write_text(content)
+[exit=0]

@@ -1,0 +1,26 @@
+$ cd /tmp/sdd-aval/borda-sem-commit && bash /Users/robertoduarte/rdd-worktrees/sdd-open-f8-aval/bin/sdd-open.sh init --yes --vendors codex 2>&1 | grep -E 'hooks|RESULTADO|→'
++ sdd/ (templates, fixtures, bin, hooks, playbook, config) (novo)
++ core.hooksPath = sdd/hooks — 5 regras + relatório + alarme passam a conferir cada commit (teto do arquivo de contexto, credencial, playbook, byte NUL, branch padrão); git commit --no-verify pula uma vez (novo)
+✅ hooks ligados (sdd/hooks: pre-commit com 5 regras + relatório + alarme da higiene off, pre-push)
+RESULTADO: INSTALADO
+→ abra seu agente e peça a fase Define (ex.: /sdd-define ou /skill:sdd-define).
+[exit=0]
+$ cd /tmp/sdd-aval/borda-sem-commit && git add -A && git commit -q -m primeiro && echo PASSOU-primeiro-commit && git log --oneline | wc -l
+PASSOU-primeiro-commit
+       1
+[exit=0]
+$ cd /tmp/sdd-aval/borda-sem-commit && cp /Users/robertoduarte/rdd-worktrees/sdd-open-f8-aval/sdd/fixtures/playbook/playbook-colapso.md sdd/playbook.md && git add sdd/playbook.md && git commit -q -m pb-no-repo-novo; echo rc=$?
+
+sdd-open: commit recusado. Encontrei o que não pode entrar nesta versão:
+
+  🛑 [H4] sdd/playbook.md perderia conhecimento (delta only): anti-collapse: 1 ID(s) de HEAD DESAPARECERAM do staged: LM-002 
+
+Por que importa:
+  [H4] o playbook só cresce por delta: um [LM-nnn] que some leva junto a lição que ele guardava
+
+RESULTADO: COMMIT RECUSADO
+→ [H4] aposentar = mover para ## Tombstones mantendo o ID; reescrita grande = 2 ou mais commits; apagar ou renomear o playbook não é opção
+→ se você conferiu e quer gravar mesmo assim, só desta vez: git commit --no-verify
+  Agente de IA: não use --no-verify sem o OK explícito da pessoa.
+rc=1
+[exit=0]

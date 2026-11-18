@@ -1,0 +1,20 @@
+$ /bin/bash /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.lyAZcjfTsM/scripts/c3.sh
+RESULTADO: SNAPSHOT GRAVADO
+→ despache o agente e, logo que ele voltar, tire o snapshot de depois sem editar nada no meio.
+[snapshot exit=0]
+[comparar exit=0]
+RESULTADO: SÓ O PERMITIDO MUDOU
+→ siga com o arquivo que o agente gravou.
+[conferir rc=0]
+PERGUNTA 1 add ADD Backend :: sup: `fila_de_envio` `idempotencia` :: Fila sem chave de idempotência duplica o envio no reprocessamento. **Do instead:** grave a chave antes de enviar e confira antes de reenviar. → ficha: — · promovido_para: —
+   simples: O envio duplicou quando a fila reprocessou. Guardar a lição avisa toda sessão que mexer na fila.
+PERGUNTA 2 promover LM-010 promovido_para=sdd/hooks/pre-commit
+   simples: O erro da planilha antiga já aconteceu 2 vezes. Virar trava automática impede a 3ª, ao custo de uma correção própria.
+PERGUNTA 3 inv - [INV-001] estado=humano origem=LM-010 :: Planilha só entra com cabeçalho validado · por quê: a planilha antiga já quebrou a importação 2 vezes · motivo: ainda não há conferência automática
+   simples: Esse erro já aconteceu no passado e nunca foi classificado: aceitar faz dele regra permanente que alguém confere.
+PERGUNTA 4 inv - [LM-011] descartado :: defeito de ferramenta, não regra do sistema
+   simples: O erro do carimbo sem fuso foi da ferramenta antiga: aceitar registra que ele não vira regra permanente.
+resumo-bloco: auto=0 pergunta=4 descartar=0 nao_julgado=0 contaminacao=nao
+RESULTADO: BLOCO VÁLIDO
+→ aplique as linhas AUTO sem perguntar e leve as linhas PERGUNTA à pessoa.
+[exit=0]

@@ -1,0 +1,8 @@
+$ (cd tests && python3 -B -m unittest -v test_f24_release_enxuta.AT002_UmaVezSo)   # HEAD 017f09a
+test_duas_publicacoes_sem_lote_nao_contam_duas_vezes (test_f24_release_enxuta.AT002_UmaVezSo.test_duas_publicacoes_sem_lote_nao_contam_duas_vezes) ... ok
+
+----------------------------------------------------------------------
+Ran 1 test in 0.733s
+
+OK
+[exit=0]

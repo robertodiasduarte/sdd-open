@@ -1,0 +1,77 @@
+$ python3 -B -m unittest -v test_windows test_publish_gate_patterns test_deploy_do_sha test_eval_agree
+test_cada_achado_tem_teste_que_roda_no_job (test_windows.AchadosGuardados.test_cada_achado_tem_teste_que_roda_no_job) ... ok
+test_a_varredura_acusa_e_respeita_o_encoding (test_windows.Decodificacao.test_a_varredura_acusa_e_respeita_o_encoding) ... ok
+test_os_aceitos_ainda_existem_e_ainda_precisam (test_windows.Decodificacao.test_os_aceitos_ainda_existem_e_ainda_precisam) ... ok
+test_subprocess_em_modo_texto_sempre_com_encoding (test_windows.Decodificacao.test_subprocess_em_modo_texto_sempre_com_encoding) ... ok
+test_subprocess_nunca_chama_bash_pelo_nome (test_windows.Decodificacao.test_subprocess_nunca_chama_bash_pelo_nome) ... ok
+test_gitattributes_poe_lf_em_todo_checkout (test_windows.FimDeLinha.test_gitattributes_poe_lf_em_todo_checkout) ... ok
+test_stdout_do_curator_sem_crlf (test_windows.FimDeLinha.test_stdout_do_curator_sem_crlf) ... ok
+test_a_varredura_acusa_a_pergunta_escrita_a_mao (test_windows.Pulos.test_a_varredura_acusa_a_pergunta_escrita_a_mao) ... ok
+test_cada_constante_tem_motivo_que_nomeia_o_recurso (test_windows.Pulos.test_cada_constante_tem_motivo_que_nomeia_o_recurso) ... ok
+test_pulo_de_plataforma_so_por_constante_do_apoio (test_windows.Pulos.test_pulo_de_plataforma_so_por_constante_do_apoio) ... ok
+test_cpf_plantado_bloqueia_no_g2 (test_publish_gate_patterns.GateInteiro.test_cpf_plantado_bloqueia_no_g2) ... ok
+test_sem_plantio_o_g2_nao_acusa (test_publish_gate_patterns.GateInteiro.test_sem_plantio_o_g2_nao_acusa) ... ok
+test_negativos_nao_casam (test_publish_gate_patterns.Padroes.test_negativos_nao_casam) ... ok
+test_positivos_casam (test_publish_gate_patterns.Padroes.test_positivos_casam) ... ok
+test_todo_padrao_e_ere_valida (test_publish_gate_patterns.Padroes.test_todo_padrao_e_ere_valida) ... ok
+test_consulta_falhando_cita_o_erro_no_teto (test_deploy_do_sha.AindaNaoSei.test_consulta_falhando_cita_o_erro_no_teto) ... ok
+test_sem_run_nunca_diz_que_nao_ha_o_que_verificar (test_deploy_do_sha.AindaNaoSei.test_sem_run_nunca_diz_que_nao_ha_o_que_verificar) ... ok
+test_teto_com_run_em_andamento_nao_e_falha (test_deploy_do_sha.AindaNaoSei.test_teto_com_run_em_andamento_nao_e_falha) ... ok
+test_gh_sem_login_sai_3 (test_deploy_do_sha.Ausentes.test_gh_sem_login_sai_3) ... ok
+test_sem_gh_e_sem_git_sai_3 (test_deploy_do_sha.Ausentes.test_sem_gh_e_sem_git_sai_3) ... ok
+test_sha_desconhecido_com_fetch_que_falha_sai_4 (test_deploy_do_sha.MergeDeOutroClone.test_sha_desconhecido_com_fetch_que_falha_sai_4) ... ok
+test_sha_que_ninguem_conhece_segue_saindo_64 (test_deploy_do_sha.MergeDeOutroClone.test_sha_que_ninguem_conhece_segue_saindo_64) ... ok
+test_sha_que_so_o_remoto_conhece_e_buscado (test_deploy_do_sha.MergeDeOutroClone.test_sha_que_so_o_remoto_conhece_e_buscado) ... ok
+test_espera_o_run_em_andamento_com_progresso_em_stderr (test_deploy_do_sha.NoAr.test_espera_o_run_em_andamento_com_progresso_em_stderr) ... ok
+test_nao_contam_outra_branch_tag_nem_outro_evento (test_deploy_do_sha.NoAr.test_nao_contam_outra_branch_tag_nem_outro_evento) ... ok
+test_proprio_verde (test_deploy_do_sha.NoAr.test_proprio_verde) ... ok
+test_workflow_dispatch_conta (test_deploy_do_sha.NoAr.test_workflow_dispatch_conta) ... ok
+test_corrida_sem_o_run_novo_sai_4_nunca_2 (test_deploy_do_sha.Redisparo.test_corrida_sem_o_run_novo_sai_4_nunca_2) ... ok
+test_deploy_mais_novo_nao_repete (test_deploy_do_sha.Redisparo.test_deploy_mais_novo_nao_repete) ... ok
+test_dispatch_recusado_diz_o_caminho (test_deploy_do_sha.Redisparo.test_dispatch_recusado_diz_o_caminho) ... ok
+test_dispatch_sem_login_sai_3_e_nao_gasta_o_redisparo (test_deploy_do_sha.Redisparo.test_dispatch_sem_login_sai_3_e_nao_gasta_o_redisparo) ... ok
+test_dispatch_sem_resposta_clara_nao_vira_recusa_nem_repete (test_deploy_do_sha.Redisparo.test_dispatch_sem_resposta_clara_nao_vira_recusa_nem_repete) ... ok
+test_duas_chamadas_juntas_repetem_uma_vez (test_deploy_do_sha.Redisparo.test_duas_chamadas_juntas_repetem_uma_vez) ... ok
+test_fetch_que_falha_nao_repete (test_deploy_do_sha.Redisparo.test_fetch_que_falha_nao_repete) ... ok
+test_ja_repetido_por_workflow_dispatch (test_deploy_do_sha.Redisparo.test_ja_repetido_por_workflow_dispatch) ... ok
+test_marca_de_outra_chamada_espera_e_nao_repete (test_deploy_do_sha.Redisparo.test_marca_de_outra_chamada_espera_e_nao_repete) ... ok
+test_nao_e_mais_a_ponta (test_deploy_do_sha.Redisparo.test_nao_e_mais_a_ponta) ... ok
+test_nao_repete (test_deploy_do_sha.Redisparo.test_nao_repete) ... ok
+test_passo_passageiro_na_ponta_repete_uma_vez (test_deploy_do_sha.Redisparo.test_passo_passageiro_na_ponta_repete_uma_vez) ... ok
+test_slots_preenchem_workflow_passos_e_branch (test_deploy_do_sha.Redisparo.test_slots_preenchem_workflow_passos_e_branch) ... ok
+test_teto_que_ja_passou_nao_repete (test_deploy_do_sha.Redisparo.test_teto_que_ja_passou_nao_repete) ... ok
+test_503_com_a_palavra_workflow_nao_e_erro_de_uso (test_deploy_do_sha.RespostasEstranhas.test_503_com_a_palavra_workflow_nao_e_erro_de_uso) ... ok
+test_consulta_falhando_nao_repete_a_linha_a_cada_volta (test_deploy_do_sha.RespostasEstranhas.test_consulta_falhando_nao_repete_a_linha_a_cada_volta) ... ok
+test_dispatch_com_404_sai_2_e_nao_64 (test_deploy_do_sha.RespostasEstranhas.test_dispatch_com_404_sai_2_e_nao_64) ... ok
+test_job_falho_sem_passo_falho_nao_repete (test_deploy_do_sha.RespostasEstranhas.test_job_falho_sem_passo_falho_nao_repete) ... ok
+test_passageiro_com_job_em_timeout_nao_repete (test_deploy_do_sha.RespostasEstranhas.test_passageiro_com_job_em_timeout_nao_repete) ... ok
+test_passageiro_e_real_juntos_nao_repete (test_deploy_do_sha.RespostasEstranhas.test_passageiro_e_real_juntos_nao_repete) ... ok
+test_run_sem_sha_nao_quebra_nem_decide (test_deploy_do_sha.RespostasEstranhas.test_run_sem_sha_nao_quebra_nem_decide) ... ok
+test_run_verde_sem_sha_nao_e_no_ar (test_deploy_do_sha.RespostasEstranhas.test_run_verde_sem_sha_nao_e_no_ar) ... ok
+test_view_com_forma_inesperada_nao_quebra (test_deploy_do_sha.RespostasEstranhas.test_view_com_forma_inesperada_nao_quebra) ... ok
+test_view_que_falha_tenta_de_novo_e_nao_conclui (test_deploy_do_sha.RespostasEstranhas.test_view_que_falha_tenta_de_novo_e_nao_conclui) ... ok
+test_workflow_com_nome_errado_sai_64_na_hora (test_deploy_do_sha.RespostasEstranhas.test_workflow_com_nome_errado_sai_64_na_hora) ... ok
+test_cancelado_espera_o_substituto_aparecer (test_deploy_do_sha.Substituto.test_cancelado_espera_o_substituto_aparecer) ... ok
+test_cancelado_sem_substituto_na_janela_sai_2 (test_deploy_do_sha.Substituto.test_cancelado_sem_substituto_na_janela_sai_2) ... ok
+test_commit_que_o_clone_nao_conhece_nunca_decide (test_deploy_do_sha.Substituto.test_commit_que_o_clone_nao_conhece_nunca_decide) ... ok
+test_contem_o_commit_e_terminou_bem (test_deploy_do_sha.Substituto.test_contem_o_commit_e_terminou_bem) ... ok
+test_mais_novo_que_nao_contem_nao_vale (test_deploy_do_sha.Substituto.test_mais_novo_que_nao_contem_nao_vale) ... ok
+test_substituto_andando_e_esperado (test_deploy_do_sha.Substituto.test_substituto_andando_e_esperado) ... ok
+test_substituto_que_terminou_mal_e_nomeado (test_deploy_do_sha.Substituto.test_substituto_que_terminou_mal_e_nomeado) ... ok
+test_branch_do_origin_head_sem_slot (test_deploy_do_sha.Uso.test_branch_do_origin_head_sem_slot) ... ok
+test_sai_64 (test_deploy_do_sha.Uso.test_sai_64) ... ok
+test_at014_numeros_exatos_da_fixture (test_eval_agree.EvalAgree.test_at014_numeros_exatos_da_fixture) ... ok
+test_at014_pasta_padrao_vem_do_output_dir (test_eval_agree.EvalAgree.test_at014_pasta_padrao_vem_do_output_dir) ... ok
+test_at015_fora_da_conta_com_o_motivo (test_eval_agree.EvalAgree.test_at015_fora_da_conta_com_o_motivo) ... ok
+test_at016_sem_dados_e_uso (test_eval_agree.EvalAgree.test_at016_sem_dados_e_uso) ... ok
+test_at017_so_le_arquivos (test_eval_agree.EvalAgree.test_at017_so_le_arquivos) ... ok
+test_aval1_l3_projeto_sem_revisoes_ainda_e_sem_dados (test_eval_agree.EvalAgree.test_aval1_l3_projeto_sem_revisoes_ainda_e_sem_dados) ... ok
+test_aval1_l4_sem_git_no_path_usa_a_pasta_atual (test_eval_agree.EvalAgree.test_aval1_l4_sem_git_no_path_usa_a_pasta_atual) ... ok
+test_real2_comentario_sem_indentacao_no_bloco_review (test_eval_agree.EvalAgree.test_real2_comentario_sem_indentacao_no_bloco_review) ... ok
+test_real2_gemini_com_varios_modelos_fica_numa_linha (test_eval_agree.EvalAgree.test_real2_gemini_com_varios_modelos_fica_numa_linha) ... ok
+
+----------------------------------------------------------------------
+Ran 70 tests in 34.929s
+
+OK
+[exit=0]

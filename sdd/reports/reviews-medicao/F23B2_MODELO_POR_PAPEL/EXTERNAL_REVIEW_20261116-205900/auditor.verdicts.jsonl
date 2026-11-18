@@ -1,0 +1,12 @@
+{"achado": "R1", "veredito": "AGREE", "justificativa": "O DESIGN:126 estabelece tetos por série, sem mecanismo compartilhado para cumprir os US$ 200 da frente inteira exigidos pelo DEFINE."}
+{"achado": "R2", "veredito": "DISAGREE_CONCERN", "justificativa": "O Pattern 5 omite a completude, mas o DESIGN:197 exige parcial sem vencedor; falta o fluxo completo para confirmar a escolha indevida e resolver a precedência."}
+{"achado": "R3", "veredito": "DISAGREE_CONCERN", "justificativa": "O DESIGN:186 não explicita cópia descartável, mas faltam o comportamento de escrita do --aplicar e a preparação do arquivo para provar corrupção."}
+{"achado": "R4", "veredito": "AGREE", "justificativa": "O DESIGN:503 manda refazer a execução interrompida sem meta.txt e não prevê recuperar seu gasto para o acumulado."}
+{"achado": "R5", "veredito": "DISAGREE_CONCERN", "justificativa": "O DESIGN:128 prevê saida.txt, mas faltam a ordem da persistência e as exclusões da fronteira para confirmar o falso FORA."}
+{"achado": "R6", "veredito": "DISAGREE_CONCERN", "justificativa": "O DESIGN:132 não esclarece o tratamento do PARADA.txt na retomada, sem provar que o marcador antigo permanecerá."}
+{"achado": "R7", "veredito": "DISAGREE_CONCERN", "justificativa": "A regex do DESIGN:72 aceita hífen inicial, mas a interpretação como opção depende da chamada e do parser ausentes do material."}
+{"achado": "R8", "veredito": "AGREE", "justificativa": "O DESIGN:299 promete linha com slot vazio, contrariando a saída sem linha de modelo exigida pelo AT-001."}
+{"achado": "R9", "veredito": "AGREE", "justificativa": "O DESIGN:109 não define a contagem de execuções por papel exigida pelo AT-003."}
+{"achado": "R10", "veredito": "DISAGREE_CONCERN", "justificativa": "O DESIGN:127 passa o modelo pelo ambiente, mas falta o comando consumidor para provar separação indevida de argumentos ou execução de código."}
+{"achado": "R11", "veredito": "DISAGREE_CONCERN", "justificativa": "O DESIGN:165 não mostra se os leitores existentes normalizam caminhos, impedindo confirmar a falha entre /var e /private/var."}
+{"achado": "N1", "veredito": "NOVO", "severidade": "MED", "arquivo": "sdd/features/DESIGN_F23B2_MODELO_POR_PAPEL.md", "linha": 128, "resumo": "Sem pontuar e aprovar a referência antes das chamadas dos candidatos, a série consome orçamento mesmo com referência fora da meta, contrariando a calibração prévia exigida pelo DEFINE."}

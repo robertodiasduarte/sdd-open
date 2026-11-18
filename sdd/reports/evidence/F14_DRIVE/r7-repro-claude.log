@@ -1,0 +1,24 @@
+$ bash sdd/reports/evidence/F14_DRIVE/r7-repro.sh /Users/robertoduarte/rdd-worktrees/sdd-open-f14-drive/sdd/bin/sdd-archive.py
+
+== Lote com-ledger: 0 arquivo(s) ==
+
+== Lote sem-ledger: 0 arquivo(s) ==
+
+== Lote soltos: 0 arquivo(s) ==
+
+== Protegidos: 3 grupo(s) ==
+  MINHA-FRENTE (1 documento(s)): ficha aberta em HANDOFF_minha-frente.md
+  OUTRA (1 documento(s)): ficha aberta em HANDOFF_Outra_s2.md
+  NOTAS_MINHA-FRENTE.txt (1 documento(s)): ficha aberta em HANDOFF_minha-frente.md
+
+== Recentes (ficam): 0 grupo(s) ==
+
+== Sem classificação (decisão sua): 0 ==
+
+== Subpastas (ficam): 0 ==
+
+TOTAIS: com-ledger=0 · sem-ledger=0 · soltos=0 · protegidos=3 · recentes=0 · sem classificação=0 · subpastas=0
+Nada foi movido.
+RESULTADO: SIMULACAO
+→ para mover, rode com --lote <nome> --aplicar, um lote por vez.
+[exit=0]

@@ -1,0 +1,2 @@
+{"achado": "R1", "veredito": "AGREE", "justificativa": "O diff mostra que vp é sobrescrito por DE_ARG antes da checagem de rebaixamento, ignorando o registro existente e permitindo rebaixar o registro (viola AT-007); severidade real é MED."}
+{"achado": "R2", "veredito": "AGREE", "justificativa": "O DESIGN exige uma variável única para instaláveis; o diff hardcodeia o padrão em instalaveis enquanto doctor usa skills_da_fonte, gerando divergência e avisos eternos no doctor; severidade real é MED."}

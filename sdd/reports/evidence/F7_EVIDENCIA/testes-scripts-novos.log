@@ -1,0 +1,57 @@
+$ cd tests && SDD_TEST_BASH=/bin/bash /usr/bin/python3 -B -m unittest -v test_gate_baseline test_gate_shell_evidencia test_avaliador_guard test_test_baseline test_bash32
+test_base_default_vem_do_config (test_gate_baseline.GateBaseline) ... ok
+test_base_invalida_sai_3 (test_gate_baseline.GateBaseline) ... ok
+test_base_passa_sai_2 (test_gate_baseline.GateBaseline) ... ok
+test_base_reprova_avaliando_sai_0_e_grava_evidencia (test_gate_baseline.GateBaseline) ... ok
+test_build_continua_verde (test_gate_baseline.GateBaseline) ... ok
+test_crash_com_rc_2_nao_prova_dentes (test_gate_baseline.GateBaseline) ... ok
+test_hooks_e_assinatura_globais_nao_quebram_a_copia (test_gate_baseline.GateBaseline) ... ok
+test_marcadores_de_asssercao_provam_dentes (test_gate_baseline.GateBaseline) ... ok
+test_sem_sobrepor_o_gate_novo_nao_existe_na_base (test_gate_baseline.GateBaseline) ... ok
+test_uso (test_gate_baseline.GateBaseline) ... ok
+test_bordas_do_pipe (test_gate_shell_evidencia.GateShellEvidencia) ... ok
+test_cada_formatador_e_acusado (test_gate_shell_evidencia.GateShellEvidencia) ... ok
+test_caminho_inexistente_e_64 (test_gate_shell_evidencia.GateShellEvidencia) ... ok
+test_falso_verde_acusa_exatamente_as_linhas_esperadas (test_gate_shell_evidencia.GateShellEvidencia) ... ok
+test_honesto_e_pipe_assertivo_saem_0 (test_gate_shell_evidencia.GateShellEvidencia) ... ok
+test_pasta_e_utf8 (test_gate_shell_evidencia.GateShellEvidencia) ... ok
+test_rc_capturado_depois_do_pipe_nao_salva (test_gate_shell_evidencia.GateShellEvidencia) ... ok
+test_sem_log_sai_0 (test_gate_shell_evidencia.GateShellEvidencia) ... ok
+test_base_invalida_e_64 (test_gate_shell_evidencia.ModoDiff) ... ok
+test_de_subpasta (test_gate_shell_evidencia.ModoDiff) ... ok
+test_so_os_logs_do_diff_e_os_nao_rastreados (test_gate_shell_evidencia.ModoDiff) ... ok
+test_staged_e_rastreado_modificado_tambem_entram (test_gate_shell_evidencia.ModoDiff) ... ok
+test_desligado_sai_0_com_aviso (test_avaliador_guard.AvaliadorGuard) ... ok
+test_fora_de_git_sai_2 (test_avaliador_guard.AvaliadorGuard) ... ok
+test_limpo_sai_0 (test_avaliador_guard.AvaliadorGuard) ... ok
+test_modificado_e_nao_rastreado_saem_1_com_o_commit (test_avaliador_guard.AvaliadorGuard) ... ok
+test_o_commit_sugerido_funciona_com_renomeacao (test_avaliador_guard.AvaliadorGuard) ... ok
+test_quatro_prefixos_nao_liberam_sdd_bin (test_avaliador_guard.AvaliadorGuard) ... ok
+test_renomear_para_dentro_de_evidence_conta_a_origem (test_avaliador_guard.AvaliadorGuard) ... ok
+test_so_evidencia_sai_0 (test_avaliador_guard.AvaliadorGuard) ... ok
+test_so_remocao_staged_sugere_commit_sem_add (test_avaliador_guard.AvaliadorGuard) ... ok
+test_trace_do_gate_nao_suja (test_avaliador_guard.AvaliadorGuard) ... ok
+test_uso (test_avaliador_guard.AvaliadorGuard) ... ok
+test_aceitar_nao_roda_e_e_idempotente (test_test_baseline.TestBaseline) ... ok
+test_cada_formato_so_aborta_pela_falha_nova (test_test_baseline.TestBaseline) ... ok
+test_comando_ausente_e_inconclusivo (test_test_baseline.TestBaseline) ... ok
+test_execucao_completa_poda_o_que_sarou (test_test_baseline.TestBaseline) ... ok
+test_execucao_parcial_nao_poda (test_test_baseline.TestBaseline) ... ok
+test_falha_nova_nao_poda_nem_na_execucao_completa (test_test_baseline.TestBaseline) ... ok
+test_pacote_go_que_nao_compila_nao_e_mascarado (test_test_baseline.TestBaseline) ... ok
+test_pacote_go_sem_linha_de_teste_tambem_falha (test_test_baseline.TestBaseline) ... ok
+test_saida_colorida_e_lida (test_test_baseline.TestBaseline) ... ok
+test_saida_nao_reconhecida_e_inconclusivo (test_test_baseline.TestBaseline) ... ok
+test_test_cmd_vazio_e_pulado (test_test_baseline.TestBaseline) ... ok
+test_touched_com_base_invalida_e_64 (test_test_baseline.TestBaseline) ... ok
+test_touched_so_aborta_por_arquivo_tocado (test_test_baseline.TestBaseline) ... ok
+test_uso (test_test_baseline.TestBaseline) ... ok
+test_o_padrao_pega_o_que_deve (test_bash32.Bash32) ... ok
+test_os_scripts_novos_existem_e_awk_de_log_usa_lc_all_c (test_bash32.Bash32) ... ok
+test_sem_bashismo_em_sdd_bin (test_bash32.Bash32) ... ok
+
+----------------------------------------------------------------------
+Ran 50 tests in 11.457s
+
+OK
+[exit=0]

@@ -1,0 +1,11 @@
+$ bash /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f10-revisao/bd420f6e-558d-4962-a0c9-40cdfc2cbd27/scratchpad/p/sab.sh revisor2
+sabotado sdd/bin/adversarial-review.sh: 'elif gat2:\n    gatilho = gat2' -> 'elif False:\n    gatilho = gat2'
+ERROR: test_escolhe_a_primeira_disponivel_fora_do_revisor_e_do_auditor_e_rotula (test_revisao.SegundoRevisor)
+ERROR: test_indisponivel_registra_67_avisa_e_o_auditor_roda (test_revisao.SegundoRevisor)
+ERROR: test_segundo_revisor_que_falha_nao_derruba_a_cadeia (test_revisao.SegundoRevisor)
+FAIL: test_segundo_revisor_sem_resultado_exige_dispensa (test_revisao.Conferir)
+FAIL: test_raso_aciona_o_segundo_revisor (test_revisao.SegundoRevisor)
+Ran 122 tests in 62.980s
+FAILED (failures=2, errors=3)
+[unittest rc=1]
+[exit=0]

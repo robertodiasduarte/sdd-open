@@ -1,0 +1,132 @@
+test_os_tres_exits_do_contrato (test_slot.Contrato.test_os_tres_exits_do_contrato) ... 
+
+  test_os_tres_exits_do_contrato (test_slot.Contrato.test_os_tres_exits_do_contrato) (rc=0) ... FAIL
+
+  test_os_tres_exits_do_contrato (test_slot.Contrato.test_os_tres_exits_do_contrato) (rc=2) ... FAIL
+
+  test_os_tres_exits_do_contrato (test_slot.Contrato.test_os_tres_exits_do_contrato) (rc=10) ... FAIL
+
+test_schema_recebe_os_arquivos_como_argumentos (test_slot.Contrato.test_schema_recebe_os_arquivos_como_argumentos) ... FAIL
+
+test_sem_arquivos_o_comando_nao_recebe_argumento_extra (test_slot.Contrato.test_sem_arquivos_o_comando_nao_recebe_argumento_extra) ... FAIL
+
+
+
+======================================================================
+
+FAIL: test_os_tres_exits_do_contrato (test_slot.Contrato.test_os_tres_exits_do_contrato) (rc=0)
+
+----------------------------------------------------------------------
+
+Traceback (most recent call last):
+
+  File "D:\a\sdd-open\sdd-open\tests\test_slot.py", line 82, in test_os_tres_exits_do_contrato
+
+    self.assertEqual(got, rc, out)
+
+AssertionError: 11 != 0 : \u2139\ufe0f  smoke.before_ok_cmd vazio: pulado (C:/Users/runneradmin/AppData/Local/Temp/sdd-open-8uxa43ok/repo/sdd/config.yaml)
+
+RESULTADO: PULADO
+
+\u2192 diga que o passo foi pulado porque o slot est� vazio; para us�-lo, preencha smoke.before_ok_cmd em sdd/config.yaml.
+
+
+
+
+
+======================================================================
+
+FAIL: test_os_tres_exits_do_contrato (test_slot.Contrato.test_os_tres_exits_do_contrato) (rc=2)
+
+----------------------------------------------------------------------
+
+Traceback (most recent call last):
+
+  File "D:\a\sdd-open\sdd-open\tests\test_slot.py", line 82, in test_os_tres_exits_do_contrato
+
+    self.assertEqual(got, rc, out)
+
+AssertionError: 11 != 2 : \u2139\ufe0f  smoke.before_ok_cmd vazio: pulado (C:/Users/runneradmin/AppData/Local/Temp/sdd-open-8uxa43ok/repo/sdd/config.yaml)
+
+RESULTADO: PULADO
+
+\u2192 diga que o passo foi pulado porque o slot est� vazio; para us�-lo, preencha smoke.before_ok_cmd em sdd/config.yaml.
+
+
+
+
+
+======================================================================
+
+FAIL: test_os_tres_exits_do_contrato (test_slot.Contrato.test_os_tres_exits_do_contrato) (rc=10)
+
+----------------------------------------------------------------------
+
+Traceback (most recent call last):
+
+  File "D:\a\sdd-open\sdd-open\tests\test_slot.py", line 82, in test_os_tres_exits_do_contrato
+
+    self.assertEqual(got, rc, out)
+
+AssertionError: 11 != 10 : \u2139\ufe0f  smoke.before_ok_cmd vazio: pulado (C:/Users/runneradmin/AppData/Local/Temp/sdd-open-8uxa43ok/repo/sdd/config.yaml)
+
+RESULTADO: PULADO
+
+\u2192 diga que o passo foi pulado porque o slot est� vazio; para us�-lo, preencha smoke.before_ok_cmd em sdd/config.yaml.
+
+
+
+
+
+======================================================================
+
+FAIL: test_schema_recebe_os_arquivos_como_argumentos (test_slot.Contrato.test_schema_recebe_os_arquivos_como_argumentos)
+
+----------------------------------------------------------------------
+
+Traceback (most recent call last):
+
+  File "D:\a\sdd-open\sdd-open\tests\test_slot.py", line 90, in test_schema_recebe_os_arquivos_como_argumentos
+
+    self.assertEqual(rc, 0, out)
+
+AssertionError: 11 != 0 : \u2139\ufe0f  schema.check_cmd vazio: pulado (C:/Users/runneradmin/AppData/Local/Temp/sdd-open-36n5k8sc/repo/sdd/config.yaml)
+
+RESULTADO: PULADO
+
+\u2192 diga que o passo foi pulado porque o slot est� vazio; para us�-lo, preencha schema.check_cmd em sdd/config.yaml.
+
+
+
+
+
+======================================================================
+
+FAIL: test_sem_arquivos_o_comando_nao_recebe_argumento_extra (test_slot.Contrato.test_sem_arquivos_o_comando_nao_recebe_argumento_extra)
+
+----------------------------------------------------------------------
+
+Traceback (most recent call last):
+
+  File "D:\a\sdd-open\sdd-open\tests\test_slot.py", line 96, in test_sem_arquivos_o_comando_nao_recebe_argumento_extra
+
+    self.assertEqual(rc, 0, out)
+
+AssertionError: 11 != 0 : \u2139\ufe0f  smoke.before_ok_cmd vazio: pulado (C:/Users/runneradmin/AppData/Local/Temp/sdd-open-ojzm675w/repo/sdd/config.yaml)
+
+RESULTADO: PULADO
+
+\u2192 diga que o passo foi pulado porque o slot est� vazio; para us�-lo, preencha smoke.before_ok_cmd em sdd/config.yaml.
+
+
+
+
+
+----------------------------------------------------------------------
+
+Ran 3 tests in 1.466s
+
+
+
+FAILED (failures=5)
+

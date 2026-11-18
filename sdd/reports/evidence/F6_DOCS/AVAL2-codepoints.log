@@ -1,0 +1,3 @@
+$ /usr/bin/python3 -B cp.py $(git diff --name-only 963c47e aaae1b4)   # Cf/Co/Cs, NBSP, U+2028/9 (FE0F de emoji liberado)
+arquivos=9 achados=0
+exit=0

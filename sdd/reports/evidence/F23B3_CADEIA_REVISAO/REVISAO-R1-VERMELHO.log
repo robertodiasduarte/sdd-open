@@ -1,0 +1,50 @@
+$ (testes da rodada 1 de a84b2e3 sobre a árvore de 3930f69) python3 -B -m unittest test_f23b3_revisao.AT006LinhasNovas.test_r1_revisao_do_design_sem_achados test_f23b3_revisao.AT002Risco.test_r2_o_meta_grava_o_termo_ou_glob_que_casou test_f23b3_revisao.AT006Loop.test_loop_aceita_rodada_d1 test_f23b3_revisao.AT002Risco.test_r4_caminho_em_nfd_casa_o_termo_acentuado test_f23b3_revisao.AT005Cadeia.test_n1_custo_incerto_na_rodada_evitada_vira_mais_nd   # HEAD 
+FE.FF
+======================================================================
+ERROR: test_r2_o_meta_grava_o_termo_ou_glob_que_casou (test_f23b3_revisao.AT002Risco.test_r2_o_meta_grava_o_termo_ou_glob_que_casou)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.04AFM78IEC/tests/test_f23b3_revisao.py", line 139, in test_r2_o_meta_grava_o_termo_ou_glob_que_casou
+    self.assertEqual(meta(self.pasta(r))["gatilho_risco_motivo"], "glob db/**")
+                     ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^
+KeyError: 'gatilho_risco_motivo'
+
+======================================================================
+FAIL: test_r1_revisao_do_design_sem_achados (test_f23b3_revisao.AT006LinhasNovas.test_r1_revisao_do_design_sem_achados)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.04AFM78IEC/tests/test_f23b3_revisao.py", line 348, in test_r1_revisao_do_design_sem_achados
+    self.assertEqual(rc, 0, out)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^
+AssertionError: 2 != 0 : 🛑 /private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/sdd-open-1kknluq_/ledgers/LEDGER_REVISAO_D.md:6 — rodada sem achados se escreve `sem achados: rodada=<N> EXTERNAL_REVIEW_<AAAAMMDD-HHMMSS>`
+🛑 /private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/sdd-open-1kknluq_/ledgers/LEDGER_REVISAO_D.md — nenhuma linha de dados nem linha `sem achados:`: nada conferido nunca é verde
+RESULTADO: VERMELHO
+→ corrija as linhas acima (molde: sdd/templates/LEDGER_REVISAO_TEMPLATE.md; critério: sdd/review/CRITERIO_DANO.md) e rode de novo.
+
+
+======================================================================
+FAIL: test_r4_caminho_em_nfd_casa_o_termo_acentuado (test_f23b3_revisao.AT002Risco.test_r4_caminho_em_nfd_casa_o_termo_acentuado)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.04AFM78IEC/tests/test_f23b3_revisao.py", line 132, in test_r4_caminho_em_nfd_casa_o_termo_acentuado
+    self.assertEqual(f(unicodedata.normalize("NFD", "lib/permissões.py")), "permissões")
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: None != 'permissões'
+
+======================================================================
+FAIL: test_n1_custo_incerto_na_rodada_evitada_vira_mais_nd (test_f23b3_revisao.AT005Cadeia.test_n1_custo_incerto_na_rodada_evitada_vira_mais_nd)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.04AFM78IEC/tests/test_f23b3_revisao.py", line 296, in test_n1_custo_incerto_na_rodada_evitada_vira_mais_nd
+    self.assertEqual(self.linha_cadeia(out, "INC")[5], "1.2500 + n/d")
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: '1.2500' != '1.2500 + n/d'
+- 1.2500
++ 1.2500 + n/d
+
+
+----------------------------------------------------------------------
+Ran 5 tests in 1.226s
+
+FAILED (failures=3, errors=1)
+[exit=1]

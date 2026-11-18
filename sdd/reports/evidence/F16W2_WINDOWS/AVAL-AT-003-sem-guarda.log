@@ -1,0 +1,8 @@
+$ (cópia de HEAD 3ba89de) volta sdd-archive.py:184 e test-baseline.sh:244 para os.path.join (o defeito do Windows) && cd tests && python3 -m unittest test_sdd_archive test_test_baseline test_f16w2_caminhos test_f16w2_saida ; grep -rln ntpath tests/
+sdd/bin/sdd-archive.py:184:        base = os.path.join("sdd", sub)  # MUTANTE
+sdd/bin/test-baseline.sh:244:            cam = os.path.join(pasta, c) if pasta else c  # MUTANTE
+Ran 60 tests in 20.529s
+
+OK
+--- testes que usam ntpath:
+(fim; vazio = nenhum)

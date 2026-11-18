@@ -1,0 +1,85 @@
+$ bash /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f10-revisao/bd420f6e-558d-4962-a0c9-40cdfc2cbd27/scratchpad/p/at022.sh
+=== todos AGREE, sem NOVO → sim
+RESULTADO: REVIEW COMPLETA
+[rc=0]
+reviewer_exit           : 0
+auditor_exit            : 0
+convergencia_1o_passe   : sim
+desempate_decisao       : -
+=== NOVO → nao
+RESULTADO: REVIEW COMPLETA
+[rc=0]
+reviewer_exit           : 0
+auditor_exit            : 0
+convergencia_1o_passe   : nao
+desempate_decisao       : -
+=== DISAGREE_CONCERN → nao
+RESULTADO: REVIEW COMPLETA
+[rc=0]
+reviewer_exit           : 0
+auditor_exit            : 0
+convergencia_1o_passe   : nao
+desempate_decisao       : -
+=== auditor falhou (68) → n/a (auditor falhou)
+RESULTADO: REVIEW INVÁLIDA
+[rc=68]
+reviewer_exit           : 0
+auditor_exit            : 68
+convergencia_1o_passe   : n/a (auditor falhou)
+desempate_decisao       : -
+=== revisor falhou → n/a (auditor não rodou)
+RESULTADO: PAROU
+[rc=67]
+reviewer_exit           : 67
+auditor_exit            : -
+convergencia_1o_passe   : n/a (auditor não rodou)
+desempate_decisao       : -
+=== revisor1 raso sem 2º revisor → n/a (revisor1 raso…)
+⚠️ o revisor terminou em 0 s sem achados: isso não conta como revisão
+RESULTADO: REVIEW COMPLETA
+[rc=0]
+reviewer_exit           : 0
+auditor_exit            : 0
+convergencia_1o_passe   : n/a (revisor1 raso: 0 achados em 0s)
+desempate_decisao       : -
+=== 2º revisor raso → n/a (2º revisor raso…)
+RESULTADO: REVIEW COMPLETA
+[rc=0]
+reviewer_exit           : 0
+revisor2_exit           : 0
+auditor_exit            : 0
+convergencia_1o_passe   : n/a (2º revisor raso: 0 achados em 0s)
+desempate_decisao       : -
+=== 2º revisor falha (cota) → exit 0
+⚠️ o 2º revisor (stub-c:falha-quota) falhou (stub-c:falha-quota falhou (cota, cobrança ou erro)): a revisão vale só com a dispensa registrada no ledger
+RESULTADO: REVIEW COMPLETA
+[rc=0]
+reviewer_exit           : 0
+revisor2_exit           : 67
+auditor_exit            : 0
+convergencia_1o_passe   : sim
+desempate_decisao       : -
+=== desempate falho (sem DECISAO) → desempate_decisao -, exit 0
+⚠️ o desempate (stub-c) não decidiu: o achado R1 fica para uma pessoa (D5)
+RESULTADO: REVIEW COMPLETA
+[rc=0]
+reviewer_exit            : 0
+auditor_exit             : 0
+convergencia_1o_passe    : nao
+desempate_decisao        : -
+desempate_exit           : 68
+=== revisor 67 → exit 67
+RESULTADO: PAROU
+[rc=67]
+reviewer_exit           : 67
+auditor_exit            : -
+convergencia_1o_passe   : n/a (auditor não rodou)
+desempate_decisao       : -
+=== revisor 0, auditor 65 → exit 65
+RESULTADO: PAROU
+[rc=65]
+reviewer_exit           : 0
+auditor_exit            : 65
+convergencia_1o_passe   : n/a (auditor falhou)
+desempate_decisao       : -
+[exit=0]

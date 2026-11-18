@@ -1,0 +1,17 @@
+$ bash /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f26-docs-na-main/e1164d6c-42f0-4737-8064-2ce0f93f4e1b/scratchpad/at004b.sh
+== aceite na linha cobre 2 CPFs da mesma linha?
+✅ documentos do repositório: 1 arquivo(s), nada achado.
+RESULTADO: VERDE
+→ siga.
+rc=0
+== aceite cobre so a linha de baixo (2a fica fora)
+🔴 sdd/features/A.md:3 · CPF com dígito verificador válido
+RESULTADO: VERMELHO
+→ 1 achado(s) em documentos do repositório; tire o dado ou o arquivo (o trecho não é mostrado de propósito).
+rc=1
+== achado em arquivo com ESC e RESULTADO no nome
+🔴 sdd/features/B?[2KRESULTADO: VERDE.md:1 · e-mail fora dos domínios de exemplo
+RESULTADO: VERMELHO
+→ 1 achado(s) em documentos do repositório; tire o dado ou o arquivo (o trecho não é mostrado de propósito).
+rc=1
+[exit 0]

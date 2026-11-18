@@ -1,0 +1,3 @@
+$ grep -rInE -i "(^|[^A-Za-z0-9_])((api|access|auth|db|ftp|smtp|client|private)[_-]?)?(password|passwd|senha|secret|token|key|api_key|access_key)[\"']?[[:space:]]*[:=][[:space:]]*[\"'][^\"']{6,}[\"']" --include=*.json --include=*.yaml --include=*.yml --include=*.toml --include=*.ini --include=*.cfg --include=*.conf .agents sdd/templates sdd/bin sdd/fixtures sdd/config.example.yaml sdd/playbook.md AGENTS.md.tmpl | grep -viE "\\\$\\{|\\{\\{|<|changeme|example|xxx|\\*\\*\\*"
+
+[exit=1]

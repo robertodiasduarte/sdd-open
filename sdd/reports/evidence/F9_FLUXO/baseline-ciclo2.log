@@ -1,0 +1,16 @@
+$ git archive 524f957 numa pasta temporária + tests/test_fluxo.py de agora; lista os testes que falham
+FAIL: test_nome_acentuado_sai_64_em_locale_utf8 (test_fluxo.Despachar) (locale='en_US.UTF-8', args=('avaliação', 'F9'))
+FAIL: test_nome_acentuado_sai_64_em_locale_utf8 (test_fluxo.Despachar) (locale='en_US.UTF-8', args=('avaliador', 'F9_INTEGRAÇÃO'))
+FAIL: test_nome_acentuado_sai_64_em_locale_utf8 (test_fluxo.Despachar) (locale='pt_BR.UTF-8', args=('avaliação', 'F9'))
+FAIL: test_nome_acentuado_sai_64_em_locale_utf8 (test_fluxo.Despachar) (locale='pt_BR.UTF-8', args=('avaliador', 'F9_INTEGRAÇÃO'))
+FAIL: test_erro_interno_e_log_que_nao_grava_saem_64 (test_fluxo.Loop) (opcao='--teto')
+FAIL: test_erro_interno_e_log_que_nao_grava_saem_64 (test_fluxo.Loop) (opcao='--ciclo-avaliador')
+FAIL: test_erro_interno_e_log_que_nao_grava_saem_64 (test_fluxo.Loop)
+FAIL: test_severidade_formatada_e_ledger_de_exemplo_cercado (test_fluxo.Seguir) (sev='**HIGH**')
+FAIL: test_severidade_formatada_e_ledger_de_exemplo_cercado (test_fluxo.Seguir) (sev='`HIGH`')
+FAIL: test_severidade_formatada_e_ledger_de_exemplo_cercado (test_fluxo.Seguir) (sev='🔴 HIGH')
+FAIL: test_severidade_formatada_e_ledger_de_exemplo_cercado (test_fluxo.Seguir)
+FAIL: test_sem_python3_todo_verbo_sai_64 (test_fluxo.UsoESemPython)
+Ran 48 tests in 8.328s
+FAILED (failures=12)
+[exit=0]

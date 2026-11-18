@@ -1,0 +1,64 @@
+test_arquivo_ignorado_pelo_git_tambem_vem (test_copiar_docs.Copia.test_arquivo_ignorado_pelo_git_tambem_vem) ... ok
+
+test_cada_prefixo_nas_2_pastas_e_cria_a_pasta_de_destino (test_copiar_docs.Copia.test_cada_prefixo_nas_2_pastas_e_cria_a_pasta_de_destino) ... ok
+
+test_cada_vogal_acentuada_e_o_cedilha (test_copiar_docs.Copia.test_cada_vogal_acentuada_e_o_cedilha) ... ok
+
+test_nada_a_copiar_sai_0 (test_copiar_docs.Copia.test_nada_a_copiar_sai_0) ... ok
+
+test_nome_com_acento_e_identico_ao_slug (test_copiar_docs.Copia.test_nome_com_acento_e_identico_ao_slug) ... ok
+
+test_nome_com_espaco_chega_inteiro (test_copiar_docs.Copia.test_nome_com_espaco_chega_inteiro) ... ok
+
+test_nome_com_quebra_de_linha_nao_vira_2_caminhos (test_copiar_docs.Copia.test_nome_com_quebra_de_linha_nao_vira_2_caminhos) ... ERROR
+
+test_sem_pasta_sdd_no_principal_sai_0 (test_copiar_docs.Copia.test_sem_pasta_sdd_no_principal_sai_0) ... ok
+
+
+
+======================================================================
+
+ERROR: test_nome_com_quebra_de_linha_nao_vira_2_caminhos (test_copiar_docs.Copia.test_nome_com_quebra_de_linha_nao_vira_2_caminhos)
+
+----------------------------------------------------------------------
+
+Traceback (most recent call last):
+
+  File "D:\a\sdd-open\sdd-open\tests\test_copiar_docs.py", line 80, in test_nome_com_quebra_de_linha_nao_vira_2_caminhos
+
+    self.doc("sdd/features/DEFINE_RELATORIO_MENSAL.md\nlixo", "x\n")
+
+  File "D:\a\sdd-open\sdd-open\tests\test_copiar_docs.py", line 24, in doc
+
+    return self.escreve(self.p, rel, texto)
+
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+  File "D:\a\sdd-open\sdd-open\tests\apoio.py", line 127, in escreve
+
+    p.write_text(texto, encoding="utf-8")
+
+  File "C:\hostedtoolcache\windows\Python\3.12.10\x64\Lib\pathlib.py", line 1047, in write_text
+
+    with self.open(mode='w', encoding=encoding, errors=errors, newline=newline) as f:
+
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+  File "C:\hostedtoolcache\windows\Python\3.12.10\x64\Lib\pathlib.py", line 1013, in open
+
+    return io.open(self, mode, buffering, encoding, errors, newline)
+
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+OSError: [Errno 22] Invalid argument: 'C:\\Users\\runneradmin\\AppData\\Local\\Temp\\sdd-open-ytfob__p\\principal\\sdd\\features\\DEFINE_RELATORIO_MENSAL.md\nlixo'
+
+
+
+----------------------------------------------------------------------
+
+Ran 8 tests in 4.883s
+
+
+
+FAILED (errors=1)
+

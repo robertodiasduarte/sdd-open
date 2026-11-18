@@ -1,0 +1,71 @@
+$ bash at005.sh
+===== sdd-brainstorm: seção 'Sem terminal' do Open
+## Sem terminal (sem acesso aos arquivos do projeto)
+
+Na web (claude.ai, ChatGPT) ou em qualquer agente que não lê nem grava os arquivos do projeto, o brainstorm é o
+mesmo; só a entrega muda:
+
+- **Entregue o documento inteiro no chat**, com o nome sugerido (`BRAINSTORM_{FEATURE}.md`) e uma frase dizendo que
+  nada foi gravado: a pessoa copia para um arquivo. Nunca diga que gravou, leu ou conferiu um arquivo que não viu.
+- **Fato, observação e inferência separados:** o que a pessoa disse (fornecido), o que você viu num arquivo ou trecho
+  que ela colou (observado) e o que você concluiu (inferido). Sem acesso ao projeto, a estrutura, os commits e os
+  padrões ficam como `não fornecido`, nunca como inspecionados.
+- **Não sobrescreva em silêncio:** se já existe um BRAINSTORM da mesma feature, pergunte se atualiza o antigo ou cria
+  outro.
+- **YAGNI com zero cortes vale:** se nada pode sair com responsabilidade, registre que a revisão foi feita e nada saiu;
+  nunca invente um corte. Métrica que ainda não tem número vira "a definir", nunca um número inventado.
+
+===== sdd-handoff: seção 'Sem terminal' do Open
+## Sem terminal (sem acesso aos arquivos do projeto)
+
+Na web (claude.ai, ChatGPT) ou em qualquer agente que não lê nem grava os arquivos do projeto, a ficha e o prompt
+são os mesmos; mudam a entrega e o que se confere:
+
+- **Dois modos, inferidos e confirmados em 1 linha** (sem menu): **continuar** (o trabalho segue noutra sessão:
+  ficha + prompt de retomada) e **entregar** (a etapa terminou: o mesmo, mais o checklist de fechamento — o código
+  roda? os critérios de aceite passam? as mudanças estão salvas? o que quebrou está anotado? —, que **não bloqueia**:
+  item não confirmado vira pendência). Sem sinal claro, assuma *continuar* e diga que assumiu.
+- **Pendências em duas listas, sempre:** 🐛 bug fix (quebrado, parcial, errado) e ✨ melhoria (próxima etapa). Lista
+  vazia leva "nenhuma" escrito: a ausência declarada também é informação.
+- **Entregue no chat** o documento inteiro e feche com 3 informações, nesta ordem: que ele **não foi gravado**; o nome
+  sugerido (`HANDOFF_{FEATURE}.md`); o que fazer com ele (salvar junto do projeto e mandar no começo da próxima
+  sessão). Nunca dê a entender que gravou.
+- **Sem comando para conferir:** projeto sem gate por comando não tem linha Verify Gate na ficha nem estado do gate
+  no prompt; a conferência da ficha (passo 3b) é a releitura do checklist acima, item a item.
+- **Pressa ("só me dá o prompt"):** entregue o prompt primeiro e a ficha logo depois, sem negociar.
+
+===== sdd-governanca: seção 'Sem terminal' do Open
+## Sem terminal (sem acesso aos arquivos do projeto)
+
+- **Quando não usar:** o DEFINE não trata dinheiro, saldo, lançamento, nota fiscal, tributo, folha nem dado pessoal
+  (resposta N.A. em 1 linha, sem arquivo); auditar o banco que já existe ou testar a segurança do sistema no ar são
+  outras tarefas.
+- **Prova sem script:** se o DEFINE não tem Verify Gate por comando (na web, ou num projeto sem testes
+  automatizados), a prova de cada lacuna aplicada é só o `prova_manual` do catálogo, de 3 a 5 passos com o
+  resultado esperado, no AT. Nenhum script é pedido ao aluno.
+- **Onde entregar:** sem acesso aos arquivos (claude.ai, ChatGPT), entregue no chat o relatório e o DEFINE atualizado,
+  dizendo que nada foi gravado; no primeiro uso, também o `GOVERNANCA_PADRAO.md`, para guardar no projeto. Com acesso,
+  grave nos caminhos do Processo acima.
+
+===== A1: checklist da governança (Open)
+131:[ ] Aplicados viram AT no DEFINE com o `prova_manual`; com Verify Gate por comando, também o script em
+132-    sdd/tests/governanca/ chamado pelo cmd do gate
+0
+===== A2: catálogo — toda linha com psql/'rodar com' e as 2 linhas antes
+86-> - **`forma: catalogo`** — só lê o catálogo do banco e levanta `GOVERNANCA Gnn REPROVADA` se achar o erro.
+87->
+88:> Com Verify Gate por comando no DEFINE, rodar com: `psql -v ON_ERROR_STOP=1 -f <arquivo>.sql` **contra um banco de
+===== A3: revisor.md — prova_script
+37-4. **Prova de cada lacuna.** Em "Como provar", o `prova_manual` sempre; com Verify Gate por comando no DEFINE,
+38:   também o `prova_script` adaptado aos nomes do DEFINE, **no relatório**, sem mexer na inversão nem na guarda de
+39-   schema. **Quem grava o `.sql` em
+--
+75-  `confirmado` (o campo `**Base legal:**` tem 3 formas fixas no `PROCEDIMENTO.md`).
+76:- Mexer na inversão ou na guarda de schema dos `prova_script`.
+===== resto da governança que fala de script sem citar o Verify Gate (PROCEDIMENTO e molde do relatório)
+90-3. **Requisito (EARS)** — no padrão Unwanted: **If** {ação proibida}, **then** the system **shall** {recusar …}.
+91:4. **Como provar** — o `prova_manual` do item adaptado aos nomes do DEFINE; quando a forma de entrega pede
+92-   script, o `prova_script` adaptado, **sem mexer na inversão**.
+21:**Como provar:** {prova_manual adaptada | prova_script adaptada, sem mexer na inversão}
+PROCEDIMENTO.md: linhas que citam Verify Gate = 0
+rc=0

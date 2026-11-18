@@ -1,0 +1,30 @@
+# lote 2 (F25 20261118T084424Z) · recusados pelo Roberto: LM-037 mordeu+1 (contagem dupla do tropeço já contado no lote 1) e REFINE LM-037 (manda o documento para a branch de documentos, que a F26 aposenta)
+$ bash sdd/bin/playbook-curator.sh --cruzar lote2-delta.txt sdd/playbook.md sdd/invariants.md
+resumo-inv: afetadas=0 pendentes=0
+RESULTADO: SEM AVISO
+→ o delta não mexe em nenhuma invariante.
+[exit=0]
+
+$ cat lote2-delta.txt
+LM-001 ajudou+1
+LM-002 ajudou+1
+LM-003 ajudou+1
+ADD Reviews / harness :: sup: `env -i` `HOME` `node` `homedir` `npx` :: Com `env -i`, um `HOME=<teste>` atribuído dentro do script vale só para o shell e não chega ao processo filho: o `node` de um CLI chamado ali cai na pasta pessoal REAL (os.homedir). Na F25, um `npx skills remove -g` de teste teria apagado skills do HOME real; o classificador do agente barrou o comando antes de rodar. **Do instead:** passe `HOME=<pasta de teste>` na linha de cada comando (nunca só atribuído dentro do script) e, no programa que chama o CLI, `HOME="${HOME}" cli …`; todo invólucro de teste do CLI recusa (exit 99) HOME fora da pasta de teste. → ficha: — · promovido_para: —
+ADD Reviews / harness :: sup: `test_decisoes_lint` `pergunta(s) em` `como-falar` `[D1` :: O `test_decisoes_lint` fixa quantas perguntas de decisão o pacote tem (a asserção "34 pergunta(s) em 29 arquivo(s)"): uma pergunta nova numa skill ou num `references/como-falar.md` derruba a suíte inteira e só aparece no gate (na F25, 35 em vez de 34 custou a rodada 2 do drive). **Do instead:** ao acrescentar uma pergunta `[Dn · …]` ou `[auto · de rotina]` a uma skill, suba o número da asserção no mesmo commit e rode `python3 -B -m unittest discover -s tests -p 'test_decisoes_lint.py'` antes do gate. → ficha: — · promovido_para: —
+
+$ bash sdd/bin/playbook-curator.sh --aplicar lote2-delta.txt sdd/playbook.md > novo.md
+[exit=0]
+
+$ bash sdd/bin/playbook-lint.sh novo.md
+🟢 /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/novo2.md: formato OK — 44 ativos, 0 tombstones, Sempre=4 bullets/322 palavras, 0 aviso(s)
+[exit=0]
+
+$ bash sdd/bin/playbook-lint.sh --anti-collapse sdd/playbook.md novo.md
+anti-collapse OK: 42 IDs em HEAD, 0 sumiram, 0 (0%) alterados (limite 20%)
+[exit=0]
+
+$ bash sdd/bin/playbook-curator.sh --validar-inv novo.md sdd/invariants.md
+🟢 trava INV: par válido (2 invariante(s), 3 descartado(s), pendentes=0)
+RESULTADO: PAR VÁLIDO
+→ copie os 2 arquivos por cima dos originais.
+[exit=0]

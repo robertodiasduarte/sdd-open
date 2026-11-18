@@ -1,0 +1,18 @@
+# linha de base vermelha em 36d0454 (testes novos da 1ª entrega copiados sobre git archive 36d0454)
+FAIL: test_frases_dizem_o_que_o_workflow_prova (test_release_workflow.Windows.test_frases_dizem_o_que_o_workflow_prova) (arquivo='README.md', piso_decidido=False)
+FAIL: test_frases_dizem_o_que_o_workflow_prova (test_release_workflow.Windows.test_frases_dizem_o_que_o_workflow_prova) (arquivo='README.pt-BR.md', piso_decidido=False)
+FAIL: test_frases_dizem_o_que_o_workflow_prova (test_release_workflow.Windows.test_frases_dizem_o_que_o_workflow_prova) (arquivo='docs/quickstart.md', piso_decidido=False)
+FAIL: test_frases_dizem_o_que_o_workflow_prova (test_release_workflow.Windows.test_frases_dizem_o_que_o_workflow_prova) (arquivo='docs/pt-BR/quickstart.md', piso_decidido=False)
+FAIL: test_frases_dizem_o_que_o_workflow_prova (test_release_workflow.Windows.test_frases_dizem_o_que_o_workflow_prova)
+FAIL: test_job_windows_nos_dois_workflows (test_release_workflow.Windows.test_job_windows_nos_dois_workflows) (workflow='release.yml')
+FAIL: test_job_windows_nos_dois_workflows (test_release_workflow.Windows.test_job_windows_nos_dois_workflows) (workflow='publish-gate.yml')
+Ran 31 tests in 0.611s
+FAILED (failures=7)
+FAIL: test_gitattributes_poe_lf_em_todo_checkout (test_windows.FimDeLinha.test_gitattributes_poe_lf_em_todo_checkout)
+FAIL: test_pulo_de_plataforma_so_por_constante_do_apoio (test_windows.Pulos.test_pulo_de_plataforma_so_por_constante_do_apoio)
+Ran 6 tests in 0.074s
+FAILED (failures=2)
+FAIL: test_gitattributes_poe_lf_em_todo_checkout (test_windows.FimDeLinha.test_gitattributes_poe_lf_em_todo_checkout)
+FAIL: test_pulo_de_plataforma_so_por_constante_do_apoio (test_windows.Pulos.test_pulo_de_plataforma_so_por_constante_do_apoio)
+Ran 6 tests in 0.154s
+FAILED (failures=2)

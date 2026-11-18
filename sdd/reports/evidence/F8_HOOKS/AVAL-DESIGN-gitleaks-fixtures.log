@@ -1,0 +1,16 @@
+$ for d in a b c; do gitleaks detect --source <tmp>/$d --no-git --redact --no-banner --exit-code 1 >/dev/null 2>&1; echo "$d -> exit $?"; done; echo '--- c conteudo:'; cat <tmp>/c/test_hooks.py; echo '--- protect help (2 primeiras linhas):'; gitleaks protect --help 2>&1 | head -3; echo '--- git subcommand:'; gitleaks git --help 2>&1 | head -3
+a -> exit 0
+b -> exit 0
+c -> exit 0
+--- c conteudo:
+conteudo = '{"password": "P%40ssw0rd-Xq7v9Lm2Zt"}'
+SENHA = "db_password=\"Kj8vQ2mN4pR7sT9w\""
+--- protect help (2 primeiras linhas):
+protect secrets in code
+
+Usage:
+--- git subcommand:
+scan git repositories for secrets
+
+Usage:
+[exit=0]

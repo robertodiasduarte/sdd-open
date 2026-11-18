@@ -1,0 +1,31 @@
+$ /usr/bin/python3 -B -m unittest -v test_inventario
+test_cinco_categorias (test_inventario.TestAchados) ... ok
+test_com_git_ve_o_que_esta_no_repositorio (test_inventario.TestAchados) ... ok
+test_conta_arquivos (test_inventario.TestAchados) ... ok
+test_falha_ao_listar_nao_vira_nada_sensivel (test_inventario.TestAchados) ... ok
+test_gitignore_existente_ja_esconde_o_arquivo (test_inventario.TestAchados) ... ok
+test_gitignore_existente_nao_repete_linha (test_inventario.TestAchados) ... ok
+test_historico_mostra_segredo_ja_apagado (test_inventario.TestAchados) ... ok
+test_limite_de_dez_por_categoria (test_inventario.TestAchados) ... ok
+test_nome_com_aspas_e_barra (test_inventario.TestAchados) ... ok
+test_nome_com_aspas_no_historico (test_inventario.TestAchados) ... ok
+test_nome_com_espaco (test_inventario.TestAchados) ... ok
+test_proposta_cobre_maiuscula (test_inventario.TestAchados) ... ok
+test_proposta_cobre_o_que_achou (test_inventario.TestAchados) ... ok
+test_proposta_escapa_caminho_grande (test_inventario.TestAchados) ... ok
+test_proposta_escapa_espaco_no_fim (test_inventario.TestAchados) ... ok
+test_proposta_vence_negacao_existente (test_inventario.TestAchados) ... ok
+test_sem_commit_nao_fala_de_historico (test_inventario.TestAchados) ... ok
+test_sem_planilha_nem_grande_a_proposta_fica_na_base (test_inventario.TestAchados) ... ok
+test_dentro_de_um_repositorio_maior (test_inventario.TestPreCondicoes) ... ok
+test_icloud_mesa_e_documentos (test_inventario.TestPreCondicoes) ... ok
+test_pasta_pessoal (test_inventario.TestPreCondicoes) ... ok
+test_pasta_sincronizada (test_inventario.TestPreCondicoes) ... ok
+test_repositorio_numa_subpasta (test_inventario.TestPreCondicoes) ... ok
+test_nao_grava_nada (test_inventario.TestSomenteLeitura) ... ok
+
+----------------------------------------------------------------------
+Ran 24 tests in 2.806s
+
+OK
+exit=0

@@ -1,0 +1,9 @@
+$ SDD_TEST_BASH=/bin/bash /usr/bin/python3 -B -m unittest -v -k at006 test_f26_docs_na_main
+# AT-006 · HEAD e99136d · cópia de git archive HEAD · piso (/usr/bin/python3, /bin/bash)
+test_at006_pode_aposentar_so_com_a_tag_no_ultimo_commit_e_a_conferencia_verde (test_f26_docs_na_main.Migracao) ... ok
+
+----------------------------------------------------------------------
+Ran 1 test in 1.310s
+
+OK
+[exit=0]

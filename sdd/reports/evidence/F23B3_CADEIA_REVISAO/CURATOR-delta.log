@@ -1,0 +1,25 @@
+$ bash sdd/bin/playbook-curator.sh --aplicar "$STG/delta.txt" sdd/playbook.md > "$STG/novo.md"   # delta.txt:
+LM-001 ajudou+1
+LM-002 ajudou+1
+LM-003 ajudou+1
+LM-006 ajudou+1
+LM-005 ajudou+1
+LM-021 ajudou+1
+LM-009 ajudou+1
+LM-010 ajudou+1
+LM-011 ajudou+1
+LM-012 ajudou+1
+LM-013 ajudou+1
+LM-014 ajudou+1
+LM-015 ajudou+1
+LM-017 ajudou+1
+LM-018 ajudou+1
+LM-028 ajudou+1
+LM-029 ajudou+1
+LM-030 ajudou+1
+LM-036 ajudou+1
+LM-035 ajudou+1
+ADD Reviews / harness :: sup: `MANIFEST.txt` `publish-gate` `undeclared file` `arquivo novo` :: Arquivo novo no pacote (prompt, teste, script) sem a linha dele no `MANIFEST.txt` derruba o Verify Gate inteiro no `publish-gate` ("undeclared file"), e só depois de montar a cópia limpa: na F23B3, os 3 prompts `v2/` e o módulo de testes novo custaram um gate (+50 min). **Do instead:** ao criar arquivo no pacote, acrescente-o ao `MANIFEST.txt` no mesmo commit e rode `PUBLISH_GATE_MODE=ci bash scripts/publish-gate.sh <cópia de git archive>` antes do gate inteiro. → ficha: — · promovido_para: —
+REFINE LM-011 :: Cenário de comportamento escrito e nunca executado esconde o defeito do texto: na F21, as 3 execuções do pedido de acesso indevido recusaram, mas só 1 usou a frase canônica, e nas 3 do manual com instrução embutida o agente não obedeceu e também não contou ao usuário que a instrução existia. E uma sonda que passa também com o texto antigo não prova o ganho do novo: na F23B3, as 2 sondas de injeção do S18 (instrução escondida e falso fim de material) passaram 3 de 3 com os prompts v1 e com os v2. **Do instead:** escreva o critério de aprovado antes de rodar e rode primeiro a série do texto antigo (se ela já passa, registre "proteção sem ganho medido" e procure uma sonda que o texto antigo reprove antes de chamar a mudança de prova); rode cada negativo 3 vezes em contexto novo, conserte o texto e rode outra série; registre as séries.
+ADD Reviews / harness :: sup: `500 linhas` `SKILL.md` `teto` `test_conversa` `sdd-release` :: Toda `SKILL.md` do pacote tem teto de 500 linhas (`test_conversa` confere todas; outros 2 testes conferem a `sdd-release`), e a `sdd-release` está no teto: na F23B3, 2 linhas a mais derrubaram o Verify Gate inteiro (+50 min). **Do instead:** antes de acrescentar texto a uma skill, `wc -l` nela; perto do teto, condense a frase nova numa linha existente ou mova o detalhe para `references/`, e rode `python3 -B -m unittest discover -s tests -p 'test_conversa.py'` antes do gate. → ficha: — · promovido_para: —
+[exit=0]

@@ -1,0 +1,23 @@
+$ bash -c cd /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f16w-windows/b56e801b-0f18-49ee-b51c-5b9188b29c23/scratchpad/bl2/tests && python3 -B -m unittest -v test_checar.TestVigiaNoWindows
+test_com_winpid_corta_a_arvore_pelo_taskkill (test_checar.TestVigiaNoWindows.test_com_winpid_corta_a_arvore_pelo_taskkill) ... ok
+test_corte_que_volta_0_e_sem_resposta (test_checar.TestVigiaNoWindows.test_corte_que_volta_0_e_sem_resposta) ... FAIL
+test_resposta_antes_do_teto_segue_valendo (test_checar.TestVigiaNoWindows.test_resposta_antes_do_teto_segue_valendo) ... ok
+test_sem_winpid_vale_o_kill_de_grupo (test_checar.TestVigiaNoWindows.test_sem_winpid_vale_o_kill_de_grupo) ... ok
+
+======================================================================
+FAIL: test_corte_que_volta_0_e_sem_resposta (test_checar.TestVigiaNoWindows.test_corte_que_volta_0_e_sem_resposta)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f16w-windows/b56e801b-0f18-49ee-b51c-5b9188b29c23/scratchpad/bl2/tests/test_checar.py", line 1102, in test_corte_que_volta_0_e_sem_resposta
+    self.assertEqual(out.strip(), "sem resposta")
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 'ok' != 'sem resposta'
+- ok
++ sem resposta
+
+
+----------------------------------------------------------------------
+Ran 4 tests in 31.658s
+
+FAILED (failures=1)
+[exit=1]

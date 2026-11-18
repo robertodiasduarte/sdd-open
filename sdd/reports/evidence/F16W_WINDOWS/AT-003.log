@@ -1,0 +1,10 @@
+$ /usr/bin/python3 -B -m unittest -v test_release_workflow.Windows
+test_frases_dizem_o_que_o_workflow_prova (test_release_workflow.Windows) ... ok
+test_job_windows_nos_dois_workflows (test_release_workflow.Windows) ... ok
+test_o_job_windows_e_igual_nos_dois_workflows (test_release_workflow.Windows) ... ok
+
+----------------------------------------------------------------------
+Ran 3 tests in 0.002s
+
+OK
+[exit=0]

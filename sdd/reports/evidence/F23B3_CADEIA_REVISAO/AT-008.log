@@ -1,0 +1,18 @@
+$ python3 -B -m unittest -v test_f23b3_revisao.AT008Adapter test_f23b3_revisao.AT008Invocacao test_f23b3_revisao.AT008Nominal test_f23b3_revisao.Raio   # HEAD 5e110b2
+test_cache_criado_maior_que_zero_fica_nd (test_f23b3_revisao.AT008Adapter.test_cache_criado_maior_que_zero_fica_nd) ... ok
+test_entrada_sem_cache_e_cache_a_parte (test_f23b3_revisao.AT008Adapter.test_entrada_sem_cache_e_cache_a_parte) ... ok
+test_modelo_padrao_do_config_toml (test_f23b3_revisao.AT008Adapter.test_modelo_padrao_do_config_toml) ... ok
+test_meta_do_codex_com_modelo_padrao_e_cache (test_f23b3_revisao.AT008Invocacao.test_meta_do_codex_com_modelo_padrao_e_cache) ... ok
+test_mutante_que_cobra_o_cache_como_entrada_muda_o_valor (test_f23b3_revisao.AT008Nominal.test_mutante_que_cobra_o_cache_como_entrada_muda_o_valor) ... ok
+test_nominal_estimado_com_o_cache_a_parte (test_f23b3_revisao.AT008Nominal.test_nominal_estimado_com_o_cache_a_parte) ... ok
+test_o_trecho_e_identico_no_eval_e_no_custo_feature (test_f23b3_revisao.AT008Nominal.test_o_trecho_e_identico_no_eval_e_no_custo_feature) ... ok
+test_sem_preco_sem_modelo_sem_cache_ou_sem_precos_e_nd (test_f23b3_revisao.AT008Nominal.test_sem_preco_sem_modelo_sem_cache_ou_sem_precos_e_nd) ... ok
+test_a_revisao_soma_o_cache_nos_tokens (test_f23b3_revisao.Raio.test_a_revisao_soma_o_cache_nos_tokens) ... ok
+test_o_gate_offline_fica_verde_com_um_config_toml_real_no_home (test_f23b3_revisao.Raio.test_o_gate_offline_fica_verde_com_um_config_toml_real_no_home) ... ok
+test_o_gate_offline_isola_o_codex_home (test_f23b3_revisao.Raio.test_o_gate_offline_isola_o_codex_home) ... ok
+
+----------------------------------------------------------------------
+Ran 11 tests in 7.826s
+
+OK
+[exit=0]

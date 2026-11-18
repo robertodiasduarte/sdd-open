@@ -1,0 +1,146 @@
+$ /usr/bin/python3 -B /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f4-conversa/5e736f5b-fdb5-4cdd-a304-706fff11b1bb/scratchpad/sonda-at018.py   # cwd=worktree 4e77a1f
+## sdd-auditoria-harness: 7 linhas diferentes fora da seção
+   -  version: "1.0.0"
+   +  version: "1.1.0"
+   +  updated: "2026-10"
+   +
+   +Na primeira resposta desta skill, comece com esta linha, uma vez só:
+   +`sdd-auditoria-harness v1.1.0 · out/2026 · versão atual: https://github.com/robertodiasduarte/sdd-open/releases/latest`
+   +
+## sdd-brainstorm: 7 linhas diferentes fora da seção
+   -  version: "2.0.0"
+   +  version: "2.1.0"
+   +  updated: "2026-10"
+   -> Abra a resposta com o banner: `🧠 BRAINSTORM (Fase 0)`.
+   +Na primeira resposta desta skill, comece com esta linha, uma vez só:
+   +`sdd-brainstorm v2.1.0 · out/2026 · versão atual: https://github.com/robertodiasduarte/sdd-open/releases/latest`
+   +
+## sdd-build: 7 linhas diferentes fora da seção
+   -  version: "2.1.1"
+   +  version: "2.2.0"
+   +  updated: "2026-10"
+   -> Abra a resposta com o banner: `🧠 BUILD (Fase 3)`.
+   +Na primeira resposta desta skill, comece com esta linha, uma vez só:
+   +`sdd-build v2.2.0 · out/2026 · versão atual: https://github.com/robertodiasduarte/sdd-open/releases/latest`
+   +
+## sdd-checar-ambiente: 26 linhas diferentes fora da seção
+   -  version: "1.3.0"
+   +  version: "1.4.0"
+   +
+   -e **responda com a saída dele, exatamente como veio** — sem frase antes, sem frase depois, sem
+   +e **responda com a saída dele, exatamente como veio** — só o Status antes, sem frase depois, sem
+   -`sdd-checar-ambiente v1.3.0 · out/2026 · versão atual: https://github.com/robertodiasduarte/sdd-open/releases/latest`
+   +`sdd-checar-ambiente v1.4.0 · out/2026 · versão atual: https://github.com/robertodiasduarte/sdd-open/releases/latest`
+   -   `✅ Pronto: repo meu-app, branch main, 2 frentes abertas, Claude Code 2.1 · sdd-checar-ambiente v1.3.0 · out/2026 · versão atual: https://github.co
+   -
+   -Se estiver tudo certo, a resposta inteira é **exatamente a linha ✅** — nenhuma frase antes nem
+   +   `✅ Pronto: repo meu-app, branch main, 2 frentes abertas, Claude Code 2.1 · sdd-checar-ambiente v1.4.0 · out/2026 · versão atual: https://github.co
+   +
+   +Se estiver tudo certo, a resposta inteira é **o Status e a linha ✅** — nenhuma outra frase antes nem
+   -Saudável:
+   +Saudável (a resposta inteira são estas duas linhas):
+   -✅ Pronto: repo meu-app, branch main, nenhuma frente aberta, Claude Code 2.1 · sdd-checar-ambiente v1.3.0 · out/2026 · versão atual: https://github.co
+   +Ambiente: ✅ 1 Verificar · ✅ 2 Explicar
+   +✅ Pronto: repo meu-app, branch main, nenhuma frente aberta, Claude Code 2.1 · sdd-checar-ambiente v1.4.0 · out/2026 · versão atual: https://github.co
+   +Ambiente: ✅ 1 Verificar · ▶️ 2 Explicar
+   +
+   -✅ Repo meu-app (público no GitHub), branch main, nenhuma frente aberta, Claude Code 2.1 · sdd-checar-ambiente v1.3.0 · out/2026 · versão atual: https
+   +✅ Repo meu-app (público no GitHub), branch main, nenhuma frente aberta, Claude Code 2.1 · sdd-checar-ambiente v1.4.0 · out/2026 · versão atual: https
+   +Ambiente: ✅ 1 Verificar · ▶️ 2 Explicar
+   +
+   -✅ Repo meu-app, branch main, 1 frente aberta, Claude Code 2.1 · sdd-checar-ambiente v1.3.0 · out/2026 · versão atual: https://github.com/robertodiasd
+   +✅ Repo meu-app, branch main, 1 frente aberta, Claude Code 2.1 · sdd-checar-ambiente v1.4.0 · out/2026 · versão atual: https://github.com/robertodiasd
+## sdd-define: 7 linhas diferentes fora da seção
+   -  version: "2.1.0"
+   +  version: "2.2.0"
+   +  updated: "2026-10"
+   -> Abra a resposta com o banner: `🧠 DEFINE (Fase 1)`.
+   +Na primeira resposta desta skill, comece com esta linha, uma vez só:
+   +`sdd-define v2.2.0 · out/2026 · versão atual: https://github.com/robertodiasduarte/sdd-open/releases/latest`
+   +
+## sdd-design: 13 linhas diferentes fora da seção
+   -  version: "2.0.0"
+   +  version: "2.1.0"
+   +  updated: "2026-10"
+   -> Abra a resposta com o banner: `🧠 DESIGN (Fase 2)`.
+   +Na primeira resposta desta skill, comece com esta linha, uma vez só:
+   +`sdd-design v2.1.0 · out/2026 · versão atual: https://github.com/robertodiasduarte/sdd-open/releases/latest`
+   +
+   +### 8. Conferir
+   +
+   +`python3 sdd/bin/design-lint.py sdd/features/DESIGN_{FEATURE}.md` sobre o arquivo gravado: títulos
+   +`### Decision N: <nome>` em sequência, `**Total Files:**` igual às linhas do manifest, dependências sem
+   +ciclo, nenhum placeholder. Vermelho ⇒ corrija o DESIGN e rode de novo antes de entregar.
+   +
+## sdd-governanca: 7 linhas diferentes fora da seção
+   -  version: "2.1.0"
+   +  version: "2.2.0"
+   +  updated: "2026-10"
+   -> Abra a resposta com o banner: `⚖️ GOVERNANÇA`.
+   +Na primeira resposta desta skill, comece com esta linha, uma vez só:
+   +`sdd-governanca v2.2.0 · out/2026 · versão atual: https://github.com/robertodiasduarte/sdd-open/releases/latest`
+   +
+## sdd-handoff: 14 linhas diferentes fora da seção
+   -  version: "2.0.0"
+   +  version: "2.1.0"
+   +  updated: "2026-10"
+   +
+   +Na primeira resposta desta skill, comece com esta linha, uma vez só:
+   +`sdd-handoff v2.1.0 · out/2026 · versão atual: https://github.com/robertodiasduarte/sdd-open/releases/latest`
+   +
+   +### 3b. Conferir a ficha
+   +
+   +`python3 sdd/bin/handoff-lint.py sdd/handoffs/HANDOFF_{FEATURE}.md` sobre o arquivo gravado: ficha
+   +com Objetivo, Status e Verify Gate, prompt de retomada em bloco de código, slice datado no histórico,
+   +nenhum placeholder, nenhum "como discutimos". Vermelho ⇒ corrija a ficha e rode de novo antes de
+   +entregar.
+   +
+## sdd-iterate: 7 linhas diferentes fora da seção
+   -  version: "2.0.1"
+   +  version: "2.1.0"
+   +  updated: "2026-10"
+   -> Abra a resposta com o banner: `🔁 ITERATE (cross-phase)`.
+   +Na primeira resposta desta skill, comece com esta linha, uma vez só:
+   +`sdd-iterate v2.1.0 · out/2026 · versão atual: https://github.com/robertodiasduarte/sdd-open/releases/latest`
+   +
+## sdd-new-session: 7 linhas diferentes fora da seção
+   -  version: "1.1.0"
+   +  version: "1.2.0"
+   +  updated: "2026-10"
+   -> Abra a resposta com o banner: `🧠 NEW-SESSION`.
+   +Na primeira resposta desta skill, comece com esta linha, uma vez só:
+   +`sdd-new-session v1.2.0 · out/2026 · versão atual: https://github.com/robertodiasduarte/sdd-open/releases/latest`
+   +
+## sdd-playbook: 7 linhas diferentes fora da seção
+   -  version: "2.0.0"
+   +  version: "2.1.0"
+   +  updated: "2026-10"
+   +Na primeira resposta desta skill, comece com esta linha, uma vez só:
+   +`sdd-playbook v2.1.0 · out/2026 · versão atual: https://github.com/robertodiasduarte/sdd-open/releases/latest`
+   +
+   +
+## sdd-prompt-builder: 7 linhas diferentes fora da seção
+   -  version: "2.0.0"
+   +  version: "2.1.0"
+   +  updated: "2026-10"
+   +Na primeira resposta desta skill, comece com esta linha, uma vez só:
+   +`sdd-prompt-builder v2.1.0 · out/2026 · versão atual: https://github.com/robertodiasduarte/sdd-open/releases/latest`
+   +
+   +
+## sdd-release: 7 linhas diferentes fora da seção
+   -  version: "2.2.0"
+   +  version: "2.3.0"
+   +  updated: "2026-10"
+   -> Abra a resposta com o banner: `🧠 RELEASE`.
+   +Na primeira resposta desta skill, comece com esta linha, uma vez só:
+   +`sdd-release v2.3.0 · out/2026 · versão atual: https://github.com/robertodiasduarte/sdd-open/releases/latest`
+   +
+## sdd-ux-review: 7 linhas diferentes fora da seção
+   -  version: "2.1.0"
+   +  version: "2.2.0"
+   +  updated: "2026-10"
+   -> Abra a resposta com o banner: `🧠 UX-REVIEW`.
+   +Na primeira resposta desta skill, comece com esta linha, uma vez só:
+   +`sdd-ux-review v2.2.0 · out/2026 · versão atual: https://github.com/robertodiasduarte/sdd-open/releases/latest`
+   +
+exit=0

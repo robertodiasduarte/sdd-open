@@ -1,0 +1,107 @@
+$ bash /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f10-revisao/bd420f6e-558d-4962-a0c9-40cdfc2cbd27/scratchpad/p/at028.sh
+##### AT-028
+=== fixture r2 indisponível sem dispensa → 20
+ESTADO: BLOQUEADO
+motivo: D3: 2º revisor acionado e indisponível (indisponível, exit 67) — restaurar a engine ou dispensar o 2º revisor nesta rodada no ledger
+RESULTADO: BLOQUEADO
+[rc=20]
+=== fixture r2 indisponível com dispensa da rodada 1 → decide o resto
+ESTADO: PRONTO
+motivo: 2º revisor dispensado no ledger (rodada 1)
+RESULTADO: PRONTO
+[rc=0]
+=== dispensa de outra rodada (rodada 2) não vale
+ESTADO: BLOQUEADO
+motivo: D3: 2º revisor acionado e indisponível (indisponível, exit 67) — restaurar a engine ou dispensar o 2º revisor nesta rodada no ledger
+RESULTADO: BLOQUEADO
+[rc=20]
+=== fixture r2 falhou (68) → 10
+ESTADO: CONTINUAR
+motivo: 2º revisor acionado e falhou (engine-b, exit 68) — refazer a review
+RESULTADO: CONTINUAR
+[rc=10]
+=== r2 exit 65 → 20
+ESTADO: BLOQUEADO
+motivo: D3: 2º revisor acionado e indisponível (eng-x, exit 65) — restaurar a engine ou dispensar o 2º revisor nesta rodada no ledger
+motivo: grave(s) sem veredito no ledger: R1@rev
+RESULTADO: BLOQUEADO
+[rc=20]
+=== r2 exit 66 → 20
+ESTADO: BLOQUEADO
+motivo: D3: 2º revisor acionado e indisponível (eng-x, exit 66) — restaurar a engine ou dispensar o 2º revisor nesta rodada no ledger
+motivo: grave(s) sem veredito no ledger: R1@rev
+RESULTADO: BLOQUEADO
+[rc=20]
+=== r2 exit 67 (cota/tempo) → 10
+ESTADO: CONTINUAR
+motivo: 2º revisor acionado e falhou (eng-x, exit 67) — refazer a review
+RESULTADO: CONTINUAR
+[rc=10]
+=== r2 sem revisor2_exit → 64
+🛑 sdd-fluxo: META com revisor2_engine=eng-x e sem revisor2_exit — a cadeia não registrou o 2º revisor
+RESULTADO: ENTRADA ILEGÍVEL
+[rc=64]
+=== dispensa sem motivo (só 'revisor2: dispensado rodada=1')
+ESTADO: CONTINUAR
+motivo: 2º revisor dispensado no ledger (rodada 1)
+motivo: grave(s) sem veredito no ledger: R1@rev
+RESULTADO: CONTINUAR
+[rc=10]
+##### AT-029
+=== fixture rasa → 10
+ESTADO: CONTINUAR
+motivo: review rasa (n/a (revisor1 raso: 0 achados em 6s)) — não conta como review, refazer
+RESULTADO: CONTINUAR
+[rc=10]
+=== 2º revisor raso → 10
+ESTADO: CONTINUAR
+motivo: review rasa (n/a (2º revisor raso: 0 achados em 3s)) — não conta como review, refazer
+RESULTADO: CONTINUAR
+[rc=10]
+=== revisor1_raso: sim sem 2º revisor → 10
+ESTADO: CONTINUAR
+motivo: review rasa (sim) — não conta como review, refazer
+RESULTADO: CONTINUAR
+[rc=10]
+=== fixture 2 revisores (lê reviewer2.verdicts.jsonl)
+ESTADO: CONTINUAR
+motivo: grave(s) sem veredito no ledger: R1@engine-c
+RESULTADO: CONTINUAR
+[rc=10]
+{"achado":"R1@engine-c","arquivo":"src/a.sh","linha":3,"severidade":"HIGH","confianca":"CONFIRMED","resumo":"exemplo"}
+=== mesmo id nos dois jsonl → 64
+🛑 sdd-fluxo: id R1@engine-a aparece em reviewer.verdicts.jsonl e em reviewer2.verdicts.jsonl — sem o rótulo @engine o ledger é ambíguo
+RESULTADO: ENTRADA ILEGÍVEL
+[rc=64]
+##### AT-030
+=== desempate REFUTADO fecha
+ESTADO: PRONTO
+motivo: refutado(s) com evidência (auditor + desempate): R1
+RESULTADO: PRONTO
+[rc=0]
+=== desempate PROCEDE mantém aberto (sem impasse)
+ESTADO: CONTINUAR
+motivo: grave(s) sem veredito no ledger: R1
+RESULTADO: CONTINUAR
+[rc=10]
+=== desempate_decisao='decisao:refutado' → D5 (20)
+ESTADO: BLOQUEADO
+motivo: D5 impasse de evidência: grave(s) refutado(s) pelo auditor sem veredito no ledger: R1
+RESULTADO: BLOQUEADO
+[rc=20]
+=== desempate_decisao='DECISAO:REFUTADO ' → D5 (20)
+ESTADO: PRONTO
+motivo: refutado(s) com evidência (auditor + desempate): R1
+RESULTADO: PRONTO
+[rc=0]
+=== desempate_decisao='-' → D5 (20)
+ESTADO: BLOQUEADO
+motivo: D5 impasse de evidência: grave(s) refutado(s) pelo auditor sem veredito no ledger: R1
+RESULTADO: BLOQUEADO
+[rc=20]
+=== REFUTADO para outro alvo → D5 (20)
+ESTADO: BLOQUEADO
+motivo: D5 impasse de evidência: grave(s) refutado(s) pelo auditor sem veredito no ledger: R1
+RESULTADO: BLOQUEADO
+[rc=20]
+[exit=0]

@@ -1,0 +1,10 @@
+$ (cd tests && python3 -B -m unittest -v test_f24_release_enxuta.AT005_LimiteDaFila)   # HEAD 017f09a
+test_6_diz_uma_linha_e_sai_10 (test_f24_release_enxuta.AT005_LimiteDaFila.test_6_diz_uma_linha_e_sai_10) ... ok
+test_a_release_so_avisa (test_f24_release_enxuta.AT005_LimiteDaFila.test_a_release_so_avisa) ... ok
+test_ate_5_nao_diz_nada (test_f24_release_enxuta.AT005_LimiteDaFila.test_ate_5_nao_diz_nada) ... ok
+
+----------------------------------------------------------------------
+Ran 3 tests in 0.235s
+
+OK
+[exit=0]

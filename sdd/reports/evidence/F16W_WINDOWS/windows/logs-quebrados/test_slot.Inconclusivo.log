@@ -1,0 +1,110 @@
+test_comando_morto_por_sinal_e_inconclusivo (test_slot.Inconclusivo.test_comando_morto_por_sinal_e_inconclusivo) ... FAIL
+
+test_saida_fora_do_contrato_e_inconclusivo (test_slot.Inconclusivo.test_saida_fora_do_contrato_e_inconclusivo) ... 
+
+  test_saida_fora_do_contrato_e_inconclusivo (test_slot.Inconclusivo.test_saida_fora_do_contrato_e_inconclusivo) (cmd='bash falso.sh 1') ... FAIL
+
+  test_saida_fora_do_contrato_e_inconclusivo (test_slot.Inconclusivo.test_saida_fora_do_contrato_e_inconclusivo) (cmd='bash falso.sh 7') ... FAIL
+
+  test_saida_fora_do_contrato_e_inconclusivo (test_slot.Inconclusivo.test_saida_fora_do_contrato_e_inconclusivo) (cmd='comando_que_nao_existe_xyz') ... FAIL
+
+test_term_no_proprio_slot_e_inconclusivo (test_slot.Inconclusivo.test_term_no_proprio_slot_e_inconclusivo) ... skipped 'sinal POSIX: o Windows n�o entrega SIGTERM nem SIGKILL a um grupo de processos'
+
+
+
+======================================================================
+
+FAIL: test_comando_morto_por_sinal_e_inconclusivo (test_slot.Inconclusivo.test_comando_morto_por_sinal_e_inconclusivo)
+
+----------------------------------------------------------------------
+
+Traceback (most recent call last):
+
+  File "D:\a\sdd-open\sdd-open\tests\test_slot.py", line 115, in test_comando_morto_por_sinal_e_inconclusivo
+
+    self.assertEqual(rc, 3, out)
+
+AssertionError: 11 != 3 : \u2139\ufe0f  smoke.before_ok_cmd vazio: pulado (C:/Users/runneradmin/AppData/Local/Temp/sdd-open-s8ylgrre/repo/sdd/config.yaml)
+
+RESULTADO: PULADO
+
+\u2192 diga que o passo foi pulado porque o slot est� vazio; para us�-lo, preencha smoke.before_ok_cmd em sdd/config.yaml.
+
+
+
+
+
+======================================================================
+
+FAIL: test_saida_fora_do_contrato_e_inconclusivo (test_slot.Inconclusivo.test_saida_fora_do_contrato_e_inconclusivo) (cmd='bash falso.sh 1')
+
+----------------------------------------------------------------------
+
+Traceback (most recent call last):
+
+  File "D:\a\sdd-open\sdd-open\tests\test_slot.py", line 108, in test_saida_fora_do_contrato_e_inconclusivo
+
+    self.assertEqual(rc, 3, out)
+
+AssertionError: 11 != 3 : \u2139\ufe0f  smoke.before_ok_cmd vazio: pulado (C:/Users/runneradmin/AppData/Local/Temp/sdd-open-y0yk9t2w/repo/sdd/config.yaml)
+
+RESULTADO: PULADO
+
+\u2192 diga que o passo foi pulado porque o slot est� vazio; para us�-lo, preencha smoke.before_ok_cmd em sdd/config.yaml.
+
+
+
+
+
+======================================================================
+
+FAIL: test_saida_fora_do_contrato_e_inconclusivo (test_slot.Inconclusivo.test_saida_fora_do_contrato_e_inconclusivo) (cmd='bash falso.sh 7')
+
+----------------------------------------------------------------------
+
+Traceback (most recent call last):
+
+  File "D:\a\sdd-open\sdd-open\tests\test_slot.py", line 108, in test_saida_fora_do_contrato_e_inconclusivo
+
+    self.assertEqual(rc, 3, out)
+
+AssertionError: 11 != 3 : \u2139\ufe0f  smoke.before_ok_cmd vazio: pulado (C:/Users/runneradmin/AppData/Local/Temp/sdd-open-y0yk9t2w/repo/sdd/config.yaml)
+
+RESULTADO: PULADO
+
+\u2192 diga que o passo foi pulado porque o slot est� vazio; para us�-lo, preencha smoke.before_ok_cmd em sdd/config.yaml.
+
+
+
+
+
+======================================================================
+
+FAIL: test_saida_fora_do_contrato_e_inconclusivo (test_slot.Inconclusivo.test_saida_fora_do_contrato_e_inconclusivo) (cmd='comando_que_nao_existe_xyz')
+
+----------------------------------------------------------------------
+
+Traceback (most recent call last):
+
+  File "D:\a\sdd-open\sdd-open\tests\test_slot.py", line 108, in test_saida_fora_do_contrato_e_inconclusivo
+
+    self.assertEqual(rc, 3, out)
+
+AssertionError: 11 != 3 : \u2139\ufe0f  smoke.before_ok_cmd vazio: pulado (C:/Users/runneradmin/AppData/Local/Temp/sdd-open-y0yk9t2w/repo/sdd/config.yaml)
+
+RESULTADO: PULADO
+
+\u2192 diga que o passo foi pulado porque o slot est� vazio; para us�-lo, preencha smoke.before_ok_cmd em sdd/config.yaml.
+
+
+
+
+
+----------------------------------------------------------------------
+
+Ran 3 tests in 1.134s
+
+
+
+FAILED (failures=4, skipped=1)
+

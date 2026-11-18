@@ -1,0 +1,14 @@
+$ /usr/bin/python3 -B /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f10-revisao/bd420f6e-558d-4962-a0c9-40cdfc2cbd27/scratchpad/p/a7.py AT027
+OK    0a roda --conferir
+OK    pergunta D3 exata em como-falar.md
+OK    como-falar tem '**rodar agora** (recomendado)'
+OK    como-falar tem '**publicar sem revisão**'
+OK    como-falar tem '**não sei**'
+OK    como-falar tem '2 a\n  15 minutos'
+OK    como-falar tem 'custo'
+OK    passo 3 grava review_externo
+OK    passo 4 roda --ledger e aborta em exit≠0, antes do passo 5
+OK    a pergunta vem antes do bloco do OK
+bloco OK: 7. **PARAR e mostrar (o 1 OK) — um bloco só.** Antes, rode    `python3 .agents/s
+OK    references/ledger.md documenta review_externo
+[exit=0]

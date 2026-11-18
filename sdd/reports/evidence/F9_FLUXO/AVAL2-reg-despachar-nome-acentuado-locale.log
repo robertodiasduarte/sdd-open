@@ -1,0 +1,9 @@
+$ T=$(mktemp -d); W=$PWD; git show bb91c42:sdd/bin/sdd-fluxo.sh > "$T/sdd-fluxo-bb91c42.sh"; mkdir "$T/w"; cd "$T/w"; printf "brief\n" > b.md; for L in C pt_BR.UTF-8 en_US.UTF-8; do LC_ALL=$L /bin/bash "$W/sdd/bin/sdd-fluxo.sh" despachar "avaliação" F9 b.md >/dev/null 2>&1; a=$?; LC_ALL=$L /bin/bash "$W/sdd/bin/sdd-fluxo.sh" despachar avaliador "F9_INTEGRAÇÃO" b.md >/dev/null 2>&1; b=$?; SDD_FLUXO_BIN="$W/sdd/bin" LC_ALL=$L /bin/bash "$T/sdd-fluxo-bb91c42.sh" despachar "avaliação" F9 b.md >/dev/null 2>&1; c=$?; echo "LC_ALL=$L · 524f957: papel avaliação rc=$a, FEATURE F9_INTEGRAÇÃO rc=$b · bb91c42: papel avaliação rc=$c"; done; echo "gravado em sdd/reports/briefs/ (o AT-012 exige nada):"; ls -A sdd/reports/briefs/; cd "$W"; LC_ALL=pt_BR.UTF-8 /bin/bash -c "case avaliação in *[!A-Za-z0-9_-]*) echo \"case: inválido\";; *) echo \"case: válido\";; esac"; rm -rf "${T:?}"; LC_ALL=pt_BR.UTF-8 /bin/bash -c "case avaliação in *[!A-Za-z0-9_-]*) exit 64;; esac; exit 40"
+LC_ALL=C · 524f957: papel avaliação rc=64, FEATURE F9_INTEGRAÇÃO rc=64 · bb91c42: papel avaliação rc=64
+LC_ALL=pt_BR.UTF-8 · 524f957: papel avaliação rc=40, FEATURE F9_INTEGRAÇÃO rc=40 · bb91c42: papel avaliação rc=64
+LC_ALL=en_US.UTF-8 · 524f957: papel avaliação rc=40, FEATURE F9_INTEGRAÇÃO rc=40 · bb91c42: papel avaliação rc=64
+gravado em sdd/reports/briefs/ (o AT-012 exige nada):
+BRIEF_avaliador_F9_INTEGRAÇÃO.md
+BRIEF_avaliação_F9.md
+case: válido
+[exit=40]

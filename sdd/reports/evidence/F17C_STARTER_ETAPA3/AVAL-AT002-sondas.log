@@ -1,0 +1,43 @@
+$ /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f17c-starter-etapa3/4be28bc9-cd19-4e52-baaf-378f21755723/scratchpad/at002.sh /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f17c-starter-etapa3/4be28bc9-cd19-4e52-baaf-378f21755723/scratchpad/g1/open /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f17c-starter-etapa3/4be28bc9-cd19-4e52-baaf-378f21755723/scratchpad/g1/starter
+=== sdd-define
+  assets/DEFINE_EXEMPLO.md = web/assets/DEFINE_EXEMPLO.md
+  assets/DEFINE_TEMPLATE.md = web/assets/DEFINE_TEMPLATE.md
+  references/CLARIFY.md = web/references/CLARIFY.md
+  references/EARS.md = web/references/EARS.md
+  references/VERIFY_GATE.md = web/references/VERIFY_GATE.md
+  references/como-falar.md = web/references/como-falar.md
+  references/define-protocol.md = web/references/define-protocol.md
+  corpo do modo contido no gerado: True | gerado começa pelo corpo: True
+  name gerado=sdd-define open=sdd-define | version gerado=2.7.0 open=2.7.0
+  description do modo: True | compatibility do modo: True
+  identificação gerada == a do Open (URL trocada): True ['`sdd-define v2.7.0 · nov/2026 · versão atual: https://github.com/robertodiasduarte/sdd-starter/releases/latest`']
+  GENERATED: True | Quando migrar: True
+=== sdd-design
+  assets/DESIGN_TEMPLATE.md = web/assets/DESIGN_TEMPLATE.md
+  references/advisor-review.md = web/references/advisor-review.md
+  references/como-falar.md = web/references/como-falar.md
+  references/design-protocol.md = web/references/design-protocol.md
+  references/llm-prompts.md = web/references/llm-prompts.md
+  corpo do modo contido no gerado: True | gerado começa pelo corpo: True
+  name gerado=sdd-design open=sdd-design | version gerado=2.7.0 open=2.7.0
+  description do modo: True | compatibility do modo: True
+  identificação gerada == a do Open (URL trocada): True ['`sdd-design v2.7.0 · nov/2026 · versão atual: https://github.com/robertodiasduarte/sdd-starter/releases/latest`']
+  GENERATED: True | Quando migrar: True
+=== sdd-build
+  assets/BUILD_REPORT_TEMPLATE.md = web/assets/BUILD_REPORT_TEMPLATE.md
+  assets/PROGRESS_TEMPLATE.md = web/assets/PROGRESS_TEMPLATE.md
+  assets/WORKER_BRIEF_TEMPLATE.md = web/assets/WORKER_BRIEF_TEMPLATE.md
+  references/aplicar-migration.md = web/references/aplicar-migration.md
+  references/build-protocol.md = web/references/build-protocol.md
+  references/como-falar.md = web/references/como-falar.md
+  references/execution-modes.md = web/references/execution-modes.md
+  references/llm-prompt-gate.md = web/references/llm-prompt-gate.md
+  references/retry-and-advisor.md = web/references/retry-and-advisor.md
+  references/verify-gate.md = web/references/verify-gate.md
+  corpo do modo contido no gerado: True | gerado começa pelo corpo: True
+  name gerado=sdd-build open=sdd-build | version gerado=2.10.0 open=2.10.0
+  description do modo: True | compatibility do modo: True
+  identificação gerada == a do Open (URL trocada): True ['`sdd-build v2.10.0 · nov/2026 · versão atual: https://github.com/robertodiasduarte/sdd-starter/releases/latest`']
+  GENERATED: True | Quando migrar: True
+falhas=0
+rc=0

@@ -1,0 +1,73 @@
+$ cat /tmp/aval2-f18.hrKa/probes/at004.sh; bash /tmp/aval2-f18.hrKa/probes/at004.sh
+. /tmp/aval2-f18.hrKa/probes/lib.sh
+mk8() { mkdir -p src
+ printf "const r = supabase.from('t').select('*');\n" > src/m1.ts      # S02 media
+ printf "const u = s.getPublicUrl(p);\n" > src/m2.ts                    # S04 media
+ printf "res.setHeader('Access-Control-Allow-Origin', '*');\n" > src/m3.js  # S14 media
+ printf "export default { build: { sourcemap: true } };\n" > vite.config.ts # S15 baixa
+ printf "module.exports = { productionBrowserSourceMaps: true };\n" > next.config.js # S15 baixa
+ printf "el.innerHTML = t;\n" > src/a1.js                               # S12 alta
+ printf "const v = eval(x);\n" > src/a2.js                              # S16 alta
+ printf "const f = new Function(x);\n" > src/a3.js                      # S16 alta
+}
+echo "### (a) 8 avisos, max_warnings: 5, com --saida; mais 1 bloqueio, 1 aceito e 1 'já existia'"
+novo a; git checkout -q main; printf "const z = s.getPublicUrl(q);\n" > velho.ts; git add -A; git commit -qm v --no-verify; git push -q origin main; git checkout -q feat; git merge -q main
+printf 'security:\n  max_warnings: 5\n' > sdd/config.yaml; mk8
+printf 'k = "sk_live_%s"\n' "$(rnd 24)" > pay.py
+printf '// sdd-seguranca: aceito S16 — expressão fixa de teste, nunca texto do usuário\nconst g = eval("1+1");\n' > src/ok.js
+git add -A; V --saida /tmp/aval2-f18.hrKa/saida-a.txt | grep -v '^   confira'
+echo "--- conteúdo de --saida (sem as linhas confira):"; grep -v 'confira à mão' /tmp/aval2-f18.hrKa/saida-a.txt
+echo; echo "### (b) slot vazio => teto 5, sem --saida"
+novo b; mk8; git add -A; V | grep -v '^   confira'
+echo; echo "### (c) slot inválido (abc) => ⚠️ e 5"
+novo c; printf 'security:\n  max_warnings: abc\n' > sdd/config.yaml; mk8; git add -A; V | grep -v '^   confira' | head -4; V | tail -4
+### (a) 8 avisos, max_warnings: 5, com --saida; mais 1 bloqueio, 1 aceito e 1 'já existia'
+▶ seguranca-varredura — stack: supabase, web (detectada) · base: origin/main · 50 arquivo(s) varrido(s), 1 pulado(s)
+🛑 S11 alta pay.py:1 — Chave secreta no código (bloqueia: novo nesta publicação)
+⚠️ S12 alta src/a1.js:1 — HTML vindo do usuário sem escapar
+⚠️ S16 alta src/a2.js:1 — Texto virando código
+⚠️ S16 alta src/a3.js:1 — Texto virando código
+⚠️ S02 media src/m1.ts:1 — Consulta que devolve colunas demais
+⚠️ S04 media src/m2.ts:1 — Arquivo privado com link público
+… e mais 4 aviso(s): lista inteira em /tmp/aval2-f18.hrKa/saida-a.txt
+✔ aceito S16 src/ok.js:2 — expressão fixa de teste, nunca texto do usuário
+RESULTADO: BLOQUEADO
+→ tire o segredo do código (se era real, ele vazou: troque-o) ou ligue a RLS na tabela, e rode de novo; achado falso leva a dispensa na linha, com motivo.
+exit=2
+--- conteúdo de --saida (sem as linhas confira):
+▶ seguranca-varredura — stack: supabase, web (detectada) · base: origin/main · 50 arquivo(s) varrido(s), 1 pulado(s)
+🛑 S11 alta pay.py:1 — Chave secreta no código (bloqueia: novo nesta publicação)
+⚠️ S12 alta src/a1.js:1 — HTML vindo do usuário sem escapar
+⚠️ S16 alta src/a2.js:1 — Texto virando código
+⚠️ S16 alta src/a3.js:1 — Texto virando código
+⚠️ S02 media src/m1.ts:1 — Consulta que devolve colunas demais
+⚠️ S04 media src/m2.ts:1 — Arquivo privado com link público
+⚠️ S14 media src/m3.js:1 — CORS aberto para qualquer origem
+⚠️ S04 media velho.ts:1 — Arquivo privado com link público (já existia)
+⚠️ S15 baixa next.config.js:1 — Código-fonte e detalhes vazando em produção
+⚠️ S15 baixa vite.config.ts:1 — Código-fonte e detalhes vazando em produção
+✔ aceito S16 src/ok.js:2 — expressão fixa de teste, nunca texto do usuário
+· pulado sdd/bin/__pycache__/skill-lint.cpython-315.pyc (binário)
+RESULTADO: BLOQUEADO
+
+### (b) slot vazio => teto 5, sem --saida
+▶ seguranca-varredura — stack: supabase, web (detectada) · base: origin/main · 46 arquivo(s) varrido(s), 1 pulado(s)
+⚠️ S12 alta src/a1.js:1 — HTML vindo do usuário sem escapar
+⚠️ S16 alta src/a2.js:1 — Texto virando código
+⚠️ S16 alta src/a3.js:1 — Texto virando código
+⚠️ S02 media src/m1.ts:1 — Consulta que devolve colunas demais
+⚠️ S04 media src/m2.ts:1 — Arquivo privado com link público
+… e mais 3 aviso(s): rode com --saida <arquivo> para ver todos
+RESULTADO: AVISOS
+→ confira cada aviso pela prova à mão; o que for falso positivo leva a dispensa na linha, com motivo.
+exit=1
+
+### (c) slot inválido (abc) => ⚠️ e 5
+▶ seguranca-varredura — stack: supabase, web (detectada) · base: origin/main · 47 arquivo(s) varrido(s), 1 pulado(s)
+⚠️ security.max_warnings inválido em sdd/config.yaml (abc): usando 5
+⚠️ S12 alta src/a1.js:1 — HTML vindo do usuário sem escapar
+⚠️ S16 alta src/a2.js:1 — Texto virando código
+… e mais 3 aviso(s): rode com --saida <arquivo> para ver todos
+RESULTADO: AVISOS
+→ confira cada aviso pela prova à mão; o que for falso positivo leva a dispensa na linha, com motivo.
+exit=1

@@ -1,0 +1,26 @@
+$ cd .. && python3 sdd/bin/skill-lint.py .agents/skills/sdd-*/SKILL.md && cd tests && /usr/bin/python3 -B -m unittest -v test_matriz_new_session.Portadas.test_sem_agents_openai_yaml test_matriz_new_session.Portadas.test_sem_pasta_tests_na_skill test_skill_lint.SkillLint.test_as_16_skills_reais_passam
+✅ .agents/skills/sdd-auditoria-harness/SKILL.md: frontmatter válido
+✅ .agents/skills/sdd-brainstorm/SKILL.md: frontmatter válido
+✅ .agents/skills/sdd-build/SKILL.md: frontmatter válido
+✅ .agents/skills/sdd-checar-ambiente/SKILL.md: frontmatter válido
+✅ .agents/skills/sdd-define/SKILL.md: frontmatter válido
+✅ .agents/skills/sdd-design/SKILL.md: frontmatter válido
+✅ .agents/skills/sdd-governanca/SKILL.md: frontmatter válido
+✅ .agents/skills/sdd-handoff/SKILL.md: frontmatter válido
+✅ .agents/skills/sdd-higiene-dado/SKILL.md: frontmatter válido
+✅ .agents/skills/sdd-iniciar-repo/SKILL.md: frontmatter válido
+✅ .agents/skills/sdd-iterate/SKILL.md: frontmatter válido
+✅ .agents/skills/sdd-new-session/SKILL.md: frontmatter válido
+✅ .agents/skills/sdd-playbook/SKILL.md: frontmatter válido
+✅ .agents/skills/sdd-prompt-builder/SKILL.md: frontmatter válido
+✅ .agents/skills/sdd-release/SKILL.md: frontmatter válido
+✅ .agents/skills/sdd-ux-review/SKILL.md: frontmatter válido
+test_sem_agents_openai_yaml (test_matriz_new_session.Portadas) ... ok
+test_sem_pasta_tests_na_skill (test_matriz_new_session.Portadas) ... ok
+test_as_16_skills_reais_passam (test_skill_lint.SkillLint) ... ok
+
+----------------------------------------------------------------------
+Ran 3 tests in 0.054s
+
+OK
+exit=0

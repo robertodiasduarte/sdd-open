@@ -1,0 +1,4 @@
+$ gh release download v2.9.0 && shasum -a 256 -c SHA256SUMS.txt
+sdd-open-v2.9.0.tar.gz: OK
+[exit=0]
+72ad1bac37c8a59a17419e8f469fac322a96c6f7eaa7d8476721795b39afdfca  sdd-open-v2.9.0.tar.gz

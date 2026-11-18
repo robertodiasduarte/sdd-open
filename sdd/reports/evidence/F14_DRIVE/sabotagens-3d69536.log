@@ -1,0 +1,29 @@
+drive: trava em arquivo que saiu do caminho vale: rc=0 · OK 
+   ⚠️ a sabotagem NÃO derrubou teste
+drive: trava de estado sem flock: rc=1 · FAILED (failures=2) 
+FAIL: test_recibos_juntos_nao_se_perdem (test_drive.EstadoSoUmPorVez)
+FAIL: test_trava_de_dono_vivo_nao_vence_pela_idade (test_drive.EstadoSoUmPorVez)
+drive: larga sem apagar: rc=1 · FAILED (failures=2, errors=2) 
+ERROR: test_trava_que_e_link_nao_cria_arquivo_fora (test_drive.EstadoSoUmPorVez)
+ERROR: test_trava_que_nao_abre_sai_2_sem_laco (test_drive.EstadoSoUmPorVez)
+FAIL: test_a_trava_de_estado_e_solta_mesmo_em_parada (test_drive.EstadoSoUmPorVez)
+archive: slice não protege: rc=1 · FAILED (failures=1) 
+FAIL: test_ficha_de_slice_protege_sem_documento_com_o_nome_do_slice (test_sdd_archive.Protecao)
+archive: solto recente sem classificação: rc=1 · FAILED (failures=1) 
+FAIL: test_solto_recente_fica_e_nao_e_decisao_sua (test_sdd_archive.Simulacao)
+release: repetir o 4 sem teto: rc=1 · FAILED (failures=1) 
+FAIL: test_chama_o_script_e_mapeia_os_exits (test_f14_drive_textos.Item10)
+release: repete nenhum run: rc=1 · FAILED (failures=1, errors=1) 
+ERROR: test_a_frase_que_para_a_repeticao_e_a_do_script (test_f14_drive_textos.Item10)
+FAIL: test_chama_o_script_e_mapeia_os_exits (test_f14_drive_textos.Item10)
+archive: cita ficha que não existe: rc=1 · FAILED (failures=1) 
+FAIL: test_ficha_de_slice_protege_sem_documento_com_o_nome_do_slice (test_sdd_archive.Protecao)
+deploy: 401 no disparo guarda a marca: rc=1 · FAILED (failures=1) 
+FAIL: test_dispatch_sem_login_sai_3_e_nao_gasta_o_redisparo (test_deploy_do_sha.Redisparo)
+drive: trava que não abre volta ao laço: rc=1 · FAILED (errors=6) 
+ERROR: test_trava_que_e_link_nao_cria_arquivo_fora (test_drive.EstadoSoUmPorVez)
+ERROR: test_trava_que_nao_abre_sai_2_sem_laco (test_drive.EstadoSoUmPorVez)
+ERROR: test_nao_consegue_gravar_sai_2 (test_drive.Recusas)
+sabotagens: 10 no total
+sabotagens vivas: 1
+[exit=1]

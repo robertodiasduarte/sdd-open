@@ -1,0 +1,6 @@
+$ python3 -B -m unittest discover -s tests -p test_seguranca_catalogo.py   # HEAD c30b54c
+----------------------------------------------------------------------
+Ran 10 tests in 0.271s
+
+OK
+[exit=0]

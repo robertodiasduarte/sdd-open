@@ -1,0 +1,5 @@
+$ bash sdd/bin/avaliador-guard.sh --permitir sdd/features/ --permitir sdd/handoffs/ --permitir sdd/reports/ --permitir sdd/reviews/
+✅ árvore commitada (fora de sdd/reports/evidence/, sdd/traces/ e dos prefixos permitidos).
+RESULTADO: VERDE
+→ o avaliador pode ser despachado.
+[exit=0]

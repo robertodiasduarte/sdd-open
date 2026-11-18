@@ -1,0 +1,11 @@
+$ P=/Users/robertoduarte/rdd-worktrees/sdd-open-f11-gate; C=$(mktemp -d); mkdir -p $C/sdd; cp -R $P/sdd/bin $P/sdd/review $C/sdd/; rm $C/sdd/review/stubs/respostas/auditor-misto.md; /bin/bash $C/sdd/bin/adversarial-review-gate.sh; echo "[gate_rc=$?]"; echo '### uso'; /bin/bash $C/sdd/bin/adversarial-review-gate.sh --x; echo "[gate_rc=$?]"; rm -rf $C
+🛑 adversarial-review-gate: stub ausente: /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.XFC4etLSoY/sdd/review/stubs/respostas/auditor-misto.md
+RESULTADO: GATE QUEBRADO
+→ reinstale sdd/review/stubs/ (rode o init do sdd-open) e rode o gate de novo.
+[gate_rc=3]
+### uso
+🛑 adversarial-review-gate: argumento desconhecido: --x
+RESULTADO: PAROU
+→ rode `adversarial-review-gate.sh --help` para ver o uso.
+[gate_rc=64]
+[exit=0]

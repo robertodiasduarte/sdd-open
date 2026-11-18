@@ -1,0 +1,15 @@
+$ W=/tmp/aval1-f11.wvW4zp; echo '### openrouter x openrouter:<mesmo slug> (mesma identidade)'; /usr/bin/python3 -B $W/h.py $W/r19 $W/e05a '' -- --base main --reviewer openrouter --auditor openrouter:qwen/qwen3.7-plus; echo '### openrouter x openrouter:<outro slug> (identidade diferente)'; /usr/bin/python3 -B $W/h.py $W/r19 $W/e05b 'openrouter=revisor,auditor' -- --base main --reviewer openrouter --auditor openrouter:deepseek/deepseek-v4-flash --no-revisor2 | grep -E '^(revisor|auditor|diversidade|RESULTADO|\[ar_rc|chamadas|SENTINELA)'
+### openrouter x openrouter:<mesmo slug> (mesma identidade)
+🛑 adversarial-review: o auditor (openrouter:qwen/qwen3.7-plus) é a mesma engine do revisor: ninguém audita a própria revisão
+RESULTADO: PAROU
+→ escolha outra engine para auditar (review.auditor) ou rode com --um-engine
+
+[ar_rc=67]
+### openrouter x openrouter:<outro slug> (identidade diferente)
+RESULTADO: REVIEW COMPLETA
+revisor: openrouter (qwen/qwen3.7-plus via StubProvider) — US$ 0,0031
+auditor: openrouter:deepseek/deepseek-v4-flash (qwen/qwen3.7-plus via StubProvider) — US$ 0,0012
+diversidade: modelo
+[ar_rc=0]
+chamadas openrouter=2
+[exit=0]

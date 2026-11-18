@@ -1,0 +1,37 @@
+$ bash /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f16w-windows/fd210694-ded6-4d95-a500-52e0521f4ae8/scratchpad/at002.sh
+fatia 1/1: 5 unidade(s), 8 teste(s); teto por unidade 5s; paralelo 1
+test_pendura.P                               TETO   testes=0    falhas=0   erros=0   pulados=0       5.0s
+    | test_neto (test_pendura.P.test_neto) ... /opt/homebrew/Cellar/python@3.15/3.15.0_1/Frameworks/Python.framework/Versions/3.15/lib/python3.15/subprocess.py:1313: ResourceWarning: subprocess 85615 is still running
+    |   _warn("subprocess %s is still running" % self.pid,
+    | ResourceWarning: Enable tracemalloc to get the object allocation traceback
+    | antes de pendurar
+    | neto vivo
+test_quebrado                                FALHOU testes=1    falhas=0   erros=1   pulados=0       0.1s
+    ERROR _FailedTest.test_quebrado
+test_verde.A                                 OK     testes=2    falhas=0   erros=0   pulados=1       0.1s
+test_verde.B                                 OK     testes=1    falhas=0   erros=0   pulados=0       0.1s
+test_vermelho.C                              FALHOU testes=3    falhas=1   erros=1   pulados=0       0.1s
+    ERROR C.test_erro
+    FAIL C.test_falha
+total: 5 unidade(s), 7 teste(s): 1 falha(s), 2 erro(s), 1 pulado(s) em 5.3s
+unidades com problema: test_pendura.P (TETO), test_quebrado (FALHOU), test_vermelho.C (FALHOU)
+RESULTADO: VERMELHO
+exit=1
+segundos totais: 6
+--- resumo.tsv
+unidade	estado	testes	falhas	erros	pulados	segundos
+test_pendura.P	TETO	0	0	0	0	5.0
+test_quebrado	FALHOU	1	0	1	0	0.1
+test_verde.A	OK	2	0	0	1	0.1
+test_verde.B	OK	1	0	0	0	0.1
+test_vermelho.C	FALHOU	3	1	1	0	0.1
+--- arquivos em --saida
+resumo.tsv
+test_pendura.P.log
+test_quebrado.log
+test_verde.A.log
+test_verde.B.log
+test_vermelho.C.log
+--- neto ainda vivo?
+nenhum neto vivo
+[exit=0]

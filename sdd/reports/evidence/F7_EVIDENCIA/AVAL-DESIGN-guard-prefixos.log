@@ -1,0 +1,6 @@
+$ set -o pipefail; git -c core.quotepath=false status --porcelain --untracked-files=all | cut -c4- | awk -F/ "{print \$1\"/\"\$2\"/\"}" | LC_ALL=C sort | uniq -c
+  23 sdd/features/
+   2 sdd/handoffs/
+ 275 sdd/reports/
+  10 sdd/reviews/
+[exit=0]

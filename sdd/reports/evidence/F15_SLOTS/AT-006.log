@@ -1,0 +1,11 @@
+$ cd tests && SDD_TEST_BASH=/bin/bash /usr/bin/python3 -B -m unittest -v test_test_baseline.TestBaseline.test_touched_conta_teste_ao_lado_da_fonte test_test_baseline.TestBaseline.test_touched_vizinho_commitado_na_branch_tambem_conta test_test_baseline.TestBaseline.test_touched_id_relativo_a_subpasta_conta
+# commit: 9013b10
+test_touched_conta_teste_ao_lado_da_fonte (test_test_baseline.TestBaseline) ... ok
+test_touched_vizinho_commitado_na_branch_tambem_conta (test_test_baseline.TestBaseline) ... ok
+test_touched_id_relativo_a_subpasta_conta (test_test_baseline.TestBaseline) ... ok
+
+----------------------------------------------------------------------
+Ran 3 tests in 0.995s
+
+OK
+[exit=0]

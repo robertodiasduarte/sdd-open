@@ -1,0 +1,11 @@
+$ SDD_TEST_BASH=/bin/bash /usr/bin/python3 -B -m unittest -v -k at001 test_f26_docs_na_main test_f26_marca_starter
+# AT-001 · HEAD e99136d · cópia de git archive HEAD · piso (/usr/bin/python3, /bin/bash)
+test_at001_extrair_tag_do_gerador_sem_documento_e_baseline_sem_a_trava (test_f26_docs_na_main.Travas) ... ok
+test_at001_tarball_como_o_release_sem_documento_e_manifest_nos_2_sentidos (test_f26_docs_na_main.Travas) ... ok
+test_at001_documentos_do_open_nao_chegam_ao_starter (test_f26_marca_starter.Marca) ... ok
+
+----------------------------------------------------------------------
+Ran 3 tests in 5.528s
+
+OK
+[exit=0]

@@ -1,0 +1,2 @@
+{"achado": "R1", "veredito": "AGREE", "justificativa": "Em sdd/bin/papel-serie.sh:393 e :429, a retomada exclui violações pelo nome do arquivo, permitindo incorporar metadados adulterados sem acusar a escrita."}
+{"achado": "N1", "veredito": "NOVO", "severidade": "MED", "arquivo": "sdd/bin/papel-serie.sh", "linha": 439, "resumo": "A retomada contabiliza e encerra o registro da execução interrompida sem verificar remotos da cópia, permitindo concluir a série sem registrar essa violação do AT-011."}

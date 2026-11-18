@@ -1,0 +1,19 @@
+$ python3 -B <worktree da tag v2.14.0>/scripts/gerar-starter.py --tag v2.14.0 /Users/robertoduarte/rdd-worktrees/sdd-starter-f17b-gerado   # branch feat/f17b-segunda-geracao, base d2f3085
+✅ sdd-checar-ambiente: 5 arquivo(s), 1 troca(s)
+✅ sdd-iniciar-repo: 3 arquivo(s), 1 troca(s)
+✅ sdd-higiene-dado: 10 arquivo(s), 0 troca(s)
+✅ sdd-new-session: 6 arquivo(s), 1 troca(s)
+✅ sdd-kb: 38 arquivo(s), 2 troca(s)
+✅ sdd-seguranca: 9 arquivo(s), 6 troca(s)
+✅ sdd-auditoria-harness: 7 arquivo(s), 0 troca(s)
+✅ sdd-prompt-builder: 9 arquivo(s), 2 troca(s)
+✅ sdd-engenharia-reversa-saas: 15 arquivo(s), 4 troca(s)
+✅ sdd-loop-builder: 6 arquivo(s), 0 troca(s)
+✅ sdd-brainstorm: 6 arquivo(s), 4 troca(s)
+✅ sdd-handoff: 5 arquivo(s), 6 troca(s)
+✅ sdd-governanca: 12 arquivo(s), 5 troca(s)
+✅ sdd-release: 2 arquivo(s), 0 troca(s), de modo (references/MODO_INICIANTE.md)
+✅ ux-review-builder: 20 arquivo(s), 0 troca(s)
+RESULTADO: GERADO
+→ no starter: python3 scripts/check-gerado.py, os testes dele e um commit numa branch.
+rc=0

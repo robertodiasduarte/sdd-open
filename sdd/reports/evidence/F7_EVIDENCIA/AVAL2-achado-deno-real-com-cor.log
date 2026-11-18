@@ -1,0 +1,34 @@
+$ P=$PWD; T=$(mktemp -d); cd "$T" && git init -q -b main r && cd r
+mkdir -p sdd/bin sdd/baselines && cp "$P"/sdd/bin/test-baseline.sh sdd/bin/
+deno --version | head -1
+printf "Deno.test(\"soma\", () => {});\nDeno.test(\"conhecido\", () => { throw new Error(\"x\"); });\nDeno.test(\"novo\", () => { throw new Error(\"y\"); });\n" > conta_test.ts
+printf "conta_test.ts::conhecido\n" > sdd/baselines/tests.txt
+echo "== deno test (cor padrão)"; bash sdd/bin/test-baseline.sh --cmd "deno test --no-check conta_test.ts"; echo "exit=$?"
+echo "== NO_COLOR=1 deno test"; bash sdd/bin/test-baseline.sh --cmd "NO_COLOR=1 deno test --no-check conta_test.ts"; echo "exit=$?"
+echo "== bytes da linha => (cor padrão):"; deno test --no-check conta_test.ts 2>&1 | grep -a "=> " | head -2 | od -c | head -6
+cd /; rm -rf "${T:?}"
+deno 2.8.2 (stable, release, aarch64-apple-darwin)
+== deno test (cor padrão)
+▶ testes: deno test --no-check conta_test.ts
+⚠️  o comando saiu 1 e nenhuma falha foi reconhecida (formatos: unittest, pytest, jest, vitest, go, deno).
+⚠️  baseline não podado (execução parcial)
+RESULTADO: INCONCLUSIVO
+→ rode onde a ferramenta exista, ou confira a saída do comando; isto não é verde.
+exit=3
+== NO_COLOR=1 deno test
+▶ testes: NO_COLOR=1 deno test --no-check conta_test.ts
+🛑 nova: conta_test.ts::novo
+ℹ️  conhecida: conta_test.ts::conhecido
+⚠️  baseline não podado (execução parcial)
+🛑 1 falha(s) nova(s); 1 conhecida(s).
+RESULTADO: VERMELHO
+→ corrija as falhas novas; aceitar uma é decisão sua: bash sdd/bin/test-baseline.sh --aceitar '<id>'
+exit=2
+== bytes da linha => (cor padrão):
+0000000    c   o   n   h   e   c   i   d   o     033   [   0   m 033   [
+0000020    3   8   ;   5   ;   2   4   5   m   =   >       .   /   c   o
+0000040    n   t   a   _   t   e   s   t   .   t   s   :   2   :   6 033
+0000060    [   0   m  \n   D   e   n   o   .   t   e   s   t   (   "   c
+0000100    o   n   h   e   c   i   d   o   "   ,       (   )       =   >
+0000120        {       t   h   r   o   w       n   e   w       E   r   r
+[exit=0]

@@ -1,0 +1,10 @@
+$ SDD_TEST_BASH=/bin/bash /usr/bin/python3 -B -m unittest -v -k at012 test_f26_docs_na_main
+# AT-012 · HEAD e99136d · cópia de git archive HEAD · piso (/usr/bin/python3, /bin/bash)
+test_at012_contributing_tem_o_procedimento (test_f26_docs_na_main.Varredura) ... ok
+test_at012_padrao_prova_a_remocao_na_ref_inteira_e_na_pasta (test_f26_docs_na_main.Varredura) ... ok
+
+----------------------------------------------------------------------
+Ran 2 tests in 0.494s
+
+OK
+[exit=0]

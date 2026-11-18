@@ -1,0 +1,56 @@
+$ bash /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f10-revisao/bd420f6e-558d-4962-a0c9-40cdfc2cbd27/scratchpad/p/a5.sh AT020
+--- US$ reportado pela engine
+▶ revisor: stub-a (revisor-ok) — até 1 min
+▶ auditor: stub-b (auditor-agree) — até 1 min
+revisor: stub-a (stub-modelo) — US$ 0,0061
+auditor: stub-b (stub-modelo) — US$ 0,0061
+custo total: US$ 0,0122
+[rc=0]
+reviewer_segundos       : 0
+reviewer_tokens_entrada : 1000
+reviewer_tokens_saida   : 200
+reviewer_tokens_total   : 1200
+reviewer_modelo         : stub-modelo
+reviewer_custo          : US$ 0.0061
+auditor_segundos        : 0
+auditor_tokens_entrada  : 1000
+auditor_tokens_saida    : 200
+auditor_tokens_total    : 1200
+auditor_modelo          : stub-modelo
+auditor_custo           : US$ 0.0061
+custo_total             : US$ 0.0122
+--- estimado por precos.tsv, assinatura e $?
+▶ revisor: pa (revisor-ok) — até 1 min
+▶ auditor: pb (auditor-agree) — até 1 min
+revisor: pa (stub-modelo) — ≈ US$ 0,0060 (estimado)
+auditor: pb (stub-modelo) — custo desconhecido
+custo total: ≈ US$ 0,0060 (estimado) (+ 1 papel(is) com custo desconhecido)
+[rc=0]
+reviewer_custo          : ≈US$ 0.0060
+auditor_custo           : $?
+custo_total             : ≈US$ 0.0060 (+ 1 papel(is) com custo $?)
+▶ revisor: pa (revisor-ok) — até 1 min
+▶ auditor: sa (auditor-agree) — até 1 min
+revisor: pa (stub-modelo) — ≈ US$ 0,0060 (estimado)
+auditor: sa (stub-modelo) — incluído na assinatura
+custo total: ≈ US$ 0,0060 (estimado)
+[rc=0]
+reviewer_custo          : ≈US$ 0.0060
+auditor_custo           : assinatura
+custo_total             : ≈US$ 0.0060
+--- tudo desconhecido
+▶ revisor: pb:revisor-ok (revisor-ok) — até 1 min
+▶ auditor: pb:auditor-agree (auditor-agree) — até 1 min
+revisor: pb:revisor-ok (stub-modelo) — custo desconhecido
+auditor: pb:auditor-agree (stub-modelo) — custo desconhecido
+custo total: US$ 0,0000 (+ 2 papel(is) com custo desconhecido)
+[rc=0]
+reviewer_custo          : $?
+auditor_custo           : $?
+custo_total             : US$ 0.0000 (+ 2 papel(is) com custo $?)
+--- custo reportado 0 (engine gratuita) vs desconhecido
+▶ revisor: pb:revisor-ok (revisor-ok) — até 1 min
+revisor: pb:revisor-ok (stub-modelo) — US$ 0,0000
+custo total: US$ 0,0000
+reviewer_custo          : US$ 0.0000
+[exit=0]

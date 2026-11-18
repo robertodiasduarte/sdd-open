@@ -1,0 +1,103 @@
+$ cat /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f12-contexto/ba201848-0f5b-4f61-8434-538b155d5260/scratchpad/l1l4.sh; echo ======; bash /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f12-contexto/ba201848-0f5b-4f61-8434-538b155d5260/scratchpad/l1l4.sh /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.1TRIWjgopM
+# sonda L1 (ordem das chaves do cabeçalho) e L4 (lints chamados de subpasta com caminho relativo)
+S="$1"; cd "$S"; B=sdd/fixtures/contexto/valido-completo.md; D=$(mktemp -d)
+lint() { bash sdd/bin/contexto-lint.sh --dominio sdd/fixtures/contexto/dominio.md --playbook sdd/fixtures/contexto/playbook.md "$1" > "$D/o" 2>&1; rc=$?; grep -E '🛑|RESULTADO' "$D/o"; echo "rc=$rc"; }
+echo '>>> L1: sup antes de ctx'
+awk '/^ctx: /{c=$0; next} /^sup: /{print; print c; next} {print}' "$B" > "$D/a.md"; sed -n 3,7p "$D/a.md"; lint "$D/a.md"
+echo '>>> L1: sha e gerado_em trocados'
+awk '/^gerado_em: /{g=$0; next} /^sha: /{print; print g; next} {print}' "$B" > "$D/b.md"; sed -n 3,7p "$D/b.md"; lint "$D/b.md"
+echo '>>> L1: ordem certa, linha em branco entre as chaves (deve passar)'
+awk '/^sha: /{print; print ""; next} {print}' "$B" > "$D/c.md"; lint "$D/c.md"
+echo '>>> L1: chave duplicada no fim (ctx: repetido depois de sup:)'
+awk '/^sup: /{print; print "ctx: ctx:pedidos"; next} {print}' "$B" > "$D/d.md"; lint "$D/d.md"
+echo '=== L4: de sdd/fixtures, caminhos relativos à subpasta'
+cd sdd/fixtures
+bash ../bin/contexto-lint.sh --dominio contexto/dominio.md --playbook contexto/playbook.md contexto/valido-completo.md > "$D/o" 2>&1; echo "contexto-lint lint rc=$?"; grep RESULTADO "$D/o"
+bash ../bin/contexto-lint.sh --dominio contexto/dominio.md --sugerir contexto/INPUT_FIXTURE_PEDIDOS.md --dir contexto --ref HEAD > "$D/o" 2>&1; echo "contexto-lint --sugerir rc=$?"; grep -E 'recomendacao|ctx:' "$D/o"
+H=$(git rev-parse HEAD); sed "s/__SHA__/$H/" contexto/validade-template.md > "$D/v.md"
+bash ../bin/contexto-lint.sh --validade contexto/valido-completo.md --ref HEAD > "$D/o" 2>&1; echo "contexto-lint --validade (rel) rc=$?"; grep -E 'RESULTADO|sha-inex' "$D/o"
+mkdir -p "$D/pat"; cp patterns/valido-vencido.md "$D/pat/x.md"
+bash ../bin/patterns-lint.sh --playbook contexto/playbook.md patterns > "$D/o" 2>&1; echo "patterns-lint pasta rel rc=$?"; grep -E 'RESULTADO|pasta inex' "$D/o"
+bash ../bin/patterns-lint.sh --playbook contexto/playbook.md --design patterns/DESIGN_FIXTURE_CITA_PEDIDOS.md patterns > "$D/o" 2>&1; echo "patterns-lint --design rel rc=$?"; grep -E 'RESULTADO|inexist|🛑' "$D/o"
+echo '=== L4 reverso: nome que existe na subpasta E na raiz (sdd/fixtures/contexto vs ./contexto?)'
+cd "$S"; mkdir -p sub; cd sub
+bash ../sdd/bin/patterns-lint.sh ../sdd/patterns > "$D/o" 2>&1; echo "patterns-lint ../sdd/patterns de sub/ rc=$?"; grep RESULTADO "$D/o"
+cd "$S"; rmdir sub
+======
+>>> L1: sup antes de ctx
+gerado_em: 2026-11-03
+sha: 0123456789abcdef0123456789abcdef01234567
+superficies: sdd/fixtures/contexto/app/pedidos.py
+sup: `pedido_item` `checkout`
+ctx: ctx:pedidos
+  🛑 [cabecalho-ausente] a.md: as linhas do cabeçalho estão fora da ordem (ctx, gerado_em, sha, superficies, sup)
+🛑 contexto-lint: 1 erro(s), 2 aviso(s) em 1 CONTEXTO(s)
+RESULTADO: VERMELHO
+rc=2
+>>> L1: sha e gerado_em trocados
+ctx: ctx:pedidos
+sha: 0123456789abcdef0123456789abcdef01234567
+gerado_em: 2026-11-03
+superficies: sdd/fixtures/contexto/app/pedidos.py
+sup: `pedido_item` `checkout`
+  🛑 [cabecalho-ausente] b.md: as linhas do cabeçalho estão fora da ordem (ctx, gerado_em, sha, superficies, sup)
+🛑 contexto-lint: 1 erro(s), 2 aviso(s) em 1 CONTEXTO(s)
+RESULTADO: VERMELHO
+rc=2
+>>> L1: ordem certa, linha em branco entre as chaves (deve passar)
+RESULTADO: VERDE
+rc=0
+>>> L1: chave duplicada no fim (ctx: repetido depois de sup:)
+RESULTADO: VERDE
+rc=0
+=== L4: de sdd/fixtures, caminhos relativos à subpasta
+contexto-lint lint rc=0
+RESULTADO: VERDE
+contexto-lint --sugerir rc=0
+ctx:pedidos termos=3 (checkout, pedido, pedido_item) estado=ausente arquivo=/private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.1TRIWjgopM/sdd/fixtures/contexto/pedidos.md
+recomendacao: gerar (ctx:pedidos ausente)
+→ despache o cartógrafo para ctx:pedidos (passo 1.5 do sdd-define).
+contexto-lint --validade (rel) rc=2
+  🛑 [sha-inexistente] valido-completo.md: o sha '0123456789abcdef0123456789abcdef01234567' não existe neste repositório
+RESULTADO: VERMELHO
+patterns-lint pasta rel rc=2
+RESULTADO: VERMELHO
+patterns-lint --design rel rc=2
+  🛑 [path-morto] DESIGN_FIXTURE_CITA_PEDIDOS.md cita patterns/pedidos.md, que não existe em /private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.1TRIWjgopM/sdd/fixtures/patterns
+  🛑 [secao-ausente] DESIGN_FIXTURE_CITA_INEXISTENTE.md: falta a seção '## Quando se aplica'
+  🛑 [secao-ausente] DESIGN_FIXTURE_CITA_INEXISTENTE.md: falta a seção '## Esqueleto'
+  🛑 [secao-ausente] DESIGN_FIXTURE_CITA_INEXISTENTE.md: falta a seção '## Checklist de conformidade'
+  🛑 [secao-ausente] DESIGN_FIXTURE_CITA_INEXISTENTE.md: falta a seção '## Exemplos canônicos'
+  🛑 [secao-ausente] DESIGN_FIXTURE_CITA_INEXISTENTE.md: falta a seção '## Landmines'
+  🛑 [secao-ausente] DESIGN_FIXTURE_CITA_INEXISTENTE.md: falta a seção '## Validado em'
+  🛑 [validado-vencido] DESIGN_FIXTURE_CITA_INEXISTENTE.md: '## Validado em' sem data AAAA-MM-DD legível
+  🛑 [secao-ausente] DESIGN_FIXTURE_CITA_PEDIDOS.md: falta a seção '## Quando se aplica'
+  🛑 [secao-ausente] DESIGN_FIXTURE_CITA_PEDIDOS.md: falta a seção '## Esqueleto'
+  🛑 [secao-ausente] DESIGN_FIXTURE_CITA_PEDIDOS.md: falta a seção '## Checklist de conformidade'
+  🛑 [secao-ausente] DESIGN_FIXTURE_CITA_PEDIDOS.md: falta a seção '## Exemplos canônicos'
+  🛑 [secao-ausente] DESIGN_FIXTURE_CITA_PEDIDOS.md: falta a seção '## Landmines'
+  🛑 [secao-ausente] DESIGN_FIXTURE_CITA_PEDIDOS.md: falta a seção '## Validado em'
+  🛑 [validado-vencido] DESIGN_FIXTURE_CITA_PEDIDOS.md: '## Validado em' sem data AAAA-MM-DD legível
+  🛑 [secao-ausente] DESIGN_FIXTURE_SEM_CITACAO.md: falta a seção '## Quando se aplica'
+  🛑 [secao-ausente] DESIGN_FIXTURE_SEM_CITACAO.md: falta a seção '## Esqueleto'
+  🛑 [secao-ausente] DESIGN_FIXTURE_SEM_CITACAO.md: falta a seção '## Checklist de conformidade'
+  🛑 [secao-ausente] DESIGN_FIXTURE_SEM_CITACAO.md: falta a seção '## Exemplos canônicos'
+  🛑 [secao-ausente] DESIGN_FIXTURE_SEM_CITACAO.md: falta a seção '## Landmines'
+  🛑 [secao-ausente] DESIGN_FIXTURE_SEM_CITACAO.md: falta a seção '## Validado em'
+  🛑 [validado-vencido] DESIGN_FIXTURE_SEM_CITACAO.md: '## Validado em' sem data AAAA-MM-DD legível
+  🛑 [validado-vencido] linha-alem-do-fim-basename.md: '## Validado em' sem data AAAA-MM-DD legível
+  🛑 [validado-vencido] linha-alem-do-fim.md: '## Validado em' sem data AAAA-MM-DD legível
+  🛑 [lm-morto] lm-morto.md: cita LM-002, que está aposentado (## Tombstones)
+  🛑 [validado-vencido] lm-morto.md: '## Validado em' sem data AAAA-MM-DD legível
+  🛑 [validado-vencido] path-morto.md: '## Validado em' sem data AAAA-MM-DD legível
+  🛑 [secao-fora-de-ordem] secao-fora-de-ordem.md: seções fora da ordem (Quando se aplica → Esqueleto → Checklist → Exemplos → Landmines → Validado em)
+  🛑 [validado-vencido] secao-fora-de-ordem.md: '## Validado em' sem data AAAA-MM-DD legível
+  🛑 [secao-ausente] sem-secao.md: falta a seção '## Checklist de conformidade'
+  🛑 [validado-vencido] sem-secao.md: '## Validado em' sem data AAAA-MM-DD legível
+  🛑 [validado-vencido] valido-completo.md: '## Validado em' sem data AAAA-MM-DD legível
+🛑 patterns-lint: 32 erro(s), 6 aviso(s) em 11 pattern(s)
+RESULTADO: VERMELHO
+=== L4 reverso: nome que existe na subpasta E na raiz (sdd/fixtures/contexto vs ./contexto?)
+patterns-lint ../sdd/patterns de sub/ rc=0
+RESULTADO: VERDE
+[exit=0]

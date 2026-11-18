@@ -1,0 +1,12 @@
+$ /bin/bash /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f10-revisao/bd420f6e-558d-4962-a0c9-40cdfc2cbd27/scratchpad/sonda-checkignore.sh
+sem regra, pasta inexistente: rc=1  (esperado 1)
+regra 'sdd/reports/reviews/' em info/exclude, pasta inexistente: rc=0  (esperado 0)
+mesma regra, consultando a própria pasta inexistente (sem /.sonda): rc=1
+regra 'sdd/reports/reviews/', pasta existente: rc=0
+worktree: .git é arquivo? sim
+worktree herda info/exclude do repositório comum: rc=0
+/private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f10-revisao/bd420f6e-558d-4962-a0c9-40cdfc2cbd27/scratchpad/sonda-checkignore.sh: line 20: .git/info/exclude: Not a directory
+→ da U5 literal na worktree: rc=1
+com --git-common-dir: rc=0
+depois do --git-common-dir: check-ignore rc=0
+[exit=0]

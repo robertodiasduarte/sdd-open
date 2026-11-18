@@ -1,0 +1,7 @@
+DELTA LM-001 ajudou+1 · conf=2026-11-05 · evidencia=DESIGN_F14_PLAYBOOK.md:510 · fp=312d848fbf,89ea1550cc
+DELTA LM-002 ajudou+1 · conf=2026-11-05 · evidencia=DESIGN_F14_PLAYBOOK.md:511 · fp=e5efe377bf,939efabacc
+DELTA LM-003 ajudou+1 · conf=2026-11-05 · evidencia=DESIGN_F14_PLAYBOOK.md:512 · fp=6a45837f24,ee5415c625
+SUGESTAO mordeu? LM-003 — termo `review` em BUILD_REPORT_F14_PLAYBOOK.md:41 (achado sem LM explícito; confirmar a causa antes de virar delta) · fp=e77e708069,f1d5344dab
+CANDIDATO #1 → LM-005 · secao=Reviews / harness · sup=`heurística` `regressão` `conserto` · evidencia=sdd/reviews/AVALIACAO_F14_PLAYBOOK_20261105-ciclo3.md · fp=6bef193915
+CANDIDATO #2 → LM-006 · secao=Reviews / harness · sup=`verify-gate` `git archive` `self-test` · evidencia=sdd/reports/evidence/F14_PLAYBOOK/verify-gate-864fd8d.log · fp=1c324275d7
+DELTA LM-001 mordeu+1 · conf=2026-11-05 · evidencia=AVAL2-V2-aposentar-e-bordas.log:40 · fp=8ea1f11743

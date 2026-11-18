@@ -1,0 +1,24 @@
+$ /usr/bin/python3 -B sdd/bin/skill-lint.py --conversa .agents/skills 2>&1 | tail -4; echo "[skill-lint rc=${PIPESTATUS[0]}]"; bash sdd/bin/sdd-decisoes-lint.sh --sites .agents/skills 2>&1 | tail -2; echo "[decisoes skills rc=${PIPESTATUS[0]}]"; bash sdd/bin/sdd-decisoes-lint.sh --sites sdd/templates/fragments 2>&1 | tail -2; echo "[decisoes fragments rc=${PIPESTATUS[0]}]"; bash sdd/bin/playbook-lint.sh --self-test 2>&1 | tail -2; echo "[playbook rc=${PIPESTATUS[0]}]"; /usr/bin/python3 -B scripts/check-versions.py --base v2.2.10 --base-obrigatoria 2>&1 | tail -3; echo "[check-versions rc=${PIPESTATUS[0]}]"; for f in sdd/bin/adversarial-review.sh sdd/bin/sdd-fluxo.sh sdd/bin/adapters/*.sh; do /bin/bash -n $f && echo "bash -n ok $f"; done; grep -nE "mapfile|declare -A|\$\{[A-Za-z_]+\^\^\}" sdd/bin/adversarial-review.sh sdd/bin/adapters/*.sh sdd/bin/sdd-fluxo.sh || echo "sem mapfile/declare -A/^^"
+🛑 .agents/skills: não consegui ler: [Errno 21] Is a directory: '.agents/skills'
+RESULTADO: VERMELHO
+→ corrija o apontado acima (frontmatter: agentskills.io/specification; conversa: sdd/templates/fragments/PERGUNTA_DECISAO.md)
+[skill-lint rc=1]
+🟢 sdd-decisoes-lint --sites: 16 pergunta(s) em 16 arquivo(s), cada uma com a marca de classe e no formato.
+[decisoes skills rc=0]
+🟢 sdd-decisoes-lint --sites: 2 pergunta(s) em 2 arquivo(s), cada uma com a marca de classe e no formato.
+[decisoes fragments rc=0]
+  ✅ --anti-collapse só CONTINUAÇÃO de LM-005 reescrita (1/5) ⇒ conta como alterado (20%) → exit 0
+🟢 self-test: todos os baselines vermelhos e verdes confirmados
+[playbook rc=0]
+PASS: check-versions — 17 skills com versão coerente, comparadas a v2.2.10.
+RESULTADO: VERDE
+→ siga para o próximo passo.
+[check-versions rc=0]
+bash -n ok sdd/bin/adversarial-review.sh
+bash -n ok sdd/bin/sdd-fluxo.sh
+bash -n ok sdd/bin/adapters/claude.sh
+bash -n ok sdd/bin/adapters/codex.sh
+bash -n ok sdd/bin/adapters/gemini.sh
+bash -n ok sdd/bin/adapters/openrouter.sh
+sem mapfile/declare -A/^^
+[exit=0]

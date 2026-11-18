@@ -1,0 +1,12 @@
+$ R=$PWD/sdd/bin/prompt-drift-scan.sh; T=$(mktemp -d); cd $T; mkdir -p sdd src; ln -s /inexistente/config.yaml sdd/config.yaml; printf "ask({ systemPrompt: \`x\` })\n" | bash $R --conteudo src/a.ts; echo "link quebrado rc=$?"; rm sdd/config.yaml; printf "prompts:\n  wrapper_pattern: \"systemPrompt:\"\n" > sdd/config.yaml; chmod 000 sdd; printf "ask({ systemPrompt: \`x\` })\n" | bash $R --conteudo src/a.ts; echo "pasta sdd 000 rc=$?"; chmod 755 sdd; cd /; rm -rf $T
+⚠️ prompts.wrapper_pattern vazio: procurei só os sinais genéricos; se o projeto chama a IA por uma função própria, esta varredura não a vê.
+   Preencha o slot em sdd/config.yaml (ex.: systemPrompt:), ou ignore se o projeto usa o SDK direto.
+RESULTADO: LIMPO
+→ nenhum sinal de prompt de produção; siga
+link quebrado rc=0
+⚠️ prompts.wrapper_pattern vazio: procurei só os sinais genéricos; se o projeto chama a IA por uma função própria, esta varredura não a vê.
+   Preencha o slot em sdd/config.yaml (ex.: systemPrompt:), ou ignore se o projeto usa o SDK direto.
+RESULTADO: LIMPO
+→ nenhum sinal de prompt de produção; siga
+pasta sdd 000 rc=0
+[exit=0]

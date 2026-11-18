@@ -1,0 +1,24 @@
+$ git rev-parse HEAD && T=$(mktemp -d) && git archive HEAD | tar -x -C $T && PUBLISH_GATE_MODE=ci bash scripts/publish-gate.sh $T && cd $T && SDD_TEST_BASH=/bin/bash /usr/bin/python3 -B -m unittest discover -s tests -p 'test_*.py'
+9508ff0f459c6f0004193d071c045d3e4cc4f974
+publish-gate — tree: /private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.N8OEQ0M6zI — mode: ci
+──────────────────────────────────────────────────────────────────
+G1 secrets (gitleaks)
+  ✅ no secrets detected
+G2 forbidden patterns
+  ✅ no forbidden pattern matched
+G3 allowlist (MANIFEST.txt)
+  ✅ tree and manifest match in both directions
+G4 verify-gate exit contract
+  ✅ DEFINE_FIXTURE_NEEDS_CLARIFICATION.md → exit 5
+  ✅ DEFINE_FIXTURE_CONTROLE.md → exit 0
+  ✅ DEFINE_FIXTURE_SEM_BLOCO.md → exit 64
+G5 documentation
+  ✅ docs present, cross-linked, attribution in place
+──────────────────────────────────────────────────────────────────
+✅ publish-gate GREEN — tree is publishable (human review of the file list still required)
+..............................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................
+----------------------------------------------------------------------
+Ran 894 tests in 760.298s
+
+OK
+[exit=0]

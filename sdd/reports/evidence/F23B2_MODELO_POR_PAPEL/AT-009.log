@@ -1,0 +1,9 @@
+$ python3 -m unittest -v test_f23b2_papeis.AT008AT011Executor.test_retomada_nao_repete_e_move_a_parada_antiga test_f23b2_papeis.AT008AT011Executor.test_execucao_interrompida_tem_o_custo_somado_antes_de_refazer   # AT-009 · HEAD c12a475 · 2026-11-17 08:38
+test_retomada_nao_repete_e_move_a_parada_antiga (test_f23b2_papeis.AT008AT011Executor) ... ok
+test_execucao_interrompida_tem_o_custo_somado_antes_de_refazer (test_f23b2_papeis.AT008AT011Executor) ... ok
+
+----------------------------------------------------------------------
+Ran 2 tests in 3.404s
+
+OK
+[exit=0]

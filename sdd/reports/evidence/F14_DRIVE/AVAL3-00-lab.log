@@ -1,0 +1,75 @@
+$ cat /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.IaPhB1vDIh/lab.sh /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.IaPhB1vDIh/ghshim/gh; /bin/bash --version; /usr/bin/python3 --version; git -C /Users/robertoduarte/rdd-worktrees/sdd-open-f14-drive rev-parse HEAD
+PROJ=/Users/robertoduarte/rdd-worktrees/sdd-open-f14-drive
+LAB=/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.IaPhB1vDIh
+export TMPDIR=$LAB/tmp PATH=/usr/bin:/bin:/usr/sbin:/sbin
+export GIT_AUTHOR_NAME=t GIT_AUTHOR_EMAIL=t@example.com GIT_COMMITTER_NAME=t GIT_COMMITTER_EMAIL=t@example.com GIT_TERMINAL_PROMPT=0 SDD_TRACE=off
+export GIT_CONFIG_NOSYSTEM=1 GIT_CONFIG_GLOBAL=/dev/null
+D=sdd/features/DEFINE_F.md
+define() { # define <cmd> [kind]
+  printf "# DEFINE: F\n\n## Technical Context\n\n| Aspect | Value | Notes |\n|---|---|---|\n| **Governança** | N.A. — sonda | t |\n\n## Verify Gate\n\n\`\`\`yaml\nverify_gate:\n  kind: %s\n  cmd: \"%s\"\n  pass_when: \"${3:-exit 0}\"\n  threshold: \"—\"\n  manual_fallback: \"—\"\n\`\`\`\n" "${2:-test}" "$1"
+}
+design() {
+  printf "# DESIGN: F\n\n## Metadata\n\n| Attribute | Value |\n|---|---|\n| **Status** | Ready for Build |\n\n## Key Decisions\n\n### Decision 1: x\n\nx\n\n## File Manifest\n\n| # | File | Action | Purpose | Agent / Owner | Dependencies |\n|---:|---|---|---|---|---|\n"
+  k=0; for a in "$@"; do k=$((k+1)); printf "| %d | \`%s\` | Modify | x | (general) | None |\n" $k "$a"; done
+  printf "\n**Total Files:** %d\n" $k
+}
+mkrepo() { # mkrepo <pasta> [cmd do gate] [pass_when]
+  R="$1"; mkdir -p "$R/sdd/bin" "$R/sdd/features"; cd "$R" || exit 9
+  for s in sdd-drive.sh verify-gate.sh sdd-fluxo.sh design-lint.py; do cp "$PROJ/sdd/bin/$s" sdd/bin/; done
+  printf "import sys\nsys.exit(0)\n" > sdd/bin/report-lint.py
+  define "${2:-echo x >> gate.calls; test -f .verde}" test "${3:-exit 0}" > $D
+  design a b > sdd/features/DESIGN_F.md
+  printf ".verde\ngate.calls\n.go\n" > .gitignore
+  git init -q; git symbolic-ref HEAD refs/heads/frente; git add -A; git commit -q -m base
+}
+drv() { echo "--- sdd-drive $*"; /bin/bash sdd/bin/sdd-drive.sh "$@"; echo "[rc=$?]"; }
+feito() { mkdir -p sdd/reports/progress; printf -- "- [x] a\n- [x] b\n" > sdd/reports/progress/PROGRESS_F.md; }
+rel() { mkdir -p sdd/reports; echo x > sdd/reports/BUILD_REPORT_F.md; }
+novo() { mktemp -d "$LAB/r.XXXXXX"; }
+st() { /usr/bin/python3 -I -B -c "import json;d=json.load(open(\"sdd/reports/progress/DRIVE_F.json\"));$1"; }
+gates() { st "print(\"gates:\",[(g[\"n\"],g[\"commit\"][:7],g[\"exit\"]) for g in d[\"gates\"]])"; }
+verde() { # repo com verde gravado: drv iniciar, feito, rel, verificar
+  touch .verde; drv iniciar $D; feito; rel; drv verificar $D
+}
+ARQ="/usr/bin/python3 -I -B $PROJ/sdd/bin/sdd-archive.py"
+mkarq() { R="$1"; mkdir -p "$R/sdd/features" "$R/sdd/reports" "$R/sdd/reviews" "$R/sdd/handoffs"; cd "$R" || exit 9; git init -q; git symbolic-ref HEAD refs/heads/main; }
+velho() { GIT_AUTHOR_DATE="2020-01-01T00:00:00" GIT_COMMITTER_DATE="2020-01-01T00:00:00" git commit -q --allow-empty -m velho; }
+doc() { mkdir -p "$(dirname "$1")"; echo x > "$1"; git add -- "$1"; GIT_AUTHOR_DATE="2020-01-01T00:00:00" GIT_COMMITTER_DATE="2020-01-01T00:00:00" git commit -q -m "d" -- "$1"; }
+ficha() { printf "# H\n\n## Ficha\n\n| Campo | Valor |\n|---|---|\n| **Status** | %s |\n" "$2" > "sdd/handoffs/HANDOFF_$1.md"; }
+arq() { echo "--- sdd-archive $*"; $ARQ "$@" 2>&1; echo "[rc=$?]"; }
+#!/usr/bin/python3 -B
+# gh de mentira: passos em $GH_DIR/cenario.json, argv em $GH_DIR/gh.log
+import json, os, sys
+a = sys.argv[1:]; d = os.environ["GH_DIR"]
+open(os.path.join(d, "gh.log"), "a").write(" ".join(a) + "\n")
+c = json.load(open(os.path.join(d, "cenario.json")))
+if c.get("erro"):
+    sys.stderr.write(c["erro"] + "\n"); sys.exit(1)
+pos = os.path.join(d, "pos"); i = int(open(pos).read()) if os.path.exists(pos) else 0
+passos = c["passos"]
+if a[:2] == ["run", "list"]:
+    if c.get("lista_erro"):
+        sys.stderr.write(c["lista_erro"] + "\n"); sys.exit(1)
+    if "--commit" in a:
+        open(pos, "w").write(str(i + 1)); p = passos[min(i, len(passos) - 1)]
+        print(json.dumps([r for r in p["runs"] if r.get("headSha") == a[a.index("--commit") + 1] or c.get("sem_filtro")]))
+    else:
+        p = passos[min(max(i - 1, 0), len(passos) - 1)]; print(json.dumps(p["runs"]))
+elif a[:2] == ["run", "view"]:
+    vc = os.path.join(d, "viewc"); vi = int(open(vc).read()) if os.path.exists(vc) else 0
+    open(vc, "w").write(str(vi + 1))
+    if c.get("view_erro") and vi < c.get("view_erro_n", 10**6):
+        sys.stderr.write(c["view_erro"] + "\n"); sys.exit(1)
+    if "view_bruto" in c: print(c["view_bruto"])
+    else: print(json.dumps(dict(jobs=c.get("jobs") or [dict(steps=[dict(name=c.get("passo", "x"), conclusion="failure")])])))
+elif a[:2] == ["workflow", "run"]:
+    if c.get("dispatch_erro"):
+        sys.stderr.write(c["dispatch_erro"] + "\n"); sys.exit(1)
+    open(pos, "w").write(str(i + 1))
+else:
+    sys.exit(9)
+GNU bash, version 3.2.57(1)-release (arm64-apple-darwin25)
+Copyright (C) 2007 Free Software Foundation, Inc.
+Python 3.9.6
+79ea6c056af455f3d7e94a2526cd6db48c6759ac
+[exit=0]

@@ -1,0 +1,94 @@
+$ git rev-parse HEAD
+0ca09f91af6e756ecf46dea7d403913aaec71905
+$ bash sdd/bin/adversarial-review.sh --reviewer claude --auditor openrouter:qwen/qwen3.7-plus --feature F12_CONTEXTO
+▶ revisor: claude (-) — até 15 min
+▶ 2º revisor: codex (-) — até 15 min
+▶ auditor: openrouter:qwen/qwen3.7-plus (qwen/qwen3.7-plus) — até 15 min
+RESULTADO: REVIEW COMPLETA
+pasta: sdd/reports/reviews/EXTERNAL_REVIEW_20261103-125947
+diff_sha256: 7512412dc25cdcd65ac696c76353dfdbc3169284071a770a7af335b71e93885d
+revisor: claude (claude-opus-5-5) — US$ 2,6327
+2º revisor: codex (-) — incluído na assinatura
+auditor: openrouter:qwen/qwen3.7-plus (qwen/qwen3.7-plus via Alibaba) — US$ 0,0581
+diversidade: vendor
+achados: 1 grave, 2 médios, 1 leve
+custo total: US$ 2,6908
+→ rode: bash sdd/bin/sdd-fluxo.sh loop --review sdd/reports/reviews/EXTERNAL_REVIEW_20261103-125947 --ledger <ledger da revisão> --rodada <N>
+[exit=0]
+$ cat sdd/reports/reviews/EXTERNAL_REVIEW_20261103-125947/META.txt
+worktree                : /Users/robertoduarte/rdd-worktrees/sdd-open-f12-contexto
+branch                  : feat/f12-contexto
+protocolo               : cadeia REVISOR → AUDITOR; paralelo não existe
+base                    : origin/main
+merge_base              : 9508ff0f459c6f0004193d071c045d3e4cc4f974
+head                    : 0ca09f91af6e756ecf46dea7d403913aaec71905
+paths                   : -
+diff_sha256             : 7512412dc25cdcd65ac696c76353dfdbc3169284071a770a7af335b71e93885d
+diff                    : 301KB (90 arquivo(s))
+contexto                : 116KB (4 doc SDD)
+docs_sdd                : BRAINSTORM_F12_CONTEXTO.md, DEFINE_F12_CONTEXTO.md, DESIGN_F12_CONTEXTO.md, BUILD_REPORT_F12_CONTEXTO.md
+contexto_cortado        : -
+diversidade             : vendor
+reviewer_engine_default : claude
+reviewer_engine_efetivo : claude
+reviewer_fallback_usado : nao
+reviewer_motivo         : -
+reviewer_exit           : 0
+reviewer_segundos       : 381
+reviewer_achados        : 2
+reviewer_tokens_entrada : 219399
+reviewer_tokens_saida   : 38703
+reviewer_tokens_total   : 258102
+reviewer_modelo         : claude-opus-5-5
+reviewer_custo          : US$ 2.6327
+revisor1_raso           : nao
+gatilho_2o_revisor      : 90 arquivos (limiar 8)
+revisor2_engine         : codex
+revisor2_engine_default : codex
+revisor2_engine_efetivo : codex
+revisor2_fallback_usado : nao
+revisor2_motivo         : -
+revisor2_exit           : 0
+revisor2_segundos       : 201
+revisor2_achados        : 2
+revisor2_tokens_entrada : 159471
+revisor2_tokens_saida   : 5940
+revisor2_tokens_total   : 165411
+revisor2_modelo         : -
+revisor2_custo          : assinatura
+auditor_engine_default  : openrouter:qwen/qwen3.7-plus
+auditor_engine_efetivo  : openrouter:qwen/qwen3.7-plus
+auditor_fallback_usado  : nao
+auditor_motivo          : -
+auditor_exit            : 0
+auditor_segundos        : 146
+auditor_vereditos       : 4
+auditor_tokens_entrada  : 146645
+auditor_tokens_saida    : 8708
+auditor_tokens_total    : 155353
+auditor_modelo          : qwen/qwen3.7-plus via Alibaba
+auditor_custo           : US$ 0.0581
+convergencia_1o_passe   : sim
+desempate_alvo          : -
+desempate_engine        : -
+desempate_decisao       : -
+custo_total             : US$ 2.6908
+quando                  : 20261103-125947
+[exit=0]
+$ bash sdd/bin/sdd-fluxo.sh loop --review sdd/reports/reviews/EXTERNAL_REVIEW_20261103-125947 --ledger sdd/reports/evidence/F12_CONTEXTO/ledger-review.md --rodada 4
+ESTADO: BLOQUEADO
+rodada: 4 de 3
+graves_abertos: 1
+aplicadas: 0
+rebatidas: 0
+motivo: grave(s) sem veredito no ledger: R1@codex
+motivo: D4 teto: 3 rodadas de review atingido
+RESULTADO: BLOQUEADO
+→ pare e faça a pergunta D4 ou D5 de sdd/templates/fragments/FLUXO_ENCADEADO.md.
+[exit=20]
+$ bash sdd/bin/adversarial-review.sh --conferir sdd/reports/reviews/EXTERNAL_REVIEW_20261103-125947
+✅ a revisão sdd/reports/reviews/EXTERNAL_REVIEW_20261103-125947 é desta versão do código (sha256 igual).
+review_externo: sdd/reports/reviews/EXTERNAL_REVIEW_20261103-125947 sha256=7512412dc25cdcd65ac696c76353dfdbc3169284071a770a7af335b71e93885d diversidade=vendor
+RESULTADO: CONFERE
+→ copie a linha review_externo para o ledger da release.
+[exit=0]

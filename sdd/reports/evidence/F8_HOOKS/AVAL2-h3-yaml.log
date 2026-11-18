@@ -1,0 +1,5 @@
+$ cd /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f8-hooks/8e011512-3e64-4505-a0ff-235ac598d20c/scratchpad/aval2/s2-h3c || exit 99; bash /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f8-hooks/8e011512-3e64-4505-a0ff-235ac598d20c/scratchpad/h3case.sh config.yaml 'db:\n  host: localhost\n  password: "%s"\n'
+valor: 24 chars, começa com 'hO', vezes-que-o-valor-aparece=0
+  🛑 [H3] config.yaml: credencial em texto claro (chave: password)
+RESULTADO: COMMIT RECUSADO
+[exit=1]

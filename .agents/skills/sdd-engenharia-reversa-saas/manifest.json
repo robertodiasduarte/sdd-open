@@ -1,6 +1,6 @@
 {
   "name": "sdd-engenharia-reversa-saas",
-  "version": "1.2.0",
+  "version": "1.2.1",
   "author": "Roberto Dias Duarte",
   "license": "MIT",
   "methodology": "Metodologia de Roberto Dias Duarte",
@@ -209,7 +209,7 @@
         ]
       }
     ],
-    "evidencia": "Logs EVAL-ER-*.log na evidência da frente F21_ENGENHARIA_REVERSA, na branch de documentos do repositório do sdd-open.",
+    "evidencia": "Logs EVAL-ER-*.log na evidência da frente F21_ENGENHARIA_REVERSA, nos documentos do repositório do sdd-open (sdd/reports/evidence/F21_ENGENHARIA_REVERSA/).",
     "status": "parcial: 3 de 17 cenários executados"
   },
   "historico_1_0_0": {

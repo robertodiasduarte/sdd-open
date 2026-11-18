@@ -1,0 +1,25 @@
+$ cd /tmp/sdd-aval/init-repetido && bash /Users/robertoduarte/rdd-worktrees/sdd-open-f8-aval/bin/sdd-open.sh init --yes --vendors codex >/dev/null && git config sdd.higieneDado on && printf '# meu\n' >> sdd/hooks/pre-commit && rm sdd/hooks/pre-push && shasum -a 256 sdd/hooks/pre-commit
+b4b72b868f902857f1bc5b6642261369c3d4a7818afef936db49e3197360246e  sdd/hooks/pre-commit
+[exit=0]
+$ cd /tmp/sdd-aval/init-repetido && bash /Users/robertoduarte/rdd-worktrees/sdd-open-f8-aval/bin/sdd-open.sh init --yes --vendors codex
+▶ init — plano
+~ sdd/ (já existe — completar 1 arquivo(s) do pacote ausente(s); o que existe não será tocado) (atualizar)
+0 a criar · 1 a atualizar · 19 já corretos
+▶ sdd-open doctor — projeto: /private/tmp/sdd-aval/init-repetido
+  bash 3.2 · git 2.54.0 (Apple Git-157) · python3 3.9
+✅ sdd/ presente (0 feature(s) em sdd/features/)
+✅ AGENTS.md com o bloco sdd-open
+✅ .agents/skills/ com 17 skill(s) sdd-*
+✅ hooks ligados (sdd/hooks: pre-commit com 5 regras + relatório + alarme da higiene on, pre-push)
+✅ codex: nativo — nada a gerar (lê .agents/skills/ e AGENTS.md nativamente) · CLI encontrado
+✅ skills e sdd/bin/ em dia com o pacote
+✅ nenhum segredo salvo no git (.env, .pfx, .p12, .pem com chave privada)
+RESULTADO: INSTALADO
+→ abra seu agente e peça a fase Define (ex.: /sdd-define ou /skill:sdd-define).
+[exit=0]
+$ cd /tmp/sdd-aval/init-repetido && shasum -a 256 sdd/hooks/pre-commit; tail -1 sdd/hooks/pre-commit; ls -l sdd/hooks/pre-push; echo higieneDado="$(git config --get sdd.higieneDado)"
+b4b72b868f902857f1bc5b6642261369c3d4a7818afef936db49e3197360246e  sdd/hooks/pre-commit
+# meu
+-rwxr-xr-x@ 1 robertoduarte  wheel  1664 Oct 30 21:12 sdd/hooks/pre-push
+higieneDado=on
+[exit=0]

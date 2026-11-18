@@ -1,0 +1,9 @@
+$ bash /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f10-revisao/bd420f6e-558d-4962-a0c9-40cdfc2cbd27/scratchpad/p/sab.sh r2-loop
+sabotado sdd/bin/sdd-fluxo.sh: 'elif r2_ec in ("65", "66") or r2_eng == "indisponível":' -> 'elif False:'
+FAIL: test_indisponivel_registra_67_avisa_e_o_auditor_roda (test_revisao.SegundoRevisor)
+FAIL: test_dispensa_de_outra_rodada_nao_vale (test_fluxo.LoopF10)
+FAIL: test_segundo_revisor_indisponivel_sem_dispensa_e_bloqueado_d3 (test_fluxo.LoopF10)
+Ran 122 tests in 64.040s
+FAILED (failures=3)
+[unittest rc=1]
+[exit=0]

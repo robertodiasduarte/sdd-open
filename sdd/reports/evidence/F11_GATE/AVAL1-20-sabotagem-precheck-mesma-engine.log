@@ -1,0 +1,9 @@
+$ /tmp/aval1-f11.wvW4zp/sabota.sh precheck-mesma-engine sdd/bin/adversarial-review.sh 'if chave(auditores[0]) == chave(revisores[0]) and not' 'if False and chave(auditores[0]) == chave(revisores[0]) and not'
+### sabotagem precheck-mesma-engine em sdd/bin/adversarial-review.sh
+  ❌ 70. 67 (mesma engine): chamadas por engine
+        → lido {'claude': 1}, esperado {}
+90 asserções, 1 falha(s) em 10 s
+RESULTADO: GATE VERMELHO
+→ cada ❌ acima diz o campo e o valor lido; o adapter da engine citada não extrai mais o que a CLI devolve (ou o script mudou de comportamento). Corrija e rode o gate de novo.
+[gate_rc=2]
+[exit=2]

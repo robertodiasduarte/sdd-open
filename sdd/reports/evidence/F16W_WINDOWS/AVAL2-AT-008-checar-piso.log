@@ -1,0 +1,19 @@
+$ env SDD_TEST_BASH=/bin/bash /usr/bin/python3 -B scripts/testes-por-modulo.py --so test_checar --teto-unidade 600 --saida /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f16w-windows/fd210694-ded6-4d95-a500-52e0521f4ae8/scratchpad/aval2/tpm-checar
+fatia 1/1: 14 unidade(s), 88 teste(s); teto por unidade 600s; paralelo 1
+test_checar.TestDadoExposto[1de2]            OK     testes=7    falhas=0   erros=0   pulados=0       8.7s
+test_checar.TestDadoExposto[2de2]            OK     testes=7    falhas=0   erros=0   pulados=0       5.6s
+test_checar.TestEditor[1de2]                 OK     testes=8    falhas=0   erros=0   pulados=0       2.6s
+test_checar.TestEditor[2de2]                 OK     testes=7    falhas=0   erros=0   pulados=0       3.6s
+test_checar.TestFrente                       OK     testes=11   falhas=0   erros=0   pulados=0      24.3s
+test_checar.TestGh                           OK     testes=11   falhas=0   erros=0   pulados=0      18.2s
+test_checar.TestOndeEstou[1de2]              OK     testes=8    falhas=0   erros=0   pulados=0       1.4s
+test_checar.TestOndeEstou[2de2]              OK     testes=7    falhas=0   erros=0   pulados=0       1.8s
+test_checar.TestRemoto[1de2]                 OK     testes=7    falhas=0   erros=0   pulados=0      33.0s
+test_checar.TestRemoto[2de2]                 OK     testes=6    falhas=0   erros=0   pulados=0      33.8s
+test_checar.TestSegredo                      OK     testes=4    falhas=0   erros=0   pulados=0       2.7s
+test_checar.TestSemRemotoIndicaIniciarRepo   OK     testes=1    falhas=0   erros=0   pulados=0       0.7s
+test_checar.TestSomenteLeitura               OK     testes=1    falhas=0   erros=0   pulados=0       1.6s
+test_checar.TestVigiaNoWindows               OK     testes=3    falhas=0   erros=0   pulados=0       1.1s
+total: 14 unidade(s), 88 teste(s): 0 falha(s), 0 erro(s), 0 pulado(s) em 139.1s
+RESULTADO: VERDE
+[exit=0]

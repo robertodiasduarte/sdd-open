@@ -5,3 +5,5 @@ __pycache__/
 *.pyc
 sdd/reports/reviews/
 sdd/traces/
+# F26: a evidência bruta de uma frente vai como anexo da Release (sdd-release, references/bruto.md), nunca no git.
+sdd/reports/evidence/*/bruto/

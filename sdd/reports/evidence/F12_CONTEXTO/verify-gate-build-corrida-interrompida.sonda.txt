@@ -1,0 +1,5 @@
+$ SDD_TRACE=off bash sdd/bin/verify-gate.sh --strict sdd/features/DEFINE_F12_CONTEXTO.md
+▶ Verify Gate [test]: T=$(mktemp -d) && git archive HEAD | tar -x -C $T && PUBLISH_GATE_MODE=ci bash scripts/publish-gate.sh $T && cd $T && SDD_TEST_BASH=/bin/bash /usr/bin/python3 -B -m unittest discover -s tests -p 'test_*.py'
+sdd/bin/verify-gate.sh: line 265: syntax error near unexpected token `('
+sdd/bin/verify-gate.sh: line 265: `  echo "🛑 kind=${KIND} exige 'cmd' executável (recebido: '${CMD:-<vazio>}')." >&2'
+[exit=2]

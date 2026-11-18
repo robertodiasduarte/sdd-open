@@ -1,0 +1,200 @@
+test_at001_gera_as_18_e_nao_toca_no_resto (test_gerar_starter.Gera.test_at001_gera_as_18_e_nao_toca_no_resto) ... FAIL
+
+test_at003_cada_skill_gerada (test_gerar_starter.Gera.test_at003_cada_skill_gerada) ... FAIL
+
+test_at005_duas_geracoes_iguais_byte_a_byte (test_gerar_starter.Gera.test_at005_duas_geracoes_iguais_byte_a_byte) ... FAIL
+
+test_at007_o_starter_passa_nas_checagens_dele (test_gerar_starter.Gera.test_at007_o_starter_passa_nas_checagens_dele) ... FAIL
+
+test_aval1_kb_gerada_sem_caminho_nem_sync_do_open (test_gerar_starter.Gera.test_aval1_kb_gerada_sem_caminho_nem_sync_do_open) ... FAIL
+
+
+
+======================================================================
+
+FAIL: test_at001_gera_as_18_e_nao_toca_no_resto (test_gerar_starter.Gera.test_at001_gera_as_18_e_nao_toca_no_resto)
+
+----------------------------------------------------------------------
+
+Traceback (most recent call last):
+
+  File "D:\a\sdd-open\sdd-open\tests\test_gerar_starter.py", line 97, in test_at001_gera_as_18_e_nao_toca_no_resto
+
+    self.assertEqual(rc, 0, out + err)
+
+AssertionError: 1 != 0 : Traceback (most recent call last):
+
+  File "C:\Users\runneradmin\AppData\Local\Temp\sdd-open-hg043g3b\open\scripts\gerar-starter.py", line 630, in <module>
+
+    sys.exit(main(sys.argv[1:]))
+
+             ^^^^^^^^^^^^^^^^^^
+
+  File "C:\Users\runneradmin\AppData\Local\Temp\sdd-open-hg043g3b\open\scripts\gerar-starter.py", line 620, in main
+
+    print(linha)
+
+  File "C:\hostedtoolcache\windows\Python\3.12.10\x64\Lib\encodings\cp1252.py", line 19, in encode
+
+    return codecs.charmap_encode(input,self.errors,encoding_table)[0]
+
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+UnicodeEncodeError: 'charmap' codec can't encode character '\u2705' in position 0: character maps to <undefined>
+
+
+
+
+
+======================================================================
+
+FAIL: test_at003_cada_skill_gerada (test_gerar_starter.Gera.test_at003_cada_skill_gerada)
+
+----------------------------------------------------------------------
+
+Traceback (most recent call last):
+
+  File "D:\a\sdd-open\sdd-open\tests\test_gerar_starter.py", line 145, in test_at003_cada_skill_gerada
+
+    self.assertEqual(rc, 0, out + err)
+
+AssertionError: 1 != 0 : Traceback (most recent call last):
+
+  File "C:\Users\runneradmin\AppData\Local\Temp\sdd-open-72g3uby1\open\scripts\gerar-starter.py", line 630, in <module>
+
+    sys.exit(main(sys.argv[1:]))
+
+             ^^^^^^^^^^^^^^^^^^
+
+  File "C:\Users\runneradmin\AppData\Local\Temp\sdd-open-72g3uby1\open\scripts\gerar-starter.py", line 620, in main
+
+    print(linha)
+
+  File "C:\hostedtoolcache\windows\Python\3.12.10\x64\Lib\encodings\cp1252.py", line 19, in encode
+
+    return codecs.charmap_encode(input,self.errors,encoding_table)[0]
+
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+UnicodeEncodeError: 'charmap' codec can't encode character '\u2705' in position 0: character maps to <undefined>
+
+
+
+
+
+======================================================================
+
+FAIL: test_at005_duas_geracoes_iguais_byte_a_byte (test_gerar_starter.Gera.test_at005_duas_geracoes_iguais_byte_a_byte)
+
+----------------------------------------------------------------------
+
+Traceback (most recent call last):
+
+  File "D:\a\sdd-open\sdd-open\tests\test_gerar_starter.py", line 209, in test_at005_duas_geracoes_iguais_byte_a_byte
+
+    self.assertEqual(rc, 0, out + err)
+
+AssertionError: 1 != 0 : Traceback (most recent call last):
+
+  File "C:\Users\runneradmin\AppData\Local\Temp\sdd-open-gyvfgzb7\open\scripts\gerar-starter.py", line 630, in <module>
+
+    sys.exit(main(sys.argv[1:]))
+
+             ^^^^^^^^^^^^^^^^^^
+
+  File "C:\Users\runneradmin\AppData\Local\Temp\sdd-open-gyvfgzb7\open\scripts\gerar-starter.py", line 620, in main
+
+    print(linha)
+
+  File "C:\hostedtoolcache\windows\Python\3.12.10\x64\Lib\encodings\cp1252.py", line 19, in encode
+
+    return codecs.charmap_encode(input,self.errors,encoding_table)[0]
+
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+UnicodeEncodeError: 'charmap' codec can't encode character '\u2705' in position 0: character maps to <undefined>
+
+
+
+
+
+======================================================================
+
+FAIL: test_at007_o_starter_passa_nas_checagens_dele (test_gerar_starter.Gera.test_at007_o_starter_passa_nas_checagens_dele)
+
+----------------------------------------------------------------------
+
+Traceback (most recent call last):
+
+  File "D:\a\sdd-open\sdd-open\tests\test_gerar_starter.py", line 252, in test_at007_o_starter_passa_nas_checagens_dele
+
+    self.assertEqual(rc, 0, out + err)
+
+AssertionError: 1 != 0 : Traceback (most recent call last):
+
+  File "C:\Users\runneradmin\AppData\Local\Temp\sdd-open-5sysc_2h\open\scripts\gerar-starter.py", line 630, in <module>
+
+    sys.exit(main(sys.argv[1:]))
+
+             ^^^^^^^^^^^^^^^^^^
+
+  File "C:\Users\runneradmin\AppData\Local\Temp\sdd-open-5sysc_2h\open\scripts\gerar-starter.py", line 620, in main
+
+    print(linha)
+
+  File "C:\hostedtoolcache\windows\Python\3.12.10\x64\Lib\encodings\cp1252.py", line 19, in encode
+
+    return codecs.charmap_encode(input,self.errors,encoding_table)[0]
+
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+UnicodeEncodeError: 'charmap' codec can't encode character '\u2705' in position 0: character maps to <undefined>
+
+
+
+
+
+======================================================================
+
+FAIL: test_aval1_kb_gerada_sem_caminho_nem_sync_do_open (test_gerar_starter.Gera.test_aval1_kb_gerada_sem_caminho_nem_sync_do_open)
+
+----------------------------------------------------------------------
+
+Traceback (most recent call last):
+
+  File "D:\a\sdd-open\sdd-open\tests\test_gerar_starter.py", line 193, in test_aval1_kb_gerada_sem_caminho_nem_sync_do_open
+
+    self.assertEqual(rc, 0, out + err)
+
+AssertionError: 1 != 0 : Traceback (most recent call last):
+
+  File "C:\Users\runneradmin\AppData\Local\Temp\sdd-open-20ppue1h\open\scripts\gerar-starter.py", line 630, in <module>
+
+    sys.exit(main(sys.argv[1:]))
+
+             ^^^^^^^^^^^^^^^^^^
+
+  File "C:\Users\runneradmin\AppData\Local\Temp\sdd-open-20ppue1h\open\scripts\gerar-starter.py", line 620, in main
+
+    print(linha)
+
+  File "C:\hostedtoolcache\windows\Python\3.12.10\x64\Lib\encodings\cp1252.py", line 19, in encode
+
+    return codecs.charmap_encode(input,self.errors,encoding_table)[0]
+
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+UnicodeEncodeError: 'charmap' codec can't encode character '\u2705' in position 0: character maps to <undefined>
+
+
+
+
+
+----------------------------------------------------------------------
+
+Ran 5 tests in 133.736s
+
+
+
+FAILED (failures=5)
+

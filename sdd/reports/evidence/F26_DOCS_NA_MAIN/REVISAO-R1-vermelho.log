@@ -1,0 +1,11 @@
+$ bash vermelho.sh   # os 9 testes da rodada 1 da revisão do código, sobre git archive de b9270a2 (antes dos consertos)
+vermelho · test_at012_texto_procura_o_dado_letra_a_letra · AssertionError: 64 != 1 : 🛑 docs-varredura: opção desconhecida: --texto
+vermelho · test_at004_log_em_utf16_e_varrido · AssertionError: 0 != 1 : ✅ documentos do repositório: 1 arquivo(s), nada achado.
+vermelho · test_at012_contributing_tem_o_procedimento · AssertionError: '--ref arquivo/docs-incorporar-starter --texto' not found in "\n\nThe working documents of eac
+vermelho · test_at005_cada_desvio_sai_1 · AssertionError: 0 != 1 : ✅ o commit da migração (00d095f) bate com a lista e a lista com a tag arquivo/docs-te
+vermelho · test_at005_squash_com_o_codigo_da_frente_confere · AssertionError: 1 != 0 : 🔴 bin/codigo.sh · o commit da migração (bf61f69) tocou um arquivo que não é documento
+vermelho · test_at008_descricao_entre_aspas_simples_ou_sem_aspas · AssertionError: "\ndescription: 'SDD Starter — Faz algo útil: em uma linha.'\n" not found in "---\nname: x\nde
+vermelho · test_f26_copia_do_starter_diz_sdd_starter · AssertionError: Regex didn't match: '· sdd-checar-ambiente v\\d+\\.\\d+\\.\\d+ · SDD Starter · [a-z]{3}/\\d{4}
+vermelho · test_at011_nome_acentuado_confere · AssertionError: 1 != 0 : 🔴 bruto: o anexo da Release v9.9.9 não tem os mesmos arquivos da pasta; rode de novo.
+vermelho · test_at011_link_na_pasta_nada_enviado · AssertionError: 'link' not found in '🔴 bruto: o anexo da Release v9.9.9 não tem os mesmos arquivos da pasta; r
+[exit=0]

@@ -1,0 +1,148 @@
+$ bash /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f16-ambiente/7a19ff14-fc44-4226-880f-204bc93851d3/scratchpad/at6/sonda.sh /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f16-ambiente/7a19ff14-fc44-4226-880f-204bc93851d3/scratchpad/at6   # sonda AT-006, HEAD 28caf3a em cópia de git archive; script da sonda copiado abaixo da saída
+=== caso A-store-stdout+python
+✅ ledger da revisão: 16 linha(s) e 0 rodada(s) sem achados em 1 arquivo(s), cada linha com veredito, dano e a pasta da revisão.
+RESULTADO: VERDE
+→ passe o arquivo ao `sdd-fluxo.sh loop --ledger` e ao `eval-revisores.sh`.
+rc=0
+calços em TMPDIR depois: 1
+=== caso B-imprime-versao-sai9009+python
+✅ ledger da revisão: 16 linha(s) e 0 rodada(s) sem achados em 1 arquivo(s), cada linha com veredito, dano e a pasta da revisão.
+RESULTADO: VERDE
+→ passe o arquivo ao `sdd-fluxo.sh loop --ledger` e ao `eval-revisores.sh`.
+rc=0
+calços em TMPDIR depois: 1
+=== caso C-store-stderr+python
+✅ ledger da revisão: 16 linha(s) e 0 rodada(s) sem achados em 1 arquivo(s), cada linha com veredito, dano e a pasta da revisão.
+RESULTADO: VERDE
+→ passe o arquivo ao `sdd-fluxo.sh loop --ledger` e ao `eval-revisores.sh`.
+rc=0
+calços em TMPDIR depois: 1
+=== caso D-py38+python
+✅ ledger da revisão: 16 linha(s) e 0 rodada(s) sem achados em 1 arquivo(s), cada linha com veredito, dano e a pasta da revisão.
+RESULTADO: VERDE
+→ passe o arquivo ao `sdd-fluxo.sh loop --ledger` e ao `eval-revisores.sh`.
+rc=0
+calços em TMPDIR depois: 1
+=== caso E-so-store-ledger
+⚠️  o python3 deste computador existe, mas não roda (no Windows, costuma ser o atalho da Microsoft Store).
+🛑 ledger-revisao-lint: python3 não encontrado no PATH.
+RESULTADO: ERRO DE USO
+→ instale o Python 3 (3.9 ou mais novo) e rode de novo.
+rc=64
+calços em TMPDIR depois: 0
+=== caso E-so-store-docs-extract
+⚠️  o python3 deste computador existe, mas não roda (no Windows, costuma ser o atalho da Microsoft Store).
+🛑 docs-extract-decisions.sh: precisa do Python 3.9 ou mais novo.
+RESULTADO: PAROU
+→ instale o Python 3.9 ou mais novo (Windows: winget install --id Python.Python.3.12 -e; macOS: brew install python; Linux: sudo apt install python3), feche e abra o terminal e rode de novo.
+rc=64
+calços em TMPDIR depois: 0
+=== caso E-so-store-test-baseline
+⚠️  o python3 deste computador existe, mas não roda (no Windows, costuma ser o atalho da Microsoft Store).
+⚠️  python3 ausente
+RESULTADO: INCONCLUSIVO
+→ instale python3 >= 3.9.
+rc=3
+calços em TMPDIR depois: 0
+=== caso F-py-3
+✅ ledger da revisão: 16 linha(s) e 0 rodada(s) sem achados em 1 arquivo(s), cada linha com veredito, dano e a pasta da revisão.
+RESULTADO: VERDE
+→ passe o arquivo ao `sdd-fluxo.sh loop --ledger` e ao `eval-revisores.sh`.
+rc=0
+calços em TMPDIR depois: 1
+=== caso G-SDD_PYTHON=python3 (timeout 20)
+✅ ledger da revisão: 16 linha(s) e 0 rodada(s) sem achados em 1 arquivo(s), cada linha com veredito, dano e a pasta da revisão.
+RESULTADO: VERDE
+→ passe o arquivo ao `sdd-fluxo.sh loop --ledger` e ao `eval-revisores.sh`.
+rc=0
+=== caso H-SDD_PYTHON com espaço + atalho como python3
+✅ ledger da revisão: 16 linha(s) e 0 rodada(s) sem achados em 1 arquivo(s), cada linha com veredito, dano e a pasta da revisão.
+RESULTADO: VERDE
+→ passe o arquivo ao `sdd-fluxo.sh loop --ledger` e ao `eval-revisores.sh`.
+rc=0
+=== caso I-TMPDIR sem escrita
+⚠️  não consegui criar o calço do Python na pasta temporária (/private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f16-ambiente/7a19ff14-fc44-4226-880f-204bc93851d3/scratchpad/at6/ro.7UpW): confira se ela existe e aceita escrita.
+🛑 ledger-revisao-lint: python3 não encontrado no PATH.
+RESULTADO: ERRO DE USO
+→ instale o Python 3 (3.9 ou mais novo) e rode de novo.
+rc=64
+⚠️  não consegui criar o calço do Python na pasta temporária (/private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f16-ambiente/7a19ff14-fc44-4226-880f-204bc93851d3/scratchpad/at6/ro.7UpW): confira se ela existe e aceita escrita.
+🛑 docs-extract-decisions.sh: precisa do Python 3.9 ou mais novo.
+RESULTADO: PAROU
+→ instale o Python 3.9 ou mais novo (Windows: winget install --id Python.Python.3.12 -e; macOS: brew install python; Linux: sudo apt install python3), feche e abra o terminal e rode de novo.
+rc=64
+=== caso J-nenhum-docs-extract
+🛑 docs-extract-decisions.sh: precisa do Python 3.9 ou mais novo.
+RESULTADO: PAROU
+→ instale o Python 3.9 ou mais novo (Windows: winget install --id Python.Python.3.12 -e; macOS: brew install python; Linux: sudo apt install python3), feche e abra o terminal e rode de novo.
+rc=64
+calços em TMPDIR depois: 0
+=== caso K-limpeza de calço velho
+rc=0
+sdd-python.NOVO
+sdd-python.j5bh6r
+----- sonda.sh -----
+#!/bin/bash
+# Sonda AT-006 (ciclo 2). Uso: bash sonda.sh <dir-sonda>
+S="$1"; A="$S/arq"; F="$S/ferr"; REAL=/usr/bin/python3
+LEDGER=/Users/robertoduarte/rdd-worktrees/sdd-open-f16-ambiente/sdd/reviews/LEDGER_REVISAO_F16_AMBIENTE.md
+mk() { mkdir -p "$1"; }
+stub() { printf '%s\n' "$2" > "$1"; chmod +x "$1"; }
+roda() { # nome, bindir, extra-env..., -- cmd
+  local nome="$1" bin="$2"; shift 2
+  local tmp; tmp="$(mktemp -d "$S/tmp.XXXX")"
+  echo "=== caso $nome"
+  local antes; antes=$(ls "$tmp" | wc -l | tr -d ' ')
+  env -i HOME="$HOME" TMPDIR="$tmp" PATH="$bin:$F" "$@" ; echo "rc=$?"
+  echo "calços em TMPDIR depois: $(ls "$tmp" | grep -c sdd-python || true)"
+}
+B="$S/bins"; rm -rf "$B"; mkdir -p "$B"
+# A: atalho que escreve no stdout e sai 9009 + python válido
+mk $B/A; stub $B/A/python3 '#!/bin/sh
+echo "Python was not found; run without arguments to install from the Microsoft Store"; exit 9009'
+stub $B/A/python "#!/bin/sh
+exec $REAL \"\$@\""
+roda A-store-stdout+python $B/A bash $A/sdd/bin/ledger-revisao-lint.sh "$LEDGER" 2>&1
+# B: atalho que imprime "3.12" e sai 9009 (rc manda) + python
+mk $B/B; stub $B/B/python3 '#!/bin/sh
+printf 3.12; exit 9009'
+cp $B/A/python $B/B/python
+roda B-imprime-versao-sai9009+python $B/B bash $A/sdd/bin/ledger-revisao-lint.sh "$LEDGER" 2>&1
+# C: atalho silencioso stderr + python
+mk $B/C; stub $B/C/python3 '#!/bin/sh
+echo "Python was not found" >&2; exit 9009'
+cp $B/A/python $B/C/python
+roda C-store-stderr+python $B/C bash $A/sdd/bin/ledger-revisao-lint.sh "$LEDGER" 2>&1
+# D: python3 3.8 + python bom
+mk $B/D; stub $B/D/python3 '#!/bin/sh
+case "$*" in *version_info*) printf 3.8;; esac; exit 0'
+cp $B/A/python $B/D/python
+roda D-py38+python $B/D bash $A/sdd/bin/ledger-revisao-lint.sh "$LEDGER" 2>&1
+# E: só o atalho (stdout) — contrato do script
+mk $B/E; cp $B/A/python3 $B/E/python3
+roda E-so-store-ledger $B/E bash $A/sdd/bin/ledger-revisao-lint.sh "$LEDGER" 2>&1
+roda E-so-store-docs-extract $B/E bash $A/sdd/bin/docs-extract-decisions.sh 2>&1
+roda E-so-store-test-baseline $B/E bash $A/sdd/bin/test-baseline.sh 2>&1
+# F: py -3 apenas
+mk $B/F; stub $B/F/py "#!/bin/sh
+[ \"\$1\" = -3 ] || { echo 'precisa -3' >&2; exit 2; }; shift; exec $REAL \"\$@\""
+roda F-py-3 $B/F bash $A/sdd/bin/ledger-revisao-lint.sh "$LEDGER" 2>&1
+# G: SDD_PYTHON=python3 com python3 válido fora do PATH principal (R1: laço) - timeout
+mk $B/G; cp $B/A/python $B/G/python3
+echo "=== caso G-SDD_PYTHON=python3 (timeout 20)"; tmp=$(mktemp -d $S/tmp.XXXX)
+env -i HOME=$HOME TMPDIR=$tmp SDD_PYTHON=python3 PATH="$B/G:$F" perl -e 'alarm 20; exec @ARGV' bash $A/sdd/bin/ledger-revisao-lint.sh "$LEDGER" 2>&1; echo "rc=$?"
+# H: SDD_PYTHON com caminho com espaço
+mkdir -p "$B/H dir"; cp $B/A/python "$B/H dir/meu py"
+echo "=== caso H-SDD_PYTHON com espaço + atalho como python3"; tmp=$(mktemp -d $S/tmp.XXXX)
+env -i HOME=$HOME TMPDIR=$tmp SDD_PYTHON="$B/H dir/meu py" PATH="$B/E:$F" bash $A/sdd/bin/ledger-revisao-lint.sh "$LEDGER" 2>&1; echo "rc=$?"
+# I: TMPDIR sem escrita, só python (precisa calço)
+echo "=== caso I-TMPDIR sem escrita"; ro=$(mktemp -d $S/ro.XXXX); chmod 555 $ro
+env -i HOME=$HOME TMPDIR=$ro PATH="$B/C:$F" bash $A/sdd/bin/ledger-revisao-lint.sh "$LEDGER" 2>&1; echo "rc=$?"
+env -i HOME=$HOME TMPDIR=$ro PATH="$B/C:$F" bash $A/sdd/bin/docs-extract-decisions.sh 2>&1; echo "rc=$?"
+chmod 755 $ro
+# J: nenhum Python, traceback?
+mk $B/J
+roda J-nenhum-docs-extract $B/J bash $A/sdd/bin/docs-extract-decisions.sh 2>&1
+# K: calço velho (>1 dia) é apagado
+echo "=== caso K-limpeza de calço velho"; tmp=$(mktemp -d $S/tmp.XXXX); mkdir $tmp/sdd-python.VELHO $tmp/sdd-python.NOVO; touch -t 202611090000 $tmp/sdd-python.VELHO
+env -i HOME=$HOME TMPDIR=$tmp PATH="$B/C:$F" bash $A/sdd/bin/ledger-revisao-lint.sh "$LEDGER" >/dev/null 2>&1; echo "rc=$?"; ls $tmp

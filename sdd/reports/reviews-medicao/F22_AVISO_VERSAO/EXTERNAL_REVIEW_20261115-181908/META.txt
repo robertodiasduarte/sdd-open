@@ -1,0 +1,46 @@
+worktree                : /Users/robertoduarte/rdd-worktrees/sdd-open-f22-aviso-versao
+branch                  : chore/curadoria-f16w2-f22
+protocolo               : cadeia REVISOR → AUDITOR; paralelo não existe
+base                    : v2.17.0
+merge_base              : 7ba7eb03bd220f0de62d3c488c949daab17606cb
+head                    : 66362e03dc7ab5f4d509609c9386168382065b87
+paths                   : -
+diff_sha256             : 5f307c11dba145a12b5336726506c4aa815ba8d69d9a32d82e744ce99f2d7143
+diff                    : 32KB (1 arquivo(s))
+contexto                : 0KB (0 doc SDD)
+docs_sdd                : -
+contexto_cortado        : -
+diversidade             : vendor
+reviewer_engine_default : claude
+reviewer_engine_efetivo : claude
+reviewer_fallback_usado : nao
+reviewer_motivo         : -
+reviewer_exit           : 0
+reviewer_segundos       : 92
+reviewer_achados        : 2
+reviewer_tokens_entrada : 20317
+reviewer_tokens_saida   : 9249
+reviewer_tokens_total   : 29566
+reviewer_modelo         : claude-fable-5-2
+reviewer_custo          : US$ 0.3357
+revisor1_raso           : nao
+gatilho_2o_revisor      : diff sem gatilho de risco — 1 revisor
+revisor2_engine         : -
+auditor_engine_default  : openrouter
+auditor_engine_efetivo  : openrouter
+auditor_fallback_usado  : nao
+auditor_motivo          : -
+auditor_exit            : 0
+auditor_segundos        : 71
+auditor_vereditos       : 2
+auditor_tokens_entrada  : 12240
+auditor_tokens_saida    : 4285
+auditor_tokens_total    : 16525
+auditor_modelo          : qwen/qwen3.7-plus via Alibaba
+auditor_custo           : US$ 0.0094
+convergencia_1o_passe   : nao
+desempate_alvo          : -
+desempate_engine        : -
+desempate_decisao       : -
+custo_total             : US$ 0.3451
+quando                  : 20261115-181908

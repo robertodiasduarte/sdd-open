@@ -1,0 +1,8 @@
+$ (mutante sem a proveniência, em 45bf1fe) python3 -B -m unittest test_f24_release_enxuta.AT010_EntradaAlterada.test_entrada_fabricada_num_commit_so
+
+
+----------------------------------------------------------------------
+Ran 1 test in 0.330s
+
+FAILED (failures=1)
+[exit=1]

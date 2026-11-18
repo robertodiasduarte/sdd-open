@@ -1,0 +1,19 @@
+DELTA LM-001 ajudou+1 · conf=2026-11-11 · evidencia=DESIGN_F18_F20_SEGURANCA.md:237 · fp=e66c1b81b5,3471918ddf
+DELTA LM-002 ajudou+1 · conf=2026-11-11 · evidencia=DESIGN_F18_F20_SEGURANCA.md:238 · fp=f00a701b22,cfa6c3ee43
+DELTA LM-003 ajudou+1 · conf=2026-11-11 · evidencia=DESIGN_F18_F20_SEGURANCA.md:239 · fp=2f559f8a3e,51261a77b4
+DELTA LM-005 ajudou+1 · conf=2026-11-11 · evidencia=DESIGN_F18_F20_SEGURANCA.md:240 · fp=3938af9a38,b091a20e91
+DELTA LM-006 ajudou+1 · conf=2026-11-11 · evidencia=DESIGN_F18_F20_SEGURANCA.md:241 · fp=6929d5f4e9,bda7385b93
+DELTA LM-007 ajudou+1 · conf=2026-11-11 · evidencia=DESIGN_F18_F20_SEGURANCA.md:242 · fp=d49568616e
+DELTA LM-008 ajudou+1 · conf=2026-11-11 · evidencia=DESIGN_F18_F20_SEGURANCA.md:243 · fp=8721a85a01,5785a8b1c3
+DELTA LM-009 ajudou+1 · conf=2026-11-11 · evidencia=DESIGN_F18_F20_SEGURANCA.md:244 · fp=67c3fd985c,e48c54ba5b
+DELTA LM-010 ajudou+1 · conf=2026-11-11 · evidencia=DESIGN_F18_F20_SEGURANCA.md:245 · fp=c17968e7b7,3781699ef0
+DELTA LM-011 ajudou+1 · conf=2026-11-11 · evidencia=DESIGN_F18_F20_SEGURANCA.md:246 · fp=9a96f9b12b,3c4e18f5a3
+DELTA LM-012 ajudou+1 · conf=2026-11-11 · evidencia=DESIGN_F18_F20_SEGURANCA.md:247 · fp=40529d9e41,ee9d1d449d
+DELTA LM-013 ajudou+1 · conf=2026-11-11 · evidencia=DESIGN_F18_F20_SEGURANCA.md:248 · fp=780c682b97,0cda583cd9
+DELTA LM-014 ajudou+1 · conf=2026-11-11 · evidencia=DESIGN_F18_F20_SEGURANCA.md:249 · fp=5a7ddc569b,9ad5dd85aa
+DELTA LM-015 ajudou+1 · conf=2026-11-11 · evidencia=DESIGN_F18_F20_SEGURANCA.md:250 · fp=a51d729f5d,882f350ef8
+DELTA LM-017 ajudou+1 · conf=2026-11-11 · evidencia=DESIGN_F18_F20_SEGURANCA.md:252 · fp=089be8e86e,738b8a5ac7
+CANDIDATO #1 → LM-018 · secao=Reviews / harness · sup=`PIPESTATUS` `zsh` `[exit=` `evidência` · evidencia=sdd/reports/evidence/F18_F20_SEGURANCA/AT-001.log · fp=b3aef61e8f
+CANDIDATO #2 → LM-019 · secao=Reviews / harness · sup=`2>/dev/null` `dito uma vez` `sdd_python_pronto` `aviso` · evidencia=sdd/reports/evidence/F18_F20_SEGURANCA/RAIO-DE-IMPACTO.md · fp=3482ad998c
+CANDIDATO #3 → LM-020 · secao=Reviews / harness · sup=`chave falsa` `evidência` `AVAL` `varredura` · evidencia=sdd/reviews/AVALIACAO_F18_F20_SEGURANCA_20261111-1545-ciclo1.md · fp=96b041c60b
+CANDIDATO #4 → LM-021 · secao=Reviews / harness · sup=`DISAGREE_EVIDENCE` `auditor` `premissa` `git diff` · evidencia=sdd/reviews/LEDGER_REVISAO_F18_F20_SEGURANCA.md · fp=b039389390

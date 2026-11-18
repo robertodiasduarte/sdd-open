@@ -1,0 +1,52 @@
+$ bash /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f10-revisao/bd420f6e-558d-4962-a0c9-40cdfc2cbd27/scratchpad/p/a1.sh AT003
+--- slot vazio
++ adversarial-review.sh --base main
+🛑 adversarial-review: nenhum revisor: preencha review.revisor1 em sdd/config.yaml ou passe --reviewer (válidas: stub-a, stub-b, stub-c, stub-d)
+RESULTADO: PAROU
+→ rode `adversarial-review.sh --help` para ver o uso.
+[rc=64]
+chamadas=0
+--- auditor vazio
++ adversarial-review.sh --base main --reviewer stub-a
+🛑 adversarial-review: nenhum auditor: preencha review.auditor em sdd/config.yaml ou passe --auditor (válidas: stub-a, stub-b, stub-c, stub-d)
+RESULTADO: PAROU
+→ rode `adversarial-review.sh --help` para ver o uso.
+[rc=64]
+chamadas=0
+--- id desconhecido
++ adversarial-review.sh --base main --reviewer xpto --auditor stub-b
+🛑 adversarial-review: engine desconhecida: 'xpto' — válidas: stub-a, stub-b, stub-c, stub-d (registry: ../../../../../../../../Users/robertoduarte/rdd-worktrees/sdd-open-f10-aval/sdd/fixtures/revisao/registry-stub.tsv; engine nova = 1 linha)
+RESULTADO: PAROU
+→ rode `adversarial-review.sh --help` para ver o uso.
+[rc=64]
+chamadas=0
+--- id desconhecido no fim da lista
++ adversarial-review.sh --base main --reviewer stub-a,xpto --auditor stub-b
+🛑 adversarial-review: engine desconhecida: 'xpto' — válidas: stub-a, stub-b, stub-c, stub-d (registry: ../../../../../../../../Users/robertoduarte/rdd-worktrees/sdd-open-f10-aval/sdd/fixtures/revisao/registry-stub.tsv; engine nova = 1 linha)
+RESULTADO: PAROU
+→ rode `adversarial-review.sh --help` para ver o uso.
+[rc=64]
+chamadas=0
+--- registry ilegível
++ adversarial-review.sh --base main --reviewer stub-a --auditor stub-b
+🛑 adversarial-review: registry ilegível: /nao/existe.tsv
+RESULTADO: PAROU
+→ rode `adversarial-review.sh --help` para ver o uso.
+[rc=64]
+chamadas=0
+--- linha com 8 colunas
++ adversarial-review.sh --base main --reviewer a --auditor a
+🛑 adversarial-review: /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.AUWyPPWIgr/r8.tsv:1 tem 8 colunas (esperado 9, separadas por TAB)
+RESULTADO: PAROU
+→ rode `adversarial-review.sh --help` para ver o uso.
+[rc=64]
+chamadas=0
+--- linha com 10 colunas
++ adversarial-review.sh --base main --reviewer a --auditor a
+🛑 adversarial-review: /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.AUWyPPWIgr/r10.tsv:1 tem 10 colunas (esperado 9, separadas por TAB)
+RESULTADO: PAROU
+→ rode `adversarial-review.sh --help` para ver o uso.
+[rc=64]
+chamadas=0
+pastas criadas:        0
+[exit=0]

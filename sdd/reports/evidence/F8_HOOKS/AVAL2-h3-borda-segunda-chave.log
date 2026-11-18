@@ -1,0 +1,16 @@
+$ cd /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f8-hooks/8e011512-3e64-4505-a0ff-235ac598d20c/scratchpad/aval2/s2-h3c || exit 99; echo '== json: versão (token ^2.0.0) ANTES da credencial real no mesmo arquivo'; bash /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f8-hooks/8e011512-3e64-4505-a0ff-235ac598d20c/scratchpad/h3case.sh cfg.json '{"dependencies": {"token": "^2.0.0"}, "db_password": "%s"}\n'
+== json: versão (token ^2.0.0) ANTES da credencial real no mesmo arquivo
+valor: 24 chars, começa com '0n', vezes-que-o-valor-aparece=0
+PASSOU-SEM-RECUSA (commit d9358a2)
+[exit=0]
+$ cd /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f8-hooks/8e011512-3e64-4505-a0ff-235ac598d20c/scratchpad/aval2/s2-h3c || exit 99; echo '== .env: placeholder (${DB_PASSWORD}) ANTES da credencial real'; bash /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f8-hooks/8e011512-3e64-4505-a0ff-235ac598d20c/scratchpad/h3case.sh .env.prod 'DB_HOST=${DB_HOST}\nPASSWORD=${DB_PASSWORD}\nSECRET=%s\n'
+== .env: placeholder (${DB_PASSWORD}) ANTES da credencial real
+valor: 24 chars, começa com 'Gc', vezes-que-o-valor-aparece=0
+PASSOU-SEM-RECUSA (commit bd2ea94)
+[exit=0]
+$ cd /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f8-hooks/8e011512-3e64-4505-a0ff-235ac598d20c/scratchpad/aval2/s2-h3c || exit 99; echo '== controle: credencial real ANTES do placeholder'; bash /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f8-hooks/8e011512-3e64-4505-a0ff-235ac598d20c/scratchpad/h3case.sh .env.prod 'SECRET=%s\nPASSWORD=${DB_PASSWORD}\n'
+== controle: credencial real ANTES do placeholder
+valor: 24 chars, começa com 'N4', vezes-que-o-valor-aparece=0
+  🛑 [H3] .env.prod: credencial em texto claro (chave: SECRET)
+RESULTADO: COMMIT RECUSADO
+[exit=1]

@@ -1,0 +1,91 @@
+$ bash /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f22-aviso-versao/89f76119-0a85-490f-a1ff-b57288611d99/scratchpad/probes/at001.sh
+
+$ git clone -q "$P" "$T/clone" && git -C "$T/clone" tag v9.9.9 HEAD && git -C "$T/clone" describe --tags
+v9.9.9
+[rc=0]
+
+$ novo_proj "$T/vazio"
+[rc=0]
+### (1) git archive de tag (como a Release): VERSION carimbado
+
+$ mkdir "$T/a1" && git -C "$T/clone" archive --prefix=pkg-x/ v9.9.9 | tar -x -C "$T/a1" && cat "$T/a1/pkg-x/VERSION"
+v9.9.9
+[rc=0]
+
+$ ver "$T/a1/pkg-x" "$T/vazio"
+ℹ️  versão: o SDD Open não está instalado neste projeto · pacote v9.9.9 — rode init
+[rc=0]
+### (2) commit depois da tag: vX.Y.Z-N-g<sha>
+
+$ git -C "$T/clone" commit -q --allow-empty -m depois && git -C "$T/clone" rev-parse --short HEAD
+69e657b
+[rc=0]
+
+$ mkdir "$T/a2" && git -C "$T/clone" archive --prefix=pkg-y/ HEAD | tar -x -C "$T/a2" && cat "$T/a2/pkg-y/VERSION"
+v9.9.9-1-g69e657b
+[rc=0]
+
+$ ver "$T/a2/pkg-y" "$T/vazio"
+ℹ️  versão: o SDD Open não está instalado neste projeto · pacote v9.9.9-1-g69e657b — rode init
+[rc=0]
+### (3) clone (VERSION nao carimbado, $Format): git describe
+
+$ cat "$T/clone/VERSION"
+$Format:%(describe:tags=true,match=v[0-9]*)$
+[rc=0]
+
+$ ver "$T/clone" "$T/vazio"
+ℹ️  versão: o SDD Open não está instalado neste projeto · pacote v9.9.9-1-g69e657b — rode init
+[rc=0]
+
+$ git -C "$T/clone" checkout -q v9.9.9 && ver "$T/clone" "$T/vazio"
+ℹ️  versão: o SDD Open não está instalado neste projeto · pacote v9.9.9 — rode init
+[rc=0]
+### (4) sem carimbo, sem clone: nome da pasta sdd-open-vX.Y.Z
+
+$ mkdir "$T/sdd-open-v3.4.5" && (cd "$T/clone" && git ls-files -z | xargs -0 tar -cf - ) | tar -x -C "$T/sdd-open-v3.4.5" && cat "$T/sdd-open-v3.4.5/VERSION" && ver "$T/sdd-open-v3.4.5" "$T/vazio"
+$Format:%(describe:tags=true,match=v[0-9]*)$
+ℹ️  versão: o SDD Open não está instalado neste projeto · pacote v3.4.5 — rode init
+[rc=0]
+### (5) nenhuma fonte: desconhecida
+
+$ cp -R "$T/sdd-open-v3.4.5" "$T/pacote-qualquer" && ver "$T/pacote-qualquer" "$T/vazio"
+ℹ️  versão: o SDD Open não está instalado neste projeto · pacote desconhecida — rode init
+[rc=0]
+### (6) pacote sem carimbo extraído DENTRO de outro repositório com tag: não herda a versão dele
+
+$ novo_proj "$T/repo-host" && git -C "$T/repo-host" tag v7.7.7 && cp -R "$T/pacote-qualquer" "$T/repo-host/vendor-pkg" && ver "$T/repo-host/vendor-pkg" "$T/vazio"
+ℹ️  versão: o SDD Open não está instalado neste projeto · pacote desconhecida — rode init
+[rc=0]
+### (7) archive de commit sem nenhuma tag: VERSION vazio -> nome da pasta
+
+$ git clone -q "$P" "$T/semtag" && git -C "$T/semtag" tag -l | xargs git -C "$T/semtag" tag -d >/dev/null && mkdir "$T/a7" && git -C "$T/semtag" archive --prefix=sdd-open-v1.0.0/ HEAD | tar -x -C "$T/a7" && od -c "$T/a7/sdd-open-v1.0.0/VERSION" | head -2 && ver "$T/a7/sdd-open-v1.0.0" "$T/vazio"
+0000000   \n                                                            
+0000001
+ℹ️  versão: o SDD Open não está instalado neste projeto · pacote v1.0.0 — rode init
+[rc=0]
+### (8) passo 'Build package and checksums' do release.yml, executado num clone (tag ainda não existe)
+
+$ cat "$T/passo-release.sh"
+set -euo pipefail
+mkdir -p dist
+# F22: o VERSION do pacote é carimbado pelo git archive (export-subst, %(describe:tags=true)): a tag precisa
+# existir AQUI antes do archive. Tag local, leve; quem a publica continua sendo o passo "Publish release".
+git rev-parse -q --verify "refs/tags/$TAG" >/dev/null || git tag "$TAG" "$GITHUB_SHA"
+git archive --format=tar.gz --prefix="sdd-open-$TAG/" -o "dist/sdd-open-$TAG.tar.gz" "$GITHUB_SHA"
+carimbo="$(tar -xzOf "dist/sdd-open-$TAG.tar.gz" "sdd-open-$TAG/VERSION" | tr -d '\r\n')"
+[ "$carimbo" = "$TAG" ] || { echo "::error::VERSION do pacote saiu '$carimbo', esperado '$TAG'"; exit 1; }
+cd dist && sha256sum "sdd-open-$TAG.tar.gz" > SHA256SUMS.txt && cat SHA256SUMS.txt
+[rc=0]
+
+$ git clone -q "$P" "$T/ci" && cd "$T/ci" && git rev-parse -q --verify refs/tags/v2.99.0; TAG=v2.99.0 GITHUB_SHA=$(git rev-parse HEAD) bash "$T/passo-release.sh"; echo "rc_passo=$?"; git tag -l v2.99.0; tar -xzOf dist/sdd-open-v2.99.0.tar.gz sdd-open-v2.99.0/VERSION
+6517f631eed9e77c998b5cffeedf4baaafc5dc829c42206f846b4a17ba700894  sdd-open-v2.99.0.tar.gz
+rc_passo=0
+v2.99.0
+v2.99.0
+[rc=0]
+
+$ mkdir "$T/rel" && tar -xzf "$T/ci/dist/sdd-open-v2.99.0.tar.gz" -C "$T/rel" && ver "$T/rel/sdd-open-v2.99.0" "$T/vazio"
+ℹ️  versão: o SDD Open não está instalado neste projeto · pacote v2.99.0 — rode init
+[rc=0]
+rc=0

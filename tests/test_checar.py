@@ -146,6 +146,7 @@ class Base(unittest.TestCase):
         # F25: o diagnóstico lê as pastas de skills da pasta pessoal; o relatório não pode depender das de quem roda. Fora
         # de self.tmp: o npm e o codex de verdade gravam na pasta pessoal, e o TestSomenteLeitura fotografa self.tmp.
         self.home = Path(tempfile.mkdtemp(prefix="checar-home-"))
+        self.script = SCRIPT
 
     def tearDown(self):
         shutil.rmtree(self.tmp, ignore_errors=True)
@@ -183,7 +184,7 @@ class Base(unittest.TestCase):
         for k in [k for k, v in e.items() if v is None]:
             del e[k]
         t0 = time.monotonic()
-        r = subprocess.run([BASH, str(SCRIPT), *args], cwd=self.raiz, capture_output=True, text=True, encoding="utf-8", errors="replace",
+        r = subprocess.run([BASH, str(self.script), *args], cwd=self.raiz, capture_output=True, text=True, encoding="utf-8", errors="replace",
                            env=e, stdin=subprocess.DEVNULL, timeout=60)
         return r.returncode, r.stdout, time.monotonic() - t0
 
@@ -199,6 +200,22 @@ class TestDadoExposto(Base):
         self.assertEqual(len(out.strip().splitlines()), 1, out)
         self.assertTrue(out.startswith("✅ Pronto: repo meu-app"), out)
         self.assertRegex(out, r"· sdd-checar-ambiente v\d+\.\d+\.\d+ · [a-z]{3}/\d{4} · versão atual: https://github\.com/robertodiasduarte/sdd-open/releases/latest")
+
+    def test_f26_copia_do_starter_diz_sdd_starter(self):
+        # o gerador do starter troca a URL do Open pela do starter em todo arquivo (gerar-starter.py, reescrever); a
+        # cópia gerada imprime então a marca, como a linha de identificação da SKILL.md dela (revisão do código, R6)
+        copia = Path(tempfile.mkdtemp(prefix="checar-starter-")) / "sdd-checar-ambiente"
+        self.addCleanup(shutil.rmtree, str(copia.parent), True)
+        shutil.copytree(str(SCRIPT.parents[1]), str(copia))
+        s = copia / "scripts" / "checar.sh"
+        s.write_text(s.read_text(encoding="utf-8").replace(
+            "https://github.com/robertodiasduarte/sdd-open/releases/latest",
+            "https://github.com/robertodiasduarte/sdd-starter/releases/latest"), encoding="utf-8")
+        self.script = s
+        out = self.checar()
+        self.assertRegex(out, r"· sdd-checar-ambiente v\d+\.\d+\.\d+ · SDD Starter · [a-z]{3}/\d{4} · versão atual: https://github\.com/robertodiasduarte/sdd-starter/releases/latest")
+        self.script = SCRIPT
+        self.assertNotIn("SDD Starter", self.checar())
 
     def test_repo_publico_sem_segredo_continua_uma_linha(self):
         self.remoto("escritorio/publico")

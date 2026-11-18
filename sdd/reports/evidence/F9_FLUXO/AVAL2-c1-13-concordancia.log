@@ -1,0 +1,15 @@
+$ T=$(mktemp -d); W=$PWD; R="$T/r"; mkdir -p "$R/sdd/features"; cp sdd/fixtures/fluxo/DEFINE_pronto.md "$R/sdd/features/DEFINE_X.md"; cp sdd/fixtures/fluxo/config-autonomo.yaml "$R/sdd/config.yaml"; cp sdd/fixtures/fluxo/DEFINE_rascunho.md "$R/sdd/features/DEFINE_G.md"; cd "$R" && git init -q; bash "$W/sdd/bin/sdd-fluxo.sh" seguir ux-review sdd/features/DEFINE_X.md design > "$T/a"; a=$?; bash "$W/sdd/bin/sdd-fluxo.sh" seguir governanca sdd/features/DEFINE_G.md design > "$T/b"; b=$?; bash "$W/sdd/bin/sdd-fluxo.sh" seguir design sdd/features/DEFINE_X.md build > "$T/c"; c=$?; bash "$W/sdd/bin/sdd-fluxo.sh" seguir define sdd/features/DEFINE_G.md design > "$T/d"; d=$?; cat "$T/a" "$T/b" "$T/c" "$T/d"; echo "rc: $a $b $c $d"; grep -h "^PARAR" "$T/a" "$T/b" "$T/c" "$T/d" > "$T/m"; grep -E "UX REVIEW não encontrado|GOVERNANÇA não está pronto[^a]" "$T/m"; r=$?; cd "$W"; rm -rf "${T:?}"; test $r -eq 1 -a $a -eq 1 -a $b -eq 1
+PARAR: UX REVIEW não encontrada: /private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.OXpVwl4aIc/r/sdd/reviews/UX_REVIEW_X.md
+RESULTADO: PARAR
+→ Próximo passo: /sdd-design sdd/features/DEFINE_X.md
+PARAR: GOVERNANÇA não está pronta (Status: Draft)
+RESULTADO: PARAR
+→ Próximo passo: /sdd-design sdd/features/DEFINE_G.md
+PARAR: DESIGN não encontrado: sdd/features/DESIGN_X.md
+RESULTADO: PARAR
+→ Próximo passo: /sdd-build sdd/features/DESIGN_X.md
+PARAR: DEFINE não está pronto (Status: Draft)
+RESULTADO: PARAR
+→ Próximo passo: /sdd-design sdd/features/DEFINE_G.md
+rc: 1 1 1 1
+[exit=0]

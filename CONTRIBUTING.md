@@ -73,6 +73,39 @@ the Portuguese originals; other English docs under `docs/` are kept in step when
 Translations into other languages are welcome as issues first, so we can agree on maintenance
 before the files exist.
 
+## Personal data removal requests (Pedido de remoção de dado pessoal)
+
+The working documents of each workstream (specs, reports, review ledgers, evidence logs) live in this public
+repository, and the raw evidence of a release is attached to its GitHub Release. Both are scanned before they are
+published (`sdd/bin/docs-varredura.sh`: secrets, personal e-mail, private keys, valid CPF/CNPJ). If something about
+you got through anyway, ask for its removal through a private channel (the repository's **Security → Report a
+vulnerability** form), or open an issue **without** the data, asking to be contacted. You get an answer within
+**30 days**.
+
+O dado pode estar em 3 lugares, e cada um tem o seu passo:
+
+1. **A `main`:** um commit que tira o dado do documento (ou o documento inteiro). O histórico da `main` ainda guarda
+   o commit antigo: tirar o dado de lá pede reescrever o histórico e pedir ao GitHub a limpeza do cache, uma decisão do
+   mantenedor caso a caso, que a resposta ao pedido informa.
+2. **A tag de arquivo `arquivo/docs-incorporar-starter`** (os documentos de antes da F26, inclusive a evidência bruta
+   que não migrou): a tag é regravada num histórico sem o arquivo (reescrito num clone da tag, por exemplo com
+   `git filter-repo --path <arquivo> --invert-paths`), e a tag antiga sai do remoto. Um commit novo por cima não basta:
+   o commit antigo continua ligado à tag, e a prova abaixo, com `--ref` e `--texto`, olha também esse histórico.
+3. **Os anexos `evidencia-bruta-<F>.tar.gz` das Releases:** o anexo é trocado por um sem o arquivo
+   (`gh release upload <tag> <arquivo> --clobber`), varrido de novo antes do envio.
+
+A prova de que o dado sumiu sai da mesma varredura, uma vez por lugar, e cada uma tem de sair 0. Use `--texto` com o
+dado como ele veio (letra a letra: `+`, `.` e parênteses de um e-mail ou telefone não viram regra de regex); `--padrao`
+é para quem escreve uma regex:
+
+```bash
+bash sdd/bin/docs-varredura.sh . --texto '<o dado>'                                  # a main, todos os arquivos
+bash sdd/bin/docs-varredura.sh --ref arquivo/docs-incorporar-starter --texto '<o dado>'   # a tag, todos os arquivos
+bash sdd/bin/docs-varredura.sh --pasta <anexo extraído> --texto '<o dado>'             # cada anexo
+```
+
+Clones e caches de terceiros ficam fora do alcance de quem mantém o repositório; a resposta ao pedido diz isso.
+
 ## Code of conduct
 
 Be decent. Assume the other person is competent and busy. Technical disagreement is welcome;

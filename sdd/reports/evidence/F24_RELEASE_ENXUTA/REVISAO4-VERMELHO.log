@@ -1,0 +1,9 @@
+$ (código de 066bd78, com os testes novos) cd tests && python3 -B -m unittest test_f24_release_enxuta.Revisao4 test_f24_release_enxuta.Revisao4Sandbox
+FAIL: test_r2_codex_impressao_sem_evidencia_na_antiga_nao_tira_da_nova (test_f24_release_enxuta.Revisao4.test_r2_codex_impressao_sem_evidencia_na_antiga_nao_tira_da_nova)
+FAIL: test_r3_codex_registrar_duas_entradas_sobrepostas_grava_cada_impressao_uma_vez (test_f24_release_enxuta.Revisao4.test_r3_codex_registrar_duas_entradas_sobrepostas_grava_cada_impressao_uma_vez)
+FAIL: test_r2_claude_sha_do_commit_publicado (test_f24_release_enxuta.Revisao4Sandbox.test_r2_claude_sha_do_commit_publicado)
+FAIL: test_r4_codex_mais_no_filtro_e_nao_sei (test_f24_release_enxuta.Revisao4Sandbox.test_r4_codex_mais_no_filtro_e_nao_sei)
+FAIL: test_textos_da_rodada_4 (test_f24_release_enxuta.Revisao4Sandbox.test_textos_da_rodada_4)
+Ran 5 tests in 1.054s
+FAILED (failures=5)
+[exit=1]

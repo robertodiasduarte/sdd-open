@@ -1,0 +1,17 @@
+$ git diff --stat v2.2.6 HEAD -- sdd/bin sdd/fixtures sdd/templates sdd/playbook.md scripts bin .github | wc -l; wc -l .agents/skills/sdd-*/SKILL.md | sort -n | tail -3; diff <(git ls-files | LC_ALL=C sort) MANIFEST.txt; git diff --stat 963c47e HEAD
+       0
+     336 .agents/skills/sdd-kb/SKILL.md
+     376 .agents/skills/sdd-iniciar-repo/SKILL.md
+    3777 total
+MANIFEST = git ls-files (ordem C)
+diff exit=0
+ .agents/skills/sdd-brainstorm/SKILL.md |  5 +--
+ .agents/skills/sdd-design/SKILL.md     |  2 +-
+ .agents/skills/sdd-release/SKILL.md    |  2 +-
+ README.md                              |  3 +-
+ README.pt-BR.md                        |  3 +-
+ docs/pt-BR/guia-do-aluno.md            | 38 +++++++++-------
+ docs/pt-BR/quickstart.md               |  2 +-
+ docs/quickstart.md                     |  2 +-
+ tests/test_docs.py                     | 79 +++++++++++++++++++++++-----------
+ 9 files changed, 85 insertions(+), 51 deletions(-)

@@ -5,14 +5,14 @@ compatibility: Requer python3 >= 3.9 (só stdlib) para o validador e bash >= 3.2
 license: MIT
 metadata:
   author: Roberto Dias Duarte
-  version: "2.2.3"
+  version: "2.2.4"
   updated: "2026-11"
 ---
 
 # SDD KB
 
 Na primeira resposta desta skill, comece com esta linha, uma vez só, antes do Status:
-`sdd-kb v2.2.3 · nov/2026 · versão atual: https://github.com/robertodiasduarte/sdd-open/releases/latest`
+`sdd-kb v2.2.4 · nov/2026 · versão atual: https://github.com/robertodiasduarte/sdd-open/releases/latest`
 
 ## Quick start
 

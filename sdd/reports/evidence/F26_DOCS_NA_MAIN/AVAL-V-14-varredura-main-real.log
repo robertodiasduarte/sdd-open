@@ -1,0 +1,11 @@
+$ time bash sdd/bin/docs-varredura.sh .; echo "rc=$?"; echo "documentos versionados: $(git ls-files sdd | wc -l | tr -d ' ') (sob sdd/) · não commitados (AVAL-V deste avaliador): $(git ls-files --others --exclude-standard sdd | wc -l | tr -d ' ')"
+✅ documentos do repositório: 2924 arquivo(s), nada achado.
+RESULTADO: VERDE
+→ siga.
+
+real	0m3.985s
+user	0m16.228s
+sys	0m1.275s
+rc=0
+documentos versionados: 3242 (sob sdd/) · não commitados (AVAL-V deste avaliador): 20
+[rc=0]

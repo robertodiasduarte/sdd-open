@@ -1,0 +1,35 @@
+$ bash /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f10-revisao/bd420f6e-558d-4962-a0c9-40cdfc2cbd27/scratchpad/p/t3.sh
+=== isolado, 3 vezes
+rodada 1 rc=0 · OK
+rodada 2 rc=0 · OK
+rodada 3 rc=0 · OK
+=== 5 em paralelo (carga como a da sabotagem)
+paralelo 1 rc=1 · FAILED (errors=1)
+paralelo 2 rc=1 · FAILED (errors=1)
+paralelo 3 rc=1 · FAILED (errors=1)
+paralelo 4 rc=1 · FAILED (errors=1)
+paralelo 5 rc=1 · FAILED (errors=1)
+--- traceback de p1:
+Traceback (most recent call last):
+  File "/private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.Bmxf6xFKMb/tests/test_revisao.py", line 843, in test_3_contexto_do_diff_do_usuario_nao_muda_o_sha
+    self.assertEqual(sha(a), sha(b))
+  File "/private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.Bmxf6xFKMb/tests/test_revisao.py", line 838, in <lambda>
+    sha = lambda s: re.search(r"diff_sha256: ([0-9a-f]{64})", s).group(1)
+AttributeError: 'NoneType' object has no attribute 'group'
+
+----------------------------------------------------------------------
+=== o teste
+    def test_3_contexto_do_diff_do_usuario_nao_muda_o_sha(self):
+        r = self.projeto()
+        self.escreve(r, "longo.txt", "".join("linha %d\n" % k for k in range(60)))
+        self.commit(r, "longo")
+        self.escreve(r, "longo.txt", "".join(("mudou %d\n" if k in (20, 30) else "linha %d\n") % k for k in range(60)))
+        sha = lambda s: re.search(r"diff_sha256: ([0-9a-f]{64})", s).group(1)
+        _, a = self.ar(r, "--base", "HEAD", "--dry-run", "--reviewer", "stub-a", "--auditor", "stub-b")
+        self.git(r, "config", "diff.context", "10")
+        self.git(r, "config", "diff.interHunkContext", "20")
+        _, b = self.ar(r, "--base", "HEAD", "--dry-run", "--reviewer", "stub-a", "--auditor", "stub-b")
+        self.assertEqual(sha(a), sha(b))
+
+    def test_4_docs_sdd_sem_o_brainstorm_descartado(self):
+[exit=0]

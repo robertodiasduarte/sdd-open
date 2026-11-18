@@ -1,0 +1,92 @@
+$ git rev-parse HEAD
+248301de856d3cd56bb231c83d89f4d985e6ed07
+$ bash sdd/bin/adversarial-review.sh --reviewer claude --auditor openrouter:qwen/qwen3.7-plus --feature F10_REVISAO
+▶ revisor: claude (-) — até 15 min
+▶ 2º revisor: codex (-) — até 15 min
+▶ auditor: openrouter:qwen/qwen3.7-plus (qwen/qwen3.7-plus) — até 15 min
+RESULTADO: REVIEW COMPLETA
+pasta: sdd/reports/reviews/EXTERNAL_REVIEW_20261101-012417
+diff_sha256: 77c64178ac2c302ee60a7212002942ab83c95eab5245572e34c2f5a5e4bbc6ee
+revisor: claude (claude-opus-5-5) — US$ 2,3420
+2º revisor: codex (-) — incluído na assinatura
+auditor: openrouter:qwen/qwen3.7-plus (qwen/qwen3.7-plus via Alibaba) — US$ 0,0540
+diversidade: vendor
+achados: 0 graves, 4 médios, 3 leves
+custo total: US$ 2,3960
+→ rode: bash sdd/bin/sdd-fluxo.sh loop --review sdd/reports/reviews/EXTERNAL_REVIEW_20261101-012417 --ledger <ledger da revisão> --rodada <N>
+[exit=0]
+$ cat sdd/reports/reviews/EXTERNAL_REVIEW_20261101-012417/META.txt
+worktree                : /Users/robertoduarte/rdd-worktrees/sdd-open-f10-revisao
+branch                  : feat/f10-revisao
+protocolo               : cadeia REVISOR → AUDITOR; paralelo não existe
+base                    : origin/main
+merge_base              : 89ac76f569026731174a4826be9d6757f5daa48e
+head                    : 248301de856d3cd56bb231c83d89f4d985e6ed07
+paths                   : -
+diff_sha256             : 77c64178ac2c302ee60a7212002942ab83c95eab5245572e34c2f5a5e4bbc6ee
+diff                    : 247KB (86 arquivo(s))
+contexto                : 104KB (3 doc SDD)
+docs_sdd                : BRAINSTORM_F10_REVISAO.md, DEFINE_F10_REVISAO.md, DESIGN_F10_REVISAO.md
+contexto_cortado        : -
+diversidade             : vendor
+reviewer_engine_default : claude
+reviewer_engine_efetivo : claude
+reviewer_fallback_usado : nao
+reviewer_motivo         : -
+reviewer_exit           : 0
+reviewer_segundos       : 398
+reviewer_achados        : 4
+reviewer_tokens_entrada : 177797
+reviewer_tokens_saida   : 42215
+reviewer_tokens_total   : 220012
+reviewer_modelo         : claude-opus-5-5
+reviewer_custo          : US$ 2.3420
+revisor1_raso           : nao
+gatilho_2o_revisor      : segurança (sdd/fixtures/revisao/respostas/falha-auth.txt)
+revisor2_engine         : codex
+revisor2_engine_default : codex
+revisor2_engine_efetivo : codex
+revisor2_fallback_usado : nao
+revisor2_motivo         : -
+revisor2_exit           : 0
+revisor2_segundos       : 220
+revisor2_achados        : 3
+revisor2_tokens_entrada : 136452
+revisor2_tokens_saida   : 7991
+revisor2_tokens_total   : 144443
+revisor2_modelo         : -
+revisor2_custo          : assinatura
+auditor_engine_default  : openrouter:qwen/qwen3.7-plus
+auditor_engine_efetivo  : openrouter:qwen/qwen3.7-plus
+auditor_fallback_usado  : nao
+auditor_motivo          : -
+auditor_exit            : 0
+auditor_segundos        : 192
+auditor_vereditos       : 7
+auditor_tokens_entrada  : 122495
+auditor_tokens_saida    : 11545
+auditor_tokens_total    : 134040
+auditor_modelo          : qwen/qwen3.7-plus via Alibaba
+auditor_custo           : US$ 0.0540
+convergencia_1o_passe   : nao
+desempate_alvo          : -
+desempate_engine        : -
+desempate_decisao       : -
+custo_total             : US$ 2.3960
+quando                  : 20261101-012417
+[exit=0]
+$ bash sdd/bin/sdd-fluxo.sh loop --review sdd/reports/reviews/EXTERNAL_REVIEW_20261101-012417 --ledger sdd/reports/evidence/F10_REVISAO/ledger-review.md --rodada 3
+ESTADO: PRONTO
+rodada: 3 de 3
+graves_abertos: 0
+aplicadas: 0
+rebatidas: 0
+RESULTADO: PRONTO
+→ siga para o avaliador ou para a release.
+[exit=0]
+$ bash sdd/bin/adversarial-review.sh --conferir sdd/reports/reviews/EXTERNAL_REVIEW_20261101-012417
+✅ a revisão sdd/reports/reviews/EXTERNAL_REVIEW_20261101-012417 é desta versão do código (sha256 igual).
+review_externo: sdd/reports/reviews/EXTERNAL_REVIEW_20261101-012417 sha256=77c64178ac2c302ee60a7212002942ab83c95eab5245572e34c2f5a5e4bbc6ee diversidade=vendor
+RESULTADO: CONFERE
+→ copie a linha review_externo para o ledger da release.
+[exit=0]

@@ -1,0 +1,136 @@
+test_binario_no_escopo_nao_quebra_a_varredura (test_agnostico.Agnostico.test_binario_no_escopo_nao_quebra_a_varredura) ... ok
+
+test_controle_com_conceito_passa (test_agnostico.Agnostico.test_controle_com_conceito_passa) ... ok
+
+test_escopo_existe_e_nao_e_vazio (test_agnostico.Agnostico.test_escopo_existe_e_nao_e_vazio) ... ok
+
+test_fixture_com_nome_de_ferramenta_reprova (test_agnostico.Agnostico.test_fixture_com_nome_de_ferramenta_reprova) ... FAIL
+
+test_os_8_termos_e_arquivo_sem_extensao_reprovam (test_agnostico.Agnostico.test_os_8_termos_e_arquivo_sem_extensao_reprovam) ... ok
+
+test_pacote_sem_ferramenta_de_um_agente_so (test_agnostico.Agnostico.test_pacote_sem_ferramenta_de_um_agente_so) ... ok
+
+test_texto_fora_de_utf8_reprova (test_agnostico.Agnostico.test_texto_fora_de_utf8_reprova) ... FAIL
+
+
+
+======================================================================
+
+FAIL: test_fixture_com_nome_de_ferramenta_reprova (test_agnostico.Agnostico.test_fixture_com_nome_de_ferramenta_reprova)
+
+----------------------------------------------------------------------
+
+Traceback (most recent call last):
+
+  File "D:\a\sdd-open\sdd-open\tests\test_agnostico.py", line 73, in test_fixture_com_nome_de_ferramenta_reprova
+
+    self.assertEqual(achados(self.tmp), [
+
+AssertionError: Lists differ: ['.agents\\skills\\sdd-x\\SKILL.md:1: AskUserQuest[117 chars]Use'] != ['.agents/skills/sdd-x/SKILL.md:1: AskUserQuestion[108 chars]Use']
+
+
+
+First differing element 0:
+
+'.agents\\skills\\sdd-x\\SKILL.md:1: AskUserQuestion'
+
+'.agents/skills/sdd-x/SKILL.md:1: AskUserQuestion'
+
+
+
+- ['.agents\\skills\\sdd-x\\SKILL.md:1: AskUserQuestion',
+
+?          ^^      ^^     ^^
+
+
+
++ ['.agents/skills/sdd-x/SKILL.md:1: AskUserQuestion',
+
+?          ^      ^     ^
+
+
+
+-  '.agents\\skills\\sdd-x\\SKILL.md:2: Task tool',
+
+?          ^^      ^^     ^^
+
+
+
++  '.agents/skills/sdd-x/SKILL.md:2: Task tool',
+
+?          ^      ^     ^
+
+
+
+-  'sdd\\templates\\T.md:1: /model',
+
+?      ^^         ^^
+
+
+
++  'sdd/templates/T.md:1: /model',
+
+?      ^         ^
+
+
+
+-  'sdd\\playbook.md:1: PreToolUse']
+
+?      ^^
+
+
+
++  'sdd/playbook.md:1: PreToolUse']
+
+?      ^
+
+
+
+
+
+======================================================================
+
+FAIL: test_texto_fora_de_utf8_reprova (test_agnostico.Agnostico.test_texto_fora_de_utf8_reprova)
+
+----------------------------------------------------------------------
+
+Traceback (most recent call last):
+
+  File "D:\a\sdd-open\sdd-open\tests\test_agnostico.py", line 99, in test_texto_fora_de_utf8_reprova
+
+    self.assertEqual(achados(self.tmp), ["sdd/templates/T.md:0: n�o � UTF-8"])
+
+AssertionError: Lists differ: ['sdd\\templates\\T.md:0: n�o � UTF-8'] != ['sdd/templates/T.md:0: n�o � UTF-8']
+
+
+
+First differing element 0:
+
+'sdd\\templates\\T.md:0: n�o � UTF-8'
+
+'sdd/templates/T.md:0: n�o � UTF-8'
+
+
+
+- ['sdd\\templates\\T.md:0: n�o � UTF-8']
+
+?      ^^         ^^
+
+
+
++ ['sdd/templates/T.md:0: n�o � UTF-8']
+
+?      ^         ^
+
+
+
+
+
+----------------------------------------------------------------------
+
+Ran 7 tests in 0.230s
+
+
+
+FAILED (failures=2)
+

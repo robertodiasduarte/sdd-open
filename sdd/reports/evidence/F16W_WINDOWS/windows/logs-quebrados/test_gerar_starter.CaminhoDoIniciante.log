@@ -1,0 +1,48 @@
+test_at006_sem_comando_no_caminho_sem_terminal (test_gerar_starter.CaminhoDoIniciante.test_at006_sem_comando_no_caminho_sem_terminal) ... FAIL
+
+
+
+======================================================================
+
+FAIL: test_at006_sem_comando_no_caminho_sem_terminal (test_gerar_starter.CaminhoDoIniciante.test_at006_sem_comando_no_caminho_sem_terminal)
+
+----------------------------------------------------------------------
+
+Traceback (most recent call last):
+
+  File "D:\a\sdd-open\sdd-open\tests\test_gerar_starter.py", line 541, in test_at006_sem_comando_no_caminho_sem_terminal
+
+    self.assertEqual(rc, 0, out + err)
+
+AssertionError: 1 != 0 : Traceback (most recent call last):
+
+  File "C:\Users\runneradmin\AppData\Local\Temp\sdd-open-x4r9ube6\open\scripts\gerar-starter.py", line 630, in <module>
+
+    sys.exit(main(sys.argv[1:]))
+
+             ^^^^^^^^^^^^^^^^^^
+
+  File "C:\Users\runneradmin\AppData\Local\Temp\sdd-open-x4r9ube6\open\scripts\gerar-starter.py", line 620, in main
+
+    print(linha)
+
+  File "C:\hostedtoolcache\windows\Python\3.12.10\x64\Lib\encodings\cp1252.py", line 19, in encode
+
+    return codecs.charmap_encode(input,self.errors,encoding_table)[0]
+
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+UnicodeEncodeError: 'charmap' codec can't encode character '\u2705' in position 0: character maps to <undefined>
+
+
+
+
+
+----------------------------------------------------------------------
+
+Ran 1 test in 26.422s
+
+
+
+FAILED (failures=1)
+

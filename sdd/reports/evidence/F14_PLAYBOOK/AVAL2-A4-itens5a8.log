@@ -1,0 +1,51 @@
+$ /bin/bash /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.lyAZcjfTsM/scripts/itens5a8.sh a /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.lyAZcjfTsM/resp/a-delta.txt /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.lyAZcjfTsM/resp/a-inv.txt
+--- item 5: AUTO + aceitos
+LM-001 ajudou+1
+LM-003 ajudou+1
+LM-002 mordeu+1
+ADD Backend :: sup: `fila_de_envio` `idempotencia` :: Fila sem chave de idempotência duplica o envio no reprocessamento. **Do instead:** grave a chave antes de enviar e confira antes de reenviar. → ficha: — · promovido_para: —
+INV_PENDENTE LM-002 (mordeu 0→1) · delta: LM-002 mordeu+1
+   proposta A: - [INV-002] estado=<ok|auto|humano> origem=LM-002 :: <regra> · por quê: <…> · tarefa|motivo: <…>
+   proposta B: - [LM-002] descartado :: <motivo>
+resumo-inv: afetadas=0 pendentes=1
+RESULTADO: HÁ AVISO DE INVARIANTE
+→ cada INV_AFETADA vai na mesma opção do delta que a causa; cada INV_PENDENTE vai na mesma opção da contagem que a causa.
+[cruzar exit=3]
+--- item 6
+RESULTADO: DELTA APLICADO (4 linha(s))
+→ o stdout é o playbook novo: rode o playbook-lint.sh nele antes de copiar por cima.
+[aplicar exit=0]
+🟢 /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.lyAZcjfTsM/tmp/sdd-curadoria-6417672a2f2c/DEMO/novo.md: formato OK — 5 ativos, 0 tombstones, Sempre=4 bullets/322 palavras, 0 aviso(s)
+[lint exit=0]
+anti-collapse OK: 4 IDs em HEAD, 0 sumiram, 0 (0%) alterados (limite 20%)
+[anti-collapse exit=0]
+RESULTADO: INVARIANTES APLICADAS
+→ o stdout é o arquivo novo: rode --validar-inv com o playbook novo antes de copiar por cima.
+[aplicar-inv exit=0]
+🟢 trava INV: par válido (2 invariante(s), 0 descartado(s), pendentes=0)
+RESULTADO: PAR VÁLIDO
+→ copie os 2 arquivos por cima dos originais.
+[validar-inv exit=0]
+ M sdd/invariants.md
+ M sdd/playbook.md
+?? sdd/reports/briefs/
+?? sdd/traces/
+--- item 7
+[log1 exit=0]
+[log2 exit=0]
+[registro exit=0]
+--- item 8
+[check-ignore exit=1]
+sdd/reports/evidence/DEMO/AVAL-01-teste.log
+[add exit=0]
+sdd/invariants.md
+sdd/playbook.md
+sdd/reports/evidence/DEMO/CURATOR-colheita.log
+sdd/reports/evidence/DEMO/CURATOR-colhidos.txt
+sdd/reports/evidence/DEMO/CURATOR-delta.log
+[commit exit=0]
+52d5342 chore(playbook): curadoria DEMO — 3 delta(s)
+ac64d07 feat: demo
+?? sdd/reports/briefs/
+?? sdd/traces/
+[exit=0]

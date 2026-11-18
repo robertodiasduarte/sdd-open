@@ -1,0 +1,38 @@
+$ /usr/bin/python3 -B -m unittest discover -s tests -p "test_sdd_open.py" -v
+test_doctor_diz_o_estado_dos_hooks_com_o_comando (test_sdd_open.Hooks) ... ok
+test_dry_run_mostra_a_linha_e_nao_liga (test_sdd_open.Hooks) ... ok
+test_hooks_path_absoluto_por_link_simbolico_e_nosso (test_sdd_open.Hooks) ... ok
+test_hooks_path_relativo_com_barra_ou_ponto_e_nosso (test_sdd_open.Hooks) ... ok
+test_init_liga_os_hooks_e_a_linha_do_plano_diz_o_efeito (test_sdd_open.Hooks) ... ok
+test_init_na_branch_padrao_com_remoto_diz_como_commitar (test_sdd_open.Hooks) ... ok
+test_init_repetido_e_idempotente_e_completa_hook_apagado (test_sdd_open.Hooks) ... ok
+test_init_repetido_sem_paste_no_path_mantem_os_vendors (test_sdd_open.Hooks) ... ok
+test_migra_o_alarme_da_higiene_sem_perder_a_protecao (test_sdd_open.Hooks) ... ok
+test_outro_hooks_path_nao_e_tocado (test_sdd_open.Hooks) ... ok
+test_pre_commit_alheio_nao_e_tocado (test_sdd_open.Hooks) ... ok
+test_check_acusa_copia_gerada_editada_a_mao (test_sdd_open.Projeto) ... ok
+test_copias_geradas_dos_scripts_portados_passam_bash_n (test_sdd_open.Projeto) ... ok
+test_doctor_acusa_env_salvo_no_git_e_sai_0 (test_sdd_open.Projeto) ... ok
+test_doctor_avisa_sdd_bin_diferente_do_pacote (test_sdd_open.Projeto) ... ok
+test_doctor_avisa_skill_mais_velha_que_a_do_pacote (test_sdd_open.Projeto) ... ok
+test_doctor_com_pacote_sem_checar_avisa_e_sai_0 (test_sdd_open.Projeto) ... ok
+test_doctor_em_dia_com_o_pacote (test_sdd_open.Projeto) ... ok
+test_doctor_nao_perde_o_resto_de_nome_com_quebra_de_linha (test_sdd_open.Projeto) ... ok
+test_doctor_sem_segredo_diz_que_esta_limpo (test_sdd_open.Projeto) ... ok
+test_doctor_termina_em_resultado (test_sdd_open.Projeto) ... ok
+test_init_copia_fixtures_de_exemplo_mas_nunca_os_testes (test_sdd_open.Projeto) ... ok
+test_init_cria_a_estrutura (test_sdd_open.Projeto) ... ok
+test_init_de_novo_e_idempotente (test_sdd_open.Projeto) ... ok
+test_sync_e_idempotente_e_check_fica_em_dia (test_sdd_open.Projeto) ... ok
+test_sync_preserva_o_texto_do_usuario_no_agents_md (test_sdd_open.Projeto) ... ok
+test_sync_reescreve_so_o_bloco_quando_a_fonte_muda (test_sdd_open.Projeto) ... ok
+test_init_fora_de_git_e_64 (test_sdd_open.Uso) ... ok
+test_opcao_desconhecida_e_64 (test_sdd_open.Uso) ... ok
+test_sem_argumentos_mostra_ajuda (test_sdd_open.Uso) ... ok
+test_verbo_desconhecido_e_64 (test_sdd_open.Uso) ... ok
+
+----------------------------------------------------------------------
+Ran 31 tests in 218.847s
+
+OK
+[exit=0]

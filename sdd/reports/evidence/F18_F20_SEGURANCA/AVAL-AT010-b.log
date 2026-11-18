@@ -1,0 +1,6 @@
+$ cd /tmp/aval-f18.SxgC/at010/r && bash /tmp/aval-f18.SxgC/at007/pkg-old/bin/sdd-open.sh doctor 2>&1 | grep 'salvo no git' > /tmp/aval-f18.SxgC/at010/dold.txt; cd /tmp/aval-f18.SxgC/at010/r2 && bash /Users/robertoduarte/rdd-worktrees/sdd-open-f18-f20-seguranca/bin/sdd-open.sh doctor 2>&1 | grep 'salvo no git' > /tmp/aval-f18.SxgC/at010/dnew.txt; cat /tmp/aval-f18.SxgC/at010/dnew.txt; diff /tmp/aval-f18.SxgC/at010/dold.txt /tmp/aval-f18.SxgC/at010/dnew.txt && echo '(doctor v2.11.0 × HEAD: idêntico)'
+⚠️  O arquivo de senhas .env está salvo no git. Tirar do git não apaga do histórico: se já houve push, quem tem acesso ao repositório tem o arquivo.
+⚠️  O certificado digital a.p12 está salvo no git. Tirar do git não apaga do histórico: se já houve push, quem tem acesso ao repositório tem o arquivo.
+⚠️  O certificado digital cert.pfx está salvo no git. Tirar do git não apaga do histórico: se já houve push, quem tem acesso ao repositório tem o arquivo.
+⚠️  A chave privada k.pem está salvo no git. Tirar do git não apaga do histórico: se já houve push, quem tem acesso ao repositório tem o arquivo.
+(doctor v2.11.0 × HEAD: idêntico)

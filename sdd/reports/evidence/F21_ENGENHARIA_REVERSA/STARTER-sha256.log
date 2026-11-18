@@ -1,0 +1,29 @@
+$ comparar SHA-256: tag v2.9.0 do sdd-open × cópia preparada para o sdd-starter (skills/sdd-engenharia-reversa-saas/)
+IGUAL     eb033b45daef  CHANGELOG.md
+DIFERENTE c93e2d37f424 ≠ 88abeac2cdbe  SKILL.md
+IGUAL     a2c479e7ba96  assets/ENGENHARIA_REVERSA_TEMPLATE.md
+IGUAL     b21021c2d233  evals/cases.json
+IGUAL     8ef5c48727af  manifest.json
+IGUAL     6324f7b85814  references/COMO_FUNCIONA.md
+IGUAL     36a541b90688  references/ESCOPO_CONFIRMADO.md
+IGUAL     329a1c366aa5  references/FONTES.md
+IGUAL     a27cf057cc04  references/ORQUESTRACAO_SDD.md
+IGUAL     d424febe6c72  references/PROTOCOLO_ENGENHARIA_REVERSA.md
+IGUAL     72882827b7b1  references/RUNTIME_COMPATIBILITY.md
+IGUAL     aba3ea10dc37  references/como-falar.md
+IGUAL     6abb0ab75ae3  scripts/validate_reverse.py
+IGUAL     1cbe3f8dbc7b  tests/test_validate_reverse.py
+total: 14 arquivos, 1 diferente(s)
+$ diff do SKILL.md (tag × starter)
+16c16
+< `sdd-engenharia-reversa-saas v1.1.0 · nov/2026 · versão atual: https://github.com/robertodiasduarte/sdd-open/releases/latest`
+---
+> `sdd-engenharia-reversa-saas v1.1.0 · nov/2026 · versão atual: https://github.com/robertodiasduarte/sdd-starter/releases/latest`
+[diff exit=1]
+$ curl -sIL -o /dev/null -w '%{http_code}' https://github.com/robertodiasduarte/sdd-starter/releases/latest/download/sdd-engenharia-reversa-saas.zip
+200
+$ shasum -a 256 -c (só a linha da skill)
+sdd-engenharia-reversa-saas.zip: OK
+[exit=0]
+$ unzip -l | tail -1
+    95340                     20 files

@@ -1,0 +1,33 @@
+$ bash checar-starter.sh /Users/robertoduarte/rdd-worktrees/sdd-starter-f17-gerado   (os passos do ci.yml gerado, na ordem)
+== check-gerado
+✅ 10 skill(s) gerada(s) e a infra conferidas: tudo igual ao que o sdd-open gerou
+RESULTADO: VERDE
+[rc=0]
+== publish-check
+PASS: publish-check found no forbidden content.
+[rc=0]
+== check-versions
+PASS: check-versions — 18 skills com versão coerente, comparadas a v1.5.16.
+[rc=0]
+== py_compile
+[rc=0]
+== bash-n
+[rc=0]
+== skill-tests
+Ran 16 tests in 0.050s
+
+OK
+[rc=0]
+== kb-gate
+RESULTADO: VERDE — 4 aceitas, 12 rejeitadas pelo motivo certo, RULE_MAP do exemplo em dia
+[rc=0]
+== root-tests
+Ran 62 tests in 2.463s
+
+OK
+[rc=0]
+== package
+packaged dist/sdd-seguranca.zip
+packaged dist/ux-review-builder.zip
+PASS: 18 skill zips built in dist/
+[rc=0]

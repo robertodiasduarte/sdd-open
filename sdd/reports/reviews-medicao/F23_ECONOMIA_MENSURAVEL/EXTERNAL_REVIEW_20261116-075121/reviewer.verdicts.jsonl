@@ -1,0 +1,2 @@
+{"achado": "R1", "arquivo": "sdd/bin/adapters/sessao-codex.py", "linha": 97, "severidade": "MED", "confianca": "CONFIRMED", "resumo": "Sessão do Codex do projeto com session_meta ilegível (ou arquivo ilegível sem outra sessão) é descartada em silêncio, subcontando sem n/d, contra o AT-004."}
+{"achado": "R2", "arquivo": "sdd/bin/custo-feature.sh", "linha": 660, "severidade": "LOW", "confianca": "CONFIRMED", "resumo": "Mapa da linha de base sem nenhuma feature válida sai exit 0 MEDIDO com tabela vazia, e não 64 como documenta o cli-conventions."}

@@ -1,0 +1,10 @@
+$ cd tests && SDD_TEST_BASH=/bin/bash /usr/bin/python3 -B -m unittest -v test_revisao.Contexto
+test_contexto_na_ordem_e_brainstorm_sai_primeiro (test_revisao.Contexto) ... ok
+test_pasta_nao_ignorada_e_64_com_o_comando_que_resolve_tambem_na_worktree (test_revisao.Contexto) ... ok
+test_sem_feature_avisa (test_revisao.Contexto) ... ok
+
+----------------------------------------------------------------------
+Ran 3 tests in 1.420s
+
+OK
+[exit=0]

@@ -1,0 +1,15 @@
+$ bash sdd/bin/verify-gate.sh --strict sdd/features/DEFINE_F16W_WINDOWS.md   # HEAD ce3a779
+🛑 GOVERNANÇA NÃO REVISADA (exit 5) — 'sdd/features/DEFINE_F16W_WINDOWS.md' não tem a linha Governança com um valor final
+   (encontrado: N.A. (ver Clarifications)).
+   Desde a v2.4.0, todo DEFINE passa pela revisão de governança antes do build; DEFINEs escritos
+   antes disso param aqui uma vez.
+   1. Numa sessão nova do agente, peça: "rode só os passos 11 (Governança) e 12 (Segurança) do sdd-define sobre sdd/features/DEFINE_F16W_WINDOWS.md".
+      Não rode o Define inteiro de novo: ele regravaria a spec.
+   2. Ou dispense: na tabela do ## Technical Context (sem essa seção, crie-a com o cabeçalho
+      | Aspect | Value | Notes |), ponha no lugar da linha Governança
+      | **Governança** | dispensada — <motivo> | <seu nome, data> |
+      e apague do DEFINE o marcador "governança não rodou", se houver.
+RESULTADO: CLARIFICAR
+→ rode a revisão de governança (passo 11 do sdd-define) ou dispense com motivo; o build e a release ficam parados até lá.
+duração: 0 s
+rc=1

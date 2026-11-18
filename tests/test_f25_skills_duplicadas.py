@@ -884,7 +884,7 @@ class AT010Textos(Base):
 
     def test_skill_md_tem_a_excecao_unica_e_a_etapa_limpar(self):
         t = (SKILL / "SKILL.md").read_text(encoding="utf-8")
-        self.assertIn('version: "1.6.0"', t)
+        self.assertIn('version: "1.6.1"', t)
         regra = t.split("- **Somente leitura.**", 1)[1].split("\n- **", 1)[0]
         self.assertIn("`--limpar <assinatura>`", regra)
         self.assertEqual(t.count("Exceção única"), 1)

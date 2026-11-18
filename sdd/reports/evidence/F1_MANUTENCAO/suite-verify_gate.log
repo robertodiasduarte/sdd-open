@@ -1,0 +1,30 @@
+$ /usr/bin/python3 -B -m unittest discover -s tests -p test_verify_gate.py -v
+test_fixtures_canonicas (test_verify_gate.FixturesDoRepositorio) ... ok
+test_fixtures_existem_no_pacote (test_verify_gate.FixturesDoRepositorio) ... ok
+test_0_verde_quando_cmd_passa (test_verify_gate.VerifyGate) ... ok
+test_2_vermelho_declarado_vence_ruido_de_ferramenta (test_verify_gate.VerifyGate) ... ok
+test_2_vermelho_quando_cmd_falha (test_verify_gate.VerifyGate) ... ok
+test_3_comando_que_declara_inconclusivo_propaga (test_verify_gate.VerifyGate) ... ok
+test_3_inconclusivo_quando_ferramenta_ausente (test_verify_gate.VerifyGate) ... ok
+test_3_smoke_com_403_inesperado_e_ruido_de_infra (test_verify_gate.VerifyGate) ... ok
+test_4_manual_ux_exige_assinatura (test_verify_gate.VerifyGate) ... ok
+test_5_marcador_ativo_fora_de_fence (test_verify_gate.VerifyGate) ... ok
+test_64_arquivo_inexistente (test_verify_gate.VerifyGate) ... ok
+test_64_fora_de_repositorio_git (test_verify_gate.VerifyGate) ... ok
+test_64_kind_invalido (test_verify_gate.VerifyGate) ... ok
+test_64_kind_test_sem_cmd_executavel (test_verify_gate.VerifyGate) ... ok
+test_64_sem_bloco (test_verify_gate.VerifyGate) ... ok
+test_contains_ausente_e_vermelho (test_verify_gate.VerifyGate) ... ok
+test_contains_presente_passa (test_verify_gate.VerifyGate) ... ok
+test_exit_n_explicito (test_verify_gate.VerifyGate) ... ok
+test_marcador_dentro_de_fence_e_documentacao_nao_duvida (test_verify_gate.VerifyGate) ... ok
+test_print_lista_o_bloco_mesmo_com_marcador (test_verify_gate.VerifyGate) ... ok
+test_smoke_com_403_esperado_passa (test_verify_gate.VerifyGate) ... ok
+test_strict_preserva_0_2_64 (test_verify_gate.VerifyGate) ... ok
+test_strict_remapeia_3_4_5_para_1 (test_verify_gate.VerifyGate) ... ok
+
+----------------------------------------------------------------------
+Ran 23 tests in 1.304s
+
+OK
+exit=0

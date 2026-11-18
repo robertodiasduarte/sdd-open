@@ -1,0 +1,12 @@
+$ python3 -B -m unittest -v test_f16w2_saida
+test_todo_script_com_main_troca_a_saida_antes_de_tudo (test_f16w2_saida.Guarda.test_todo_script_com_main_troca_a_saida_antes_de_tudo) ... ok
+test_todo_python_embutido_num_script_troca_a_saida (test_f16w2_saida.GuardaEmbutidos.test_todo_python_embutido_num_script_troca_a_saida) ... ok
+test_os_scripts_imprimem_o_caractere_e_saem_com_o_exit_de_sempre (test_f16w2_saida.SaidaCp1252.test_os_scripts_imprimem_o_caractere_e_saem_com_o_exit_de_sempre) ... ok
+test_report_lint_le_o_stdin_em_utf8 (test_f16w2_saida.SaidaCp1252.test_report_lint_le_o_stdin_em_utf8) ... ok
+test_stdin_lido_em_cp1252_daria_verde_falso (test_f16w2_saida.SaidaCp1252.test_stdin_lido_em_cp1252_daria_verde_falso) ... ok
+
+----------------------------------------------------------------------
+Ran 5 tests in 0.352s
+
+OK
+[exit=0]

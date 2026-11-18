@@ -1,0 +1,10 @@
+$ /bin/bash sdd/bin/sdd-decisoes-lint.sh --self-test
+sdd-decisoes-lint --self-test
+  ✅ sem-classe → exit 2 (sem marca de classe)
+  ✅ com-outro → exit 2 (tem a opção **Outro**)
+  ✅ com-jargao → exit 2 (identificador técnico)
+  ✅ dois-recomendados → exit 2 (2 opções (recomendado))
+  ✅ controle → exit 0
+RESULTADO: VERDE
+→ as 4 fixtures reprovam pelo motivo certo e o controle passa.
+[exit=0]

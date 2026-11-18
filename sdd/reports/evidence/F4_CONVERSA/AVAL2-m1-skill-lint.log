@@ -1,0 +1,44 @@
+$ /bin/bash /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f4-conversa/5e736f5b-fdb5-4cdd-a304-706fff11b1bb/scratchpad/m1.sh
+== M1 original (linha em branco + Outro primeiro)
+🛑 /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.oJK2jBSnx2/conversa-controle/SKILL.md: references/como-falar.md:28 **Posso apagar a pasta?** — nenhuma opção (recomendado)
+🛑 /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.oJK2jBSnx2/conversa-controle/SKILL.md: references/como-falar.md:28 **Posso apagar a pasta?** — sem a opção **não sei**
+🛑 /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.oJK2jBSnx2/conversa-controle/SKILL.md: references/como-falar.md:28 **Posso apagar a pasta?** — tem a opção **Outro**: resposta fora das opções é tratada como dúvida
+RESULTADO: VERMELHO
+→ corrija o apontado acima (frontmatter: agentskills.io/specification; conversa: sdd/templates/fragments/PERGUNTA_DECISAO.md)
+exit=1
+== M1 marcador *
+🛑 /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.6fLNAcZBba/conversa-controle/SKILL.md: references/como-falar.md:28 **Posso apagar a pasta?** — nenhuma opção (recomendado)
+🛑 /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.6fLNAcZBba/conversa-controle/SKILL.md: references/como-falar.md:28 **Posso apagar a pasta?** — sem a opção **não sei**
+🛑 /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.6fLNAcZBba/conversa-controle/SKILL.md: references/como-falar.md:28 **Posso apagar a pasta?** — tem a opção **Outro**: resposta fora das opções é tratada como dúvida
+RESULTADO: VERMELHO
+→ corrija o apontado acima (frontmatter: agentskills.io/specification; conversa: sdd/templates/fragments/PERGUNTA_DECISAO.md)
+exit=1
+== M1 marcador + e lista numerada 1.
+✅ /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.t2RyPhGfqr/conversa-controle/SKILL.md: frontmatter válido · camada de conversa ok
+exit=0
+== M1 duas linhas em branco
+🛑 /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.s6cgQa3tcc/conversa-controle/SKILL.md: references/como-falar.md:28 **Posso apagar a pasta?** — nenhuma opção (recomendado)
+🛑 /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.s6cgQa3tcc/conversa-controle/SKILL.md: references/como-falar.md:28 **Posso apagar a pasta?** — sem a opção **não sei**
+🛑 /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.s6cgQa3tcc/conversa-controle/SKILL.md: references/como-falar.md:28 **Posso apagar a pasta?** — tem a opção **Outro**: resposta fora das opções é tratada como dúvida
+RESULTADO: VERMELHO
+→ corrija o apontado acima (frontmatter: agentskills.io/specification; conversa: sdd/templates/fragments/PERGUNTA_DECISAO.md)
+exit=1
+== M1 opcao em citacao com linha '>' vazia
+✅ /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.px9ldw5VX1/conversa-controle/SKILL.md: frontmatter válido · camada de conversa ok
+exit=0
+== M1 negrito com __ (underscore)
+✅ /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.tTIQWXqQCV/conversa-controle/SKILL.md: frontmatter válido · camada de conversa ok
+exit=0
+== M1 pergunta em ** com ? seguido de : ex **Posso?**:
+🛑 /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.3LPM402Azq/conversa-controle/SKILL.md: references/como-falar.md:28 **Posso apagar a pasta?** — nenhuma opção (recomendado)
+🛑 /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.3LPM402Azq/conversa-controle/SKILL.md: references/como-falar.md:28 **Posso apagar a pasta?** — sem a opção **não sei**
+🛑 /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.3LPM402Azq/conversa-controle/SKILL.md: references/como-falar.md:28 **Posso apagar a pasta?** — tem a opção **Outro**: resposta fora das opções é tratada como dúvida
+RESULTADO: VERMELHO
+→ corrija o apontado acima (frontmatter: agentskills.io/specification; conversa: sdd/templates/fragments/PERGUNTA_DECISAO.md)
+exit=1
+== M1 rotulo Outro. / Outros
+✅ /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.4fujyFuCzo/conversa-controle/SKILL.md: frontmatter válido · camada de conversa ok
+exit=0
+== M1 frase entre a pergunta e as opções
+✅ /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.JsZyPS3HDY/conversa-controle/SKILL.md: frontmatter válido · camada de conversa ok
+exit=0

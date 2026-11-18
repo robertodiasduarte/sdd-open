@@ -1,0 +1,39 @@
+$ bash /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f16w-windows/fd210694-ded6-4d95-a500-52e0521f4ae8/scratchpad/at003.sh
+--- diff do job testes-windows entre os 2 workflows (vazio = igual)
+63a64
+> 
+--- .github/workflows/publish-gate.yml
+3:    runs-on: windows-latest
+7:    timeout-minutes: 30
+9:      fail-fast: false   # uma fatia vermelha não cancela as outras: a medição é do pacote inteiro
+11:        fatia: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
+33:      # Afirmado, não só impresso: o Python é o nativo (os.name == nt) e o bash dos testes é o do Git,
+38:          bash -c 'echo "bash $BASH_VERSION"; uname -s; case "$(uname -s)" in MINGW*|MSYS*) ;; *) exit 1 ;; esac'
+39:          python -c 'import os, sys; print(sys.version, os.name); sys.exit(os.name != "nt")'
+44:        if: matrix.fatia == 1
+54:        run: python -B scripts/testes-por-modulo.py --fatia "${{ matrix.fatia }}/12" --teto-unidade 600 --saida "$RUNNER_TEMP/tpm"
+57:        if: always()
+58:        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+needs do release: 
+--- .github/workflows/release.yml
+3:    runs-on: windows-latest
+7:    timeout-minutes: 30
+9:      fail-fast: false   # uma fatia vermelha não cancela as outras: a medição é do pacote inteiro
+11:        fatia: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
+33:      # Afirmado, não só impresso: o Python é o nativo (os.name == nt) e o bash dos testes é o do Git,
+38:          bash -c 'echo "bash $BASH_VERSION"; uname -s; case "$(uname -s)" in MINGW*|MSYS*) ;; *) exit 1 ;; esac'
+39:          python -c 'import os, sys; print(sys.version, os.name); sys.exit(os.name != "nt")'
+44:        if: matrix.fatia == 1
+54:        run: python -B scripts/testes-por-modulo.py --fatia "${{ matrix.fatia }}/12" --teto-unidade 600 --saida "$RUNNER_TEMP/tpm"
+57:        if: always()
+58:        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+needs do release: 255:    needs: [testes, testes-macos]
+--- SHA da action de artefato x tag v7.0.2 no GitHub (leitura)
+cf430e030ddbb5b0abf93d22962f4752f3646cd9	refs/tags/v7.0.2
+--- python3 -B -m unittest test_release_workflow (tests/)
+test_frases_dizem_o_que_o_workflow_prova (test_release_workflow.Windows.test_frases_dizem_o_que_o_workflow_prova) ... ok
+test_job_windows_nos_dois_workflows (test_release_workflow.Windows.test_job_windows_nos_dois_workflows) ... ok
+test_o_job_windows_e_igual_nos_dois_workflows (test_release_workflow.Windows.test_o_job_windows_e_igual_nos_dois_workflows) ... ok
+Ran 32 tests in 0.956s
+OK
+[exit=0]

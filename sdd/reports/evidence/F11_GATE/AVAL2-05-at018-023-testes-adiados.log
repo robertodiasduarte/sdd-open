@@ -1,0 +1,16 @@
+$ cd /Users/robertoduarte/rdd-worktrees/sdd-open-f11-gate && SDD_TEST_BASH=/bin/bash /usr/bin/python3 -B -m unittest discover -v -s tests -p 'test_revisao*.py' -k at018 -k at019 -k at020 -k at021 -k at022 -k at023
+test_at018_no_revisor2_com_gatilho_exige_motivo_no_conferir (test_revisao.F11Adiados) ... ok
+test_at018_sem_gatilho_o_no_revisor2_continua_conferindo (test_revisao.F11Adiados) ... ok
+test_at019_modelo_reportado_igual_ao_configurado_usa_a_tarifa (test_revisao.F11Adiados) ... ok
+test_at019_modelo_reportado_sem_preco_e_desconhecido (test_revisao.F11Adiados) ... ok
+test_at020_tentativa_que_estourou_o_teto_marca_custo_incerto (test_revisao.F11Adiados) ... ok
+test_at020_tentativa_recusada_nao_marca (test_revisao.F11Adiados) ... ok
+test_at021_conferir_pula_pasta_sem_meta (test_revisao.F11Adiados) ... ok
+test_at022_feature_sem_documento_avisa_e_segue (test_revisao.F11Adiados) ... ok
+test_f11_at023_gemini_com_dois_modelos_soma_os_tokens (test_revisao_adapters.Extracao) ... ok
+
+----------------------------------------------------------------------
+Ran 9 tests in 5.693s
+
+OK
+[exit=0]

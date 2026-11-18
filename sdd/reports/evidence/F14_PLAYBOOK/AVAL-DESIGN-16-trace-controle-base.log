@@ -1,0 +1,7 @@
+$ cd /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.8ThIJgJWOa/base/tests && env -u SDD_TRACE -u SDD_TRACE_DIR SDD_TEST_BASH=/bin/bash TMPDIR=/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.8ThIJgJWOa/tmp /usr/bin/python3 -B -m unittest test_verify_gate_trace test_governanca_gate
+.............................
+----------------------------------------------------------------------
+Ran 29 tests in 6.911s
+
+OK
+[exit=0]

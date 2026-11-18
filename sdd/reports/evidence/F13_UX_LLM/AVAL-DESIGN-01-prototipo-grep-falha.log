@@ -1,0 +1,10 @@
+$ T=$(mktemp -d); cd "$T"; echo "messages.create(x)" > f.ts; chmod 000 f.ts; /usr/bin/grep -qE "messages\.create" f.ts; echo "grep em arquivo ilegivel rc=$?"; if /usr/bin/grep -qE "messages\.create" f.ts; then echo DRIFT; else echo "ramo else -> RESULTADO: LIMPO (falso)"; fi; test -e f.ts && echo "-e passa"; test -f f.ts && echo "-f passa"; test -s f.ts && echo "-s passa"; test -r f.ts || echo "-r reprova: a sonda que falta na tabela de Error Handling"; chmod 600 f.ts; cd /; rm -rf "$T"
+grep: f.ts: Permission denied
+grep em arquivo ilegivel rc=2
+grep: f.ts: Permission denied
+ramo else -> RESULTADO: LIMPO (falso)
+-e passa
+-f passa
+-s passa
+-r reprova: a sonda que falta na tabela de Error Handling
+[exit=0]

@@ -1,0 +1,13 @@
+$ cd <cópia da árvore com sdd/bin/*-lint.py de 4e77a1f> && cd tests && SDD_TEST_BASH=/bin/bash /usr/bin/python3 -B -m unittest test_skill_lint test_design_lint test_handoff_lint  # testes novos das notas da revisão contra os lints do build
+FAIL: test_opcoes_depois_de_linha_em_branco_ou_com_asterisco_sao_conferidas (test_skill_lint.SkillLint) (marca='-')
+FAIL: test_opcoes_depois_de_linha_em_branco_ou_com_asterisco_sao_conferidas (test_skill_lint.SkillLint) (marca='*')
+FAIL: test_outro_com_complemento_reprova (test_skill_lint.SkillLint)
+FAIL: test_proximo_passo_com_dois_pontos_ou_em_citacao_tambem_tem_limite (test_skill_lint.SkillLint) (forma='**Próximo passo:** ')
+FAIL: test_proximo_passo_com_dois_pontos_ou_em_citacao_tambem_tem_limite (test_skill_lint.SkillLint) (forma='> **Próximo passo** — ')
+FAIL: test_secao_dentro_de_bloco_de_codigo_nao_conta (test_skill_lint.SkillLint)
+FAIL: test_sem_flag_mensagem_de_frontmatter_nao_muda (test_skill_lint.SkillLint)
+FAIL: test_aspas_angulares_em_prosa_passam (test_design_lint.DesignLint)
+FAIL: test_ficha_fechada_dispensa_o_prompt (test_handoff_lint.HandoffLint)
+FAIL: test_titulo_dentro_do_prompt_nao_encerra_a_secao (test_handoff_lint.HandoffLint)
+Ran 45 tests in 4.337s
+FAILED (failures=10)

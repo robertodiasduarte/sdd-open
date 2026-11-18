@@ -1,0 +1,13 @@
+$ cd tests && SDD_TEST_BASH=/bin/bash /usr/bin/python3 -B -m unittest -v test_revisao.Diff
+test_config_do_usuario_nao_muda_o_sha (test_revisao.Diff) ... ok
+test_diff_vazio_base_invalida_e_acima_de_8_mb_sao_64 (test_revisao.Diff) ... ok
+test_dry_run_nao_chama_engine_nem_cria_pasta (test_revisao.Diff) ... ok
+test_funciona_numa_worktree (test_revisao.Diff) ... ok
+test_inclui_nao_rastreado_exclui_artefatos_sdd_e_a_pasta_de_saida (test_revisao.Diff) ... ok
+test_paths_inclui_o_que_nomeia (test_revisao.Diff) ... ok
+
+----------------------------------------------------------------------
+Ran 6 tests in 2.659s
+
+OK
+[exit=0]

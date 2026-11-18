@@ -1,0 +1,9 @@
+$ env -i PATH=/usr/bin:/bin HOME=/Users/robertoduarte /usr/bin/python3 -B /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.iNp6lMZaXH/sonda_proxy.py
+python 3.9.6 darwin
+1 gate: servidor local (no_proxy)                          -> HTTP 200 | rede tocada: [('getaddrinfo', '127.0.0.1'), ('connect', '127.0.0.1', 60717)]
+2 gate: https://openrouter.ai (URL real)                   -> URLError(ConnectionRefusedError: [Errno 61] Connection refused) | rede tocada: [('getaddrinfo', '127.0.0.1'), ('connect', '127.0.0.1', 9)]
+3 gate: http://example.invalid (sonda do DESIGN)           -> URLError(ConnectionRefusedError: [Errno 61] Connection refused) | rede tocada: [('getaddrinfo', '127.0.0.1'), ('connect', '127.0.0.1', 9)]
+4 gate + usuario NO_PROXY=* (maiusc.)                      -> URLError(ConnectionRefusedError: [Errno 61] Connection refused) | rede tocada: [('getaddrinfo', '127.0.0.1'), ('connect', '127.0.0.1', 9)]
+5 SEM proxy (proxy ignorado): http://example.invalid       -> URLError(gaierror: [Errno 8] GUARDA: resolucao fora do loopback bloqueada (example.invalid)) | rede tocada: [('getaddrinfo', 'example.invalid')]
+6 usuario no_proxy=* sem o gate sobrescrever               -> URLError(gaierror: [Errno 8] GUARDA: resolucao fora do loopback bloqueada (openrouter.ai)) | rede tocada: [('getaddrinfo', 'openrouter.ai')]
+[exit=0]

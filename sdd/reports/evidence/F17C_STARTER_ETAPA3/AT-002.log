@@ -1,0 +1,14 @@
+$ cd <git archive 97503a7>/tests && SDD_TEST_BASH=/bin/bash python3 -B -m unittest -v test_f17c_gerador.ModoWeb.test_at002_as_3_saem_so_do_modo_web test_f17c_gerador.ModoWeb.test_sem_pasta_base_o_modo_continua_na_raiz_da_skill test_gerar_starter.SkillDeModo
+test_at002_as_3_saem_so_do_modo_web (test_f17c_gerador.ModoWeb.test_at002_as_3_saem_so_do_modo_web) ... ok
+test_sem_pasta_base_o_modo_continua_na_raiz_da_skill (test_f17c_gerador.ModoWeb.test_sem_pasta_base_o_modo_continua_na_raiz_da_skill) ... ok
+test_at002_arquivo_citado_pelo_modo_vai_junto_com_o_fecho (test_gerar_starter.SkillDeModo.test_at002_arquivo_citado_pelo_modo_vai_junto_com_o_fecho) ... ok
+test_at002_release_gerada_so_do_modo (test_gerar_starter.SkillDeModo.test_at002_release_gerada_so_do_modo) ... ok
+test_at003_a_release_crua_reprova_no_lint (test_gerar_starter.SkillDeModo.test_at003_a_release_crua_reprova_no_lint) ... ok
+test_at003_modo_quebrado_sai_65_sem_gravar (test_gerar_starter.SkillDeModo.test_at003_modo_quebrado_sai_65_sem_gravar) ... ok
+test_at009_versao_que_nao_sobe_numa_skill_nova_da_lista (test_gerar_starter.SkillDeModo.test_at009_versao_que_nao_sobe_numa_skill_nova_da_lista) ... ok
+
+----------------------------------------------------------------------
+Ran 7 tests in 41.528s
+
+OK
+rc=0

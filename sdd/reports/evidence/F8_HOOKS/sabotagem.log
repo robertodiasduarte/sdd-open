@@ -1,0 +1,12 @@
+$ bash sdd/reports/evidence/F8_HOOKS/sabotagem.sh
+✅ pre-commit: H2 sem teto → vermelho (test_h2_teto_do_arquivo_de_contexto ) · restaurado → verde
+✅ pre-push: nunca atrás → vermelho (test_pre_push_avisa_base_velha_e_sai_0 ) · restaurado → verde
+✅ sdd-open.sh: init não liga o hooksPath → vermelho (test_init_liga_os_hooks_e_a_linha_do_plano_diz_o_efeito ) · restaurado → verde
+✅ vendors.sh: .cursorrules fora da lista → vermelho (test_lista_de_arquivos_de_contexto_igual_a_do_pacote ) · restaurado → verde
+✅ merge.sh: entrada do avaliador não entra → vermelho (test_init_gera_os_guards_e_as_entradas_do_settings ) · restaurado → verde
+✅ alarme.sh: sdd/hooks tratado como outro → vermelho (test_desinstalar_remove_o_arquivo_legado_da_migracao_e_so_ele test_hooks_path_absoluto_por_link_simbolico_e_modo_hooks test_hooks_path_relativo_com_barra_ou_ponto_e_modo_hooks test_verificar_instalar_desinstalar_pela_config ) · restaurado → verde
+✅ pre-commit.sh da higiene: rm volta com hooksPath → vermelho (test_recusa_pelo_dispatcher_ensina_desinstalar_sem_rm ) · restaurado → verde
+✅ report-guard: exit 1 do lint não nega → vermelho (test_report_guard_nega_write_que_o_lint_reprova ) · restaurado → verde
+✅ avaliador-guard: ignora a palavra veredito → vermelho (test_avaliador_guard_nega_com_arvore_suja_e_so_com_veredito ) · restaurado → verde
+🟢 9/9 sabotagens vermelhas e restauradas
+[exit=0]

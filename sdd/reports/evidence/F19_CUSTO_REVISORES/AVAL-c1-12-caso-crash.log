@@ -1,0 +1,5 @@
+$ PATH=/usr/bin:/bin /bin/bash sdd/bin/eval-revisores.sh /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f21-f19/8ca3f42f-d684-434d-9f0b-19bdcf0aef88/scratchpad/aval-f19/casos/crash --ledgers /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f21-f19/8ca3f42f-d684-434d-9f0b-19bdcf0aef88/scratchpad/aval-f19/casos/crash --registry /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f21-f19/8ca3f42f-d684-434d-9f0b-19bdcf0aef88/scratchpad/aval-f19/casos/crash/registry.tsv
+Traceback (most recent call last):
+  File "<stdin>", line 260, in <module>
+AttributeError: 'int' object has no attribute 'split'
+[exit=1]

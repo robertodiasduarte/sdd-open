@@ -1,0 +1,34 @@
+test_recusa_a_copia_gerada_pelo_init (test_sdd_kb.Gate.test_recusa_a_copia_gerada_pelo_init) ... FAIL
+
+test_rejeitado_por_outro_motivo_e_vermelho (test_sdd_kb.Gate.test_rejeitado_por_outro_motivo_e_vermelho) ... ok
+
+test_rule_map_derivado_do_exemplo_aponta_o_rule_map (test_sdd_kb.Gate.test_rule_map_derivado_do_exemplo_aponta_o_rule_map) ... ok
+
+test_validador_sabotado_deixa_o_gate_vermelho (test_sdd_kb.Gate.test_validador_sabotado_deixa_o_gate_vermelho) ... ok
+
+
+
+======================================================================
+
+FAIL: test_recusa_a_copia_gerada_pelo_init (test_sdd_kb.Gate.test_recusa_a_copia_gerada_pelo_init)
+
+----------------------------------------------------------------------
+
+Traceback (most recent call last):
+
+  File "D:\a\sdd-open\sdd-open\tests\test_sdd_kb.py", line 127, in test_recusa_a_copia_gerada_pelo_init
+
+    self.assertIn(".claude/skills/sdd-kb/scripts/gate.sh", out.split("RESULTADO:", 1)[0])
+
+AssertionError: '.claude/skills/sdd-kb/scripts/gate.sh' not found in '\U0001f6d1 c�pia gerada pelo sync: C:\\Users\\runneradmin\\AppData\\Local\\Temp\\sdd-open-xlc29w40\\projeto\\.claude\\skills\\sdd-kb\\scripts\\gate.sh tem o cabe�alho da c�pia; os exemplos daqui n�o valem como prova\n'
+
+
+
+----------------------------------------------------------------------
+
+Ran 4 tests in 70.297s
+
+
+
+FAILED (failures=1)
+

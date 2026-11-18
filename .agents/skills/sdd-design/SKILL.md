@@ -5,7 +5,7 @@ compatibility: Requer bash >= 3.2 e git >= 2.20; roda sdd/bin/playbook-lint.sh -
 license: MIT
 metadata:
   author: Roberto Dias Duarte
-  version: "2.9.0"
+  version: "2.9.1"
   updated: "2026-11"
   fase: "2"
 ---
@@ -13,7 +13,7 @@ metadata:
 # sdd-design — Fase 2
 
 Na primeira resposta desta skill, comece com esta linha, uma vez só, antes do Status:
-`sdd-design v2.9.0 · nov/2026 · versão atual: https://github.com/robertodiasduarte/sdd-open/releases/latest`
+`sdd-design v2.9.1 · nov/2026 · versão atual: https://github.com/robertodiasduarte/sdd-open/releases/latest`
 
 **Projeto sem `sdd/bin/` (sem o `init`) ou sem acesso aos arquivos (claude.ai, ChatGPT)?** Siga `web/MODO_WEB.md`
 desta skill; os caminhos que ele cita (`references/`, `assets/`) são os de dentro de `web/`.

@@ -1,0 +1,7 @@
+$ cd tests && SDD_TEST_BASH=/bin/bash /usr/bin/python3 -B -m unittest test_f25_skills_duplicadas.RevisaoRodada5   # código de 132643a, testes novos
+FAIL: test_r1_desfazer_nao_apaga_a_guardada_se_o_lugar_virou_atalho_para_ela (test_f25_skills_duplicadas.RevisaoRodada5)
+FAIL: test_r2_sem_a_linha_do_desfazer_nada_sai (test_f25_skills_duplicadas.RevisaoRodada5)
+FAIL: test_r3_npx_que_deixa_a_linha_no_registro_e_falha (test_f25_skills_duplicadas.RevisaoRodada5)
+Ran 3 tests in 3.297s
+FAILED (failures=3)
+[exit=1]

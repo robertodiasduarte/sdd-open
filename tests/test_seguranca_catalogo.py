@@ -86,7 +86,9 @@ class SemMaterialDeOrigem(unittest.TestCase):
     """Decisão do brainstorm: o pacote não cita o material de origem (termos montados aqui, para este arquivo não citar)."""
 
     PROIBIDOS = re.compile("|".join(["porta " + "aberta", "e-" + "book", "e" + "book", "construir " + "com ia"]), re.I)
-    FORA = ("sdd/features/", "sdd/reports/", "sdd/reviews/", "sdd/traces/", "sdd/releases/", "sdd/contexto/", ".git/")
+    # F26: as pastas de documento (fora do pacote pela trava 1) moram no checkout; o CI roda a suíte nele (avaliador, A2)
+    FORA = ("sdd/features/", "sdd/reports/", "sdd/reviews/", "sdd/traces/", "sdd/releases/", "sdd/contexto/",
+            "sdd/handoffs/", "sdd/archive/", "sdd/curadoria/", ".git/")
     DESTA_FRENTE = (".agents/skills/sdd-seguranca/", "sdd/bin/seguranca-varredura.sh", "docs/security.md",
                     "docs/pt-BR/security.md")
 

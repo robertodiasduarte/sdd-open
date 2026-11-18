@@ -1,0 +1,47 @@
+$ /usr/bin/python3 -B -m unittest -v test_checar.TestRemoto test_checar.TestFrente test_checar.TestVigiaNoWindows test_f16_textos
+test_comandos_impressos_sem_prompt (test_checar.TestRemoto) ... ok
+test_credencial_github_privado_explica_as_duas_causas (test_checar.TestRemoto) ... ok
+test_credencial_recusada_rapida (test_checar.TestRemoto) ... ok
+test_git_fora_do_path (test_checar.TestRemoto) ... ok
+test_host_ssh_desconhecido (test_checar.TestRemoto) ... ok
+test_login_do_editor_esperando (test_checar.TestRemoto) ... ok
+test_rede_parada_com_editor_nao_e_janela_de_login (test_checar.TestRemoto) ... ok
+test_rede_pendurada (test_checar.TestRemoto) ... ok
+test_rede_pendurada_inteira_api_e_remoto (test_checar.TestRemoto) ... ok
+test_remoto_vazio (test_checar.TestRemoto) ... ok
+test_sem_remoto_continua_aviso (test_checar.TestRemoto) ... ok
+test_ssh_pendurado_vigia (test_checar.TestRemoto) ... ok
+test_vazio_com_warning (test_checar.TestRemoto) ... ok
+test_frente_bloqueia_credencial (test_checar.TestFrente) ... ok
+test_frente_bloqueia_host_ssh (test_checar.TestFrente) ... ok
+test_frente_bloqueia_login_do_editor (test_checar.TestFrente) ... ok
+test_frente_bloqueia_rede (test_checar.TestFrente) ... ok
+test_frente_bloqueia_sem_origin (test_checar.TestFrente) ... ok
+test_frente_bloqueia_sem_remoto (test_checar.TestFrente) ... ok
+test_frente_bloqueia_vazio (test_checar.TestFrente) ... ok
+test_frente_nao_olha_dado_exposto (test_checar.TestFrente) ... ok
+test_frente_saudavel_uma_linha (test_checar.TestFrente) ... ok
+test_frente_usa_a_branch_padrao_do_config_e_avisa_da_ref_velha (test_checar.TestFrente) ... ok
+test_slot_com_branch_que_o_origin_nao_tem_nao_vale (test_checar.TestFrente) ... ok
+test_com_winpid_corta_a_arvore_pelo_taskkill (test_checar.TestVigiaNoWindows) ... ok
+test_regra_do_relogio_e_o_caso_vizinho (test_checar.TestVigiaNoWindows) ... ok
+test_sem_winpid_vale_o_kill_de_grupo (test_checar.TestVigiaNoWindows) ... ok
+test_skill_descreve_o_gh_o_editor_e_o_modo_editor (test_f16_textos.ChecarAmbiente) ... ok
+test_passo_0_avisa_do_gh_cedo_sem_parar (test_f16_textos.IniciarRepo) ... ok
+test_passo_2_le_a_linha_gh_e_passo_6_mantem_a_checagem (test_f16_textos.IniciarRepo) ... ok
+test_as_funcoes_do_gh_sao_iguais_nos_2_scripts (test_f16_textos.Instalacao) ... ok
+test_o_bloco_de_instalacao_e_igual_nas_3_skills (test_f16_textos.Instalacao) ... ok
+test_o_bloco_tem_os_comandos_de_cada_sistema_e_o_login (test_f16_textos.Instalacao) ... ok
+test_o_comando_que_o_script_imprime_esta_na_tabela (test_f16_textos.Instalacao) ... ok
+test_aviso_final_nas_duas_formas (test_f16_textos.NovaSessao) ... ok
+test_lista_do_checar_editores_so_vale_com_versao_e_forma (test_f16_textos.NovaSessao) ... ok
+test_modo_terminal_em_3_passos_sem_presumir_um_agente (test_f16_textos.NovaSessao) ... ok
+test_slot_cheio_como_esta_e_vazio_pelo_checar_editores (test_f16_textos.NovaSessao) ... ok
+test_slot_vazio_pergunta_uma_vez_e_nunca_escolhe_sozinho (test_f16_textos.NovaSessao) ... ok
+test_as_3_skills_sobem_de_versao (test_f16_textos.Versoes) ... ok
+
+----------------------------------------------------------------------
+Ran 40 tests in 91.259s
+
+OK
+[exit=0]

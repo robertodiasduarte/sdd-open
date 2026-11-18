@@ -1,0 +1,55 @@
+$ bash /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f17b-starter-etapa2/4bd671df-4c34-431c-bf11-929368bfac1c/scratchpad/at006.sh
+### sdd-brainstorm (gerada): blocos de código shell
+/private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f17b-starter-etapa2/4bd671df-4c34-431c-bf11-929368bfac1c/scratchpad/w1/st/skills/sdd-brainstorm/references/PERGUNTA_DECISAO.md:24:```
+/private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f17b-starter-etapa2/4bd671df-4c34-431c-bf11-929368bfac1c/scratchpad/w1/st/skills/sdd-brainstorm/references/PERGUNTA_DECISAO.md:64:```
+/private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f17b-starter-etapa2/4bd671df-4c34-431c-bf11-929368bfac1c/scratchpad/w1/st/skills/sdd-brainstorm/references/PERGUNTA_DECISAO.md:98:```
+/private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f17b-starter-etapa2/4bd671df-4c34-431c-bf11-929368bfac1c/scratchpad/w1/st/skills/sdd-brainstorm/references/RESUMO_ETAPA.md:70:```
+/private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f17b-starter-etapa2/4bd671df-4c34-431c-bf11-929368bfac1c/scratchpad/w1/st/skills/sdd-brainstorm/references/RESUMO_ETAPA.md:80:```
+/private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f17b-starter-etapa2/4bd671df-4c34-431c-bf11-929368bfac1c/scratchpad/w1/st/skills/sdd-brainstorm/SKILL.md:30:```
+/private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f17b-starter-etapa2/4bd671df-4c34-431c-bf11-929368bfac1c/scratchpad/w1/st/skills/sdd-brainstorm/SKILL.md:130:```
+/private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f17b-starter-etapa2/4bd671df-4c34-431c-bf11-929368bfac1c/scratchpad/w1/st/skills/sdd-brainstorm/SKILL.md:185:```
+### sdd-brainstorm: linhas que mandam rodar bash/python3/sh
+### sdd-brainstorm: Verify Gate
+/private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f17b-starter-etapa2/4bd671df-4c34-431c-bf11-929368bfac1c/scratchpad/w1/st/skills/sdd-brainstorm/references/PERGUNTA_DECISAO.md:20:- **sim** (recomendado) — gravo o arquivo e sigo para o Verify Gate: os 6 testes cobrem os 4 objetivos.
+/private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f17b-starter-etapa2/4bd671df-4c34-431c-bf11-929368bfac1c/scratchpad/w1/st/skills/sdd-brainstorm/references/PERGUNTA_DECISAO.md:79:**Status** — `Build: ✅ 1 Plano · ✅ 2 Modo · ✅ 3 Tarefas 5/5 · ⏸️ 4 Verify Gate · ⬜ 5 Relatório`
+/private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f17b-starter-etapa2/4bd671df-4c34-431c-bf11-929368bfac1c/scratchpad/w1/st/skills/sdd-brainstorm/SKILL.md:222:e outros): o Open traz o Verify Gate executável, a revisão por outra IA, a varredura de segurança em toda publicação
+### sdd-handoff (gerada): blocos de código shell
+/private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f17b-starter-etapa2/4bd671df-4c34-431c-bf11-929368bfac1c/scratchpad/w1/st/skills/sdd-handoff/references/PERGUNTA_DECISAO.md:24:```
+/private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f17b-starter-etapa2/4bd671df-4c34-431c-bf11-929368bfac1c/scratchpad/w1/st/skills/sdd-handoff/references/PERGUNTA_DECISAO.md:64:```
+/private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f17b-starter-etapa2/4bd671df-4c34-431c-bf11-929368bfac1c/scratchpad/w1/st/skills/sdd-handoff/references/PERGUNTA_DECISAO.md:98:```
+/private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f17b-starter-etapa2/4bd671df-4c34-431c-bf11-929368bfac1c/scratchpad/w1/st/skills/sdd-handoff/references/HANDOFF_TEMPLATE.md:98:```
+/private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f17b-starter-etapa2/4bd671df-4c34-431c-bf11-929368bfac1c/scratchpad/w1/st/skills/sdd-handoff/SKILL.md:169:```
+### sdd-handoff: linhas que mandam rodar bash/python3/sh
+### sdd-handoff: Verify Gate
+/private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f17b-starter-etapa2/4bd671df-4c34-431c-bf11-929368bfac1c/scratchpad/w1/st/skills/sdd-handoff/references/PERGUNTA_DECISAO.md:20:- **sim** (recomendado) — gravo o arquivo e sigo para o Verify Gate: os 6 testes cobrem os 4 objetivos.
+/private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f17b-starter-etapa2/4bd671df-4c34-431c-bf11-929368bfac1c/scratchpad/w1/st/skills/sdd-handoff/references/PERGUNTA_DECISAO.md:79:**Status** — `Build: ✅ 1 Plano · ✅ 2 Modo · ✅ 3 Tarefas 5/5 · ⏸️ 4 Verify Gate · ⬜ 5 Relatório`
+/private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f17b-starter-etapa2/4bd671df-4c34-431c-bf11-929368bfac1c/scratchpad/w1/st/skills/sdd-handoff/SKILL.md:123:- estado do Verify Gate, se o projeto tiver um gate por comando (o comando e o que ele saiu em <data>);
+/private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f17b-starter-etapa2/4bd671df-4c34-431c-bf11-929368bfac1c/scratchpad/w1/st/skills/sdd-handoff/SKILL.md:155:- **Sem comando para conferir:** projeto sem gate por comando não tem linha Verify Gate na ficha nem estado do gate
+/private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f17b-starter-etapa2/4bd671df-4c34-431c-bf11-929368bfac1c/scratchpad/w1/st/skills/sdd-handoff/SKILL.md:188:e outros): o Open traz o Verify Gate executável, a revisão por outra IA, a varredura de segurança em toda publicação
+### sdd-governanca (gerada): blocos de código shell
+/private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f17b-starter-etapa2/4bd671df-4c34-431c-bf11-929368bfac1c/scratchpad/w1/st/skills/sdd-governanca/references/PERGUNTA_DECISAO.md:24:```
+/private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f17b-starter-etapa2/4bd671df-4c34-431c-bf11-929368bfac1c/scratchpad/w1/st/skills/sdd-governanca/references/PERGUNTA_DECISAO.md:64:```
+/private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f17b-starter-etapa2/4bd671df-4c34-431c-bf11-929368bfac1c/scratchpad/w1/st/skills/sdd-governanca/references/PERGUNTA_DECISAO.md:98:```
+/private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f17b-starter-etapa2/4bd671df-4c34-431c-bf11-929368bfac1c/scratchpad/w1/st/skills/sdd-governanca/references/CATALOGO_GOVERNANCA.md:149:```
+/private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f17b-starter-etapa2/4bd671df-4c34-431c-bf11-929368bfac1c/scratchpad/w1/st/skills/sdd-governanca/references/CATALOGO_GOVERNANCA.md:198:```
+/private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f17b-starter-etapa2/4bd671df-4c34-431c-bf11-929368bfac1c/scratchpad/w1/st/skills/sdd-governanca/references/CATALOGO_GOVERNANCA.md:267:```
+/private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f17b-starter-etapa2/4bd671df-4c34-431c-bf11-929368bfac1c/scratchpad/w1/st/skills/sdd-governanca/references/CATALOGO_GOVERNANCA.md:336:```
+/private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f17b-starter-etapa2/4bd671df-4c34-431c-bf11-929368bfac1c/scratchpad/w1/st/skills/sdd-governanca/references/CATALOGO_GOVERNANCA.md:419:```
+/private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f17b-starter-etapa2/4bd671df-4c34-431c-bf11-929368bfac1c/scratchpad/w1/st/skills/sdd-governanca/references/CATALOGO_GOVERNANCA.md:460:```
+/private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f17b-starter-etapa2/4bd671df-4c34-431c-bf11-929368bfac1c/scratchpad/w1/st/skills/sdd-governanca/references/CATALOGO_GOVERNANCA.md:502:```
+/private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f17b-starter-etapa2/4bd671df-4c34-431c-bf11-929368bfac1c/scratchpad/w1/st/skills/sdd-governanca/references/CATALOGO_GOVERNANCA.md:573:```
+/private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f17b-starter-etapa2/4bd671df-4c34-431c-bf11-929368bfac1c/scratchpad/w1/st/skills/sdd-governanca/references/RESUMO_ETAPA.md:70:```
+/private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f17b-starter-etapa2/4bd671df-4c34-431c-bf11-929368bfac1c/scratchpad/w1/st/skills/sdd-governanca/references/RESUMO_ETAPA.md:80:```
+/private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f17b-starter-etapa2/4bd671df-4c34-431c-bf11-929368bfac1c/scratchpad/w1/st/skills/sdd-governanca/references/revisor.md:16:```
+/private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f17b-starter-etapa2/4bd671df-4c34-431c-bf11-929368bfac1c/scratchpad/w1/st/skills/sdd-governanca/references/revisor.md:54:```
+/private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f17b-starter-etapa2/4bd671df-4c34-431c-bf11-929368bfac1c/scratchpad/w1/st/skills/sdd-governanca/SKILL.md:130:```
+### sdd-governanca: linhas que mandam rodar bash/python3/sh
+### sdd-governanca: Verify Gate
+/private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f17b-starter-etapa2/4bd671df-4c34-431c-bf11-929368bfac1c/scratchpad/w1/st/skills/sdd-governanca/references/PERGUNTA_DECISAO.md:20:- **sim** (recomendado) — gravo o arquivo e sigo para o Verify Gate: os 6 testes cobrem os 4 objetivos.
+/private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f17b-starter-etapa2/4bd671df-4c34-431c-bf11-929368bfac1c/scratchpad/w1/st/skills/sdd-governanca/references/PERGUNTA_DECISAO.md:79:**Status** — `Build: ✅ 1 Plano · ✅ 2 Modo · ✅ 3 Tarefas 5/5 · ⏸️ 4 Verify Gate · ⬜ 5 Relatório`
+/private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f17b-starter-etapa2/4bd671df-4c34-431c-bf11-929368bfac1c/scratchpad/w1/st/skills/sdd-governanca/references/revisor.md:38:   `sdd/tests/governanca/` e o liga ao `cmd` do Verify Gate é o passo 11 do Define**, na hora em que a
+/private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f17b-starter-etapa2/4bd671df-4c34-431c-bf11-929368bfac1c/scratchpad/w1/st/skills/sdd-governanca/SKILL.md:79:**Com Verify Gate por comando no DEFINE, a prova de cada lacuna aplicada é um script.** Para cada lacuna
+/private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f17b-starter-etapa2/4bd671df-4c34-431c-bf11-929368bfac1c/scratchpad/w1/st/skills/sdd-governanca/SKILL.md:85:   `verify_gate` **existente** do DEFINE — nunca crie um 2º bloco;
+/private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f17b-starter-etapa2/4bd671df-4c34-431c-bf11-929368bfac1c/scratchpad/w1/st/skills/sdd-governanca/SKILL.md:103:- **Prova sem script:** se o DEFINE não tem Verify Gate por comando (na web, ou num projeto sem testes
+/private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f17b-starter-etapa2/4bd671df-4c34-431c-bf11-929368bfac1c/scratchpad/w1/st/skills/sdd-governanca/SKILL.md:163:e outros): o Open traz o Verify Gate executável, a revisão por outra IA, a varredura de segurança em toda publicação
+rc=0

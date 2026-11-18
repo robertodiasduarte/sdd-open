@@ -1,0 +1,191 @@
+$ bash probes/at002.sh <W>   # W = pasta temporária com open/ (repo git com tags) e starter/ (1ª geração commitada)
+### a) tag inexistente
+$ python3 -B open/scripts/gerar-starter.py --tag v0.0.0-nao-existe s2
+🛑 a tag v0.0.0-nao-existe não existe neste repositório (a geração parte sempre de uma tag publicada)
+RESULTADO: NADA FOI GRAVADO
+→ corrija a causa acima e rode de novo.
+rc=64
+$ git -C s2 status --porcelain (nada gravado ⇒ vazio, salvo a sujeira do próprio caso)
+status_rc=0
+### b1) destino sem a forma do starter (pasta vazia)
+$ python3 -B open/scripts/gerar-starter.py --tag v9.9.0 vazio
+🛑 /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f17-starter-gerado/ec173b46-ec5c-43da-887d-2b87a8b93fd4/scratchpad/aval.NXmc/vazio não tem a forma do sdd-starter (skills/ e scripts/check-versions.py)
+RESULTADO: NADA FOI GRAVADO
+→ corrija a causa acima e rode de novo.
+rc=64
+### b2) destino sem scripts/check-versions.py
+$ python3 -B open/scripts/gerar-starter.py --tag v9.9.0 s2
+🛑 /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f17-starter-gerado/ec173b46-ec5c-43da-887d-2b87a8b93fd4/scratchpad/aval.NXmc/s2 não tem a forma do sdd-starter (skills/ e scripts/check-versions.py)
+RESULTADO: NADA FOI GRAVADO
+→ corrija a causa acima e rode de novo.
+rc=64
+$ git -C s2 status --porcelain (nada gravado ⇒ vazio, salvo a sujeira do próprio caso)
+status_rc=0
+### b3) destino sem git
+$ python3 -B open/scripts/gerar-starter.py --tag v9.9.0 semgit
+🛑 /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f17-starter-gerado/ec173b46-ec5c-43da-887d-2b87a8b93fd4/scratchpad/aval.NXmc/semgit não é um repositório git (o git é a rede de segurança da geração)
+RESULTADO: NADA FOI GRAVADO
+→ corrija a causa acima e rode de novo.
+rc=64
+### c1) destino com mudança não commitada
+$ python3 -B open/scripts/gerar-starter.py --tag v9.9.0 s2
+🛑 /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f17-starter-gerado/ec173b46-ec5c-43da-887d-2b87a8b93fd4/scratchpad/aval.NXmc/s2 tem mudança não commitada ou arquivo não rastreado: commite ou guarde antes
+RESULTADO: NADA FOI GRAVADO
+→ corrija a causa acima e rode de novo.
+rc=64
+$ git -C s2 status --porcelain (nada gravado ⇒ vazio, salvo a sujeira do próprio caso)
+ M README.md
+status_rc=0
+### c2) destino com arquivo não rastreado
+$ python3 -B open/scripts/gerar-starter.py --tag v9.9.0 s2
+🛑 /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f17-starter-gerado/ec173b46-ec5c-43da-887d-2b87a8b93fd4/scratchpad/aval.NXmc/s2 tem mudança não commitada ou arquivo não rastreado: commite ou guarde antes
+RESULTADO: NADA FOI GRAVADO
+→ corrija a causa acima e rode de novo.
+rc=64
+$ git -C s2 status --porcelain (nada gravado ⇒ vazio, salvo a sujeira do próprio caso)
+?? novo.txt
+status_rc=0
+### d1) troca que casa 0 vez
+$ python3 -B open/scripts/gerar-starter.py --tag v9.9.1 s2
+🛑 sdd-new-session.md, bloco 2: o trecho casou 0 vez(es) em SKILL.md; esperado exatamente 1 (o texto do Open mudou? ajuste a troca)
+RESULTADO: NADA FOI GRAVADO
+→ corrija a causa acima e rode de novo.
+rc=65
+$ git -C s2 status --porcelain (nada gravado ⇒ vazio, salvo a sujeira do próprio caso)
+status_rc=0
+### d2) troca que casa 2+ vezes (--- no SKILL.md)
+$ python3 -B open/scripts/gerar-starter.py --tag v9.9.2 s2
+🛑 sdd-kb.md, bloco 1: o trecho casou 12 vez(es) em SKILL.md; esperado exatamente 1 (o texto do Open mudou? ajuste a troca)
+RESULTADO: NADA FOI GRAVADO
+→ corrija a causa acima e rode de novo.
+rc=65
+$ git -C s2 status --porcelain (nada gravado ⇒ vazio, salvo a sujeira do próprio caso)
+status_rc=0
+### e) skill da lista sem linha no openai.tsv
+$ python3 -B open/scripts/gerar-starter.py --tag v9.9.3 s2
+🛑 sdd-loop-builder não tem linha em scripts/starter/openai.tsv
+RESULTADO: NADA FOI GRAVADO
+→ corrija a causa acima e rode de novo.
+rc=65
+$ git -C s2 status --porcelain (nada gravado ⇒ vazio, salvo a sujeira do próprio caso)
+status_rc=0
+### f1) lint do init acha citação (sdd/playbook.md num .md)
+$ python3 -B open/scripts/gerar-starter.py --tag v9.9.4 s2
+🛑 o lint do init achou 1 citação(ões) a arquivo que só o init cria:
+  skills/sdd-loop-builder/references/como-falar.md:55: sdd/playbook.md
+RESULTADO: NADA FOI GRAVADO
+→ corrija a causa acima e rode de novo.
+rc=65
+$ git -C s2 status --porcelain (nada gravado ⇒ vazio, salvo a sujeira do próprio caso)
+status_rc=0
+### f2) lint do init acha citação (sdd/bin/ num .sh)
+$ python3 -B open/scripts/gerar-starter.py --tag v9.9.5 s2
+🛑 o lint do init achou 1 citação(ões) a arquivo que só o init cria:
+  skills/sdd-kb/scripts/gate.sh:188: sdd/bin/
+RESULTADO: NADA FOI GRAVADO
+→ corrija a causa acima e rode de novo.
+rc=65
+$ git -C s2 status --porcelain (nada gravado ⇒ vazio, salvo a sujeira do próprio caso)
+status_rc=0
+### g) skill muda contra o destino (1ª geração) sem versão maior
+$ python3 -B open/scripts/gerar-starter.py --tag v9.9.6 s3
+🛑 o version gate do starter reprovaria:
+  sdd-loop-builder: a cópia gerada mudou e a versão não subiu (1.0.0 no starter, 1.0.0 no Open): suba a versão da skill no Open
+RESULTADO: NADA FOI GRAVADO
+→ corrija a causa acima e rode de novo.
+rc=65
+$ git -C s3 status --porcelain (nada gravado ⇒ vazio, salvo a sujeira do próprio caso)
+status_rc=0
+### h) gerador do caminho difere do gerador da tag
+$ python3 -B open/scripts/gerar-starter.py --tag v9.9.7 s2
+🛑 este gerador difere do que está na tag v9.9.7: rode o da tag (git show v9.9.7:scripts/gerar-starter.py > /tmp/g.py; python3 /tmp/g.py …)
+RESULTADO: NADA FOI GRAVADO
+→ corrija a causa acima e rode de novo.
+rc=64
+$ git -C s2 status --porcelain (nada gravado ⇒ vazio, salvo a sujeira do próprio caso)
+status_rc=0
+### i) controle: mesma tag v9.9.0 num starter limpo
+$ python3 -B open/scripts/gerar-starter.py --tag v9.9.0 s2
+✅ sdd-checar-ambiente: 5 arquivo(s), 1 troca(s)
+✅ sdd-iniciar-repo: 3 arquivo(s), 1 troca(s)
+✅ sdd-higiene-dado: 10 arquivo(s), 0 troca(s)
+✅ sdd-new-session: 6 arquivo(s), 1 troca(s)
+✅ sdd-kb: 38 arquivo(s), 0 troca(s)
+✅ sdd-seguranca: 9 arquivo(s), 6 troca(s)
+✅ sdd-auditoria-harness: 7 arquivo(s), 0 troca(s)
+✅ sdd-prompt-builder: 9 arquivo(s), 2 troca(s)
+✅ sdd-engenharia-reversa-saas: 15 arquivo(s), 3 troca(s)
+✅ sdd-loop-builder: 6 arquivo(s), 0 troca(s)
+RESULTADO: GERADO
+→ no starter: python3 scripts/check-gerado.py, os testes dele e um commit numa branch.
+rc=0
+$ git -C s2 status --porcelain (nada gravado ⇒ vazio, salvo a sujeira do próprio caso)
+ M .github/workflows/auto-release.yml
+ M .github/workflows/ci.yml
+ M .github/workflows/release.yml
+ M README.md
+ M scripts/publish-check.sh
+ M skills/sdd-auditoria-harness/SKILL.md
+ M skills/sdd-auditoria-harness/references/AUDIT_PROTOCOL.md
+ M skills/sdd-auditoria-harness/scripts/collect_evidence.py
+ M skills/sdd-checar-ambiente/SKILL.md
+ M skills/sdd-checar-ambiente/scripts/checar.sh
+ D skills/sdd-checar-ambiente/tests/test_checar.py
+ M skills/sdd-engenharia-reversa-saas/CHANGELOG.md
+ M skills/sdd-engenharia-reversa-saas/SKILL.md
+ M skills/sdd-engenharia-reversa-saas/evals/cases.json
+ M skills/sdd-engenharia-reversa-saas/manifest.json
+ M skills/sdd-engenharia-reversa-saas/references/ORQUESTRACAO_SDD.md
+ M skills/sdd-engenharia-reversa-saas/references/como-falar.md
+ D skills/sdd-engenharia-reversa-saas/tests/test_validate_reverse.py
+ M skills/sdd-higiene-dado/CHANGELOG.md
+ M skills/sdd-higiene-dado/SKILL.md
+ M skills/sdd-higiene-dado/evals/cases.json
+ M skills/sdd-higiene-dado/manifest.json
+ M skills/sdd-higiene-dado/references/COMO_FUNCIONA.md
+ M skills/sdd-higiene-dado/references/RUNTIME_COMPATIBILITY.md
+ M skills/sdd-higiene-dado/scripts/alarme.sh
+ M skills/sdd-higiene-dado/scripts/pre-commit.sh
+ D skills/sdd-higiene-dado/tests/test_alarme.py
+ M skills/sdd-iniciar-repo/SKILL.md
+ M skills/sdd-iniciar-repo/scripts/inventario.sh
+ D skills/sdd-iniciar-repo/tests/test_inventario.py
+ M skills/sdd-kb/CHANGELOG.md
+ M skills/sdd-kb/SKILL.md
+ M skills/sdd-kb/assets/CATALOGO_FONTES_TEMPLATE.md
+ M skills/sdd-kb/assets/RULE_TEMPLATE.md
+ M skills/sdd-kb/references/como-falar.md
+ M skills/sdd-kb/references/kb-protocol.md
+ M skills/sdd-kb/references/normativo.md
+ M skills/sdd-kb/scripts/gate.sh
+ M skills/sdd-kb/scripts/kb_normativo.py
+ M skills/sdd-kb/scripts/validate_kb.py
+ M skills/sdd-new-session/SKILL.md
+ M skills/sdd-prompt-builder/SKILL.md
+ M skills/sdd-prompt-builder/references/sdd-integration.md
+?? .gitattributes
+?? GERADO.txt
+?? scripts/check-gerado.py
+?? skills/sdd-auditoria-harness/GERADO.txt
+?? skills/sdd-auditoria-harness/references/PERGUNTA_DECISAO.md
+?? skills/sdd-auditoria-harness/references/como-falar.md
+?? skills/sdd-checar-ambiente/GERADO.txt
+?? skills/sdd-checar-ambiente/references/
+?? skills/sdd-engenharia-reversa-saas/GERADO.txt
+?? skills/sdd-engenharia-reversa-saas/agents/
+?? skills/sdd-engenharia-reversa-saas/references/PERGUNTA_DECISAO.md
+?? skills/sdd-higiene-dado/GERADO.txt
+?? skills/sdd-iniciar-repo/GERADO.txt
+?? skills/sdd-kb/GERADO.txt
+?? skills/sdd-kb/references/PERGUNTA_DECISAO.md
+?? skills/sdd-loop-builder/
+?? skills/sdd-new-session/GERADO.txt
+?? skills/sdd-new-session/references/
+?? skills/sdd-new-session/scripts/
+?? skills/sdd-prompt-builder/GERADO.txt
+?? skills/sdd-prompt-builder/references/LLM_PROMPTS_BUILD_REPORT.md
+?? skills/sdd-prompt-builder/references/LLM_PROMPTS_DESIGN.md
+?? skills/sdd-prompt-builder/references/PERGUNTA_DECISAO.md
+?? skills/sdd-prompt-builder/references/como-falar.md
+?? skills/sdd-seguranca/
+status_rc=0

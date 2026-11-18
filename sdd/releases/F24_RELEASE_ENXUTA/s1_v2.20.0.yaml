@@ -1,0 +1,19 @@
+feature_id: F24_RELEASE_ENXUTA
+slice_id: s1
+versao: 2.20.0
+data: 2026-11-17
+estado: shipado
+veredito: CONCERNS
+waived: null
+dod: "11 ATs com log por AT em 017f09a, todos exit 0; Verify Gate verde em 017f09a (2.435 testes, 3 pulados); CI do PR #36 18 de 18; Release v2.20.0 com shasum -c OK e VERSION = v2.20.0"
+descricao: "Release enxuta: a sdd-release só colhe e põe a colheita numa fila versionada (sdd/curadoria/fila/), e o lote da sdd-playbook julga depois com as mesmas garantias (colheita refeita, proveniência, conferidor, contagem entra e regra pergunta); um commit de papel coberto pelo OK, com push-de-papel.py dizendo se ele publica; depois do OK, só o smoke vermelho para; ficha por acréscimo (bloco Publicado gerado do ledger por ficha-publicado.py); trilha curta decidida por trilha.sh; tabela 'Depois do push' em como-falar.md, uma frase por etapa; sdd-release 2.16.0, sdd-playbook 2.3.0, sdd-handoff 2.3.0"
+deploy: real
+trilha: completa
+review_externo: dispensado — a rodada 5 (sdd/reports/reviews/EXTERNAL_REVIEW_20261116-220949, claude revisa, codex como 2º revisor por superfície de risco, qwen audita, claude desempata) revisou 60e4839; o delta até 017f09a são os 8 consertos dessa rodada, cada um com teste vermelho em 60e4839 e verde depois, e o Verify Gate final roda em 017f09a — decisão do Roberto em 2026-11-17, com o teto de 3 rodadas já passado (4ª e 5ª com o OK dele)
+avisos:
+  - "revisão do código em 5 rodadas (4ª e 5ª acima do teto, com o OK do Roberto) mais a do DESIGN (D1): 60 achados decididos no ledger, 8 rebatidos com evidência ou por escopo"
+  - "pendência: teste de ponta a ponta do lote com um bloco de curador gravado (R2@claude da rodada 5); hoje os scripts do lote têm testes próprios e o despacho é conferido por texto"
+  - "pendência: no próprio Open, a fila da curadoria fica na branch de documentos e o playbook na main; o procedimento do 1º lote aqui precisa ser definido antes de rodá-lo"
+  - "pendência: leitor de ledger do ficha-publicado.py é de linhas chave: valor (stdlib); YAML com sintaxe estranha e campos legíveis gera a linha (R4@codex da rodada 4a)"
+  - "conserto de teste de outra frente: test_f16w_passo0 deixou de fixar a data da contagem (a main estava vermelha desde a curadoria da F23B3)"
+  - "custo nominal n/d: claude-opus-5-5 sem tarifa em precos.tsv; a revisão soma US$ 14,75 + n/d nominal"

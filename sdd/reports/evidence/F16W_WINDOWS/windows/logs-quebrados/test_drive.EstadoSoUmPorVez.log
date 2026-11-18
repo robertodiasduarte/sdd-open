@@ -1,0 +1,106 @@
+test_a_trava_de_estado_e_solta_mesmo_em_parada (test_drive.EstadoSoUmPorVez.test_a_trava_de_estado_e_solta_mesmo_em_parada) ... FAIL
+
+test_recibos_juntos_nao_se_perdem (test_drive.EstadoSoUmPorVez.test_recibos_juntos_nao_se_perdem) ... FAIL
+
+test_trava_de_dono_vivo_nao_vence_pela_idade (test_drive.EstadoSoUmPorVez.test_trava_de_dono_vivo_nao_vence_pela_idade) ... skipped 'fcntl: o Windows n�o tem a trava POSIX'
+
+test_trava_de_estado_abandonada_vence (test_drive.EstadoSoUmPorVez.test_trava_de_estado_abandonada_vence) ... FAIL
+
+test_trava_que_e_link_nao_cria_arquivo_fora (test_drive.EstadoSoUmPorVez.test_trava_que_e_link_nao_cria_arquivo_fora) ... ERROR
+
+test_trava_que_nao_abre_sai_2_sem_laco (test_drive.EstadoSoUmPorVez.test_trava_que_nao_abre_sai_2_sem_laco) ... ERROR
+
+
+
+======================================================================
+
+ERROR: test_trava_que_e_link_nao_cria_arquivo_fora (test_drive.EstadoSoUmPorVez.test_trava_que_e_link_nao_cria_arquivo_fora)
+
+----------------------------------------------------------------------
+
+Traceback (most recent call last):
+
+  File "D:\a\sdd-open\sdd-open\tests\test_drive.py", line 1293, in test_trava_que_e_link_nao_cria_arquivo_fora
+
+    os.symlink(str(fora / "trava"), str(self.r / "sdd/reports/progress/DRIVE_F.estado.lock"))
+
+FileExistsError: [WinError 183] Cannot create a file when that file already exists: 'C:\\Users\\runneradmin\\AppData\\Local\\Temp\\sdd-open-0pu67kgu\\fora\\trava' -> 'C:\\Users\\runneradmin\\AppData\\Local\\Temp\\sdd-open-0pu67kgu\\repo\\sdd\\reports\\progress\\DRIVE_F.estado.lock'
+
+
+
+======================================================================
+
+ERROR: test_trava_que_nao_abre_sai_2_sem_laco (test_drive.EstadoSoUmPorVez.test_trava_que_nao_abre_sai_2_sem_laco)
+
+----------------------------------------------------------------------
+
+Traceback (most recent call last):
+
+  File "D:\a\sdd-open\sdd-open\tests\test_drive.py", line 1280, in test_trava_que_nao_abre_sai_2_sem_laco
+
+    os.symlink(str(self.r / "nao-existe/trava"), str(self.r / "sdd/reports/progress/DRIVE_F.estado.lock"))
+
+FileExistsError: [WinError 183] Cannot create a file when that file already exists: 'C:\\Users\\runneradmin\\AppData\\Local\\Temp\\sdd-open-w676ep54\\repo\\nao-existe\\trava' -> 'C:\\Users\\runneradmin\\AppData\\Local\\Temp\\sdd-open-w676ep54\\repo\\sdd\\reports\\progress\\DRIVE_F.estado.lock'
+
+
+
+======================================================================
+
+FAIL: test_a_trava_de_estado_e_solta_mesmo_em_parada (test_drive.EstadoSoUmPorVez.test_a_trava_de_estado_e_solta_mesmo_em_parada)
+
+----------------------------------------------------------------------
+
+Traceback (most recent call last):
+
+  File "D:\a\sdd-open\sdd-open\tests\test_drive.py", line 1303, in test_a_trava_de_estado_e_solta_mesmo_em_parada
+
+    self.assertFalse(self.existe("sdd/reports/progress/DRIVE_F.estado.lock"))
+
+AssertionError: True is not false
+
+
+
+======================================================================
+
+FAIL: test_recibos_juntos_nao_se_perdem (test_drive.EstadoSoUmPorVez.test_recibos_juntos_nao_se_perdem)
+
+----------------------------------------------------------------------
+
+Traceback (most recent call last):
+
+  File "D:\a\sdd-open\sdd-open\tests\test_drive.py", line 1231, in test_recibos_juntos_nao_se_perdem
+
+    self.assertFalse(self.existe("sdd/reports/progress/DRIVE_F.estado.lock"), "a trava n�o sobra")
+
+AssertionError: True is not false : a trava n�o sobra
+
+
+
+======================================================================
+
+FAIL: test_trava_de_estado_abandonada_vence (test_drive.EstadoSoUmPorVez.test_trava_de_estado_abandonada_vence)
+
+----------------------------------------------------------------------
+
+Traceback (most recent call last):
+
+  File "D:\a\sdd-open\sdd-open\tests\test_drive.py", line 1238, in test_trava_de_estado_abandonada_vence
+
+    self.assertAcao(self.drive("proximo", D), "RODADA")
+
+  File "D:\a\sdd-open\sdd-open\tests\test_drive.py", line 77, in assertAcao
+
+    self.assertRegex(out, r"(?m)^ACAO: %s$" % acao)
+
+AssertionError: Regex didn't match: '(?m)^ACAO: RODADA$' not found in 'ACAO: DESIGN\nrodada: 1/3\no DESIGN n\ufffdo passa no design-lint (saiu 1)\nRESULTADO: CONTINUAR\n\u2192 rode a fase Design sobre este DEFINE e chame proximo de novo.\n'
+
+
+
+----------------------------------------------------------------------
+
+Ran 6 tests in 15.680s
+
+
+
+FAILED (failures=3, errors=2, skipped=1)
+

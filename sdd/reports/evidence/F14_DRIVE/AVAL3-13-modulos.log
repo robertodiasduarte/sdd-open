@@ -1,0 +1,33 @@
+$ cat /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.IaPhB1vDIh/p12.sh; /bin/bash /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.IaPhB1vDIh/p12.sh
+cd /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.IaPhB1vDIh/copia; export TMPDIR=/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.IaPhB1vDIh/tmp PATH=/usr/bin:/bin:/usr/sbin:/sbin
+rc=0; for m in test_drive test_deploy_do_sha test_sdd_archive test_avaliador_guard test_curadoria_bloco; do echo "=== $m"; SDD_TEST_BASH=/bin/bash /usr/bin/python3 -B -m unittest discover -s tests -p "$m.py" 2>&1 | /usr/bin/tail -3; done
+echo "=== self-test"; /bin/bash sdd/bin/sdd-drive.sh --self-test 2>&1 | /usr/bin/tail -3
+echo "=== ast"; /usr/bin/python3 -I -B -c "import ast;ast.parse(open(\"sdd/bin/sdd-archive.py\",encoding=\"utf-8\").read());print(\"ast ok\")"
+exit 0
+=== test_drive
+Ran 91 tests in 182.291s
+
+OK
+=== test_deploy_do_sha
+Ran 35 tests in 24.391s
+
+OK
+=== test_sdd_archive
+Ran 29 tests in 8.856s
+
+OK
+=== test_avaliador_guard
+Ran 14 tests in 5.314s
+
+OK
+=== test_curadoria_bloco
+Ran 49 tests in 23.204s
+
+OK
+=== self-test
+✅ self-test: todos os casos passaram.
+RESULTADO: VERDE
+→ o script está conforme o contrato.
+=== ast
+ast ok
+[exit=0]

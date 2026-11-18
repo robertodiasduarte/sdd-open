@@ -1,0 +1,8 @@
+$ (código de c32f48d + testes novos) python3 -m unittest test_f23_custo.AT004NuncaZero
+FAIL: test_docs_sdd_com_caminho_e_outro_separador (test_f23_custo.AT004NuncaZero)
+FAIL: test_fase_marcada_sem_mensagem_lida_e_n_d (test_f23_custo.AT004NuncaZero)
+FAIL: test_leitor_que_falha_deixa_toda_linha_da_janela_parcial (test_f23_custo.AT004NuncaZero)
+FAIL: test_linha_ilegivel_deixa_toda_linha_da_janela_parcial (test_f23_custo.AT004NuncaZero)
+FAIL: test_raiz_por_link_simbolico_acha_as_sessoes (test_f23_custo.AT004NuncaZero)
+Ran 5 tests in 2.106s
+FAILED (failures=5)

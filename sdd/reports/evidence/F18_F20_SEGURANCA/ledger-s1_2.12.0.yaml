@@ -1,0 +1,21 @@
+feature_id: F18_F20_SEGURANCA
+slice_id: s1
+versao: 2.12.0
+data: 2026-11-11
+estado: shipado
+veredito: CONCERNS
+waived: null
+dod: "catálogo S01–S22 da skill nova sdd-seguranca (fichas com 13 campos, texto próprio, referência OWASP/CWE); seguranca-varredura.sh bloqueia só chave literal (S11, em qualquer caminho menos node_modules/ e o catálogo; PEM só com o corpo) e tabela sem RLS (S01, na ordem das migrações, só com Supabase) acrescentadas contra origin/<branch padrão>, avisa o resto com a prova à mão, teto security.max_warnings, dispensa na linha com motivo; AGENTS.md com as 5 regras de maior risco da stack e o ponteiro; perfil de risco no Brainstorm, passo 12 no Define (sem trava), seção Segurança no Design (design-lint avisa), regras da stack no Build, varredura e 0c fixa no Release, modo incidente; Verify Gate 0 em 382ef04; Release com SHA256SUMS.txt conferido"
+descricao: "Segurança embutida no fluxo (F18, ondas 1 a 3) e ações preventivas (F20, entregas 1 a 5): skill sdd-seguranca 1.0.0 (21ª; modos Define, checklist, app publicado e incidente), sdd/bin/seguranca-varredura.sh, slots security.stack e security.max_warnings, AGENTS.md com regras da stack, sdd-brainstorm 2.3.0, sdd-define 2.6.0, sdd-design 2.6.0, sdd-build 2.9.0, sdd-release 2.11.0, docs/security.md. Passo 0: curadoria da F16 (LM-014 a LM-017, LM-012 refinada e descartada das invariantes), sdd-new-session 1.5.1 (lista do --editores conferida), doctor (causa do Python uma vez, deriva de sdd/bin/lib/, skill do pacote ausente)."
+deploy: real
+review_externo: dispensado — a rodada 4 (sdd/reports/reviews/EXTERNAL_REVIEW_20261111-171628, só o delta --base ff164c6, sha256=2067cc8d1af6) confere com c30b54c, depois das rodadas 1 a 3 (DESIGN; diff inteiro em bf280b7 e ff164c6), todas claude + qwen (diversidade=vendor; 2º revisor dispensado: codex sem cota, gemini sem credencial, 2º revisor pago evitado pela LM-010); depois da rodada 4, só os 3 consertos dela (382ef04), cada um com teste vermelho antes, por decisão do Roberto
+avisos:
+  - "teto do método passado: rodada 4 de revisão (teto 3), só do delta desde a rodada 3, por decisão do Roberto na release; os 3 consertos dela (382ef04) vão com dispensa registrada"
+  - "raio de impacto (0b), antes da última rodada: 4 quebras achadas e consertadas (ff164c6): a causa do Python sumia no init/sync, \\r\\n do Windows no bloco do AGENTS.md, skill do pacote ausente depois do sync, contagem de skills em 2 testes"
+  - "avaliador de contexto novo: NEEDS_WORK no ciclo 1 (4 achados: chave em sdd/ e .claude/ passava calada, CORS com colchete, innerHTML +=, texto do AT-001), PASS_PENDENTE_RECIBO no ciclo 2 com os 10 ATs PASS; o recibo é o Verify Gate"
+  - "1ª revisão de governança caiu por erro do build (verify-gate rodado entre a foto de antes e o despacho); a 2ª passou limpa: N.A."
+  - "cenário incidente-chave da sdd-seguranca escrito e não executado (LM-011); os 2 do modo Define executados, 6 de 6"
+  - "Windows: o fim de linha \\n da varredura tem teste no macOS; sem teste automático no Windows (F16W)"
+  - "falso positivo da varredura no mundo real não medido (casos escritos do zero, decisão do brainstorm)"
+  - "saldo da OpenRouter caiu US$ 1,07 entre a rodada 3 e a 4, mais que o custo registrado: a chave tem outro uso"
+  - "landmines, drift, lint, testes do diff e deploy pulados: o repositório do pacote não tem sdd/config.yaml; a suíte inteira roda no Verify Gate"

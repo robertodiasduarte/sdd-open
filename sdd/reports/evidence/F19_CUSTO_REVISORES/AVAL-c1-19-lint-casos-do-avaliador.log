@@ -1,0 +1,58 @@
+$ PATH=/usr/bin:/bin /usr/bin/python3 -B /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f21-f19/8ca3f42f-d684-434d-9f0b-19bdcf0aef88/scratchpad/aval-f19/tools/lintcasos.py /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f21-f19/8ca3f42f-d684-434d-9f0b-19bdcf0aef88/scratchpad/aval-f19/casos/lint sdd/bin/ledger-revisao-lint.sh
+ok  c01 ok mínimo                                                  esperado=0  obtido=0  msgs=0 | ✅ ledger da revisão: 1 linha(s) e 0 rodada(s) sem achados em 1 arquivo(s), cada linha com veredito, dano e a pasta da revisão.
+ok  c02 id N1 e rótulos                                            esperado=0  obtido=0  msgs=0 | ✅ ledger da revisão: 4 linha(s) e 0 rodada(s) sem achados em 1 arquivo(s), cada linha com veredito, dano e a pasta da revisão.
+ok  c03 pasta com sufixo -2                                        esperado=0  obtido=0  msgs=0 | ✅ ledger da revisão: 1 linha(s) e 0 rodada(s) sem achados em 1 arquivo(s), cada linha com veredito, dano e a pasta da revisão.
+ok  c04 rodada com lote 5a                                         esperado=0  obtido=0  msgs=0 | ✅ ledger da revisão: 1 linha(s) e 0 rodada(s) sem achados em 1 arquivo(s), cada linha com veredito, dano e a pasta da revisão.
+ok  c05 sev fora (CRITICAL)                                        esperado=2  obtido=2  msgs=1 | 🛑 c05.md:3 — severidade `CRITICAL` fora de HIGH, MED, LOW
+ok  c06 sev minúscula                                              esperado=2  obtido=2  msgs=1 | 🛑 c06.md:3 — severidade `high` fora de HIGH, MED, LOW
+ok  c07 rodada fora (rodada 1)                                     esperado=2  obtido=2  msgs=1 | 🛑 c07.md:3 — rodada `rodada 1` fora do formato rodada=<N>
+ok  c08 rodada fora (1)                                            esperado=2  obtido=2  msgs=1 | 🛑 c08.md:3 — rodada `1` fora do formato rodada=<N>
+ok  c09 pasta fora (caminho)                                       esperado=2  obtido=2  msgs=1 | 🛑 c09.md:3 — revisão `sdd/reports/reviews/EXTERNAL_REVIEW_20260301-000001` não é uma pasta EXTERNAL_REVIEW_<AAAAMMDD-HHMMSS>
+ok  c10 pasta fora (data curta)                                    esperado=2  obtido=2  msgs=1 | 🛑 c10.md:3 — revisão `EXTERNAL_REVIEW_2026-03-01` não é uma pasta EXTERNAL_REVIEW_<AAAAMMDD-HHMMSS>
+ok  c11 id fora (A1)                                               esperado=2  obtido=2  msgs=1 | 🛑 c11.md:3 — achado `A1` fora do formato R<n> ou N<n>, com @<engine> opcional: copie o id do arquivo de vereditos
+ok  c12 id fora (R1 claude)                                        esperado=2  obtido=2  msgs=1 | 🛑 c12.md:3 — achado `R1 claude` fora do formato R<n> ou N<n>, com @<engine> opcional: copie o id do arquivo de vereditos
+ok  c13 id fora (#1)                                               esperado=2  obtido=2  msgs=1 | 🛑 c13.md:3 — achado `1` fora do formato R<n> ou N<n>, com @<engine> opcional: copie o id do arquivo de vereditos
+ok  c14 evidência vazia                                            esperado=2  obtido=2  msgs=1 | 🛑 c14.md:3 — evidência vazia
+ok  c15 evidência só traço                                         esperado=2  obtido=2  msgs=1 | 🛑 c15.md:3 — evidência vazia
+ok  c16 falta dano (6 células)                                     esperado=2  obtido=2  msgs=1 | 🛑 c16.md:3 — a linha tem 6 célula(s), o ledger da revisão tem 7: falta a célula `dano` (e a pasta da revisão)
+ok  c17 5 células (formato antigo, com cabeçalho novo)             esperado=2  obtido=2  msgs=1 | 🛑 c17.md:3 — a linha tem 5 célula(s), o ledger da revisão tem 7: falta a célula `dano` (e a pasta da revisão)
+ok  c18 8 células (| na evidência)                                 esperado=2  obtido=2  msgs=1 | 🛑 c18.md:3 — a linha tem 8 células, o ledger da revisão tem 7: escape `|` dentro de célula com `\|`
+ok  c19 | escapado na evidência                                    esperado=0  obtido=0  msgs=0 | ✅ ledger da revisão: 1 linha(s) e 0 rodada(s) sem achados em 1 arquivo(s), cada linha com veredito, dano e a pasta da revisão.
+ok  c20 dano fora (Sim)                                            esperado=2  obtido=2  msgs=1 | 🛑 c20.md:3 — dano `Sim` fora de sim, nao, ?
+ok  c21 dano fora (não)                                            esperado=2  obtido=2  msgs=1 | 🛑 c21.md:3 — dano `não` fora de sim, nao, ?
+ok  c22 dano vazio                                                 esperado=2  obtido=2  msgs=1 | 🛑 c22.md:3 — dano `` fora de sim, nao, ?
+ok  c23 sim com teste test_x                                       esperado=0  obtido=0  msgs=0 | ✅ ledger da revisão: 1 linha(s) e 0 rodada(s) sem achados em 1 arquivo(s), cada linha com veredito, dano e a pasta da revisão.
+ok  c24 sim com TESTE: maiúsculo                                   esperado=0  obtido=0  msgs=0 | ✅ ledger da revisão: 1 linha(s) e 0 rodada(s) sem achados em 1 arquivo(s), cada linha com veredito, dano e a pasta da revisão.
+ok  c25 sim com arquivo::teste                                     esperado=0  obtido=0  msgs=0 | ✅ ledger da revisão: 1 linha(s) e 0 rodada(s) sem achados em 1 arquivo(s), cada linha com veredito, dano e a pasta da revisão.
+ok  c26 sim com tests/…                                            esperado=0  obtido=0  msgs=0 | ✅ ledger da revisão: 1 linha(s) e 0 rodada(s) sem achados em 1 arquivo(s), cada linha com veredito, dano e a pasta da revisão.
+ok  c27 sim com teste: qualquer-palavra                            esperado=2  obtido=2  msgs=1 | 🛑 c27.md:3 — dano = sim sem `teste: <nome>` na evidência: cite o teste que falha no código antigo (test_…, arquivo::teste ou tests/…)
+ok  c28 sim com teste: vazio                                       esperado=2  obtido=2  msgs=1 | 🛑 c28.md:3 — dano = sim sem `teste: <nome>` na evidência: cite o teste que falha no código antigo (test_…, arquivo::teste ou tests/…)
+ok  c29 sim sem a palavra teste:                                   esperado=2  obtido=2  msgs=1 | 🛑 c29.md:3 — dano = sim sem `teste: <nome>` na evidência: cite o teste que falha no código antigo (test_…, arquivo::teste ou tests/…)
+ok  c30 sim + REBATIDA_ESCOPO                                      esperado=2  obtido=2  msgs=1 | 🛑 c30.md:3 — dano = sim com veredito REBATIDA_ESCOPO: só achado APLICADA pode ser falha com dano
+ok  c31 ? sem retroativo                                           esperado=2  obtido=2  msgs=1 | 🛑 c31.md:3 — dano = ? num ledger que não é retroativo: marque sim ou nao (ou declare `retroativo: sim`)
+ok  c32 ? com retroativo: sim                                      esperado=0  obtido=0  msgs=0 | ✅ ledger da revisão: 1 linha(s) e 0 rodada(s) sem achados em 1 arquivo(s), cada linha com veredito, dano e a pasta da revisão.
+ok  c33 ? com retroativo dentro de cerca                           esperado=2  obtido=2  msgs=1 | 🛑 c33.md:7 — dano = ? num ledger que não é retroativo: marque sim ou nao (ou declare `retroativo: sim`)
+ok  c34 ? com **retroativo: sim**                                  esperado=2  obtido=2  msgs=2 | 🛑 c34.md:1 — a marca de retroativo é a linha `retroativo: sim`, sozinha, sem negrito, citação ou maiúscula
+ok  c35 ? com > retroativo: sim                                    esperado=2  obtido=2  msgs=2 | 🛑 c35.md:1 — a marca de retroativo é a linha `retroativo: sim`, sozinha, sem negrito, citação ou maiúscula
+ok  c36 ? com Retroativo: Sim                                      esperado=2  obtido=2  msgs=2 | 🛑 c36.md:1 — a marca de retroativo é a linha `retroativo: sim`, sozinha, sem negrito, citação ou maiúscula
+ok  c37 ? com retroativo: sim e texto na mesma linha               esperado=2  obtido=2  msgs=2 | 🛑 c37.md:1 — a marca de retroativo é a linha `retroativo: sim`, sozinha, sem negrito, citação ou maiúscula
+ok  c38 ? com retroativo:sim (sem espaço)                          esperado=2  obtido=2  msgs=2 | 🛑 c38.md:1 — a marca de retroativo é a linha `retroativo: sim`, sozinha, sem negrito, citação ou maiúscula
+ok  c39 ? com retroativo: nao                                      esperado=2  obtido=2  msgs=1 | 🛑 c39.md:5 — dano = ? num ledger que não é retroativo: marque sim ou nao (ou declare `retroativo: sim`)
+ok  c40 cabeçalho de 5 colunas                                     esperado=2  obtido=2  msgs=1 | 🛑 c40.md:1 — o cabeçalho não é o do molde: `| achado | sev | veredito | rodada | evidência | dano | revisão |`
+ok  c41 cabeçalho com ordem do brainstorm (dano antes de rodada)   esperado=2  obtido=2  msgs=1 | 🛑 c41.md:1 — o cabeçalho não é o do molde: `| achado | sev | veredito | rodada | evidência | dano | revisão |`
+DIF c42 cabeçalho com dano e revisão trocados                      esperado=2  obtido=0  msgs=0 | ✅ ledger da revisão: 1 linha(s) e 0 rodada(s) sem achados em 1 arquivo(s), cada linha com veredito, dano e a pasta da revisão.
+ok  c43 repetido no arquivo                                        esperado=2  obtido=2  msgs=1 | 🛑 c43.md:4 — achado R1 repetido na revisão EXTERNAL_REVIEW_20260301-000001 (1ª vez em c43.md:3)
+ok  c44 mesmo id em revisões diferentes                            esperado=0  obtido=0  msgs=0 | ✅ ledger da revisão: 2 linha(s) e 0 rodada(s) sem achados em 1 arquivo(s), cada linha com veredito, dano e a pasta da revisão.
+ok  c45 tabela só dentro de cerca                                  esperado=64 obtido=64 msgs=1 | 🛑 c45.md — nenhuma linha de dados nem linha `sem achados:`: nada conferido nunca é verde
+ok  c46 linha ruim dentro de cerca + linha boa fora                esperado=0  obtido=0  msgs=0 | ✅ ledger da revisão: 1 linha(s) e 0 rodada(s) sem achados em 1 arquivo(s), cada linha com veredito, dano e a pasta da revisão.
+ok  c47 outra tabela ruim + ledger bom                             esperado=0  obtido=0  msgs=0 | ✅ ledger da revisão: 1 linha(s) e 0 rodada(s) sem achados em 1 arquivo(s), cada linha com veredito, dano e a pasta da revisão.
+ok  c48 só sem achados                                             esperado=0  obtido=0  msgs=0 | ✅ ledger da revisão: 0 linha(s) e 1 rodada(s) sem achados em 1 arquivo(s), cada linha com veredito, dano e a pasta da revisão.
+ok  c49 sem achados mal escrito (Sem achados na rodada 1)          esperado=2  obtido=2  msgs=1 | 🛑 c49.md:1 — rodada sem achados se escreve `sem achados: rodada=<N> EXTERNAL_REVIEW_<AAAAMMDD-HHMMSS>`
+ok  c50 sem achados sem pasta                                      esperado=2  obtido=2  msgs=2 | 🛑 c50.md:1 — rodada sem achados se escreve `sem achados: rodada=<N> EXTERNAL_REVIEW_<AAAAMMDD-HHMMSS>`
+ok  c51 arquivo vazio                                              esperado=64 obtido=64 msgs=1 | 🛑 c51.md — nenhuma linha de dados nem linha `sem achados:`: nada conferido nunca é verde
+ok  c52 só cabeçalho                                               esperado=64 obtido=64 msgs=1 | 🛑 c52.md — nenhuma linha de dados nem linha `sem achados:`: nada conferido nunca é verde
+ok  c53 CRLF                                                       esperado=0  obtido=0  msgs=0 | ✅ ledger da revisão: 1 linha(s) e 0 rodada(s) sem achados em 1 arquivo(s), cada linha com veredito, dano e a pasta da revisão.
+ok  c54 CRLF com retroativo                                        esperado=0  obtido=0  msgs=0 | ✅ ledger da revisão: 1 linha(s) e 0 rodada(s) sem achados em 1 arquivo(s), cada linha com veredito, dano e a pasta da revisão.
+DIF c55 sem achados + linha de dados para a MESMA pasta            esperado=2  obtido=0  msgs=0 | ✅ ledger da revisão: 1 linha(s) e 1 rodada(s) sem achados em 1 arquivo(s), cada linha com veredito, dano e a pasta da revisão.
+divergências do esperado pelo avaliador: 2 de 55
+[exit=0]

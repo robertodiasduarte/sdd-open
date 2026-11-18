@@ -1,0 +1,17 @@
+$ /bin/bash sdd/reports/evidence/F14_PLAYBOOK/real1-repro.sh
+## 1. playbook sem permissão (R1@claude, R2@codex): esperado exit 2, nunca 1
+exit=2
+0
+## 2. sugestão em 2 arquivos (R3): a 2ª release não pode trazer sugestão nova
+0 deltas colhidos em st (2 arquivo(s) elegíveis) — ausência é informação, não verde
+0
+## 3. restauração com link no intermediário (R1@codex): alvo tem de ficar intacto
+sequência: rm -f sdd/features/DEFINE_<F>.md.restaurando && cp "$T/DEFINE.antes" sdd/features/DEFINE_<F>.md.restaurando && rm -f sdd/features/DEFINE_<F>.md && mv sdd/features/DEFINE_<F>.md.restaurando sdd/features/DEFINE_<F>.md && cmp "$T/DEFINE.antes" sdd/features/DEFINE_<F>.md
+exit=0
+vitima agora: vitima
+-rw-r--r--
+## 4. fronteira com git traduzido (R4@claude): LC_ALL=C fixado no script
+exit=64
+## 5. check por link que sai da raiz (R4@codex): esperado exit 2
+exit=2
+[exit=0]

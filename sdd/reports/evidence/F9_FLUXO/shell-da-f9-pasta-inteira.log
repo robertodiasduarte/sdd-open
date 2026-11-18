@@ -1,0 +1,5 @@
+$ bash sdd/bin/gate-shell-evidencia.sh sdd/reports/evidence/F9_FLUXO
+✅ 102 log(s) sem exit de formatador.
+RESULTADO: VERDE
+→ siga para o próximo passo.
+[exit=0]

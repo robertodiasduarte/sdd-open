@@ -1,0 +1,46 @@
+test_prompt_drift_scan (unittest.loader._FailedTest.test_prompt_drift_scan) ... ERROR
+
+
+
+======================================================================
+
+ERROR: test_prompt_drift_scan (unittest.loader._FailedTest.test_prompt_drift_scan)
+
+----------------------------------------------------------------------
+
+ImportError: Failed to import test module: test_prompt_drift_scan
+
+Traceback (most recent call last):
+
+  File "C:\hostedtoolcache\windows\Python\3.12.10\x64\Lib\unittest\loader.py", line 137, in loadTestsFromName
+
+    module = __import__(module_name)
+
+             ^^^^^^^^^^^^^^^^^^^^^^^
+
+  File "D:\a\sdd-open\sdd-open\tests\test_prompt_drift_scan.py", line 9, in <module>
+
+    import pty
+
+  File "C:\hostedtoolcache\windows\Python\3.12.10\x64\Lib\pty.py", line 12, in <module>
+
+    import tty
+
+  File "C:\hostedtoolcache\windows\Python\3.12.10\x64\Lib\tty.py", line 5, in <module>
+
+    from termios import *
+
+ModuleNotFoundError: No module named 'termios'
+
+
+
+
+
+----------------------------------------------------------------------
+
+Ran 1 test in 0.000s
+
+
+
+FAILED (errors=1)
+

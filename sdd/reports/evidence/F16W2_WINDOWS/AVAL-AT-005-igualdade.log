@@ -1,0 +1,9 @@
+$ diff <(função de checar.sh) <(função de inventario.sh)  # corta, marca_nova, gh_estado; HEAD 3ba89de
+--- corta: linhas checar=13 inventario=13
+IGUAIS
+--- marca_nova: linhas checar=31 inventario=31
+IGUAIS
+--- gh_estado: linhas checar=27 inventario=27
+IGUAIS
+.agents/skills/sdd-checar-ambiente/scripts/checar.sh:0
+.agents/skills/sdd-iniciar-repo/scripts/inventario.sh:0

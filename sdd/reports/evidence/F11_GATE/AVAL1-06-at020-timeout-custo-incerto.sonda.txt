@@ -1,0 +1,100 @@
+# NOTA (build): este log do avaliador termina num formatador — o [exit] abaixo NÃO prova o comando (gate-shell-evidencia). Fica como registro da sonda; a prova do AT está em verde-adiados.log / gate-v.log / teste-gate.log.
+$ W=/tmp/aval1-f11.wvW4zp; P=/Users/robertoduarte/rdd-worktrees/sdd-open-f11-gate; echo '### A: gemini (desconhecida) passa do teto, claude revisa'; H_BIN=$W/bin2 /usr/bin/python3 -B $W/h.py $W/r20 $W/e20a 'claude=revisor;openrouter=auditor' -- --base main --reviewer gemini,claude --auditor openrouter --no-revisor2; grep -hE '^(reviewer_(engine_efetivo|custo|motivo)|auditor_custo|custo)' $(ls -d $W/r20/sdd/reports/reviews/*/ | tail -1)META.txt; echo '### B: codex (assinatura) passa do teto, claude revisa'; H_BIN=$W/bin2 /usr/bin/python3 -B $W/h.py $W/r20 $W/e20b 'claude=revisor;openrouter=auditor' -- --base main --reviewer codex,claude --auditor openrouter --no-revisor2; grep -hE '^(reviewer_(engine_efetivo|custo|motivo)|auditor_custo|custo)' $(ls -d $W/r20/sdd/reports/reviews/*/ | tail -1)META.txt; echo '### C: gemini recusa por cota (tentativa recusada), claude revisa'; /usr/bin/python3 -B $W/h.py $W/r20 $W/e20c 'gemini=cota;claude=revisor;openrouter=auditor' -- --base main --reviewer gemini,claude --auditor openrouter --no-revisor2; grep -hE '^(reviewer_(engine_efetivo|custo|motivo)|auditor_custo|custo)' $(ls -d $W/r20/sdd/reports/reviews/*/ | tail -1)META.txt; echo '### D: openrouter 429 x3 esgota (recusada), claude audita'; /usr/bin/python3 -B $W/h.py $W/r20 $W/e20d 'codex=revisor;openrouter=429;claude=auditor' -- --base main --reviewer codex --auditor openrouter,claude --no-revisor2; grep -hE '^(auditor_(engine_efetivo|custo|motivo)|custo)' $(ls -d $W/r20/sdd/reports/reviews/*/ | tail -1)META.txt
+### A: gemini (desconhecida) passa do teto, claude revisa
+▶ revisor: gemini (-) — até 1 min
+▶ revisor: claude (-) — até 1 min
+▶ auditor: openrouter (qwen/qwen3.7-plus) — até 1 min
+⚠️ sem --feature: a revisão não leu BRAINSTORM, DEFINE nem DESIGN, e decisões já documentadas podem voltar como achado
+⚠️ o revisor previsto (gemini) falhou (gemini passou do teto de tempo); quem revisou foi claude
+RESULTADO: REVIEW COMPLETA
+pasta: sdd/reports/reviews/EXTERNAL_REVIEW_20261101-073836
+diff_sha256: a456848719277cb386f912815ac0343f1b3e610074ee8b5aa0854479515592cc
+revisor: claude (claude-stub-5) (troca de engine) — US$ 0,0421 + custo desconhecido
+auditor: openrouter (qwen/qwen3.7-plus via StubProvider) — US$ 0,0012
+diversidade: vendor
+achados: 0 graves, 1 médio, 1 leve
+custo total: US$ 0,0433 (+ 1 papel(is) com custo desconhecido)
+→ rode: bash sdd/bin/sdd-fluxo.sh loop --review sdd/reports/reviews/EXTERNAL_REVIEW_20261101-073836 --ledger <ledger da revisão> --rodada <N>
+
+[ar_rc=0]
+chamadas claude=1
+chamadas openrouter=1
+reviewer_engine_efetivo : claude
+reviewer_motivo         : gemini passou do teto de tempo
+reviewer_custo          : US$ 0.0421 + $?
+auditor_custo           : US$ 0.0012
+custo_total             : US$ 0.0433 (+ 1 papel(is) com custo $?)
+### B: codex (assinatura) passa do teto, claude revisa
+▶ revisor: codex (-) — até 1 min
+▶ revisor: claude (-) — até 1 min
+▶ auditor: openrouter (qwen/qwen3.7-plus) — até 1 min
+⚠️ sem --feature: a revisão não leu BRAINSTORM, DEFINE nem DESIGN, e decisões já documentadas podem voltar como achado
+⚠️ o revisor previsto (codex) falhou (codex passou do teto de tempo); quem revisou foi claude
+RESULTADO: REVIEW COMPLETA
+pasta: sdd/reports/reviews/EXTERNAL_REVIEW_20261101-073838
+diff_sha256: a456848719277cb386f912815ac0343f1b3e610074ee8b5aa0854479515592cc
+revisor: claude (claude-stub-5) (troca de engine) — US$ 0,0421
+auditor: openrouter (qwen/qwen3.7-plus via StubProvider) — US$ 0,0012
+diversidade: vendor
+achados: 0 graves, 1 médio, 1 leve
+custo total: US$ 0,0433
+→ rode: bash sdd/bin/sdd-fluxo.sh loop --review sdd/reports/reviews/EXTERNAL_REVIEW_20261101-073838 --ledger <ledger da revisão> --rodada <N>
+
+[ar_rc=0]
+chamadas claude=1
+chamadas openrouter=1
+reviewer_engine_efetivo : claude
+reviewer_motivo         : codex passou do teto de tempo
+reviewer_custo          : US$ 0.0421
+auditor_custo           : US$ 0.0012
+custo_total             : US$ 0.0433
+### C: gemini recusa por cota (tentativa recusada), claude revisa
+▶ revisor: gemini (-) — até 1 min
+▶ revisor: claude (-) — até 1 min
+▶ auditor: openrouter (qwen/qwen3.7-plus) — até 1 min
+⚠️ sem --feature: a revisão não leu BRAINSTORM, DEFINE nem DESIGN, e decisões já documentadas podem voltar como achado
+⚠️ o revisor previsto (gemini) falhou (gemini falhou (cota, cobrança ou erro)); quem revisou foi claude
+RESULTADO: REVIEW COMPLETA
+pasta: sdd/reports/reviews/EXTERNAL_REVIEW_20261101-073841
+diff_sha256: a456848719277cb386f912815ac0343f1b3e610074ee8b5aa0854479515592cc
+revisor: claude (claude-stub-5) (troca de engine) — US$ 0,0421
+auditor: openrouter (qwen/qwen3.7-plus via StubProvider) — US$ 0,0012
+diversidade: vendor
+achados: 0 graves, 1 médio, 1 leve
+custo total: US$ 0,0433
+→ rode: bash sdd/bin/sdd-fluxo.sh loop --review sdd/reports/reviews/EXTERNAL_REVIEW_20261101-073841 --ledger <ledger da revisão> --rodada <N>
+
+[ar_rc=0]
+chamadas claude=1
+chamadas gemini=1
+chamadas openrouter=1
+reviewer_engine_efetivo : claude
+reviewer_motivo         : gemini falhou (cota, cobrança ou erro)
+reviewer_custo          : US$ 0.0421
+auditor_custo           : US$ 0.0012
+custo_total             : US$ 0.0433
+### D: openrouter 429 x3 esgota (recusada), claude audita
+▶ revisor: codex (-) — até 1 min
+▶ auditor: openrouter (qwen/qwen3.7-plus) — até 1 min
+▶ auditor: claude (-) — até 1 min
+⚠️ sem --feature: a revisão não leu BRAINSTORM, DEFINE nem DESIGN, e decisões já documentadas podem voltar como achado
+⚠️ o auditor previsto (openrouter) falhou (openrouter seguiu no limite passageiro (429) depois de 3 tentativas); quem auditou foi claude
+RESULTADO: REVIEW COMPLETA
+pasta: sdd/reports/reviews/EXTERNAL_REVIEW_20261101-073842
+diff_sha256: a456848719277cb386f912815ac0343f1b3e610074ee8b5aa0854479515592cc
+revisor: codex (-) — incluído na assinatura
+auditor: claude (claude-stub-5) (troca de engine) — US$ 0,0137
+diversidade: vendor
+achados: 0 graves, 1 médio, 1 leve
+custo total: US$ 0,0137
+→ rode: bash sdd/bin/sdd-fluxo.sh loop --review sdd/reports/reviews/EXTERNAL_REVIEW_20261101-073842 --ledger <ledger da revisão> --rodada <N>
+
+[ar_rc=0]
+chamadas claude=1
+chamadas codex=1
+chamadas openrouter=3
+auditor_engine_efetivo  : claude
+auditor_motivo          : openrouter seguiu no limite passageiro (429) depois de 3 tentativas
+auditor_custo           : US$ 0.0137
+custo_total             : US$ 0.0137
+[exit=0]

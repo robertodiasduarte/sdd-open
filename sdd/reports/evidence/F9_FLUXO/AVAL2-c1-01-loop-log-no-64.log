@@ -1,0 +1,22 @@
+$ T=$(mktemp -d); bash sdd/bin/sdd-fluxo.sh loop --review sdd/fixtures/fluxo/review-ok --ledger sdd/fixtures/fluxo/ledger-rebatida.md --rodada 1 --log "$T/LOOP-rodada-1.log" >/dev/null; echo "1ª chamada rc=$?"; bash sdd/bin/sdd-fluxo.sh loop --review "$T/nao-existe" --ledger sdd/fixtures/fluxo/ledger-rebatida.md --rodada 1 --log "$T/LOOP-rodada-1.log"; rc=$?; echo "2ª chamada (META ausente) rc=$rc; o --log ficou assim:"; cat "$T/LOOP-rodada-1.log"; mkdir "$T/ev"; mv "$T/LOOP-rodada-1.log" "$T/ev/"; bash sdd/bin/gate-shell-evidencia.sh "$T/ev"; echo "gate-shell-evidencia rc=$?"; bash sdd/bin/sdd-fluxo.sh loop --review sdd/fixtures/fluxo/review-ok --rodada x --log "$T/sub/dir/L2.log" >/dev/null 2>&1; echo "uso ruim (--rodada x) rc=$?, pasta criada:"; cat "$T/sub/dir/L2.log"; grep -qxF "[exit=64]" "$T/ev/LOOP-rodada-1.log"; r1=$?; grep -qxF "[exit=64]" "$T/sub/dir/L2.log"; r2=$?; rm -rf "${T:?}"; test $rc -eq 64 -a $r1 -eq 0 -a $r2 -eq 0
+1ª chamada rc=0
+🛑 sdd-fluxo: /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.Pdkrzy8uUg/nao-existe/META.txt ausente — sem review não há como declarar PRONTO
+RESULTADO: ENTRADA ILEGÍVEL
+→ sem essa entrada não há como declarar PRONTO; refaça a revisão ou conserte o arquivo.
+2ª chamada (META ausente) rc=64; o --log ficou assim:
+$ sdd-fluxo.sh loop --review /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.Pdkrzy8uUg/nao-existe --ledger sdd/fixtures/fluxo/ledger-rebatida.md --rodada 1
+🛑 sdd-fluxo: /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.Pdkrzy8uUg/nao-existe/META.txt ausente — sem review não há como declarar PRONTO
+RESULTADO: ENTRADA ILEGÍVEL
+→ sem essa entrada não há como declarar PRONTO; refaça a revisão ou conserte o arquivo.
+[exit=64]
+✅ 1 log(s) sem exit de formatador.
+RESULTADO: VERDE
+→ siga para o próximo passo.
+gate-shell-evidencia rc=0
+uso ruim (--rodada x) rc=64, pasta criada:
+$ sdd-fluxo.sh loop --review sdd/fixtures/fluxo/review-ok --rodada x
+🛑 sdd-fluxo: --rodada é inteiro com sufixo de lote opcional (5 ou 5a); --teto/--ciclo-avaliador são inteiros
+RESULTADO: ERRO DE USO
+→ rode `sdd-fluxo.sh` sem argumentos para ver o uso.
+[exit=64]
+[exit=0]

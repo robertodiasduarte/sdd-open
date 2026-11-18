@@ -1,0 +1,33 @@
+$ cd /Users/robertoduarte/rdd-worktrees/sdd-open-f14-drive; grep -n "raio-de-impacto\|deploy-do-sha\|git show origin\|sdd-archive\|gh run list\|merge-base\|gh run rerun" .agents/skills/sdd-release/SKILL.md | cut -c1-200; ls .agents/skills/sdd-release/references/ .agents/skills/sdd-drive .agents/skills/sdd-drive/references 2>&1; grep -n "D4 \|D2 \|auto ·\|paro antes de publicar\|verificar --fundo\|não sei\|<<<RODADA\|executor-drive" .agents/skills/sdd-drive/SKILL.md | cut -c1-170
+88:diff-base (`git merge-base origin/{default_branch} HEAD`).
+132:slot de configuração. Para cada uma, um agente fresco com o brief `references/raio-de-impacto.md` e só os 5 campos dele:
+217:8. **Push.** Re-check de base: `GIT_TERMINAL_PROMPT=0 git fetch` + `git merge-base --is-ancestor origin/{default_branch} HEAD`
+227:    `bash sdd/bin/deploy-do-sha.sh --commit <SHA publicado> --workflow <arquivo> --branch {default_branch}`. O `--workflow` vem do
+235:    | `2` | não está no ar: a frase traz o run, o passo e por que não repetiu; para repetir, um push novo ou `gh workflow run` na ponta, **nunca `gh run rerun` de um run antigo** (com fila, ele pu
+245:    `git show origin/{default_branch}:CHANGELOG.md > CHANGELOG.md`, sem depender de qual lado é "ours" na operação.
+255:    passivo é outra operação, deliberada: `python3 sdd/bin/sdd-archive.py` (simulação por padrão; depois,
+.agents/skills/sdd-drive:
+SKILL.md
+references
+
+.agents/skills/sdd-drive/references:
+como-falar.md
+executor.md
+
+.agents/skills/sdd-release/references/:
+como-falar.md
+ledger.md
+raio-de-impacto.md
+46:   recomendada primeiro e com o porquê, sempre **não sei**, nunca **Outro**. Pergunta aberta: a pergunta
+47:   em negrito e como responder, com a saída "não sei". Várias de uma vez: numeradas.
+69:   rodar o teste final) e `paro antes de publicar`.
+86:**O teste final pode levar mais que o limite de um comando do seu agente:** por isso `verificar --fundo`, que devolve na
+90:como prompt inteiro. Sem subagente, grave o brief em `sdd/reports/briefs/BRIEF_executor-drive_{F}.md` e rode
+91:`bash sdd/bin/sdd-drive.sh aguardar <DEFINE> executor-drive sdd/reports/briefs/BRIEF_executor-drive_{F}.md`: ele para
+94:**O bloco `<<<RODADA` que volta do executor:** `bloqueio:` preenchido ⇒ `bash sdd/bin/sdd-drive.sh bloqueio <DEFINE> "<o motivo>"`. O
+99:Chamar o drive liga o encadeamento só nesta execução; nada muda em `flow.autonomous`. `[auto · de rotina]` vale a
+101:sai na seção `Decidi sozinho` do `DRIVE_REPORT`. As marcadas `[D1 · não se desfaz]`, `[D2 · muda o produto]`,
+102:`[D3 · muda a regra do método]`, `[D4 · limite de tentativas]` e `[D5 · provas em conflito]` são sempre perguntadas à pessoa.
+110:| `orcamento-rodadas` | 20 | pergunta `[D4 · limite de tentativas]` de `references/como-falar.md` |
+111:| `gate-alterado` | 20 | pergunta `[D2 · muda o produto]` de `references/como-falar.md`, com os 2 comandos |
+[exit=0]

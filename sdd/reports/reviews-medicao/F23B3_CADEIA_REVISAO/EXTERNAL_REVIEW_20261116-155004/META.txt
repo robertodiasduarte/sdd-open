@@ -1,0 +1,52 @@
+worktree                     : /Users/robertoduarte/rdd-worktrees/sdd-open-f23b3-cadeia-revisao
+branch                       : feat/f23b3-cadeia-revisao
+protocolo                    : cadeia REVISOR → AUDITOR; paralelo não existe
+base                         : origin/main
+merge_base                   : ef217b985c1b2ab225c2fe03450ae7d2f0f68ae5
+head                         : 3930f69625e0df630cd7c4d0d1fdb650fb62f1ad
+paths                        : -
+diff_sha256                  : 5afc0de3ea93f58908a46d7c3e8ec260b893c3f5e1aa0ad12bf2c3f476591d85
+diff                         : 156KB (33 arquivo(s))
+contexto                     : 66KB (2 doc SDD)
+docs_sdd                     : DEFINE_F23B3_CADEIA_REVISAO.md, DESIGN_F23B3_CADEIA_REVISAO.md
+contexto_cortado             : -
+diversidade                  : vendor
+reviewer_engine_default      : claude
+reviewer_engine_efetivo      : claude
+reviewer_fallback_usado      : nao
+reviewer_motivo              : -
+reviewer_exit                : 0
+reviewer_segundos            : 441
+reviewer_achados             : 4
+reviewer_tokens_entrada      : 113340
+reviewer_tokens_saida        : 29451
+reviewer_tokens_total        : 142791
+reviewer_tokens_cache_lido   : -
+reviewer_tokens_cache_criado : -
+reviewer_modelo              : claude-fable-5-1
+reviewer_custo               : US$ 3.7263
+revisor1_raso                : nao
+gatilho_2o_revisor           : diff sem gatilho de risco — 1 revisor
+gatilho_regra_antiga         : 33 arquivos (limiar 8)
+dispensas_a_mao              : -
+revisor2_engine              : -
+auditor_engine_default       : codex
+auditor_engine_efetivo       : codex
+auditor_fallback_usado       : nao
+auditor_motivo               : -
+auditor_exit                 : 0
+auditor_segundos             : 80
+auditor_vereditos            : 5
+auditor_tokens_entrada       : 86975
+auditor_tokens_saida         : 2229
+auditor_tokens_total         : 97268
+auditor_tokens_cache_lido    : 8064
+auditor_tokens_cache_criado  : 0
+auditor_modelo               : gpt-6.1-sol
+auditor_custo                : assinatura
+convergencia_1o_passe        : nao
+desempate_alvo               : -
+desempate_engine             : -
+desempate_decisao            : -
+custo_total                  : US$ 3.7263
+quando                       : 20261116-155004

@@ -1,0 +1,15 @@
+$ cd <worktree em 55a866d com tests/test_revisao*.py e sdd/fixtures/revisao/ novos>/tests && SDD_TEST_BASH=/bin/bash /usr/bin/python3 -B -m unittest test_revisao.RevisaoRodada2 test_revisao_adapters.Invocacao.test_openrouter_401_sem_corpo_e_auth
+FAIL: test_r1_claude_e_r3_codex_sinais_de_fabrica (test_revisao.RevisaoRodada2) (engine='claude', coluna=6, texto='{"duration_ms":401,"is_error":')
+FAIL: test_r1_claude_e_r3_codex_sinais_de_fabrica (test_revisao.RevisaoRodada2) (engine='codex', coluna=6, texto='{"type":"turn.completed","usag')
+FAIL: test_r1_claude_e_r3_codex_sinais_de_fabrica (test_revisao.RevisaoRodada2) (engine='gemini', coluna=6, texto='{"stats":{"tokens":{"prompt":4')
+FAIL: test_r1_claude_e_r3_codex_sinais_de_fabrica (test_revisao.RevisaoRodada2) (engine='openrouter', coluna=6, texto='HTTP 401\n')
+FAIL: test_r1_claude_e_r3_codex_sinais_de_fabrica (test_revisao.RevisaoRodada2) (engine='openrouter', coluna=7, texto='HTTP 429\n')
+FAIL: test_r1_claude_e_r3_codex_sinais_de_fabrica (test_revisao.RevisaoRodada2) (engine='openrouter', coluna=8, texto='HTTP 402\n')
+FAIL: test_r1_codex_linha_com_crases_e_conteudo_e_68_e_cerca_sozinha_passa (test_revisao.RevisaoRodada2)
+FAIL: test_r2_claude_falha_do_git_add_n_e_64_e_nome_com_dois_pontos_entra (test_revisao.RevisaoRodada2)
+FAIL: test_r2_codex_segundo_revisor_automatico_pula_a_mesma_engine (test_revisao.RevisaoRodada2)
+FAIL: test_r4_codex_custo_de_tentativa_anterior_entra_no_papel (test_revisao.RevisaoRodada2)
+FAIL: test_openrouter_401_sem_corpo_e_auth (test_revisao_adapters.Invocacao)
+Ran 6 tests in 3.432s
+FAILED (failures=11)
+[exit=1]

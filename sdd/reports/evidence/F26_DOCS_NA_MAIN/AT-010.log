@@ -1,0 +1,12 @@
+$ SDD_TEST_BASH=/bin/bash /usr/bin/python3 -B -m unittest -v -k at010 test_f26_marca_starter
+# AT-010 · HEAD e99136d · cópia de git archive HEAD · piso (/usr/bin/python3, /bin/bash)
+test_at010_cada_skill_da_lista_cabe_no_teto_com_a_marca (test_f26_marca_starter.Marca) ... ok
+test_at010_checar_separa_as_duas_origens_com_a_linha_marcada (test_f26_marca_starter.OpenSemMarca) ... ok
+test_at010_gerador_recusa_copia_que_mudou_sem_versao_maior (test_f26_marca_starter.OpenSemMarca) ... ok
+test_at010_open_sem_sdd_starter (test_f26_marca_starter.OpenSemMarca) ... ok
+
+----------------------------------------------------------------------
+Ran 4 tests in 5.823s
+
+OK
+[exit=0]

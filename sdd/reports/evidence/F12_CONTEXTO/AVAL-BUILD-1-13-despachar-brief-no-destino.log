@@ -1,0 +1,17 @@
+$ cd /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.iKg4zpjEH3 && mkdir -p sdd/reports/briefs && cp .agents/skills/sdd-define/references/cartografo.md sdd/reports/briefs/BRIEF_cartografo_F2.md && bash sdd/bin/sdd-fluxo.sh despachar cartografo F2 sdd/reports/briefs/BRIEF_cartografo_F2.md
+⏸️ sdd-open: esta etapa precisa de uma sessão nova do agente (papel: cartografo).
+
+**Por que parei:** a conferência precisa de alguém que não viu esta conversa, e este agente não abre essa sessão sozinho.
+**Onde:** numa janela nova do seu agente, na pasta /private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.iKg4zpjEH3.
+**Passos:**
+1. Abra uma sessão nova do agente nesta pasta → você vê o agente pronto, sem histórico.
+2. Cole o conteúdo de sdd/reports/briefs/BRIEF_cartografo_F2.md → o agente começa a ler o código do domínio.
+3. Quando ele terminar, copie o bloco que começa com `<<<CONTEXTO` até `>>>` e cole aqui → é o que eu preciso para continuar.
+**O que não foi feito:** nada foi gravado em sdd/contexto/.
+**Brief:** sdd/reports/briefs/BRIEF_cartografo_F2.md
+**Sessão nova:** abra o agente nesta pasta e cole o conteúdo do brief.
+
+Quando terminar, me peça de novo, eu continuo daqui.
+RESULTADO: AGUARDANDO_HUMANO
+→ quando a pessoa colar o retorno, continue do passo que parou.
+[exit=40]

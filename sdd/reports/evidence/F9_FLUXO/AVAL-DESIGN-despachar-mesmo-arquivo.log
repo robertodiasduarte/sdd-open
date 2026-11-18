@@ -1,0 +1,6 @@
+$ bash cp-mesmo.sh <tmp>
+cp: sdd/reports/briefs/BRIEF_avaliador_F.md and sdd/reports/briefs/BRIEF_avaliador_F.md are identical (not copied).
+cp mesmo caminho: exit=1
+cp: /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f9-fluxo/94899e31-441d-456b-92d6-96e16fa6305d/scratchpad/tmps/cp.JCTyUO/sdd/reports/briefs/BRIEF_avaliador_F.md and ./sdd/reports/briefs/BRIEF_avaliador_F.md are identical (not copied).
+cp caminho relativo x absoluto: exit=1
+[exit=0]

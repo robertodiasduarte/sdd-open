@@ -1,0 +1,13 @@
+$ bash /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f10-revisao/bd420f6e-558d-4962-a0c9-40cdfc2cbd27/scratchpad/p/a5.sh AT021
+6 openrouter qwen/qwen3.7-plus 0.32 1.28 https://openrouter.ai/api/v1/models True openrouter→url da lista: True
+6 openrouter deepseek/deepseek-v4-flash 0.091 0.182 https://openrouter.ai/api/v1/models True openrouter→url da lista: True
+# precos.tsv — tarifa pública por modelo, em US$ por milhão de tokens. 6 colunas separadas por TAB:
+#   engine · modelo · usd_mtok_entrada · usd_mtok_saida · fonte (URL https:// da lista pública) · conferido_em (AAAA-MM-DD)
+# Usado só quando a engine não reporta o custo (o OpenRouter reporta usage.cost; o claude reporta
+# total_cost_usd): o META mostra ≈US$ (estimado). Modelo ausente daqui e sem custo reportado = $? — nunca 0.
+# Preço muda: confira na fonte e atualize a data; nunca preencha de memória.
+
+--- modelo ausente do precos.tsv → $?
+reviewer_custo          : $?
+auditor_custo           : $?
+[exit=0]

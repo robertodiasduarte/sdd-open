@@ -1,0 +1,20 @@
+$ for f in sdd/bin/verify-gate.sh sdd/bin/report-lint.py sdd/bin/playbook-lint.sh scripts/publish-gate.sh scripts/check-versions.py $(git ls-tree -r --name-only v2.2.4 sdd/fixtures) .agents/skills/sdd-iniciar-repo/SKILL.md .agents/skills/sdd-higiene-dado/SKILL.md sdd/templates/fragments/RESUMO_ETAPA.md; do a=$(git show v2.2.4:$f | shasum -a 256 | cut -c1-16); b=$(shasum -a 256 < $f | cut -c1-16); [ "$a" = "$b" ] && echo "igual $a $f" || { echo "DIFERENTE $a $b $f"; x=1; }; done; echo "skills: $(ls -d .agents/skills/sdd-*/ | wc -l | tr -d " ")"; exit ${x:-0}
+igual bb28521afea8f9ee sdd/bin/verify-gate.sh
+igual dca2cf84f763632a sdd/bin/report-lint.py
+igual 9d85b580a259fe2e sdd/bin/playbook-lint.sh
+igual 20bd174f72abe755 scripts/publish-gate.sh
+igual 0458ee42f3b151ea scripts/check-versions.py
+igual e96d1f2efe8726d2 sdd/fixtures/BRAINSTORM_EXEMPLO.md
+igual af1f05e4cb611040 sdd/fixtures/DEFINE_FIXTURE_CONTROLE.md
+igual cacaed1d5095c37e sdd/fixtures/DEFINE_FIXTURE_GOVERNANCA.md
+igual 20bea03728220025 sdd/fixtures/DEFINE_FIXTURE_NEEDS_CLARIFICATION.md
+igual 1be2aea8cd66cb32 sdd/fixtures/DEFINE_FIXTURE_SEM_BLOCO.md
+igual 8e7a43792b19d7f5 sdd/fixtures/playbook/playbook-colapso.md
+igual 193817365e6d5246 sdd/fixtures/playbook/playbook-delta-ok.md
+igual 53652c0b1fbd15de sdd/fixtures/playbook/playbook-invalido.md
+igual 1d9b03d0b310116b sdd/fixtures/playbook/playbook-valido.md
+igual 0e7f3148ecdcdf82 .agents/skills/sdd-iniciar-repo/SKILL.md
+igual c06fec9f034c1604 .agents/skills/sdd-higiene-dado/SKILL.md
+igual 030178d41367b113 sdd/templates/fragments/RESUMO_ETAPA.md
+skills: 16
+exit=0

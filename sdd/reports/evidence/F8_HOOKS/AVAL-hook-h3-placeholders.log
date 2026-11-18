@@ -1,0 +1,30 @@
+$ cd /tmp/sdd-aval/hook-h3b && cp /Users/robertoduarte/rdd-worktrees/sdd-open-f8-aval/sdd/fixtures/hooks/config-placeholder.json placeholders.json && printf '{"parse-passwd": "^1.0.0"}\n' > package-lock.json && git add placeholders.json package-lock.json && git commit -q -m h3-placeholders && echo PASSOU-placeholders-e-parse-passwd
+PASSOU-placeholders-e-parse-passwd
+[exit=0]
+$ cd /tmp/sdd-aval/hook-h3b && printf '{"dependencies": {"token": "^2.0.0"}}\n' > package-lock.json && git add package-lock.json && git commit -q -m h3-pkg-token; rc=$?; git restore --staged package-lock.json; git checkout -- package-lock.json; exit $rc
+
+sdd-open: commit recusado. Encontrei o que não pode entrar nesta versão:
+
+  🛑 [H3] package-lock.json: credencial em texto claro (chave: token)
+
+Por que importa:
+  [H3] o que entra no git fica no histórico e vai junto em todo push; depois disso, rotacionar a credencial é o único conserto
+
+RESULTADO: COMMIT RECUSADO
+→ [H3] troque o valor por um placeholder (${VAR}, CHANGEME, example) ou tire o arquivo desta versão: git restore --staged "<arquivo>"
+→ se você conferiu e quer gravar mesmo assim, só desta vez: git commit --no-verify
+  Agente de IA: não use --no-verify sem o OK explícito da pessoa.
+[exit=1]
+$ cd /tmp/sdd-aval/hook-h3b && V=$(LC_ALL=C tr -dc A-Za-z0-9 </dev/urandom | head -c 24) && printf 'password="%s"\n' "$V" > notes.md && git add notes.md && PATH=/bin:/usr/bin git commit -q -m h3-md && echo PASSOU-md-nao-e-config-sem-gitleaks
+PASSOU-md-nao-e-config-sem-gitleaks
+[exit=0]
+$ cd /tmp/sdd-aval/hook-h3b && V=$(LC_ALL=C tr -dc A-Za-z0-9 </dev/urandom | head -c 24) && printf 'PASSWORD=%s\n' "$V" > .env.prod && git add .env.prod && out=$(PATH=/bin:/usr/bin git commit -q -m h3-env-sem-aspas 2>&1); rc=$?; printf '%s\n' "$out" | grep -c "$V" | sed 's/^/vezes-que-o-valor-aparece=/'; printf '%s\n' "$out"; git reset -q --soft HEAD~1 2>/dev/null; git rm -q --cached .env.prod; rm -f .env.prod; echo rc=$rc
+vezes-que-o-valor-aparece=0
+
+rc=0
+[exit=0]
+$ cd /tmp/sdd-aval/hook-h3b && git status --short; git log --oneline | head -3
+c0381b0 h3-md
+ec7707d h3-placeholders
+f54db8d sdd-open init
+[exit=0]

@@ -1,0 +1,6 @@
+$ wc -l .agents/skills/sdd-*/SKILL.md | sort -n | tail -4
+     304 .agents/skills/sdd-new-session/SKILL.md
+     336 .agents/skills/sdd-kb/SKILL.md
+     376 .agents/skills/sdd-iniciar-repo/SKILL.md
+    3777 total
+exit=0

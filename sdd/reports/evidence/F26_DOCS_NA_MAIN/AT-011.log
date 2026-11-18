@@ -1,0 +1,14 @@
+$ SDD_TEST_BASH=/bin/bash /usr/bin/python3 -B -m unittest -v -k at011 test_f26_docs_na_main
+# AT-011 · HEAD e99136d · cópia de git archive HEAD · piso (/usr/bin/python3, /bin/bash)
+test_at011_anexado_e_conferido_e_download_diferente_reprova (test_f26_docs_na_main.Bruto) ... ok
+test_at011_bruto_no_gitignore (test_f26_docs_na_main.Bruto) ... ok
+test_at011_release_ausente_nada_enviado (test_f26_docs_na_main.Bruto) ... ok
+test_at011_sem_bruto (test_f26_docs_na_main.Bruto) ... ok
+test_at011_texto_da_release_e_da_referencia (test_f26_docs_na_main.Bruto) ... ok
+test_at011_varredura_vermelha_nada_enviado (test_f26_docs_na_main.Bruto) ... ok
+
+----------------------------------------------------------------------
+Ran 6 tests in 1.616s
+
+OK
+[exit=0]

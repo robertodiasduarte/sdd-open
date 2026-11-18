@@ -1,0 +1,85 @@
+$ /bin/bash /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f4-conversa/5e736f5b-fdb5-4cdd-a304-706fff11b1bb/scratchpad/low.sh
+== L1 sem --conversa, frontmatter inválido: v2.2.4 vs fd94876
+v2.2.4 exit=1
+fd94876 exit=1
+(saídas idênticas)
+== L1 opção desconhecida --foo (DESIGN Decisão 2: sai 64)
+🛑 --foo: não consegui ler: [Errno 2] No such file or directory: '--foo'
+🛑 /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.5FvB26flDt/sdd-x/SKILL.md: name: 'sdd-y' difere do nome da pasta 'sdd-x'
+RESULTADO: VERMELHO
+→ corrija o frontmatter apontado acima (spec: agentskills.io/specification)
+v2.2.4 exit=1
+skill-lint: opção desconhecida: --foo
+uso: skill-lint.py [--conversa] <SKILL.md> [...]
+fd94876 exit=64
+== L2 '**Próximo passo:** ' + 150 chars
+🛑 /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.DlMsMmGPqG/conversa-controle/SKILL.md: references/como-falar.md:28 **Próximo passo** com 150 caracteres (limite 100)
+RESULTADO: VERMELHO
+→ corrija o apontado acima (frontmatter: agentskills.io/specification; conversa: sdd/templates/fragments/PERGUNTA_DECISAO.md)
+exit=1
+== L2 '> **Próximo passo** — ' + 150 chars
+🛑 /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.bl3dzxuYSz/conversa-controle/SKILL.md: references/como-falar.md:28 **Próximo passo** com 150 caracteres (limite 100)
+RESULTADO: VERMELHO
+→ corrija o apontado acima (frontmatter: agentskills.io/specification; conversa: sdd/templates/fragments/PERGUNTA_DECISAO.md)
+exit=1
+== L3 '- **Outro (descreva)** —'
+🛑 /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.nQxfZKYRLA/conversa-controle/SKILL.md: references/como-falar.md:19 **Posso gravar o resultado?** — tem a opção **Outro**: resposta fora das opções é tratada como dúvida
+RESULTADO: VERMELHO
+→ corrija o apontado acima (frontmatter: agentskills.io/specification; conversa: sdd/templates/fragments/PERGUNTA_DECISAO.md)
+exit=1
+== L3 residual '- **Outros** —'
+✅ /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.0SJ3jkCXvt/conversa-controle/SKILL.md: frontmatter válido · camada de conversa ok
+exit=0
+== L4 test_agnostico: arquivo sem extensão, .toml, .html, 'Task Tool'
+['.agents/skills/sdd-x/hooks/pre.toml:1: PreToolUse', '.agents/skills/sdd-x/scripts/gancho:1: PostToolUse', 'sdd/templates/x.html:1: Task Tool']
+== L4 novo: .md em Latin-1 com AskUserQuestion (fd94876 pula; 4e77a1f dava erro)
+[]
+UnicodeDecodeError: 'utf-8' codec can't decode byte 0xe7 in position 30: invalid continuation byte
+== L5 design-lint/handoff-lint: chmod 000 e não-UTF-8
+🛑 /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.5FvB26flDt/D.md: não consegui ler: [Errno 13] Permission denied: '/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.5FvB26flDt/D.md'
+RESULTADO: VERMELHO
+→ confira a permissão e a codificação (UTF-8) do arquivo e rode de novo
+exit=1
+🛑 /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.5FvB26flDt/bin.md: não consegui ler: 'utf-8' codec can't decode byte 0xff in position 4: invalid start byte
+RESULTADO: VERMELHO
+→ confira a permissão e a codificação (UTF-8) do arquivo e rode de novo
+exit=1
+🛑 /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.5FvB26flDt/H.md: não consegui ler: [Errno 13] Permission denied: '/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.5FvB26flDt/H.md'
+RESULTADO: VERMELHO
+→ confira a permissão e a codificação (UTF-8) do arquivo e rode de novo
+exit=1
+🛑 /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.5FvB26flDt/bin.md: não consegui ler: 'utf-8' codec can't decode byte 0xff in position 4: invalid start byte
+RESULTADO: VERMELHO
+→ confira a permissão e a codificação (UTF-8) do arquivo e rode de novo
+exit=1
+== L5 há teste do ramo ilegível? (grep chmod/xff/decode nos testes dos 2 lints)
+grep exit=1
+== L6 « » em prosa no design-lint
+✅ /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.5FvB26flDt/D6.md: DESIGN válido
+exit=0
+== L7 instrução de identificação nas skills (14 da F4)
+.agents/skills/sdd-auditoria-harness/SKILL.md:1
+.agents/skills/sdd-brainstorm/SKILL.md:1
+.agents/skills/sdd-build/SKILL.md:1
+.agents/skills/sdd-checar-ambiente/SKILL.md:0
+.agents/skills/sdd-define/SKILL.md:1
+.agents/skills/sdd-design/SKILL.md:1
+.agents/skills/sdd-governanca/SKILL.md:1
+.agents/skills/sdd-handoff/SKILL.md:1
+.agents/skills/sdd-higiene-dado/SKILL.md:0
+.agents/skills/sdd-iniciar-repo/SKILL.md:0
+.agents/skills/sdd-iterate/SKILL.md:1
+.agents/skills/sdd-new-session/SKILL.md:1
+.agents/skills/sdd-playbook/SKILL.md:1
+.agents/skills/sdd-prompt-builder/SKILL.md:1
+.agents/skills/sdd-release/SKILL.md:1
+.agents/skills/sdd-ux-review/SKILL.md:1
+73:aplica não é mencionada fora dessa linha. Termine a linha ✅ com a identificação desta skill:
+== L8 seção dentro de bloco de código
+✅ /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.s85WaWsE86/conversa-controle/SKILL.md: frontmatter válido · camada de conversa ok
+exit=0
+== DESIGN v1.1: corpo das Decisões 4/5 vs código
+193:- **Placeholder** (`\x7b`/`\x7d` = chaves): `«[^»]*»`, `\x7b[A-Z][A-Z0-9_][A-Z0-9_]+\x7d` ou `\x7b[^\x7b\x7d\n]*\s[^\x7b\x7d\n]*\x7d`, fora de código.
+194:- **Saída:** cada violação vira uma linha `🛑 <arquivo>: <regra>`; exit 1 com `RESULTADO: VERMELHO`; exit 0 com `✅ <arquivo>: DESIGN válido`. Sem argumento ou arquivo ilegível, 64.
+219:  - `## Prompt de retomada` com ≥1 bloco cercado;
+560:PLACEHOLDER = re.compile(r"«[^»]*»|\x7b[A-Z][A-Z0-9_][A-Z0-9_]+\x7d|\x7b[^\x7b\x7d\n]*\s[^\x7b\x7d\n]*\x7d")

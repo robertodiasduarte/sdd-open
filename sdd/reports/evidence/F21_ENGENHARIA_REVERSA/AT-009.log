@@ -1,0 +1,10 @@
+$ (em tests/) /usr/bin/python3 -B -m unittest -v test_f21_textos.Documentos.test_ancoras_das_skills_orquestradas test_f21_textos.Documentos.test_agents_tmpl_tem_a_linha_er_entre_kb_e_0_e_as_outras_no_lugar test_skill_lint.SkillLint.test_as_18_skills_reais_passam_com_conversa
+test_ancoras_das_skills_orquestradas (test_f21_textos.Documentos) ... ok
+test_agents_tmpl_tem_a_linha_er_entre_kb_e_0_e_as_outras_no_lugar (test_f21_textos.Documentos) ... ok
+test_as_18_skills_reais_passam_com_conversa (test_skill_lint.SkillLint) ... ok
+
+----------------------------------------------------------------------
+Ran 3 tests in 0.073s
+
+OK
+[exit=0]

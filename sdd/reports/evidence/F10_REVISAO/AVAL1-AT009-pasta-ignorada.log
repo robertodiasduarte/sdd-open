@@ -1,0 +1,28 @@
+$ bash /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f10-revisao/bd420f6e-558d-4962-a0c9-40cdfc2cbd27/scratchpad/p/a2.sh AT009
+--- pasta padrão não ignorada
++ adversarial-review.sh --base main --reviewer stub-a --auditor stub-b
+🛑 a pasta sdd/reports/reviews não está ignorada pelo git: o diff e as respostas das engines iriam para o repositório.
+RESULTADO: PAROU
+→ rode: printf '%s\n' 'sdd/reports/reviews/' >> "$(git rev-parse --git-common-dir)/info/exclude"
+[rc=64]
+chamadas=0 pasta=nao
+--- o comando sugerido resolve
+sdd/reports/reviews/
+RESULTADO: REVIEW COMPLETA
+[rc=0]
+--- output_dir customizado não ignorado
++ adversarial-review.sh --base main --reviewer stub-a --auditor stub-b
+🛑 a pasta revs não está ignorada pelo git: o diff e as respostas das engines iriam para o repositório.
+RESULTADO: PAROU
+→ rode: printf '%s\n' 'revs/' >> "$(git rev-parse --git-common-dir)/info/exclude"
+[rc=64]
+--- worktree ligada: comando aponta para o git-common-dir
++ adversarial-review.sh --base main --reviewer stub-a --auditor stub-b
+🛑 a pasta outra/pasta não está ignorada pelo git: o diff e as respostas das engines iriam para o repositório.
+RESULTADO: PAROU
+→ rode: printf '%s\n' 'outra/pasta/' >> "$(git rev-parse --git-common-dir)/info/exclude"
+[rc=64]
+exclude comum: outra/pasta/
+RESULTADO: REVIEW COMPLETA
+[rc=0]
+[exit=0]

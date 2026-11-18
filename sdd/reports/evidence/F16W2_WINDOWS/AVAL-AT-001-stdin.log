@@ -1,0 +1,21 @@
+$ cd /Users/robertoduarte/rdd-worktrees/sdd-open-f16w-windows && for R in base head: python3(winpy) <R>/sdd/bin/report-lint.py sdd/reports/BUILD_REPORT_F16W_WINDOWS.md  x  cat … | python3(winpy) report-lint.py --stdin sdd/reports/BUILD_REPORT_F16W_WINDOWS.md  # winpy = stdin/stdout cp1252 como no Windows (/private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f16w-windows/b56e801b-0f18-49ee-b51c-5b9188b29c23/scratchpad/emul.py)
+=== base
+--- por caminho:
+      File "/Library/Developer/CommandLineTools/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/encodings/cp1252.py", line 19, in encode
+    return codecs.charmap_encode(input,self.errors,encoding_table)[0]
+UnicodeEncodeError: 'charmap' codec can't encode character '\u2705' in position 0: character maps to <undefined>
+--- por --stdin:
+      File "/Library/Developer/CommandLineTools/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/encodings/cp1252.py", line 19, in encode
+    return codecs.charmap_encode(input,self.errors,encoding_table)[0]
+UnicodeEncodeError: 'charmap' codec can't encode character '\u2705' in position 0: character maps to <undefined>
+>>> mesma saída
+=== head
+--- por caminho:
+✅ sdd/reports/BUILD_REPORT_F16W_WINDOWS.md: todo `true` tem evidência abrível e a avaliação está provada ou declarada
+RESULTADO: VERDE
+→ o relatório pode ser commitado.
+--- por --stdin:
+✅ sdd/reports/BUILD_REPORT_F16W_WINDOWS.md: todo `true` tem evidência abrível e a avaliação está provada ou declarada
+RESULTADO: VERDE
+→ o relatório pode ser commitado.
+>>> mesma saída

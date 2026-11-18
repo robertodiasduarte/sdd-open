@@ -1,0 +1,8 @@
+$ /usr/bin/python3 -B -m unittest -v test_matriz_new_session.Portadas.test_sem_referencia_ao_starter
+test_sem_referencia_ao_starter (test_matriz_new_session.Portadas) ... ok
+
+----------------------------------------------------------------------
+Ran 1 test in 0.002s
+
+OK
+exit=0

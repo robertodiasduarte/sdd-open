@@ -1,0 +1,59 @@
+$ bash /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f10-revisao/bd420f6e-558d-4962-a0c9-40cdfc2cbd27/scratchpad/p/c5.sh
+=== achado 5: o revisor cai de stub-a (cota) para stub-c; o auditor só tem stub-c → excluído
+## ar --reviewer stub-a:falha-quota,stub-c --auditor stub-c --no-revisor2
+▶ revisor: stub-a:falha-quota (falha-quota) — até 1 min
+▶ revisor: stub-c (revisor-ok) — até 1 min
+⚠️ sem --feature: a revisão não leu BRAINSTORM, DEFINE nem DESIGN, e decisões já documentadas podem voltar como achado
+⚠️ o revisor previsto (stub-a:falha-quota) falhou (stub-a:falha-quota falhou (cota, cobrança ou erro)); quem revisou foi stub-c
+RESULTADO: PAROU
+auditor: stub-c excluída (já tem outro papel nesta revisão)
+pasta: sdd/reports/reviews/EXTERNAL_REVIEW_20261101-001901
+diff_sha256: 373d6a164c040c00b4bf57ea64e213b7c97f40de1713e69304d2712f607e2417
+revisor: stub-c (stub-modelo) (troca de engine) — custo desconhecido
+diversidade: -
+custo total: custo desconhecido
+→ escolha outra engine para auditar (review.auditor) ou rode com --um-engine
+[rc=67]
+diversidade             : -
+reviewer_engine_efetivo : stub-c
+reviewer_fallback_usado : sim
+auditor_engine_efetivo  : -
+auditor_motivo          : stub-c excluída (já tem outro papel nesta revisão)
+auditor_exit            : 67
+=== --um-engine com auditor que responde sem bloco (68): o aviso de mesma engine continua?
+## ar --reviewer stub-a --auditor stub-a:auditor-sem-bloco --um-engine --no-revisor2
+▶ revisor: stub-a (revisor-ok) — até 1 min
+▶ auditor: stub-a:auditor-sem-bloco (auditor-sem-bloco) — até 1 min
+⚠️ sem --feature: a revisão não leu BRAINSTORM, DEFINE nem DESIGN, e decisões já documentadas podem voltar como achado
+RESULTADO: REVIEW INVÁLIDA
+auditor (stub-a:auditor-sem-bloco): a engine respondeu fora do formato; isto não é zero achados
+pasta: sdd/reports/reviews/EXTERNAL_REVIEW_20261101-001902
+diff_sha256: 373d6a164c040c00b4bf57ea64e213b7c97f40de1713e69304d2712f607e2417
+revisor: stub-a (stub-modelo) — incluído na assinatura
+auditor: stub-a:auditor-sem-bloco (stub-modelo) — incluído na assinatura
+diversidade: -
+custo total: incluído na assinatura
+→ rode de novo; se repetir, troque a engine do auditor
+[rc=68]
+diversidade             : -
+auditor_exit            : 68
+=== --um-engine normal
+## ar --reviewer stub-a --um-engine --no-revisor2
+▶ revisor: stub-a (revisor-ok) — até 1 min
+▶ auditor: stub-a (revisor-ok) — até 1 min
+⚠️ sem --feature: a revisão não leu BRAINSTORM, DEFINE nem DESIGN, e decisões já documentadas podem voltar como achado
+RESULTADO: REVIEW INVÁLIDA
+auditor (stub-a): a engine respondeu fora do formato; isto não é zero achados
+pasta: sdd/reports/reviews/EXTERNAL_REVIEW_20261101-001902
+diff_sha256: 373d6a164c040c00b4bf57ea64e213b7c97f40de1713e69304d2712f607e2417
+revisor: stub-a (stub-modelo) — incluído na assinatura
+auditor: stub-a (stub-modelo) — incluído na assinatura
+diversidade: -
+custo total: incluído na assinatura
+→ rode de novo; se repetir, troque a engine do auditor
+[rc=68]
+diversidade             : -
+reviewer_engine_efetivo : stub-a
+auditor_engine_efetivo  : stub-a
+auditor_exit            : 68
+[exit=0]

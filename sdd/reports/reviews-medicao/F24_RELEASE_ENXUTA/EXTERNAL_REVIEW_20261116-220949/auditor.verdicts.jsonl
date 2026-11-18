@@ -1,0 +1,10 @@
+{"achado": "R1@claude", "veredito": "AGREE", "justificativa": "lote.md:72 usa $TMPDIR sem fallback, enquanto a linha 21 usa ${TMPDIR:-/tmp}; falha em ambientes sem a variável."}
+{"achado": "R2@claude", "veredito": "AGREE", "justificativa": "test_f24_release_enxuta.py não executa --conferir-bloco nem despacho do curador, validando AT-003/AT-004 apenas por busca de texto."}
+{"achado": "R3@claude", "veredito": "AGREE", "justificativa": "lote.md:65 omite --recusar quando o curador escreve no playbook, deixando a entrada na fila sem o motivo do AT-004."}
+{"achado": "R4@claude", "veredito": "AGREE", "justificativa": "ficha-publicado.py:128 insere novo bloco se o marcador de fim estiver ausente, quebrando a idempotência."}
+{"achado": "R5@claude", "veredito": "AGREE", "justificativa": "push-de-papel.py:89 ignora tags-ignore, classificando incorretamente como PUBLICA."}
+{"achado": "R6@claude", "veredito": "AGREE", "justificativa": "push-de-papel.py:125 não captura exceções inesperadas, resultando em exit 1 em vez de 2 (NAO_SEI)."}
+{"achado": "R1@codex", "veredito": "DISAGREE_EVIDENCE", "justificativa": "playbook-curator.sh:1980 compara guardada com refeita; alterar colheita.txt localmente causa mismatch e recusa, pois o registro é global."}
+{"achado": "R2@codex", "veredito": "AGREE", "justificativa": "lote.md:63 usa git checkout -- arquivo, que restaura do index, preservando alterações indevidas do curador."}
+{"achado": "R3@codex", "veredito": "DISAGREE_CONCERN", "justificativa": "ficha-publicado.py:77 usa parser regex intencional para stdlib; a falta de validação YAML completa é trade-off documentado."}
+{"achado": "N1", "veredito": "NOVO", "severidade": "HIGH", "arquivo": ".agents/skills/sdd-release/SKILL.md", "linha": 314, "resumo": "git add -- sdd/curadoria/fila/{F} não remove arquivos deletados do index, impedindo a limpeza de entradas falhas antigas."}

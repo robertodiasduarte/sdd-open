@@ -1,0 +1,18 @@
+$ bash /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f26-docs-na-main/e1164d6c-42f0-4737-8064-2ce0f93f4e1b/scratchpad/c2v/at001.sh
+== docs versionados na HEAD real (devem ser muitos):
+2929
+== tarball como no release.yml (git archive --format=tar.gz --prefix=sdd-open-vX/ HEAD)
+arquivos no tarball:      752
+docs no tarball: 0
+linhas do MANIFEST:      751
+no MANIFEST e fora do tarball:        0
+no tarball e fora do MANIFEST:        1
+
+== extrair_tag num clone temporario com tag vTESTE na HEAD
+RAIZ_OPEN do modulo: /private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.Xcjz0cGkNf/clone
+commit extraido: 4ccb0ef2e931
+docs na arvore do extrair_tag: 0
+arquivos na arvore do extrair_tag:      751
+== baseline: sem a linha 'sdd/** export-ignore' (clone, commit local)
+docs no git archive sem a trava: 3053
+[rc=0]

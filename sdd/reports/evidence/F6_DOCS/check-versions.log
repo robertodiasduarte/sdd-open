@@ -1,0 +1,12 @@
+$ python3 -B scripts/check-versions.py --base v2.2.6 --base-obrigatoria && for s in brainstorm define governanca ux-review design build release; do printf "sdd-%s %s → %s\n" "$s" "$(git show v2.2.6:.agents/skills/sdd-$s/SKILL.md | sed -n "s/^  version: \"\(.*\)\"$/\1/p")" "$(sed -n "s/^  version: \"\(.*\)\"$/\1/p" .agents/skills/sdd-$s/SKILL.md)"; done
+PASS: check-versions — 17 skills com versão coerente, comparadas a v2.2.6.
+RESULTADO: VERDE
+→ siga para o próximo passo.
+sdd-brainstorm 2.1.0 → 2.1.1
+sdd-define 2.3.0 → 2.3.1
+sdd-governanca 2.2.0 → 2.2.1
+sdd-ux-review 2.3.0 → 2.3.1
+sdd-design 2.1.0 → 2.1.1
+sdd-build 2.2.0 → 2.2.1
+sdd-release 2.3.0 → 2.3.1
+exit=0

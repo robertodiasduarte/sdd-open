@@ -1,0 +1,92 @@
+$ [A4] PYTHONIOENCODING=ascii <python> -B validate_reverse.py <levantamento com secao renomeada>; grep do limite em manifest.json e docs/cli-conventions.md · [A5] comando do Success Criteria como escrito no DEFINE v1.2 · [A6] marcador minusculo, com hifen e separador curto; grep do limite no manifest.json
+1
+## [A4] /usr/bin/python3 -B .agents/skills/sdd-engenharia-reversa-saas/scripts/validate_reverse.py sec.md (sem variavel)
+{"errors": ["SECAO_AUSENTE_OU_DUPLICADA:Lacunas e contradições"], "evidence_count": 1, "finding_count": 1, "ok": false, "scope": "lint_estrutural_apenas; nao verifica veracidade, autorizacao ou gates SDD"}
+exit=2
+## [A4] PYTHONIOENCODING=ascii /usr/bin/python3 -B ... sec.md
+  File "/private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f21-f19/8ca3f42f-d684-434d-9f0b-19bdcf0aef88/scratchpad/c3/cli/.agents/skills/sdd-engenharia-reversa-saas/scripts/validate_reverse.py", line 206, in main
+    print(json.dumps(result, ensure_ascii=False, sort_keys=True))
+UnicodeEncodeError: 'ascii' codec can't encode characters in position 58-59: ordinal not in range(128)
+exit=1
+## [A4] LC_ALL=C PYTHONCOERCECLOCALE=0 PYTHONUTF8=0 /usr/bin/python3 -B ... sec.md
+  File "/private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f21-f19/8ca3f42f-d684-434d-9f0b-19bdcf0aef88/scratchpad/c3/cli/.agents/skills/sdd-engenharia-reversa-saas/scripts/validate_reverse.py", line 206, in main
+    print(json.dumps(result, ensure_ascii=False, sort_keys=True))
+UnicodeEncodeError: 'ascii' codec can't encode characters in position 58-59: ordinal not in range(128)
+exit=1
+## [A4] LC_ALL=C /usr/bin/python3 -B ... sec.md
+{"errors": ["SECAO_AUSENTE_OU_DUPLICADA:Lacunas e contradições"], "evidence_count": 1, "finding_count": 1, "ok": false, "scope": "lint_estrutural_apenas; nao verifica veracidade, autorizacao ou gates SDD"}
+exit=2
+## [A4] PYTHONIOENCODING=ascii /usr/bin/python3 -B ... ok.md (valido)
+{"errors": [], "evidence_count": 1, "finding_count": 1, "ok": true, "scope": "lint_estrutural_apenas; nao verifica veracidade, autorizacao ou gates SDD"}
+exit=0
+## [A4] python3 -B .agents/skills/sdd-engenharia-reversa-saas/scripts/validate_reverse.py sec.md (sem variavel)
+{"errors": ["SECAO_AUSENTE_OU_DUPLICADA:Lacunas e contradições"], "evidence_count": 1, "finding_count": 1, "ok": false, "scope": "lint_estrutural_apenas; nao verifica veracidade, autorizacao ou gates SDD"}
+exit=2
+## [A4] PYTHONIOENCODING=ascii python3 -B ... sec.md
+    print(json.dumps(result, ensure_ascii=False, sort_keys=True))
+    ~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+UnicodeEncodeError: 'ascii' codec can't encode characters in position 58-59: ordinal not in range(128)
+exit=1
+## [A4] LC_ALL=C PYTHONCOERCECLOCALE=0 PYTHONUTF8=0 python3 -B ... sec.md
+    print(json.dumps(result, ensure_ascii=False, sort_keys=True))
+    ~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+UnicodeEncodeError: 'ascii' codec can't encode characters in position 58-59: ordinal not in range(128)
+exit=1
+## [A4] LC_ALL=C python3 -B ... sec.md
+{"errors": ["SECAO_AUSENTE_OU_DUPLICADA:Lacunas e contradições"], "evidence_count": 1, "finding_count": 1, "ok": false, "scope": "lint_estrutural_apenas; nao verifica veracidade, autorizacao ou gates SDD"}
+exit=2
+## [A4] PYTHONIOENCODING=ascii python3 -B ... ok.md (valido)
+{"errors": [], "evidence_count": 1, "finding_count": 1, "ok": true, "scope": "lint_estrutural_apenas; nao verifica veracidade, autorizacao ou gates SDD"}
+exit=0
+## [A4] limite declarado: grep -n 'ASCII' .agents/skills/sdd-engenharia-reversa-saas/manifest.json docs/cli-conventions.md .agents/skills/sdd-engenharia-reversa-saas/SKILL.md .agents/skills/sdd-engenharia-reversa-saas/CHANGELOG.md .agents/skills/sdd-engenharia-reversa-saas/references/*.md
+.agents/skills/sdd-engenharia-reversa-saas/manifest.json:235:    "Saída do lint com o stdout forçado para ASCII: um código de erro com acento derruba o script com exit 1, sem o JSON (o script entrou sem mudança de byte).",
+docs/cli-conventions.md:103:padrão forçada para ASCII (`PYTHONIOENCODING=ascii`), um código de erro com acento faz o script cair com
+## [A4] em que chave do manifest.json
+o_que_ainda_nao_prova -> ['Saída do lint com o stdout forçado para ASCII: um código de erro com acento derruba o script com exit 1, sem o JSON (o script entrou sem mudança de byte).', 'Rigor total do lint sobre marcadores: ele aceita marcador em minúsculas ou com hífen e linha separadora com menos colunas que o cabeçalho; o molde só usa marcadores em maiúsculas.']
+## [A4] git diff --quiet 45e27a9..ae05d6e nao se aplica (script novo); sha256 do script
+6abb0ab75ae3cde15346a90f4fa40da9122a7291effae5998dcbf367a537810b  .agents/skills/sdd-engenharia-reversa-saas/scripts/validate_reverse.py
+######## [A5] python3 sdd/bin/skill-lint.py --conversa .agents/skills/*/SKILL.md
+✅ .agents/skills/sdd-auditoria-harness/SKILL.md: frontmatter válido · camada de conversa ok
+✅ .agents/skills/sdd-brainstorm/SKILL.md: frontmatter válido · camada de conversa ok
+✅ .agents/skills/sdd-build/SKILL.md: frontmatter válido · camada de conversa ok
+✅ .agents/skills/sdd-checar-ambiente/SKILL.md: frontmatter válido · camada de conversa ok
+✅ .agents/skills/sdd-define/SKILL.md: frontmatter válido · camada de conversa ok
+✅ .agents/skills/sdd-design/SKILL.md: frontmatter válido · camada de conversa ok
+✅ .agents/skills/sdd-drive/SKILL.md: frontmatter válido · camada de conversa ok
+✅ .agents/skills/sdd-engenharia-reversa-saas/SKILL.md: frontmatter válido · camada de conversa ok
+✅ .agents/skills/sdd-governanca/SKILL.md: frontmatter válido · camada de conversa ok
+✅ .agents/skills/sdd-handoff/SKILL.md: frontmatter válido · camada de conversa ok
+✅ .agents/skills/sdd-higiene-dado/SKILL.md: frontmatter válido · camada de conversa ok
+✅ .agents/skills/sdd-iniciar-repo/SKILL.md: frontmatter válido · camada de conversa ok
+✅ .agents/skills/sdd-iterate/SKILL.md: frontmatter válido · camada de conversa ok
+✅ .agents/skills/sdd-kb/SKILL.md: frontmatter válido · camada de conversa ok
+✅ .agents/skills/sdd-loop-builder/SKILL.md: frontmatter válido · camada de conversa ok
+✅ .agents/skills/sdd-new-session/SKILL.md: frontmatter válido · camada de conversa ok
+✅ .agents/skills/sdd-playbook/SKILL.md: frontmatter válido · camada de conversa ok
+✅ .agents/skills/sdd-prompt-builder/SKILL.md: frontmatter válido · camada de conversa ok
+✅ .agents/skills/sdd-release/SKILL.md: frontmatter válido · camada de conversa ok
+✅ .agents/skills/sdd-ux-review/SKILL.md: frontmatter válido · camada de conversa ok
+exit=0
+## [A5] /usr/bin/python3 -B idem (contagem de linhas verdes)
+20
+exit=0
+## [A5] forma antiga, sem caminhos
+uso: skill-lint.py [--conversa] <SKILL.md> [...]
+exit=64
+######## [A6]
+## /usr/bin/python3 -B validate_reverse.py mai.md
+{"errors": ["PLACEHOLDER_NAO_PREENCHIDO"], "evidence_count": 1, "finding_count": 1, "ok": false, "scope": "lint_estrutural_apenas; nao verifica veracidade, autorizacao ou gates SDD"}
+exit=2
+## /usr/bin/python3 -B validate_reverse.py min.md
+{"errors": [], "evidence_count": 1, "finding_count": 1, "ok": true, "scope": "lint_estrutural_apenas; nao verifica veracidade, autorizacao ou gates SDD"}
+exit=0
+## /usr/bin/python3 -B validate_reverse.py hif.md
+{"errors": [], "evidence_count": 1, "finding_count": 1, "ok": true, "scope": "lint_estrutural_apenas; nao verifica veracidade, autorizacao ou gates SDD"}
+exit=0
+## /usr/bin/python3 -B validate_reverse.py sep.md
+{"errors": [], "evidence_count": 1, "finding_count": 1, "ok": true, "scope": "lint_estrutural_apenas; nao verifica veracidade, autorizacao ou gates SDD"}
+exit=0
+## [A6] marcadores do molde fora de MAIUSCULAS_COM_SUBLINHADO
+(fim; exit=1)
+## find pyc na copia depois de tudo
+(fim)

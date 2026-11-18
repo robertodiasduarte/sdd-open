@@ -1,0 +1,168 @@
+$ python3 -B open/scripts/gerar-starter.py --lint cru > cru.out 2>&1; echo rc=$?; head -3 cru.out; grep -c ':[0-9]*: ' cru.out; tail -2 cru.out
+echo '== saída gerada'; python3 -B open/scripts/gerar-starter.py --lint starter/skills; echo rc=$?
+echo '== cada padrão injetado numa cópia da saída gerada (pasta gl)'; for p in 'sdd/bin/x.sh' 'sdd/templates/X.md' 'sdd/hooks/pre-commit' 'sdd/review/a.md' 'sdd/patterns/b.md' 'sdd/playbook.md' 'sdd/invariants.md' 'sdd/WORKFLOW_CONTRACTS.yaml' 'bin/sdd-open.sh' '.agents/skills/sdd-kb/scripts/x.py' 'rode o `sync`' 'rode o init do sdd-open'; do rm -rf gl; cp -R starter/skills gl; printf '\nLinha: %s\n' "$p" >> gl/sdd-loop-builder/SKILL.md; o=$(python3 -B open/scripts/gerar-starter.py --lint gl 2>&1); r=$?; echo "[$p] rc=$r -> $(echo "$o" | grep -E ':[0-9]+:' | head -1 | sed 's/^ *//')"; done
+echo '== o par que define a pasta (deve passar)'; rm -rf gl; cp -R starter/skills gl; printf '\nA pasta é `.claude/skills/sdd-loop-builder/` ou `.agents/skills/sdd-loop-builder/`.\n' >> gl/sdd-loop-builder/SKILL.md; python3 -B open/scripts/gerar-starter.py --lint gl; echo rc=$?
+echo '== .agents/skills/<nome>/ fora do par (deve reprovar)'; rm -rf gl; cp -R starter/skills gl; printf '\nCopie para `.agents/skills/sdd-loop-builder/` e pronto.\n' >> gl/sdd-loop-builder/SKILL.md; python3 -B open/scripts/gerar-starter.py --lint gl; echo rc=$?
+rc=65
+🛑 sdd-auditoria-harness/SKILL.md:19: sdd/templates/
+🛑 sdd-auditoria-harness/references/como-falar.md:46: sdd/templates/
+🛑 sdd-checar-ambiente/SKILL.md:19: sdd/templates/
+72
+RESULTADO: CITA ARQUIVO DO INIT
+→ troque a citação (scripts/starter/trocas/) e gere de novo.
+== saída gerada
+🛑 sdd-higiene-dado/scripts/alarme.sh:45: sdd/hooks/
+🛑 sdd-higiene-dado/scripts/alarme.sh:52: sdd/hooks/
+🛑 sdd-higiene-dado/scripts/alarme.sh:122: sdd/hooks/
+RESULTADO: CITA ARQUIVO DO INIT
+→ troque a citação (scripts/starter/trocas/) e gere de novo.
+rc=65
+== cada padrão injetado numa cópia da saída gerada (pasta gl)
+[sdd/bin/x.sh] rc=65 -> 🛑 sdd-higiene-dado/scripts/alarme.sh:45: sdd/hooks/
+[sdd/templates/X.md] rc=65 -> 🛑 sdd-higiene-dado/scripts/alarme.sh:45: sdd/hooks/
+[sdd/hooks/pre-commit] rc=65 -> 🛑 sdd-higiene-dado/scripts/alarme.sh:45: sdd/hooks/
+[sdd/review/a.md] rc=65 -> 🛑 sdd-higiene-dado/scripts/alarme.sh:45: sdd/hooks/
+[sdd/patterns/b.md] rc=65 -> 🛑 sdd-higiene-dado/scripts/alarme.sh:45: sdd/hooks/
+[sdd/playbook.md] rc=65 -> 🛑 sdd-higiene-dado/scripts/alarme.sh:45: sdd/hooks/
+[sdd/invariants.md] rc=65 -> 🛑 sdd-higiene-dado/scripts/alarme.sh:45: sdd/hooks/
+[sdd/WORKFLOW_CONTRACTS.yaml] rc=65 -> 🛑 sdd-higiene-dado/scripts/alarme.sh:45: sdd/hooks/
+[bin/sdd-open.sh] rc=65 -> 🛑 sdd-higiene-dado/scripts/alarme.sh:45: sdd/hooks/
+[.agents/skills/sdd-kb/scripts/x.py] rc=65 -> 🛑 sdd-higiene-dado/scripts/alarme.sh:45: sdd/hooks/
+[rode o `sync`] rc=65 -> 🛑 sdd-higiene-dado/scripts/alarme.sh:45: sdd/hooks/
+[rode o init do sdd-open] rc=65 -> 🛑 sdd-higiene-dado/scripts/alarme.sh:45: sdd/hooks/
+== o par que define a pasta (deve passar)
+🛑 sdd-higiene-dado/scripts/alarme.sh:45: sdd/hooks/
+🛑 sdd-higiene-dado/scripts/alarme.sh:52: sdd/hooks/
+🛑 sdd-higiene-dado/scripts/alarme.sh:122: sdd/hooks/
+RESULTADO: CITA ARQUIVO DO INIT
+→ troque a citação (scripts/starter/trocas/) e gere de novo.
+rc=65
+== .agents/skills/<nome>/ fora do par (deve reprovar)
+🛑 sdd-higiene-dado/scripts/alarme.sh:45: sdd/hooks/
+🛑 sdd-higiene-dado/scripts/alarme.sh:52: sdd/hooks/
+🛑 sdd-higiene-dado/scripts/alarme.sh:122: sdd/hooks/
+🛑 sdd-loop-builder/SKILL.md:143: .agents/skills/sdd-loop-builder/
+RESULTADO: CITA ARQUIVO DO INIT
+→ troque a citação (scripts/starter/trocas/) e gere de novo.
+rc=65
+rc=0
+$ echo '# refeito: --lint na RAIZ do starter gerado (a lista de aceitos usa caminho relativo à raiz); a passada sobre starter/skills acima sai 65 só pelas 3 linhas aceitas'
+G() { rm -rf gl; mkdir gl; (cd starter && git ls-files -z --others --cached --exclude-standard | xargs -0 tar -cf - ) | tar -xf - -C gl; }
+echo '== saída gerada, na raiz'; G; python3 -B open/scripts/gerar-starter.py --lint gl; echo rc=$?
+for p in 'sdd/bin/x.sh' 'sdd/templates/X.md' 'sdd/hooks/pre-commit' 'sdd/review/a.md' 'sdd/patterns/b.md' 'sdd/playbook.md' 'sdd/invariants.md' 'sdd/WORKFLOW_CONTRACTS.yaml' 'bin/sdd-open.sh' '.agents/skills/sdd-kb/scripts/x.py' 'rode o `sync`' 'rode o init do sdd-open'; do G; printf '\nLinha: %s\n' "$p" >> gl/skills/sdd-loop-builder/SKILL.md; o=$(python3 -B open/scripts/gerar-starter.py --lint gl 2>&1); r=$?; echo "[$p] rc=$r -> $(echo "$o" | grep -E ':[0-9]+:' | sed 's/^ *//' | tr '\n' ' ')"; done
+echo '== o par que define a pasta (deve passar)'; G; printf '\nA pasta é `.claude/skills/sdd-loop-builder/` ou `.agents/skills/sdd-loop-builder/`.\n' >> gl/skills/sdd-loop-builder/SKILL.md; python3 -B open/scripts/gerar-starter.py --lint gl; echo rc=$?
+echo '== .agents/skills/<nome>/ fora do par (deve reprovar)'; G; printf '\nCopie para `.agents/skills/sdd-loop-builder/` e pronto.\n' >> gl/skills/sdd-loop-builder/SKILL.md; python3 -B open/scripts/gerar-starter.py --lint gl; echo rc=$?
+echo '== citação no README e num workflow gerados'; G; printf '\nveja sdd/playbook.md\n' >> gl/README.md; printf '# sdd/bin/x\n' >> gl/.github/workflows/ci.yml; python3 -B open/scripts/gerar-starter.py --lint gl; echo rc=$?
+# refeito: --lint na RAIZ do starter gerado (a lista de aceitos usa caminho relativo à raiz); a passada sobre starter/skills acima sai 65 só pelas 3 linhas aceitas
+== saída gerada, na raiz
+tar: skills/sdd-checar-ambiente/tests/test_checar.py: Cannot stat: No such file or directory
+tar: skills/sdd-engenharia-reversa-saas/tests/test_validate_reverse.py: Cannot stat: No such file or directory
+tar: skills/sdd-higiene-dado/tests/test_alarme.py: Cannot stat: No such file or directory
+tar: skills/sdd-iniciar-repo/tests/test_inventario.py: Cannot stat: No such file or directory
+tar: Error exit delayed from previous errors.
+RESULTADO: VERDE
+→ nenhuma citação a arquivo que só o init cria.
+rc=0
+tar: skills/sdd-checar-ambiente/tests/test_checar.py: Cannot stat: No such file or directory
+tar: skills/sdd-engenharia-reversa-saas/tests/test_validate_reverse.py: Cannot stat: No such file or directory
+tar: skills/sdd-higiene-dado/tests/test_alarme.py: Cannot stat: No such file or directory
+tar: skills/sdd-iniciar-repo/tests/test_inventario.py: Cannot stat: No such file or directory
+tar: Error exit delayed from previous errors.
+[sdd/bin/x.sh] rc=65 -> 🛑 skills/sdd-loop-builder/SKILL.md:143: sdd/bin/ 
+tar: skills/sdd-checar-ambiente/tests/test_checar.py: Cannot stat: No such file or directory
+tar: skills/sdd-engenharia-reversa-saas/tests/test_validate_reverse.py: Cannot stat: No such file or directory
+tar: skills/sdd-higiene-dado/tests/test_alarme.py: Cannot stat: No such file or directory
+tar: skills/sdd-iniciar-repo/tests/test_inventario.py: Cannot stat: No such file or directory
+tar: Error exit delayed from previous errors.
+[sdd/templates/X.md] rc=65 -> 🛑 skills/sdd-loop-builder/SKILL.md:143: sdd/templates/ 
+tar: skills/sdd-checar-ambiente/tests/test_checar.py: Cannot stat: No such file or directory
+tar: skills/sdd-engenharia-reversa-saas/tests/test_validate_reverse.py: Cannot stat: No such file or directory
+tar: skills/sdd-higiene-dado/tests/test_alarme.py: Cannot stat: No such file or directory
+tar: skills/sdd-iniciar-repo/tests/test_inventario.py: Cannot stat: No such file or directory
+tar: Error exit delayed from previous errors.
+[sdd/hooks/pre-commit] rc=65 -> 🛑 skills/sdd-loop-builder/SKILL.md:143: sdd/hooks/ 
+tar: skills/sdd-checar-ambiente/tests/test_checar.py: Cannot stat: No such file or directory
+tar: skills/sdd-engenharia-reversa-saas/tests/test_validate_reverse.py: Cannot stat: No such file or directory
+tar: skills/sdd-higiene-dado/tests/test_alarme.py: Cannot stat: No such file or directory
+tar: skills/sdd-iniciar-repo/tests/test_inventario.py: Cannot stat: No such file or directory
+tar: Error exit delayed from previous errors.
+[sdd/review/a.md] rc=65 -> 🛑 skills/sdd-loop-builder/SKILL.md:143: sdd/review/ 
+tar: skills/sdd-checar-ambiente/tests/test_checar.py: Cannot stat: No such file or directory
+tar: skills/sdd-engenharia-reversa-saas/tests/test_validate_reverse.py: Cannot stat: No such file or directory
+tar: skills/sdd-higiene-dado/tests/test_alarme.py: Cannot stat: No such file or directory
+tar: skills/sdd-iniciar-repo/tests/test_inventario.py: Cannot stat: No such file or directory
+tar: Error exit delayed from previous errors.
+[sdd/patterns/b.md] rc=65 -> 🛑 skills/sdd-loop-builder/SKILL.md:143: sdd/patterns/ 
+tar: skills/sdd-checar-ambiente/tests/test_checar.py: Cannot stat: No such file or directory
+tar: skills/sdd-engenharia-reversa-saas/tests/test_validate_reverse.py: Cannot stat: No such file or directory
+tar: skills/sdd-higiene-dado/tests/test_alarme.py: Cannot stat: No such file or directory
+tar: skills/sdd-iniciar-repo/tests/test_inventario.py: Cannot stat: No such file or directory
+tar: Error exit delayed from previous errors.
+[sdd/playbook.md] rc=65 -> 🛑 skills/sdd-loop-builder/SKILL.md:143: sdd/playbook.md 
+tar: skills/sdd-checar-ambiente/tests/test_checar.py: Cannot stat: No such file or directory
+tar: skills/sdd-engenharia-reversa-saas/tests/test_validate_reverse.py: Cannot stat: No such file or directory
+tar: skills/sdd-higiene-dado/tests/test_alarme.py: Cannot stat: No such file or directory
+tar: skills/sdd-iniciar-repo/tests/test_inventario.py: Cannot stat: No such file or directory
+tar: Error exit delayed from previous errors.
+[sdd/invariants.md] rc=65 -> 🛑 skills/sdd-loop-builder/SKILL.md:143: sdd/invariants.md 
+tar: skills/sdd-checar-ambiente/tests/test_checar.py: Cannot stat: No such file or directory
+tar: skills/sdd-engenharia-reversa-saas/tests/test_validate_reverse.py: Cannot stat: No such file or directory
+tar: skills/sdd-higiene-dado/tests/test_alarme.py: Cannot stat: No such file or directory
+tar: skills/sdd-iniciar-repo/tests/test_inventario.py: Cannot stat: No such file or directory
+tar: Error exit delayed from previous errors.
+[sdd/WORKFLOW_CONTRACTS.yaml] rc=65 -> 🛑 skills/sdd-loop-builder/SKILL.md:143: sdd/WORKFLOW_CONTRACTS.yaml 
+tar: skills/sdd-checar-ambiente/tests/test_checar.py: Cannot stat: No such file or directory
+tar: skills/sdd-engenharia-reversa-saas/tests/test_validate_reverse.py: Cannot stat: No such file or directory
+tar: skills/sdd-higiene-dado/tests/test_alarme.py: Cannot stat: No such file or directory
+tar: skills/sdd-iniciar-repo/tests/test_inventario.py: Cannot stat: No such file or directory
+tar: Error exit delayed from previous errors.
+[bin/sdd-open.sh] rc=65 -> 🛑 skills/sdd-loop-builder/SKILL.md:143: bin/sdd-open.sh 
+tar: skills/sdd-checar-ambiente/tests/test_checar.py: Cannot stat: No such file or directory
+tar: skills/sdd-engenharia-reversa-saas/tests/test_validate_reverse.py: Cannot stat: No such file or directory
+tar: skills/sdd-higiene-dado/tests/test_alarme.py: Cannot stat: No such file or directory
+tar: skills/sdd-iniciar-repo/tests/test_inventario.py: Cannot stat: No such file or directory
+tar: Error exit delayed from previous errors.
+[.agents/skills/sdd-kb/scripts/x.py] rc=65 -> 🛑 skills/sdd-loop-builder/SKILL.md:143: .agents/skills/sdd-kb/ 
+tar: skills/sdd-checar-ambiente/tests/test_checar.py: Cannot stat: No such file or directory
+tar: skills/sdd-engenharia-reversa-saas/tests/test_validate_reverse.py: Cannot stat: No such file or directory
+tar: skills/sdd-higiene-dado/tests/test_alarme.py: Cannot stat: No such file or directory
+tar: skills/sdd-iniciar-repo/tests/test_inventario.py: Cannot stat: No such file or directory
+tar: Error exit delayed from previous errors.
+[rode o `sync`] rc=65 -> 🛑 skills/sdd-loop-builder/SKILL.md:143: `sync` 
+tar: skills/sdd-checar-ambiente/tests/test_checar.py: Cannot stat: No such file or directory
+tar: skills/sdd-engenharia-reversa-saas/tests/test_validate_reverse.py: Cannot stat: No such file or directory
+tar: skills/sdd-higiene-dado/tests/test_alarme.py: Cannot stat: No such file or directory
+tar: skills/sdd-iniciar-repo/tests/test_inventario.py: Cannot stat: No such file or directory
+tar: Error exit delayed from previous errors.
+[rode o init do sdd-open] rc=65 -> 🛑 skills/sdd-loop-builder/SKILL.md:143: init do sdd-open 
+== o par que define a pasta (deve passar)
+tar: skills/sdd-checar-ambiente/tests/test_checar.py: Cannot stat: No such file or directory
+tar: skills/sdd-engenharia-reversa-saas/tests/test_validate_reverse.py: Cannot stat: No such file or directory
+tar: skills/sdd-higiene-dado/tests/test_alarme.py: Cannot stat: No such file or directory
+tar: skills/sdd-iniciar-repo/tests/test_inventario.py: Cannot stat: No such file or directory
+tar: Error exit delayed from previous errors.
+RESULTADO: VERDE
+→ nenhuma citação a arquivo que só o init cria.
+rc=0
+== .agents/skills/<nome>/ fora do par (deve reprovar)
+tar: skills/sdd-checar-ambiente/tests/test_checar.py: Cannot stat: No such file or directory
+tar: skills/sdd-engenharia-reversa-saas/tests/test_validate_reverse.py: Cannot stat: No such file or directory
+tar: skills/sdd-higiene-dado/tests/test_alarme.py: Cannot stat: No such file or directory
+tar: skills/sdd-iniciar-repo/tests/test_inventario.py: Cannot stat: No such file or directory
+tar: Error exit delayed from previous errors.
+🛑 skills/sdd-loop-builder/SKILL.md:143: .agents/skills/sdd-loop-builder/
+RESULTADO: CITA ARQUIVO DO INIT
+→ troque a citação (scripts/starter/trocas/) e gere de novo.
+rc=65
+== citação no README e num workflow gerados
+tar: skills/sdd-checar-ambiente/tests/test_checar.py: Cannot stat: No such file or directory
+tar: skills/sdd-engenharia-reversa-saas/tests/test_validate_reverse.py: Cannot stat: No such file or directory
+tar: skills/sdd-higiene-dado/tests/test_alarme.py: Cannot stat: No such file or directory
+tar: skills/sdd-iniciar-repo/tests/test_inventario.py: Cannot stat: No such file or directory
+tar: Error exit delayed from previous errors.
+🛑 .github/workflows/ci.yml:51: sdd/bin/
+🛑 README.md:184: sdd/playbook.md
+RESULTADO: CITA ARQUIVO DO INIT
+→ troque a citação (scripts/starter/trocas/) e gere de novo.
+rc=65
+rc=0

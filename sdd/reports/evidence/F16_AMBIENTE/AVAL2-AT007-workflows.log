@@ -1,0 +1,51 @@
+$ grep -nE 'testes-windows:|runs-on: windows|timeout-minutes|shell: bash|setup-python|needs:|continue-on-error|unittest|PUBLISH_GATE_MODE|SDD_TEST_BASH' .github/workflows/release.yml
+12:# Two jobs: `testes` holds a read-only token; `release` (needs: testes) is the only one with
+14:# continue-on-error or `|| true`: a check that cannot fail is not a check.
+55:    timeout-minutes: 45   # F19: a suíte passou de 25 min aqui (26m15s no PR) e a v2.10.0 ficou sem Release
+69:          PUBLISH_GATE_MODE: ci
+127:        run: python3 -B -m unittest discover -s tests -p 'test_*.py'
+149:    timeout-minutes: 60
+180:      - name: Unit tests on the floor (/usr/bin/python3, SDD_TEST_BASH=/bin/bash)
+182:          SDD_TEST_BASH: /bin/bash
+183:        run: /usr/bin/python3 -B -m unittest discover -s tests -p 'test_*.py'
+186:  # Ubuntu acima já o cobre). Informativo até o Roberto decidir o piso: fica FORA do `needs:` do job
+187:  # `release`, então um vermelho aqui aparece no run sem segurar a Release (sem continue-on-error).
+188:  testes-windows:
+190:    runs-on: windows-latest
+193:    timeout-minutes: 30
+196:        shell: bash
+202:      - uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0 # v7.1.0
+222:          echo "SDD_TEST_BASH=$(cygpath -w "$(command -v bash)")" >> "$GITHUB_ENV"
+226:          PUBLISH_GATE_MODE: ci
+235:        run: python -B -m unittest -v test_checar test_inventario test_python_resolver test_windows test_f16_textos
+239:    needs: [testes, testes-macos]
+241:    timeout-minutes: 10
+$ grep -nE 'testes-windows:|runs-on: windows|timeout-minutes|shell: bash|setup-python|needs:|continue-on-error|unittest|PUBLISH_GATE_MODE|SDD_TEST_BASH' .github/workflows/publish-gate.yml
+34:          PUBLISH_GATE_MODE: ci
+118:        run: python3 -B -m unittest discover -s tests -p 'test_*.py'
+155:    timeout-minutes: 60
+186:      - name: Unit tests on the floor (/usr/bin/python3, SDD_TEST_BASH=/bin/bash)
+188:          SDD_TEST_BASH: /bin/bash
+189:        run: /usr/bin/python3 -B -m unittest discover -s tests -p 'test_*.py'
+192:  # Ubuntu acima já o cobre). Informativo até o Roberto decidir o piso: fica FORA do `needs:` do job
+193:  # `release`, então um vermelho aqui aparece no run sem segurar a Release (sem continue-on-error).
+194:  testes-windows:
+196:    runs-on: windows-latest
+199:    timeout-minutes: 30
+202:        shell: bash
+208:      - uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0 # v7.1.0
+228:          echo "SDD_TEST_BASH=$(cygpath -w "$(command -v bash)")" >> "$GITHUB_ENV"
+232:          PUBLISH_GATE_MODE: ci
+241:        run: python -B -m unittest -v test_checar test_inventario test_python_resolver test_windows test_f16_textos
+$ git diff 36d0454 HEAD --stat -- .github/workflows; git diff 36d0454 HEAD -- .github/workflows | grep -c '^-[^-]'
+ .github/workflows/publish-gate.yml | 52 ++++++++++++++++++++++++++++++++++++++
+ .github/workflows/release.yml      | 52 ++++++++++++++++++++++++++++++++++++++
+ 2 files changed, 104 insertions(+)
+0
+$ grep -n -i 'windows' README.md README.pt-BR.md docs/quickstart.md docs/pt-BR/quickstart.md
+README.md:90:Works on macOS and Linux, tested in CI on every release; on Windows (Git Bash/WSL) it has no automated tests yet. bash 3.2, zero zsh, zero symlinks.
+docs/pt-BR/quickstart.md:78:No Windows, use Git Bash ou WSL (ainda sem teste automático no Windows).
+docs/pt-BR/quickstart.md:152:| um programa de Windows | executável (.exe) para Windows | qualquer um dos 7 agentes, aberto na pasta do projeto |
+docs/quickstart.md:80:On Windows, use Git Bash or WSL (no automated tests on Windows yet).
+docs/quickstart.md:153:| a Windows program | Windows executable (.exe) | any of the 7 agents, opened in the project folder |
+README.pt-BR.md:91:Funciona em macOS e Linux, testado no CI a cada release; no Windows (Git Bash/WSL), ainda sem teste automático. bash 3.2, zero zsh, zero symlink.

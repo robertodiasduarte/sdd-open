@@ -1,0 +1,181 @@
+$ /bin/bash /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.VE6HeN93zy/ats.sh
+=== AT-016 sonda corrigida: sem coluna Tipo no inventario
+rc 1 🛑 /D.md: a seção de prompts está fora do formato, que mudou na v2.5.0; nada no código precisa mudar; faltam:
+🛑 /D.md:   falta a coluna Tipo no inventário
+RESULTADO: VERMELHO
+→ copie as colunas e os campos de sdd/templates/fragments/LLM_PROMPTS_DESIGN.md
+
+=== AT-017/18 ponteiros
+sdd/templates/DESIGN_TEMPLATE.md:170:<!-- Só com `LLM Prompts: true` no DEFINE: copie aqui a seção de sdd/templates/fragments/LLM_PROMPTS_DESIGN.md.
+.agents/skills/sdd-design/SKILL.md:162:Copie a seção de `sdd/templates/fragments/LLM_PROMPTS_DESIGN.md` para o DESIGN, entre os padrões de código e o 
+167:campos. Não escreva o prompt nem chame skill de prompt aqui: a fase Build faz isso, com o contrato em mãos.
+=== AT-019/020
+prompt-drift-scan.sh --conteudo          2
+saída 2 aqui é o esperado              1
+item faltando                            1
+não é laço                            1
+Saída 2: \*\*pare\*\*                   1
+Saída 64                                1
+item em laço                            1
+Não encerre o turno                     1
+re-prompta o modelo                      1
+na dúvida, `loop`                       1
+Registre a triagem                       1
+não encontrei a skill                   1
+D2 · muda o produto                     1
+  sdd-decisoes-lint.sh --sites <pasta|arquivo.md>…
+      Toda pergunta de decisão (negrito terminado em `?` seguido de opções `- **rótulo** — efeito`, na
+      linha do **Sua decisão**; blocos ```markdown contam, outros blocos cercados não) precisa de:
+      exatamente 1 marca `[<código> · <rótulo>]` logo antes da pergunta, com o rótulo da tabela do
+      item 9 · exatamente 1 opção (recomendado), a primeira · a opção **não sei** · nenhuma opção
+      **Outro** · nenhum identificador técnico (AT-n, LM-n, Dn, SHA) fora do `(ref: …)` final.
+  sdd-decisoes-lint.sh --self-test
+      as 4 fixtures de sdd/fixtures/conversa/decisoes/ reprovam pelo motivo certo e o controle passa.
+RESULTADO: ERRO DE USO
+→ rode com --sites <pasta> ou --self-test.
+decisoes_rc=64
+=== AT-022 a 026
+---
+name: sdd-loop-builder
+description: "Especifica, refina e confere processos de produção em que a resposta de um modelo decide o passo seguinte:
+compatibility: Skill de documento — não requer ferramenta externa. Consumida pela fase Build quando o DESIGN inventaria 
+license: MIT
+metadata:
+  author: Roberto Dias Duarte
+  version: "1.0.0"
+  updated: "2026-11"
+  fase: "3-apoio"
+---
+
+16:`sdd-loop-builder v1.0.0 · nov/2026 · versão atual: https://github.com/robertodiasduarte/sdd-open/releases/latest`
+como-falar.md
+exemplo-loop-spec.md
+loop-spec-rules.md
+18
+80:3. **Referência normativa literal:** schemas, catálogos, fórmulas, comandos de verificação; o conteúdo, não só o pont
+87:1. **É um laço?** Se nenhuma saída do modelo decide um passo seguinte, é uma chamada única: recomende a skill de prom
+99:8. **Entregar** exatamente um bloco de texto com a LOOP_SPEC no molde das regras, a tabela de estágios, os prompts pe
+102:⛔ **Os prompts dos estágios nunca nascem aqui.** Esta skill dá, para cada estágio LLM, o contrato de saída em 1 linh
+121:- **Pedido de LOOP_SPEC para o que é chamada única:** diga, recomende a skill de prompt e pare.
+124:- **Efeito externo sem reversão possível:** perfil `high-risk` com `NEEDS_APPROVAL`; sem quem aprove, a ação sai do
+perfil ['standard']
+intent True | control_state True | cycle_protocol True | context_assembly True | action_space True | observation True | verifier True | recovery_and_convergence_policy True | stop_rules True | budget True | observability True | 
+| 1 | coletar | código | 2 tags → lista de commits | código de saída do git | — | 0 | — |
+| 2 | redigir | LLM | lista de commits → rascunho | conferir_citacoes | 4000 | 2 transitórias | notas/redigir.txt |
+| 3 | conferir_citacoes | código | rascunho + lista → aprovados e reprovados | testes do próprio script | — | 0 | — |
+| 4 | reescrever | LLM | reprovados + lista → itens novos | conferir_citacoes | 2000 | 2 transitórias | notas/reescrever.txt |
+.agents/skills/sdd-prompt-builder/references/sdd-integration.md loop-builder=1 scan=1
+sdd/templates/fragments/LLM_PROMPTS_BUILD_REPORT.md loop-builder=1 scan=1
+
+Uma linha por item do inventário "LLM Prompts" do DESIGN. Item do DESIGN sem linha aqui é item
+não construído.
+
+| # | Prompt (do inventário) | Arquivo | Tipo (one-shot · loop) | Gerado por | Status |
+|---|---|---|---|---|---|
+| 1 | <nome do DESIGN> | `<caminho>` | one-shot | `sdd-prompt-builder` (ou a skill de `prompts.builder_skill`) | criado · refatorado · bloqu
+| 2 | <nome do DESIGN> | `<pasta>/LOOP_SPEC.md` | loop | `sdd-loop-builder` | criado · refatorado · bloqueado (motivo) |
+| 2.1 | <estágio>, derivado da linha 2 | `<pasta>/<estágio>.<ext>` | loop, estágio LLM | `sdd-prompt-builder` (ou a skill de `prompts.builde
+
+Item `loop` tem 1 entrada pela LOOP_SPEC e 1 por estágio LLM. Sem ground truth, escreva a lacuna em
+"Evidência": o eval fica para antes da release.
+
+N.A. quando: nunca, com `LLM Prompts: true` — o inventário do DESIGN tem pelo menos um item.
+=== AT-027/028
+1.4.3: | 1.4.3 | AA | Texto ≥4,5:1 (≥3:1 se ≥24
+1.4.11: | 1.4.11 | AA | Borda de controle, ícone
+1.4.1 : | 1.4.1 | A | Estado dito também por tex
+2.4.7: | 2.4.7 | AA | Foco visível em todo cont
+4.1.2: | 4.1.2 | A | Nome, papel e valor por co
+2.1.1: | 2.1.1 | A | Tab alcança e aciona todo 
+2.5.8: | 2.5.8 | AA | Alvo ≥24×24 px, salvo as 
+267:- [ ] 2.1.1 (herdado da tabela WCAG): Tab alcança e aciona todo controle, sem armadilha de foco — provado no relatór
+268:- [ ] 2.5.8 (herdado da tabela WCAG): alvo ≥24×24 px, salvo as exceções da norma; 44×44 px recomendado no mobile — m
+=== AT-029
+90:prompts:
+91-  builder_skill: "sdd-prompt-builder"
+92-  # Se o projeto chama a IA por uma função própria, a expressão do parâmetro dela: o script
+93-  # sdd/bin/prompt-drift-scan.sh procura essa expressão seguida de texto fixo. Exemplos:
+sdd/config.example.yaml:96:  wrapper_pattern: ""
+docs/adaptation-guide.md:30:  wrapper_pattern: ""                   # if the project calls the LLM through its own function: the expression
+docs/pt-BR/adaptation-guide.md:32:  wrapper_pattern: ""                   # se o projeto chama a IA por uma função própria: a expressão do parâmetro
+smoke_rc=1
+sdd/config.example.yaml:94:  # "systemPrompt:" ou "callLLM\\(" (entre aspas duplas, a contrabarra vai dobrada). Vazio = a
+docs/adaptation-guide.md:31:                                        # of its parameter, e.g. "systemPrompt:" or "callLLM\\("; see docs/llm-in-code.md
+docs/pt-BR/adaptation-guide.md:33:                                        # dela, ex.: "systemPrompt:" ou "callLLM\\("; veja docs/pt-BR/llm-in-code.md
+=== AT-031
+docs/roadmap.md:1
+docs/pt-BR/roadmap.md:1
+own document.
+
+| Theme | What it brings | Status |
+|---|---|---|
+| **`sdd-drive`** | a skill that drives several phases in a row with the same human stops 
+| **Spec ↔ code reconciliation** | checking that the file manifest covered every requireme
+| **Specs as deltas** | a spec written as a difference against a canonical capability set,
+
+9:## A process in a loop: `sdd-loop-builder`
+15:The `sdd-loop-builder` skill writes the process card, a **LOOP_SPEC v2**, before any code exists:
+29:## The inventory in the Design
+36:**After updating the package**, a DESIGN in progress with the old inventory fails `design-lint.py` once. It is not a
+39:## The router in the Build
+41:Step 4 of `sdd-build`, for a file in the inventory:
+44:- `Tipo=loop` goes to `sdd-loop-builder` first, then to the prompt skill once per LLM stage, all in the same turn;
+51:## The drift scan: `prompt-drift-scan.sh`
+docs/llm-in-code.md links 1 quebrados 0
+docs/pt-BR/llm-in-code.md links 1 quebrados 0
+README.md links 28 quebrados 0
+README.pt-BR.md links 28 quebrados 0
+=== AT-032
+sdd/bin/prompt-drift-scan.sh:14:# fixo. O slot guarda a expressão do parâmetro (systemPrompt: ou callLLM\(); o script acrescenta
+sdd/bin/prompt-drift-scan.sh:255:  printf 'prompts:\n  wrapper_pattern: "systemPrompt:|callLLM\\\\("  # comentário\n' > "$proj/sdd/config.ya
+sdd/bin/prompt-drift-scan.sh:291:  slot_padrao() { printf 'prompts:\n  wrapper_pattern: "systemPrompt:|callLLM\\\\("  # comentário\n' > "$pr
+sdd/bin/prompt-drift-scan.sh:316:  conteudo 2 'parâmetro do wrapper' src/f.ts               'await callLLM("x")'
+sdd/bin/prompt-drift-scan.sh:317:  conteudo 2 'parâmetro do wrapper' src/g.ts               "await callLLM('x')"
+sdd/bin/prompt-drift-scan.sh:320:  conteudo 0 'RESULTADO: LIMPO' src/i.ts                   'await callLLM(SYSTEM_X)'
+sdd/bin/prompt-drift-scan.sh:321:  conteudo 0 'RESULTADO: LIMPO' src/a.test.ts              'await callLLM("x")'
+sdd/bin/prompt-drift-scan.sh:322:  conteudo 0 'RESULTADO: LIMPO' src/a.spec.js              'await callLLM("x")'
+sdd/bin/prompt-drift-scan.sh:323:  conteudo 0 'RESULTADO: LIMPO' src/a_test.go              'await callLLM("x")'
+sdd/bin/prompt-drift-scan.sh:324:  conteudo 0 'RESULTADO: LIMPO' src/test_a.py              'await callLLM("x")'
+sdd/bin/prompt-drift-scan.sh:325:  conteudo 0 'RESULTADO: LIMPO' tests/j.py                 'await callLLM("x")'
+sdd/bin/prompt-drift-scan.sh:326:  conteudo 0 'RESULTADO: LIMPO' src/test/k.py              'await callLLM("x")'
+sdd/bin/prompt-drift-scan.sh:327:  conteudo 0 'RESULTADO: LIMPO' src/__tests__/l.js         'await callLLM("x")'
+sdd/bin/prompt-drift-scan.sh:328:  conteudo 0 'RESULTADO: LIMPO' spec/l2.rb                 'await callLLM("x")'
+sdd/bin/prompt-drift-scan.sh:329:  conteudo 0 'RESULTADO: LIMPO' src/a_spec.rb              'await callLLM("x")'
+sdd/bin/prompt-drift-scan.sh:330:  conteudo 0 'RESULTADO: LIMPO' src/FooTest.java           'await callLLM("x")'
+sdd/bin/prompt-drift-scan.sh:331:  conteudo 0 'RESULTADO: LIMPO' src/FooTests.cs            'await callLLM("x")'
+sdd/bin/prompt-drift-scan.sh:359:  slot "'callLLM\\('"
+sdd/bin/prompt-drift-scan.sh:360:  conteudo 2 'parâmetro do wrapper' src/v.ts 'callLLM("x")'
+.agents/skills/sdd-loop-builder/SKILL.md:7:  author: Roberto Dias Duarte
+.agents/skills/sdd-loop-builder/SKILL.md:16:`sdd-loop-builder v1.0.0 · nov/2026 · versão atual: https://github.com/robertodiasduarte/sdd-ope
+.agents/skills/sdd-loop-builder/SKILL.md:131:Parte do SDD Open by RDD — https://github.com/robertodiasduarte/sdd-open
+docs/llm-in-code.md:67:  wrapper_pattern: "systemPrompt:"     # or "callLLM\\(": inside double quotes the backslash is doubled
+docs/pt-BR/llm-in-code.md:67:  wrapper_pattern: "systemPrompt:"     # ou "callLLM\\(": entre aspas duplas, a contrabarra vai dobrada
+termos_rc=0
+bash4_rc=1
+=== AT-030 init/sync
+init_rc=0
+✅ nenhum segredo salvo no git (.env, .pfx, .p12, .pem com chave privada)
+RESULTADO: INSTALADO
+→ abra seu agente e peça a fase Define (ex.: /sdd-define ou /skill:sdd-define).
+ok sdd/bin/contraste.sh
+ok sdd/bin/prompt-drift-scan.sh
+ok sdd/templates/fragments/LLM_PROMPTS_DESIGN.md
+ok .agents/skills/sdd-loop-builder/SKILL.md
+ok .agents/skills/sdd-loop-builder/references/loop-spec-rules.md
+ok .claude/skills/sdd-loop-builder/SKILL.md
+21.00:1 PASSA (piso 4.5:1)
+RESULTADO: PASSA
+→ anote o par e o número na tabela da UX review
+RESULTADO: VERDE
+→ o prompt-drift-scan.sh está pronto para uso
+RESULTADO: LIMPO
+→ nenhum sinal de prompt de produção; siga
+init2_rc=0
+ok sdd/bin/prompt-drift-scan.sh
+ok sdd/templates/fragments/LLM_PROMPTS_DESIGN.md
+ok .agents/skills/sdd-loop-builder/SKILL.md
+contraste do usuario: # meu
+sync_rc=0
+adaptador ok
+novos=      12
+[exit=0]

@@ -1,0 +1,84 @@
+# Rodada 4 da revisão do código: testes novos contra os scripts de HEAD 7b84b5d (antes do conserto)
+test_trava_da_pasta_de_medicao (test_f23b2_papeis.AT008AT011Executor) ... FAIL
+test_agente_vivo_da_interrompida_trava_a_retomada (test_f23b2_papeis.AT008AT011Executor) ... FAIL
+test_parada_fica_se_a_retomada_sai_antes_de_chamar (test_f23b2_papeis.AT008AT011Executor) ... FAIL
+test_precos_relativo_vale_pela_pasta_atual (test_f23b2_papeis.AT008AT011Executor) ... FAIL
+test_parada_de_outra_serie_nao_conta_como_escrita_da_interrompida (test_f23b2_papeis.AT008AT011Executor) ... FAIL
+test_um_add_proposto_nao_cobre_dois_esperados (test_f23b2_papeis.AT004AT007Medidor) ... FAIL
+
+======================================================================
+FAIL: test_trava_da_pasta_de_medicao (test_f23b2_papeis.AT008AT011Executor)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.X8Ukku2hwz/tests/test_f23b2_papeis.py", line 712, in test_trava_da_pasta_de_medicao
+    self.assertEqual(rc, 64, out + err)
+AssertionError: 0 != 64 : papel-serie: cur · papel curador · 1 caso(s) · 1 repetição(ões) · referência caro · candidatos —
+▶ c1 · caro · rep 1 · rc 0 · 0s · nominal 1.001 · acumulado 1.001
+RESULTADO: COMPLETA
+→ acumulado da medição: nominal 1.001 · pago 0. Rode papel-medir.sh /private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/sdd-open-uypq32cb/projeto/med/cur para a escolha.
+
+
+======================================================================
+FAIL: test_agente_vivo_da_interrompida_trava_a_retomada (test_f23b2_papeis.AT008AT011Executor)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.X8Ukku2hwz/tests/test_f23b2_papeis.py", line 742, in test_agente_vivo_da_interrompida_trava_a_retomada
+    self.assertEqual(rc, 64, out + err)
+AssertionError: 0 != 64 : ↻ execução interrompida medida (execucoes/c1/caro/1): nominal 1.001 · fronteira conferida
+papel-serie: cur · papel curador · 1 caso(s) · 1 repetição(ões) · referência caro · candidatos —
+▶ c1 · caro · rep 1 · rc 0 · 0s · nominal 1.001 · acumulado 2.002
+RESULTADO: COMPLETA
+→ acumulado da medição: nominal 2.002 · pago 0. Rode papel-medir.sh /private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/sdd-open-mauy4go7/projeto/med/cur para a escolha.
+
+
+======================================================================
+FAIL: test_parada_fica_se_a_retomada_sai_antes_de_chamar (test_f23b2_papeis.AT008AT011Executor)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.X8Ukku2hwz/tests/test_f23b2_papeis.py", line 770, in test_parada_fica_se_a_retomada_sai_antes_de_chamar
+    self.assertTrue((s / "PARADA.txt").exists())
+AssertionError: False is not true
+
+======================================================================
+FAIL: test_precos_relativo_vale_pela_pasta_atual (test_f23b2_papeis.AT008AT011Executor)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.X8Ukku2hwz/tests/test_f23b2_papeis.py", line 779, in test_precos_relativo_vale_pela_pasta_atual
+    self.assertIn("nominal: 1.001", (s / "execucoes/c1/caro/1/meta.txt").read_text(encoding="utf-8"))
+AssertionError: 'nominal: 1.001' not found in 'estado: ok\npapel: curador\ncaso: c1\ncandidato: caro\nmodelo: modelo-caro\ncobranca: assinatura\nrepeticao: 1\nrc: 0\nsegundos: 0\nnominal: n/d\npago: n/d\nmodelos: \nentrada: 0\nsaida: 0\ncache_lido: 0\ncache_criado: 0\n'
+
+======================================================================
+FAIL: test_parada_de_outra_serie_nao_conta_como_escrita_da_interrompida (test_f23b2_papeis.AT008AT011Executor)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.X8Ukku2hwz/tests/test_f23b2_papeis.py", line 813, in test_parada_de_outra_serie_nao_conta_como_escrita_da_interrompida
+    self.assertEqual(rc, 0, out)
+AssertionError: 21 != 0 : ↻ execução interrompida medida (execucoes/c1/caro/1): nominal 1.001 · fronteira fora
+🛑 papel-serie: execução interrompida com escrita fora da cópia: o projeto mudou entre a foto de antes e esta retomada (o agente ou uma edição sua); o custo foi somado e nada foi apagado. Confira e retome com o mesmo comando
+RESULTADO: FRONTEIRA
+→ nada mais foi chamado; o motivo e os acumulados estão em /private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/sdd-open-hrjggn2b/projeto/med/cur/PARADA.txt. Retome com o mesmo comando depois de resolver.
+
+
+======================================================================
+FAIL: test_um_add_proposto_nao_cobre_dois_esperados (test_f23b2_papeis.AT004AT007Medidor)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.X8Ukku2hwz/tests/test_f23b2_papeis.py", line 349, in test_um_add_proposto_nao_cobre_dois_esperados
+    self.assertEqual(rc, 3, out)
+AssertionError: 1 != 3 : # Medição — cur (papel curador)
+
+Gabarito: 1 caso(s) × 1 repetição(ões). Referência: barato. Limiar de ganho: 30%.
+
+| Candidato | Modelo | Na meta | Mediana nominal US$ | Queda × referência |
+|---|---|---:|---:|---:|
+| barato | modelo-barato | 1 de 1 | 0.2005 | 0.0% |
+
+RESULTADO: SEM GANHO MEDIDO
+→ nenhum candidato bate a meta em todas as execuções com queda de 30% ou mais; o slot fica vazio e isso não conta como economia.
+
+
+----------------------------------------------------------------------
+Ran 6 tests in 6.211s
+
+FAILED (failures=6)
+[exit=1]

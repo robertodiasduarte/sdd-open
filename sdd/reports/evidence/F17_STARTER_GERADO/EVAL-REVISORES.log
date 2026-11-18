@@ -1,0 +1,11 @@
+eval-revisores — custo e resultado por papel, engine e modelo (4 pasta(s) lida(s) em /Users/robertoduarte/rdd-worktrees/sdd-open-f17-starter-gerado/sdd/reports/reviews; 1 ledger(s))
+
+| Papel | Engine (modelo) | Cobrança | Rodadas | Falhas | Pago US$ | Nominal US$ | Achados | Aplicados | Com dano | Falsos positivos | Fora de escopo | Sem classificar | Pago por dano | Nominal por dano | AGREE |
+|---|---|---|---:|---|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|
+| revisor | claude (claude-opus-5-5) | assinatura | 4 | 0 | 0.0000 | 4.0020 | 12 | 8 de 12 | 0 de 12 | 4 de 12 | 0 de 12 | 0 de 12 | — | — | — |
+| auditor | openrouter (qwen/qwen3.7-plus via Alibaba) | pay-per-token | 4 | 0 | 0.1093 | 0.1093 | 0 | 0 | 0 | 0 | 0 | 0 | — | — | 91.7% (11 de 12) |
+
+fora da conta: 0
+RESULTADO: MEDIDO
+→ leia cada taxa com a amostra ao lado: poucas rodadas dão número instável. O script conta o que está registrado; trocar a cadeia de revisão é decisão de quem lê.
+[exit=0]

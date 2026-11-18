@@ -1,0 +1,2 @@
+{"achado": "R1", "veredito": "AGREE", "justificativa": "O diff confirma que n_edit_mesclar recebe n_edit e o .diff gerado (p vs n, onde n==a) apaga a edição do usuário quando o pacote não mudou o arquivo, violando a P8 do BRAINSTORM."}
+{"achado": "R2", "veredito": "DISAGREE_CONCERN", "justificativa": "O gh release create lida com tags locais criando-as no remoto; não há evidência no diff de que o passo de publicação abortaria por esse motivo."}

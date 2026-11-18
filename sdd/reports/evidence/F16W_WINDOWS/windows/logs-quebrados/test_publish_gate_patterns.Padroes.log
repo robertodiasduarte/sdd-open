@@ -1,0 +1,368 @@
+test_negativos_nao_casam (test_publish_gate_patterns.Padroes.test_negativos_nao_casam) ... 
+
+  test_negativos_nao_casam (test_publish_gate_patterns.Padroes.test_negativos_nao_casam) (texto='data 2026-10-29 e 29/10/2026') ... FAIL
+
+  test_negativos_nao_casam (test_publish_gate_patterns.Padroes.test_negativos_nao_casam) (texto='carimbo 2026-10-29T12:30:00Z') ... FAIL
+
+  test_negativos_nao_casam (test_publish_gate_patterns.Padroes.test_negativos_nao_casam) (texto='vers�o v2.10.0 e 1.024 caracteres') ... FAIL
+
+  test_negativos_nao_casam (test_publish_gate_patterns.Padroes.test_negativos_nao_casam) (texto='exits 0/2/3/4/5/64 e LM-004') ... FAIL
+
+  test_negativos_nao_casam (test_publish_gate_patterns.Padroes.test_negativos_nao_casam) (texto='commit 80d7887 e sha 3f2a9c1') ... FAIL
+
+  test_negativos_nao_casam (test_publish_gate_patterns.Padroes.test_negativos_nao_casam) (texto='intervalo 8080-8090') ... FAIL
+
+  test_negativos_nao_casam (test_publish_gate_patterns.Padroes.test_negativos_nao_casam) (texto='AT-001 a AT-026') ... FAIL
+
+test_positivos_casam (test_publish_gate_patterns.Padroes.test_positivos_casam) ... 
+
+  test_positivos_casam (test_publish_gate_patterns.Padroes.test_positivos_casam) (caso='CPF com pontua��o') ... FAIL
+
+  test_positivos_casam (test_publish_gate_patterns.Padroes.test_positivos_casam) (caso='CNPJ com pontua��o') ... FAIL
+
+  test_positivos_casam (test_publish_gate_patterns.Padroes.test_positivos_casam) (caso='celular com DDD entre par�nteses') ... FAIL
+
+  test_positivos_casam (test_publish_gate_patterns.Padroes.test_positivos_casam) (caso='celular com DDD sem par�nteses') ... FAIL
+
+  test_positivos_casam (test_publish_gate_patterns.Padroes.test_positivos_casam) (caso='fixo com DDD') ... FAIL
+
+test_todo_padrao_e_ere_valida (test_publish_gate_patterns.Padroes.test_todo_padrao_e_ere_valida) ... 
+
+  test_todo_padrao_e_ere_valida (test_publish_gate_patterns.Padroes.test_todo_padrao_e_ere_valida) (padrao='[0-9]{11,}') ... FAIL
+
+  test_todo_padrao_e_ere_valida (test_publish_gate_patterns.Padroes.test_todo_padrao_e_ere_valida) (padrao='[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}') ... FAIL
+
+
+
+======================================================================
+
+FAIL: test_negativos_nao_casam (test_publish_gate_patterns.Padroes.test_negativos_nao_casam) (texto='data 2026-10-29 e 29/10/2026')
+
+----------------------------------------------------------------------
+
+Traceback (most recent call last):
+
+  File "D:\a\sdd-open\sdd-open\tests\test_publish_gate_patterns.py", line 61, in test_negativos_nao_casam
+
+    self.assertEqual(self.casa(texto), [], "falso positivo bloquearia a publica��o")
+
+                     ^^^^^^^^^^^^^^^^
+
+  File "D:\a\sdd-open\sdd-open\tests\test_publish_gate_patterns.py", line 48, in casa
+
+    self.assertLessEqual(rc, 1, "padr�o inv�lido para o grep: /" + rx + "/ " + err)
+
+AssertionError: 2 not less than or equal to 1 : padr�o inv�lido para o grep: /[0-9]{11,}/ grep: [0-9]: No such file or directory
+
+
+
+
+
+======================================================================
+
+FAIL: test_negativos_nao_casam (test_publish_gate_patterns.Padroes.test_negativos_nao_casam) (texto='carimbo 2026-10-29T12:30:00Z')
+
+----------------------------------------------------------------------
+
+Traceback (most recent call last):
+
+  File "D:\a\sdd-open\sdd-open\tests\test_publish_gate_patterns.py", line 61, in test_negativos_nao_casam
+
+    self.assertEqual(self.casa(texto), [], "falso positivo bloquearia a publica��o")
+
+                     ^^^^^^^^^^^^^^^^
+
+  File "D:\a\sdd-open\sdd-open\tests\test_publish_gate_patterns.py", line 48, in casa
+
+    self.assertLessEqual(rc, 1, "padr�o inv�lido para o grep: /" + rx + "/ " + err)
+
+AssertionError: 2 not less than or equal to 1 : padr�o inv�lido para o grep: /[0-9]{11,}/ grep: [0-9]: No such file or directory
+
+
+
+
+
+======================================================================
+
+FAIL: test_negativos_nao_casam (test_publish_gate_patterns.Padroes.test_negativos_nao_casam) (texto='vers�o v2.10.0 e 1.024 caracteres')
+
+----------------------------------------------------------------------
+
+Traceback (most recent call last):
+
+  File "D:\a\sdd-open\sdd-open\tests\test_publish_gate_patterns.py", line 61, in test_negativos_nao_casam
+
+    self.assertEqual(self.casa(texto), [], "falso positivo bloquearia a publica��o")
+
+                     ^^^^^^^^^^^^^^^^
+
+  File "D:\a\sdd-open\sdd-open\tests\test_publish_gate_patterns.py", line 48, in casa
+
+    self.assertLessEqual(rc, 1, "padr�o inv�lido para o grep: /" + rx + "/ " + err)
+
+AssertionError: 2 not less than or equal to 1 : padr�o inv�lido para o grep: /[0-9]{11,}/ grep: [0-9]: No such file or directory
+
+
+
+
+
+======================================================================
+
+FAIL: test_negativos_nao_casam (test_publish_gate_patterns.Padroes.test_negativos_nao_casam) (texto='exits 0/2/3/4/5/64 e LM-004')
+
+----------------------------------------------------------------------
+
+Traceback (most recent call last):
+
+  File "D:\a\sdd-open\sdd-open\tests\test_publish_gate_patterns.py", line 61, in test_negativos_nao_casam
+
+    self.assertEqual(self.casa(texto), [], "falso positivo bloquearia a publica��o")
+
+                     ^^^^^^^^^^^^^^^^
+
+  File "D:\a\sdd-open\sdd-open\tests\test_publish_gate_patterns.py", line 48, in casa
+
+    self.assertLessEqual(rc, 1, "padr�o inv�lido para o grep: /" + rx + "/ " + err)
+
+AssertionError: 2 not less than or equal to 1 : padr�o inv�lido para o grep: /[0-9]{11,}/ grep: [0-9]: No such file or directory
+
+
+
+
+
+======================================================================
+
+FAIL: test_negativos_nao_casam (test_publish_gate_patterns.Padroes.test_negativos_nao_casam) (texto='commit 80d7887 e sha 3f2a9c1')
+
+----------------------------------------------------------------------
+
+Traceback (most recent call last):
+
+  File "D:\a\sdd-open\sdd-open\tests\test_publish_gate_patterns.py", line 61, in test_negativos_nao_casam
+
+    self.assertEqual(self.casa(texto), [], "falso positivo bloquearia a publica��o")
+
+                     ^^^^^^^^^^^^^^^^
+
+  File "D:\a\sdd-open\sdd-open\tests\test_publish_gate_patterns.py", line 48, in casa
+
+    self.assertLessEqual(rc, 1, "padr�o inv�lido para o grep: /" + rx + "/ " + err)
+
+AssertionError: 2 not less than or equal to 1 : padr�o inv�lido para o grep: /[0-9]{11,}/ grep: [0-9]: No such file or directory
+
+
+
+
+
+======================================================================
+
+FAIL: test_negativos_nao_casam (test_publish_gate_patterns.Padroes.test_negativos_nao_casam) (texto='intervalo 8080-8090')
+
+----------------------------------------------------------------------
+
+Traceback (most recent call last):
+
+  File "D:\a\sdd-open\sdd-open\tests\test_publish_gate_patterns.py", line 61, in test_negativos_nao_casam
+
+    self.assertEqual(self.casa(texto), [], "falso positivo bloquearia a publica��o")
+
+                     ^^^^^^^^^^^^^^^^
+
+  File "D:\a\sdd-open\sdd-open\tests\test_publish_gate_patterns.py", line 48, in casa
+
+    self.assertLessEqual(rc, 1, "padr�o inv�lido para o grep: /" + rx + "/ " + err)
+
+AssertionError: 2 not less than or equal to 1 : padr�o inv�lido para o grep: /[0-9]{11,}/ grep: [0-9]: No such file or directory
+
+
+
+
+
+======================================================================
+
+FAIL: test_negativos_nao_casam (test_publish_gate_patterns.Padroes.test_negativos_nao_casam) (texto='AT-001 a AT-026')
+
+----------------------------------------------------------------------
+
+Traceback (most recent call last):
+
+  File "D:\a\sdd-open\sdd-open\tests\test_publish_gate_patterns.py", line 61, in test_negativos_nao_casam
+
+    self.assertEqual(self.casa(texto), [], "falso positivo bloquearia a publica��o")
+
+                     ^^^^^^^^^^^^^^^^
+
+  File "D:\a\sdd-open\sdd-open\tests\test_publish_gate_patterns.py", line 48, in casa
+
+    self.assertLessEqual(rc, 1, "padr�o inv�lido para o grep: /" + rx + "/ " + err)
+
+AssertionError: 2 not less than or equal to 1 : padr�o inv�lido para o grep: /[0-9]{11,}/ grep: [0-9]: No such file or directory
+
+
+
+
+
+======================================================================
+
+FAIL: test_positivos_casam (test_publish_gate_patterns.Padroes.test_positivos_casam) (caso='CPF com pontua��o')
+
+----------------------------------------------------------------------
+
+Traceback (most recent call last):
+
+  File "D:\a\sdd-open\sdd-open\tests\test_publish_gate_patterns.py", line 56, in test_positivos_casam
+
+    self.assertTrue(self.casa(texto), nome + " n�o foi pego por nenhum padr�o")
+
+                    ^^^^^^^^^^^^^^^^
+
+  File "D:\a\sdd-open\sdd-open\tests\test_publish_gate_patterns.py", line 48, in casa
+
+    self.assertLessEqual(rc, 1, "padr�o inv�lido para o grep: /" + rx + "/ " + err)
+
+AssertionError: 2 not less than or equal to 1 : padr�o inv�lido para o grep: /[0-9]{11,}/ grep: [0-9]: No such file or directory
+
+
+
+
+
+======================================================================
+
+FAIL: test_positivos_casam (test_publish_gate_patterns.Padroes.test_positivos_casam) (caso='CNPJ com pontua��o')
+
+----------------------------------------------------------------------
+
+Traceback (most recent call last):
+
+  File "D:\a\sdd-open\sdd-open\tests\test_publish_gate_patterns.py", line 56, in test_positivos_casam
+
+    self.assertTrue(self.casa(texto), nome + " n�o foi pego por nenhum padr�o")
+
+                    ^^^^^^^^^^^^^^^^
+
+  File "D:\a\sdd-open\sdd-open\tests\test_publish_gate_patterns.py", line 48, in casa
+
+    self.assertLessEqual(rc, 1, "padr�o inv�lido para o grep: /" + rx + "/ " + err)
+
+AssertionError: 2 not less than or equal to 1 : padr�o inv�lido para o grep: /[0-9]{11,}/ grep: [0-9]: No such file or directory
+
+
+
+
+
+======================================================================
+
+FAIL: test_positivos_casam (test_publish_gate_patterns.Padroes.test_positivos_casam) (caso='celular com DDD entre par�nteses')
+
+----------------------------------------------------------------------
+
+Traceback (most recent call last):
+
+  File "D:\a\sdd-open\sdd-open\tests\test_publish_gate_patterns.py", line 56, in test_positivos_casam
+
+    self.assertTrue(self.casa(texto), nome + " n�o foi pego por nenhum padr�o")
+
+                    ^^^^^^^^^^^^^^^^
+
+  File "D:\a\sdd-open\sdd-open\tests\test_publish_gate_patterns.py", line 48, in casa
+
+    self.assertLessEqual(rc, 1, "padr�o inv�lido para o grep: /" + rx + "/ " + err)
+
+AssertionError: 2 not less than or equal to 1 : padr�o inv�lido para o grep: /[0-9]{11,}/ grep: [0-9]: No such file or directory
+
+
+
+
+
+======================================================================
+
+FAIL: test_positivos_casam (test_publish_gate_patterns.Padroes.test_positivos_casam) (caso='celular com DDD sem par�nteses')
+
+----------------------------------------------------------------------
+
+Traceback (most recent call last):
+
+  File "D:\a\sdd-open\sdd-open\tests\test_publish_gate_patterns.py", line 56, in test_positivos_casam
+
+    self.assertTrue(self.casa(texto), nome + " n�o foi pego por nenhum padr�o")
+
+                    ^^^^^^^^^^^^^^^^
+
+  File "D:\a\sdd-open\sdd-open\tests\test_publish_gate_patterns.py", line 48, in casa
+
+    self.assertLessEqual(rc, 1, "padr�o inv�lido para o grep: /" + rx + "/ " + err)
+
+AssertionError: 2 not less than or equal to 1 : padr�o inv�lido para o grep: /[0-9]{11,}/ grep: [0-9]: No such file or directory
+
+
+
+
+
+======================================================================
+
+FAIL: test_positivos_casam (test_publish_gate_patterns.Padroes.test_positivos_casam) (caso='fixo com DDD')
+
+----------------------------------------------------------------------
+
+Traceback (most recent call last):
+
+  File "D:\a\sdd-open\sdd-open\tests\test_publish_gate_patterns.py", line 56, in test_positivos_casam
+
+    self.assertTrue(self.casa(texto), nome + " n�o foi pego por nenhum padr�o")
+
+                    ^^^^^^^^^^^^^^^^
+
+  File "D:\a\sdd-open\sdd-open\tests\test_publish_gate_patterns.py", line 48, in casa
+
+    self.assertLessEqual(rc, 1, "padr�o inv�lido para o grep: /" + rx + "/ " + err)
+
+AssertionError: 2 not less than or equal to 1 : padr�o inv�lido para o grep: /[0-9]{11,}/ grep: [0-9]: No such file or directory
+
+
+
+
+
+======================================================================
+
+FAIL: test_todo_padrao_e_ere_valida (test_publish_gate_patterns.Padroes.test_todo_padrao_e_ere_valida) (padrao='[0-9]{11,}')
+
+----------------------------------------------------------------------
+
+Traceback (most recent call last):
+
+  File "D:\a\sdd-open\sdd-open\tests\test_publish_gate_patterns.py", line 67, in test_todo_padrao_e_ere_valida
+
+    self.assertLessEqual(rc, 1, err)
+
+AssertionError: 2 not less than or equal to 1 : grep: [0-9]: No such file or directory
+
+
+
+
+
+======================================================================
+
+FAIL: test_todo_padrao_e_ere_valida (test_publish_gate_patterns.Padroes.test_todo_padrao_e_ere_valida) (padrao='[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}')
+
+----------------------------------------------------------------------
+
+Traceback (most recent call last):
+
+  File "D:\a\sdd-open\sdd-open\tests\test_publish_gate_patterns.py", line 67, in test_todo_padrao_e_ere_valida
+
+    self.assertLessEqual(rc, 1, err)
+
+AssertionError: 2 not less than or equal to 1 : grep: [A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+.[A-Za-z]: No such file or directory
+
+
+
+
+
+----------------------------------------------------------------------
+
+Ran 3 tests in 0.278s
+
+
+
+FAILED (failures=14)
+

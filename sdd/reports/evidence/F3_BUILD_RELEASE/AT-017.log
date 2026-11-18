@@ -1,0 +1,12 @@
+$ cd tests && SDD_TEST_BASH=/bin/bash /usr/bin/python3 -B -m unittest -v test_contrato_build_release.SddRelease
+test_bloco_tem_os_campos_na_ordem (test_contrato_build_release.SddRelease) ... ok
+test_cada_resultado_do_script_tem_traducao (test_contrato_build_release.SddRelease) ... ok
+test_item_7_roda_o_script (test_contrato_build_release.SddRelease) ... ok
+test_report_lint_da_fase_0_cita_migration (test_contrato_build_release.SddRelease) ... ok
+test_uma_pergunta_so_e_a_ultima_linha (test_contrato_build_release.SddRelease) ... ok
+test_versao (test_contrato_build_release.SddRelease) ... ok
+
+----------------------------------------------------------------------
+Ran 6 tests in 0.000s
+
+OK

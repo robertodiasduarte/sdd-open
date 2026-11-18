@@ -1,0 +1,66 @@
+$ /usr/bin/python3 -B /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.lyAZcjfTsM/scripts/sonda4.py </dev/null
+staging: /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.lyAZcjfTsM/tmp/sdd-curadoria-ad059057172d/F1
+copiado: sdd/features/DESIGN_F1.md
+copiado: sdd/reports/BUILD_REPORT_F1.md
+copiado: sdd/reports/evidence/F1/AVAL-1-a.log
+ignorado (link ou não é arquivo): sdd/reports/evidence/F1/AVAL-2-link.log
+copiado: sdd/reports/evidence/F1/CURATOR-colhidos.txt
+copiado: sdd/reviews/AVALIACAO_F1_20261105.md
+copiado: sdd/reviews/AVALIACAO_F1_2_20261105.md
+copiado: sdd/archive/F1/AVALIACAO_F1_20260101.md
+copiado: sdd/releases/F1/a_1.yaml
+copiado: sdd/handoffs/HANDOFF_F1.md
+RESULTADO: STAGING PRONTO (9 arquivo(s))
+→ os originais não foram tocados; rode --colher "/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.lyAZcjfTsM/tmp/sdd-curadoria-ad059057172d/F1" sdd/playbook.md e guarde a saída em colheita.txt nessa pasta.
+  ['AVAL-1-a.log', 'AVALIACAO_F1_20260101.md', 'AVALIACAO_F1_20261105.md', 'AVALIACAO_F1_2_20261105.md', 'BUILD_REPORT_F1.md', 'CURATOR-colhidos.txt', 'DESIGN_F1.md', 'HANDOFF_F1.md', 'a_1.yaml']
+AT-041 | PASS | copia só da feature | os 7 + registro; nunca LONGO, nunca outro.log; link ignorado | ['AVAL-1-a.log', 'AVALIACAO_F1_20260101.md', 'AVALIACAO_F1_20261105.md', 'AVALIACAO_F1_2_20261105.md', 'BUILD_REPORT_F1.md', 'CURATOR-colhidos.txt', 'DESIGN_F1.md', 'HANDOFF_F1.md', 'a_1.yaml']
+AT-041 | REPROVA | feature F1 com avaliação de F1_2 (nome maior que começa por dígito) | AVALIACAO_F1_2_20261105.md não é copiada | ['AVAL-1-a.log', 'AVALIACAO_F1_20260101.md', 'AVALIACAO_F1_20261105.md', 'AVALIACAO_F1_2_20261105.md', 'BUILD_REPORT_F1.md', 'CURATOR-colhidos.txt', 'DESIGN_F1.md', 'HANDOFF_F1.md', 'a_1.yaml']
+AT-041 | PASS | sdd/ vence archive | DESIGN de sdd/ | x ⏎ 
+AT-041 | PASS | originais intocados | existem | 
+AT-041 | PASS | --retomar não limpa e diz que há colheita | lixo fica | staging: /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.lyAZcjfTsM/tmp/sdd-curadoria
+AT-041 | PASS | --preparar limpa o que sobrou | lixo sai | 0
+AT-041 | PASS | sem DESIGN nem BUILD_REPORT | exit 1 | 1
+AT-041 | PASS | nome 'a.b' | exit 64 | 64
+AT-041 | PASS | nome '../x' | exit 64 | 64
+AT-041 | PASS | nome 'a/b' | exit 64 | 64
+AT-041 | PASS | nome '-x' | exit 64 | 64
+AT-041 | PASS | nome '' | exit 64 | 64
+AT-041 | PASS | sem nome | exit 64 | 64
+AT-041 | PASS | staging é link | exit 2, alvo intocado | rc=2
+AT-041 | PASS | só em archive | copia, exit 0 | staging: /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.lyAZcjfTsM/tmp/sdd
+AT-041 | PASS | cópia sem .git | exit 0, usa a pasta atual | 0
+DELTA LM-020 ajudou+1 · conf=2026-11-05 · evidencia=BUILD_REPORT_X.md:9 · fp=d6c8c562a4,8faad2fa40
+DELTA LM-016 mordeu+1 · conf=2026-11-05 · evidencia=BUILD_REPORT_X.md:14 · fp=d7215613c0,4acc3bc773
+SUGESTAO mordeu? LM-020 — termo `fila_de_envio` em BUILD_REPORT_X.md:16 (achado sem LM explícito; confirmar a causa antes de virar delta) · fp=8d319fb1cf
+CANDIDATO #1 → LM-031 · secao=Backend · sup=`k1` · evidencia=e · fp=ffe419f616
+   delta: ADD Backend :: sup: `k1` :: Regra. **Do instead:** x. → ficha: — · promovido_para: —
+REJEITADO candidato em BUILD_REPORT_X.md:24 — regra: sem 'Do instead:' · fp=a3d1ac1993
+resumo: deltas=2 (ajudou=1 mordeu=1) candidatos=1 rejeitados=1 promocoes=0 sugestoes=1
+RESULTADO: HÁ O QUE JULGAR
+→ despache o curador com esta colheita; nada foi aplicado.
+
+AT-044 | PASS | 1ª rodada | 2 DELTA (cada um com 2 impressões), SUGESTAO, CANDIDATO, REJEITADO | DELTA LM-020 ajudou+1 · conf=2026-11-05 
+AT-044 | PASS | 2ª rodada igual, com o registro | exit 1, JA_JULGADO, nada novo | rc=1 JA_JULGADO 7 linha(s) já julgada(s) numa curadoria anterior desta feature (CURATOR-colhidos.txt): não contam de novo ⏎ resumo: deltas=0 (ajudou=0 mordeu
+AT-044 | PASS | só o número da linha mudou | exit 1 | rc=1 JA_JULGADO 7 linha(s) já julgada(s) numa curadoria anterior desta feature (CURATOR-colhidos.txt): não contam de novo ⏎ res
+DELTA LM-016 mordeu+1 · conf=2026-11-05 · evidencia=BUILD_REPORT_X.md:32 · fp=d6e35b8c66
+SUGESTAO mordeu? LM-020 — termo `fila_de_envio` em BUILD_REPORT_X.md:33 (achado sem LM explícito; confirmar a causa antes de virar delta) · fp=3563c1b01e
+CANDIDATO #1 → LM-031 · secao=Backend · sup=`k3` · evidencia=e · fp=9ffc6a3e91
+   delta: ADD Backend :: sup: `k3` :: Outra. **Do instead:** y. → ficha: — · promovido_para: —
+JA_JULGADO 6 linha(s) já julgada(s) numa curadoria anterior desta feature (CURATOR-colhidos.txt): não contam de novo
+resumo: deltas=1 (ajudou=0 mordeu=1) candidatos=1 rejeitados=0 promocoes=0 sugestoes=1
+RESULTADO: HÁ O QUE JULGAR
+→ despache o curador com esta colheita; nada foi aplicado.
+
+AT-044 | PASS | achado novo, sugestão nova e candidato novo | contam | DELTA LM-016 mordeu+1 · conf=2026-11-05 · evidencia=BUILD_REPORT_X.md:32 · fp=d6e35b8c66 ⏎ SUGESTAO mordeu? LM-020 — termo `fila_de_envio` em BUILD_REPORT_X.md:33 (achado sem LM explícito; confirmar a causa antes de virar delta) · fp=3563c1b01e ⏎ CANDIDATO #1 → LM-031 · secao=Backend · sup=`k3` · ev
+AT-044 | PASS | lição em 2 arquivos | as 2 impressões vão no registro | rc=1 JA_JULGADO 8 linha(s) já julgada(s) numa curadoria anterior desta feature (CURATOR-colhidos.txt): não contam de novo ⏎ res
+DELTA LM-016 mordeu+1 · conf=2026-11-05 · evidencia=BUILD_REPORT_X.md:8 · fp=d08eacb761,f8d87ef9a0
+CANDIDATO #1 → LM-031 · secao=Backend · sup=`k` · evidencia=e · fp=74409c9a47
+   delta: ADD Backend :: sup: `k` :: r. **Do instead:** x. → ficha: — · promovido_para: —
+resumo: deltas=1 (ajudou=0 mordeu=1) candidatos=1 rejeitados=0 promocoes=0 sugestoes=0
+RESULTADO: HÁ O QUE JULGAR
+→ despache o curador com esta colheita; nada foi aplicado.
+
+AT-044 | PASS | mordeu_antes de candidato | não conta de novo | rc=1 JA_JULGADO 2 linha(s) já julgada(s) numa curadoria anterior desta feature (CURATOR-colhidos.txt): não contam de novo ⏎ res
+AT-044 | PASS | registro com lixo | ignora o lixo e conta | DELTA LM-020 ajudou+1 · conf=2026-11-05 · evidencia=BUILD_REPORT_X.md:9 · fp=d6c
+TOTAL 23 casos, 1 reprovados: AT-041
+[exit=0]

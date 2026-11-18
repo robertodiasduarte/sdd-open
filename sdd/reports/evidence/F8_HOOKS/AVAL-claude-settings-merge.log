@@ -1,0 +1,210 @@
+$ cd /tmp/sdd-aval/claude-merge && cat .claude/settings.json
+{
+  "permissions": {
+    "allow": [
+      "Bash(git status:*)"
+    ]
+  },
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "Bash",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "echo hook-do-usuario"
+          }
+        ]
+      }
+    ],
+    "Stop": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "echo fim-da-sessao"
+          }
+        ]
+      }
+    ]
+  }
+}
+[exit=0]
+$ cd /tmp/sdd-aval/claude-merge && bash /Users/robertoduarte/rdd-worktrees/sdd-open-f8-aval/bin/sdd-open.sh init --yes --vendors claude 2>&1 | grep -v '^+ .agents/skills/'
+▶ init — plano
++ AGENTS.md (novo)
++ sdd/ (templates, fixtures, bin, hooks, playbook, config) (novo)
++ core.hooksPath = sdd/hooks — 5 regras + relatório + alarme passam a conferir cada commit (teto do arquivo de contexto, credencial, playbook, byte NUL, branch padrão); git commit --no-verify pula uma vez (novo)
++ CLAUDE.md (novo)
++ .claude/hooks/sdd-avaliador-guard.py (novo)
++ .claude/hooks/sdd-report-guard.py (novo)
+~ .claude/settings.json (hooks += 2 guards do sdd-open) (atualizar)
++ .claude/skills/sdd-auditoria-harness/SKILL.md (novo)
++ .claude/skills/sdd-auditoria-harness/references/AUDIT_PROTOCOL.md (novo)
++ .claude/skills/sdd-auditoria-harness/references/REPORT_TEMPLATE.md (novo)
++ .claude/skills/sdd-auditoria-harness/references/como-falar.md (novo)
++ .claude/skills/sdd-auditoria-harness/scripts/collect_evidence.py (novo)
++ .claude/skills/sdd-brainstorm/SKILL.md (novo)
++ .claude/skills/sdd-brainstorm/references/como-falar.md (novo)
++ .claude/skills/sdd-build/SKILL.md (novo)
++ .claude/skills/sdd-build/references/aplicar-migration.md (novo)
++ .claude/skills/sdd-build/references/como-falar.md (novo)
++ .claude/skills/sdd-build/references/contexto-fresco.md (novo)
++ .claude/skills/sdd-build/references/modos-e-retry.md (novo)
++ .claude/skills/sdd-checar-ambiente/SKILL.md (novo)
++ .claude/skills/sdd-checar-ambiente/references/como-falar.md (novo)
++ .claude/skills/sdd-checar-ambiente/scripts/checar.sh (novo)
++ .claude/skills/sdd-define/SKILL.md (novo)
++ .claude/skills/sdd-define/references/como-falar.md (novo)
++ .claude/skills/sdd-design/SKILL.md (novo)
++ .claude/skills/sdd-design/references/como-falar.md (novo)
++ .claude/skills/sdd-governanca/SKILL.md (novo)
++ .claude/skills/sdd-governanca/assets/GOVERNANCA_PADRAO_TEMPLATE.md (novo)
++ .claude/skills/sdd-governanca/assets/GOVERNANCA_REVIEW_TEMPLATE.md (novo)
++ .claude/skills/sdd-governanca/evals/cases.json (novo)
++ .claude/skills/sdd-governanca/manifest.json (novo)
++ .claude/skills/sdd-governanca/references/CATALOGO_GOVERNANCA.md (novo)
++ .claude/skills/sdd-governanca/references/PROCEDIMENTO.md (novo)
++ .claude/skills/sdd-governanca/references/como-falar.md (novo)
++ .claude/skills/sdd-handoff/SKILL.md (novo)
++ .claude/skills/sdd-handoff/references/como-falar.md (novo)
++ .claude/skills/sdd-higiene-dado/CHANGELOG.md (novo)
++ .claude/skills/sdd-higiene-dado/SKILL.md (novo)
++ .claude/skills/sdd-higiene-dado/evals/cases.json (novo)
++ .claude/skills/sdd-higiene-dado/manifest.json (novo)
++ .claude/skills/sdd-higiene-dado/references/COMO_FUNCIONA.md (novo)
++ .claude/skills/sdd-higiene-dado/references/ESCOPO_CONFIRMADO.md (novo)
++ .claude/skills/sdd-higiene-dado/references/RUNTIME_COMPATIBILITY.md (novo)
++ .claude/skills/sdd-higiene-dado/scripts/alarme.sh (novo)
++ .claude/skills/sdd-higiene-dado/scripts/pre-commit.sh (novo)
++ .claude/skills/sdd-iniciar-repo/SKILL.md (novo)
++ .claude/skills/sdd-iniciar-repo/scripts/inventario.sh (novo)
++ .claude/skills/sdd-iterate/SKILL.md (novo)
++ .claude/skills/sdd-iterate/references/como-falar.md (novo)
++ .claude/skills/sdd-kb/CHANGELOG.md (novo)
++ .claude/skills/sdd-kb/SKILL.md (novo)
++ .claude/skills/sdd-kb/assets/CASO_TEMPLATE.json (novo)
++ .claude/skills/sdd-kb/assets/CATALOGO_FONTES_TEMPLATE.md (novo)
++ .claude/skills/sdd-kb/assets/CONCEPT_TEMPLATE.md (novo)
++ .claude/skills/sdd-kb/assets/INDEX_NORMATIVO_TEMPLATE.md (novo)
++ .claude/skills/sdd-kb/assets/INDEX_TEMPLATE.md (novo)
++ .claude/skills/sdd-kb/assets/KB_INDEX_TEMPLATE.yaml (novo)
++ .claude/skills/sdd-kb/assets/PATTERN_TEMPLATE.md (novo)
++ .claude/skills/sdd-kb/assets/QUICK_REFERENCE_TEMPLATE.md (novo)
++ .claude/skills/sdd-kb/assets/RULE_TEMPLATE.md (novo)
++ .claude/skills/sdd-kb/assets/TABELA_TEMPLATE.json (novo)
++ .claude/skills/sdd-kb/assets/_index.yaml (novo)
++ .claude/skills/sdd-kb/assets/example-kb-normativo/RULE_MAP.md (novo)
++ .claude/skills/sdd-kb/assets/example-kb-normativo/casos/ub12-crt3-2026-09.json (novo)
++ .claude/skills/sdd-kb/assets/example-kb-normativo/concepts/ano-teste-2026.md (novo)
++ .claude/skills/sdd-kb/assets/example-kb-normativo/fontes/CATALOGO.md (novo)
++ .claude/skills/sdd-kb/assets/example-kb-normativo/fontes/registro-captura-2026-09-27.txt (novo)
++ .claude/skills/sdd-kb/assets/example-kb-normativo/index.md (novo)
++ .claude/skills/sdd-kb/assets/example-kb-normativo/patterns/conferir-vigencia-antes-de-usar.md (novo)
++ .claude/skills/sdd-kb/assets/example-kb-normativo/quick-reference.md (novo)
++ .claude/skills/sdd-kb/assets/example-kb-normativo/rules/ALIQ-REF-2026.md (novo)
++ .claude/skills/sdd-kb/assets/example-kb-normativo/rules/UB12-10-CRT3.md (novo)
++ .claude/skills/sdd-kb/assets/example-kb-normativo/rules/UB12-10-EXC1.md (novo)
++ .claude/skills/sdd-kb/assets/example-kb-normativo/tabelas/2026-01-01/aliquotas-referencia.json (novo)
++ .claude/skills/sdd-kb/assets/example-kb/concepts/regime-de-competencia.md (novo)
++ .claude/skills/sdd-kb/assets/example-kb/index.md (novo)
++ .claude/skills/sdd-kb/assets/example-kb/patterns/conferir-antes-de-fechar.md (novo)
++ .claude/skills/sdd-kb/assets/example-kb/quick-reference.md (novo)
++ .claude/skills/sdd-kb/references/como-falar.md (novo)
++ .claude/skills/sdd-kb/references/kb-protocol.md (novo)
++ .claude/skills/sdd-kb/references/normativo.md (novo)
++ .claude/skills/sdd-kb/references/sourcing.md (novo)
++ .claude/skills/sdd-kb/scripts/gate.sh (novo)
++ .claude/skills/sdd-kb/scripts/kb_normativo.py (novo)
++ .claude/skills/sdd-kb/scripts/validate_kb.py (novo)
++ .claude/skills/sdd-new-session/SKILL.md (novo)
++ .claude/skills/sdd-new-session/references/como-falar.md (novo)
++ .claude/skills/sdd-playbook/SKILL.md (novo)
++ .claude/skills/sdd-playbook/references/como-falar.md (novo)
++ .claude/skills/sdd-prompt-builder/SKILL.md (novo)
++ .claude/skills/sdd-prompt-builder/references/como-falar.md (novo)
++ .claude/skills/sdd-prompt-builder/references/output-template.md (novo)
++ .claude/skills/sdd-prompt-builder/references/prompt-building-rules.md (novo)
++ .claude/skills/sdd-prompt-builder/references/sdd-integration.md (novo)
++ .claude/skills/sdd-release/SKILL.md (novo)
++ .claude/skills/sdd-release/references/como-falar.md (novo)
++ .claude/skills/sdd-release/references/ledger.md (novo)
++ .claude/skills/sdd-release/scripts/deploy-espera-testes.py (novo)
++ .claude/skills/sdd-ux-review/SKILL.md (novo)
++ .claude/skills/sdd-ux-review/references/como-falar.md (novo)
++ .claude/skills/sdd-ux-review/references/entrevista-publico.md (novo)
+117 a criar · 1 a atualizar · 0 já corretos
+▶ sdd-open doctor — projeto: /private/tmp/sdd-aval/claude-merge
+  bash 3.2 · git 2.54.0 (Apple Git-157) · python3 3.9
+✅ sdd/ presente (0 feature(s) em sdd/features/)
+✅ AGENTS.md com o bloco sdd-open
+✅ .agents/skills/ com 17 skill(s) sdd-*
+✅ hooks ligados (sdd/hooks: pre-commit com 5 regras + relatório + alarme da higiene off, pre-push)
+✅ claude: gerado (.claude/skills · CLAUDE.md · .claude/hooks + settings.json) · CLI encontrado · cobre também Grok Build e GLM
+✅ skills e sdd/bin/ em dia com o pacote
+✅ nenhum segredo salvo no git (.env, .pfx, .p12, .pem com chave privada)
+RESULTADO: INSTALADO
+→ abra seu agente e peça a fase Define (ex.: /sdd-define ou /skill:sdd-define).
+[exit=0]
+$ cd /tmp/sdd-aval/claude-merge && cat .claude/settings.json
+{
+  "permissions": {
+    "allow": [
+      "Bash(git status:*)"
+    ]
+  },
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "Bash",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "echo hook-do-usuario"
+          }
+        ]
+      },
+      {
+        "matcher": "Write|Edit|MultiEdit",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python3 \"$CLAUDE_PROJECT_DIR/.claude/hooks/sdd-report-guard.py\"",
+            "timeout": 10
+          }
+        ]
+      },
+      {
+        "matcher": "Agent|Task",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python3 \"$CLAUDE_PROJECT_DIR/.claude/hooks/sdd-avaliador-guard.py\""
+          }
+        ]
+      }
+    ],
+    "Stop": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "echo fim-da-sessao"
+          }
+        ]
+      }
+    ]
+  }
+}
+[exit=0]
+$ cd /tmp/sdd-aval/claude-merge && python3 -c "
+import json;d=json.load(open('.claude/settings.json'))
+print('permissions preservadas:', d['permissions']); print('Stop preservado:', d['hooks']['Stop'])
+pre=d['hooks']['PreToolUse']; print('PreToolUse:', [(e.get('matcher'), [h['command'] for h in e['hooks']], [h.get('timeout') for h in e['hooks']]) for e in pre])"
+permissions preservadas: {'allow': ['Bash(git status:*)']}
+Stop preservado: [{'hooks': [{'type': 'command', 'command': 'echo fim-da-sessao'}]}]
+PreToolUse: [('Bash', ['echo hook-do-usuario'], [None]), ('Write|Edit|MultiEdit', ['python3 "$CLAUDE_PROJECT_DIR/.claude/hooks/sdd-report-guard.py"'], [10]), ('Agent|Task', ['python3 "$CLAUDE_PROJECT_DIR/.claude/hooks/sdd-avaliador-guard.py"'], [None])]
+[exit=0]
+$ cd /tmp/sdd-aval/claude-merge && bash /Users/robertoduarte/rdd-worktrees/sdd-open-f8-aval/bin/sdd-open.sh sync --vendors claude --yes >/dev/null && python3 -c "import json;d=json.load(open('.claude/settings.json'));print('entradas PreToolUse =',len(d['hooks']['PreToolUse']))"
+entradas PreToolUse = 3
+[exit=0]

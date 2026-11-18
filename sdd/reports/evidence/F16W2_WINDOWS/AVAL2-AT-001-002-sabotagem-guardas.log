@@ -1,0 +1,12 @@
+$ cd /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f16w-windows/b56e801b-0f18-49ee-b51c-5b9188b29c23/scratchpad/sab3 && SDD_TEST_BASH=/bin/bash /usr/bin/python3 -B -m unittest discover -s tests -p 'test_f16w2_saida.py' 2>&1 | grep -E '^(FAIL|ERROR):|kb-dominios|slot.sh|^Ran|^OK|^FAILED' | head -12; echo '--- HEAD sem sabotagem:'; cd /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f16w-windows/b56e801b-0f18-49ee-b51c-5b9188b29c23/scratchpad/head && SDD_TEST_BASH=/bin/bash /usr/bin/python3 -B -m unittest discover -s tests -p 'test_f16w2_saida.py' 2>&1 | tail -3; echo "[rc=$?]"
+FAIL: test_todo_script_com_main_troca_a_saida_antes_de_tudo (test_f16w2_saida.Guarda) (script='sdd/bin/kb-dominios.py')
+AssertionError: '_canal.reconfigure(encoding="utf-8", errors="replace", newline="\\n")' not found in 'pass' : sdd/bin/kb-dominios.py
+FAIL: test_todo_python_embutido_num_script_troca_a_saida (test_f16w2_saida.GuardaEmbutidos) (script='sdd/bin/slot.sh', inicio='import sys as _sdd_sys  # F16W2: saída e')
+FAIL: test_os_scripts_imprimem_o_caractere_e_saem_com_o_exit_de_sempre (test_f16w2_saida.SaidaCp1252) (script='sdd/bin/kb-dominios.py')
+Ran 5 tests in 0.891s
+FAILED (failures=3)
+--- HEAD sem sabotagem:
+Ran 5 tests in 0.862s
+
+OK
+[rc=0]

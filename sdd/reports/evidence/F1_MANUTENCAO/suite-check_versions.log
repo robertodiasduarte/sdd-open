@@ -1,0 +1,23 @@
+$ /usr/bin/python3 -B -m unittest discover -s tests -p test_check_versions.py -v
+test_base_indisponivel_sem_obrigatoria_cai_para_estrutural (test_check_versions.CheckVersions) ... ok
+test_base_obrigatoria_que_nao_resolve_reprova (test_check_versions.CheckVersions) ... ok
+test_base_obrigatoria_sem_base_reprova (test_check_versions.CheckVersions) ... ok
+test_estrutura_valida_passa (test_check_versions.CheckVersions) ... ok
+test_evals_divergente_reprova (test_check_versions.CheckVersions) ... ok
+test_manifest_divergente_reprova (test_check_versions.CheckVersions) ... ok
+test_manifest_sem_chave_version_passa (test_check_versions.CheckVersions) ... ok
+test_opcao_desconhecida_e_64 (test_check_versions.CheckVersions) ... ok
+test_skill_mudada_com_bump_passa (test_check_versions.CheckVersions) ... ok
+test_skill_mudada_sem_bump_reprova (test_check_versions.CheckVersions) ... ok
+test_skill_nova_passa (test_check_versions.CheckVersions) ... ok
+test_skill_que_nao_tinha_versao_na_base_passa (test_check_versions.CheckVersions) ... ok
+test_versao_ausente_reprova (test_check_versions.CheckVersions) ... ok
+test_versao_malformada_reprova (test_check_versions.CheckVersions) ... ok
+test_versao_que_desce_reprova (test_check_versions.CheckVersions) ... ok
+test_as_13_skills_do_open_passam (test_check_versions.SkillsDoPacote) ... ok
+
+----------------------------------------------------------------------
+Ran 16 tests in 3.140s
+
+OK
+exit=0

@@ -1,0 +1,45 @@
+$ bash /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f10-revisao/bd420f6e-558d-4962-a0c9-40cdfc2cbd27/scratchpad/p/a2.sh AT006
+--- revisão completa
+RESULTADO: REVIEW COMPLETA
+[rc=0]
+arquivos no diff.patch:
+diff --git a/docs/novo-untracked.md b/docs/novo-untracked.md
+diff --git a/sdd/config.yaml b/sdd/config.yaml
+diff --git a/src/conta.sh b/src/conta.sh
+diff --git a/src/novo.sh b/src/novo.sh
+sha256(diff.patch)=858ba1257dc89e13dc05c728b560b01939cb9e38ddad01204a8e860ac4d5ca84
+base                    : main
+merge_base              : a7c6cb7fc9f6e9647cf9b83e5fc19638c455aeb3
+paths                   : -
+diff_sha256             : 858ba1257dc89e13dc05c728b560b01939cb9e38ddad01204a8e860ac4d5ca84
+diff                    : 0KB (4 arquivo(s))
+--- base padrão sem --base: origin/main ausente → main local
+  diff: 4 arquivo(s), 0 KB, base main, merge-base a7c6cb7fc9f6
+  diff_sha256: 858ba1257dc89e13dc05c728b560b01939cb9e38ddad01204a8e860ac4d5ca84
+[rc=0]
+--- base padrão com origin/main
+  diff: 4 arquivo(s), 0 KB, base origin/main, merge-base a7c6cb7fc9f6
+  diff_sha256: 858ba1257dc89e13dc05c728b560b01939cb9e38ddad01204a8e860ac4d5ca84
+[rc=0]
+--- --paths nomeando sdd/features
+  diff: 2 arquivo(s), 0 KB, base main, merge-base a7c6cb7fc9f6
+[rc=0]
+--- config do usuário (noprefix, patience, renames, mnemonicprefix, external diff, context) não muda o sha
+antes:   diff_sha256: 858ba1257dc89e13dc05c728b560b01939cb9e38ddad01204a8e860ac4d5ca84
+depois:   diff_sha256: 858ba1257dc89e13dc05c728b560b01939cb9e38ddad01204a8e860ac4d5ca84
+SHA IGUAL
+--- índice real intacto (o não rastreado continua não rastreado)
+?? docs/
+--- worktree ligada
+RESULTADO: REVIEW COMPLETA
+[rc=0]
+diff --git a/docs/novo-untracked.md b/docs/novo-untracked.md
+diff --git a/sdd/config.yaml b/sdd/config.yaml
+diff --git a/src/conta.sh b/src/conta.sh
+diff --git a/src/novo.sh b/src/novo.sh
+diff --git a/src/wt-novo.sh b/src/wt-novo.sh
+--- índice ausente conta como vazio
+.git/index
+  diff: 2 arquivo(s), 0 KB, base main, merge-base f81ba9ec8a21
+[rc=0]
+[exit=0]

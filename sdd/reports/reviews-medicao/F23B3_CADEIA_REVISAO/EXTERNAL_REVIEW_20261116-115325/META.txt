@@ -1,0 +1,46 @@
+worktree                : /Users/robertoduarte/rdd-worktrees/sdd-open-f23b3-cadeia-revisao
+branch                  : feat/f23b3-cadeia-revisao
+protocolo               : cadeia REVISOR → AUDITOR; paralelo não existe
+base                    : origin/main
+merge_base              : ef217b985c1b2ab225c2fe03450ae7d2f0f68ae5
+head                    : e1870e31ecd2e60f9f75de24f924bd4ae18be41c
+paths                   : sdd/features/DEFINE_F23B3_CADEIA_REVISAO.md sdd/features/DESIGN_F23B3_CADEIA_REVISAO.md
+diff_sha256             : 5048d9a455cd20f0054565d804a8a506962dd8babe5793f509bfa75869feb412
+diff                    : 62KB (2 arquivo(s))
+contexto                : 61KB (2 doc SDD)
+docs_sdd                : DEFINE_F23B3_CADEIA_REVISAO.md, DESIGN_F23B3_CADEIA_REVISAO.md
+contexto_cortado        : -
+diversidade             : vendor
+reviewer_engine_default : claude
+reviewer_engine_efetivo : claude
+reviewer_fallback_usado : nao
+reviewer_motivo         : -
+reviewer_exit           : 0
+reviewer_segundos       : 118
+reviewer_achados        : 5
+reviewer_tokens_entrada : 64047
+reviewer_tokens_saida   : 11869
+reviewer_tokens_total   : 75916
+reviewer_modelo         : claude-opus-5-5
+reviewer_custo          : US$ 0.7430
+revisor1_raso           : nao
+gatilho_2o_revisor      : diff sem gatilho de risco — 1 revisor
+revisor2_engine         : -
+auditor_engine_default  : codex
+auditor_engine_efetivo  : codex
+auditor_fallback_usado  : nao
+auditor_motivo          : -
+auditor_exit            : 0
+auditor_segundos        : 110
+auditor_vereditos       : 6
+auditor_tokens_entrada  : 65908
+auditor_tokens_saida    : 2945
+auditor_tokens_total    : 68853
+auditor_modelo          : -
+auditor_custo           : assinatura
+convergencia_1o_passe   : nao
+desempate_alvo          : -
+desempate_engine        : -
+desempate_decisao       : -
+custo_total             : US$ 0.7430
+quando                  : 20261116-115325

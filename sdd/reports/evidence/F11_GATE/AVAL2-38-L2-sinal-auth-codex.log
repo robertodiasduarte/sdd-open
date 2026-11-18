@@ -1,0 +1,12 @@
+$ /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/aval2w.zHdF4lN0AJ/sabota.sh sinal-auth-codex-inerte sdd/review/registry.tsv '(?i)(401 unauthorized|unauthorized|not logged in|codex login)' '(?i)(NUNCA-CASA-XYZ)'
+### sabotagem sinal-auth-codex-inerte em sdd/review/registry.tsv
+  ❌ 83. falha de credencial (codex): exit 65 e parou nela
+        → lido (67, 'claude'), esperado (65, 'codex')
+  ❌ 84. falha de credencial (codex): sem troca de engine: nenhuma engine fora do roteiro foi chamada
+  ❌ 85. falha de credencial (codex): sem troca de engine: chamadas por engine
+        → lido {'claude': 1, 'codex': 1}, esperado {'codex': 1}
+103 asserções, 3 falha(s) em 6 s
+RESULTADO: GATE VERMELHO
+→ cada ❌ acima diz o campo e o valor lido; o adapter da engine citada não extrai mais o que a CLI devolve (ou o script mudou de comportamento). Corrija e rode o gate de novo.
+[gate_rc=2]
+[exit=2]

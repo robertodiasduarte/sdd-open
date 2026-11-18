@@ -1,0 +1,26 @@
+$ PATH=/usr/bin:/bin /bin/bash /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f21-f19/8ca3f42f-d684-434d-9f0b-19bdcf0aef88/scratchpad/aval-f19/tools/rede.sh /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f21-f19/8ca3f42f-d684-434d-9f0b-19bdcf0aef88/scratchpad/aval-f19/casos/rede
+=== termos de rede/engine nos dois scripts (grep; esperado: nenhuma linha de código)
+sdd/bin/eval-revisores.sh:114:    """O rótulo que o adversarial-review.sh põe depois do @: o id da engine com : e / trocados por -."""
+sdd/bin/eval-revisores.sh:412:    print("→ nenhuma revisão com META.txt legível nesta pasta: rode adversarial-review.sh e meça de novo.")
+[grep exit=0]
+=== imports e subprocess
+sdd/bin/eval-revisores.sh:47:import json, os, re, subprocess, sys
+sdd/bin/eval-revisores.sh:48:from decimal import Decimal
+sdd/bin/eval-revisores.sh:84:        r = subprocess.run(["git", "rev-parse", "--show-toplevel"], capture_output=True, text=True)
+sdd/bin/ledger-revisao-lint.sh:46:import re, sys
+=== sob sandbox que nega toda rede (sandbox-exec deny network*)
+[exit=0]
+saída idêntica com a rede negada
+RESULTADO: VERDE
+→ passe o arquivo ao `sdd-fluxo.sh loop --ledger` e ao `eval-revisores.sh`.
+[exit=0]
+=== só leitura: sandbox que nega toda escrita em arquivo fora de /dev (deny file-write*)
+RESULTADO: MEDIDO
+→ leia cada taxa com a amostra ao lado: poucas rodadas dão número instável. O script conta o que está registrado; trocar a cadeia de revisão é decisão de quem lê.
+[exit=0]
+RESULTADO: VERDE
+→ passe o arquivo ao `sdd-fluxo.sh loop --ledger` e ao `eval-revisores.sh`.
+[exit=0]
+=== nenhum arquivo novo ou alterado na árvore depois das execuções
+[arquivos alterados: 0]
+[exit=0]

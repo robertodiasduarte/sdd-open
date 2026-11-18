@@ -1,0 +1,29 @@
+$ /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f17c-starter-etapa3/4be28bc9-cd19-4e52-baaf-378f21755723/scratchpad/at001.sh /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f17c-starter-etapa3/4be28bc9-cd19-4e52-baaf-378f21755723/scratchpad/g1/starter
+== skills e GERADO.txt
+pastas em skills/: 18
+sdd-define com GERADO.txt
+sdd-design com GERADO.txt
+sdd-build com GERADO.txt
+== LICENSE NOTICE CONTRIBUTING iguais à v1.5.18
+LICENSE igual
+NOTICE igual
+CONTRIBUTING.md igual
+== README/quickstart citam validadores?
+nenhum validador citado
+== congelad*
+nenhuma 'congelada/frozen' em README e quickstart
+== 18 nos 2 idiomas
+README.md
+docs/quickstart.md
+docs/quickstart.pt-BR.md
+README.md: 2 linha(s) com 18; 18 skills deste repositório são **geradas** a partir|18 skills in this repository are **generated** from |
+docs/quickstart.md: 2 linha(s) com 18; 18 skills into the project's `|18) into whatever directory your agent reads skills/|
+docs/quickstart.pt-BR.md: 1 linha(s) com 18; 18 skills em `|
+== baixar-nfse
+29:Crie uma pasta nova, fora de iCloud, OneDrive, Dropbox ou Google Drive, e abra essa pasta no seu agente. Dentro dela, crie a pasta `sdd/features/` (uma pasta `sdd` com outra, `features`, dentro).
+33:Abra cada link abaixo no GitHub, clique no botão de baixar o arquivo bruto (**Download raw file**, a seta para baixo no alto do arquivo) e salve em `sdd/features/`, sem mudar o nome:
+46:Os documentos estão em sdd/features/: BRAINSTORM_BAIXAR_NFSE.md, DEFINE_BAIXAR_NFSE.md e DESIGN_BAIXAR_NFSE.md. Leia os três antes de começar.
+49:- Crie somente os arquivos do File Manifest, todos dentro de extensao/. O relatório do build fica em sdd/reports/.
+baixar-nfse sem validador
+falhas=0
+rc=0

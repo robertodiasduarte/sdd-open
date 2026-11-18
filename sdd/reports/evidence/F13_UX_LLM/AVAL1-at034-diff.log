@@ -1,0 +1,3 @@
+$ git diff --quiet v2.4.0 HEAD -- sdd/hooks sdd/bin/report-lint.py sdd/bin/verify-gate.sh .agents/skills/sdd-release; echo rc=$?; git diff --name-only v2.4.0 HEAD -- sdd/hooks sdd/bin/report-lint.py sdd/bin/verify-gate.sh .agents/skills/sdd-release
+rc=0
+[exit=0]

@@ -1,0 +1,220 @@
+$ S=sdd/bin/contraste.sh; t(){ printf "\n--- %s\n" "$*"; "$@"; echo "[rc=$?]"; }
+t bash $S "#767676" "#ffffff"
+t bash $S "#777777" "#ffffff"
+t bash $S "#71796f" "#ffffff"
+t bash $S "#6c7b67" "#ffffff"
+t bash $S "#000" "#fff" .5
+t bash $S "#000" "#fff" 1
+t bash $S "#000" "#fff" 0
+t bash $S "#777777" "#ffffff" --piso 3
+t bash $S --piso 3 "#777777" "#ffffff"
+t bash $S "#777777" --piso 3 "#ffffff"
+t bash $S "rgba(0,0,0,.5)" "#fff"
+t bash $S "#zzz" "#fff"
+t bash $S "#12345" "#fff"
+t bash $S "#000" "#fff" --piso 4.555
+t bash $S "#000" "#fff" --piso 0
+echo "=== locale"
+LC_ALL=pt_BR.UTF-8 awk "BEGIN{printf \"%.1f\n\", .5}"
+LC_ALL=pt_BR.UTF-8 LC_NUMERIC=pt_BR.UTF-8 LANG=pt_BR.UTF-8 bash $S "#000" "#fff" .5; echo "[rc=$?]"
+LC_ALL=pt_BR.UTF-8 bash $S "#767676" "#ffffff" --piso 4.5; echo "[rc=$?]"
+LC_ALL=pt_BR.UTF-8 bash $S --self-test; echo "[rc=$?]"
+echo "=== CDPATH"
+CDPATH=. bash $S --self-test 2>&1; echo "[rc=$?]"
+CDPATH=. bash $S "#000" "#fff"; echo "[rc=$?]"
+echo "=== drift CDPATH"
+CDPATH=. bash sdd/bin/prompt-drift-scan.sh --self-test 2>&1; echo "[rc=$?]"
+
+
+--- bash sdd/bin/contraste.sh #767676 #ffffff
+4.54:1 PASSA (piso 4.5:1)
+RESULTADO: PASSA
+→ anote o par e o número na tabela da UX review
+[rc=0]
+
+--- bash sdd/bin/contraste.sh #777777 #ffffff
+4.47:1 REPROVA (piso 4.5:1)
+RESULTADO: REPROVA
+→ afaste as 2 cores até 4.5:1; texto grande, borda e ícone usam --piso 3
+[rc=2]
+
+--- bash sdd/bin/contraste.sh #71796f #ffffff
+4.50:1 PASSA (piso 4.5:1)
+RESULTADO: PASSA
+→ anote o par e o número na tabela da UX review
+[rc=0]
+
+--- bash sdd/bin/contraste.sh #6c7b67 #ffffff
+4.49:1 REPROVA (piso 4.5:1)
+RESULTADO: REPROVA
+→ afaste as 2 cores até 4.5:1; texto grande, borda e ícone usam --piso 3
+[rc=2]
+
+--- bash sdd/bin/contraste.sh #000 #fff .5
+3.97:1 REPROVA (piso 4.5:1)
+RESULTADO: REPROVA
+→ afaste as 2 cores até 4.5:1; texto grande, borda e ícone usam --piso 3
+[rc=2]
+
+--- bash sdd/bin/contraste.sh #000 #fff 1
+21.00:1 PASSA (piso 4.5:1)
+RESULTADO: PASSA
+→ anote o par e o número na tabela da UX review
+[rc=0]
+
+--- bash sdd/bin/contraste.sh #000 #fff 0
+1.00:1 REPROVA (piso 4.5:1)
+RESULTADO: REPROVA
+→ afaste as 2 cores até 4.5:1; texto grande, borda e ícone usam --piso 3
+[rc=2]
+
+--- bash sdd/bin/contraste.sh #777777 #ffffff --piso 3
+4.47:1 PASSA (piso 3:1)
+RESULTADO: PASSA
+→ anote o par e o número na tabela da UX review
+[rc=0]
+
+--- bash sdd/bin/contraste.sh --piso 3 #777777 #ffffff
+4.47:1 PASSA (piso 3:1)
+RESULTADO: PASSA
+→ anote o par e o número na tabela da UX review
+[rc=0]
+
+--- bash sdd/bin/contraste.sh #777777 --piso 3 #ffffff
+4.47:1 PASSA (piso 3:1)
+RESULTADO: PASSA
+→ anote o par e o número na tabela da UX review
+[rc=0]
+
+--- bash sdd/bin/contraste.sh rgba(0,0,0,.5) #fff
+🛑 cor não reconhecida: rgba(0,0,0,.5). Aceito #rgb ou #rrggbb.
+RESULTADO: ERRO DE USO
+→ a transparência vai como 3º valor: bash sdd/bin/contraste.sh '#000000' '#ffffff' .5
+[rc=64]
+
+--- bash sdd/bin/contraste.sh #zzz #fff
+🛑 cor não reconhecida: #zzz. Aceito #rgb ou #rrggbb.
+RESULTADO: ERRO DE USO
+→ bash sdd/bin/contraste.sh '#767676' '#ffffff'
+[rc=64]
+
+--- bash sdd/bin/contraste.sh #12345 #fff
+🛑 cor não reconhecida: #12345. Aceito #rgb ou #rrggbb.
+RESULTADO: ERRO DE USO
+→ bash sdd/bin/contraste.sh '#767676' '#ffffff'
+[rc=64]
+
+--- bash sdd/bin/contraste.sh #000 #fff --piso 4.555
+🛑 piso inválido: 4.555. Aceito número com até 2 casas.
+RESULTADO: ERRO DE USO
+→ use, por exemplo, --piso 3
+[rc=64]
+
+--- bash sdd/bin/contraste.sh #000 #fff --piso 0
+🛑 piso inválido: 0. Precisa ser maior que zero.
+RESULTADO: ERRO DE USO
+→ use, por exemplo, --piso 3
+[rc=64]
+=== locale
+0,5
+3.97:1 REPROVA (piso 4.5:1)
+RESULTADO: REPROVA
+→ afaste as 2 cores até 4.5:1; texto grande, borda e ícone usam --piso 3
+[rc=2]
+4.54:1 PASSA (piso 4.5:1)
+RESULTADO: PASSA
+→ anote o par e o número na tabela da UX review
+[rc=0]
+✅ 28 casos conferidos
+RESULTADO: VERDE
+→ o contraste.sh está pronto para uso
+[rc=0]
+=== CDPATH
+🛑 caso: #000000 #ffffff → exit 127, "" (esperado: exit 0, "21.00:1 PASSA (piso 4.5:1)")
+🛑 caso: #767676 #ffffff → exit 127, "" (esperado: exit 0, "4.54:1 PASSA (piso 4.5:1)")
+🛑 caso: #777777 #ffffff → exit 127, "" (esperado: exit 2, "4.47:1 REPROVA (piso 4.5:1)")
+🛑 caso: #777 #FFF → exit 127, "" (esperado: exit 2, "4.47:1 REPROVA (piso 4.5:1)")
+🛑 caso: #6c7b67 #ffffff → exit 127, "" (esperado: exit 2, "4.49:1 REPROVA (piso 4.5:1)")
+🛑 caso: #71796f #ffffff → exit 127, "" (esperado: exit 0, "4.50:1 PASSA (piso 4.5:1)")
+🛑 caso: #fff #fff → exit 127, "" (esperado: exit 2, "1.00:1 REPROVA (piso 4.5:1)")
+🛑 caso: #000 #fff .5 → exit 127, "" (esperado: exit 2, "3.97:1 REPROVA (piso 4.5:1)")
+🛑 caso: #000 #fff 1 → exit 127, "" (esperado: exit 0, "21.00:1 PASSA (piso 4.5:1)")
+🛑 caso: #000 #fff 0 → exit 127, "" (esperado: exit 2, "1.00:1 REPROVA (piso 4.5:1)")
+🛑 caso: #777777 #ffffff --piso 3 → exit 127, "" (esperado: exit 0, "4.47:1 PASSA (piso 3:1)")
+🛑 caso: --piso 3 #777777 #ffffff → exit 127, "" (esperado: exit 0, "4.47:1 PASSA (piso 3:1)")
+🛑 caso: #777777 #ffffff --piso 4.48 → exit 127, "" (esperado: exit 2, "4.47:1 REPROVA (piso 4.48:1)")
+🛑 caso: #767676 #ffffff --piso 4.55 → exit 127, "" (esperado: exit 2, "4.54:1 REPROVA (piso 4.55:1)")
+🛑 caso: #767676 #ffffff --piso 4.08 → exit 127, "" (esperado: exit 0, "4.54:1 PASSA (piso 4.08:1)")
+🛑 caso:  → exit 127, "" (esperado: exit 64, "")
+🛑 caso: #zzz #fff → exit 127, "" (esperado: exit 64, "")
+🛑 caso: #12345 #fff → exit 127, "" (esperado: exit 64, "")
+🛑 caso: rgba(0,0,0,.5) #fff → exit 127, "" (esperado: exit 64, "")
+🛑 caso: #000 → exit 127, "" (esperado: exit 64, "")
+🛑 caso: #000 #fff .5 .5 → exit 127, "" (esperado: exit 64, "")
+🛑 caso: #000 #fff 2 → exit 127, "" (esperado: exit 64, "")
+🛑 caso: #000 #fff --piso → exit 127, "" (esperado: exit 64, "")
+🛑 caso: #000 #fff --piso 0 → exit 127, "" (esperado: exit 64, "")
+🛑 caso: #000 #fff --piso 0.00 → exit 127, "" (esperado: exit 64, "")
+🛑 caso: #000 #fff --piso 4.555 → exit 127, "" (esperado: exit 64, "")
+🛑 caso: #000 #fff --piso abc → exit 127, "" (esperado: exit 64, "")
+🛑 caso: #000 #fff --nada → exit 127, "" (esperado: exit 64, "")
+RESULTADO: VERMELHO
+→ 28 de 28 caso(s) falharam: corrija o script; nunca o oráculo
+[rc=2]
+21.00:1 PASSA (piso 4.5:1)
+RESULTADO: PASSA
+→ anote o par e o número na tabela da UX review
+[rc=0]
+=== drift CDPATH
+🛑 caso --conteudo prompts/novo.txt: exit 127 (esperado 2, com "pasta prompts/")
+🛑 caso --conteudo src/novo/prompts/v1/a.ts: exit 127 (esperado 2, com "pasta prompts/")
+🛑 caso --conteudo src/Agent_Prompt.py: exit 127 (esperado 2, com "nome com prompt")
+🛑 caso --conteudo src/a.py: exit 127 (esperado 2, com "chamada direta ao SDK")
+🛑 caso --conteudo src/b.py: exit 127 (esperado 2, com "chamada direta ao SDK")
+🛑 caso --conteudo src/c.ts: exit 127 (esperado 2, com "system: com texto fixo")
+🛑 caso --conteudo src/d.json: exit 127 (esperado 2, com "system: com texto fixo")
+🛑 caso --conteudo src/e.ts: exit 127 (esperado 2, com "parâmetro do wrapper")
+🛑 caso --conteudo src/f.ts: exit 127 (esperado 2, com "parâmetro do wrapper")
+🛑 caso --conteudo src/g.ts: exit 127 (esperado 2, com "parâmetro do wrapper")
+🛑 caso --conteudo src/h.ts: exit 127 (esperado 0, com "RESULTADO: LIMPO")
+🛑 caso --conteudo src/i.ts: exit 127 (esperado 0, com "RESULTADO: LIMPO")
+🛑 caso --conteudo src/a.test.ts: exit 127 (esperado 0, com "RESULTADO: LIMPO")
+🛑 caso --conteudo src/a.spec.js: exit 127 (esperado 0, com "RESULTADO: LIMPO")
+🛑 caso --conteudo src/a_test.go: exit 127 (esperado 0, com "RESULTADO: LIMPO")
+🛑 caso --conteudo src/test_a.py: exit 127 (esperado 0, com "RESULTADO: LIMPO")
+🛑 caso --conteudo tests/j.py: exit 127 (esperado 0, com "RESULTADO: LIMPO")
+🛑 caso --conteudo src/test/k.py: exit 127 (esperado 0, com "RESULTADO: LIMPO")
+🛑 caso --conteudo src/__tests__/l.js: exit 127 (esperado 0, com "RESULTADO: LIMPO")
+🛑 caso --conteudo docs/m.md: exit 127 (esperado 0, com "RESULTADO: LIMPO")
+🛑 caso --conteudo docs/prompt-guia.md: exit 127 (esperado 0, com "RESULTADO: LIMPO")
+🛑 caso --conteudo .github/dependabot.yml: exit 127 (esperado 0, com "RESULTADO: LIMPO")
+🛑 caso --conteudo src/n.yml: exit 127 (esperado 0, com "RESULTADO: LIMPO")
+🛑 caso --conteudo src/o.yml: exit 127 (esperado 0, com "RESULTADO: LIMPO")
+🛑 caso em disco src/p.ts: exit 127 (esperado 2, com "src/p.ts :: chamada direta")
+🛑 caso em disco src/prompts/q.txt: exit 127 (esperado 2, com "pasta prompts/")
+🛑 caso em disco src/r.py: exit 127 (esperado 0, com "RESULTADO: LIMPO")
+🛑 caso --conteudo src/s.ts: exit 127 (esperado 2, com "parâmetro do wrapper")
+🛑 caso --conteudo src/s.ts: exit 127 (esperado 0, com "RESULTADO: LIMPO")
+🛑 caso --conteudo src/t.ts: exit 127 (esperado 0, com "wrapper_pattern vazio")
+🛑 caso --conteudo src/t.ts: exit 127 (esperado 2, com "wrapper_pattern vazio")
+🛑 caso --conteudo src/t.ts: exit 127 (esperado 0, com "wrapper_pattern vazio")
+🛑 caso --conteudo src/u.ts: exit 127 (esperado 2, com "parâmetro do wrapper")
+🛑 caso --conteudo src/v.ts: exit 127 (esperado 2, com "parâmetro do wrapper")
+🛑 caso --conteudo src/w.ts: exit 127 (esperado 2, com "parâmetro do wrapper")
+🛑 caso de uso (expressão inválida (): exit 127 (esperado 64, sem LIMPO)
+🛑 caso de uso (expressão inválida [): exit 127 (esperado 64, sem LIMPO)
+🛑 caso de uso (aspa sem fechar): exit 127 (esperado 64, sem LIMPO)
+🛑 caso de uso (texto depois da aspa): exit 127 (esperado 64, sem LIMPO)
+🛑 caso de uso (sem argumento): exit 127 (esperado 64, sem LIMPO)
+🛑 caso de uso (caminho inexistente): exit 127 (esperado 64, sem LIMPO)
+🛑 caso de uso (pasta): exit 127 (esperado 64, sem LIMPO)
+🛑 caso de uso (opção desconhecida): exit 127 (esperado 64, sem LIMPO)
+🛑 caso de uso (--conteudo sem caminho): exit 127 (esperado 64, sem LIMPO)
+🛑 caso de uso (--conteudo com 2 caminhos): exit 127 (esperado 64, sem LIMPO)
+🛑 caso de uso (--conteudo sem nada na entrada): exit 127 (esperado 64, sem LIMPO)
+🛑 caso de uso (.. em pasta inexistente): exit 127 (esperado 64, sem LIMPO)
+🛑 caso de uso (arquivo ilegível): exit 127 (esperado 64, sem LIMPO)
+RESULTADO: VERMELHO
+→ 48 de 48 caso(s) falharam: corrija o script; não afrouxe o sinal para passar
+[rc=2]
+[exit=0]

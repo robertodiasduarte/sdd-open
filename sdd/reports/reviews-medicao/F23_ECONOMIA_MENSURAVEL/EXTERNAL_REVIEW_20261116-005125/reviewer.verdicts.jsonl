@@ -1,0 +1,4 @@
+{"achado": "R1", "arquivo": "sdd/bin/custo-feature.sh", "linha": 438, "severidade": "MED", "confianca": "CONFIRMED", "resumo": "Pasta de revisão citada pelo ledger e ausente do disco some da conta sem n/d: revisão sai 0.0000 ou parcial sem + n/d"}
+{"achado": "R2", "arquivo": "sdd/bin/custo-feature.sh", "linha": 561, "severidade": "LOW", "confianca": "CONFIRMED", "resumo": "Com agente sem leitor, as fases viram n/d mas a linha sem fase sai 0.0000 para um trecho não medido"}
+{"achado": "R3", "arquivo": "sdd/bin/custo-feature.sh", "linha": 556, "severidade": "LOW", "confianca": "CONFIRMED", "resumo": "Linha ilegível em sessão fora da janela marca todas as linhas da feature como parciais, para sempre no checkout compartilhado"}
+{"achado": "R4", "arquivo": "sdd/bin/custo-feature.sh", "linha": 448, "severidade": "LOW", "confianca": "PLAUSIBLE", "resumo": "Papel com engine e sem campo de custo é pulado sem n/d e a revisão pode sair 0.0000"}

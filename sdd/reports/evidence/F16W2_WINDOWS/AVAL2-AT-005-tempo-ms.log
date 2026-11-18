@@ -1,0 +1,8 @@
+$ /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f16w-windows/b56e801b-0f18-49ee-b51c-5b9188b29c23/scratchpad/at005t.sh; echo "[rc=$?]"
+rodada 1: 10628 ms | 1 linha(s) 'não respondeu em 10 s'
+rodada 2: 10646 ms | 1 linha(s) 'não respondeu em 10 s'
+rodada 3: 10363 ms | 1 linha(s) 'não respondeu em 10 s'
+--- mesmo cenário, Mac nativo (gh pendurado, kill do grupo)
+rodada 1: 10583 ms | 1 linha(s) 'não respondeu em 10 s'
+rodada 2: 10311 ms | 1 linha(s) 'não respondeu em 10 s'
+[rc=0]

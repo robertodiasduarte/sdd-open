@@ -1,0 +1,7 @@
+$ cd /Users/robertoduarte/rdd-worktrees/sdd-open-f10-aval && /bin/bash sdd/bin/verify-gate.sh --print --strict sdd/features/DEFINE_F10_REVISAO.md
+── Verify Gate de sdd/features/DEFINE_F10_REVISAO.md ──
+kind:       test
+cmd:        T=$(mktemp -d) && git archive HEAD | tar -x -C $T && PUBLISH_GATE_MODE=ci bash scripts/publish-gate.sh $T && cd $T && SDD_TEST_BASH=/bin/bash /usr/bin/python3 -B -m unittest discover -s tests -p 'test_*.py'
+pass_when:  exit 0
+threshold:  —
+[exit=0]

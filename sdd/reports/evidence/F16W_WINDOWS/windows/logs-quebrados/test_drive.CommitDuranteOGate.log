@@ -1,0 +1,164 @@
+test_a_variavel_do_fundo_nao_chega_ao_gate (test_drive.CommitDuranteOGate.test_a_variavel_do_fundo_nao_chega_ao_gate) ... FAIL
+
+test_a_variavel_no_ambiente_de_quem_chama_nao_abre_a_trava (test_drive.CommitDuranteOGate.test_a_variavel_no_ambiente_de_quem_chama_nao_abre_a_trava) ... FAIL
+
+test_commit_de_codigo_no_meio_nao_ganha_o_verde (test_drive.CommitDuranteOGate.test_commit_de_codigo_no_meio_nao_ganha_o_verde) ... FAIL
+
+test_commit_so_de_documento_no_meio_mantem_o_verde (test_drive.CommitDuranteOGate.test_commit_so_de_documento_no_meio_mantem_o_verde) ... FAIL
+
+test_troca_de_comando_no_meio_nao_vale_o_gate_que_nao_rodou (test_drive.CommitDuranteOGate.test_troca_de_comando_no_meio_nao_vale_o_gate_que_nao_rodou) ... FAIL
+
+test_verde_com_arquivo_novo_lista_o_arquivo (test_drive.CommitDuranteOGate.test_verde_com_arquivo_novo_lista_o_arquivo) ... FAIL
+
+test_vermelho_com_commit_no_meio_diz_o_log_e_a_rodada (test_drive.CommitDuranteOGate.test_vermelho_com_commit_no_meio_diz_o_log_e_a_rodada) ... FAIL
+
+
+
+======================================================================
+
+FAIL: test_a_variavel_do_fundo_nao_chega_ao_gate (test_drive.CommitDuranteOGate.test_a_variavel_do_fundo_nao_chega_ao_gate)
+
+----------------------------------------------------------------------
+
+Traceback (most recent call last):
+
+  File "D:\a\sdd-open\sdd-open\tests\test_drive.py", line 784, in test_a_variavel_do_fundo_nao_chega_ao_gate
+
+    self.assertAcao(self.drive("verificar", D, "--fundo"), "ESPERAR")
+
+  File "D:\a\sdd-open\sdd-open\tests\test_drive.py", line 77, in assertAcao
+
+    self.assertRegex(out, r"(?m)^ACAO: %s$" % acao)
+
+AssertionError: Regex didn't match: '(?m)^ACAO: ESPERAR$' not found in 'ACAO: DESIGN\nrodada: 1/3\no DESIGN n\ufffdo passa no design-lint (saiu 1)\nRESULTADO: CONTINUAR\n\u2192 rode a fase Design sobre este DEFINE e chame proximo de novo.\n'
+
+
+
+======================================================================
+
+FAIL: test_a_variavel_no_ambiente_de_quem_chama_nao_abre_a_trava (test_drive.CommitDuranteOGate.test_a_variavel_no_ambiente_de_quem_chama_nao_abre_a_trava)
+
+----------------------------------------------------------------------
+
+Traceback (most recent call last):
+
+  File "D:\a\sdd-open\sdd-open\tests\test_drive.py", line 764, in test_a_variavel_no_ambiente_de_quem_chama_nao_abre_a_trava
+
+    self.assertAcao(self.drive("verificar", D, env=dict(self.env, SDD_DRIVE_TRAVA_HERDADA="1")), "RODADA")
+
+  File "D:\a\sdd-open\sdd-open\tests\test_drive.py", line 77, in assertAcao
+
+    self.assertRegex(out, r"(?m)^ACAO: %s$" % acao)
+
+AssertionError: Regex didn't match: '(?m)^ACAO: RODADA$' not found in 'ACAO: DESIGN\nrodada: 1/3\no DESIGN n\ufffdo passa no design-lint (saiu 1)\nRESULTADO: CONTINUAR\n\u2192 rode a fase Design sobre este DEFINE e chame proximo de novo.\n'
+
+
+
+======================================================================
+
+FAIL: test_commit_de_codigo_no_meio_nao_ganha_o_verde (test_drive.CommitDuranteOGate.test_commit_de_codigo_no_meio_nao_ganha_o_verde)
+
+----------------------------------------------------------------------
+
+Traceback (most recent call last):
+
+  File "D:\a\sdd-open\sdd-open\tests\test_drive.py", line 715, in test_commit_de_codigo_no_meio_nao_ganha_o_verde
+
+    self.assertAcao(self.drive("verificar", D, "--fundo"), "ESPERAR")
+
+  File "D:\a\sdd-open\sdd-open\tests\test_drive.py", line 77, in assertAcao
+
+    self.assertRegex(out, r"(?m)^ACAO: %s$" % acao)
+
+AssertionError: Regex didn't match: '(?m)^ACAO: ESPERAR$' not found in 'ACAO: DESIGN\nrodada: 1/3\no DESIGN n\ufffdo passa no design-lint (saiu 1)\nRESULTADO: CONTINUAR\n\u2192 rode a fase Design sobre este DEFINE e chame proximo de novo.\n'
+
+
+
+======================================================================
+
+FAIL: test_commit_so_de_documento_no_meio_mantem_o_verde (test_drive.CommitDuranteOGate.test_commit_so_de_documento_no_meio_mantem_o_verde)
+
+----------------------------------------------------------------------
+
+Traceback (most recent call last):
+
+  File "D:\a\sdd-open\sdd-open\tests\test_drive.py", line 728, in test_commit_so_de_documento_no_meio_mantem_o_verde
+
+    self.assertAcao(self.drive("verificar", D, "--fundo"), "ESPERAR")
+
+  File "D:\a\sdd-open\sdd-open\tests\test_drive.py", line 77, in assertAcao
+
+    self.assertRegex(out, r"(?m)^ACAO: %s$" % acao)
+
+AssertionError: Regex didn't match: '(?m)^ACAO: ESPERAR$' not found in 'ACAO: DESIGN\nrodada: 1/3\no DESIGN n\ufffdo passa no design-lint (saiu 1)\nRESULTADO: CONTINUAR\n\u2192 rode a fase Design sobre este DEFINE e chame proximo de novo.\n'
+
+
+
+======================================================================
+
+FAIL: test_troca_de_comando_no_meio_nao_vale_o_gate_que_nao_rodou (test_drive.CommitDuranteOGate.test_troca_de_comando_no_meio_nao_vale_o_gate_que_nao_rodou)
+
+----------------------------------------------------------------------
+
+Traceback (most recent call last):
+
+  File "D:\a\sdd-open\sdd-open\tests\test_drive.py", line 737, in test_troca_de_comando_no_meio_nao_vale_o_gate_que_nao_rodou
+
+    self.assertAcao(self.drive("verificar", D, "--fundo"), "ESPERAR")
+
+  File "D:\a\sdd-open\sdd-open\tests\test_drive.py", line 77, in assertAcao
+
+    self.assertRegex(out, r"(?m)^ACAO: %s$" % acao)
+
+AssertionError: Regex didn't match: '(?m)^ACAO: ESPERAR$' not found in 'ACAO: DESIGN\nrodada: 1/3\no DESIGN n\ufffdo passa no design-lint (saiu 1)\nRESULTADO: CONTINUAR\n\u2192 rode a fase Design sobre este DEFINE e chame proximo de novo.\n'
+
+
+
+======================================================================
+
+FAIL: test_verde_com_arquivo_novo_lista_o_arquivo (test_drive.CommitDuranteOGate.test_verde_com_arquivo_novo_lista_o_arquivo)
+
+----------------------------------------------------------------------
+
+Traceback (most recent call last):
+
+  File "D:\a\sdd-open\sdd-open\tests\test_drive.py", line 756, in test_verde_com_arquivo_novo_lista_o_arquivo
+
+    self.assertAcao(res, "COMMITAR")
+
+  File "D:\a\sdd-open\sdd-open\tests\test_drive.py", line 77, in assertAcao
+
+    self.assertRegex(out, r"(?m)^ACAO: %s$" % acao)
+
+AssertionError: Regex didn't match: '(?m)^ACAO: COMMITAR$' not found in 'ACAO: DESIGN\nrodada: 1/3\no DESIGN n\ufffdo passa no design-lint (saiu 1)\nRESULTADO: CONTINUAR\n\u2192 rode a fase Design sobre este DEFINE e chame proximo de novo.\n'
+
+
+
+======================================================================
+
+FAIL: test_vermelho_com_commit_no_meio_diz_o_log_e_a_rodada (test_drive.CommitDuranteOGate.test_vermelho_com_commit_no_meio_diz_o_log_e_a_rodada)
+
+----------------------------------------------------------------------
+
+Traceback (most recent call last):
+
+  File "D:\a\sdd-open\sdd-open\tests\test_drive.py", line 770, in test_vermelho_com_commit_no_meio_diz_o_log_e_a_rodada
+
+    self.assertAcao(self.drive("verificar", D, "--fundo"), "ESPERAR")
+
+  File "D:\a\sdd-open\sdd-open\tests\test_drive.py", line 77, in assertAcao
+
+    self.assertRegex(out, r"(?m)^ACAO: %s$" % acao)
+
+AssertionError: Regex didn't match: '(?m)^ACAO: ESPERAR$' not found in 'ACAO: DESIGN\nrodada: 1/3\no DESIGN n\ufffdo passa no design-lint (saiu 1)\nRESULTADO: CONTINUAR\n\u2192 rode a fase Design sobre este DEFINE e chame proximo de novo.\n'
+
+
+
+----------------------------------------------------------------------
+
+Ran 7 tests in 25.928s
+
+
+
+FAILED (failures=7)
+

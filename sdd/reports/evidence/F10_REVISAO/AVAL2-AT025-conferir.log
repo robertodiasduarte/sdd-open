@@ -1,0 +1,83 @@
+$ bash /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f10-revisao/bd420f6e-558d-4962-a0c9-40cdfc2cbd27/scratchpad/p/at025.sh
+=== sem revisão nenhuma
+--- conferir 
+🛑 adversarial-review: nenhuma revisão em sdd/reports/reviews
+RESULTADO: NÃO CONFERE
+→ rode adversarial-review.sh nesta frente, ou registre a dispensa (pergunta D3).
+[rc=2]
+=== revisão mais nova, nada mudou
+--- conferir 
+✅ a revisão sdd/reports/reviews/EXTERNAL_REVIEW_20261101-002635 é desta versão do código (sha256 igual).
+review_externo: sdd/reports/reviews/EXTERNAL_REVIEW_20261101-002635 sha256=373d6a164c040c00b4bf57ea64e213b7c97f40de1713e69304d2712f607e2417 diversidade=modelo
+RESULTADO: CONFERE
+→ copie a linha review_externo para o ledger da release.
+[rc=0]
+=== commit atômico depois da revisão (release passo 4) — ainda confere
+--- conferir 
+✅ a revisão sdd/reports/reviews/EXTERNAL_REVIEW_20261101-002635 é desta versão do código (sha256 igual).
+review_externo: sdd/reports/reviews/EXTERNAL_REVIEW_20261101-002635 sha256=373d6a164c040c00b4bf57ea64e213b7c97f40de1713e69304d2712f607e2417 diversidade=modelo
+RESULTADO: CONFERE
+→ copie a linha review_externo para o ledger da release.
+[rc=0]
+=== artefato SDD muda depois — ainda confere
+--- conferir 
+✅ a revisão sdd/reports/reviews/EXTERNAL_REVIEW_20261101-002635 é desta versão do código (sha256 igual).
+review_externo: sdd/reports/reviews/EXTERNAL_REVIEW_20261101-002635 sha256=373d6a164c040c00b4bf57ea64e213b7c97f40de1713e69304d2712f607e2417 diversidade=modelo
+RESULTADO: CONFERE
+→ copie a linha review_externo para o ledger da release.
+[rc=0]
+=== 1 byte num arquivo rastreado do diff → 2
+--- conferir 
+🛑 adversarial-review: o código mudou depois da revisão sdd/reports/reviews/EXTERNAL_REVIEW_20261101-002635 (sha256 diferente)
+RESULTADO: NÃO CONFERE
+→ rode a revisão de novo sobre esta versão.
+[rc=2]
+=== 1 byte num não rastreado novo → 2
+--- conferir 
+🛑 adversarial-review: o código mudou depois da revisão sdd/reports/reviews/EXTERNAL_REVIEW_20261101-002635 (sha256 diferente)
+RESULTADO: NÃO CONFERE
+→ rode a revisão de novo sobre esta versão.
+[rc=2]
+=== pasta explícita
+--- conferir sdd/reports/reviews/EXTERNAL_REVIEW_20261101-002635
+✅ a revisão sdd/reports/reviews/EXTERNAL_REVIEW_20261101-002635 é desta versão do código (sha256 igual).
+review_externo: sdd/reports/reviews/EXTERNAL_REVIEW_20261101-002635 sha256=373d6a164c040c00b4bf57ea64e213b7c97f40de1713e69304d2712f607e2417 diversidade=modelo
+RESULTADO: CONFERE
+→ copie a linha review_externo para o ledger da release.
+[rc=0]
+=== papel falhou (auditor 68)
+--- conferir 
+🛑 adversarial-review: a revisão sdd/reports/reviews/EXTERNAL_REVIEW_20261101-002637 não completou (reviewer_exit=0, auditor_exit=68)
+RESULTADO: NÃO CONFERE
+→ rode a revisão de novo.
+[rc=2]
+=== rasa
+--- conferir 
+🛑 adversarial-review: a revisão sdd/reports/reviews/EXTERNAL_REVIEW_20261101-002637-2 foi rasa (n/a (revisor1 raso: 0 achados em 0s)): não conta como revisão
+RESULTADO: NÃO CONFERE
+→ rode a revisão de novo, com outra engine se preciso.
+[rc=2]
+=== 2º revisor 66 sem dispensa → 2; com motivo de 2 caracteres → 2; com 3+ → 0
+--- conferir 
+🛑 adversarial-review: o 2º revisor foi acionado e não deu resultado (revisor2_exit=66)
+RESULTADO: NÃO CONFERE
+→ rode de novo com outra engine (--revisor2) ou registre a dispensa com --aceitar-sem-revisor2 "<motivo>".
+[rc=2]
+--- conferir --aceitar-sem-revisor2 ab
+🛑 adversarial-review: o 2º revisor foi acionado e não deu resultado (revisor2_exit=66)
+RESULTADO: NÃO CONFERE
+→ rode de novo com outra engine (--revisor2) ou registre a dispensa com --aceitar-sem-revisor2 "<motivo>".
+[rc=2]
+--- conferir --aceitar-sem-revisor2 sem cota hoje
+✅ a revisão sdd/reports/reviews/EXTERNAL_REVIEW_20261101-002638 é desta versão do código (sha256 igual).
+review_externo: sdd/reports/reviews/EXTERNAL_REVIEW_20261101-002638 sha256=dd359fe5a9d8fdb78edf6020c55bcb57f6040ab06430e9e3a490c08f5ce63d95 diversidade=modelo revisor2=dispensado — sem cota hoje
+RESULTADO: CONFERE
+→ copie a linha review_externo para o ledger da release.
+[rc=0]
+=== revisão só de --paths é ignorada na escolha da mais nova / recusada explícita
+--- conferir sdd/reports/reviews/EXTERNAL_REVIEW_20261101-002639
+🛑 adversarial-review: a revisão sdd/reports/reviews/EXTERNAL_REVIEW_20261101-002639 cobre só --paths src/novo.sh, não o diff inteiro desta frente
+RESULTADO: NÃO CONFERE
+→ rode a revisão sem --paths (a da release revisa o código, não só o DESIGN).
+[rc=2]
+[exit=0]

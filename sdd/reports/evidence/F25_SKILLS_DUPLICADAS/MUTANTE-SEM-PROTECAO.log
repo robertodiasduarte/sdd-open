@@ -1,0 +1,21 @@
+$ cd <tmp>/tmp.0oOIjxhDr8/tests && /usr/bin/python3 -B -m unittest test_f25_skills_duplicadas.AT009Limpar.test_npx_protege_a_outra_copia
+E
+======================================================================
+ERROR: test_npx_protege_a_outra_copia (test_f25_skills_duplicadas.AT009Limpar)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "<tmp>/tmp.0oOIjxhDr8/tests/test_f25_skills_duplicadas.py", line 504, in test_npx_protege_a_outra_copia
+    self.assertEqual((self.g_claude / "sdd-define/SKILL.md").read_bytes(), manual)
+  File "/Library/Developer/CommandLineTools/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/pathlib.py", line 1249, in read_bytes
+    with self.open(mode='rb') as f:
+  File "/Library/Developer/CommandLineTools/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/pathlib.py", line 1242, in open
+    return io.open(self, mode, buffering, encoding, errors, newline,
+  File "/Library/Developer/CommandLineTools/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/pathlib.py", line 1110, in _opener
+    return self._accessor.open(self, flags, mode)
+FileNotFoundError: [Errno 2] No such file or directory: '<tmp>/f25-if1svsb5/home/.claude/skills/sdd-define/SKILL.md'
+
+----------------------------------------------------------------------
+Ran 1 test in 1.210s
+
+FAILED (errors=1)
+[exit=1]

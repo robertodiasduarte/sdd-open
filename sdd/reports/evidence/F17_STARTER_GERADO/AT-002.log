@@ -1,0 +1,15 @@
+$ (cd tests && python3 -B -m unittest -v test_gerar_starter.Recusa)   # AT-002, commit d813954
+test_at002_destino_sujo_ou_sem_a_forma_do_starter (test_gerar_starter.Recusa.test_at002_destino_sujo_ou_sem_a_forma_do_starter) ... ok
+test_at002_lint_do_init_acha_citacao (test_gerar_starter.Recusa.test_at002_lint_do_init_acha_citacao) ... ok
+test_at002_skill_sem_linha_no_openai_tsv (test_gerar_starter.Recusa.test_at002_skill_sem_linha_no_openai_tsv) ... ok
+test_at002_tag_inexistente (test_gerar_starter.Recusa.test_at002_tag_inexistente) ... ok
+test_at002_troca_que_nao_casa_exatamente_uma_vez (test_gerar_starter.Recusa.test_at002_troca_que_nao_casa_exatamente_uma_vez) ... ok
+test_at007_versao_que_nao_sobe_reprova_antes_de_gravar (test_gerar_starter.Recusa.test_at007_versao_que_nao_sobe_reprova_antes_de_gravar) ... ok
+test_gerador_diferente_do_da_tag (test_gerar_starter.Recusa.test_gerador_diferente_do_da_tag) ... ok
+test_r6_tag_anterior_ao_gerador_diz_a_causa (test_gerar_starter.Recusa.test_r6_tag_anterior_ao_gerador_diz_a_causa) ... ok
+
+----------------------------------------------------------------------
+Ran 8 tests in 8.187s
+
+OK
+[exit=0]

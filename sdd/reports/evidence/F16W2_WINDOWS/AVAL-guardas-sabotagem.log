@@ -1,0 +1,17 @@
+$ (cópia de HEAD 3ba89de) sabotagens: (1) tira o reconfigure do __main__ de kb-dominios.py; (2) tira o reconfigure do heredoc do sdd-fluxo.sh; (3) tira o reconfigure de .agents/skills/sdd-kb/scripts/kb_normativo.py — depois: cd tests && python3 -m unittest test_f16w2_saida
+sabotado: sdd/bin/kb-dominios.py
+sabotado: sdd/bin/sdd-fluxo.sh
+sabotado: .agents/skills/sdd-kb/scripts/kb_normativo.py
+sdd/bin/kb-dominios.py:167:            pass  # SABOTADO: removido
+sdd/bin/sdd-fluxo.sh:134:        pass  # SABOTADO: removido
+.agents/skills/sdd-kb/scripts/kb_normativo.py:250:            pass  # SABOTADO: removido
+FAIL: test_todo_script_com_main_troca_a_saida_antes_de_tudo (test_f16w2_saida.Guarda) (script='.agents/skills/sdd-kb/scripts/kb_normativo.py')
+AssertionError: '_canal.reconfigure(encoding="utf-8", errors="replace", newline="\\n")' not found in 'pass  # SABOTADO: removido' : .agents/skills/sdd-kb/scripts/kb_normativo.py
+FAIL: test_todo_script_com_main_troca_a_saida_antes_de_tudo (test_f16w2_saida.Guarda) (script='sdd/bin/kb-dominios.py')
+AssertionError: '_canal.reconfigure(encoding="utf-8", errors="replace", newline="\\n")' not found in 'pass  # SABOTADO: removido' : sdd/bin/kb-dominios.py
+FAIL: test_todo_python_embutido_num_script_troca_a_saida (test_f16w2_saida.GuardaEmbutidos) (script='sdd/bin/sdd-fluxo.sh', inicio='import sys as _sdd_sys  # F16W2: saída e')
+AssertionError: '_sdd_c.reconfigure(encoding="utf-8", errors="replace", newline="\\n")' not found in 'import sys as _sdd_sys  # F16W2: saída em UTF-8 e "\\n" também no Windows (cp1252 e "\\r\\n" no pipe do Git Bash)\nfor _sdd_c in (_sdd_sys.stdout, _sdd_sys.stderr):\n    try:\n        pass  # SABOTADO: removido\n    except (AttributeError, ValueError):\n        pass\nimport fnmatch, os, re, shlex, subprocess, sys\n\nBIN = os.environ["SDD_FLUXO_BIN"]\nBASH = os.environ.get("SDD_FLUXO_BASH") or "bash"\nverbo, args = sys.argv[1], sys.argv[2:]\n\n\ndef ler(caminho):\n    try:\n        with open(caminho, encoding="utf-8") as h:\n            return h.read()\n    except (OSError, UnicodeDecodeError):\n        return None\n\n\ndef raiz_de(pasta):\n    try:\n        r = subprocess.run(["git", "-C", pasta, "rev-parse", "--show-toplevel"],\n                           capture_output=True, text=True, encoding="utf-8", errors="replace")\n        if r.returncode == 0 and r.stdout.strip():\n            return r.stdout.strip()\n    except OSError:\n        pass\n    return os.getcwd()\n\n\ndef slot(caminho, bloco, chave):\n    """Valor de bloco.chave num YAML de 1 nível; None se o arquivo ou a chave não existem."""\n    texto = ler(caminho)\n    if texto is None:\n        return None\n    dentro = False\n    for ln in texto.splitlines():\n'
+FAIL: test_os_scripts_imprimem_o_caractere_e_saem_com_o_exit_de_sempre (test_f16w2_saida.SaidaCp1252) (script='sdd/bin/kb-dominios.py')
+AssertionError: Regex matched: '\\U0001' matches '\\\\U0001|\\\\u2' in "\\U0001f6d1 DESIGN_X.md: falta a linha **KB Domains** no Technical Context\nRESULTADO: VERMELHO\n\\u2192 corrija o KB Domains com nomes de 'ls sdd/kb/' ou escreva nenhum, e rode de novo\n"
+Ran 5 tests in 0.786s
+FAILED (failures=4)

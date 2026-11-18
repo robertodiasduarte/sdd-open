@@ -76,8 +76,8 @@ class Molde(Sandbox):
 class Skills(unittest.TestCase):
     def test_build_5c_manda_gravar_conferir_e_passar_o_ledger(self):
         texto = ler(".agents/skills/sdd-build/SKILL.md")
-        self.assertIn('version: "2.13.0"', texto)
-        self.assertIn("`sdd-build v2.13.0 · nov/2026", texto)
+        self.assertIn('version: "2.13.1"', texto)
+        self.assertIn("`sdd-build v2.13.1 · nov/2026", texto)
         passo = trecho(texto, "**5c. Review adversarial pós-build.**", "**5d.")
         for termo in ("sdd/reviews/LEDGER_REVISAO_{F}.md", "sdd/templates/LEDGER_REVISAO_TEMPLATE.md",
                       "sdd/review/CRITERIO_DANO.md", "copiado do arquivo de vereditos", "`teste: <nome>`",
@@ -91,8 +91,8 @@ class Skills(unittest.TestCase):
 
     def test_release_item_8_confere_o_lint_do_ledger(self):
         texto = ler(".agents/skills/sdd-release/SKILL.md")
-        self.assertIn('version: "2.16.0"', texto)
-        self.assertIn("`sdd-release v2.16.0 · nov/2026", texto)
+        self.assertIn('version: "2.17.0"', texto)
+        self.assertIn("`sdd-release v2.17.0 · nov/2026", texto)
         item = trecho(texto, "8. **Review externo (obrigatório, com dispensa registrada):**", "\n9. **Testes do diff:**")
         for termo in ("Com revisão feita (não dispensada)", "bash sdd/bin/ledger-revisao-lint.sh sdd/reviews/LEDGER_REVISAO_{F}.md",
                       "exit 2 ⇒ **abortar**", "exit 64", "sem achados: rodada=N"):
@@ -140,7 +140,7 @@ class Documentos(unittest.TestCase):
         # Sobra da F19 (F16, item 0d): sem .gitignore, `git add -A` depois da suíte sem -B levou .pyc e o trace
         # do gate para um commit. O arquivo é declarado no MANIFEST como qualquer outro (o publish-gate barra o resto).
         linhas = [ln for ln in ler(".gitignore").splitlines() if ln and not ln.startswith("#")]
-        self.assertEqual(linhas, ["__pycache__/", "*.pyc", "sdd/reports/reviews/", "sdd/traces/"])
+        self.assertEqual(linhas, ["__pycache__/", "*.pyc", "sdd/reports/reviews/", "sdd/traces/", "sdd/reports/evidence/*/bruto/"])
         self.assertIn(".gitignore", ler("MANIFEST.txt").splitlines())
 
     def test_contratos_e_manifest(self):

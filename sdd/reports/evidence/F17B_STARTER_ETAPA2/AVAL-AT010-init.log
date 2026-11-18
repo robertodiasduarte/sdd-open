@@ -1,0 +1,20 @@
+$ bash /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f17b-starter-etapa2/4bd671df-4c34-431c-bf11-929368bfac1c/scratchpad/init.sh
+init rc=0
+✅ nenhum segredo salvo no git (.env, .pfx, .p12, .pem com chave privada)
+RESULTADO: INSTALADO
+→ abra seu agente e peça a fase Define (ex.: /sdd-define ou /skill:sdd-define).
+### scripts/ no projeto?
+ls: /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f17b-starter-etapa2/4bd671df-4c34-431c-bf11-929368bfac1c/scratchpad/proj-init/scripts: No such file or directory
+### skills instaladas:       22
+ux-review-builder
+22
+### sdd/bin existe → caminho completo; MODO_INICIANTE presente na release instalada
+adapters
+adversarial-review-gate.sh
+adversarial-review.sh
+MODO_INICIANTE.md
+como-falar.md
+ledger.md
+raio-de-impacto.md
+seguranca.md
+rc=0

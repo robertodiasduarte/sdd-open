@@ -1,0 +1,16 @@
+$ bash /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f26-docs-na-main/e1164d6c-42f0-4737-8064-2ce0f93f4e1b/scratchpad/v/at004c.sh
+== --pasta com .tar.gz e .gz que contêm e-mail real e CPF válido
+✅ pasta /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.pZdfb64duB/b: 2 arquivo(s), nada achado.
+RESULTADO: VERDE
+→ siga.
+rc=0
+== controle: o mesmo texto solto
+🔴 nota.txt:1 · CPF com dígito verificador válido
+🔴 nota.txt:1 · e-mail fora dos domínios de exemplo
+RESULTADO: VERMELHO
+rc=0
+== sdd-release: onde a varredura roda (antes do push)
+/Users/robertoduarte/rdd-worktrees/sdd-open-f26-docs-na-main/.agents/skills/sdd-release/SKILL.md:146:    com os documentos no repositório (trava `export-ignore` sob `sdd/`), também `bash sdd/bin/docs-varredura.sh .` (1 ⇒ FAIL; 64 ⇒ pulado e dito)
+/Users/robertoduarte/rdd-worktrees/sdd-open-f26-docs-na-main/.agents/skills/sdd-release/references/bruto.md:31:  falsa escrita por extenso numa sonda ou um CPF de exemplo que fecha a conta; a `docs-varredura.sh --pasta` barra e o
+/Users/robertoduarte/rdd-worktrees/sdd-open-f26-docs-na-main/.agents/skills/sdd-release/references/bruto.md:38:  `bash sdd/bin/docs-varredura.sh --pasta <anexo extraído> --padrao '<o dado>'` (o `CONTRIBUTING.md` do Open tem o
+[rc=0]

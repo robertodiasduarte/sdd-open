@@ -1,0 +1,6 @@
+$ (git archive 2fcdda1) SDD_TEST_BASH=/bin/bash /usr/bin/python3 -B -m unittest discover -s tests -p 'test_*.py'
+----------------------------------------------------------------------
+Ran 388 tests in 188.383s
+
+OK
+rc=

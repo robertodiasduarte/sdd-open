@@ -1,0 +1,15 @@
+$ W=/tmp/aval1-f11.wvW4zp; rm -f $W/marca-real; env BASH_ENV=$W/bashenv.sh ENV=$W/bashenv.sh 'BASH_FUNC_claude%%=() {  echo FUNC >> /tmp/aval1-f11.wvW4zp/marca-real; }' OPENROUTER_API_KEY=sk-or-v1-chave-do-usuario-aval SDD_REVIEW_OPENROUTER_URL=https://openrouter.ai/api/v1/chat/completions SDD_REVIEW_ESPERA=30 http_proxy= HTTPS_PROXY= no_proxy='*' PATH=$W/real:$PATH /bin/bash /Users/robertoduarte/rdd-worktrees/sdd-open-f11-gate/sdd/bin/adversarial-review-gate.sh -v > $W/hostil.out 2>&1; rc=$?; grep -E 'asserções|RESULTADO|❌|Bearer|lido: (US|qwen)' $W/hostil.out; echo "[gate_rc=$rc]"; echo "marca-real: $(cat $W/marca-real 2>/dev/null || echo nenhuma)"; exit $rc
+        lido: US$ 0.0421
+        lido: qwen/qwen3.7-plus via StubProvider
+        lido: US$ 0.0012
+        lido: qwen/qwen3.7-plus via StubProvider
+        lido: US$ 0.0031
+        lido: US$ 0.0137
+        lido: qwen/qwen3.7-plus via StubProvider
+        lido: qwen/qwen3.7-plus-preview via StubProvider
+  ✅ 88. a OpenRouter recebeu Authorization: Bearer <chave gerada>
+90 asserções, 0 falha(s) em 6 s
+RESULTADO: GATE VERDE
+[gate_rc=0]
+marca-real: nenhuma
+[exit=0]

@@ -1,0 +1,5 @@
+$ cd /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f8-hooks/8e011512-3e64-4505-a0ff-235ac598d20c/scratchpad/aval2/at001-remoto || exit 99; git remote add origin /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f8-hooks/8e011512-3e64-4505-a0ff-235ac598d20c/scratchpad/aval2/at001-remoto.git && git push -q origin main && git rev-parse --verify refs/remotes/origin/main >/dev/null && echo origin/main-existe; /bin/bash /Users/robertoduarte/rdd-worktrees/sdd-open-f8-aval/bin/sdd-open.sh init --yes --vendors codex 2>&1 | grep -E '^→|RESULTADO'
+origin/main-existe
+RESULTADO: INSTALADO
+→ leve a instalação para uma branch nova antes de commitar (a branch padrão já tem remoto e o hook recusa commit direto): git switch -c sdd-open-init · depois, abra seu agente e peça a fase Define (ex.: /sdd-define ou /skill:sdd-define).
+[exit=0]

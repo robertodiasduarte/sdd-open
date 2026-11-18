@@ -1,0 +1,6 @@
+$ /usr/bin/python3 -B scratchpad/sonda-comandos.py <projeto>   (extrai() da F4 sobre as SKILL.md com as mudanças das Decisions 5 e 6, em memória)
+sdd-define, diferenças extraídas:
+    '+ passo ### 10. Conferir o KB Domains'
+    '+ cmd python3 sdd/bin/kb-dominios.py sdd/features/DEFINE_{FEATURE}.md   # 0 segue · 1 corrija e rode de novo'
+exceção como a Decision 5/9 escreve: '+ cmd python3 sdd/bin/kb-dominios.py sdd/features/DEFINE_{FEATURE}.md' → NÃO BATE
+sdd-ux-review, diferenças extraídas: nenhuma

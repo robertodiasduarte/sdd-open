@@ -1,0 +1,18 @@
+feature_id: F26_DOCS_NA_MAIN
+slice_id: s1
+versao: 2.23.0
+data: 2026-11-18
+estado: shipado
+veredito: CONCERNS
+waived: null
+dod: "Verify Gate verde em 4ccb0ef (2.586 testes, cópia de git archive, /bin/bash 3.2) e a mesma suíte verde num clone com os documentos, como o CI; 12 de 12 ATs com log por AT; avaliador fresco PASS_PENDENTE_RECIBO no ciclo 2 (A1 a A6 do ciclo 1 resolvidos); migração conferida na tag arquivo/docs-incorporar-starter (511d6fa), também por squash simulado; fila da curadoria vazia; revisão do código PRONTO (8 aplicadas, 2 rebatidas)."
+descricao: "Os documentos das frentes passam da branch docs/incorporar-starter para a main, fora do pacote por duas travas (export-ignore por lista de permissão em sdd/ e o publish-gate do CI sobre o pacote montado); varredura própria dos documentos (segredo, e-mail real, chave, certificado, CPF/CNPJ válido, UTF-16, compactado, teto de 256 KB); evidência bruta como anexo da Release (anexar-bruto.sh na sdd-release); remoção a pedido no CONTRIBUTING; 18 skills geradas para o SDD Starter com a marca na descrição e na linha de identificação."
+deploy: real
+trilha: completa
+review_externo: dispensado — a revisão sdd/reports/reviews/EXTERNAL_REVIEW_20261118-065427 (claude revisa, codex audita) cobriu o código com --paths, porque o diff inteiro passa de 8 MB com os 2.868 documentos migrados (conferidos pela varredura e pela conferência da migração); o delta de código depois dela são os consertos dela e do avaliador, cada um com teste vermelho antes, provados por execução no ciclo 2 do avaliador fresco
+avisos:
+  - "revisão do código: o 2º revisor (gemini) falhou por credencial e foi dispensado pelo Roberto na rodada 1 (a superfície de risco era só a linha da versão da sdd-seguranca)"
+  - "item 7 (exit dos logs) sobre a evidência desta frente e do lote: verde; os 85 logs antigos acusados (F3, F4, F5, F6, F8, F14, W0) vieram iguais à tag de arquivo e não podem mudar (a conferência da migração exige o blob da tag)"
+  - "pendências baixas do avaliador: A7 (o --padrao com --ref não olha o histórico; o CONTRIBUTING manda o --texto, que olha) e A8 (a sdd-release não diz o que fazer com o exit 2 da varredura dos documentos)"
+  - "lint, drift, landmines, smoke e test-baseline pulados: o Open não tem sdd/config.yaml (a suíte inteira rodou no Verify Gate e no clone)"
+  - "a branch de documentos está congelada até a F26 entrar na main (pedido do Roberto); o push dela e da tag de arquivo vem depois do push da main, e o --pode-aposentar confere"

@@ -5,7 +5,7 @@ compatibility: Skill de documento — não requer ferramenta externa. Consumida 
 license: MIT
 metadata:
   author: Roberto Dias Duarte
-  version: "1.0.0"
+  version: "1.0.1"
   updated: "2026-11"
   fase: "3-apoio"
 ---
@@ -13,7 +13,7 @@ metadata:
 # Loop Builder
 
 Na primeira resposta desta skill, comece com esta linha, uma vez só, antes do Status:
-`sdd-loop-builder v1.0.0 · nov/2026 · versão atual: https://github.com/robertodiasduarte/sdd-open/releases/latest`
+`sdd-loop-builder v1.0.1 · nov/2026 · versão atual: https://github.com/robertodiasduarte/sdd-open/releases/latest`
 
 Especificar o sistema que decide o que perguntar ao modelo, como conferir e quando parar. A `sdd-prompt-builder` entrega
 o contrato de **uma** saída; esta skill entrega o contrato do **processo**. Os prompts de cada estágio nascem depois,

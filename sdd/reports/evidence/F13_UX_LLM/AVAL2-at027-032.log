@@ -1,0 +1,24 @@
+$ grep -c '1\.4\.3\|1\.4\.11\|1\.4\.1 \|2\.4\.7\|4\.1\.2\|2\.1\.1\|2\.5\.8' sdd/templates/UX_REVIEW_TEMPLATE.md; grep -n '3\.3\.7\|2\.4\.13' sdd/templates/UX_REVIEW_TEMPLATE.md; grep -n 'contraste.sh\|REPROVA\|N\.A\.' .agents/skills/sdd-ux-review/SKILL.md; grep -n 'sdd-loop-builder' .agents/skills/sdd-prompt-builder/references/sdd-integration.md sdd/templates/fragments/LLM_PROMPTS_BUILD_REPORT.md README.md README.pt-BR.md; grep -n 'sdd-drive\|^| ' docs/roadmap.md; grep -n 'sdd-drive' docs/pt-BR/roadmap.md; grep -rnE 'LBI|WARM|COOL|LM-[0-9]|fp-eval|BRAVO' sdd/bin/contraste.sh sdd/bin/prompt-drift-scan.sh .agents/skills/sdd-loop-builder sdd/templates/fragments/LLM_PROMPTS_DESIGN.md docs/llm-in-code.md docs/pt-BR/llm-in-code.md; echo termos_rc=$?
+9
+214:3.3.7 é nível A e 2.4.13 é AAA: não entram aqui, e nenhum dos 2 é critério AA.
+101:   **medido** nos pares reais com `bash sdd/bin/contraste.sh` (≥4.5:1 texto, ≥3:1 não-texto).
+103:4.5. **WCAG 2.2 AA.** Sem superfície visual: `N.A. — <motivo>` em 1 linha. Com tela, as 7 linhas da tabela de
+105:   com `PASSA`, `REPROVA` ou `N.A.` (com motivo); 2.1.1 e 2.5.8 herdados, que só se provam na tela pronta e vão
+106:   para as Acceptance notes. Par medido por tema do projeto: `bash sdd/bin/contraste.sh '<fg>' '<bg>' [alpha]
+107:   [--piso 3]`; a saída é truncada, e 4.49 reprova o piso 4.5. Todo `REPROVA` vira **1 MUST** em UX/CX Findings,
+111:   coluna, o MUST vem dela, citado à parte. Todo status diferente de `N.A.` exige evidência.
+113:   (aplicar a lente ao pé da letra pioraria esta tela) · `N.A.` (com motivo; podem ir juntas numa linha).
+142:[ ] Tabela WCAG preenchida com evidência, ou N.A. justificado; cada REPROVA virou 1 MUST com o critério e o par
+143:[ ] 60/30/10 aplicado com papéis claros (ou N.A. justificado para não-visual)
+161:- **Tabela WCAG com o texto da norma** — um REPROVA afirma uma violação; exigir mais que a norma ali cria defeito
+.agents/skills/sdd-prompt-builder/references/sdd-integration.md:81:| `loop` | processo iterativo que re-prompta o modelo com base na própria saída anterior | primeiro a `sdd-loop-builder` (a LOOP_SPEC); depois **um prompt por estágio LLM**, cada um por esta skill |
+sdd/templates/fragments/LLM_PROMPTS_BUILD_REPORT.md:22:| 2 | <nome do DESIGN> | `<pasta>/LOOP_SPEC.md` | loop | `sdd-loop-builder` | criado · refatorado · bloqueado (motivo) |
+README.md:58:| **Cross-cutting** | `sdd-iterate` · `sdd-playbook` · `sdd-prompt-builder` · `sdd-loop-builder` · `sdd-auditoria-harness` | when the case calls for it |
+README.pt-BR.md:58:| **Transversais** | `sdd-iterate` · `sdd-playbook` · `sdd-prompt-builder` · `sdd-loop-builder` · `sdd-auditoria-harness` | quando o caso pedir |
+13:| Theme | What it brings | Status |
+15:| **`sdd-drive`** | a skill that drives several phases in a row with the same human stops | *planned* |
+16:| **Spec ↔ code reconciliation** | checking that the file manifest covered every requirement, not only that acceptance passed | *planned* |
+17:| **Specs as deltas** | a spec written as a difference against a canonical capability set, instead of a long-lived document | *under evaluation* |
+15:| **`sdd-drive`** | uma skill que conduz várias fases seguidas com as mesmas paradas humanas | *planejado* |
+termos_rc=1
+[exit=0]

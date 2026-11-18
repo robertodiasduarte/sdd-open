@@ -1,0 +1,54 @@
+$ git -C starter rev-parse HEAD; git -C starter status --porcelain | wc -l; python3 -B open/scripts/gerar-starter.py --tag v9.9.0 starter
+a82c972b57f2ffa7a092d6aab08ff33742c93336
+       0
+✅ sdd-checar-ambiente: 5 arquivo(s), 1 troca(s)
+✅ sdd-iniciar-repo: 3 arquivo(s), 1 troca(s)
+✅ sdd-higiene-dado: 10 arquivo(s), 0 troca(s)
+✅ sdd-new-session: 6 arquivo(s), 1 troca(s)
+✅ sdd-kb: 38 arquivo(s), 2 troca(s)
+✅ sdd-seguranca: 9 arquivo(s), 6 troca(s)
+✅ sdd-auditoria-harness: 7 arquivo(s), 0 troca(s)
+✅ sdd-prompt-builder: 9 arquivo(s), 2 troca(s)
+✅ sdd-engenharia-reversa-saas: 15 arquivo(s), 4 troca(s)
+✅ sdd-loop-builder: 6 arquivo(s), 0 troca(s)
+RESULTADO: GERADO
+→ no starter: python3 scripts/check-gerado.py, os testes dele e um commit numa branch.
+rc=0
+$ git -C starter add -A -n . >/dev/null; git -C starter status --porcelain --untracked-files=all | awk '{print $2}' | awk -F/ '{ if ($1=="skills") print $1"/"$2; else if ($1==".github") print $1"/"$2; else print $1 }' | sort | uniq -c; echo '-- fora do escopo (deve ser vazio):'; git -C starter status --porcelain --untracked-files=all -- docs exemplos tests LICENSE NOTICE CONTRIBUTING.md skills/sdd-brainstorm skills/sdd-define skills/sdd-design skills/sdd-build skills/sdd-handoff skills/sdd-release skills/sdd-governanca skills/ux-review-builder; echo '-- fim'; ls starter/skills | wc -l; ls starter/skills
+   1 .gitattributes
+   3 .github/workflows
+   1 GERADO.txt
+   1 README.md
+   2 scripts
+   6 skills/sdd-auditoria-harness
+   6 skills/sdd-checar-ambiente
+  10 skills/sdd-engenharia-reversa-saas
+  10 skills/sdd-higiene-dado
+   4 skills/sdd-iniciar-repo
+  12 skills/sdd-kb
+   7 skills/sdd-loop-builder
+   6 skills/sdd-new-session
+   7 skills/sdd-prompt-builder
+  10 skills/sdd-seguranca
+-- fora do escopo (deve ser vazio):
+-- fim
+      18
+sdd-auditoria-harness
+sdd-brainstorm
+sdd-build
+sdd-checar-ambiente
+sdd-define
+sdd-design
+sdd-engenharia-reversa-saas
+sdd-governanca
+sdd-handoff
+sdd-higiene-dado
+sdd-iniciar-repo
+sdd-kb
+sdd-loop-builder
+sdd-new-session
+sdd-prompt-builder
+sdd-release
+sdd-seguranca
+ux-review-builder
+rc=0

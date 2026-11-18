@@ -1,0 +1,94 @@
+test_1_edicao_do_mesmo_tamanho_no_mesmo_instante_do_indice_entra_no_diff (test_revisao.AvaliadorCiclo2.test_1_edicao_do_mesmo_tamanho_no_mesmo_instante_do_indice_entra_no_diff) ... FAIL
+
+test_2_order_file_e_textconv_do_usuario_nao_mudam_o_sha (test_revisao.AvaliadorCiclo2.test_2_order_file_e_textconv_do_usuario_nao_mudam_o_sha) ... ERROR
+
+test_3_lista_esgotada_registra_a_troca_e_nao_diz_quem_revisou (test_revisao.AvaliadorCiclo2.test_3_lista_esgotada_registra_a_troca_e_nao_diz_quem_revisou) ... FAIL
+
+test_5_comentario_de_security_globs_cita_o_segundo_revisor (test_revisao.AvaliadorCiclo2.test_5_comentario_de_security_globs_cita_o_segundo_revisor) ... ok
+
+
+
+======================================================================
+
+ERROR: test_2_order_file_e_textconv_do_usuario_nao_mudam_o_sha (test_revisao.AvaliadorCiclo2.test_2_order_file_e_textconv_do_usuario_nao_mudam_o_sha)
+
+----------------------------------------------------------------------
+
+Traceback (most recent call last):
+
+  File "D:\a\sdd-open\sdd-open\tests\test_revisao.py", line 907, in test_2_order_file_e_textconv_do_usuario_nao_mudam_o_sha
+
+    self.assertEqual(sha(a), sha(b))
+
+                     ^^^^^^
+
+  File "D:\a\sdd-open\sdd-open\tests\test_revisao.py", line 899, in <lambda>
+
+    sha = lambda s: re.search(r"diff_sha256: ([0-9a-f]{64})", s).group(1)
+
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+AttributeError: 'NoneType' object has no attribute 'group'
+
+
+
+======================================================================
+
+FAIL: test_1_edicao_do_mesmo_tamanho_no_mesmo_instante_do_indice_entra_no_diff (test_revisao.AvaliadorCiclo2.test_1_edicao_do_mesmo_tamanho_no_mesmo_instante_do_indice_entra_no_diff)
+
+----------------------------------------------------------------------
+
+Traceback (most recent call last):
+
+  File "D:\a\sdd-open\sdd-open\tests\test_revisao.py", line 891, in test_1_edicao_do_mesmo_tamanho_no_mesmo_instante_do_indice_entra_no_diff
+
+    self.assertEqual(rc, 0, out)
+
+AssertionError: 64 != 0 : D:\a\sdd-open\sdd-open\sdd\bin\adversarial-review.sh: line 37: cd: null directory
+
+\u26a0\ufe0f  o python3 deste computador existe, mas n�o roda (no Windows, costuma ser o atalho da Microsoft Store).
+
+\U0001f6d1 adversarial-review: python3 n�o encontrado no PATH.
+
+RESULTADO: PAROU
+
+\u2192 instale o Python 3 (3.9 ou mais novo) e rode de novo.
+
+
+
+
+
+======================================================================
+
+FAIL: test_3_lista_esgotada_registra_a_troca_e_nao_diz_quem_revisou (test_revisao.AvaliadorCiclo2.test_3_lista_esgotada_registra_a_troca_e_nao_diz_quem_revisou)
+
+----------------------------------------------------------------------
+
+Traceback (most recent call last):
+
+  File "D:\a\sdd-open\sdd-open\tests\test_revisao.py", line 913, in test_3_lista_esgotada_registra_a_troca_e_nao_diz_quem_revisou
+
+    self.assertEqual(rc, 67, out)
+
+AssertionError: 64 != 67 : D:\a\sdd-open\sdd-open\sdd\bin\adversarial-review.sh: line 37: cd: null directory
+
+\u26a0\ufe0f  o python3 deste computador existe, mas n�o roda (no Windows, costuma ser o atalho da Microsoft Store).
+
+\U0001f6d1 adversarial-review: python3 n�o encontrado no PATH.
+
+RESULTADO: PAROU
+
+\u2192 instale o Python 3 (3.9 ou mais novo) e rode de novo.
+
+
+
+
+
+----------------------------------------------------------------------
+
+Ran 4 tests in 1.453s
+
+
+
+FAILED (failures=2, errors=1)
+

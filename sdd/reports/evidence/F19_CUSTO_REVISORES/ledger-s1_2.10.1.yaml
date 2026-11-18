@@ -1,0 +1,22 @@
+feature_id: F19_CUSTO_REVISORES
+slice_id: s1
+versao: 2.10.1
+data: 2026-11-10
+estado: shipado
+veredito: CONCERNS
+waived: null
+dod: "eval-revisores.sh sobre as fixtures imprime a tabela esperada célula a célula e sai 0; sem dados sai 2; ledger-revisao-lint.sh sai 0 no controle e 2 com arquivo:linha em cada fixture de reprovação; o loop fecha com o ledger de 7 colunas; os 4 arquivos chegam ao projeto pelo init; Verify Gate verde em cópia de git archive"
+descricao: "Custo e benefício dos modelos de revisão: ledger da revisão por frente com a marca de dano (7 colunas), critério de dano, lint do ledger e o medidor eval-revisores.sh (custo pago e nominal, achados, falsos positivos e custo por falha com dano, por papel, engine e modelo); sdd-build 2.8.0 manda gravar e conferir o ledger, sdd-release 2.10.0 confere o lint antes de publicar. O medidor só informa: não muda a cadeia de revisão."
+deploy: real
+review_externo: sdd/reports/reviews/EXTERNAL_REVIEW_20261110-162917 sha256=d333619ffd4e04af92ed45379b03614be710bc32ccfcb9b1443524af7a9cdd6c diversidade=nenhuma revisor2=dispensado — codex sem cota e gemini sem credencial; dispensa do Roberto em 2026-11-10
+avisos:
+  - "avaliador de contexto novo sem PASS: 3 ciclos, o último NEEDS_WORK sobre 0d4a730; os consertos pedidos entraram em dcf95ac e não foram reavaliados por ele (decisão do Roberto em 2026-11-10: fechar com a rodada 5 da revisão)"
+  - "revisão das rodadas 3, 4 e 5 com uma engine só (a mesma revisou e auditou, diversidade nenhuma): o auditor pago ficou sem saldo na rodada 2; decisão do Roberto"
+  - "teto do método passado: 5 rodadas de revisão (teto 3) e 3 ciclos do avaliador (teto 2), cada extra por decisão do Roberto"
+  - "rodada 5: 2 achados leves aceitos e não aplicados, pendência na ficha: a coluna Cobrança falta na tabela de colunas dos 2 documentos; papel indisponível sem exit e sem custo é pulado sem aviso"
+  - "limites declarados na ajuda: o que vem depois de --> na mesma linha não é lido; o medidor soma o que o ledger diz sem conferir o teste; arquivo de vereditos com linha cortada conta só as linhas inteiras"
+  - "2º revisor dispensado pelo Roberto (codex sem cota, gemini sem credencial)"
+  - "governança dispensada pelo Roberto com 2 cuidados aplicados (aritmética decimal exata; sem custo informado nunca é zero)"
+  - "testes do diff pulados: o repositório do pacote não tem sdd/config.yaml; a suíte inteira rodou no Verify Gate"
+  - "4 logs do avaliador com exit que não prova o comando (gate-shell-evidencia) foram rebaixados a *.aval.txt com nota; nenhum critério de aceite dependia deles"
+  - "a tag v2.10.0 (dcf95ac) foi enviada e ficou SEM Release: o job de testes do Ubuntu do release.yml foi cancelado pelo teto de 25 min no meio dos testes, sem teste vermelho; decisão do Roberto em 2026-11-10: commit 36d0454 (teto de 25 para 45 min, só o workflow e o teste que fixa o número, fora da revisão externa) e publicação como v2.10.1; a tag v2.10.0 não foi movida"

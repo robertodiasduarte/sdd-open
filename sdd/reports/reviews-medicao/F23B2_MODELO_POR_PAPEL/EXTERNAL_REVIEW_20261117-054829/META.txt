@@ -1,0 +1,53 @@
+worktree                     : /Users/robertoduarte/rdd-worktrees/sdd-open-f23b2-modelo-por-papel
+branch                       : feat/f23b2-modelo-por-papel
+protocolo                    : cadeia REVISOR → AUDITOR; paralelo não existe
+base                         : origin/main
+merge_base                   : fb7ee82f7cb0a15b4fda798f1a9615bd2dbe253f
+head                         : 7b84b5df9e388f4bb018ef1324ca9c4c385b73f1
+paths                        : -
+diff_sha256                  : e1388952ff0993b0525c45dadd6c9af92fe4ec72c109c4b4e45e1159698d2c2b
+diff                         : 160KB (38 arquivo(s))
+contexto                     : 78KB (3 doc SDD)
+docs_sdd                     : DEFINE_F23B2_MODELO_POR_PAPEL.md, DESIGN_F23B2_MODELO_POR_PAPEL.md, BUILD_REPORT_F23B2_MODELO_POR_PAPEL.md
+contexto_cortado             : -
+diversidade                  : vendor
+reviewer_engine_default      : claude
+reviewer_engine_efetivo      : claude
+reviewer_fallback_usado      : nao
+reviewer_motivo              : -
+reviewer_exit                : 0
+reviewer_segundos            : 328
+reviewer_achados             : 5
+reviewer_tokens_entrada      : 120751
+reviewer_tokens_saida        : 35481
+reviewer_tokens_total        : 156232
+reviewer_tokens_cache_lido   : -
+reviewer_tokens_cache_criado : -
+reviewer_modelo              : claude-opus-5-5
+reviewer_custo               : US$ 1.7298
+revisor1_raso                : nao
+gatilho_2o_revisor           : diff sem gatilho de risco — 1 revisor
+gatilho_risco_motivo         : -
+gatilho_regra_antiga         : 38 arquivos (limiar 8)
+dispensas_a_mao              : -
+revisor2_engine              : -
+auditor_engine_default       : codex
+auditor_engine_efetivo       : codex
+auditor_fallback_usado       : nao
+auditor_motivo               : -
+auditor_exit                 : 0
+auditor_segundos             : 244
+auditor_vereditos            : 7
+auditor_tokens_entrada       : 88939
+auditor_tokens_saida         : 6742
+auditor_tokens_total         : 109121
+auditor_tokens_cache_lido    : 13440
+auditor_tokens_cache_criado  : 0
+auditor_modelo               : gpt-6.1-sol
+auditor_custo                : assinatura
+convergencia_1o_passe        : nao
+desempate_alvo               : -
+desempate_engine             : -
+desempate_decisao            : -
+custo_total                  : US$ 1.7298
+quando                       : 20261117-054829

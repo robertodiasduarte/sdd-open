@@ -1,0 +1,10 @@
+$ cd <proj-teste> && claude -p 'Não invoque nenhuma ferramenta. Na descrição da ferramenta Skill há uma lista de skills disponíveis. Copie literalmente TODAS as entradas dessa lista cujo nome contém "sdd-define" (se houver mais de uma, todas) e a entrada "sdd-marca-so-local-f25". Se não houver, escreva AUSENTE.' --no-session-persistence --model haiku --max-turns 1 --tools Skill
+# Claude Code 2.1.314 · 2026-11-17 · HOME de teste não serve (sem login: 'Not logged in · Please run /login'); medido com o HOME real SÓ LIDO: nada gravado em pasta de skills, sessão sem persistência
+# global (lida): ~/.claude/skills/sdd-define v2.6.1, description 'Fase 1 do SDD Open — transforma um brainstorm…'
+# projeto-teste: .claude/skills/sdd-define v9.9.9, description 'MARCA-LOCAL-PROJETO-F25: cópia do projeto…'; controle .claude/skills/sdd-marca-so-local-f25 (só no projeto)
+- sdd-define: Fase 1 do SDD Open — transforma um brainstorm, notas ou pedido direto em especificação com testes de aceitação em EARS, protocolo de ambiguidade (NEEDS CLARIFICATION) e um Verify Gate executável, gravando sdd/features/DEFINE_{FEATURE}.md. Use quando o usuário pedir para especificar, definir requisitos, escrever a spec, ou disser /sdd-define.
+- anthropic-skills:sdd-define
+- sdd-marca-so-local-f25: MARCA-SO-LOCAL-F25: controle (só existe no projeto).
+# leitura: com o mesmo nome, a lista traz a GLOBAL e esconde a do projeto (a MARCA-LOCAL-PROJETO-F25 não aparece); a de controle, só do projeto, aparece.
+# complemento (esta sessão, Claude Code 2.1.314, repositório sem .claude/skills): sdd-loop-builder e sdd-engenharia-reversa-saas existem só em ~/.agents/skills e em .agents/skills do projeto, e sdd-drive só em .agents/skills do projeto; nenhuma das três está na lista de skills da sessão ⇒ o Claude Code não lê ~/.agents/skills nem .agents/skills.
+[exit=0]

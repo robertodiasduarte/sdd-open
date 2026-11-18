@@ -1,0 +1,19 @@
+$ /usr/bin/python3 -B -m unittest discover -s tests -p test_sdd_open.py -v
+test_check_acusa_copia_gerada_editada_a_mao (test_sdd_open.Projeto) ... ok
+test_doctor_termina_em_resultado (test_sdd_open.Projeto) ... ok
+test_init_copia_fixtures_de_exemplo_mas_nunca_os_testes (test_sdd_open.Projeto) ... ok
+test_init_cria_a_estrutura (test_sdd_open.Projeto) ... ok
+test_init_de_novo_e_idempotente (test_sdd_open.Projeto) ... ok
+test_sync_e_idempotente_e_check_fica_em_dia (test_sdd_open.Projeto) ... ok
+test_sync_preserva_o_texto_do_usuario_no_agents_md (test_sdd_open.Projeto) ... ok
+test_sync_reescreve_so_o_bloco_quando_a_fonte_muda (test_sdd_open.Projeto) ... ok
+test_init_fora_de_git_e_64 (test_sdd_open.Uso) ... ok
+test_opcao_desconhecida_e_64 (test_sdd_open.Uso) ... ok
+test_sem_argumentos_mostra_ajuda (test_sdd_open.Uso) ... ok
+test_verbo_desconhecido_e_64 (test_sdd_open.Uso) ... ok
+
+----------------------------------------------------------------------
+Ran 12 tests in 25.485s
+
+OK
+exit=0

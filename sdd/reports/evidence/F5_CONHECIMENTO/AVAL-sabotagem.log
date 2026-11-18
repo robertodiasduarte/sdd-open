@@ -1,0 +1,24 @@
+$ (clone em mktemp, 7e5b25c) bash sabotagem.sh
+── validate_kb.py --strict deixa de exigir teste (.agents/skills/sdd-kb/scripts/validate_kb.py)
+   vermelho:
+     FAIL: test_implementacao_sem_teste_reprova (test_sdd_kb.Strict)
+     FAIL: test_no_pacote_fica_verde_em_uma_linha (test_sdd_kb.Gate)
+     FAIL: test_numa_copia_so_da_skill_fica_verde (test_sdd_kb.Gate)
+     FAIL: test_recusa_a_copia_gerada_pelo_init (test_sdd_kb.Gate)
+   verde de novo depois do git checkout
+── kb_normativo.py rule-map --check aceita RULE_MAP derivado (.agents/skills/sdd-kb/scripts/kb_normativo.py)
+   vermelho:
+     FAIL: test_check_dos_dois_lados (test_sdd_kb.RuleMapCheck)
+   verde de novo depois do git checkout
+── gate.sh não reprova caso ruim aceito (.agents/skills/sdd-kb/scripts/gate.sh)
+   vermelho:
+     FAIL: test_validador_sabotado_deixa_o_gate_vermelho (test_sdd_kb.Gate)
+   verde de novo depois do git checkout
+── kb-dominios.py aceita nome sem pasta (sdd/bin/kb-dominios.py)
+   vermelho:
+     FAIL: test_lista_de_existentes_truncada_em_10 (test_kb_dominios.KbDominios)
+     FAIL: test_nome_sem_pasta_lista_os_que_existem (test_kb_dominios.KbDominios)
+   verde de novo depois do git checkout
+árvore limpa no fim
+sabotagens com falha: 0
+EXIT=0

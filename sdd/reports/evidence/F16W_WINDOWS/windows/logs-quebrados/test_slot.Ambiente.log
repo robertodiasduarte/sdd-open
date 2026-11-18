@@ -1,0 +1,238 @@
+test_before_ok_esvazia_so_a_pasta_padrao (test_slot.Ambiente.test_before_ok_esvazia_so_a_pasta_padrao) ... ERROR
+
+test_before_ok_vazio_tambem_esvazia (test_slot.Ambiente.test_before_ok_vazio_tambem_esvazia) ... ERROR
+
+test_caminhos_relativos_valem_de_onde_foi_chamado (test_slot.Ambiente.test_caminhos_relativos_valem_de_onde_foi_chamado) ... FAIL
+
+test_mesma_pasta_de_outra_worktree_subpasta_e_symlink (test_slot.Ambiente.test_mesma_pasta_de_outra_worktree_subpasta_e_symlink) ... FAIL
+
+test_padroes_sem_flags (test_slot.Ambiente.test_padroes_sem_flags) ... FAIL
+
+test_sem_git_funciona_com_commit_vazio (test_slot.Ambiente.test_sem_git_funciona_com_commit_vazio) ... FAIL
+
+test_variaveis_do_momento (test_slot.Ambiente.test_variaveis_do_momento) ... 
+
+  test_variaveis_do_momento (test_slot.Ambiente.test_variaveis_do_momento) (chave='smoke.before_ok_cmd') ... FAIL
+
+  test_variaveis_do_momento (test_slot.Ambiente.test_variaveis_do_momento) (chave='smoke.before_push_cmd') ... FAIL
+
+  test_variaveis_do_momento (test_slot.Ambiente.test_variaveis_do_momento) (chave='smoke.after_deploy_cmd') ... FAIL
+
+  test_variaveis_do_momento (test_slot.Ambiente.test_variaveis_do_momento) (chave='schema.check_cmd') ... FAIL
+
+
+
+======================================================================
+
+ERROR: test_before_ok_esvazia_so_a_pasta_padrao (test_slot.Ambiente.test_before_ok_esvazia_so_a_pasta_padrao)
+
+----------------------------------------------------------------------
+
+Traceback (most recent call last):
+
+  File "D:\a\sdd-open\sdd-open\tests\test_slot.py", line 342, in test_before_ok_esvazia_so_a_pasta_padrao
+
+    pasta = Path(self.registro()["DIR"])
+
+                 ~~~~~~~~~~~~~~~^^^^^^^
+
+KeyError: 'DIR'
+
+
+
+======================================================================
+
+ERROR: test_before_ok_vazio_tambem_esvazia (test_slot.Ambiente.test_before_ok_vazio_tambem_esvazia)
+
+----------------------------------------------------------------------
+
+Traceback (most recent call last):
+
+  File "D:\a\sdd-open\sdd-open\tests\test_slot.py", line 361, in test_before_ok_vazio_tambem_esvazia
+
+    pasta = Path(self.registro()["DIR"])
+
+                 ~~~~~~~~~~~~~~~^^^^^^^
+
+KeyError: 'DIR'
+
+
+
+======================================================================
+
+FAIL: test_caminhos_relativos_valem_de_onde_foi_chamado (test_slot.Ambiente.test_caminhos_relativos_valem_de_onde_foi_chamado)
+
+----------------------------------------------------------------------
+
+Traceback (most recent call last):
+
+  File "D:\a\sdd-open\sdd-open\tests\test_slot.py", line 374, in test_caminhos_relativos_valem_de_onde_foi_chamado
+
+    self.assertEqual(rc, 0, out + err)
+
+AssertionError: 11 != 0 : \u2139\ufe0f  schema.check_cmd vazio: pulado (C:/Users/runneradmin/AppData/Local/Temp/sdd-open-zccild0s/repo/sdd/config.yaml)
+
+RESULTADO: PULADO
+
+\u2192 diga que o passo foi pulado porque o slot est� vazio; para us�-lo, preencha schema.check_cmd em sdd/config.yaml.
+
+
+
+
+
+======================================================================
+
+FAIL: test_mesma_pasta_de_outra_worktree_subpasta_e_symlink (test_slot.Ambiente.test_mesma_pasta_de_outra_worktree_subpasta_e_symlink)
+
+----------------------------------------------------------------------
+
+Traceback (most recent call last):
+
+  File "D:\a\sdd-open\sdd-open\tests\test_slot.py", line 323, in test_mesma_pasta_de_outra_worktree_subpasta_e_symlink
+
+    self.assertEqual(rc, 0)
+
+AssertionError: 11 != 0
+
+
+
+======================================================================
+
+FAIL: test_padroes_sem_flags (test_slot.Ambiente.test_padroes_sem_flags)
+
+----------------------------------------------------------------------
+
+Traceback (most recent call last):
+
+  File "D:\a\sdd-open\sdd-open\tests\test_slot.py", line 312, in test_padroes_sem_flags
+
+    self.assertEqual(rc, 0, out)
+
+AssertionError: 11 != 0 : \u2139\ufe0f  smoke.before_push_cmd vazio: pulado (C:/Users/runneradmin/AppData/Local/Temp/sdd-open-f0snvw2r/repo/sdd/config.yaml)
+
+RESULTADO: PULADO
+
+\u2192 diga que o passo foi pulado porque o slot est� vazio; para us�-lo, preencha smoke.before_push_cmd em sdd/config.yaml.
+
+
+
+
+
+======================================================================
+
+FAIL: test_sem_git_funciona_com_commit_vazio (test_slot.Ambiente.test_sem_git_funciona_com_commit_vazio)
+
+----------------------------------------------------------------------
+
+Traceback (most recent call last):
+
+  File "D:\a\sdd-open\sdd-open\tests\test_slot.py", line 387, in test_sem_git_funciona_com_commit_vazio
+
+    self.assertEqual(rc, 0, out + err)
+
+AssertionError: 11 != 0 : \u2139\ufe0f  smoke.before_ok_cmd vazio: pulado (/c/Users/runneradmin/AppData/Local/Temp/sdd-open-xbt0sh_9/solto/sdd/config.yaml)
+
+RESULTADO: PULADO
+
+\u2192 diga que o passo foi pulado porque o slot est� vazio; para us�-lo, preencha smoke.before_ok_cmd em sdd/config.yaml.
+
+
+
+
+
+======================================================================
+
+FAIL: test_variaveis_do_momento (test_slot.Ambiente.test_variaveis_do_momento) (chave='smoke.before_ok_cmd')
+
+----------------------------------------------------------------------
+
+Traceback (most recent call last):
+
+  File "D:\a\sdd-open\sdd-open\tests\test_slot.py", line 298, in test_variaveis_do_momento
+
+    self.assertEqual(rc, 0, out)
+
+AssertionError: 11 != 0 : \u2139\ufe0f  smoke.before_ok_cmd vazio: pulado (C:/Users/runneradmin/AppData/Local/Temp/sdd-open-bn5__75m/repo/sdd/config.yaml)
+
+RESULTADO: PULADO
+
+\u2192 diga que o passo foi pulado porque o slot est� vazio; para us�-lo, preencha smoke.before_ok_cmd em sdd/config.yaml.
+
+
+
+
+
+======================================================================
+
+FAIL: test_variaveis_do_momento (test_slot.Ambiente.test_variaveis_do_momento) (chave='smoke.before_push_cmd')
+
+----------------------------------------------------------------------
+
+Traceback (most recent call last):
+
+  File "D:\a\sdd-open\sdd-open\tests\test_slot.py", line 298, in test_variaveis_do_momento
+
+    self.assertEqual(rc, 0, out)
+
+AssertionError: 11 != 0 : \u2139\ufe0f  smoke.before_push_cmd vazio: pulado (C:/Users/runneradmin/AppData/Local/Temp/sdd-open-bn5__75m/repo/sdd/config.yaml)
+
+RESULTADO: PULADO
+
+\u2192 diga que o passo foi pulado porque o slot est� vazio; para us�-lo, preencha smoke.before_push_cmd em sdd/config.yaml.
+
+
+
+
+
+======================================================================
+
+FAIL: test_variaveis_do_momento (test_slot.Ambiente.test_variaveis_do_momento) (chave='smoke.after_deploy_cmd')
+
+----------------------------------------------------------------------
+
+Traceback (most recent call last):
+
+  File "D:\a\sdd-open\sdd-open\tests\test_slot.py", line 298, in test_variaveis_do_momento
+
+    self.assertEqual(rc, 0, out)
+
+AssertionError: 11 != 0 : \u2139\ufe0f  smoke.after_deploy_cmd vazio: pulado (C:/Users/runneradmin/AppData/Local/Temp/sdd-open-bn5__75m/repo/sdd/config.yaml)
+
+RESULTADO: PULADO
+
+\u2192 diga que o passo foi pulado porque o slot est� vazio; para us�-lo, preencha smoke.after_deploy_cmd em sdd/config.yaml.
+
+
+
+
+
+======================================================================
+
+FAIL: test_variaveis_do_momento (test_slot.Ambiente.test_variaveis_do_momento) (chave='schema.check_cmd')
+
+----------------------------------------------------------------------
+
+Traceback (most recent call last):
+
+  File "D:\a\sdd-open\sdd-open\tests\test_slot.py", line 298, in test_variaveis_do_momento
+
+    self.assertEqual(rc, 0, out)
+
+AssertionError: 11 != 0 : \u2139\ufe0f  schema.check_cmd vazio: pulado (C:/Users/runneradmin/AppData/Local/Temp/sdd-open-bn5__75m/repo/sdd/config.yaml)
+
+RESULTADO: PULADO
+
+\u2192 diga que o passo foi pulado porque o slot est� vazio; para us�-lo, preencha schema.check_cmd em sdd/config.yaml.
+
+
+
+
+
+----------------------------------------------------------------------
+
+Ran 7 tests in 4.413s
+
+
+
+FAILED (failures=8, errors=2)
+

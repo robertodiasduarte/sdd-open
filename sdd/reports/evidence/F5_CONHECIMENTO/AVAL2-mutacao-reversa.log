@@ -1,0 +1,109 @@
+$ /usr/bin/python3 reversa.py   (cada correção do ciclo 1 desfeita numa cópia git archive 0e0dba5 em mktemp -d; roda o módulo de teste correspondente no piso)
+### M1 — kb-dominios lê qualquer seção (dentro sempre True) (sdd/bin/kb-dominios.py)
+$ cd <copia> && SDD_TEST_BASH=/bin/bash /usr/bin/python3 -B -m unittest discover -s tests -p 'test_kb_dominios.py'
+FAIL: test_linha_fora_do_technical_context_nao_conta (test_kb_dominios.KbDominios)
+FAIL: test_nenhum_em_outra_secao_nao_esconde_o_technical_context (test_kb_dominios.KbDominios)
+Ran 20 tests in 1.413s
+FAILED (failures=2)
+EXIT=1  → VERMELHO (o teste pega)
+
+### L2 — kb-dominios sem o try/except OSError no iterdir (sdd/bin/kb-dominios.py)
+$ cd <copia> && SDD_TEST_BASH=/bin/bash /usr/bin/python3 -B -m unittest discover -s tests -p 'test_kb_dominios.py'
+FAIL: test_sdd_kb_ilegivel_e_1_sem_traceback (test_kb_dominios.KbDominios)
+Ran 20 tests in 1.398s
+FAILED (failures=1)
+EXIT=1  → VERMELHO (o teste pega)
+
+### L1 — gate.sh: projeto() sem rm -f $T/saida (.agents/skills/sdd-kb/scripts/gate.sh)
+$ cd <copia> && SDD_TEST_BASH=/bin/bash /usr/bin/python3 -B -m unittest discover -s tests -p 'test_sdd_kb.py'
+FAIL: test_ancora_ausente_e_vermelho_com_a_moldura (test_sdd_kb.Gate)
+Ran 19 tests in 15.275s
+FAILED (failures=1)
+EXIT=1  → VERMELHO (o teste pega)
+
+### M2 — gate.sh: rule-map --check de volta para depois das aceitas (.agents/skills/sdd-kb/scripts/gate.sh)
+$ cd <copia> && SDD_TEST_BASH=/bin/bash /usr/bin/python3 -B -m unittest discover -s tests -p 'test_sdd_kb.py'
+FAIL: test_rule_map_derivado_do_exemplo_aponta_o_rule_map (test_sdd_kb.Gate)
+Ran 19 tests in 15.416s
+FAILED (failures=1)
+EXIT=1  → VERMELHO (o teste pega)
+
+### M3a — gate.sh: sem o rule-map --check do exemplo (.agents/skills/sdd-kb/scripts/gate.sh)
+$ cd <copia> && SDD_TEST_BASH=/bin/bash /usr/bin/python3 -B -m unittest discover -s tests -p 'test_sdd_kb.py'
+FAIL: test_rule_map_derivado_do_exemplo_aponta_o_rule_map (test_sdd_kb.Gate)
+Ran 19 tests in 14.936s
+FAILED (failures=1)
+EXIT=1  → VERMELHO (o teste pega)
+
+### M3b — gate.sh: aceita() não reprova caso bom rejeitado (.agents/skills/sdd-kb/scripts/gate.sh)
+$ cd <copia> && SDD_TEST_BASH=/bin/bash /usr/bin/python3 -B -m unittest discover -s tests -p 'test_sdd_kb.py'
+FAIL: test_caso_bom_rejeitado_e_vermelho (test_sdd_kb.Gate)
+Ran 19 tests in 14.696s
+FAILED (failures=1)
+EXIT=1  → VERMELHO (o teste pega)
+
+### M3c — gate.sh: rejeita() não confere a razão (.agents/skills/sdd-kb/scripts/gate.sh)
+$ cd <copia> && SDD_TEST_BASH=/bin/bash /usr/bin/python3 -B -m unittest discover -s tests -p 'test_sdd_kb.py'
+FAIL: test_rejeitado_por_outro_motivo_e_vermelho (test_sdd_kb.Gate)
+Ran 19 tests in 16.259s
+FAILED (failures=1)
+EXIT=1  → VERMELHO (o teste pega)
+
+### L3 — validate_kb.py sem a regra de fora da raiz (.agents/skills/sdd-kb/scripts/validate_kb.py)
+$ cd <copia> && SDD_TEST_BASH=/bin/bash /usr/bin/python3 -B -m unittest discover -s tests -p 'test_sdd_kb.py'
+FAIL: test_teste_fora_da_raiz_reprova (test_sdd_kb.Strict) (teste='/private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/sdd-open-0cm0_8ex/fora.py')
+FAIL: test_teste_fora_da_raiz_reprova (test_sdd_kb.Strict) (teste='../fora.py::t')
+FAIL: test_teste_fora_da_raiz_reprova (test_sdd_kb.Strict) (teste='tests/../../fora.py')
+Ran 19 tests in 14.529s
+FAILED (failures=3)
+EXIT=1  → VERMELHO (o teste pega)
+
+### L4a — SKILL.md com 'Pasta de bases' (.agents/skills/sdd-kb/SKILL.md)
+$ cd <copia> && SDD_TEST_BASH=/bin/bash /usr/bin/python3 -B -m unittest discover -s tests -p 'test_sdd_kb.py'
+FAIL: test_nenhum_caminho_de_fora_do_open (test_sdd_kb.TextoDaSkill)
+Ran 19 tests in 14.641s
+FAILED (failures=1)
+EXIT=1  → VERMELHO (o teste pega)
+
+### L4b — SKILL.md com link ](./assets/ (.agents/skills/sdd-kb/SKILL.md)
+$ cd <copia> && SDD_TEST_BASH=/bin/bash /usr/bin/python3 -B -m unittest discover -s tests -p 'test_sdd_kb.py'
+FAIL: test_nenhum_caminho_de_fora_do_open (test_sdd_kb.TextoDaSkill)
+Ran 19 tests in 14.869s
+FAILED (failures=1)
+EXIT=1  → VERMELHO (o teste pega)
+
+### L4c — references com link ](../assets/ (.agents/skills/sdd-kb/references/kb-protocol.md)
+$ cd <copia> && SDD_TEST_BASH=/bin/bash /usr/bin/python3 -B -m unittest discover -s tests -p 'test_sdd_kb.py'
+FAIL: test_nenhum_caminho_de_fora_do_open (test_sdd_kb.TextoDaSkill)
+Ran 19 tests in 14.482s
+FAILED (failures=1)
+EXIT=1  → VERMELHO (o teste pega)
+
+### L4d — SKILL.md com link ](Scripts/ (caixa) (.agents/skills/sdd-kb/SKILL.md)
+$ cd <copia> && SDD_TEST_BASH=/bin/bash /usr/bin/python3 -B -m unittest discover -s tests -p 'test_sdd_kb.py'
+FAIL: test_nenhum_caminho_de_fora_do_open (test_sdd_kb.TextoDaSkill)
+Ran 19 tests in 14.565s
+FAILED (failures=1)
+EXIT=1  → VERMELHO (o teste pega)
+
+### L5a — entrevista sem a pergunta de estágio aberta (.agents/skills/sdd-ux-review/references/entrevista-publico.md)
+$ cd <copia> && SDD_TEST_BASH=/bin/bash /usr/bin/python3 -B -m unittest discover -s tests -p 'test_conversa.py'
+FAIL: test_perguntas_de_fato_sao_abertas (test_conversa.EntrevistaPublico) (pergunta='**Em que estágio')
+Ran 19 tests in 0.069s
+FAILED (failures=1)
+EXIT=1  → VERMELHO (o teste pega)
+
+### L5b — entrevista sem 'frequência de uso' (.agents/skills/sdd-ux-review/references/entrevista-publico.md)
+$ cd <copia> && SDD_TEST_BASH=/bin/bash /usr/bin/python3 -B -m unittest discover -s tests -p 'test_conversa.py'
+FAIL: test_pergunta_so_o_que_muda_a_experiencia (test_conversa.EntrevistaPublico) (trecho='frequência de uso')
+Ran 19 tests in 0.069s
+FAILED (failures=1)
+EXIT=1  → VERMELHO (o teste pega)
+
+### L6 — gate.sh: linha da cópia gerada sem o caminho ($0) (.agents/skills/sdd-kb/scripts/gate.sh)
+$ cd <copia> && SDD_TEST_BASH=/bin/bash /usr/bin/python3 -B -m unittest discover -s tests -p 'test_sdd_kb.py'
+FAIL: test_recusa_a_copia_gerada_pelo_init (test_sdd_kb.Gate)
+Ran 19 tests in 13.056s
+FAILED (failures=1)
+EXIT=1  → VERMELHO (o teste pega)
+

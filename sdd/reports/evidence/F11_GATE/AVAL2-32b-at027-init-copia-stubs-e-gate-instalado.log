@@ -1,0 +1,37 @@
+$ P=/Users/robertoduarte/rdd-worktrees/sdd-open-f11-gate; T=$(mktemp -d) && O=$(mktemp -d) && cd $T && GIT_CONFIG_GLOBAL=/dev/null git init -q && /bin/bash $P/bin/sdd-open.sh init --vendors codex --yes > $O/init.out 2>&1; echo "[init_rc=$?]"; find sdd/review/stubs -type f | LC_ALL=C sort; echo '### gate no projeto instalado'; /bin/bash sdd/bin/adversarial-review-gate.sh > $O/gate.out 2>&1; echo "[gate_rc=$?]"; grep -E 'asserções|RESULTADO|❌' $O/gate.out; echo '### eval-agree no projeto instalado (sem revisões)'; /bin/bash sdd/bin/eval-agree.sh; echo "[eval_rc=$?]"; echo '### rastro no projeto depois do gate'; git status --short --untracked-files=all | grep -c 'reviews\|EXTERNAL'; echo '### MANIFEST tem os stubs'; grep -n 'review/stubs\|adversarial-review-gate\|eval-agree' $P/MANIFEST.txt
+[init_rc=0]
+sdd/review/stubs/cenarios.tsv
+sdd/review/stubs/claude.py
+sdd/review/stubs/codex.py
+sdd/review/stubs/comum.py
+sdd/review/stubs/gemini.py
+sdd/review/stubs/openrouter.py
+sdd/review/stubs/respostas/auditor-agree.md
+sdd/review/stubs/respostas/auditor-misto.md
+sdd/review/stubs/respostas/auditor-sem-bloco.md
+sdd/review/stubs/respostas/revisor.md
+### gate no projeto instalado
+[gate_rc=0]
+103 asserções, 0 falha(s) em 7 s
+RESULTADO: GATE VERDE
+### eval-agree no projeto instalado (sem revisões)
+eval-agree — taxa de AGREE por auditor (0 pasta(s) lida(s) em /private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.VXqmmffcRX/sdd/reports/reviews)
+RESULTADO: SEM DADOS
+→ nenhuma revisão com auditoria completa nesta pasta: rode adversarial-review.sh e meça de novo.
+[eval_rc=2]
+### rastro no projeto depois do gate
+8
+### MANIFEST tem os stubs
+138:sdd/bin/adversarial-review-gate.sh
+142:sdd/bin/eval-agree.sh
+288:sdd/review/stubs/cenarios.tsv
+289:sdd/review/stubs/claude.py
+290:sdd/review/stubs/codex.py
+291:sdd/review/stubs/comum.py
+292:sdd/review/stubs/gemini.py
+293:sdd/review/stubs/openrouter.py
+294:sdd/review/stubs/respostas/auditor-agree.md
+295:sdd/review/stubs/respostas/auditor-misto.md
+296:sdd/review/stubs/respostas/auditor-sem-bloco.md
+297:sdd/review/stubs/respostas/revisor.md
+[exit=0]

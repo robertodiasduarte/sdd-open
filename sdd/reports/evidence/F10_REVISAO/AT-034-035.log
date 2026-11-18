@@ -1,0 +1,10 @@
+$ cd tests && SDD_TEST_BASH=/bin/bash /usr/bin/python3 -B -m unittest -v test_sdd_open.Projeto.test_init_copia_review_e_adapters_e_nunca_sobrescreve test_sdd_open.Projeto.test_doctor_avisa_adapter_diferente_do_pacote test_revisao.Registry.test_registry_de_fabrica_tem_as_4_engines_com_9_colunas_e_sem_cadeia
+test_init_copia_review_e_adapters_e_nunca_sobrescreve (test_sdd_open.Projeto) ... ok
+test_doctor_avisa_adapter_diferente_do_pacote (test_sdd_open.Projeto) ... ok
+test_registry_de_fabrica_tem_as_4_engines_com_9_colunas_e_sem_cadeia (test_revisao.Registry) ... ok
+
+----------------------------------------------------------------------
+Ran 3 tests in 28.427s
+
+OK
+[exit=0]

@@ -1,0 +1,26 @@
+$ cat /tmp/aval1-f11.wvW4zp/nula.sh; /tmp/aval1-f11.wvW4zp/nula.sh codex
+#!/bin/bash
+# nula.sh <engine> — cópia de sdd/bin + sdd/review em mktemp; o adapter <engine> ganha, no fim, um adapter_extrair que
+# devolve o texto da original e tudo o mais nulo (tokens, modelo, custo); roda o gate da cópia.
+P=/Users/robertoduarte/rdd-worktrees/sdd-open-f11-gate; e=$1
+C=$(mktemp -d); mkdir -p $C/sdd; cp -R $P/sdd/bin $P/sdd/review $C/sdd/
+cat >> $C/sdd/bin/adapters/$e.sh <<'SH'
+eval "_orig_$(declare -f adapter_extrair)"
+adapter_extrair() { _orig_adapter_extrair "$@" | /usr/bin/python3 -I -c 'import json,sys; d=json.loads(sys.stdin.read().splitlines()[-1]); print(json.dumps({"texto": d["texto"], "tokens_entrada": None, "tokens_saida": None, "modelo": None, "custo_usd": None}))'; }
+SH
+echo "### extração nula em $e"
+out=$(/bin/bash $C/sdd/bin/adversarial-review-gate.sh 2>&1); rc=$?
+printf '%s\n' "$out" | grep -E -A1 '❌' ; printf '%s\n' "$out" | grep -E 'asserções|RESULTADO'
+echo "[gate_rc=$rc]"; rm -rf "$C"; exit $rc
+### extração nula em codex
+  ❌ 9. codex (auditor): tokens de turn.completed
+        → lido ('n/d', 'n/d'), esperado ('18000', '300')
+--
+  ❌ 18. codex (revisor): tokens de turn.completed
+        → lido ('n/d', 'n/d'), esperado ('24000', '900')
+--
+→ cada ❌ acima diz o campo e o valor lido; o adapter da engine citada não extrai mais o que a CLI devolve (ou o script mudou de comportamento). Corrija e rode o gate de novo.
+90 asserções, 2 falha(s) em 7 s
+RESULTADO: GATE VERMELHO
+[gate_rc=2]
+[exit=2]

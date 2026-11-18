@@ -1,0 +1,28 @@
+$ T=$(mktemp -d) && mkdir -p $T/sdd-x && printf -- "---\nname: sdd-x\ndescription: faz\n---\n# x\n" > $T/sdd-x/SKILL.md && printf -- "---\nname: errado\ndescription: faz\n---\n" > $T/sdd-x/B.md && for v in v2.2.4 HEAD; do git show $v:sdd/bin/skill-lint.py > $T/lint-$v.py; echo "== $v: SKILL.md valido"; /usr/bin/python3 -B $T/lint-$v.py $T/sdd-x/SKILL.md; echo "rc=$?"; echo "== $v: nome errado"; /usr/bin/python3 -B $T/lint-$v.py $T/sdd-x/B.md; echo "rc=$?"; echo "== $v: argumento --verbose"; /usr/bin/python3 -B $T/lint-$v.py --verbose $T/sdd-x/SKILL.md; echo "rc=$?"; done 2>&1 | sed "s#$T#\$T#g"
+== v2.2.4: SKILL.md valido
+✅ $T/sdd-x/SKILL.md: frontmatter válido
+rc=0
+== v2.2.4: nome errado
+🛑 $T/sdd-x/B.md: name: 'errado' difere do nome da pasta 'sdd-x'
+RESULTADO: VERMELHO
+→ corrija o frontmatter apontado acima (spec: agentskills.io/specification)
+rc=1
+== v2.2.4: argumento --verbose
+🛑 --verbose: não consegui ler: [Errno 2] No such file or directory: '--verbose'
+RESULTADO: VERMELHO
+→ corrija o frontmatter apontado acima (spec: agentskills.io/specification)
+✅ $T/sdd-x/SKILL.md: frontmatter válido
+rc=1
+== HEAD: SKILL.md valido
+✅ $T/sdd-x/SKILL.md: frontmatter válido
+rc=0
+== HEAD: nome errado
+🛑 $T/sdd-x/B.md: name: 'errado' difere do nome da pasta 'sdd-x'
+RESULTADO: VERMELHO
+→ corrija o apontado acima (frontmatter: agentskills.io/specification; conversa: sdd/templates/fragments/PERGUNTA_DECISAO.md)
+rc=1
+== HEAD: argumento --verbose
+skill-lint: opção desconhecida: --verbose
+uso: skill-lint.py [--conversa] <SKILL.md> [...]
+rc=64
+exit=0

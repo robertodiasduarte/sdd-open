@@ -1,0 +1,13 @@
+$ bash sdd/bin/playbook-curator.sh --aplicar "$STG/delta.txt" sdd/playbook.md > "$STG/novo.md"   # delta.txt:
+LM-001 ajudou+1
+LM-002 ajudou+1
+LM-003 ajudou+1
+LM-006 ajudou+1
+LM-014 ajudou+1
+LM-015 ajudou+1
+LM-017 ajudou+1
+LM-029 ajudou+1
+LM-030 ajudou+1
+ADD Reviews / harness :: sup: `starter` `gerar-starter` `lista.txt` `trocas` `sdd/bin` :: Texto novo numa skill que o starter gera (as de `scripts/starter/lista.txt`) e que cita `sdd/bin/…` ou um fragmento de `sdd/templates/` derruba o lint do init do gerador do starter ("achou N citação(ões) a arquivo que só o init cria") e, com ele, 30 testes da suíte; na F23 isso só apareceu no 2º Verify Gate (+30 min). **Do instead:** ao mexer numa skill da lista, rode `python3 -B -m unittest discover -s tests -p 'test_gerar_starter.py'` antes do gate inteiro; se o texto só vale com o `init` do Open, tire-o do starter por uma troca em `scripts/starter/trocas/<skill>.md`, nunca editando o starter gerado. → ficha: F23_ECONOMIA_MENSURAVEL · promovido_para: —
+ADD Reviews / harness :: sup: `usage` `message.id` `cache_read_input_tokens` `token_count` `total_token_usage` `custo` :: Somar o `usage` do registro local do agente linha a linha infla o custo: o Claude Code grava uma linha por bloco de conteúdo e repete o `usage` da mesma mensagem (na F22, 1.064 linhas para 472 mensagens, até 13 repetições), e o `token_count` do Codex traz o total acumulado, que se repete, com o cache lido já dentro de `input_tokens`. **Do instead:** no Claude, agrupe por `message.id` (sem id, `requestId`) com o maior valor de cada campo; no Codex, use a diferença entre `total_token_usage` consecutivos e tire o cache lido da entrada; cache lido e criado têm preço próprio (o criado, na validade que o agente usa); teste com fixture que repete a linha e um mutante que soma linha a linha. → ficha: F23_ECONOMIA_MENSURAVEL · promovido_para: —
+[exit=0]

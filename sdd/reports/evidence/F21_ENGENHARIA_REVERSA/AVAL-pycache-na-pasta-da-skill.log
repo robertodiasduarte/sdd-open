@@ -1,0 +1,10 @@
+$ (cópia de git archive HEAD=2af3d6c) grep -n dont_write_bytecode tests/test_validate_reverse.py; python3 -m unittest discover -s tests -p test_validate_reverse.py (Python 3.15, sem -B); find .agents -name "*.pyc"; depois init --vendors claude --yes num projeto novo e find
+grep exit=1
+Python 3.15.0
+Ran 18 tests in 0.064s
+
+OK
+.agents/skills/sdd-engenharia-reversa-saas/scripts/__pycache__/validate_reverse.cpython-315.pyc
+init exit=0
+./.claude/skills/sdd-engenharia-reversa-saas/scripts/__pycache__/validate_reverse.cpython-315.pyc
+./.agents/skills/sdd-engenharia-reversa-saas/scripts/__pycache__/validate_reverse.cpython-315.pyc

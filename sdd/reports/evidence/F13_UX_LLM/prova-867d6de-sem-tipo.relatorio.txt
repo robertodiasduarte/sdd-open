@@ -1,0 +1,21 @@
+# BUILD_REPORT_NOTAS — parcial, 2026-11-04
+
+- Seleção de modo: default fixado pelo usuário; somente tarefa 1 concluída; sem commit.
+- Triagem: inventário sem Tipo; reescrita a partir da saída anterior caracteriza loop. Aplicadas sdd-loop-builder e sdd-prompt-builder.
+- Entrega v1 (nova, sem versão anterior): src/notas/LOOP_SPEC.md e estágios LLM src/notas/redigir.txt e src/notas/reescrever.txt; prompts derivados considerados previstos pela tarefa 1. Estágios de código apenas especificados, fora desta entrega.
+- Conferência incremental: 3 arquivos íntegros; 11 seções standard; 2 prompts referenciados com objetivo, saída, referência, completude e verificação. Varredura pré-gravação dos três: exit 0.
+- Orçamento fechado: 4 ciclos. Propostas: saída 4000/2000 tokens por chamada; entrada 12000/8000; totais de saída 12000/18000 por estágio; 300 s totais, timeout LLM 30 s/código 10 s, reserva 30 s; K=3, W=2, R=2, esperas 1/2 s, parada após duas elevações de custo/progresso.
+- Eval: sem ground truth; definir antes da release. Provedor/modelo preservados como os do projeto; nenhum foi selecionado.
+
+## Contrato de aceite
+Não revisado nesta execução restrita à tarefa 1.
+## Landmines lidas no build
+LM-001, LM-002 — N.A.: nenhum gate implementado ou executado; LM-003, LM-004 — N.A.: sem revisão externa ou migration. Busca por notas/prompt/loop: nenhum hit.
+## Drift detectado
+Nenhum. Aviso: wrapper_pattern vazio limita a detecção a sinais genéricos.
+## Candidatos ao playbook
+nenhum candidato
+## Verify Gate
+Não executado por instrução do usuário; AT-001: false (sem evidência de execução). Checks globais e report-lint não executados: relatório parcial, fase não encerrada.
+## Veredito do avaliador
+avaliador: N.A. (0 camadas mapeadas nos slots vazios do config; revisão de contexto fresco excluída pelo usuário).

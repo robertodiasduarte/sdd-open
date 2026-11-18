@@ -1,0 +1,23 @@
+$ git rev-parse HEAD
+8a320e9d27d4471f5352e3861a277865ded2d1ed
+$ sdd-fluxo.sh loop --review sdd/reports/reviews/EXTERNAL_REVIEW_20261105-132615 --ledger ledger-review.md --rodada 4 --teto 4
+ESTADO: PRONTO
+rodada: 4 de 4
+graves_abertos: 0
+aplicadas: 0
+rebatidas: 1
+motivo: grave(s) rebatido(s) no ledger: R1@openrouter-deepseek-deepseek-v4-pro
+RESULTADO: PRONTO
+→ siga para o avaliador ou para a release.
+[exit=0]
+$ adversarial-review.sh --conferir sdd/reports/reviews/EXTERNAL_REVIEW_20261105-132615 --ledger ledger-review.md
+🛑 adversarial-review: o ledger sdd/reports/evidence/F14_PLAYBOOK/ledger-review.md não tem a linha review_externo:
+RESULTADO: LEDGER SEM REVIEW
+→ rode adversarial-review.sh --conferir e copie a linha que ele imprime, ou registre a dispensa (review_externo: dispensado — <motivo>) depois da pergunta D3.
+[exit=2]
+$ adversarial-review.sh --conferir sdd/reports/reviews/EXTERNAL_REVIEW_20261105-132615
+✅ a revisão sdd/reports/reviews/EXTERNAL_REVIEW_20261105-132615 é desta versão do código (sha256 igual).
+review_externo: sdd/reports/reviews/EXTERNAL_REVIEW_20261105-132615 sha256=5a73f1893155458b8b3cb880086ad3335fbcd61ac9cc4543682749348d617a84 diversidade=vendor
+RESULTADO: CONFERE
+→ copie a linha review_externo para o ledger da release.
+[exit=0]

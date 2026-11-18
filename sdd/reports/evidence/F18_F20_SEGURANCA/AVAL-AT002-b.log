@@ -1,0 +1,16 @@
+$ cat /tmp/aval-f18.SxgC/probes/at002b.sh; bash /tmp/aval-f18.SxgC/probes/at002b.sh
+. /tmp/aval-f18.SxgC/probes/lib.sh; M=supabase/migrations
+echo "### (i) normalização: public.x × x, maiúsculas ⇒ casa (esperado 0)"
+novo e1; printf 'CREATE TABLE public.x (id int);\nALTER TABLE x ENABLE ROW LEVEL SECURITY;\n' > $M/1.sql; V | grep -E "S01|exit"
+echo "### (j) drop + recriação sem RLS ⇒ bloqueia (esperado 2)"
+novo e3; printf 'create table z (id int);\nalter table z enable row level security;\ndrop table z;\ncreate table z (id int);\n' > $M/1.sql; V | grep -E "S01|exit"
+echo "### (k) RLS ligada em OUTRO esquema com o mesmo nome: public.w criada aberta, private.w com RLS"
+novo e7; printf 'create table public.w (id int);\ncreate table private.w (id int);\nalter table private.w enable row level security;\n' > $M/1.sql; V | grep -E "S01|exit"
+### (i) normalização: public.x × x, maiúsculas ⇒ casa (esperado 0)
+exit=0
+### (j) drop + recriação sem RLS ⇒ bloqueia (esperado 2)
+🛑 S01 alta supabase/migrations/1.sql:4 — Tabela sem RLS (bloqueia: novo nesta publicação)
+exit=2
+### (k) RLS ligada em OUTRO esquema com o mesmo nome: public.w criada aberta, private.w com RLS
+🛑 S01 alta supabase/migrations/1.sql:1 — Tabela sem RLS (bloqueia: novo nesta publicação)
+exit=2

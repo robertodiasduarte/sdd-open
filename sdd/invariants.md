@@ -30,3 +30,4 @@ Gramática (1 linha por invariante; abaixo da primeira, linha fora dela é erro)
 ## Descartados
 - [LM-012] descartado :: regra de publicação deste pacote, já barrada pelo `scripts/publish-gate.sh` do repositório, que não é instalado no projeto do aluno; não é regra do sistema que o aluno constrói
 - [LM-035] descartado :: regra de manutenção deste pacote (a lista e o gerador do starter em `scripts/`), já barrada pelo lint do `scripts/gerar-starter.py` e pelos testes de `test_gerar_starter`, que não são instalados no projeto do aluno; não é regra do sistema que o aluno constrói (mesmo motivo do descarte da LM-012)
+- [LM-037] descartado :: regra de publicação deste pacote (o `MANIFEST.txt` e o `scripts/publish-gate.sh`, que já barra o arquivo não declarado), que não é instalada no projeto do aluno; não é regra do sistema que o aluno constrói (mesmo motivo do descarte da LM-012)

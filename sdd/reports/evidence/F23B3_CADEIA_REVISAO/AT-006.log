@@ -1,0 +1,15 @@
+$ python3 -B -m unittest -v test_f23b3_revisao.AT006LinhasNovas test_f23b3_revisao.AT006Loop   # HEAD 5e110b2
+test_antes_fora_da_conta_e_sem_classificar (test_f23b3_revisao.AT006LinhasNovas.test_antes_fora_da_conta_e_sem_classificar) ... ok
+test_depois_a_conta_fecha (test_f23b3_revisao.AT006LinhasNovas.test_depois_a_conta_fecha) ... ok
+test_lint_recusa_as_linhas_quase_certas (test_f23b3_revisao.AT006LinhasNovas.test_lint_recusa_as_linhas_quase_certas) ... ok
+test_os_trechos_de_leitura_sao_identicos (test_f23b3_revisao.AT006LinhasNovas.test_os_trechos_de_leitura_sao_identicos) ... ok
+test_r1_revisao_do_design_sem_achados (test_f23b3_revisao.AT006LinhasNovas.test_r1_revisao_do_design_sem_achados) ... ok
+test_r3_rodada2_sem_resultado_com_travessao_colado_entra_no_custo (test_f23b3_revisao.AT006LinhasNovas.test_r3_rodada2_sem_resultado_com_travessao_colado_entra_no_custo) ... ok
+test_sem_resultado_numa_pasta_com_achados_vai_para_fora_da_conta (test_f23b3_revisao.AT006LinhasNovas.test_sem_resultado_numa_pasta_com_achados_vai_para_fora_da_conta) ... ok
+test_loop_aceita_rodada_d1 (test_f23b3_revisao.AT006Loop.test_loop_aceita_rodada_d1) ... ok
+
+----------------------------------------------------------------------
+Ran 8 tests in 0.976s
+
+OK
+[exit=0]

@@ -1,0 +1,49 @@
+$ bash sdd/bin/verify-gate.sh sdd/features/DEFINE_F23_ECONOMIA_MENSURAVEL.md   # HEAD f5e2e31
+▶ Verify Gate [test]: T=$(mktemp -d) && git archive HEAD | tar -x -C $T && PUBLISH_GATE_MODE=ci bash scripts/publish-gate.sh $T && cd $T && SDD_TEST_BASH=/bin/bash /usr/bin/python3 -B -m unittest discover -s tests -p 'test_*.py'
+   │ publish-gate — tree: /private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.WkJYjzBFh5 — mode: ci
+   │ ──────────────────────────────────────────────────────────────────
+   │ G1 secrets (gitleaks)
+   │   ✅ no secrets detected
+   │ G2 forbidden patterns
+   │   ✅ no forbidden pattern matched
+   │ G3 allowlist (MANIFEST.txt)
+   │   ✅ tree and manifest match in both directions
+   │ G4 verify-gate exit contract
+   │   ✅ DEFINE_FIXTURE_NEEDS_CLARIFICATION.md → exit 5
+   │   ✅ DEFINE_FIXTURE_CONTROLE.md → exit 0
+   │   ✅ DEFINE_FIXTURE_SEM_BLOCO.md → exit 64
+   │ G5 documentation
+   │   ✅ docs present, cross-linked, attribution in place
+   │ ──────────────────────────────────────────────────────────────────
+   │ ✅ publish-gate GREEN — tree is publishable (human review of the file list still required)
+   │ ......................................s.......................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................s.............................................................................................................................................................................................................................................................................................................................................................................................................................................s...................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................
+   │ ======================================================================
+   │ FAIL: test_todo_script_com_main_troca_a_saida_antes_de_tudo (test_f16w2_saida.Guarda) (script='sdd/bin/adapters/sessao-claude.py')
+   │ ----------------------------------------------------------------------
+   │ Traceback (most recent call last):
+   │   File "/private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.WkJYjzBFh5/tests/test_f16w2_saida.py", line 43, in test_todo_script_com_main_troca_a_saida_antes_de_tudo
+   │     self.assertEqual(linhas[0], "for _canal in (sys.stdout, sys.stderr):", rel)
+   │ AssertionError: 'main()' != 'for _canal in (sys.stdout, sys.stderr):'
+   │ - main()
+   │ + for _canal in (sys.stdout, sys.stderr):
+   │  : sdd/bin/adapters/sessao-claude.py
+   │ 
+   │ ======================================================================
+   │ FAIL: test_todo_script_com_main_troca_a_saida_antes_de_tudo (test_f16w2_saida.Guarda) (script='sdd/bin/adapters/sessao-codex.py')
+   │ ----------------------------------------------------------------------
+   │ Traceback (most recent call last):
+   │   File "/private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.WkJYjzBFh5/tests/test_f16w2_saida.py", line 43, in test_todo_script_com_main_troca_a_saida_antes_de_tudo
+   │     self.assertEqual(linhas[0], "for _canal in (sys.stdout, sys.stderr):", rel)
+   │ AssertionError: 'main()' != 'for _canal in (sys.stdout, sys.stderr):'
+   │ - main()
+   │ + for _canal in (sys.stdout, sys.stderr):
+   │  : sdd/bin/adapters/sessao-codex.py
+   │ 
+   │ ----------------------------------------------------------------------
+   │ Ran 2305 tests in 1629.939s
+   │ 
+   │ FAILED (failures=2, skipped=3)
+🛑 GATE VERMELHO (test) — pass_when: 'exit 0' NÃO satisfeito (rc=1).
+RESULTADO: VERMELHO
+→ corrija o que o comando acima apontou e rode de novo.
+exit=2

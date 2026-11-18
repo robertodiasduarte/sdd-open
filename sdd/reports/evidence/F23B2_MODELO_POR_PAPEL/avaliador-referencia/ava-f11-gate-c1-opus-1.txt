@@ -1,0 +1,62 @@
+Os 27 ATs passaram, todos provados por execução, mas o Verify Gate inteiro não fechou verde aqui por causa do sandbox. Por isso o veredito é PASS_PENDENTE_RECIBO, não PASS. Não editei código nem documento do projeto: só gravei os `sdd/reports/evidence/F11_GATE/AVAL-*.log` (cada um começa com `$ comando` e traz a saída verbatim).
+
+<<<AVALIACAO
+VEREDITO: PASS_PENDENTE_RECIBO
+
+Recibos pendentes (não deu para provar neste ambiente):
+- **Verify Gate verde.** O `cmd` do DEFINE parou no G1 do `publish-gate.sh`, que grava em `/tmp/gitleaks.$$` e recebeu "Operation not permitted" do sandbox. O pedido para rodar fora do sandbox foi negado (AVAL-99).
+- **Suíte inteira sobre o `git archive HEAD` no piso:** 878 de 881 passaram. As 3 falhas são `test_claude_adapter` (2 subtestes) e `test_publish_gate_patterns.test_sem_plantio_o_g2_nao_acusa`. Todas vêm de `Operation not permitted` em `~/Library/Caches/com.apple.python` ou `/tmp`, e falham igual na base `31ca89c`. O commit não toca nesses arquivos (AVAL-98, AVAL-98b).
+- **CI verde em Ubuntu e macOS, release `v2.3.1` com `SHA256SUMS.txt` e `job testes-macos ≤ 25 min`:** dependem de serviço externo, não verificados.
+
+| AT | sonda | esperado | observado | resultado |
+|---|---|---|---|---|
+| AT-001 | `bash sdd/bin/adversarial-review-gate.sh`, com PATH padrão e no piso (bash 3.2 + `/usr/bin/python3` 3.9) (AVAL-01, AVAL-02) | repo descartável, 4 adapters reais, uma linha `✅/❌ N.` por asserção, `RESULTADO:` + `→`, exit 0 | 90 linhas `✅`, `90 asserções, 0 falha(s) em 5 s`, `RESULTADO: GATE VERDE` + `→`, exit 0; no piso foram 7 s | PASS |
+| AT-002 | mesmo gate, anel claude→codex→gemini→openrouter→claude; mais extração nula por engine e 4 sabotagens de campo numa cópia de `sdd/` (AVAL-02, AVAL-03-sabota-nulo-*, -claude-custo, -codex-tokens, -gemini-modelo, -openrouter-cost) | campos que discriminam cada engine; `≈US$` calculado a partir de `precos.tsv`; extração nula ⇒ exit 2 nomeando uma asserção da engine | claude `claude-stub-5` / `US$ 0.0421`; codex `18000/300` com `-`/`assinatura`; gemini `gemini-stub-pro` com `$?`; openrouter `… via StubProvider` / `US$ 0.0012`; `≈US$ 0.6953` (confere com 1234567·0.32 + 234567·1.28 por 1e6). Cada uma das 4 extrações nulas ⇒ exit 2 nomeando só asserções daquela engine (#6/7/47/48 claude, #9/18 codex, #21/22/31/32 gemini, #35/36/44/45/53/54/59 openrouter). As 4 sabotagens ⇒ exit 2 (#7/48, #9/18, #21/31, #36/45) | PASS |
+| AT-003 | gate, asserções 4/16/29/42 e `auditor_exit` (AVAL-02) | AGREE/DISAGREE/NOVO de `auditor.verdicts.jsonl` e `auditor_exit 0` | `[('R1','AGREE'),('R2','AGREE')]` e exit 0 nas 4 engines como auditor | PASS |
+| AT-004 | gate, cenário 68 (AVAL-01) | exit 68 e nenhum "zero achados" | #63 a #67 passaram: exit 68, `auditor_exit 68`, sem jsonl, `REVIEW INVÁLIDA`; sabotagem `nulo-*` mostrou que a asserção discrimina | PASS |
+| AT-005 | gate, cenários 67-mesma e 67-exclusão; sabotagem `exclusao` (`if False and chave(d) in excluir`) (AVAL-01, AVAL-03-sabota-exclusao) | exit 67 com 0 chamadas; no fallback, `auditor_exit 67`, `excluída`, efetivo codex, codex.n=1 | no pacote, #68 a #74 passaram. Sabotado ⇒ exit 2 com ❌71 (`lido 68`), ❌72 e ❌74 (`codex: 2`) | PASS |
+| AT-006 | gate, cenário 65; sabotagem `auth-troca` (AVAL-03-sabota-auth-troca) | exit 65 e a próxima engine nunca chamada | no pacote, #75 a #78 passaram. Sabotado ⇒ ❌75 (67), ❌76 (codex), ❌77 (`chamadas fora da fila: codex`), ❌78 | PASS |
+| AT-007 | gate, cenários 429 do codex (CLI) e da openrouter (HTTP); sabotagem `429-sem-retentativa` | 2 chamadas na mesma engine, exit 0 | no pacote, #79 a #84 passaram (`codex: 2`, `openrouter: 2`). Sabotado ⇒ ❌79/81/82/84 | PASS |
+| AT-008 | gate, cenário cota; sabotagem `cota-sem-fallback` | a próxima engine roda e o META registra o fallback | `(0,'claude','sim')`. Sabotado ⇒ ❌85/87 | PASS |
+| AT-009 | stubs chamados direto sem fila (AVAL-09) e sentinela dentro do gate (sabotagem `auth-troca`) | CLI sai 99, HTTP 599 `sentinela`, nome na sentinela, contagem por cenário | claude/codex/gemini saíram 99; openrouter respondeu `HTTP 599 corpo='sentinela'`; a sentinela registrou as 4 engines; o gate acusou `codex` fora da fila | PASS |
+| AT-010 | gate #88 a #90; sabotagens `deny` (`"allow"`) e `vaza-chave` (a chave gravada no META) | Bearer com a chave gerada, `data_collection: deny`, chave em nenhum arquivo | no pacote, verde. `deny` sabotado ⇒ ❌89. `vaza-chave` ⇒ ❌90 listando 5 `META.txt` | PASS |
+| AT-011 | (a) sem `gemini.py`; (b) registry sem openrouter; (c) `export -f claude`; (d) `BASH_ENV` que antepõe a CLI real; (e) o filtro de `BASH_FUNC_*`/`BASH_ENV` desligado numa cópia (AVAL-11, AVAL-11b) | exit 3 nomeando o item e o valor resolvido, antes de qualquer chamada | (a) e (b): exit 3 com o caminho. (c) e (d): o gate remove a função e o `BASH_ENV`, fica verde e o marcador da CLI real continua vazio. (e): exit 3, ``claude` resolve para 'claude'`` e `'/tmp/…/real/claude'`; marcador vazio | PASS |
+| AT-012 | qualquer sabotagem (ex.: `nulo-openrouter`) | continua as demais asserções, exit 2, lista todas as falhas | `90 asserções, 7 falha(s)`, todas listadas, exit 2 | PASS |
+| AT-013 | `adversarial-review-gate.sh -v` (AVAL-02) | mostra o valor extraído | `lido: US$ 0.0421`, `lido: ('18000', '300')`, e assim por diante | PASS |
+| AT-014 | `eval-agree.sh sdd/fixtures/revisao/eval`; padrão via `review.output_dir` rodando de subdiretório; padrão `sdd/reports/reviews` (AVAL-14, AVAL-15) | tabela por auditor sem ` via`, `taxa_agree` com 1 casa, exit 0 | `codex (-)`: 1, 4, 2, 1, 0, 1, 66.7%. `openrouter (qwen/qwen3.7-plus)`: 2, 4, 3, 0, 1, 0, 75.0% (`via Alibaba` e `via OutroProvedor` juntas numa linha). Bate com o cálculo manual; exit 0 nos 3 modos | PASS |
+| AT-015 | mesmas fixtures, mais uma pasta com META ilegível e outra sem META (AVAL-15) | linha "fora da conta" com o motivo | `fora da conta: 2 (…000003: auditor_exit 68; …000004: sem auditor.verdicts.jsonl)`; também `META ilegível` | PASS (ver achado 1) |
+| AT-016 | pasta vazia; só revisões ruins; pasta inexistente; `--xyz`; 2 argumentos (AVAL-15) | exit 2 dizendo quantas pastas leu; uso ⇒ 64 | `0 pasta(s) lida(s)` e `2 pasta(s)` com `SEM DADOS`, exit 2; os 3 casos de uso saíram 64 | PASS |
+| AT-017 | `env -i PATH=/usr/bin:/bin` com proxies em `:9`; `grep urllib\|socket\|adapters/` (AVAL-15) | roda sem engine nem rede; o grep não acha nada | a tabela idêntica, exit 0; nenhuma CLI resolve nesse PATH; grep exit 1 | PASS |
+| AT-018 | revisão com diff em `src/auth/` e `--no-revisor2`, depois `--conferir` sem motivo, com `ok` e com motivo (AVAL-18) | exit 2 sem motivo; com motivo, `revisor2=dispensado — <motivo>` | sem motivo e com `ok` (< 3 caracteres): exit 2 `NÃO CONFERE`. Com motivo: exit 0 e `review_externo: … revisor2=dispensado — release urgente sem 2a engine` | PASS |
+| AT-019 | gate #60 (`modelo-sem-preco`); sabotagem `tarifa-configurada` (AVAL-03-sabota-tarifa-configurada) | `$?`, nunca a tarifa do modelo configurado | no pacote `$?`. Sabotado ⇒ ❌60 `lido '≈US$ 0.6953', esperado '$?'` | PASS |
+| AT-020 | registry do projeto com `timeout_s=2` e CLI que dorme 10 s: gemini (`desconhecida`) e codex (`assinatura`); cota do gemini (AVAL-20, AVAL-20b) | `… + $?` no estouro de engine não-assinatura; recusa não soma nada | gemini: `reviewer_custo US$ 0.0421 + $?` e `custo_total … (+ 1 papel(is) com custo $?)`. codex (assinatura): `US$ 0.0421`. Cota: `US$ 0.0421` | PASS |
+| AT-021 | `--conferir` sem pasta, com pastas mais novas sem META e com META vazio (AVAL-21) | escolhe a mais nova que tem META | escolheu `EXTERNAL_REVIEW_20261116-234250` e pulou `29991231-*` | PASS |
+| AT-022 | `--feature NAOEXISTE`, e o controle `--feature EXISTE` (AVAL-22) | aviso com os 4 caminhos, e a revisão segue | `⚠️ --feature NAOEXISTE: nenhum documento encontrado (sdd/features/BRAINSTORM_…, DEFINE_…, DESIGN_…, sdd/reports/BUILD_REPORT_…)`, exit 0; o controle não avisa | PASS |
+| AT-023 | `adapter_extrair` real sobre JSON com 2 e 3 modelos (AVAL-23) | soma os tokens e reporta todos os modelos | `5800/740`, `gemini-2.5-pro+gemini-2.5-flash-lite`; com 3 modelos, `111/222` e `a+b+c` | PASS (ver achado 2) |
+| AT-024 | `test_revisao`, `_adapters`, `_gate`, `test_eval_agree`, `release_workflow`, `docs`, `sdd_open`, `bash32` no piso, mais a suíte inteira (AVAL-24, AVAL-98) | os testes da F10 continuam verdes | 199 testes OK. Suíte: 878 de 881; as 3 falhas são do sandbox e idênticas na base | PASS |
+| AT-025 | leitura dos YAML do job `testes-macos` (AVAL-25-27) | `timeout-minutes: 30` nos dois workflows | `release.yml ['30']`, `publish-gate.yml ['30']`; `test_release_workflow` OK | PASS |
+| AT-026 | grep das seções e exits nas docs EN/PT e no roadmap (AVAL-25-27) | gate (comando, o que prova, 0/2/3/64) e `eval-agree` com `taxa_agree`; roadmap sem a linha | seções `## Offline gate` / `## Gate offline` com a tabela 0/2/3/64 e `## eval-agree` com a fórmula; o roadmap não tem mais "adversarial"; `test_docs` OK | PASS |
+| AT-027 | MANIFEST contra os arquivos novos do commit; grep bash 3.2; `bin/sdd-open.sh init --yes` num repo novo e o gate rodado de lá (AVAL-25-27, AVAL-27) | tudo listado, grep limpo, `init` copia `stubs/` | 21 de 21 `ok`; grep exit 1; `bash -n` ok; o init copiou os 9 arquivos de `stubs/` e o gate na cópia saiu verde (exit 0) | PASS |
+
+ACHADOS (nenhum bloqueia; todos LOW):
+
+1. **LOW: `eval-agree.sh` descarta em silêncio uma linha não-JSON do `auditor.verdicts.jsonl` e conta a revisão.** O DESIGN pede "jsonl legível".
+   Reprodução:
+   ```
+   mkdir -p $T/mix/EXTERNAL_REVIEW_20260101-000011
+   cp sdd/fixtures/revisao/eval/EXTERNAL_REVIEW_20260101-000001/META.txt $T/mix/EXTERNAL_REVIEW_20260101-000011/
+   printf '{"achado":"R1","veredito":"AGREE"}\nnão é json\n' > $T/mix/EXTERNAL_REVIEW_20260101-000011/auditor.verdicts.jsonl
+   bash sdd/bin/eval-agree.sh $T/mix
+   ```
+   Saída: a linha `codex (-)` soma a revisão (2 revisões, 5 vereditos) sem aviso, e nada vai para "fora da conta" (AVAL-15).
+
+2. **LOW: `adapters/gemini.sh` ordena os modelos só por `tokens.total`.** Sem `total`, a ordem cai na de chegada. Reprodução: `source sdd/bin/adapters/gemini.sh; adapter_extrair f.json`, com `f.json` trazendo 3 modelos sem `total`, devolve `a+b+c` mesmo com `c` tendo mais tokens (AVAL-23). Hoje não pesa: a saída medida (`sdd/fixtures/revisao/saidas/gemini.json`) traz `"total"`.
+
+3. **LOW, desvio do DESIGN: há menos cenários de falha do que a Decision 1 lista.** `cenarios.tsv` tem só claude `auth`, codex `429`, gemini `cota` e openrouter `429`. Faltam codex `401`/`usage limit`, gemini `UNAUTHENTICATED`/`429` e openrouter `401`/`402`. Os ATs são cumpridos (AT-006 diz "a stub"), mas a credencial (exit 65) só é provada pelo regex do claude. Reprodução: `grep -P '\tsintético$' sdd/review/stubs/cenarios.tsv`.
+
+4. **INFO: o exit 3 da sonda de PATH (3ª condição do AT-011) só dispara se o filtro do gate falhar.** `tests/test_revisao_gate.py` só confere que a CLI real não é chamada. Provei o caminho do exit 3 desligando o filtro numa cópia (AVAL-11b). Reprodução: na cópia, trocar `if not k.startswith("BASH_FUNC_") and k not in ("BASH_ENV", "ENV")` por `if True`, rodar `export -f claude` e depois o gate ⇒ exit 3.
+
+5. **INFO, ambiente:** o `scripts/publish-gate.sh:49` grava em `/tmp/gitleaks.$$` em vez de `$TMPDIR`. É anterior à F11 e é o que impediu o Verify Gate de rodar no sandbox. Reprodução: rodar o `cmd` do `verify_gate` com `/tmp` sem permissão de escrita ⇒ `line 49: /tmp/gitleaks.NNNN: Operation not permitted` (AVAL-99).
+>>>
+
+Para fechar como PASS falta rodar o `cmd` do Verify Gate fora do sandbox e juntar os recibos de CI e da release `v2.3.1`. Se quiser liberar a escrita em `/tmp` para comandos como esse, use `/sandbox`.

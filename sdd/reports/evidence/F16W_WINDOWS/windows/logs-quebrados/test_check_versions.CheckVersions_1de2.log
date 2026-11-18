@@ -1,0 +1,158 @@
+test_base_indisponivel_sem_obrigatoria_cai_para_estrutural (test_check_versions.CheckVersions.test_base_indisponivel_sem_obrigatoria_cai_para_estrutural) ... FAIL
+
+test_base_obrigatoria_que_nao_resolve_reprova (test_check_versions.CheckVersions.test_base_obrigatoria_que_nao_resolve_reprova) ... FAIL
+
+test_base_obrigatoria_sem_base_reprova (test_check_versions.CheckVersions.test_base_obrigatoria_sem_base_reprova) ... ok
+
+test_estrutura_valida_passa (test_check_versions.CheckVersions.test_estrutura_valida_passa) ... FAIL
+
+test_evals_divergente_reprova (test_check_versions.CheckVersions.test_evals_divergente_reprova) ... ok
+
+test_manifest_divergente_reprova (test_check_versions.CheckVersions.test_manifest_divergente_reprova) ... ok
+
+test_manifest_sem_chave_version_passa (test_check_versions.CheckVersions.test_manifest_sem_chave_version_passa) ... FAIL
+
+test_opcao_desconhecida_e_64 (test_check_versions.CheckVersions.test_opcao_desconhecida_e_64) ... ok
+
+
+
+======================================================================
+
+FAIL: test_base_indisponivel_sem_obrigatoria_cai_para_estrutural (test_check_versions.CheckVersions.test_base_indisponivel_sem_obrigatoria_cai_para_estrutural)
+
+----------------------------------------------------------------------
+
+Traceback (most recent call last):
+
+  File "D:\a\sdd-open\sdd-open\tests\test_check_versions.py", line 63, in test_base_indisponivel_sem_obrigatoria_cai_para_estrutural
+
+    self.assertEqual(rc, 0, out)
+
+AssertionError: 1 != 0 : check-versions: base 'v9.9.9' indispon\ufffdvel; s\ufffd as checagens estruturais.
+
+PASS: check-versions \ufffd 2 skills com vers\ufffdo coerente.
+
+Traceback (most recent call last):
+
+  File "D:\a\sdd-open\sdd-open\scripts\check-versions.py", line 131, in <module>
+
+    sys.exit(main(sys.argv[1:]))
+
+             ^^^^^^^^^^^^^^^^^^
+
+  File "D:\a\sdd-open\sdd-open\scripts\check-versions.py", line 126, in main
+
+    print("RESULTADO: VERDE\n\u2192 siga para o pr\ufffdximo passo.")
+
+  File "C:\hostedtoolcache\windows\Python\3.12.10\x64\Lib\encodings\cp1252.py", line 19, in encode
+
+    return codecs.charmap_encode(input,self.errors,encoding_table)[0]
+
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+UnicodeEncodeError: 'charmap' codec can't encode character '\u2192' in position 18: character maps to <undefined>
+
+
+
+
+
+======================================================================
+
+FAIL: test_base_obrigatoria_que_nao_resolve_reprova (test_check_versions.CheckVersions.test_base_obrigatoria_que_nao_resolve_reprova)
+
+----------------------------------------------------------------------
+
+Traceback (most recent call last):
+
+  File "D:\a\sdd-open\sdd-open\tests\test_check_versions.py", line 109, in test_base_obrigatoria_que_nao_resolve_reprova
+
+    self.assertIn("indispon�vel", out)
+
+AssertionError: 'indispon�vel' not found in 'FAIL: base \'v9.9.9\' indispon\ufffdvel \ufffd sem ela n\ufffdo d\ufffd para saber o que mudou desde a \ufffdltima release.\nTraceback (most recent call last):\n  File "D:\\a\\sdd-open\\sdd-open\\scripts\\check-versions.py", line 131, in <module>\n    sys.exit(main(sys.argv[1:]))\n             ^^^^^^^^^^^^^^^^^^\n  File "D:\\a\\sdd-open\\sdd-open\\scripts\\check-versions.py", line 106, in main\n    print("RESULTADO: VERMELHO\\n\\u2192 fa\ufffda checkout com o hist\ufffdrico e as tags (fetch-depth: 0) e rode de novo.")\n  File "C:\\hostedtoolcache\\windows\\Python\\3.12.10\\x64\\Lib\\encodings\\cp1252.py", line 19, in encode\n    return codecs.charmap_encode(input,self.errors,encoding_table)[0]\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nUnicodeEncodeError: \'charmap\' codec can\'t encode character \'\\u2192\' in position 21: character maps to <undefined>\n'
+
+
+
+======================================================================
+
+FAIL: test_estrutura_valida_passa (test_check_versions.CheckVersions.test_estrutura_valida_passa)
+
+----------------------------------------------------------------------
+
+Traceback (most recent call last):
+
+  File "D:\a\sdd-open\sdd-open\tests\test_check_versions.py", line 40, in test_estrutura_valida_passa
+
+    self.assertEqual(rc, 0, out)
+
+AssertionError: 1 != 0 : PASS: check-versions \ufffd 2 skills com vers\ufffdo coerente.
+
+Traceback (most recent call last):
+
+  File "D:\a\sdd-open\sdd-open\scripts\check-versions.py", line 131, in <module>
+
+    sys.exit(main(sys.argv[1:]))
+
+             ^^^^^^^^^^^^^^^^^^
+
+  File "D:\a\sdd-open\sdd-open\scripts\check-versions.py", line 126, in main
+
+    print("RESULTADO: VERDE\n\u2192 siga para o pr\ufffdximo passo.")
+
+  File "C:\hostedtoolcache\windows\Python\3.12.10\x64\Lib\encodings\cp1252.py", line 19, in encode
+
+    return codecs.charmap_encode(input,self.errors,encoding_table)[0]
+
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+UnicodeEncodeError: 'charmap' codec can't encode character '\u2192' in position 18: character maps to <undefined>
+
+
+
+
+
+======================================================================
+
+FAIL: test_manifest_sem_chave_version_passa (test_check_versions.CheckVersions.test_manifest_sem_chave_version_passa)
+
+----------------------------------------------------------------------
+
+Traceback (most recent call last):
+
+  File "D:\a\sdd-open\sdd-open\tests\test_check_versions.py", line 104, in test_manifest_sem_chave_version_passa
+
+    self.assertEqual(rc, 0, out)
+
+AssertionError: 1 != 0 : PASS: check-versions \ufffd 2 skills com vers\ufffdo coerente.
+
+Traceback (most recent call last):
+
+  File "D:\a\sdd-open\sdd-open\scripts\check-versions.py", line 131, in <module>
+
+    sys.exit(main(sys.argv[1:]))
+
+             ^^^^^^^^^^^^^^^^^^
+
+  File "D:\a\sdd-open\sdd-open\scripts\check-versions.py", line 126, in main
+
+    print("RESULTADO: VERDE\n\u2192 siga para o pr\ufffdximo passo.")
+
+  File "C:\hostedtoolcache\windows\Python\3.12.10\x64\Lib\encodings\cp1252.py", line 19, in encode
+
+    return codecs.charmap_encode(input,self.errors,encoding_table)[0]
+
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+UnicodeEncodeError: 'charmap' codec can't encode character '\u2192' in position 18: character maps to <undefined>
+
+
+
+
+
+----------------------------------------------------------------------
+
+Ran 8 tests in 1.394s
+
+
+
+FAILED (failures=4)
+

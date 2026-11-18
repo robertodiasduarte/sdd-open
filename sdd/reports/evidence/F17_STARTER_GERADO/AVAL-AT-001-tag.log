@@ -1,0 +1,22 @@
+$ # AT-001 "da tag, nunca da árvore de trabalho": muda a árvore de trabalho do Open temporário sem commitar e gera da v9.9.0
+$ echo "MARCA-ARVORE-DE-TRABALHO" >> open/.agents/skills/sdd-kb/SKILL.md; echo "MARCA-ARVORE-DE-TRABALHO" >> open/scripts/starter/raiz/README.md; python3 -B open/scripts/gerar-starter.py --tag v9.9.0 s2; grep -rl MARCA-ARVORE s2
+RESULTADO: GERADO
+→ no starter: python3 scripts/check-gerado.py, os testes dele e um commit numa branch.
+rc=0
+grep_rc=1 (1 = a marca não chegou ao destino)
+$ diff -r -x .git s2 starter  (igual à 1ª geração)
+diff_rc=0
+
+$ # sem rede: o gerador não importa socket/urllib/http
+24:from __future__ import annotations
+26:import argparse
+27:import hashlib
+28:import io
+29:import os
+30:import re
+31:import shutil
+32:import subprocess
+33:import sys
+34:import tarfile
+35:import tempfile
+36:from pathlib import Path

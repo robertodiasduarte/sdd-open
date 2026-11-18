@@ -9,3 +9,28 @@
 # F22: o git archive escreve no VERSION a tag da versão (export-subst); no clone ele fica com o texto $Format, e a
 # versão vem do git describe (bin/lib/versao.sh).
 VERSION export-subst
+# F26: os documentos das frentes (DEFINE, DESIGN, relatórios, fichas, ledgers, fila da curadoria) vivem na main e
+# nunca entram no pacote (tarball da Release, gerar-starter.py, cópia do Verify Gate: todos saem do git archive).
+# Lista de PERMISSÃO dentro de sdd/: tudo fora, menos as entradas do pacote. Cada pasta do pacote precisa das 2 linhas
+# (a pasta e o conteúdo): só com "/**", o git archive tira a pasta inteira, calado (medido no Design da F26). Entrada
+# nova do pacote sem as linhas reprova no G3 do publish-gate ("declared but missing").
+sdd/** export-ignore
+sdd/bin -export-ignore
+sdd/bin/** -export-ignore
+sdd/fixtures -export-ignore
+sdd/fixtures/** -export-ignore
+sdd/hooks -export-ignore
+sdd/hooks/** -export-ignore
+sdd/patterns -export-ignore
+sdd/patterns/** -export-ignore
+sdd/review -export-ignore
+sdd/review/** -export-ignore
+sdd/templates -export-ignore
+sdd/templates/** -export-ignore
+sdd/WORKFLOW_CONTRACTS.yaml -export-ignore
+sdd/config.example.yaml -export-ignore
+sdd/invariants.md -export-ignore
+sdd/playbook.md -export-ignore
+# F26: a evidência guarda os bytes como foram gravados (logs do Windows vêm com CRLF): normalizar o fim de linha
+# mudaria a prova e o blob que a migração confere contra a tag de arquivo.
+sdd/reports/evidence/** -text

@@ -1,0 +1,56 @@
+$ (clone temporário de 7e19462 + simula.py: 7 seções com comandos citados + 7 bumps, commitado) python3 -B comandos-intactos-f6.py ; python3 -B comandos-intactos-f6.py --sem-secao
+## com limpa() do Pattern 3
+OK    sdd-brainstorm: 7 → 7 linhas extraídas (passos, itens numerados e comandos), idêntico
+OK    sdd-define: 14 → 14 linhas extraídas (passos, itens numerados e comandos), idêntico
+OK    sdd-governanca: 4 → 4 linhas extraídas (passos, itens numerados e comandos), idêntico
+OK    sdd-ux-review: 8 → 8 linhas extraídas (passos, itens numerados e comandos), idêntico
+OK    sdd-design: 12 → 12 linhas extraídas (passos, itens numerados e comandos), idêntico
+OK    sdd-build: 16 → 16 linhas extraídas (passos, itens numerados e comandos), idêntico
+OK    sdd-release: 55 → 55 linhas extraídas (passos, itens numerados e comandos), idêntico
+skills: 7 · com diferença não declarada: 0
+exit=0
+## sem a remoção da seção (controle: prova que a limpa é necessária)
+FALHA sdd-brainstorm: 7 → 12 linhas extraídas (passos, itens numerados e comandos), 5 diferença(s)
+        + cmd sdd/bin/verify-gate.sh sdd/features/DEFINE_{F}.md   ← NÃO DECLARADA
+        + cmd git add   ← NÃO DECLARADA
+        + cmd git add -A   ← NÃO DECLARADA
+        + cmd python3 sdd/bin/kb-dominios.py sdd/features/DEFINE_{F}.md   ← NÃO DECLARADA
+        + cmd gh run rerun   ← NÃO DECLARADA
+FALHA sdd-define: 14 → 19 linhas extraídas (passos, itens numerados e comandos), 5 diferença(s)
+        + cmd sdd/bin/verify-gate.sh sdd/features/DEFINE_{F}.md   ← NÃO DECLARADA
+        + cmd git add   ← NÃO DECLARADA
+        + cmd git add -A   ← NÃO DECLARADA
+        + cmd python3 sdd/bin/kb-dominios.py sdd/features/DEFINE_{F}.md   ← NÃO DECLARADA
+        + cmd gh run rerun   ← NÃO DECLARADA
+FALHA sdd-governanca: 4 → 9 linhas extraídas (passos, itens numerados e comandos), 5 diferença(s)
+        + cmd sdd/bin/verify-gate.sh sdd/features/DEFINE_{F}.md   ← NÃO DECLARADA
+        + cmd git add   ← NÃO DECLARADA
+        + cmd git add -A   ← NÃO DECLARADA
+        + cmd python3 sdd/bin/kb-dominios.py sdd/features/DEFINE_{F}.md   ← NÃO DECLARADA
+        + cmd gh run rerun   ← NÃO DECLARADA
+FALHA sdd-ux-review: 8 → 13 linhas extraídas (passos, itens numerados e comandos), 5 diferença(s)
+        + cmd sdd/bin/verify-gate.sh sdd/features/DEFINE_{F}.md   ← NÃO DECLARADA
+        + cmd git add   ← NÃO DECLARADA
+        + cmd git add -A   ← NÃO DECLARADA
+        + cmd python3 sdd/bin/kb-dominios.py sdd/features/DEFINE_{F}.md   ← NÃO DECLARADA
+        + cmd gh run rerun   ← NÃO DECLARADA
+FALHA sdd-design: 12 → 17 linhas extraídas (passos, itens numerados e comandos), 5 diferença(s)
+        + cmd sdd/bin/verify-gate.sh sdd/features/DEFINE_{F}.md   ← NÃO DECLARADA
+        + cmd git add   ← NÃO DECLARADA
+        + cmd git add -A   ← NÃO DECLARADA
+        + cmd python3 sdd/bin/kb-dominios.py sdd/features/DEFINE_{F}.md   ← NÃO DECLARADA
+        + cmd gh run rerun   ← NÃO DECLARADA
+FALHA sdd-build: 16 → 21 linhas extraídas (passos, itens numerados e comandos), 5 diferença(s)
+        + cmd sdd/bin/verify-gate.sh sdd/features/DEFINE_{F}.md   ← NÃO DECLARADA
+        + cmd git add   ← NÃO DECLARADA
+        + cmd git add -A   ← NÃO DECLARADA
+        + cmd python3 sdd/bin/kb-dominios.py sdd/features/DEFINE_{F}.md   ← NÃO DECLARADA
+        + cmd gh run rerun   ← NÃO DECLARADA
+FALHA sdd-release: 55 → 60 linhas extraídas (passos, itens numerados e comandos), 5 diferença(s)
+        + cmd sdd/bin/verify-gate.sh sdd/features/DEFINE_{F}.md   ← NÃO DECLARADA
+        + cmd git add   ← NÃO DECLARADA
+        + cmd git add -A   ← NÃO DECLARADA
+        + cmd python3 sdd/bin/kb-dominios.py sdd/features/DEFINE_{F}.md   ← NÃO DECLARADA
+        + cmd gh run rerun   ← NÃO DECLARADA
+skills: 7 · com diferença não declarada: 7
+exit=1

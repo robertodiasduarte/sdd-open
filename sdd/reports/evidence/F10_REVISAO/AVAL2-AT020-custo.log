@@ -1,0 +1,94 @@
+$ bash /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f10-revisao/bd420f6e-558d-4962-a0c9-40cdfc2cbd27/scratchpad/p/at020.sh
+=== custo reportado pela engine (US$)
+revisor: e-ass (stub-modelo) — US$ 0,0061
+auditor: e-ppt (stub-modelo) — US$ 0,0061
+custo total: US$ 0,0122
+[rc=0]
+reviewer_segundos       : 0
+reviewer_tokens_entrada : 1000
+reviewer_tokens_saida   : 200
+reviewer_tokens_total   : 1200
+reviewer_modelo         : stub-modelo
+reviewer_custo          : US$ 0.0061
+auditor_segundos        : 0
+auditor_tokens_entrada  : 1000
+auditor_tokens_saida    : 200
+auditor_tokens_total    : 1200
+auditor_modelo          : stub-modelo
+auditor_custo           : US$ 0.0061
+custo_total             : US$ 0.0122
+=== estimado por precos.tsv (≈US$) + desconhecido ($?)
+revisor: e-est (stub-modelo) — ≈ US$ 0,0040 (estimado)
+auditor: e-ppt (stub-modelo) — custo desconhecido
+custo total: ≈ US$ 0,0040 (estimado) (+ 1 papel(is) com custo desconhecido)
+[rc=0]
+reviewer_segundos       : 0
+reviewer_tokens_entrada : 1000
+reviewer_tokens_saida   : 200
+reviewer_tokens_total   : 1200
+reviewer_modelo         : stub-modelo
+reviewer_custo          : ≈US$ 0.0040
+auditor_segundos        : 0
+auditor_tokens_entrada  : 1000
+auditor_tokens_saida    : 200
+auditor_tokens_total    : 1200
+auditor_modelo          : stub-modelo
+auditor_custo           : $?
+custo_total             : ≈US$ 0.0040 (+ 1 papel(is) com custo $?)
+=== assinatura + desconhecida
+revisor: e-ass (stub-modelo) — incluído na assinatura
+auditor: e-aud2 (stub-modelo) — custo desconhecido
+custo total: incluído na assinatura (+ 1 papel(is) com custo desconhecido)
+[rc=0]
+reviewer_segundos       : 0
+reviewer_tokens_entrada : 1000
+reviewer_tokens_saida   : 200
+reviewer_tokens_total   : 1200
+reviewer_modelo         : stub-modelo
+reviewer_custo          : assinatura
+auditor_segundos        : 0
+auditor_tokens_entrada  : 1000
+auditor_tokens_saida    : 200
+auditor_tokens_total    : 1200
+auditor_modelo          : stub-modelo
+auditor_custo           : $?
+custo_total             : assinatura (+ 1 papel(is) com custo $?)
+=== estimado + assinatura
+revisor: e-est (stub-modelo) — ≈ US$ 0,0040 (estimado)
+auditor: e-aud2:auditor-agree (stub-modelo) — custo desconhecido
+custo total: ≈ US$ 0,0040 (estimado) (+ 1 papel(is) com custo desconhecido)
+[rc=0]
+reviewer_segundos       : 0
+reviewer_tokens_entrada : 1000
+reviewer_tokens_saida   : 200
+reviewer_tokens_total   : 1200
+reviewer_modelo         : stub-modelo
+reviewer_custo          : ≈US$ 0.0040
+auditor_segundos        : 0
+auditor_tokens_entrada  : 1000
+auditor_tokens_saida    : 200
+auditor_tokens_total    : 1200
+auditor_modelo          : stub-modelo
+auditor_custo           : $?
+custo_total             : ≈US$ 0.0040 (+ 1 papel(is) com custo $?)
+=== custo minúsculo reportado (nunca 0,0000)
+revisor: e-ass (stub-modelo) — US$ 0,000010
+auditor: e-ppt (stub-modelo) — US$ 0,000010
+custo total: US$ 0,000020
+[rc=0]
+reviewer_segundos       : 0
+reviewer_tokens_entrada : 1000
+reviewer_tokens_saida   : 200
+reviewer_tokens_total   : 1200
+reviewer_modelo         : stub-modelo
+reviewer_custo          : US$ 0.000010
+auditor_segundos        : 0
+auditor_tokens_entrada  : 1000
+auditor_tokens_saida    : 200
+auditor_tokens_total    : 1200
+auditor_modelo          : stub-modelo
+auditor_custo           : US$ 0.000010
+custo_total             : US$ 0.000020
+=== algum 'US$ 0' ou ' 0$' em _custo para custo desconhecido?
+nenhum
+[exit=0]

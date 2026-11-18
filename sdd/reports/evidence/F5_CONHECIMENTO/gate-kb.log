@@ -1,0 +1,3 @@
+$ PYTHON=/usr/bin/python3 /bin/bash .agents/skills/sdd-kb/scripts/gate.sh
+RESULTADO: VERDE — 4 aceitas, 12 rejeitadas pelo motivo certo, RULE_MAP do exemplo em dia
+exit=0

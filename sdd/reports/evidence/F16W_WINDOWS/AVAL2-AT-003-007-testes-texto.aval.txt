@@ -1,0 +1,14 @@
+$ bash -c cd tests; for m in test_release_workflow test_f16_textos test_windows; do echo "== $m (/usr/bin/python3 3.9.6, /bin/bash)"; SDD_TEST_BASH=/bin/bash /usr/bin/python3 -B -m unittest $m 2>&1 | tail -3; done
+== test_release_workflow (/usr/bin/python3 3.9.6, /bin/bash)
+Ran 32 tests in 1.749s
+
+OK
+== test_f16_textos (/usr/bin/python3 3.9.6, /bin/bash)
+Ran 13 tests in 0.002s
+
+OK
+== test_windows (/usr/bin/python3 3.9.6, /bin/bash)
+Ran 9 tests in 0.548s
+
+OK
+[exit=0]

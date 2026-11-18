@@ -1,0 +1,61 @@
+$ bash ensaio.sh <worktree da frente em 1a71e1a> <pasta> && bash checagens-starter.sh <clone v1.5.17 gerado> v1.5.17
+✅ sdd-checar-ambiente: 5 arquivo(s), 1 troca(s)
+✅ sdd-iniciar-repo: 3 arquivo(s), 1 troca(s)
+✅ sdd-higiene-dado: 10 arquivo(s), 0 troca(s)
+✅ sdd-new-session: 6 arquivo(s), 1 troca(s)
+✅ sdd-kb: 38 arquivo(s), 2 troca(s)
+✅ sdd-seguranca: 9 arquivo(s), 6 troca(s)
+✅ sdd-auditoria-harness: 7 arquivo(s), 0 troca(s)
+✅ sdd-prompt-builder: 9 arquivo(s), 2 troca(s)
+✅ sdd-engenharia-reversa-saas: 15 arquivo(s), 4 troca(s)
+✅ sdd-loop-builder: 6 arquivo(s), 0 troca(s)
+✅ sdd-brainstorm: 6 arquivo(s), 4 troca(s)
+✅ sdd-handoff: 5 arquivo(s), 6 troca(s)
+✅ sdd-governanca: 12 arquivo(s), 5 troca(s)
+✅ sdd-release: 2 arquivo(s), 0 troca(s), de modo (references/MODO_INICIANTE.md)
+✅ ux-review-builder: 20 arquivo(s), 0 troca(s)
+RESULTADO: GERADO
+→ no starter: python3 scripts/check-gerado.py, os testes dele e um commit numa branch.
+rc=0
+$ python3 -B scripts/check-gerado.py
+✅ 15 skill(s) gerada(s) e a infra conferidas: tudo igual ao que o sdd-open gerou
+RESULTADO: VERDE
+rc=0
+$ bash scripts/publish-check.sh
+PASS: publish-check found no forbidden content.
+rc=0
+$ python3 -B scripts/check-versions.py --base v1.5.17
+PASS: check-versions — 18 skills com versão coerente, comparadas a v1.5.17.
+rc=0
+$ bash -c python3 -m py_compile skills/*/scripts/*.py scripts/*.py
+rc=0
+$ bash -c for f in scripts/package.sh scripts/publish-check.sh skills/*/scripts/*.sh; do bash -n "$f" || exit 1; done
+rc=0
+$ bash -c for t in skills/*/tests; do [ -d "$t" ] || continue; python3 -B -m unittest discover -s "$t" -p "test_*.py" || exit 1; done
+OK
+................
+----------------------------------------------------------------------
+Ran 16 tests in 0.049s
+
+OK
+rc=0
+$ bash -c if [ -d tests ]; then python3 -B -m unittest discover -s tests -p "test_*.py"; fi
+..............................................................
+----------------------------------------------------------------------
+Ran 62 tests in 3.057s
+
+OK
+rc=0
+$ bash skills/sdd-kb/scripts/gate.sh
+RESULTADO: VERDE — 4 aceitas, 12 rejeitadas pelo motivo certo, RULE_MAP do exemplo em dia
+rc=0
+$ bash scripts/package.sh
+packaged dist/sdd-new-session.zip
+packaged dist/sdd-prompt-builder.zip
+packaged dist/sdd-release.zip
+packaged dist/sdd-seguranca.zip
+packaged dist/ux-review-builder.zip
+PASS: 18 skill zips built in dist/
+rc=0
+falhas=0
+rc=0

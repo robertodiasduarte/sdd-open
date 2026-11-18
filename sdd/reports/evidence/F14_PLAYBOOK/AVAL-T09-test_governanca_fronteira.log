@@ -1,0 +1,7 @@
+$ cd tests && TMPDIR=/private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f14-playbook/712319f2-9f99-446d-ba48-ead3df6c700d/scratchpad/aval.iYqyIE/tmp SDD_TEST_BASH=/bin/bash /usr/bin/python3 -B -m unittest test_governanca_fronteira
+.......................
+----------------------------------------------------------------------
+Ran 23 tests in 16.300s
+
+OK
+[exit=0]

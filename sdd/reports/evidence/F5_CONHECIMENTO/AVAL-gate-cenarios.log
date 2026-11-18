@@ -1,0 +1,29 @@
+$ cd /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.x7MtT861ps/aval && /bin/bash --version | head -1
+GNU bash, version 3.2.57(1)-release (arm64-apple-darwin25)
+EXIT=0
+
+$ cd /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.x7MtT861ps/aval && /bin/bash .agents/skills/sdd-kb/scripts/gate.sh
+RESULTADO: VERDE — 4 aceitas, 12 rejeitadas pelo motivo certo, RULE_MAP do exemplo em dia
+EXIT=0
+
+$ cd / && /bin/bash /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.x7MtT861ps/aval/.agents/skills/sdd-kb/scripts/gate.sh
+RESULTADO: VERDE — 4 aceitas, 12 rejeitadas pelo motivo certo, RULE_MAP do exemplo em dia
+EXIT=0
+
+$ cd /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.jjb1Vwhwb8 && PATH=/usr/bin:/bin /bin/bash sdd-kb/scripts/gate.sh
+RESULTADO: VERDE — 4 aceitas, 12 rejeitadas pelo motivo certo, RULE_MAP do exemplo em dia
+EXIT=0
+
+$ cd /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.jjb1Vwhwb8/sdd-kb/scripts && PATH=/usr/bin:/bin /bin/bash ./gate.sh
+RESULTADO: VERDE — 4 aceitas, 12 rejeitadas pelo motivo certo, RULE_MAP do exemplo em dia
+EXIT=0
+
+$ cd / && PATH=/usr/bin:/bin /bin/bash '/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.6DEomi0XSe/pasta com espaço/sdd-kb/scripts/gate.sh'
+RESULTADO: VERDE — 4 aceitas, 12 rejeitadas pelo motivo certo, RULE_MAP do exemplo em dia
+EXIT=0
+
+$ cd /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.x7MtT861ps/aval && PYTHON=/usr/bin/python3 /bin/bash .agents/skills/sdd-kb/scripts/gate.sh; ls -d ${TMPDIR}tmp.* 2>/dev/null | wc -l
+RESULTADO: VERDE — 4 aceitas, 12 rejeitadas pelo motivo certo, RULE_MAP do exemplo em dia
+     160
+EXIT=0
+

@@ -51,7 +51,7 @@ class ModoWeb(Base):
                 self.assertIn('version: "%s"' % versao_do_open(skill), fm)
                 self.assertNotIn("SDD Open —", fm)                      # a description do Open nunca vai
                 self.assertIn("compatibility:", fm)
-                self.assertEqual(s.count("`%s v%s · nov/2026 · versão atual: https://github.com/robertodiasduarte/"
+                self.assertEqual(s.count("`%s v%s · SDD Starter · nov/2026 · versão atual: https://github.com/robertodiasduarte/"
                                          "sdd-starter/releases/latest`" % (skill, versao_do_open(skill))), 1)
                 self.assertIn("## Como falar com o aluno", s)
                 self.assertNotIn("web/MODO_WEB.md", s)

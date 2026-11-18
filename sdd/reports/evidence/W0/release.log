@@ -1,0 +1,5 @@
+$ gh release download v2.2.4 -D $D && cd $D && shasum -a 256 -c SHA256SUMS.txt
+push: 1a54da5..303cc87 HEAD -> main · PR #4 MERGED · run release 40926754472 success (Testes + Publicar release)
+tag v2.2.4 em 303cc87 · https://github.com/robertodiasduarte/sdd-open/releases/tag/v2.2.4
+b8a0aab0d58b87050d80c68813c868f6a2d4f9784fe7130ad663efc63a555670  sdd-open-v2.2.4.tar.gz
+sdd-open-v2.2.4.tar.gz: OK

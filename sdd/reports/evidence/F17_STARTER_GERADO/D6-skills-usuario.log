@@ -1,0 +1,17 @@
+$ (backup e troca de ~/.claude/skills/sdd-* pela tag v2.13.0, git archive)
+backup: ~/.claude/skills-backup-2026-11-13/ (14 pastas)
+sdd-auditoria-harness 1.2.1
+sdd-brainstorm 2.3.1
+sdd-build 2.9.1
+sdd-checar-ambiente 1.5.1
+sdd-define 2.6.1
+sdd-design 2.6.0
+sdd-governanca 2.4.1
+sdd-handoff 2.1.2
+sdd-higiene-dado 1.2.0
+sdd-iniciar-repo 1.2.0
+sdd-kb 2.2.1
+sdd-new-session 1.6.0
+sdd-prompt-builder 2.2.0
+sdd-release 2.11.1
+[exit=0]

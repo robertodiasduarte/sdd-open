@@ -1,0 +1,15 @@
+$ /usr/bin/python3 -B -m unittest discover -s tests -p test_playbook_lint.py -v
+test_anti_collapse_aceita_delta (test_playbook_lint.PlaybookLint) ... ok
+test_anti_collapse_bloqueia_colapso (test_playbook_lint.PlaybookLint) ... ok
+test_fixture_delta_ok_passa (test_playbook_lint.PlaybookLint) ... ok
+test_fixture_invalida_reprova_com_2 (test_playbook_lint.PlaybookLint) ... ok
+test_fixture_valida_passa (test_playbook_lint.PlaybookLint) ... ok
+test_fora_de_git_e_64 (test_playbook_lint.PlaybookLint) ... ok
+test_grep_sem_hit_e_1 (test_playbook_lint.PlaybookLint) ... ok
+test_self_test_passa (test_playbook_lint.PlaybookLint) ... ok
+
+----------------------------------------------------------------------
+Ran 8 tests in 2.448s
+
+OK
+exit=0

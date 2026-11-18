@@ -1,0 +1,8 @@
+$ python3 -B -m unittest -v test_f23b3_revisao.AT004Desempate   # HEAD 5e110b2
+test_desempate_roda_sem_flag_e_a_dispensa_a_mao_fica_no_meta (test_f23b3_revisao.AT004Desempate.test_desempate_roda_sem_flag_e_a_dispensa_a_mao_fica_no_meta) ... ok
+
+----------------------------------------------------------------------
+Ran 1 test in 1.119s
+
+OK
+[exit=0]

@@ -1,0 +1,139 @@
+$ /bin/bash /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f15-slots/80a83c1b-4077-4625-ba69-e27f11f530a1/scratchpad/p1.sh
+---- [rc0] cmd="CODE=0 bash f.sh" args: a b.txt c.txt
+⚠️  SDD_BASE vazio: origin/main não existe neste repositório
+▶ smoke.before_ok_cmd (before_ok): CODE=0 bash f.sh
+falso: pwd=/private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.7ca7bbqRow n=2 args=[a b.txt c.txt]
+ arg<a b.txt>
+ arg<c.txt>
+RESULTADO: OK
+→ siga para o próximo passo.
+[exit=0]
+---- [rc2] cmd="CODE=2 bash f.sh" args: a b.txt c.txt
+⚠️  SDD_BASE vazio: origin/main não existe neste repositório
+▶ smoke.before_ok_cmd (before_ok): CODE=2 bash f.sh
+falso: pwd=/private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.7ca7bbqRow n=2 args=[a b.txt c.txt]
+ arg<a b.txt>
+ arg<c.txt>
+RESULTADO: REPROVOU
+→ leve ao bloco do OK como FAIL-candidato: corrigir ou WAIVED com motivo.
+[exit=2]
+---- [rc10] cmd="CODE=10 bash f.sh" args: a b.txt c.txt
+⚠️  SDD_BASE vazio: origin/main não existe neste repositório
+▶ smoke.before_ok_cmd (before_ok): CODE=10 bash f.sh
+falso: pwd=/private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.7ca7bbqRow n=2 args=[a b.txt c.txt]
+ arg<a b.txt>
+ arg<c.txt>
+RESULTADO: NADA A MEDIR
+→ diga que nada foi medido neste momento e siga.
+[exit=10]
+---- [rc1] cmd="CODE=1 bash f.sh" args: a b.txt c.txt
+⚠️  SDD_BASE vazio: origin/main não existe neste repositório
+▶ smoke.before_ok_cmd (before_ok): CODE=1 bash f.sh
+falso: pwd=/private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.7ca7bbqRow n=2 args=[a b.txt c.txt]
+ arg<a b.txt>
+ arg<c.txt>
+⚠️  o comando de smoke.before_ok_cmd saiu 1, fora do contrato (0 ok · 2 reprovou · 10 nada a medir)
+RESULTADO: INCONCLUSIVO
+→ confira a saída acima; isto não é verde.
+[exit=3]
+---- [rc7] cmd="CODE=7 bash f.sh" args: a b.txt c.txt
+⚠️  SDD_BASE vazio: origin/main não existe neste repositório
+▶ smoke.before_ok_cmd (before_ok): CODE=7 bash f.sh
+falso: pwd=/private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.7ca7bbqRow n=2 args=[a b.txt c.txt]
+ arg<a b.txt>
+ arg<c.txt>
+⚠️  o comando de smoke.before_ok_cmd saiu 7, fora do contrato (0 ok · 2 reprovou · 10 nada a medir)
+RESULTADO: INCONCLUSIVO
+→ confira a saída acima; isto não é verde.
+[exit=3]
+---- [127] cmd="comando_inexistente_xyz" args: 
+⚠️  SDD_BASE vazio: origin/main não existe neste repositório
+▶ smoke.before_ok_cmd (before_ok): comando_inexistente_xyz
+slot: comando_inexistente_xyz: command not found
+⚠️  o comando de smoke.before_ok_cmd saiu 127, fora do contrato (0 ok · 2 reprovou · 10 nada a medir)
+RESULTADO: INCONCLUSIVO
+→ confira a saída acima; isto não é verde.
+[exit=3]
+---- [sinal] cmd="kill -9 $$" args: 
+⚠️  SDD_BASE vazio: origin/main não existe neste repositório
+▶ smoke.before_ok_cmd (before_ok): kill -9 $$
+/Users/robertoduarte/rdd-worktrees/sdd-open-f15-slots/sdd/bin/slot.sh: line 198: 25257 Killed: 9               SDD_MOMENTO="${MOMENTO}" SDD_FEATURE="${FEATURE}" SDD_BASE="${BASE_SHA}" SDD_COMMIT="${COMMIT_SHA}" SDD_ARVORE="${ARVORE}" SDD_SLOT_DIR="${DIR}" bash -c "${CMD} \"\$@\"" slot ${ARQS[@]+"${ARQS[@]}"}
+⚠️  o comando de smoke.before_ok_cmd morreu pelo sinal 9 (saiu 137)
+RESULTADO: INCONCLUSIVO
+→ confira a saída acima; isto não é verde.
+[exit=3]
+---- [aspas-shell] cmd="echo 'abc" args: 
+🛑 o comando de smoke.before_ok_cmd tem erro de sintaxe: bash: -c: line 0: unexpected EOF while looking for matching `''
+RESULTADO: ERRO DE USO
+→ corrija o comando em sdd/config.yaml (uma linha só; com |, ; ou &&, aponte para um script)
+[exit=64]
+---- [pipe] cmd="| cat" args: 
+🛑 o comando de smoke.before_ok_cmd tem erro de sintaxe: bash: -c: line 0: syntax error near unexpected token `|'
+RESULTADO: ERRO DE USO
+→ corrija o comando em sdd/config.yaml (uma linha só; com |, ; ou &&, aponte para um script)
+[exit=64]
+---- [hash] cmd="echo oi # comentario" args: 
+🛑 sdd/config.yaml, linha 4: o comando de smoke.before_ok_cmd tem um comentário (#); os arquivos cairiam dentro dele
+RESULTADO: ERRO DE USO
+→ tire o # do comando (o comentário vai numa linha própria do config) ou aponte para um script
+[exit=64]
+---- [yaml-aspas] cmd="echo oi args: 
+🛑 sdd/config.yaml, linha 4: o valor de smoke.before_ok_cmd abre aspas e não fecha
+RESULTADO: ERRO DE USO
+→ feche as aspas do valor (uma linha só) e rode de novo
+[exit=64]
+---- chave errada
+🛑 chave desconhecida: smoke.foo_cmd
+RESULTADO: ERRO DE USO
+→ use uma destas: smoke.before_ok_cmd, smoke.before_push_cmd, smoke.after_deploy_cmd, schema.check_cmd
+[exit=64]
+---- flag sem valor
+🛑 --feature exige um valor
+RESULTADO: ERRO DE USO
+→ passe --feature <valor>; um nome vazio indica variável não preenchida na chamada
+[exit=64]
+---- base nao resolve
+🛑 --base nao/existe não resolve para um commit
+RESULTADO: ERRO DE USO
+→ confira a ref (um git fetch traz as do remoto)
+[exit=64]
+---- commit nao resolve
+⚠️  SDD_BASE vazio: origin/main não existe neste repositório
+🛑 --commit deadbeef não resolve para um commit
+RESULTADO: ERRO DE USO
+→ confira o SHA; se ele nasceu no remoto (merge de PR), rode GIT_TERMINAL_PROMPT=0 git fetch antes
+[exit=64]
+---- vazio
+ℹ️  smoke.before_ok_cmd vazio: pulado (/private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.7ca7bbqRow/sdd/config.yaml)
+RESULTADO: PULADO
+→ diga que o passo foi pulado porque o slot está vazio; para usá-lo, preencha smoke.before_ok_cmd em sdd/config.yaml.
+[exit=11]
+---- ausente com comentario col0
+ℹ️  smoke.before_ok_cmd vazio: pulado (/private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.7ca7bbqRow/sdd/config.yaml)
+RESULTADO: PULADO
+→ diga que o passo foi pulado porque o slot está vazio; para usá-lo, preencha smoke.before_ok_cmd em sdd/config.yaml.
+[exit=11]
+---- comentario col0 entre secao e chave (deve achar)
+⚠️  SDD_BASE vazio: origin/main não existe neste repositório
+▶ smoke.before_ok_cmd (before_ok): exit 2
+RESULTADO: REPROVOU
+→ leve ao bloco do OK como FAIL-candidato: corrigir ou WAIVED com motivo.
+[exit=2]
+---- sem config
+ℹ️  smoke.before_ok_cmd vazio: pulado (sem /private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.7ca7bbqRow/sdd/config.yaml)
+RESULTADO: PULADO
+→ diga que o passo foi pulado porque o slot está vazio; para usá-lo, preencha smoke.before_ok_cmd em sdd/config.yaml.
+[exit=11]
+---- sinal no proprio slot.sh (TERM)
+⚠️  SDD_BASE vazio: origin/main não existe neste repositório
+▶ smoke.before_ok_cmd (before_ok): sleep 5
+⚠️  slot.sh interrompido por sinal
+RESULTADO: INCONCLUSIVO
+→ rode de novo; isto não é verde.
+[exit=3]
+---- sinal no proprio slot.sh (INT)
+⚠️  SDD_BASE vazio: origin/main não existe neste repositório
+▶ smoke.before_ok_cmd (before_ok): sleep 5
+RESULTADO: OK
+→ siga para o próximo passo.
+[exit=0]

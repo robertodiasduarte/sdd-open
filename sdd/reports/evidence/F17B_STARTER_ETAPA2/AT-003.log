@@ -1,0 +1,9 @@
+$ cd <git archive e583889>/tests && SDD_TEST_BASH=/bin/bash python3 -B -m unittest -v test_gerar_starter.SkillDeModo.test_at003_modo_quebrado_sai_65_sem_gravar test_gerar_starter.SkillDeModo.test_at003_a_release_crua_reprova_no_lint
+test_at003_modo_quebrado_sai_65_sem_gravar (test_gerar_starter.SkillDeModo.test_at003_modo_quebrado_sai_65_sem_gravar) ... ok
+test_at003_a_release_crua_reprova_no_lint (test_gerar_starter.SkillDeModo.test_at003_a_release_crua_reprova_no_lint) ... ok
+
+----------------------------------------------------------------------
+Ran 2 tests in 5.383s
+
+OK
+rc=0

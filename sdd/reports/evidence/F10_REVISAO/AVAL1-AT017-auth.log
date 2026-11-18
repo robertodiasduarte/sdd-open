@@ -1,0 +1,35 @@
+$ bash /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f10-revisao/bd420f6e-558d-4962-a0c9-40cdfc2cbd27/scratchpad/p/a5.sh AT017
+--- sinal_auth na saída da chamada que falhou → 65 sem chamar o próximo id
++ adversarial-review.sh --base main --reviewer stub-a:falha-auth,stub-c --auditor stub-b --no-revisor2
+▶ revisor: stub-a:falha-auth (falha-auth) — até 1 min
+⚠️ sem --feature: a revisão não leu BRAINSTORM, DEFINE nem DESIGN, e decisões já documentadas podem voltar como achado
+RESULTADO: PAROU
+revisor: falha de credencial em stub-a:falha-auth
+pasta: sdd/reports/reviews/EXTERNAL_REVIEW_20261031-235831
+diff_sha256: b7fb048c0c3864cb429ecb37b9358aae3b23ae86e922bb0199c98a7e4773e6ff
+revisor: stub-a:falha-auth (falha-auth) — incluído na assinatura
+diversidade: modelo
+custo total: US$ 0,0000
+→ confira a credencial de stub-a:falha-auth (credencial do stub (exemplo de teste)); a revisão não troca de engine por falha de credencial
+[rc=65]
+chamadas=1 (esperado 1)
+reviewer_engine_efetivo : stub-a:falha-auth
+reviewer_fallback_usado : nao
+reviewer_motivo         : falha de credencial em stub-a:falha-auth
+reviewer_exit           : 65
+--- adapter sai 65 (chave ausente)
+RESULTADO: PAROU
+→ confira a credencial de stub-a:sem-chave (credencial do stub (exemplo de teste)); a revisão não troca de engine por falha de credencial
+[rc=65]
+chamadas=2 (esperado 2: só mais 1)
+--- auth no auditor
+▶ revisor: stub-a (revisor-ok) — até 1 min
+▶ auditor: stub-b:falha-auth (falha-auth) — até 1 min
+RESULTADO: PAROU
+→ confira a credencial de stub-b:falha-auth (credencial do stub (exemplo de teste)); a revisão não troca de engine por falha de credencial
+[rc=65]
+--- resposta válida que cita FALHA-AUTH e 401 não é falha
+RESULTADO: REVIEW COMPLETA
+[rc=0]
+reviewer_exit           : 0
+[exit=0]

@@ -1,0 +1,9 @@
+# critério (escrito antes): com SDD_CHECAR_EDITOR_PATH vazio (nenhum editor no PATH) e o app real em /Applications,
+# o --editor devolve open -a "Visual Studio Code"; esse comando abre a pasta da frente (exit 0) e o processo do VS Code existe em até 10 s.
+$ SDD_CHECAR_EDITOR_PATH=/var/empty bash .agents/skills/sdd-checar-ambiente/scripts/checar.sh --editor
+open -a "Visual Studio Code"
+dica: para abrir pelo terminal com 'code', no Visual Studio Code: Command Palette (Cmd+Shift+P) → Shell Command: Install 'code' command in PATH
+exit=0
+$ open -a "Visual Studio Code" "/Users/robertoduarte/rdd-worktrees/sdd-open-f16-ambiente"
+exit=0
+processo do VS Code presente após 1s

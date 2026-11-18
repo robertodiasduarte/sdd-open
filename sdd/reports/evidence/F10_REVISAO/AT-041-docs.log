@@ -1,0 +1,25 @@
+$ cd tests && SDD_TEST_BASH=/bin/bash /usr/bin/python3 -B -m unittest -v test_docs
+test_deltas_continua_em_avaliacao_na_coluna_do_open (test_docs.Comparison) ... ok
+test_dez_blocos_numerados (test_docs.Guia) ... ok
+test_instalacao_e_atualizacao_do_open (test_docs.Guia) ... ok
+test_o_teste_acusa_sdd_fora_do_git (test_docs.Guia) ... ok
+test_os_sete_agentes (test_docs.Guia) ... ok
+test_sem_as_premissas_do_starter (test_docs.Guia) ... ok
+test_uma_ficha_por_skill (test_docs.Guia) ... ok
+test_ancora_segue_a_regra_do_github (test_docs.Links) ... ok
+test_o_teste_acusa_link_quebrado (test_docs.Links) ... ok
+test_todo_link_relativo_abre (test_docs.Links) ... ok
+test_secao_com_itens (test_docs.PorQueCadaRegra) ... ok
+test_regra_validacoes_tabela_e_atualizacao (test_docs.Quickstart) ... ok
+test_agents_tmpl (test_docs.ReadmeEAgents) ... ok
+test_readme_cita_as_skills_a_kb_e_o_ok (test_docs.ReadmeEAgents) ... ok
+test_fluxo_encadeado_tem_documento_proprio_linkado_do_readme (test_docs.Roadmap) ... ok
+test_hooks_tem_documento_proprio_linkado_do_readme (test_docs.Roadmap) ... ok
+test_revisao_adversarial_tem_documento_proprio_linkado_do_readme (test_docs.Roadmap) ... ok
+test_temas_status_e_sem_data (test_docs.Roadmap) ... ok
+
+----------------------------------------------------------------------
+Ran 18 tests in 0.031s
+
+OK
+[exit=0]

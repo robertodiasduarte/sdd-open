@@ -1,0 +1,74 @@
+test_brief_ja_no_destino_por_caminho_relativo_e_absoluto (test_fluxo.Despachar.test_brief_ja_no_destino_por_caminho_relativo_e_absoluto) ... ok
+
+test_cartografo_e_revisor_de_governanca_tem_texto_proprio (test_fluxo.Despachar.test_cartografo_e_revisor_de_governanca_tem_texto_proprio) ... ok
+
+test_curador_para_dizendo_que_a_publicacao_ja_terminou (test_fluxo.Despachar.test_curador_para_dizendo_que_a_publicacao_ja_terminou) ... ok
+
+test_erros_saem_64_e_nada_e_gravado (test_fluxo.Despachar.test_erros_saem_64_e_nada_e_gravado) ... 
+
+  test_erros_saem_64_e_nada_e_gravado (test_fluxo.Despachar.test_erros_saem_64_e_nada_e_gravado) (args=['avaliador', 'F9\n', 'D:\\a\\sdd-open\\sdd-open\\sdd\\fixtures\\fluxo\\brief-avaliador.md']) ... FAIL
+
+test_grava_o_brief_imprime_a_parada_e_sai_40 (test_fluxo.Despachar.test_grava_o_brief_imprime_a_parada_e_sai_40) ... ok
+
+test_nome_acentuado_sai_64_em_locale_utf8 (test_fluxo.Despachar.test_nome_acentuado_sai_64_em_locale_utf8) ... ok
+
+test_outro_papel_nao_ganha_a_frase_da_publicacao (test_fluxo.Despachar.test_outro_papel_nao_ganha_a_frase_da_publicacao) ... ok
+
+test_retorno_de_outro_papel_e_o_bloco_final (test_fluxo.Despachar.test_retorno_de_outro_papel_e_o_bloco_final) ... ok
+
+
+
+======================================================================
+
+FAIL: test_erros_saem_64_e_nada_e_gravado (test_fluxo.Despachar.test_erros_saem_64_e_nada_e_gravado) (args=['avaliador', 'F9\n', 'D:\\a\\sdd-open\\sdd-open\\sdd\\fixtures\\fluxo\\brief-avaliador.md'])
+
+----------------------------------------------------------------------
+
+Traceback (most recent call last):
+
+  File "D:\a\sdd-open\sdd-open\tests\test_fluxo.py", line 392, in test_erros_saem_64_e_nada_e_gravado
+
+    self.assertEqual(rc, 64, out)
+
+AssertionError: 40 != 64 : \u23f8\ufe0f sdd-open: esta etapa precisa de uma sess�o nova do agente (papel: avaliador).
+
+
+
+**Por que parei:** a confer�ncia precisa de algu�m que n�o viu esta conversa, e este agente n�o abre essa sess�o sozinho.
+
+**Onde:** numa janela nova do seu agente, na pasta C:/Users/runneradmin/AppData/Local/Temp/sdd-open-80_vfrnj/repo.
+
+**Passos:**
+
+1. Abra uma sess�o nova do agente nesta pasta \u2192 voc� v� o agente pronto, sem hist�rico.
+
+2. Cole o conte�do de sdd/reports/briefs/BRIEF_avaliador_F9.md \u2192 o agente come�a a ler o DEFINE.
+
+3. Quando ele terminar, copie o bloco inteiro da resposta, de `<<<AVALIACAO` at� `>>>` (com a linha `VEREDITO: �`) e cole aqui \u2192 � o que eu preciso para continuar.
+
+**O que n�o foi feito:** nada foi publicado e o relat�rio n�o foi gravado.
+
+**Brief:** sdd/reports/briefs/BRIEF_avaliador_F9.md
+
+**Sess�o nova:** abra o agente nesta pasta e cole o conte�do do brief.
+
+
+
+Quando terminar, me pe�a de novo, eu continuo daqui.
+
+RESULTADO: AGUARDANDO_HUMANO
+
+\u2192 quando a pessoa colar o retorno, continue do passo que parou.
+
+
+
+
+
+----------------------------------------------------------------------
+
+Ran 8 tests in 2.604s
+
+
+
+FAILED (failures=1)
+

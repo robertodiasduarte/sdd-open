@@ -1,0 +1,9 @@
+# sdd-design, item 'Títulos ### Decision N: fixos — … renomear … quebra quem lê, sem erro visível' (.agents/skills/sdd-design/SKILL.md)
+$ /usr/bin/python3 -B sdd/bin/design-lint.py $T/D_ok.md   # $T/D_renomeado.md = DESIGN_F6_DOCS.md com 'Decision N:' -> 'Decisão N:'
+✅ /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.G56xf8p5be/D_ok.md: DESIGN válido
+exit=0
+$ /usr/bin/python3 -B sdd/bin/design-lint.py $T/D_renomeado.md   # $T/D_renomeado.md = DESIGN_F6_DOCS.md com 'Decision N:' -> 'Decisão N:'
+🛑 /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.G56xf8p5be/D_renomeado.md: título fora do padrão '### Decision N: <nome>': ### Decisão 8: Evidência, contratos intactos e sabotagem
+RESULTADO: VERMELHO
+→ corrija o DESIGN nos pontos acima (molde: sdd/templates/DESIGN_TEMPLATE.md) e rode de novo
+exit=1

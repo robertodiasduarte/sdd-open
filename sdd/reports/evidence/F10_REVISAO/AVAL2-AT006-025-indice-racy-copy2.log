@@ -1,0 +1,11 @@
+$ bash /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f10-revisao/bd420f6e-558d-4962-a0c9-40cdfc2cbd27/scratchpad/p/racy2.sh
+1
+HEAD (copyfile): 🛑 adversarial-review: o diff contra HEAD está vazio: a revisão não teria o que revisar
+cópia com copy2:   diff_sha256: 1a63db5239b709cbe66a7c6b61b0d6d6a4eabee2ce18b5082be96d0c6c23f8b4
+=== conferir: revisão feita, depois edição do mesmo tamanho no mesmo segundo de uma escrita do índice
+revisão: diff_sha256             : 4568248ec545467384809c274372281e8358d6289e9b00fd26c8708f676498de
+conteúdo agora: valor = 999 · git diff HEAD:  1 file changed, 1 insertion(+), 1 deletion(-)
+🛑 adversarial-review: o código mudou depois da revisão sdd/reports/reviews/EXTERNAL_REVIEW_20261101-003628 (sha256 diferente)
+RESULTADO: NÃO CONFERE
+[conferir rc=2]
+[exit=0]

@@ -1,0 +1,63 @@
+$ /bin/bash /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f21-f19/8ca3f42f-d684-434d-9f0b-19bdcf0aef88/scratchpad/aval2-f19/ferr/padroes.sh /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f21-f19/8ca3f42f-d684-434d-9f0b-19bdcf0aef88/scratchpad/aval2-f19/copia /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f21-f19/8ca3f42f-d684-434d-9f0b-19bdcf0aef88/scratchpad/aval2-f19/casos/at
+=== sem git, review.output_dir: minhas, ledgers padrão sdd/reviews
+eval-revisores — custo e resultado por papel, engine e modelo (1 pasta(s) lida(s) em <casos>/padrao-slot/minhas; 1 ledger(s))
+| revisor | claude (m) | assinatura | 1 | 0 | 0.0000 | 1.0000 | 1 | 1 de 1 | 0 de 1 | 0 de 1 | 0 de 1 | 0 de 1 | — | — | — |
+fora da conta: 0
+RESULTADO: MEDIDO
+→ leia cada taxa com a amostra ao lado: poucas rodadas dão número instável. O script conta o que está registrado; trocar a cadeia de revisão é decisão de quem lê.
+[exit 0]
+=== sem git, slot vazio → sdd/reports/reviews
+eval-revisores — custo e resultado por papel, engine e modelo (1 pasta(s) lida(s) em <casos>/padrao-vazio/sdd/reports/reviews; 1 ledger(s))
+| revisor | claude (m) | assinatura | 1 | 0 | 0.0000 | 1.0000 | 1 | 1 de 1 | 0 de 1 | 0 de 1 | 0 de 1 | 0 de 1 | — | — | — |
+fora da conta: 0
+RESULTADO: MEDIDO
+→ leia cada taxa com a amostra ao lado: poucas rodadas dão número instável. O script conta o que está registrado; trocar a cadeia de revisão é decisão de quem lê.
+[exit 0]
+=== projeto sem a pasta padrão → 2 SEM DADOS
+eval-revisores — custo e resultado por papel, engine e modelo (0 pasta(s) lida(s) em <casos>/vazio/sdd/reports/reviews; 0 ledger(s))
+RESULTADO: SEM DADOS
+→ nenhuma revisão com META.txt legível nesta pasta: rode adversarial-review.sh e meça de novo.
+[exit 2]
+=== pasta sem META legível → 2
+eval-revisores — custo e resultado por papel, engine e modelo (0 pasta(s) lida(s) em <casos>/semmeta; 0 ledger(s))
+fora da conta: 1 (EXTERNAL_REVIEW_20260401-000001: META ilegível ou incompleto)
+RESULTADO: SEM DADOS
+→ nenhuma revisão com META.txt legível nesta pasta: rode adversarial-review.sh e meça de novo.
+[exit 2]
+=== pasta que não existe → 64
+🛑 eval-revisores: a pasta <casos>/nao-existe não existe
+RESULTADO: PAROU
+→ rode `eval-revisores.sh --help` para ver o uso.
+[exit 64]
+=== argumento desconhecido → 64
+🛑 eval-revisores: opção desconhecida: --json
+RESULTADO: PAROU
+→ rode `eval-revisores.sh --help` para ver o uso.
+[exit 64]
+=== argumento vazio → 64
+🛑 eval-revisores: o caminho da pasta veio vazio
+RESULTADO: PAROU
+→ rode `eval-revisores.sh --help` para ver o uso.
+[exit 64]
+=== --help → 0
+      fora da conta = o que não entrou nos números, com o motivo (linha de ledger sem par, pasta ilegível…)
+[exit 0]
+  eval-revisores.sh [<pasta-das-revisões>] [--ledgers <pasta-ou-arquivo>] [--registry <registry.tsv>]
+      pasta: padrão review.output_dir do sdd/config.yaml da raiz git (sdd/reports/reviews se vazio)
+      --ledgers: padrão sdd/reviews da raiz git; numa pasta, lê os LEDGER_REVISAO_*.md
+=== sem rede (sandbox-exec nega network*) e só leitura
+[livre exit 0]
+[sem rede exit 0]
+eval-revisores — custo e resultado por papel, engine e modelo (6 pasta(s) lida(s) em /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f21-f19/8ca3f42f-d684-434d-9f0b-19bdcf0aef88/sc
+
+saída idêntica com a rede negada
+PermissionError: [Errno 1] Operation not permitted
+[controle: a sandbox nega a rede de fato, exit 1]
+[escrita negada exit 64]
+/private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f21-f19/8ca3f42f-d684-434d-9f0b-19bdcf0aef88/scratchpad/aval2-f19/copia/sdd/bin/eval-revisores.sh: line 37: /dev/null: Operation not
+🛑 eval-revisores: python3 não encontrado no PATH.
+RESULTADO: PAROU
+fixtures inalteradas (mesmo hash antes e depois)
+[arquivos da cópia alterados depois da medição: 0]
+[grep de módulo de rede nos 2 scripts: exit 0]
+[exit 0]

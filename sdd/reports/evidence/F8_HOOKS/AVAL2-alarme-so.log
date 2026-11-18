@@ -1,0 +1,43 @@
+$ cd /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f8-hooks/8e011512-3e64-4505-a0ff-235ac598d20c/scratchpad/aval2/s3-alarme && git config sdd.higieneDado on && printf 'X=1\n' > .env && git add .env && PATH=/bin:/usr/bin git commit -q -m so-alarme
+
+sdd-open: commit recusado pelo alarme da sdd-higiene-dado:
+
+
+sdd-higiene-dado: commit recusado. Encontrei o que não deveria ir para o git:
+
+  .env: arquivo de senhas (.env)
+
+Por que importa: o que entra no git fica no histórico e vai junto em todo push.
+Apagar depois não desfaz: quem já copiou o repositório continua com o dado.
+
+Como corrigir:
+  1. Tire o arquivo deste commit:      git restore --staged "<arquivo>"
+  2. Se ele nunca deve ir para o git:  echo "<arquivo>" >> .gitignore
+  3. Se o dado é necessário, use um fictício ou anonimizado.
+
+Se você conferiu e o dado é fictício ou autorizado, grave mesmo assim:
+  git commit --no-verify
+Isso pula o alarme só neste commit. Agente de IA: não use --no-verify sem o OK
+explícito da pessoa.
+
+Para desinstalar o alarme: bash .agents/skills/sdd-higiene-dado/scripts/alarme.sh desinstalar
+
+RESULTADO: COMMIT RECUSADO
+→ [alarme] siga o "Como corrigir" da mensagem do alarme acima (tirar o arquivo desta versão, .gitignore ou dado fictício)
+→ se você conferiu e quer gravar mesmo assim, só desta vez: git commit --no-verify
+  Agente de IA: não use --no-verify sem o OK explícito da pessoa.
+[exit=1]
+$ cd /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f8-hooks/8e011512-3e64-4505-a0ff-235ac598d20c/scratchpad/aval2/s3-alarme && out=$(PATH=/bin:/usr/bin git commit -q -m so-alarme 2>&1); rc=$?; echo cabecalho-alarme=$(printf '%s\n' "$out" | grep -c 'commit recusado pelo alarme da sdd-higiene-dado'); echo encontrei-o-que-nao-pode=$(printf '%s\n' "$out" | grep -c 'Encontrei o que não pode entrar'); echo por-que-importa-do-dispatcher=$(printf '%s\n' "$out" | grep -c '^Por que importa:$'); echo resultado=$(printf '%s\n' "$out" | grep -c 'RESULTADO: COMMIT RECUSADO'); echo seta-alarme=$(printf '%s\n' "$out" | grep -c '^→ \[alarme\]'); echo setas-total=$(printf '%s\n' "$out" | grep -c '^→'); echo ultima-seta="$(printf '%s\n' "$out" | grep '^→' | tail -1)"; echo linhas-em-branco-consecutivas=$(printf '%s\n' "$out" | awk 'NF==0{b++; if(b>=3)c++} NF{b=0} END{print c+0}'); exit $rc
+cabecalho-alarme=1
+encontrei-o-que-nao-pode=0
+por-que-importa-do-dispatcher=0
+resultado=1
+seta-alarme=1
+setas-total=2
+ultima-seta=→ se você conferiu e quer gravar mesmo assim, só desta vez: git commit --no-verify
+linhas-em-branco-consecutivas=0
+[exit=1]
+$ cd /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f8-hooks/8e011512-3e64-4505-a0ff-235ac598d20c/scratchpad/aval2/s3-alarme && git reset -q HEAD -- .env CLAUDE.md && rm -f .env CLAUDE.md && printf 'ok\n' > limpo.txt && git add limpo.txt && out=$(PATH=/bin:/usr/bin git commit -q -m limpo 2>&1); rc=$?; echo "bytes-de-saida=${#out}"; git log --oneline -1; exit $rc
+bytes-de-saida=0
+3147e46 limpo
+[exit=0]

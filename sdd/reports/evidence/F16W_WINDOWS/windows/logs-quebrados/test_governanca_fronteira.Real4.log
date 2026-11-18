@@ -1,0 +1,40 @@
+test_link_criado_no_permitido_nao_autoriza_outro_arquivo (test_governanca_fronteira.Real4.test_link_criado_no_permitido_nao_autoriza_outro_arquivo) ... FAIL
+
+
+
+======================================================================
+
+FAIL: test_link_criado_no_permitido_nao_autoriza_outro_arquivo (test_governanca_fronteira.Real4.test_link_criado_no_permitido_nao_autoriza_outro_arquivo)
+
+----------------------------------------------------------------------
+
+Traceback (most recent call last):
+
+  File "D:\a\sdd-open\sdd-open\tests\test_governanca_fronteira.py", line 180, in test_link_criado_no_permitido_nao_autoriza_outro_arquivo
+
+    self.snap("antes")
+
+  File "D:\a\sdd-open\sdd-open\tests\test_governanca_fronteira.py", line 36, in snap
+
+    self.assertEqual(rc, 0, out)
+
+AssertionError: 64 != 0 : incluir fora do worktree: C:\Users\runneradmin\AppData\Local\Temp\sdd-open-fit1fjb9\w\sdd\reviews\REL.md
+
+uso: D:\a\sdd-open\sdd-open\sdd\bin\governanca-fronteira.sh --snapshot <raiz-do-worktree> <arquivo-do-snapshot> [incluir�] | --comparar <antes> <depois> <permitido>�
+
+RESULTADO: ERRO DE USO
+
+\u2192 a fronteira N�O foi verificada; corrija a chamada e rode de novo.
+
+
+
+
+
+----------------------------------------------------------------------
+
+Ran 1 test in 0.410s
+
+
+
+FAILED (failures=1)
+

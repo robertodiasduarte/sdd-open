@@ -1,0 +1,6 @@
+$ (código de e451071 + testes da rodada 3) python3 -m unittest test_f23_custo.Rodada3
+FAIL: test_agente_sem_leitor_deixa_sem_fase_n_d (test_f23_custo.Rodada3)
+FAIL: test_papel_que_rodou_sem_custo_gravado_e_n_d (test_f23_custo.Rodada3)
+FAIL: test_pasta_citada_pelo_ledger_e_ausente_e_n_d (test_f23_custo.Rodada3)
+Ran 3 tests in 0.415s
+FAILED (failures=3)

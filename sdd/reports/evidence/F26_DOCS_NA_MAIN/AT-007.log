@@ -1,0 +1,10 @@
+$ SDD_TEST_BASH=/bin/bash /usr/bin/python3 -B -m unittest -v -k at007 test_f26_docs_na_main
+# AT-007 · HEAD e99136d · cópia de git archive HEAD · piso (/usr/bin/python3, /bin/bash) (a suíte inteira no piso: VERIFY-GATE-e99136d.log)
+test_at007_init_de_um_clone_com_documentos_nao_instala_documento (test_f26_docs_na_main.SemRegressao) ... ok
+test_at007_push_so_de_documento_nao_publica_e_com_playbook_publica (test_f26_docs_na_main.SemRegressao) ... ok
+
+----------------------------------------------------------------------
+Ran 2 tests in 3.750s
+
+OK
+[exit=0]

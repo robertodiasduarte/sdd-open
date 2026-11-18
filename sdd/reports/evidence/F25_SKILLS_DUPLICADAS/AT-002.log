@@ -1,0 +1,11 @@
+$ cd <git archive HEAD>/tests && /usr/bin/python3 -B -m unittest -v test_f25_skills_duplicadas.AT002Codex
+test_as_4_pastas_do_codex (test_f25_skills_duplicadas.AT002Codex) ... ok
+test_codex_home_troca_a_pasta_do_codex (test_f25_skills_duplicadas.AT002Codex) ... ok
+test_refaz_a_medicao_do_codex_sem_modelo (test_f25_skills_duplicadas.AT002Codex)
+O Codex instalado ainda lê exatamente as pastas que o checar.sh varre (EXP-2): sem modelo, sem rede. ... ok
+
+----------------------------------------------------------------------
+Ran 3 tests in 3.467s
+
+OK
+[exit=0]

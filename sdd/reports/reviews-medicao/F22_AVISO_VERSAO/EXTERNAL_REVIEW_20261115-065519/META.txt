@@ -1,0 +1,46 @@
+worktree                : /Users/robertoduarte/rdd-worktrees/sdd-open-f22-aviso-versao
+branch                  : feat/f22-aviso-versao
+protocolo               : cadeia REVISOR → AUDITOR; paralelo não existe
+base                    : v2.16.1
+merge_base              : c2690d55b1b6abac7af0d11a14b8ab1d65504bc8
+head                    : d1eda3eb1fb6e3404069248ed7b9f587056d08c0
+paths                   : -
+diff_sha256             : fac4b52bff47025a71a8e2b6e9d232411bfc3131413c2a77785b7780a47fb1f4
+diff                    : 154KB (41 arquivo(s))
+contexto                : 74KB (3 doc SDD)
+docs_sdd                : BRAINSTORM_F22_AVISO_VERSAO.md, DEFINE_F22_AVISO_VERSAO.md, DESIGN_F22_AVISO_VERSAO.md
+contexto_cortado        : -
+diversidade             : vendor
+reviewer_engine_default : claude
+reviewer_engine_efetivo : claude
+reviewer_fallback_usado : nao
+reviewer_motivo         : -
+reviewer_exit           : 0
+reviewer_segundos       : 229
+reviewer_achados        : 6
+reviewer_tokens_entrada : 118155
+reviewer_tokens_saida   : 24153
+reviewer_tokens_total   : 142308
+reviewer_modelo         : claude-opus-5-5
+reviewer_custo          : US$ 1.4736
+revisor1_raso           : nao
+gatilho_2o_revisor      : 41 arquivos (limiar 8) — dispensado por --no-revisor2
+revisor2_engine         : -
+auditor_engine_default  : openrouter
+auditor_engine_efetivo  : openrouter
+auditor_fallback_usado  : nao
+auditor_motivo          : -
+auditor_exit            : 0
+auditor_segundos        : 195
+auditor_vereditos       : 6
+auditor_tokens_entrada  : 79317
+auditor_tokens_saida    : 11929
+auditor_tokens_total    : 91246
+auditor_modelo          : qwen/qwen3.7-plus via Alibaba
+auditor_custo           : US$ 0.0407
+convergencia_1o_passe   : sim
+desempate_alvo          : -
+desempate_engine        : -
+desempate_decisao       : -
+custo_total             : US$ 1.5143
+quando                  : 20261115-065519

@@ -1,0 +1,9 @@
+$ python3 -B -m unittest -v test_f23b3_revisao.AT003Conferir   # HEAD 5e110b2
+test_com_risco_e_no_revisor2_continua_exigindo_motivo (test_f23b3_revisao.AT003Conferir.test_com_risco_e_no_revisor2_continua_exigindo_motivo) ... ok
+test_sem_risco_e_10_arquivos_o_conferir_aceita_sem_flag (test_f23b3_revisao.AT003Conferir.test_sem_risco_e_10_arquivos_o_conferir_aceita_sem_flag) ... ok
+
+----------------------------------------------------------------------
+Ran 2 tests in 0.990s
+
+OK
+[exit=0]

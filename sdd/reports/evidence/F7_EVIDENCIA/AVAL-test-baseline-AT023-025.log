@@ -1,0 +1,340 @@
+$ /bin/bash /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f7-evidencia/17ba90ab-414d-4dcc-9a02-576aad29f6c6/scratchpad/p/tb.sh /Users/robertoduarte/rdd-worktrees/sdd-open-f7-aval
+### AT-023 fixtures dos 5 formatos: 1 conhecida + 1 nova -> 2 nomeando só a nova; as 2 conhecidas -> 0
+--- unittest (baseline: test_conta.Caso.test_conhecido)
+$ bash sdd/bin/test-baseline.sh --cmd cat '/Users/robertoduarte/rdd-worktrees/sdd-open-f7-aval/sdd/fixtures/evidencia/testes-unittest.txt'; exit 1
+▶ testes: cat '/Users/robertoduarte/rdd-worktrees/sdd-open-f7-aval/sdd/fixtures/evidencia/testes-unittest.txt'; exit 1
+🛑 nova: test_conta.Caso.test_novo
+ℹ️  conhecida: test_conta.Caso.test_conhecido
+⚠️  baseline não podado (execução parcial)
+🛑 1 falha(s) nova(s); 1 conhecida(s).
+RESULTADO: VERMELHO
+→ corrija as falhas novas; aceitar uma é decisão sua: bash sdd/bin/test-baseline.sh --aceitar '<id>'
+[exit=2]
+
+$ bash sdd/bin/test-baseline.sh --cmd cat '/Users/robertoduarte/rdd-worktrees/sdd-open-f7-aval/sdd/fixtures/evidencia/testes-unittest.txt'; exit 1
+▶ testes: cat '/Users/robertoduarte/rdd-worktrees/sdd-open-f7-aval/sdd/fixtures/evidencia/testes-unittest.txt'; exit 1
+ℹ️  conhecida: test_conta.Caso.test_conhecido
+ℹ️  conhecida: test_conta.Caso.test_novo
+⚠️  baseline não podado (execução parcial)
+✅ nenhuma falha nova (2 conhecida(s)).
+RESULTADO: VERDE
+→ siga para o próximo passo.
+[exit=0]
+
+--- pytest (baseline: tests/test_conta.py::test_conhecido)
+$ bash sdd/bin/test-baseline.sh --cmd cat '/Users/robertoduarte/rdd-worktrees/sdd-open-f7-aval/sdd/fixtures/evidencia/testes-pytest.txt'; exit 1
+▶ testes: cat '/Users/robertoduarte/rdd-worktrees/sdd-open-f7-aval/sdd/fixtures/evidencia/testes-pytest.txt'; exit 1
+🛑 nova: tests/test_conta.py::test_novo
+ℹ️  conhecida: tests/test_conta.py::test_conhecido
+⚠️  baseline não podado (execução parcial)
+🛑 1 falha(s) nova(s); 1 conhecida(s).
+RESULTADO: VERMELHO
+→ corrija as falhas novas; aceitar uma é decisão sua: bash sdd/bin/test-baseline.sh --aceitar '<id>'
+[exit=2]
+
+$ bash sdd/bin/test-baseline.sh --cmd cat '/Users/robertoduarte/rdd-worktrees/sdd-open-f7-aval/sdd/fixtures/evidencia/testes-pytest.txt'; exit 1
+▶ testes: cat '/Users/robertoduarte/rdd-worktrees/sdd-open-f7-aval/sdd/fixtures/evidencia/testes-pytest.txt'; exit 1
+ℹ️  conhecida: tests/test_conta.py::test_conhecido
+ℹ️  conhecida: tests/test_conta.py::test_novo
+⚠️  baseline não podado (execução parcial)
+✅ nenhuma falha nova (2 conhecida(s)).
+RESULTADO: VERDE
+→ siga para o próximo passo.
+[exit=0]
+
+--- jest (baseline: Conta › conhecido)
+$ bash sdd/bin/test-baseline.sh --cmd cat '/Users/robertoduarte/rdd-worktrees/sdd-open-f7-aval/sdd/fixtures/evidencia/testes-jest.txt'; exit 1
+▶ testes: cat '/Users/robertoduarte/rdd-worktrees/sdd-open-f7-aval/sdd/fixtures/evidencia/testes-jest.txt'; exit 1
+🛑 nova: Conta › novo
+ℹ️  conhecida: Conta › conhecido
+⚠️  baseline não podado (execução parcial)
+🛑 1 falha(s) nova(s); 1 conhecida(s).
+RESULTADO: VERMELHO
+→ corrija as falhas novas; aceitar uma é decisão sua: bash sdd/bin/test-baseline.sh --aceitar '<id>'
+[exit=2]
+
+$ bash sdd/bin/test-baseline.sh --cmd cat '/Users/robertoduarte/rdd-worktrees/sdd-open-f7-aval/sdd/fixtures/evidencia/testes-jest.txt'; exit 1
+▶ testes: cat '/Users/robertoduarte/rdd-worktrees/sdd-open-f7-aval/sdd/fixtures/evidencia/testes-jest.txt'; exit 1
+ℹ️  conhecida: Conta › conhecido
+ℹ️  conhecida: Conta › novo
+⚠️  baseline não podado (execução parcial)
+✅ nenhuma falha nova (2 conhecida(s)).
+RESULTADO: VERDE
+→ siga para o próximo passo.
+[exit=0]
+
+--- vitest (baseline: src/conta.test.ts > Conta > conhecido)
+$ bash sdd/bin/test-baseline.sh --cmd cat '/Users/robertoduarte/rdd-worktrees/sdd-open-f7-aval/sdd/fixtures/evidencia/testes-vitest.txt'; exit 1
+▶ testes: cat '/Users/robertoduarte/rdd-worktrees/sdd-open-f7-aval/sdd/fixtures/evidencia/testes-vitest.txt'; exit 1
+🛑 nova: src/conta.test.ts > Conta > novo
+ℹ️  conhecida: src/conta.test.ts > Conta > conhecido
+⚠️  baseline não podado (execução parcial)
+🛑 1 falha(s) nova(s); 1 conhecida(s).
+RESULTADO: VERMELHO
+→ corrija as falhas novas; aceitar uma é decisão sua: bash sdd/bin/test-baseline.sh --aceitar '<id>'
+[exit=2]
+
+$ bash sdd/bin/test-baseline.sh --cmd cat '/Users/robertoduarte/rdd-worktrees/sdd-open-f7-aval/sdd/fixtures/evidencia/testes-vitest.txt'; exit 1
+▶ testes: cat '/Users/robertoduarte/rdd-worktrees/sdd-open-f7-aval/sdd/fixtures/evidencia/testes-vitest.txt'; exit 1
+ℹ️  conhecida: src/conta.test.ts > Conta > conhecido
+ℹ️  conhecida: src/conta.test.ts > Conta > novo
+⚠️  baseline não podado (execução parcial)
+✅ nenhuma falha nova (2 conhecida(s)).
+RESULTADO: VERDE
+→ siga para o próximo passo.
+[exit=0]
+
+--- go (baseline: TestConhecido)
+$ bash sdd/bin/test-baseline.sh --cmd cat '/Users/robertoduarte/rdd-worktrees/sdd-open-f7-aval/sdd/fixtures/evidencia/testes-go.txt'; exit 1
+▶ testes: cat '/Users/robertoduarte/rdd-worktrees/sdd-open-f7-aval/sdd/fixtures/evidencia/testes-go.txt'; exit 1
+🛑 nova: TestNovo
+ℹ️  conhecida: TestConhecido
+⚠️  baseline não podado (execução parcial)
+🛑 1 falha(s) nova(s); 1 conhecida(s).
+RESULTADO: VERMELHO
+→ corrija as falhas novas; aceitar uma é decisão sua: bash sdd/bin/test-baseline.sh --aceitar '<id>'
+[exit=2]
+
+$ bash sdd/bin/test-baseline.sh --cmd cat '/Users/robertoduarte/rdd-worktrees/sdd-open-f7-aval/sdd/fixtures/evidencia/testes-go.txt'; exit 1
+▶ testes: cat '/Users/robertoduarte/rdd-worktrees/sdd-open-f7-aval/sdd/fixtures/evidencia/testes-go.txt'; exit 1
+ℹ️  conhecida: TestConhecido
+ℹ️  conhecida: TestNovo
+⚠️  baseline não podado (execução parcial)
+✅ nenhuma falha nova (2 conhecida(s)).
+RESULTADO: VERDE
+→ siga para o próximo passo.
+[exit=0]
+
+--- deno (baseline: conta_test.ts::conhecido)
+$ bash sdd/bin/test-baseline.sh --cmd cat '/Users/robertoduarte/rdd-worktrees/sdd-open-f7-aval/sdd/fixtures/evidencia/testes-deno.txt'; exit 1
+▶ testes: cat '/Users/robertoduarte/rdd-worktrees/sdd-open-f7-aval/sdd/fixtures/evidencia/testes-deno.txt'; exit 1
+🛑 nova: conta_test.ts::novo
+ℹ️  conhecida: conta_test.ts::conhecido
+⚠️  baseline não podado (execução parcial)
+🛑 1 falha(s) nova(s); 1 conhecida(s).
+RESULTADO: VERMELHO
+→ corrija as falhas novas; aceitar uma é decisão sua: bash sdd/bin/test-baseline.sh --aceitar '<id>'
+[exit=2]
+
+$ bash sdd/bin/test-baseline.sh --cmd cat '/Users/robertoduarte/rdd-worktrees/sdd-open-f7-aval/sdd/fixtures/evidencia/testes-deno.txt'; exit 1
+▶ testes: cat '/Users/robertoduarte/rdd-worktrees/sdd-open-f7-aval/sdd/fixtures/evidencia/testes-deno.txt'; exit 1
+ℹ️  conhecida: conta_test.ts::conhecido
+ℹ️  conhecida: conta_test.ts::novo
+⚠️  baseline não podado (execução parcial)
+✅ nenhuma falha nova (2 conhecida(s)).
+RESULTADO: VERDE
+→ siga para o próximo passo.
+[exit=0]
+
+### AT-023 saídas REAIS: unittest 3.9 (/usr/bin/python3), unittest 3.13, deno test
+--- /usr/bin/python3: saída real
+ERROR: test_erro (test_real.Caso)
+FAIL: test_conhecido (test_real.Caso)
+FAIL: test_novo (test_real.Caso)
+$ bash sdd/bin/test-baseline.sh --cmd /usr/bin/python3 -B -m unittest discover -s t -p 'test_real.py'
+▶ testes: /usr/bin/python3 -B -m unittest discover -s t -p 'test_real.py'
+🛑 nova: test_real.Caso.test_erro
+🛑 nova: test_real.Caso.test_novo
+ℹ️  conhecida: test_real.Caso.test_conhecido
+⚠️  baseline não podado (execução parcial)
+🛑 2 falha(s) nova(s); 1 conhecida(s).
+RESULTADO: VERMELHO
+→ corrija as falhas novas; aceitar uma é decisão sua: bash sdd/bin/test-baseline.sh --aceitar '<id>'
+[exit=2]
+
+--- /opt/homebrew/bin/python3.13: saída real
+ERROR: test_erro (test_real.Caso.test_erro)
+FAIL: test_conhecido (test_real.Caso.test_conhecido)
+FAIL: test_novo (test_real.Caso.test_novo)
+$ bash sdd/bin/test-baseline.sh --cmd /opt/homebrew/bin/python3.13 -B -m unittest discover -s t -p 'test_real.py'
+▶ testes: /opt/homebrew/bin/python3.13 -B -m unittest discover -s t -p 'test_real.py'
+🛑 nova: test_real.Caso.test_erro
+🛑 nova: test_real.Caso.test_novo
+ℹ️  conhecida: test_real.Caso.test_conhecido
+⚠️  baseline não podado (execução parcial)
+🛑 2 falha(s) nova(s); 1 conhecida(s).
+RESULTADO: VERMELHO
+→ corrija as falhas novas; aceitar uma é decisão sua: bash sdd/bin/test-baseline.sh --aceitar '<id>'
+[exit=2]
+
+--- deno: saída real (cabeça das falhas)
+conhecido => ./conta_test.ts:1:6
+Deno.test("conhecido", () => { if (1 !== 2) throw new Error("x"); });
+novo => ./conta_test.ts:2:6
+Deno.test("novo", () => { if (3 !== 4) throw new Error("y"); });
+conhecido => ./conta_test.ts:1:6
+novo => ./conta_test.ts:2:6
+$ bash sdd/bin/test-baseline.sh --cmd NO_COLOR=1 deno test --no-check conta_test.ts
+▶ testes: NO_COLOR=1 deno test --no-check conta_test.ts
+🛑 nova: conta_test.ts::novo
+ℹ️  conhecida: conta_test.ts::conhecido
+⚠️  baseline não podado (execução parcial)
+🛑 1 falha(s) nova(s); 1 conhecida(s).
+RESULTADO: VERMELHO
+→ corrija as falhas novas; aceitar uma é decisão sua: bash sdd/bin/test-baseline.sh --aceitar '<id>'
+[exit=2]
+
+### AT-024 execução completa (project.test_cmd), sem falha nova: poda e lista o que sarou
+$ bash sdd/bin/test-baseline.sh
+▶ testes: cat /Users/robertoduarte/rdd-worktrees/sdd-open-f7-aval/sdd/fixtures/evidencia/testes-go.txt; exit 1
+ℹ️  conhecida: TestConhecido
+ℹ️  conhecida: TestNovo
+✅ sarou — removido do baseline (commite sdd/baselines/tests.txt): TestSarou
+✅ nenhuma falha nova (2 conhecida(s)).
+RESULTADO: VERDE
+→ siga para o próximo passo.
+[exit=0]
+
+--- baseline depois:
+# comentário fica
+TestConhecido
+TestNovo
+### AT-024 --cmd: nada sai, arquivo byte-idêntico e aviso
+$ bash sdd/bin/test-baseline.sh --cmd cat '/Users/robertoduarte/rdd-worktrees/sdd-open-f7-aval/sdd/fixtures/evidencia/testes-go.txt'; exit 1
+▶ testes: cat '/Users/robertoduarte/rdd-worktrees/sdd-open-f7-aval/sdd/fixtures/evidencia/testes-go.txt'; exit 1
+ℹ️  conhecida: TestConhecido
+ℹ️  conhecida: TestNovo
+⚠️  baseline não podado (execução parcial)
+✅ nenhuma falha nova (2 conhecida(s)).
+RESULTADO: VERDE
+→ siga para o próximo passo.
+[exit=0]
+
+byte-idêntico
+### AT-024 resultado 2 (falha nova) na execução completa: nada sai
+$ bash sdd/bin/test-baseline.sh
+▶ testes: cat /Users/robertoduarte/rdd-worktrees/sdd-open-f7-aval/sdd/fixtures/evidencia/testes-go.txt; exit 1
+🛑 nova: TestNovo
+ℹ️  conhecida: TestConhecido
+⚠️  baseline não podado (execução parcial)
+🛑 1 falha(s) nova(s); 1 conhecida(s).
+RESULTADO: VERMELHO
+→ corrija as falhas novas; aceitar uma é decisão sua: bash sdd/bin/test-baseline.sh --aceitar '<id>'
+[exit=2]
+
+byte-idêntico
+### AT-024 resultado 3 na execução completa: nada sai
+$ bash sdd/bin/test-baseline.sh
+▶ testes: echo boom; exit 1
+⚠️  o comando saiu 1 e nenhuma falha foi reconhecida (formatos: unittest, pytest, jest, vitest, go, deno).
+⚠️  baseline não podado (execução parcial)
+RESULTADO: INCONCLUSIVO
+→ rode onde a ferramenta exista, ou confira a saída do comando; isto não é verde.
+[exit=3]
+
+byte-idêntico
+### AT-024 --touched: aborta só por falha nova que cita arquivo de teste tocado; não poda
+--- sem tocar tests/test_conta.py: falha nova vira ⚠️ e sai 0
+$ bash sdd/bin/test-baseline.sh --touched --base base0
+▶ testes: cat /Users/robertoduarte/rdd-worktrees/sdd-open-f7-aval/sdd/fixtures/evidencia/testes-pytest.txt; exit 1
+⚠️  nova, fora do diff (não aborta com --touched): tests/test_conta.py::test_novo
+ℹ️  conhecida: tests/test_conta.py::test_conhecido
+⚠️  baseline não podado (execução parcial)
+✅ nenhuma falha nova (1 conhecida(s)).
+RESULTADO: VERDE
+→ siga para o próximo passo.
+[exit=0]
+
+--- tocando tests/test_conta.py (não rastreado): falha nova aborta 2
+$ bash sdd/bin/test-baseline.sh --touched --base base0
+▶ testes: cat /Users/robertoduarte/rdd-worktrees/sdd-open-f7-aval/sdd/fixtures/evidencia/testes-pytest.txt; exit 1
+🛑 nova: tests/test_conta.py::test_novo
+ℹ️  conhecida: tests/test_conta.py::test_conhecido
+⚠️  baseline não podado (execução parcial)
+🛑 1 falha(s) nova(s); 1 conhecida(s).
+RESULTADO: VERMELHO
+→ corrija as falhas novas; aceitar uma é decisão sua: bash sdd/bin/test-baseline.sh --aceitar '<id>'
+[exit=2]
+
+byte-idêntico
+--- --touched com --base inválida
+$ bash sdd/bin/test-baseline.sh --touched --base nao-existe
+🛑 --touched: git diff nao-existe...HEAD falhou (base inválida?)
+RESULTADO: ERRO DE USO
+→ uso: sdd/bin/test-baseline.sh [--cmd <comando>] [--touched [--base <ref>]] [--aceitar <id>]
+[exit=64]
+
+### AT-024 --aceitar não roda os testes
+$ bash sdd/bin/test-baseline.sh --aceitar tests/test_conta.py::test_novo
+✅ aceito: `tests/test_conta.py::test_novo` entrou em sdd/baselines/tests.txt como falha conhecida.
+RESULTADO: VERDE
+→ commite sdd/baselines/tests.txt junto com o motivo no BUILD_REPORT.
+[exit=0]
+
+ls: RODOU: No such file or directory
+TestSarou
+tests/test_conta.py::test_novo
+$ bash sdd/bin/test-baseline.sh --aceitar tests/test_conta.py::test_novo
+ℹ️  `tests/test_conta.py::test_novo` já está no baseline.
+RESULTADO: VERDE
+→ commite sdd/baselines/tests.txt junto com o motivo no BUILD_REPORT.
+[exit=0]
+
+### AT-025 comando sai ≠0 sem falha reconhecida -> 3 INCONCLUSIVO
+$ bash sdd/bin/test-baseline.sh --cmd echo 'Segmentation fault'; exit 139
+▶ testes: echo 'Segmentation fault'; exit 139
+⚠️  o comando saiu 139 e nenhuma falha foi reconhecida (formatos: unittest, pytest, jest, vitest, go, deno).
+⚠️  baseline não podado (execução parcial)
+RESULTADO: INCONCLUSIVO
+→ rode onde a ferramenta exista, ou confira a saída do comando; isto não é verde.
+[exit=3]
+
+### AT-025 comando ausente -> 3
+$ bash sdd/bin/test-baseline.sh --cmd ferramenta_que_nao_existe_xyz
+▶ testes: ferramenta_que_nao_existe_xyz
+⚠️  o comando saiu 127 e nenhuma falha foi reconhecida (formatos: unittest, pytest, jest, vitest, go, deno).
+⚠️  a ferramenta de teste não rodou (comando não encontrado).
+⚠️  baseline não podado (execução parcial)
+RESULTADO: INCONCLUSIVO
+→ rode onde a ferramenta exista, ou confira a saída do comando; isto não é verde.
+[exit=3]
+
+### AT-025 test_cmd vazio sem --cmd -> 0 PULADO
+$ bash sdd/bin/test-baseline.sh
+ℹ️  project.test_cmd vazio em sdd/config.yaml: não há comando de teste para comparar.
+RESULTADO: PULADO
+→ preencha project.test_cmd (ou passe --cmd) para usar o baseline de testes.
+[exit=0]
+
+--- sem config
+$ bash sdd/bin/test-baseline.sh
+ℹ️  project.test_cmd vazio em sdd/config.yaml: não há comando de teste para comparar.
+RESULTADO: PULADO
+→ preencha project.test_cmd (ou passe --cmd) para usar o baseline de testes.
+[exit=0]
+
+### uso -> 64
+$ bash sdd/bin/test-baseline.sh --cmd
+🛑 --cmd exige um comando
+RESULTADO: ERRO DE USO
+→ uso: sdd/bin/test-baseline.sh [--cmd <comando>] [--touched [--base <ref>]] [--aceitar <id>]
+[exit=64]
+
+$ bash sdd/bin/test-baseline.sh --xyz
+🛑 argumento inesperado: --xyz
+RESULTADO: ERRO DE USO
+→ uso: sdd/bin/test-baseline.sh [--cmd <comando>] [--touched [--base <ref>]] [--aceitar <id>]
+[exit=64]
+
+### borda (informativo): rc=0 e nenhuma falha, baseline com ids -> execução completa poda tudo
+$ bash sdd/bin/test-baseline.sh
+▶ testes: echo OK; exit 0
+✅ sarou — removido do baseline (commite sdd/baselines/tests.txt): A
+✅ sarou — removido do baseline (commite sdd/baselines/tests.txt): B
+✅ nenhuma falha nova (0 conhecida(s)).
+RESULTADO: VERDE
+→ siga para o próximo passo.
+[exit=0]
+
+--- baseline:
+### borda (informativo): go com falha de build num pacote + falha conhecida em outro
+project:
+  test_cmd: "printf %s\\n \"--- FAIL: TestConhecido (0.00s)\" \"FAIL\" \"# exemplo/outro\" \"outro/x.go:3:1: syntax error\" \"FAIL\texemplo/outro [build failed]\"; exit 1"
+$ bash sdd/bin/test-baseline.sh
+▶ testes: printf %s\\n \"--- FAIL: TestConhecido (0.00s)\" \"FAIL\" \"# exemplo/outro\" \"outro/x.go:3:1: syntax error\" \"FAIL\texemplo/outro [build failed]\"; exit 1
+⚠️  o comando saiu 2 e nenhuma falha foi reconhecida (formatos: unittest, pytest, jest, vitest, go, deno).
+⚠️  baseline não podado (execução parcial)
+RESULTADO: INCONCLUSIVO
+→ rode onde a ferramenta exista, ou confira a saída do comando; isto não é verde.
+[exit=3]
+[exit=0]

@@ -1,0 +1,8 @@
+$ bash /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f10-revisao/bd420f6e-558d-4962-a0c9-40cdfc2cbd27/scratchpad/p/sab.sh custo
+sabotado sdd/bin/adversarial-review.sh: '    return "assinatura" if d["cobranca"] == "assinatura" else "$?"' -> '    return "assinatura" if d["cobranca"] == "assinatura" else "US$ 0.0'
+FAIL: test_quatro_formas_e_nunca_zero_desconhecido (test_revisao.Custo)
+FAIL: test_gemini_e_modelo_explicito (test_revisao_adapters.Invocacao)
+Ran 122 tests in 62.632s
+FAILED (failures=2)
+[unittest rc=1]
+[exit=0]

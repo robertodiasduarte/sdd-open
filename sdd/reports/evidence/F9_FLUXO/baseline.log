@@ -1,0 +1,1037 @@
+$ T=$(mktemp -d) && git archive v2.2.9 | tar -x -C $T && cp tests/test_fluxo.py tests/test_decisoes_lint.py $T/tests/ && cd $T && SDD_TEST_BASH=/bin/bash /usr/bin/python3 -B -m unittest discover -s tests -p test_fluxo.py; SDD_TEST_BASH=/bin/bash /usr/bin/python3 -B -m unittest discover -s tests -p test_decisoes_lint.py
+FFEEFFFFFEFEFFFEEEEEEFFFFFFFFF
+======================================================================
+ERROR: test_ligado_desligado_e_invalido (test_fluxo.Estado) (valor=False)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.ogOmcyQtPI/tests/test_fluxo.py", line 271, in test_ligado_desligado_e_invalido
+    r = self.projeto(valor)
+  File "/private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.ogOmcyQtPI/tests/test_fluxo.py", line 38, in projeto
+    r = self.repo()
+  File "/private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.ogOmcyQtPI/tests/apoio.py", line 68, in repo
+    p.mkdir(parents=True)
+  File "/Library/Developer/CommandLineTools/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/pathlib.py", line 1313, in mkdir
+    self._accessor.mkdir(self, mode)
+FileExistsError: [Errno 17] File exists: '/private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/sdd-open-3rt58wdl/repo'
+
+======================================================================
+ERROR: test_ligado_desligado_e_invalido (test_fluxo.Estado) (valor=None)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.ogOmcyQtPI/tests/test_fluxo.py", line 271, in test_ligado_desligado_e_invalido
+    r = self.projeto(valor)
+  File "/private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.ogOmcyQtPI/tests/test_fluxo.py", line 38, in projeto
+    r = self.repo()
+  File "/private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.ogOmcyQtPI/tests/apoio.py", line 68, in repo
+    p.mkdir(parents=True)
+  File "/Library/Developer/CommandLineTools/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/pathlib.py", line 1313, in mkdir
+    self._accessor.mkdir(self, mode)
+FileExistsError: [Errno 17] File exists: '/private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/sdd-open-3rt58wdl/repo'
+
+======================================================================
+ERROR: test_ligado_desligado_e_invalido (test_fluxo.Estado)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.ogOmcyQtPI/tests/test_fluxo.py", line 276, in test_ligado_desligado_e_invalido
+    r = self.projeto(None)
+  File "/private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.ogOmcyQtPI/tests/test_fluxo.py", line 38, in projeto
+    r = self.repo()
+  File "/private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.ogOmcyQtPI/tests/apoio.py", line 68, in repo
+    p.mkdir(parents=True)
+  File "/Library/Developer/CommandLineTools/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/pathlib.py", line 1313, in mkdir
+    self._accessor.mkdir(self, mode)
+FileExistsError: [Errno 17] File exists: '/private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/sdd-open-3rt58wdl/repo'
+
+======================================================================
+ERROR: test_fluxo_encadeado_tem_o_contrato (test_fluxo.Fragmentos)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.ogOmcyQtPI/tests/test_fluxo.py", line 508, in test_fluxo_encadeado_tem_o_contrato
+    texto = ler(RAIZ / "sdd/templates/fragments/FLUXO_ENCADEADO.md")
+  File "/private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.ogOmcyQtPI/tests/test_fluxo.py", line 29, in ler
+    return Path(p).read_text(encoding="utf-8")
+  File "/Library/Developer/CommandLineTools/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/pathlib.py", line 1256, in read_text
+    with self.open(mode='r', encoding=encoding, errors=errors) as f:
+  File "/Library/Developer/CommandLineTools/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/pathlib.py", line 1242, in open
+    return io.open(self, mode, buffering, encoding, errors, newline,
+  File "/Library/Developer/CommandLineTools/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/pathlib.py", line 1110, in _opener
+    return self._accessor.open(self, flags, mode)
+FileNotFoundError: [Errno 2] No such file or directory: '/private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.ogOmcyQtPI/sdd/templates/fragments/FLUXO_ENCADEADO.md'
+
+======================================================================
+ERROR: test_review_invalida_nao_le_os_jsonl_e_sai_10 (test_fluxo.Loop)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.ogOmcyQtPI/tests/test_fluxo.py", line 129, in test_review_invalida_nao_le_os_jsonl_e_sai_10
+    shutil.copy(str(FX / "review-invalida/META.txt"), str(d / "META.txt"))
+  File "/Library/Developer/CommandLineTools/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/shutil.py", line 418, in copy
+    copyfile(src, dst, follow_symlinks=follow_symlinks)
+  File "/Library/Developer/CommandLineTools/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/shutil.py", line 264, in copyfile
+    with open(src, 'rb') as fsrc, open(dst, 'wb') as fdst:
+FileNotFoundError: [Errno 2] No such file or directory: '/private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.ogOmcyQtPI/sdd/fixtures/fluxo/review-invalida/META.txt'
+
+======================================================================
+ERROR: test_glob_do_slot_e_de_layers_sql_exigem (test_fluxo.ReviewDesign)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.ogOmcyQtPI/tests/test_fluxo.py", line 75, in test_glob_do_slot_e_de_layers_sql_exigem
+    base = ler(FX / "DESIGN_dispensavel.md")
+  File "/private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.ogOmcyQtPI/tests/test_fluxo.py", line 29, in ler
+    return Path(p).read_text(encoding="utf-8")
+  File "/Library/Developer/CommandLineTools/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/pathlib.py", line 1256, in read_text
+    with self.open(mode='r', encoding=encoding, errors=errors) as f:
+  File "/Library/Developer/CommandLineTools/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/pathlib.py", line 1242, in open
+    return io.open(self, mode, buffering, encoding, errors, newline,
+  File "/Library/Developer/CommandLineTools/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/pathlib.py", line 1110, in _opener
+    return self._accessor.open(self, flags, mode)
+FileNotFoundError: [Errno 2] No such file or directory: '/private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.ogOmcyQtPI/sdd/fixtures/fluxo/DESIGN_dispensavel.md'
+
+======================================================================
+ERROR: test_concordancia_e_artigo_por_documento (test_fluxo.Seguir)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.ogOmcyQtPI/tests/test_fluxo.py", line 301, in test_concordancia_e_artigo_por_documento
+    self.poe(r, "DEFINE_pronto.md", "DEFINE_X.md")
+  File "/private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.ogOmcyQtPI/tests/test_fluxo.py", line 46, in poe
+    shutil.copy(str(FX / fixture), str(alvo))
+  File "/Library/Developer/CommandLineTools/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/shutil.py", line 418, in copy
+    copyfile(src, dst, follow_symlinks=follow_symlinks)
+  File "/Library/Developer/CommandLineTools/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/shutil.py", line 264, in copyfile
+    with open(src, 'rb') as fsrc, open(dst, 'wb') as fdst:
+FileNotFoundError: [Errno 2] No such file or directory: '/private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.ogOmcyQtPI/sdd/fixtures/fluxo/DEFINE_pronto.md'
+
+======================================================================
+ERROR: test_design_segue_com_a_revisao_registrada_ou_dispensavel (test_fluxo.Seguir)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.ogOmcyQtPI/tests/test_fluxo.py", line 315, in test_design_segue_com_a_revisao_registrada_ou_dispensavel
+    self.poe(r, "DEFINE_pronto.md", "DEFINE_X.md")
+  File "/private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.ogOmcyQtPI/tests/test_fluxo.py", line 46, in poe
+    shutil.copy(str(FX / fixture), str(alvo))
+  File "/Library/Developer/CommandLineTools/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/shutil.py", line 418, in copy
+    copyfile(src, dst, follow_symlinks=follow_symlinks)
+  File "/Library/Developer/CommandLineTools/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/shutil.py", line 264, in copyfile
+    with open(src, 'rb') as fsrc, open(dst, 'wb') as fdst:
+FileNotFoundError: [Errno 2] No such file or directory: '/private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.ogOmcyQtPI/sdd/fixtures/fluxo/DEFINE_pronto.md'
+
+======================================================================
+ERROR: test_desligado_ou_sem_config_para_em_silencio_de_motivo (test_fluxo.Seguir) (autonomo=False)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.ogOmcyQtPI/tests/test_fluxo.py", line 365, in test_desligado_ou_sem_config_para_em_silencio_de_motivo
+    self.poe(r, "DEFINE_pronto.md", "DEFINE_X.md")
+  File "/private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.ogOmcyQtPI/tests/test_fluxo.py", line 46, in poe
+    shutil.copy(str(FX / fixture), str(alvo))
+  File "/Library/Developer/CommandLineTools/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/shutil.py", line 418, in copy
+    copyfile(src, dst, follow_symlinks=follow_symlinks)
+  File "/Library/Developer/CommandLineTools/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/shutil.py", line 264, in copyfile
+    with open(src, 'rb') as fsrc, open(dst, 'wb') as fdst:
+FileNotFoundError: [Errno 2] No such file or directory: '/private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.ogOmcyQtPI/sdd/fixtures/fluxo/DEFINE_pronto.md'
+
+======================================================================
+ERROR: test_desligado_ou_sem_config_para_em_silencio_de_motivo (test_fluxo.Seguir) (autonomo=None)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.ogOmcyQtPI/tests/test_fluxo.py", line 364, in test_desligado_ou_sem_config_para_em_silencio_de_motivo
+    r = self.projeto(autonomo)
+  File "/private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.ogOmcyQtPI/tests/test_fluxo.py", line 38, in projeto
+    r = self.repo()
+  File "/private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.ogOmcyQtPI/tests/apoio.py", line 68, in repo
+    p.mkdir(parents=True)
+  File "/Library/Developer/CommandLineTools/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/pathlib.py", line 1313, in mkdir
+    self._accessor.mkdir(self, mode)
+FileExistsError: [Errno 17] File exists: '/private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/sdd-open-9je4opn_/repo'
+
+======================================================================
+ERROR: test_para_por_cada_motivo (test_fluxo.Seguir)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.ogOmcyQtPI/tests/test_fluxo.py", line 330, in test_para_por_cada_motivo
+    self.poe(r, "DEFINE_pronto.md", "DEFINE_X.md")
+  File "/private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.ogOmcyQtPI/tests/test_fluxo.py", line 46, in poe
+    shutil.copy(str(FX / fixture), str(alvo))
+  File "/Library/Developer/CommandLineTools/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/shutil.py", line 418, in copy
+    copyfile(src, dst, follow_symlinks=follow_symlinks)
+  File "/Library/Developer/CommandLineTools/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/shutil.py", line 264, in copyfile
+    with open(src, 'rb') as fsrc, open(dst, 'wb') as fdst:
+FileNotFoundError: [Errno 2] No such file or directory: '/private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.ogOmcyQtPI/sdd/fixtures/fluxo/DEFINE_pronto.md'
+
+======================================================================
+ERROR: test_segue_com_tudo_pronto_e_a_linha_cabe_em_100 (test_fluxo.Seguir)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.ogOmcyQtPI/tests/test_fluxo.py", line 291, in test_segue_com_tudo_pronto_e_a_linha_cabe_em_100
+    self.poe(r, "DEFINE_pronto.md", "DEFINE_X.md")
+  File "/private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.ogOmcyQtPI/tests/test_fluxo.py", line 46, in poe
+    shutil.copy(str(FX / fixture), str(alvo))
+  File "/Library/Developer/CommandLineTools/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/shutil.py", line 418, in copy
+    copyfile(src, dst, follow_symlinks=follow_symlinks)
+  File "/Library/Developer/CommandLineTools/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/shutil.py", line 264, in copyfile
+    with open(src, 'rb') as fsrc, open(dst, 'wb') as fdst:
+FileNotFoundError: [Errno 2] No such file or directory: '/private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.ogOmcyQtPI/sdd/fixtures/fluxo/DEFINE_pronto.md'
+
+======================================================================
+ERROR: test_uso_errado_e_slot_invalido_saem_64 (test_fluxo.Seguir)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.ogOmcyQtPI/tests/test_fluxo.py", line 373, in test_uso_errado_e_slot_invalido_saem_64
+    self.poe(r, "DEFINE_pronto.md", "DEFINE_X.md")
+  File "/private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.ogOmcyQtPI/tests/test_fluxo.py", line 46, in poe
+    shutil.copy(str(FX / fixture), str(alvo))
+  File "/Library/Developer/CommandLineTools/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/shutil.py", line 418, in copy
+    copyfile(src, dst, follow_symlinks=follow_symlinks)
+  File "/Library/Developer/CommandLineTools/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/shutil.py", line 264, in copyfile
+    with open(src, 'rb') as fsrc, open(dst, 'wb') as fdst:
+FileNotFoundError: [Errno 2] No such file or directory: '/private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.ogOmcyQtPI/sdd/fixtures/fluxo/DEFINE_pronto.md'
+
+======================================================================
+ERROR: test_self_test_fica_vermelho_com_fixture_trocada (test_fluxo.SelfTest)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.ogOmcyQtPI/tests/test_fluxo.py", line 427, in test_self_test_fica_vermelho_com_fixture_trocada
+    shutil.copy(str(FX / "DESIGN_novos.md"), str(copia / "sdd/fixtures/fluxo/DESIGN_dispensavel.md"))
+  File "/Library/Developer/CommandLineTools/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/shutil.py", line 418, in copy
+    copyfile(src, dst, follow_symlinks=follow_symlinks)
+  File "/Library/Developer/CommandLineTools/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/shutil.py", line 264, in copyfile
+    with open(src, 'rb') as fsrc, open(dst, 'wb') as fdst:
+FileNotFoundError: [Errno 2] No such file or directory: '/private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.ogOmcyQtPI/sdd/fixtures/fluxo/DESIGN_novos.md'
+
+======================================================================
+FAIL: test_brief_ja_no_destino_por_caminho_relativo_e_absoluto (test_fluxo.Despachar) (caminho='sdd/reports/briefs/BRIEF_avaliador_X.md')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.ogOmcyQtPI/tests/test_fluxo.py", line 249, in test_brief_ja_no_destino_por_caminho_relativo_e_absoluto
+    self.assertEqual(rc, 40, out)
+AssertionError: 127 != 40 : /bin/bash: /private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.ogOmcyQtPI/sdd/bin/sdd-fluxo.sh: No such file or directory
+
+
+======================================================================
+FAIL: test_brief_ja_no_destino_por_caminho_relativo_e_absoluto (test_fluxo.Despachar) (caminho='/private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/sdd-open-nrzm7dj9/repo/sdd/reports/briefs/BRIEF_avaliador_X.md')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.ogOmcyQtPI/tests/test_fluxo.py", line 249, in test_brief_ja_no_destino_por_caminho_relativo_e_absoluto
+    self.assertEqual(rc, 40, out)
+AssertionError: 127 != 40 : /bin/bash: /private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.ogOmcyQtPI/sdd/bin/sdd-fluxo.sh: No such file or directory
+
+
+======================================================================
+FAIL: test_erros_saem_64_e_nada_e_gravado (test_fluxo.Despachar) (args=['avaliador', 'X', '/private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/sdd-open-tlff4srb/nao-existe.md'])
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.ogOmcyQtPI/tests/test_fluxo.py", line 261, in test_erros_saem_64_e_nada_e_gravado
+    self.assertEqual(rc, 64, out)
+AssertionError: 127 != 64 : /bin/bash: /private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.ogOmcyQtPI/sdd/bin/sdd-fluxo.sh: No such file or directory
+
+
+======================================================================
+FAIL: test_erros_saem_64_e_nada_e_gravado (test_fluxo.Despachar) (args=['avaliador', 'X', '/private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/sdd-open-tlff4srb/vazio.md'])
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.ogOmcyQtPI/tests/test_fluxo.py", line 261, in test_erros_saem_64_e_nada_e_gravado
+    self.assertEqual(rc, 64, out)
+AssertionError: 127 != 64 : /bin/bash: /private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.ogOmcyQtPI/sdd/bin/sdd-fluxo.sh: No such file or directory
+
+
+======================================================================
+FAIL: test_erros_saem_64_e_nada_e_gravado (test_fluxo.Despachar) (args=['../fora', 'X', '/private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.ogOmcyQtPI/sdd/fixtures/fluxo/brief-avaliador.md'])
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.ogOmcyQtPI/tests/test_fluxo.py", line 261, in test_erros_saem_64_e_nada_e_gravado
+    self.assertEqual(rc, 64, out)
+AssertionError: 127 != 64 : /bin/bash: /private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.ogOmcyQtPI/sdd/bin/sdd-fluxo.sh: No such file or directory
+
+
+======================================================================
+FAIL: test_erros_saem_64_e_nada_e_gravado (test_fluxo.Despachar) (args=['avaliador', 'X/Y', '/private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.ogOmcyQtPI/sdd/fixtures/fluxo/brief-avaliador.md'])
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.ogOmcyQtPI/tests/test_fluxo.py", line 261, in test_erros_saem_64_e_nada_e_gravado
+    self.assertEqual(rc, 64, out)
+AssertionError: 127 != 64 : /bin/bash: /private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.ogOmcyQtPI/sdd/bin/sdd-fluxo.sh: No such file or directory
+
+
+======================================================================
+FAIL: test_erros_saem_64_e_nada_e_gravado (test_fluxo.Despachar) (args=['avaliador', 'X'])
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.ogOmcyQtPI/tests/test_fluxo.py", line 261, in test_erros_saem_64_e_nada_e_gravado
+    self.assertEqual(rc, 64, out)
+AssertionError: 127 != 64 : /bin/bash: /private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.ogOmcyQtPI/sdd/bin/sdd-fluxo.sh: No such file or directory
+
+
+======================================================================
+FAIL: test_grava_o_brief_imprime_a_parada_e_sai_40 (test_fluxo.Despachar)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.ogOmcyQtPI/tests/test_fluxo.py", line 226, in test_grava_o_brief_imprime_a_parada_e_sai_40
+    self.assertEqual(rc, 40, out)
+AssertionError: 127 != 40 : /bin/bash: /private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.ogOmcyQtPI/sdd/bin/sdd-fluxo.sh: No such file or directory
+
+
+======================================================================
+FAIL: test_retorno_de_outro_papel_e_o_bloco_final (test_fluxo.Despachar)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.ogOmcyQtPI/tests/test_fluxo.py", line 238, in test_retorno_de_outro_papel_e_o_bloco_final
+    self.assertEqual(rc, 40, out)
+AssertionError: 127 != 40 : /bin/bash: /private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.ogOmcyQtPI/sdd/bin/sdd-fluxo.sh: No such file or directory
+
+
+======================================================================
+FAIL: test_ligado_desligado_e_invalido (test_fluxo.Estado) (valor=True)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.ogOmcyQtPI/tests/test_fluxo.py", line 273, in test_ligado_desligado_e_invalido
+    self.assertEqual(rc, esperado, out)
+AssertionError: 127 != 0 : /bin/bash: /private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.ogOmcyQtPI/sdd/bin/sdd-fluxo.sh: No such file or directory
+
+
+======================================================================
+FAIL: test_pergunta_decisao_tem_as_6_marcas_e_o_estado (test_fluxo.Fragmentos)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.ogOmcyQtPI/tests/test_fluxo.py", line 503, in test_pergunta_decisao_tem_as_6_marcas_e_o_estado
+    self.assertIn("| `%s` |" % marca, texto)
+AssertionError: '| `[D1 · não se desfaz]` |' not found in '# Fragmento — Pergunta de decisão e parada\n\n> Reusável. Lido pelo `references/como-falar.md` de cada skill e pelo bloco "O que precisa de você"\n> do `RESUMO_ETAPA.md`. É o **dono único** do formato: as skills apontam para cá e trazem só os\n> próprios exemplos. O `sdd/bin/skill-lint.py --conversa` confere as perguntas desses exemplos.\n\n## Por que existe\n\nQuem responde à skill, em geral, nunca usou git nem terminal, e decide sem abrir arquivo. Pergunta sem\nopção vira "pode" sem saber o que autoriza; opção sem efeito vira chute; e uma parada sem passos deixa a\npessoa sem saber o que fazer.\n\n## Pergunta de autorização\n\nQuando a skill precisa de um sim, de uma escolha entre caminhos conhecidos ou de um OK antes de algo que\nnão se desfaz:\n\n```markdown\n**Sua decisão** — **Posso gravar o DEFINE com estes 6 testes de aceitação?**\n- **sim** (recomendado) — gravo o arquivo e sigo para o Verify Gate: os 6 testes cobrem os 4 objetivos.\n- **mostrar antes** — mostro os 6 testes, um por linha, e pergunto de novo.\n- **não** — paro aqui; nada é gravado.\n- **não sei** — explico o que é um teste de aceitação com o teste 1 como exemplo.\n```\n\n1. A pergunta vai em negrito e termina em `?`. Ela é decidível sem abrir arquivo: o contexto necessário\n   está na própria resposta.\n2. Uma opção por linha, `- **rótulo** — efeito`. O efeito diz o que acontece, não o que a opção "é".\n3. A recomendada vem **primeiro**, com `(recomendado)` e o porquê no efeito. Exatamente uma.\n4. Números em vez de adjetivos: "6 testes", "3 arquivos", "leva uns 4 minutos"; nunca "alguns", "rápido".\n5. Identificadores técnicos (AT-003, LM-004, um SHA) só no fim do efeito, entre parênteses: `(ref: AT-003)`.\n   A frase tem de fazer sentido sem eles.\n6. Sempre a opção **não sei**: a skill responde à dúvida e repete as opções.\n7. Nunca uma opção **Outro** escrita. Quem quer outra coisa diz, e a resposta que não casa com nenhuma\n   opção é tratada como dúvida: responder e repetir as opções. Se a ferramenta de pergunta do agente\n   acrescentar um campo livre sozinha, ele continua lá; a skill não escreve um.\n8. **Eco** de 1 linha: no "O que foi feito" da resposta seguinte, o eco registra a escolha: *"Você escolheu\n   **sim**: gravei o DEFINE com os 6 testes."*\n9. Classe da decisão: reservado. Uma versão futura do pacote marca a pergunta com `[Dn]` antes do\n   negrito; até lá, não escreva a marca.\n\n## Pergunta aberta\n\nQuando a resposta não cabe em opções (um nome, um número, um caminho):\n\n```markdown\n**Sua decisão** — **Qual é o tempo máximo aceitável para processar um extrato?** Responda com um número\ne a unidade (por exemplo, "30 segundos"), ou "não sei": aí eu proponho um valor com base nas amostras.\n```\n\nNão invente opções para uma pergunta aberta. Diga como responder e deixe a saída "não sei".\n\n## Várias perguntas de uma vez\n\nSó quando a etapa precisa delas juntas, até 5, numeradas; a pessoa pode responder pelos números\n("1 sim, 2 mostrar antes"). Cada uma segue o formato acima.\n\n## Parada ⏸️\n\nQuando a etapa não pode seguir sem uma ação da pessoa (instalar algo, fazer login, abrir uma sessão\nnova do agente para um avaliador sem esta conversa):\n\n```markdown\n**Status** — `Build: ✅ 1 Plano · ✅ 2 Modo · ✅ 3 Tarefas 5/5 · ⏸️ 4 Verify Gate · ⬜ 5 Relatório`\n\n**Por que parei:** a conferência final precisa de alguém que não viu esta conversa, e este agente não\nabre uma conversa nova sozinho.\n\n**Onde:** numa janela nova do seu agente, na mesma pasta do projeto.\n\n**Passos:**\n1. Abra uma sessão nova do agente nesta pasta → você vê o agente pronto, sem histórico.\n2. Cole o pedido que está no arquivo do brief → o agente começa a ler o DEFINE.\n3. Quando ele terminar, copie a última linha (`VEREDITO: …`) → é ela que eu preciso.\n\n**O que não foi feito:** o relatório não foi gravado e nada foi publicado.\n\n**Brief:** `sdd/reports/evidence/PAGAMENTOS/AVAL-brief.md`\n\n**Sessão nova:** abra o agente nesta pasta e cole o conteúdo do brief.\n\nQuando terminar, me peça de novo, eu continuo daqui.\n```\n\n- O Status mostra ⏸️ na etapa parada.\n- **Por que parei:** uma frase, com o motivo da pessoa, não a regra da skill.\n- **Onde:** terminal, navegador, pasta, outra janela do agente.\n- **Passos:** numerados, um comando por passo quando houver comando, com o que esperar na tela.\n- **O que não foi feito:** sempre ("Nada foi publicado.", "Nenhuma frente foi criada.").\n- **Brief:** e **Sessão nova:** só quando a parada é por uma sessão sem esta conversa: o caminho do\n  arquivo que a skill gravou e como abrir a sessão. Sem isso, as duas linhas somem.\n- A frase final só quando a pessoa tem algo a fazer.\n'
+
+======================================================================
+FAIL: test_aguardando_recibo_e_recibo_com_data (test_fluxo.Loop)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.ogOmcyQtPI/tests/test_fluxo.py", line 159, in test_aguardando_recibo_e_recibo_com_data
+    self.assertEqual(rc, 30, out)
+AssertionError: 127 != 30 : /bin/bash: /private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.ogOmcyQtPI/sdd/bin/sdd-fluxo.sh: No such file or directory
+
+
+======================================================================
+FAIL: test_bloqueado_d4_teto_d4_ciclos_e_d5 (test_fluxo.Loop) (caso='teto')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.ogOmcyQtPI/tests/test_fluxo.py", line 144, in test_bloqueado_d4_teto_d4_ciclos_e_d5
+    self.assertEqual(rc, 20, out)
+AssertionError: 127 != 20 : /bin/bash: /private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.ogOmcyQtPI/sdd/bin/sdd-fluxo.sh: No such file or directory
+
+
+======================================================================
+FAIL: test_bloqueado_d4_teto_d4_ciclos_e_d5 (test_fluxo.Loop) (caso='ciclos')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.ogOmcyQtPI/tests/test_fluxo.py", line 144, in test_bloqueado_d4_teto_d4_ciclos_e_d5
+    self.assertEqual(rc, 20, out)
+AssertionError: 127 != 20 : /bin/bash: /private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.ogOmcyQtPI/sdd/bin/sdd-fluxo.sh: No such file or directory
+
+
+======================================================================
+FAIL: test_bloqueado_d4_teto_d4_ciclos_e_d5 (test_fluxo.Loop) (caso='impasse')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.ogOmcyQtPI/tests/test_fluxo.py", line 144, in test_bloqueado_d4_teto_d4_ciclos_e_d5
+    self.assertEqual(rc, 20, out)
+AssertionError: 127 != 20 : /bin/bash: /private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.ogOmcyQtPI/sdd/bin/sdd-fluxo.sh: No such file or directory
+
+
+======================================================================
+FAIL: test_bordas_da_fonte_needs_work_no_teto_e_high_com_recibo_pendente_saem_10 (test_fluxo.Loop)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.ogOmcyQtPI/tests/test_fluxo.py", line 151, in test_bordas_da_fonte_needs_work_no_teto_e_high_com_recibo_pendente_saem_10
+    self.assertEqual(rc, 10, out)
+AssertionError: 127 != 10 : /bin/bash: /private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.ogOmcyQtPI/sdd/bin/sdd-fluxo.sh: No such file or directory
+
+
+======================================================================
+FAIL: test_continuar_por_cada_causa (test_fluxo.Loop) (caso='aplicada')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.ogOmcyQtPI/tests/test_fluxo.py", line 122, in test_continuar_por_cada_causa
+    self.assertEqual(rc, 10, out)
+AssertionError: 127 != 10 : /bin/bash: /private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.ogOmcyQtPI/sdd/bin/sdd-fluxo.sh: No such file or directory
+
+
+======================================================================
+FAIL: test_continuar_por_cada_causa (test_fluxo.Loop) (caso='sem ledger')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.ogOmcyQtPI/tests/test_fluxo.py", line 122, in test_continuar_por_cada_causa
+    self.assertEqual(rc, 10, out)
+AssertionError: 127 != 10 : /bin/bash: /private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.ogOmcyQtPI/sdd/bin/sdd-fluxo.sh: No such file or directory
+
+
+======================================================================
+FAIL: test_continuar_por_cada_causa (test_fluxo.Loop) (caso='outra rodada')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.ogOmcyQtPI/tests/test_fluxo.py", line 122, in test_continuar_por_cada_causa
+    self.assertEqual(rc, 10, out)
+AssertionError: 127 != 10 : /bin/bash: /private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.ogOmcyQtPI/sdd/bin/sdd-fluxo.sh: No such file or directory
+
+
+======================================================================
+FAIL: test_continuar_por_cada_causa (test_fluxo.Loop) (caso='linha MED')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.ogOmcyQtPI/tests/test_fluxo.py", line 122, in test_continuar_por_cada_causa
+    self.assertEqual(rc, 10, out)
+AssertionError: 127 != 10 : /bin/bash: /private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.ogOmcyQtPI/sdd/bin/sdd-fluxo.sh: No such file or directory
+
+
+======================================================================
+FAIL: test_continuar_por_cada_causa (test_fluxo.Loop) (caso='needs work')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.ogOmcyQtPI/tests/test_fluxo.py", line 122, in test_continuar_por_cada_causa
+    self.assertEqual(rc, 10, out)
+AssertionError: 127 != 10 : /bin/bash: /private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.ogOmcyQtPI/sdd/bin/sdd-fluxo.sh: No such file or directory
+
+
+======================================================================
+FAIL: test_entrada_ausente_ou_malformada_sai_64_nunca_0 (test_fluxo.Loop) (caso='sem META')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.ogOmcyQtPI/tests/test_fluxo.py", line 192, in test_entrada_ausente_ou_malformada_sai_64_nunca_0
+    self.assertEqual(rc, 64, out)
+AssertionError: 127 != 64 : /bin/bash: /private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.ogOmcyQtPI/sdd/bin/sdd-fluxo.sh: No such file or directory
+
+
+======================================================================
+FAIL: test_entrada_ausente_ou_malformada_sai_64_nunca_0 (test_fluxo.Loop) (caso='sem jsonl do revisor')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.ogOmcyQtPI/tests/test_fluxo.py", line 192, in test_entrada_ausente_ou_malformada_sai_64_nunca_0
+    self.assertEqual(rc, 64, out)
+AssertionError: 127 != 64 : /bin/bash: /private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.ogOmcyQtPI/sdd/bin/sdd-fluxo.sh: No such file or directory
+
+
+======================================================================
+FAIL: test_entrada_ausente_ou_malformada_sai_64_nunca_0 (test_fluxo.Loop) (caso='linha que não é JSON')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.ogOmcyQtPI/tests/test_fluxo.py", line 192, in test_entrada_ausente_ou_malformada_sai_64_nunca_0
+    self.assertEqual(rc, 64, out)
+AssertionError: 127 != 64 : /bin/bash: /private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.ogOmcyQtPI/sdd/bin/sdd-fluxo.sh: No such file or directory
+
+
+======================================================================
+FAIL: test_entrada_ausente_ou_malformada_sai_64_nunca_0 (test_fluxo.Loop) (caso='revisor sem severidade')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.ogOmcyQtPI/tests/test_fluxo.py", line 192, in test_entrada_ausente_ou_malformada_sai_64_nunca_0
+    self.assertEqual(rc, 64, out)
+AssertionError: 127 != 64 : /bin/bash: /private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.ogOmcyQtPI/sdd/bin/sdd-fluxo.sh: No such file or directory
+
+
+======================================================================
+FAIL: test_entrada_ausente_ou_malformada_sai_64_nunca_0 (test_fluxo.Loop) (caso='auditor com veredito errado')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.ogOmcyQtPI/tests/test_fluxo.py", line 192, in test_entrada_ausente_ou_malformada_sai_64_nunca_0
+    self.assertEqual(rc, 64, out)
+AssertionError: 127 != 64 : /bin/bash: /private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.ogOmcyQtPI/sdd/bin/sdd-fluxo.sh: No such file or directory
+
+
+======================================================================
+FAIL: test_entrada_ausente_ou_malformada_sai_64_nunca_0 (test_fluxo.Loop) (caso='NOVO sem severidade')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.ogOmcyQtPI/tests/test_fluxo.py", line 192, in test_entrada_ausente_ou_malformada_sai_64_nunca_0
+    self.assertEqual(rc, 64, out)
+AssertionError: 127 != 64 : /bin/bash: /private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.ogOmcyQtPI/sdd/bin/sdd-fluxo.sh: No such file or directory
+
+
+======================================================================
+FAIL: test_entrada_ausente_ou_malformada_sai_64_nunca_0 (test_fluxo.Loop) (caso='avaliação ambígua')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.ogOmcyQtPI/tests/test_fluxo.py", line 192, in test_entrada_ausente_ou_malformada_sai_64_nunca_0
+    self.assertEqual(rc, 64, out)
+AssertionError: 127 != 64 : /bin/bash: /private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.ogOmcyQtPI/sdd/bin/sdd-fluxo.sh: No such file or directory
+
+
+======================================================================
+FAIL: test_entrada_ausente_ou_malformada_sai_64_nunca_0 (test_fluxo.Loop) (caso='avaliação sem veredito')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.ogOmcyQtPI/tests/test_fluxo.py", line 192, in test_entrada_ausente_ou_malformada_sai_64_nunca_0
+    self.assertEqual(rc, 64, out)
+AssertionError: 127 != 64 : /bin/bash: /private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.ogOmcyQtPI/sdd/bin/sdd-fluxo.sh: No such file or directory
+
+
+======================================================================
+FAIL: test_entrada_ausente_ou_malformada_sai_64_nunca_0 (test_fluxo.Loop) (caso='ledger ilegível')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.ogOmcyQtPI/tests/test_fluxo.py", line 192, in test_entrada_ausente_ou_malformada_sai_64_nunca_0
+    self.assertEqual(rc, 64, out)
+AssertionError: 127 != 64 : /bin/bash: /private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.ogOmcyQtPI/sdd/bin/sdd-fluxo.sh: No such file or directory
+
+
+======================================================================
+FAIL: test_entrada_ausente_ou_malformada_sai_64_nunca_0 (test_fluxo.Loop) (args=('--rodada', 'x'))
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.ogOmcyQtPI/tests/test_fluxo.py", line 197, in test_entrada_ausente_ou_malformada_sai_64_nunca_0
+    self.assertEqual(rc, 64, out)
+AssertionError: 127 != 64 : /bin/bash: /private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.ogOmcyQtPI/sdd/bin/sdd-fluxo.sh: No such file or directory
+
+
+======================================================================
+FAIL: test_entrada_ausente_ou_malformada_sai_64_nunca_0 (test_fluxo.Loop) (args=('--rodada', '1', '--teto', 'a'))
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.ogOmcyQtPI/tests/test_fluxo.py", line 197, in test_entrada_ausente_ou_malformada_sai_64_nunca_0
+    self.assertEqual(rc, 64, out)
+AssertionError: 127 != 64 : /bin/bash: /private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.ogOmcyQtPI/sdd/bin/sdd-fluxo.sh: No such file or directory
+
+
+======================================================================
+FAIL: test_entrada_ausente_ou_malformada_sai_64_nunca_0 (test_fluxo.Loop) (args=('--rodada', '1', '--ledger'))
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.ogOmcyQtPI/tests/test_fluxo.py", line 197, in test_entrada_ausente_ou_malformada_sai_64_nunca_0
+    self.assertEqual(rc, 64, out)
+AssertionError: 127 != 64 : /bin/bash: /private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.ogOmcyQtPI/sdd/bin/sdd-fluxo.sh: No such file or directory
+
+
+======================================================================
+FAIL: test_log_grava_o_exit_real_e_tee_e_acusado (test_fluxo.Loop)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.ogOmcyQtPI/tests/test_fluxo.py", line 205, in test_log_grava_o_exit_real_e_tee_e_acusado
+    self.assertEqual(rc, 20, out)
+AssertionError: 127 != 20 : /bin/bash: /private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.ogOmcyQtPI/sdd/bin/sdd-fluxo.sh: No such file or directory
+
+
+======================================================================
+FAIL: test_pronto_com_rebatida_e_justificativa_que_cita_outro_veredito (test_fluxo.Loop)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.ogOmcyQtPI/tests/test_fluxo.py", line 106, in test_pronto_com_rebatida_e_justificativa_que_cita_outro_veredito
+    self.assertEqual(rc, 0, out)
+AssertionError: 127 != 0 : /bin/bash: /private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.ogOmcyQtPI/sdd/bin/sdd-fluxo.sh: No such file or directory
+
+
+======================================================================
+FAIL: test_dispensavel (test_fluxo.ReviewDesign)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.ogOmcyQtPI/tests/test_fluxo.py", line 69, in test_dispensavel
+    self.assertEqual(rc, 1, out)
+AssertionError: 127 != 1 : /bin/bash: /private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.ogOmcyQtPI/sdd/bin/sdd-fluxo.sh: No such file or directory
+
+
+======================================================================
+FAIL: test_manifest_ilegivel_sai_64_com_o_default_seguro (test_fluxo.ReviewDesign) (design='DESIGN_sem_manifest.md')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.ogOmcyQtPI/tests/test_fluxo.py", line 90, in test_manifest_ilegivel_sai_64_com_o_default_seguro
+    self.assertEqual(rc, 64, out)
+AssertionError: 127 != 64 : /bin/bash: /private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.ogOmcyQtPI/sdd/bin/sdd-fluxo.sh: No such file or directory
+
+
+======================================================================
+FAIL: test_manifest_ilegivel_sai_64_com_o_default_seguro (test_fluxo.ReviewDesign) (design='D.md')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.ogOmcyQtPI/tests/test_fluxo.py", line 90, in test_manifest_ilegivel_sai_64_com_o_default_seguro
+    self.assertEqual(rc, 64, out)
+AssertionError: 127 != 64 : /bin/bash: /private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.ogOmcyQtPI/sdd/bin/sdd-fluxo.sh: No such file or directory
+
+
+======================================================================
+FAIL: test_manifest_ilegivel_sai_64_com_o_default_seguro (test_fluxo.ReviewDesign) (design='nao-existe.md')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.ogOmcyQtPI/tests/test_fluxo.py", line 90, in test_manifest_ilegivel_sai_64_com_o_default_seguro
+    self.assertEqual(rc, 64, out)
+AssertionError: 127 != 64 : /bin/bash: /private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.ogOmcyQtPI/sdd/bin/sdd-fluxo.sh: No such file or directory
+
+
+======================================================================
+FAIL: test_termo_de_seguranca_exige_com_um_arquivo_novo (test_fluxo.ReviewDesign)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.ogOmcyQtPI/tests/test_fluxo.py", line 63, in test_termo_de_seguranca_exige_com_um_arquivo_novo
+    self.assertEqual(rc, 0, out)
+AssertionError: 127 != 0 : /bin/bash: /private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.ogOmcyQtPI/sdd/bin/sdd-fluxo.sh: No such file or directory
+
+
+======================================================================
+FAIL: test_titulo_numerado_com_qualificador_e_acoes_novo_new (test_fluxo.ReviewDesign)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.ogOmcyQtPI/tests/test_fluxo.py", line 58, in test_titulo_numerado_com_qualificador_e_acoes_novo_new
+    self.assertEqual(rc, 0, out)
+AssertionError: 127 != 0 : /bin/bash: /private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.ogOmcyQtPI/sdd/bin/sdd-fluxo.sh: No such file or directory
+
+
+======================================================================
+FAIL: test_tres_arquivos_novos_exige_e_modify_nao_conta (test_fluxo.ReviewDesign)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.ogOmcyQtPI/tests/test_fluxo.py", line 53, in test_tres_arquivos_novos_exige_e_modify_nao_conta
+    self.assertEqual(rc, 0, out)
+AssertionError: 127 != 0 : /bin/bash: /private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.ogOmcyQtPI/sdd/bin/sdd-fluxo.sh: No such file or directory
+
+
+======================================================================
+FAIL: test_self_test_numa_copia_sem_git (test_fluxo.SelfTest)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.ogOmcyQtPI/tests/test_fluxo.py", line 416, in test_self_test_numa_copia_sem_git
+    self.assertEqual(rc, 0, out + err)
+AssertionError: 127 != 0 : /bin/bash: /private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/sdd-open-1a4mdf5f/pacote/sdd/bin/sdd-fluxo.sh: No such file or directory
+
+
+======================================================================
+FAIL: test_config_example_tem_os_dois_slots_com_default (test_fluxo.Slots)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.ogOmcyQtPI/tests/test_fluxo.py", line 519, in test_config_example_tem_os_dois_slots_com_default
+    self.assertRegex(texto, r"(?m)^flow:\n(?:\s+#.*\n)*\s+autonomous: false$")
+AssertionError: Regex didn't match: '(?m)^flow:\\n(?:\\s+#.*\\n)*\\s+autonomous: false$' not found in '# sdd/config.yaml — copiado de config.example.yaml pelo `init`. Preencha para o seu projeto.\n#\n# As skills consultam estes slots ({{TEST_CMD}}, {{DEPLOY_CMD}}, …) em vez de fixar comandos.\n# Slot VAZIO significa "pule este passo e diga que pulou" — nunca "adivinhe um comando".\n# Parser: chaves simples `chave: valor` e mapas de 1 nível; sem âncoras, sem listas complexas.\n\nproject:\n  name: meu-projeto\n  # Comando de teste, usado por gates `kind: test`.\n  test_cmd: ""\n  # Checagem de tipos/compilação, usada por gates `kind: typecheck`.\n  typecheck_cmd: ""\n  # Checagem de sintaxe por tipo de arquivo (fase Release, passo 0a).\n  lint_cmd: ""\n  # Branch de onde nascem as features. Nunca se trabalha nela diretamente (o pre-commit de sdd/hooks\n  # recusa commit direto nela quando ela já tem remoto).\n  default_branch: main\n  # Teto, em KB, do arquivo de contexto do agente (AGENTS.md, CLAUDE.md, GEMINI.md, .cursorrules) num\n  # commit: ele entra inteiro em toda sessão do agente. Acima disso o pre-commit recusa. Vazio = 100.\n  context_file_max_kb: 100\n\n# Camadas do seu projeto: nome → glob. É o que diz "esta feature toca 2 camadas" — o gatilho\n# do avaliador de contexto fresco. `sql` também diz o que conta como migration (report-lint.py).\n# Exemplos: sql: "db/migrations/**" · api: "src/api/**" · ui: "src/ui/**" · infra: "deploy/**"\nlayers:\n  api: ""\n  ui: ""\n  sql: ""\n\n# Evidência do build (report-lint.py): a partir de quantas camadas de `layers:` tocadas pelo File\n# Manifest do DESIGN a avaliação em contexto fresco é obrigatória. Abaixo disso, a linha\n# `avaliador: N.A. (<motivo>)` no BUILD_REPORT vale. 1 = avaliador sempre. Inteiro >= 1.\nevidence:\n  require_avaliacao_layers: 2\n\ndeploy:\n  # Roda na fase Release, depois da única aprovação humana.\n  cmd: ""\n  # Detecta o que chegou em produção sem commit correspondente (função publicada pelo console,\n  # migration aplicada pelo painel). Vazio = você só deploya via git e esse drift não existe.\n  drift_check_cmd: ""\n\nrelease:\n  # Bloqueadores próprios do projeto: começa com regras genéricas, cresce a cada incidente.\n  landmines_cmd: ""\n  # Opcional, pós-deploy (changelog, comunicado, ledger).\n  changelog_hook: ""\n\nreview:\n  # Vendors disponíveis para o review adversarial (revisor → auditor de vendor DIFERENTE).\n  # Com um só vendor, o review degrada com aviso registrado — nunca é pulado em silêncio.\n  vendors: ""\n\n# Preenchido pelo sdd-open (`init`): agentes para os quais os adaptadores são gerados.\nvendors: ""\n# Editor e pasta de worktrees são usados pela skill de nova sessão (sdd-new-session).\neditor: ""\nworktree_base: ""\n\n# Skill de engenharia de prompt usada pela fase Build quando o DESIGN inventaria prompts de\n# producao. Vem preenchida com a skill que acompanha o pacote; troque pelo nome da sua se\n# tiver outra. Vazio = a fase Build bloqueia o item de prompt e pede decisao, em vez de\n# improvisar o texto que vai para producao.\nprompts:\n  builder_skill: "sdd-prompt-builder"\n'
+
+======================================================================
+FAIL: test_bloco_comum_igual_nas_9_dentro_do_encerramento (test_fluxo.Subsecao) (skill='sdd-brainstorm')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.ogOmcyQtPI/tests/test_fluxo.py", line 439, in test_bloco_comum_igual_nas_9_dentro_do_encerramento
+    self.assertEqual(texto.count("\n### Fluxo encadeado\n"), 1)
+AssertionError: 0 != 1
+
+======================================================================
+FAIL: test_bloco_comum_igual_nas_9_dentro_do_encerramento (test_fluxo.Subsecao) (skill='sdd-define')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.ogOmcyQtPI/tests/test_fluxo.py", line 439, in test_bloco_comum_igual_nas_9_dentro_do_encerramento
+    self.assertEqual(texto.count("\n### Fluxo encadeado\n"), 1)
+AssertionError: 0 != 1
+
+======================================================================
+FAIL: test_bloco_comum_igual_nas_9_dentro_do_encerramento (test_fluxo.Subsecao) (skill='sdd-governanca')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.ogOmcyQtPI/tests/test_fluxo.py", line 439, in test_bloco_comum_igual_nas_9_dentro_do_encerramento
+    self.assertEqual(texto.count("\n### Fluxo encadeado\n"), 1)
+AssertionError: 0 != 1
+
+======================================================================
+FAIL: test_bloco_comum_igual_nas_9_dentro_do_encerramento (test_fluxo.Subsecao) (skill='sdd-ux-review')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.ogOmcyQtPI/tests/test_fluxo.py", line 439, in test_bloco_comum_igual_nas_9_dentro_do_encerramento
+    self.assertEqual(texto.count("\n### Fluxo encadeado\n"), 1)
+AssertionError: 0 != 1
+
+======================================================================
+FAIL: test_bloco_comum_igual_nas_9_dentro_do_encerramento (test_fluxo.Subsecao) (skill='sdd-design')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.ogOmcyQtPI/tests/test_fluxo.py", line 439, in test_bloco_comum_igual_nas_9_dentro_do_encerramento
+    self.assertEqual(texto.count("\n### Fluxo encadeado\n"), 1)
+AssertionError: 0 != 1
+
+======================================================================
+FAIL: test_bloco_comum_igual_nas_9_dentro_do_encerramento (test_fluxo.Subsecao) (skill='sdd-build')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.ogOmcyQtPI/tests/test_fluxo.py", line 439, in test_bloco_comum_igual_nas_9_dentro_do_encerramento
+    self.assertEqual(texto.count("\n### Fluxo encadeado\n"), 1)
+AssertionError: 0 != 1
+
+======================================================================
+FAIL: test_bloco_comum_igual_nas_9_dentro_do_encerramento (test_fluxo.Subsecao) (skill='sdd-iterate')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.ogOmcyQtPI/tests/test_fluxo.py", line 439, in test_bloco_comum_igual_nas_9_dentro_do_encerramento
+    self.assertEqual(texto.count("\n### Fluxo encadeado\n"), 1)
+AssertionError: 0 != 1
+
+======================================================================
+FAIL: test_bloco_comum_igual_nas_9_dentro_do_encerramento (test_fluxo.Subsecao) (skill='sdd-release')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.ogOmcyQtPI/tests/test_fluxo.py", line 439, in test_bloco_comum_igual_nas_9_dentro_do_encerramento
+    self.assertEqual(texto.count("\n### Fluxo encadeado\n"), 1)
+AssertionError: 0 != 1
+
+======================================================================
+FAIL: test_bloco_comum_igual_nas_9_dentro_do_encerramento (test_fluxo.Subsecao) (skill='sdd-new-session')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.ogOmcyQtPI/tests/test_fluxo.py", line 439, in test_bloco_comum_igual_nas_9_dentro_do_encerramento
+    self.assertEqual(texto.count("\n### Fluxo encadeado\n"), 1)
+AssertionError: 0 != 1
+
+======================================================================
+FAIL: test_bloco_comum_igual_nas_9_dentro_do_encerramento (test_fluxo.Subsecao)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.ogOmcyQtPI/tests/test_fluxo.py", line 455, in test_bloco_comum_igual_nas_9_dentro_do_encerramento
+    self.assertEqual(len(set(blocos.values())), 1, "o bloco comum diverge entre as skills")
+AssertionError: 0 != 1 : o bloco comum diverge entre as skills
+
+======================================================================
+FAIL: test_build_nunca_segue_para_a_release (test_fluxo.Subsecao)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.ogOmcyQtPI/tests/test_fluxo.py", line 463, in test_build_nunca_segue_para_a_release
+    self.assertIn("`seguir build sdd/features/DEFINE_{FEATURE}.md release` sempre para", texto)
+AssertionError: '`seguir build sdd/features/DEFINE_{FEATURE}.md release` sempre para' not found in '---\nname: sdd-build\ndescription: Fase 3 do SDD Open — executa o manifest do DESIGN arquivo a arquivo com verificação incremental, trata o Verify Gate do DEFINE como bloqueante, exige evidência abrível para cada critério (nunca "deve funcionar"), recomenda review de segundo vendor e avaliação em contexto fresco, e grava sdd/reports/BUILD_REPORT_{FEATURE}.md. Use quando o DESIGN estiver pronto ou o usuário disser /sdd-build.\ncompatibility: Requer bash >= 3.2, git >= 2.20 e python3 (report-lint.py). Roda sdd/bin/verify-gate.sh como critério de parada.\nlicense: MIT\nmetadata:\n  author: Roberto Dias Duarte\n  version: "2.3.0"\n  updated: "2026-10"\n  fase: "3"\n---\n\n# sdd-build — Fase 3\n\nNa primeira resposta desta skill, comece com esta linha, uma vez só, antes do Status:\n`sdd-build v2.3.0 · out/2026 · versão atual: https://github.com/robertodiasduarte/sdd-open/releases/latest`\n\nConstruir o que o DESIGN desenhou, e **provar** que atende ao que o DEFINE contratou. O\ncritério de parada é um comando: `sdd/bin/verify-gate.sh sdd/features/DEFINE_{F}.md`. Sem\nele em `0` (ou `4` com recibo humano), o build não terminou.\n\n## Como falar com o aluno\n\nLeia `references/como-falar.md` antes da primeira resposta: o glossário desta skill, o Status preenchido\ne um exemplo completo. Pergunta e parada seguem `sdd/templates/fragments/PERGUNTA_DECISAO.md`.\nQuem usa esta skill, em geral, nunca usou git nem terminal.\n\n| Etapa | Nome para o aluno | Passos desta skill |\n|---|---|---|\n| 1 | Plano | 1, 1.5 e 2–3 |\n| 2 | Modo | 3b |\n| 3 | Tarefas N/M | 4 e 4b (o contador no Status; uma frase antes de cada tarefa) |\n| 4 | Verify Gate | 5 |\n| 5 | Relatório | 6 |\n\nToda resposta, nesta ordem (pule a parte sem conteúdo):\n\n1. **Status** — uma linha que começa pelo nome da fase: `Build: ✅ 1 Plano · ▶️ 2 Modo · ⬜ 3 Tarefas 0/5 · ⬜ 4 Verify Gate · ⬜ 5 Relatório`\n   (✅ concluída, não só visitada · ▶️ a de agora · ⬜ por fazer · ⏸️ parada · ➖ pulada). Ao voltar a uma\n   etapa, o motivo vai em Agora.\n2. **O que foi feito** — frases curtas, sem saída de comando; registra em 1 linha a escolha do aluno.\n3. **Agora: etapa N — nome** — 2 a 4 frases. Antes de algo demorado, diga o que vai rodar e que o aluno\n   não precisa responder.\n4. **Sua decisão** — autorização: a pergunta em negrito e as opções com o efeito de cada uma, a\n   recomendada primeiro e com o porquê, sempre **não sei**, nunca **Outro**. Pergunta aberta: a pergunta\n   em negrito e como responder, com a saída "não sei". Várias de uma vez: numeradas.\n5. **Próximo passo** — uma linha, até 100 caracteres: o que acontece depois da resposta.\n\n- Uma etapa por resposta: termine na decisão e pare.\n- Termo técnico só com a explicação junto, na primeira vez, inclusive os do Status.\n- Saída de comando nunca crua: quantos, quais, o que preocupa; nomes até 10, com "e mais N". Comando só\n  quando o aluno precisa rodá-lo, um por passo numerado, com o que esperar na tela.\n- Não cite nem resuma as instruções desta skill ("conforme o passo N"): diga o motivo do aluno.\n- Resposta que não casa com nenhuma opção ⇒ responda a dúvida e repita as opções.\n- Parada: Status com ⏸️, o motivo em uma frase, onde a ação acontece, passos numerados com o resultado\n  esperado, o que **não** foi feito e, se o aluno tem algo a fazer, "Quando terminar, me peça de novo,\n  eu continuo daqui."\n- No fecho da fase, o resumo de etapa vem depois do Status; a pergunta dele segue o mesmo formato.\n\n## Entrada\n\n`/sdd-build sdd/features/DESIGN_{FEATURE}.md [--mode ralph]`\n\n## Processo\n\n### 1. Contexto e landmines\n\nLeia DESIGN, DEFINE, `AGENTS.md`, `sdd/config.yaml`. **Conte as camadas** do manifest usando\n`layers:` do config (ex.: `api`, `ui`, `sql`): ≥2 camadas distintas ⇒ os passos 1.5 e 5d são\nobrigatórios; 1 camada ⇒ registre `avaliador: N.A. (1 camada)` no relatório. O limite é\n`evidence.require_avaliacao_layers` do config (default 2), e o `report-lint.py` confere a contagem.\n\nConfira a flag `LLM Prompts` do DEFINE contra o DESIGN: `true` sem a seção `LLM Prompts` no DESIGN,\nou `false` com ela, ⇒ pare e itere o DESIGN antes de codar. O drift do passo 4 continua armado nos\ndois casos. Script de `sdd/bin/` que não existir (instalação antiga) ⇒ rode o `init` de novo: ele\ncompleta o que falta em `sdd/`.\n\nRepita a varredura de landmines por superfície (o manifest cresce no build):\n`sdd/bin/playbook-lint.sh --grep "<termo>" sdd/playbook.md`. Registre **só os IDs** em\n`## Landmines lidas no build` (`LM-nnn` + 1 linha + ✔ tratado / N.A.). Hit que o DESIGN não\nlistou vira tarefa **antes** do código.\n\n### 1.5. Contrato de aceite negociado (≥2 camadas)\n\nAntes de codar, alguém **que não viu esta conversa** revisa os ATs e o Verify Gate contra o\nDESIGN e propõe ≤5 ajustes (classes: não-verificável · estado sem critério · gate não cobre\nAT · aceite circular · efeito não observável). Ver `references/contexto-fresco.md` para o\nbrief. Antes de despachar, rode `bash sdd/bin/avaliador-guard.sh`: exit 1 ⇒ commite o que ele\nlistar e rode de novo; exit 2 ⇒ pare. Negocie com o usuário (múltipla escolha, uma opção por proposta); toda proposta recebe\n**ACEITA** (aplicada no DEFINE, `Revision History` atualizado, `verify-gate.sh --print` ainda\nparseia) ou **RECUSADA (motivo)** — registradas em `## Contrato de aceite` do DESIGN. Nunca\nsilêncio. Se o DESIGN já tem contrato negociado após a última edição do DEFINE, pule.\n\n### 2–3. Tarefas e ordem\n\nConverta o manifest em lista de tarefas e ordene por dependência (imports, schemas\ncompartilhados). **A primeira tarefa é o gate**: se o Verify Gate aponta para um script que\nainda não existe, crie-o **já com todos os blocos, falhando** — só assim existe baseline\nvermelho de verdade. Script ausente sai `3` (inconclusivo), não `2`, e um gate que nunca\nficou vermelho não prova nada.\n\n### 3b. Modo de execução (recomendação → decisão do usuário)\n\n| Sinal | Empurra para |\n|---|---|\n| poucos arquivos, acoplados (schemas/helpers compartilhados) | **default** (um autor lembra nomes e assinaturas) |\n| muitos arquivos independentes, build longo, risco de perder o fio | **ralph** (contexto fresco por tarefa, commit atômico, retomável) |\n| volume paralelizável fora de segurança e de prompts LLM | **briefs** (workers paralelos; experimental) |\n\nEmpate → default. Mesmo com recomendação óbvia, **pergunte**; com `--mode` explícito,\nregistre "modo fixado por flag". Detalhes em `references/modos-e-retry.md`.\n\n### 4. Executar cada tarefa\n\nGuidelines inegociáveis: suposição vira pergunta · simplicidade · mudança cirúrgica ·\ncritério antes do código · **evidência, não declaração**.\n\n1. **Drift de prompt** (sempre): o arquivo cheira a prompt de produção (path `**/prompts/**`,\n   parâmetro de system prompt do seu wrapper de LLM recebendo um **literal**, `messages.create`,\n   `chat.completions`) e não está no inventário do DESIGN? **Pare** e pergunte: iterar o DESIGN,\n   ou confirmar falso positivo e registrar em "Drift detectado". ⛔ Calibre o sinal pelo código\n   real do projeto: se as chamadas passam por um wrapper próprio, procurar só pelas assinaturas\n   do SDK deixa o gate **cego**. Exclua arquivos de teste, ou o gate vira lobo e é ignorado.\n2. **Prompt no inventário:** compile o contrato do DESIGN (tom, saída, fallback, referências) e\n   passe à skill `sdd-prompt-builder` (ou a que estiver em `prompts.builder_skill` do\n   `sdd/config.yaml`); não reabra decisões de provedor/modelo. Sem skill disponível, **bloqueie\n   o item** e peça decisão — nunca improvise o texto que vai para produção.\n3. **Escrever** seguindo os Code Patterns. 4. **Verificar** (lint, tipos, teste do arquivo).\n5. **Marcar** concluído.\n\n**Escada de retry — correção é redispatch fresco, nunca reply:** 1ª falha → corrigir no\ncontexto (erro trivial). 2ª falha → **reexecutar do zero** a partir de um brief que leva SÓ o\ncritério que falhou (verbatim), o erro (verbatim) e a instrução "trate como tarefa nova; não\nassuma que a tentativa anterior estava quase certa". 3ª falha → **parar** e reportar; nunca\ncontornar o critério.\n\n### 4b. Migration (só se o manifest tem)\n\nManifest com `*.sql`, pasta `migrations/`, caminho que casa `layers.sql` do config ou ação descrita\ncomo migration ⇒ leia `references/aplicar-migration.md` e siga-o **antes** do Verify Gate: descobrir\nferramenta e projeto (nome **e** ref), parar na divergência, uma confirmação só com o SQL inteiro,\naplicar, e **provar por leitura**. `exit 0` não prova (LM-004). Sem migration, o passo não existe e\nnão se fala de banco.\n\n### 5. Validação\n\n**5a. Verify Gate (bloqueante):** `sdd/bin/verify-gate.sh sdd/features/DEFINE_{F}.md`\n\n| exit | Ação |\n|---|---|\n| `0` | verde — seguir |\n| `2` | vermelho — **abortar**; corrigir código (ou iterar DESIGN/DEFINE se a premissa está errada) e rodar de novo |\n| `3` | inconclusivo — **não** é verde: instale a ferramenta ou rode onde ela exista; registre |\n| `4` | manual-ux — mostre o `manual_fallback` ao humano e **pare** até o recibo (quem, data, resultado) |\n| `5` | clarificação pendente — **pare** e volte ao Define; não é vermelho de build |\n| `64` | DEFINE sem gate válido — volte ao Define |\n\nSe o build corrigiu (ou escreveu) a asserção do gate, prove que ela tem dentes:\n`bash sdd/bin/gate-baseline.sh sdd/features/DEFINE_{F}.md --sobrepor <script do gate>` roda o gate\ncontra a branch de produção e exige vermelho **avaliando** (exit 0). Exit 2 ⇒ a asserção não\ndistingue o antes do depois: reancore e rode de novo; exit 3 ⇒ registre no relatório.\n\n**5b. Checks do projeto:** `{{TEST_CMD}}` via `bash sdd/bin/test-baseline.sh` (só falha nova\naborta; aceitar uma falha como conhecida, com `--aceitar`, é decisão do usuário), `{{TYPECHECK_CMD}}`,\n`{{LINT_CMD}}` do config, quando preenchidos. Slot vazio = pular **e dizer que pulou**.\n\n**5c. Review adversarial pós-build (recomende; o usuário decide).** Sim quando o diff toca\nsegurança, rota pública, lógica sutil entre arquivos, ou o build rodou em ralph/briefs. Não em\nfix trivial. **Commite antes** (trabalho commitado com arquivos untracked ao lado faz um\nreview de "não commitado" revisar o vazio). Contrato de resposta em\n`sdd/templates/fragments/ADVISOR_CONSULT.md`; cada nota → APLICADA · REBATIDA_EVIDENCIA ·\nREBATIDA_ESCOPO no Advisor Ledger do relatório. Vendor que não seguiu o formato **falhou**:\nnunca leia como "zero achados". Review nunca substitui smoke real.\n\n**5d. Avaliador de contexto fresco (bloqueante em ≥2 camadas).** Quem julga não é quem\nconstrói. Antes de despachar, `bash sdd/bin/avaliador-guard.sh` (exit 1 ⇒ commite o listado; exit\n2 ⇒ pare). Alguém sem esta conversa (agente novo, sessão nova, ou subagente onde o vendor\ntiver) lê o DEFINE como contrato e **prova cada AT executando** — comando, chamada, clique\n— nunca lendo o diff. O brief leva só: modo `veredito`, feature, caminhos do DEFINE e do\nDESIGN, pasta do projeto, URL base e se há credenciais autorizadas. Persista o bloco\n`<<<AVALIACAO … >>>` em `sdd/reviews/AVALIACAO_{F}_{YYYYMMDD-HHMM}.md`. `PASS` → seguir.\n`NEEDS_WORK` → os achados são o brief do ciclo seguinte (fresco); máximo 2 ciclos, depois\n`Status: Blocked`. Sem browser/sessão para superfície visual → `NAO_VERIFICADO`, nunca PASS.\nDetalhes em `references/contexto-fresco.md`.\n\n### 6. BUILD_REPORT\n\n`sdd/reports/BUILD_REPORT_{FEATURE}.md`, do template. **Default-FAIL:** a tabela de ATs nasce\ncom todo AT `false`. `true` exige evidência abrível — `sdd/reports/evidence/{F}/AT-nnn.log`\n(1ª linha `$ comando`, saída verbatim), `AVALIACAO_{F}_*.md`, ou `recibo: nome YYYY-MM-DD`\n(só gate manual-ux). "Por raciocínio" e "deve funcionar" são negados. A linha do avaliador é\nobrigatória, numa de 3 formas: o `AVALIACAO_{F}_*.md` em `sdd/reviews/`, `avaliador: N.A. (<motivo>)`\n(menos camadas que o limite) ou `avaliador: PENDENTE (<motivo>)` (build travado antes do 5d; a fase\nRelease não sai com ela). Flag `LLM Prompts: true` ⇒ a seção do relatório segue o molde\n`sdd/templates/fragments/LLM_PROMPTS_BUILD_REPORT.md`. Valide:\n\n```bash\npython3 sdd/bin/report-lint.py sdd/reports/BUILD_REPORT_{FEATURE}.md   # exit 0 obrigatório\n```\n\nSeções obrigatórias: Seleção de modo · Contrato de aceite · Landmines lidas no build ·\nCandidatos ao playbook (bloco literal `<<<CANDIDATO_PLAYBOOK … >>>` com `evidencia:`, ou\n"nenhum candidato") · Verify Gate (exit + recibo se manual-ux) · Veredito do avaliador ·\nAdvisor Ledger (se houve review) · Drift detectado (mesmo que "nenhum") · Migrations aplicadas\n(se o manifest tem migration: projeto nome · ref, data e prova por leitura — o `report-lint` reprova\nmigration listada sem a linha).\n\n## Quality Gate\n\n```text\n[ ] Camadas contadas; ≥2 ⇒ 1.5 e 5d rodaram, com o guard antes · 1 ⇒ "avaliador: N.A." no relatório\n[ ] Contrato de aceite: toda proposta ACEITA|RECUSADA (ou "já negociado" / N.A.)\n[ ] Verify Gate exit 0 (ou 4 com recibo) — nunca 2, nem 3 sem resolução\n[ ] Todos os arquivos do manifest criados; verificações passam; sem TODO no código\n[ ] Todo AT `true` cita evidência válida; report-lint.py exit 0; sem bypass silencioso\n[ ] Seleção de modo e reviews decididas com registro (SIM com ledger ou NÃO com motivo)\n[ ] Drift registrado (mesmo zero) · candidatos ao playbook com evidência (ou "nenhum")\n[ ] Resposta fechada com o resumo de etapa (fragments/RESUMO_ETAPA.md)\n```\n\n## Por que cada regra existe\n\n- **O critério de parada é o Verify Gate** — "parece pronto" muda com o cansaço de quem constrói; um\n  comando com exit dá a mesma resposta para todos, inclusive para a release, que roda o gate de novo.\n- **A primeira tarefa é o gate, falhando** — um gate que nunca ficou vermelho não prova nada; script\n  ausente sai 3 (inconclusivo), não 2.\n- **Commit antes de qualquer revisão** — um revisor de "o que não foi commitado" olhando uma árvore já\n  commitada revisa o vazio, e um review que passou sobre nada é pior que nenhum.\n- **Quem julga não é quem constrói** — o autor confirma o que quis fazer; quem não viu a conversa prova\n  o que o DEFINE pede, executando, não lendo o diff.\n- **Evidência abrível, nunca "deve funcionar"** — a frase não pode ser conferida depois; um log com o\n  comando na 1ª linha pode, e o `report-lint.py` reprova o critério sem ele.\n- **Correção é redispatch fresco, não resposta na mesma conversa** — na 2ª falha, o contexto que errou\n  carrega a hipótese errada; recomeçar só com o critério e o erro quebra o ciclo.\n- **Migration provada por leitura** — `exit 0` não prova que a coluna está no banco certo (LM-004), e o\n  código iria para produção chamando o que não existe.\n- **Prompt fora do inventário para o build e pergunta** — texto de produção improvisado escapa do\n  contrato que o Design fechou e de toda revisão.\n- **Guard antes de despachar o avaliador** — ele usa o terminal e pode restaurar arquivos do último\n  commit; o que não foi commitado se perde, e com tudo commitado restaurar devolve o próprio trabalho.\n- **Gate corrigido roda contra o código anterior** — uma asserção que fica verde antes da mudança não\n  avalia nada, e "corrigir até ficar verde" é igual a afrouxar.\n- **Só falha de teste nova aborta** — uma falha antiga travando todo build ensina a ignorar vermelho;\n  separada no baseline, a nova continua aparecendo, e aceitar uma é decisão registrada.\n- **A flag `LLM Prompts` do DEFINE confere com o DESIGN antes de codar** — `true` sem inventário deixa\n  prompt de produção sem contrato; `false` com inventário constrói o que o Define disse que não existe.\n- **A linha do avaliador é obrigatória** — o lint que só confere o veredito que aparece aprova o\n  relatório que não fala do avaliador; a ausência reprova, e `PENDENTE` registra o build travado.\n\n## Encerramento (obrigatório)\n\nFeche com o **resumo de etapa** (`sdd/templates/fragments/RESUMO_ETAPA.md`); o 🏃 é\n`/sdd-build`.\n\n**Próximo passo:** `/sdd-release <o que liberar>` — a fase Release roda o Verify Gate de novo\nantes de qualquer publicação.\n\n---\n\nParte do SDD Open by RDD — https://github.com/robertodiasduarte/sdd-open\n'
+
+======================================================================
+FAIL: test_despacho_sem_papel_fresco_para_no_exit_40 (test_fluxo.TextoDoPorte) (arquivo='SKILL.md')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.ogOmcyQtPI/tests/test_fluxo.py", line 493, in test_despacho_sem_papel_fresco_para_no_exit_40
+    self.assertRegex(texto, r"bash sdd/bin/sdd-fluxo\.sh despachar (avaliador|revisor-design)")
+AssertionError: Regex didn't match: 'bash sdd/bin/sdd-fluxo\\.sh despachar (avaliador|revisor-design)' not found in '---\nname: sdd-build\ndescription: Fase 3 do SDD Open — executa o manifest do DESIGN arquivo a arquivo com verificação incremental, trata o Verify Gate do DEFINE como bloqueante, exige evidência abrível para cada critério (nunca "deve funcionar"), recomenda review de segundo vendor e avaliação em contexto fresco, e grava sdd/reports/BUILD_REPORT_{FEATURE}.md. Use quando o DESIGN estiver pronto ou o usuário disser /sdd-build.\ncompatibility: Requer bash >= 3.2, git >= 2.20 e python3 (report-lint.py). Roda sdd/bin/verify-gate.sh como critério de parada.\nlicense: MIT\nmetadata:\n  author: Roberto Dias Duarte\n  version: "2.3.0"\n  updated: "2026-10"\n  fase: "3"\n---\n\n# sdd-build — Fase 3\n\nNa primeira resposta desta skill, comece com esta linha, uma vez só, antes do Status:\n`sdd-build v2.3.0 · out/2026 · versão atual: https://github.com/robertodiasduarte/sdd-open/releases/latest`\n\nConstruir o que o DESIGN desenhou, e **provar** que atende ao que o DEFINE contratou. O\ncritério de parada é um comando: `sdd/bin/verify-gate.sh sdd/features/DEFINE_{F}.md`. Sem\nele em `0` (ou `4` com recibo humano), o build não terminou.\n\n## Como falar com o aluno\n\nLeia `references/como-falar.md` antes da primeira resposta: o glossário desta skill, o Status preenchido\ne um exemplo completo. Pergunta e parada seguem `sdd/templates/fragments/PERGUNTA_DECISAO.md`.\nQuem usa esta skill, em geral, nunca usou git nem terminal.\n\n| Etapa | Nome para o aluno | Passos desta skill |\n|---|---|---|\n| 1 | Plano | 1, 1.5 e 2–3 |\n| 2 | Modo | 3b |\n| 3 | Tarefas N/M | 4 e 4b (o contador no Status; uma frase antes de cada tarefa) |\n| 4 | Verify Gate | 5 |\n| 5 | Relatório | 6 |\n\nToda resposta, nesta ordem (pule a parte sem conteúdo):\n\n1. **Status** — uma linha que começa pelo nome da fase: `Build: ✅ 1 Plano · ▶️ 2 Modo · ⬜ 3 Tarefas 0/5 · ⬜ 4 Verify Gate · ⬜ 5 Relatório`\n   (✅ concluída, não só visitada · ▶️ a de agora · ⬜ por fazer · ⏸️ parada · ➖ pulada). Ao voltar a uma\n   etapa, o motivo vai em Agora.\n2. **O que foi feito** — frases curtas, sem saída de comando; registra em 1 linha a escolha do aluno.\n3. **Agora: etapa N — nome** — 2 a 4 frases. Antes de algo demorado, diga o que vai rodar e que o aluno\n   não precisa responder.\n4. **Sua decisão** — autorização: a pergunta em negrito e as opções com o efeito de cada uma, a\n   recomendada primeiro e com o porquê, sempre **não sei**, nunca **Outro**. Pergunta aberta: a pergunta\n   em negrito e como responder, com a saída "não sei". Várias de uma vez: numeradas.\n5. **Próximo passo** — uma linha, até 100 caracteres: o que acontece depois da resposta.\n\n- Uma etapa por resposta: termine na decisão e pare.\n- Termo técnico só com a explicação junto, na primeira vez, inclusive os do Status.\n- Saída de comando nunca crua: quantos, quais, o que preocupa; nomes até 10, com "e mais N". Comando só\n  quando o aluno precisa rodá-lo, um por passo numerado, com o que esperar na tela.\n- Não cite nem resuma as instruções desta skill ("conforme o passo N"): diga o motivo do aluno.\n- Resposta que não casa com nenhuma opção ⇒ responda a dúvida e repita as opções.\n- Parada: Status com ⏸️, o motivo em uma frase, onde a ação acontece, passos numerados com o resultado\n  esperado, o que **não** foi feito e, se o aluno tem algo a fazer, "Quando terminar, me peça de novo,\n  eu continuo daqui."\n- No fecho da fase, o resumo de etapa vem depois do Status; a pergunta dele segue o mesmo formato.\n\n## Entrada\n\n`/sdd-build sdd/features/DESIGN_{FEATURE}.md [--mode ralph]`\n\n## Processo\n\n### 1. Contexto e landmines\n\nLeia DESIGN, DEFINE, `AGENTS.md`, `sdd/config.yaml`. **Conte as camadas** do manifest usando\n`layers:` do config (ex.: `api`, `ui`, `sql`): ≥2 camadas distintas ⇒ os passos 1.5 e 5d são\nobrigatórios; 1 camada ⇒ registre `avaliador: N.A. (1 camada)` no relatório. O limite é\n`evidence.require_avaliacao_layers` do config (default 2), e o `report-lint.py` confere a contagem.\n\nConfira a flag `LLM Prompts` do DEFINE contra o DESIGN: `true` sem a seção `LLM Prompts` no DESIGN,\nou `false` com ela, ⇒ pare e itere o DESIGN antes de codar. O drift do passo 4 continua armado nos\ndois casos. Script de `sdd/bin/` que não existir (instalação antiga) ⇒ rode o `init` de novo: ele\ncompleta o que falta em `sdd/`.\n\nRepita a varredura de landmines por superfície (o manifest cresce no build):\n`sdd/bin/playbook-lint.sh --grep "<termo>" sdd/playbook.md`. Registre **só os IDs** em\n`## Landmines lidas no build` (`LM-nnn` + 1 linha + ✔ tratado / N.A.). Hit que o DESIGN não\nlistou vira tarefa **antes** do código.\n\n### 1.5. Contrato de aceite negociado (≥2 camadas)\n\nAntes de codar, alguém **que não viu esta conversa** revisa os ATs e o Verify Gate contra o\nDESIGN e propõe ≤5 ajustes (classes: não-verificável · estado sem critério · gate não cobre\nAT · aceite circular · efeito não observável). Ver `references/contexto-fresco.md` para o\nbrief. Antes de despachar, rode `bash sdd/bin/avaliador-guard.sh`: exit 1 ⇒ commite o que ele\nlistar e rode de novo; exit 2 ⇒ pare. Negocie com o usuário (múltipla escolha, uma opção por proposta); toda proposta recebe\n**ACEITA** (aplicada no DEFINE, `Revision History` atualizado, `verify-gate.sh --print` ainda\nparseia) ou **RECUSADA (motivo)** — registradas em `## Contrato de aceite` do DESIGN. Nunca\nsilêncio. Se o DESIGN já tem contrato negociado após a última edição do DEFINE, pule.\n\n### 2–3. Tarefas e ordem\n\nConverta o manifest em lista de tarefas e ordene por dependência (imports, schemas\ncompartilhados). **A primeira tarefa é o gate**: se o Verify Gate aponta para um script que\nainda não existe, crie-o **já com todos os blocos, falhando** — só assim existe baseline\nvermelho de verdade. Script ausente sai `3` (inconclusivo), não `2`, e um gate que nunca\nficou vermelho não prova nada.\n\n### 3b. Modo de execução (recomendação → decisão do usuário)\n\n| Sinal | Empurra para |\n|---|---|\n| poucos arquivos, acoplados (schemas/helpers compartilhados) | **default** (um autor lembra nomes e assinaturas) |\n| muitos arquivos independentes, build longo, risco de perder o fio | **ralph** (contexto fresco por tarefa, commit atômico, retomável) |\n| volume paralelizável fora de segurança e de prompts LLM | **briefs** (workers paralelos; experimental) |\n\nEmpate → default. Mesmo com recomendação óbvia, **pergunte**; com `--mode` explícito,\nregistre "modo fixado por flag". Detalhes em `references/modos-e-retry.md`.\n\n### 4. Executar cada tarefa\n\nGuidelines inegociáveis: suposição vira pergunta · simplicidade · mudança cirúrgica ·\ncritério antes do código · **evidência, não declaração**.\n\n1. **Drift de prompt** (sempre): o arquivo cheira a prompt de produção (path `**/prompts/**`,\n   parâmetro de system prompt do seu wrapper de LLM recebendo um **literal**, `messages.create`,\n   `chat.completions`) e não está no inventário do DESIGN? **Pare** e pergunte: iterar o DESIGN,\n   ou confirmar falso positivo e registrar em "Drift detectado". ⛔ Calibre o sinal pelo código\n   real do projeto: se as chamadas passam por um wrapper próprio, procurar só pelas assinaturas\n   do SDK deixa o gate **cego**. Exclua arquivos de teste, ou o gate vira lobo e é ignorado.\n2. **Prompt no inventário:** compile o contrato do DESIGN (tom, saída, fallback, referências) e\n   passe à skill `sdd-prompt-builder` (ou a que estiver em `prompts.builder_skill` do\n   `sdd/config.yaml`); não reabra decisões de provedor/modelo. Sem skill disponível, **bloqueie\n   o item** e peça decisão — nunca improvise o texto que vai para produção.\n3. **Escrever** seguindo os Code Patterns. 4. **Verificar** (lint, tipos, teste do arquivo).\n5. **Marcar** concluído.\n\n**Escada de retry — correção é redispatch fresco, nunca reply:** 1ª falha → corrigir no\ncontexto (erro trivial). 2ª falha → **reexecutar do zero** a partir de um brief que leva SÓ o\ncritério que falhou (verbatim), o erro (verbatim) e a instrução "trate como tarefa nova; não\nassuma que a tentativa anterior estava quase certa". 3ª falha → **parar** e reportar; nunca\ncontornar o critério.\n\n### 4b. Migration (só se o manifest tem)\n\nManifest com `*.sql`, pasta `migrations/`, caminho que casa `layers.sql` do config ou ação descrita\ncomo migration ⇒ leia `references/aplicar-migration.md` e siga-o **antes** do Verify Gate: descobrir\nferramenta e projeto (nome **e** ref), parar na divergência, uma confirmação só com o SQL inteiro,\naplicar, e **provar por leitura**. `exit 0` não prova (LM-004). Sem migration, o passo não existe e\nnão se fala de banco.\n\n### 5. Validação\n\n**5a. Verify Gate (bloqueante):** `sdd/bin/verify-gate.sh sdd/features/DEFINE_{F}.md`\n\n| exit | Ação |\n|---|---|\n| `0` | verde — seguir |\n| `2` | vermelho — **abortar**; corrigir código (ou iterar DESIGN/DEFINE se a premissa está errada) e rodar de novo |\n| `3` | inconclusivo — **não** é verde: instale a ferramenta ou rode onde ela exista; registre |\n| `4` | manual-ux — mostre o `manual_fallback` ao humano e **pare** até o recibo (quem, data, resultado) |\n| `5` | clarificação pendente — **pare** e volte ao Define; não é vermelho de build |\n| `64` | DEFINE sem gate válido — volte ao Define |\n\nSe o build corrigiu (ou escreveu) a asserção do gate, prove que ela tem dentes:\n`bash sdd/bin/gate-baseline.sh sdd/features/DEFINE_{F}.md --sobrepor <script do gate>` roda o gate\ncontra a branch de produção e exige vermelho **avaliando** (exit 0). Exit 2 ⇒ a asserção não\ndistingue o antes do depois: reancore e rode de novo; exit 3 ⇒ registre no relatório.\n\n**5b. Checks do projeto:** `{{TEST_CMD}}` via `bash sdd/bin/test-baseline.sh` (só falha nova\naborta; aceitar uma falha como conhecida, com `--aceitar`, é decisão do usuário), `{{TYPECHECK_CMD}}`,\n`{{LINT_CMD}}` do config, quando preenchidos. Slot vazio = pular **e dizer que pulou**.\n\n**5c. Review adversarial pós-build (recomende; o usuário decide).** Sim quando o diff toca\nsegurança, rota pública, lógica sutil entre arquivos, ou o build rodou em ralph/briefs. Não em\nfix trivial. **Commite antes** (trabalho commitado com arquivos untracked ao lado faz um\nreview de "não commitado" revisar o vazio). Contrato de resposta em\n`sdd/templates/fragments/ADVISOR_CONSULT.md`; cada nota → APLICADA · REBATIDA_EVIDENCIA ·\nREBATIDA_ESCOPO no Advisor Ledger do relatório. Vendor que não seguiu o formato **falhou**:\nnunca leia como "zero achados". Review nunca substitui smoke real.\n\n**5d. Avaliador de contexto fresco (bloqueante em ≥2 camadas).** Quem julga não é quem\nconstrói. Antes de despachar, `bash sdd/bin/avaliador-guard.sh` (exit 1 ⇒ commite o listado; exit\n2 ⇒ pare). Alguém sem esta conversa (agente novo, sessão nova, ou subagente onde o vendor\ntiver) lê o DEFINE como contrato e **prova cada AT executando** — comando, chamada, clique\n— nunca lendo o diff. O brief leva só: modo `veredito`, feature, caminhos do DEFINE e do\nDESIGN, pasta do projeto, URL base e se há credenciais autorizadas. Persista o bloco\n`<<<AVALIACAO … >>>` em `sdd/reviews/AVALIACAO_{F}_{YYYYMMDD-HHMM}.md`. `PASS` → seguir.\n`NEEDS_WORK` → os achados são o brief do ciclo seguinte (fresco); máximo 2 ciclos, depois\n`Status: Blocked`. Sem browser/sessão para superfície visual → `NAO_VERIFICADO`, nunca PASS.\nDetalhes em `references/contexto-fresco.md`.\n\n### 6. BUILD_REPORT\n\n`sdd/reports/BUILD_REPORT_{FEATURE}.md`, do template. **Default-FAIL:** a tabela de ATs nasce\ncom todo AT `false`. `true` exige evidência abrível — `sdd/reports/evidence/{F}/AT-nnn.log`\n(1ª linha `$ comando`, saída verbatim), `AVALIACAO_{F}_*.md`, ou `recibo: nome YYYY-MM-DD`\n(só gate manual-ux). "Por raciocínio" e "deve funcionar" são negados. A linha do avaliador é\nobrigatória, numa de 3 formas: o `AVALIACAO_{F}_*.md` em `sdd/reviews/`, `avaliador: N.A. (<motivo>)`\n(menos camadas que o limite) ou `avaliador: PENDENTE (<motivo>)` (build travado antes do 5d; a fase\nRelease não sai com ela). Flag `LLM Prompts: true` ⇒ a seção do relatório segue o molde\n`sdd/templates/fragments/LLM_PROMPTS_BUILD_REPORT.md`. Valide:\n\n```bash\npython3 sdd/bin/report-lint.py sdd/reports/BUILD_REPORT_{FEATURE}.md   # exit 0 obrigatório\n```\n\nSeções obrigatórias: Seleção de modo · Contrato de aceite · Landmines lidas no build ·\nCandidatos ao playbook (bloco literal `<<<CANDIDATO_PLAYBOOK … >>>` com `evidencia:`, ou\n"nenhum candidato") · Verify Gate (exit + recibo se manual-ux) · Veredito do avaliador ·\nAdvisor Ledger (se houve review) · Drift detectado (mesmo que "nenhum") · Migrations aplicadas\n(se o manifest tem migration: projeto nome · ref, data e prova por leitura — o `report-lint` reprova\nmigration listada sem a linha).\n\n## Quality Gate\n\n```text\n[ ] Camadas contadas; ≥2 ⇒ 1.5 e 5d rodaram, com o guard antes · 1 ⇒ "avaliador: N.A." no relatório\n[ ] Contrato de aceite: toda proposta ACEITA|RECUSADA (ou "já negociado" / N.A.)\n[ ] Verify Gate exit 0 (ou 4 com recibo) — nunca 2, nem 3 sem resolução\n[ ] Todos os arquivos do manifest criados; verificações passam; sem TODO no código\n[ ] Todo AT `true` cita evidência válida; report-lint.py exit 0; sem bypass silencioso\n[ ] Seleção de modo e reviews decididas com registro (SIM com ledger ou NÃO com motivo)\n[ ] Drift registrado (mesmo zero) · candidatos ao playbook com evidência (ou "nenhum")\n[ ] Resposta fechada com o resumo de etapa (fragments/RESUMO_ETAPA.md)\n```\n\n## Por que cada regra existe\n\n- **O critério de parada é o Verify Gate** — "parece pronto" muda com o cansaço de quem constrói; um\n  comando com exit dá a mesma resposta para todos, inclusive para a release, que roda o gate de novo.\n- **A primeira tarefa é o gate, falhando** — um gate que nunca ficou vermelho não prova nada; script\n  ausente sai 3 (inconclusivo), não 2.\n- **Commit antes de qualquer revisão** — um revisor de "o que não foi commitado" olhando uma árvore já\n  commitada revisa o vazio, e um review que passou sobre nada é pior que nenhum.\n- **Quem julga não é quem constrói** — o autor confirma o que quis fazer; quem não viu a conversa prova\n  o que o DEFINE pede, executando, não lendo o diff.\n- **Evidência abrível, nunca "deve funcionar"** — a frase não pode ser conferida depois; um log com o\n  comando na 1ª linha pode, e o `report-lint.py` reprova o critério sem ele.\n- **Correção é redispatch fresco, não resposta na mesma conversa** — na 2ª falha, o contexto que errou\n  carrega a hipótese errada; recomeçar só com o critério e o erro quebra o ciclo.\n- **Migration provada por leitura** — `exit 0` não prova que a coluna está no banco certo (LM-004), e o\n  código iria para produção chamando o que não existe.\n- **Prompt fora do inventário para o build e pergunta** — texto de produção improvisado escapa do\n  contrato que o Design fechou e de toda revisão.\n- **Guard antes de despachar o avaliador** — ele usa o terminal e pode restaurar arquivos do último\n  commit; o que não foi commitado se perde, e com tudo commitado restaurar devolve o próprio trabalho.\n- **Gate corrigido roda contra o código anterior** — uma asserção que fica verde antes da mudança não\n  avalia nada, e "corrigir até ficar verde" é igual a afrouxar.\n- **Só falha de teste nova aborta** — uma falha antiga travando todo build ensina a ignorar vermelho;\n  separada no baseline, a nova continua aparecendo, e aceitar uma é decisão registrada.\n- **A flag `LLM Prompts` do DEFINE confere com o DESIGN antes de codar** — `true` sem inventário deixa\n  prompt de produção sem contrato; `false` com inventário constrói o que o Define disse que não existe.\n- **A linha do avaliador é obrigatória** — o lint que só confere o veredito que aparece aprova o\n  relatório que não fala do avaliador; a ausência reprova, e `PENDENTE` registra o build travado.\n\n## Encerramento (obrigatório)\n\nFeche com o **resumo de etapa** (`sdd/templates/fragments/RESUMO_ETAPA.md`); o 🏃 é\n`/sdd-build`.\n\n**Próximo passo:** `/sdd-release <o que liberar>` — a fase Release roda o Verify Gate de novo\nantes de qualquer publicação.\n\n---\n\nParte do SDD Open by RDD — https://github.com/robertodiasduarte/sdd-open\n'
+
+======================================================================
+FAIL: test_despacho_sem_papel_fresco_para_no_exit_40 (test_fluxo.TextoDoPorte) (arquivo='contexto-fresco.md')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.ogOmcyQtPI/tests/test_fluxo.py", line 493, in test_despacho_sem_papel_fresco_para_no_exit_40
+    self.assertRegex(texto, r"bash sdd/bin/sdd-fluxo\.sh despachar (avaliador|revisor-design)")
+AssertionError: Regex didn't match: 'bash sdd/bin/sdd-fluxo\\.sh despachar (avaliador|revisor-design)' not found in '# Avaliação em contexto fresco — quem julga não é quem constrói\n\n## Por que existe\n\nUm build que lê o próprio diff e "vê o handler" conclui que o botão funciona. Ninguém clicou.\nFeatures foram publicadas com "Enviar não faz nada" exatamente assim. O avaliador nasce **sem\na conversa do build**, lê o DEFINE como contrato e **prova cada critério executando**: comando,\nchamada HTTP, clique. Nunca lendo o diff.\n\nDuas landmines que este papel neutraliza:\n- **Asserção de fiação ≠ comportamento** — o `grep` acha a chamada, mas a condição pode ser\n  sempre-verdadeira.\n- **Régua validada contra o par que a construiu é circular** — por isso o brief abaixo é\n  **tudo** o que o avaliador recebe.\n\n## Como despachar (qualquer agente)\n\nO valor está no contexto limpo, não na API de subagente. Use o que o seu vendor tiver, nesta\nordem de preferência:\n\n1. **Subagente em contexto limpo** (Claude Code, Codex, Kimi Code, Grok Build e outros que\n   suportam agentes): despache com o brief abaixo como prompt inteiro.\n2. **Sessão nova** do mesmo agente: grave o brief em `sdd/reports/briefs/BRIEF_avaliador_{F}.md`\n   e abra uma sessão nova que só lê esse arquivo.\n3. **Outro vendor** em sessão nova: idem, e ganha diversidade de erro.\n\n⛔ O brief **não** leva BUILD_REPORT, diff, resumo do que foi feito, nem hipóteses do build.\nSe vier, o avaliador registra `CONTAMINAÇÃO` e o veredito perde valor.\n\n## Brief — modo `contrato` (antes de codar, ≥2 camadas)\n\n```text\nmodo: contrato · FEATURE: {F} · DEFINE: sdd/features/DEFINE_{F}.md ·\nDESIGN: sdd/features/DESIGN_{F}.md · projeto: {caminho absoluto}\n\nVocê não viu a conversa do build. Leia o DEFINE (## Acceptance Tests e ## Verify Gate) e o\nDESIGN. Para cada AT, pergunte: é verificável por execução? o estado que quebra tem critério?\no cmd do gate cobre este AT? o aceite é circular (prova a fiação, não o comportamento)? o\nefeito é observável? Proponha ≤5 ajustes, cada um com: alvo · classe · problema · redação em\nEARS · como verificar (comando/sonda). Rode as sondas read-only que puder AGORA (git diff,\ngrep, execução das fixtures) e cite o que mediu. Não edite código nem documento do projeto:\no único arquivo que você grava de propósito, pelo shell, é `sdd/reports/evidence/{F}/AVAL-*.log`\n(1ª linha `$ comando`, saída verbatim). Devolva o bloco <<<CONTRATO … >>>.\n```\n\n## Brief — modo `veredito` (depois do build)\n\n```text\nmodo: veredito · ciclo: {1|2} · FEATURE: {F} · DEFINE: sdd/features/DEFINE_{F}.md ·\nDESIGN: sdd/features/DESIGN_{F}.md · projeto: {caminho absoluto} · URL base: {se houver} ·\ncredenciais: {"autorizadas pelo humano nesta sessão" | "não autorizadas"}\n\nVocê não viu a conversa do build. Leia o DEFINE como contrato. Para cada AT, PROVE por\nexecução (comando, chamada, clique) — nunca lendo diff. Superfície visual: derive um roteiro\nclicável dos ATs e do manual_fallback e execute-o; sem browser/sessão, devolva o roteiro em\nNAO_VERIFICADO, nunca PASS. Só leitura em produção (GET, consultas SELECT, rotas idempotentes);\nnada que grave ou envie. Devolva <<<AVALIACAO … >>> com: veredito PASS | NEEDS_WORK |\nPASS_PENDENTE_RECIBO, tabela por AT (sonda · esperado · observado · resultado) e ACHADOS\n(cada um com reprodução exata). Não edite código nem documento do projeto: o único arquivo\nque você grava de propósito, pelo shell, é `sdd/reports/evidence/{F}/AVAL-*.log` (1ª linha\n`$ comando`, saída verbatim).\n```\n\n## O que o build faz com o veredito\n\n| Veredito | Ação |\n|---|---|\n| `PASS` | seguir; os ATs provados citam `sdd/reviews/AVALIACAO_{F}_{ts}.md` como evidência |\n| `NEEDS_WORK` | os ACHADOS são o brief de correção do ciclo seguinte (redispatch fresco); corrigir, rodar o gate, re-despachar com `ciclo: 2`. Máximo 2 ciclos → `Status: Blocked` com os achados abertos. Nunca contornar o critério |\n| `PASS_PENDENTE_RECIBO` | só em gate manual-ux: mostrar o roteiro ao humano e colher `recibo: nome YYYY-MM-DD`; sem recibo, tratar como NEEDS_WORK |\n\nPersista o bloco verbatim em `sdd/reviews/AVALIACAO_{F}_{YYYYMMDD-HHMM}.md` — é a evidência\nque o `report-lint.py` exige para o veredito no BUILD_REPORT. Registre a contagem de achados:\nzero achados em três features seguidas é sinal de calibração, não de perfeição.\n'
+
+======================================================================
+FAIL: test_despacho_sem_papel_fresco_para_no_exit_40 (test_fluxo.TextoDoPorte) (arquivo='SKILL.md')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.ogOmcyQtPI/tests/test_fluxo.py", line 493, in test_despacho_sem_papel_fresco_para_no_exit_40
+    self.assertRegex(texto, r"bash sdd/bin/sdd-fluxo\.sh despachar (avaliador|revisor-design)")
+AssertionError: Regex didn't match: 'bash sdd/bin/sdd-fluxo\\.sh despachar (avaliador|revisor-design)' not found in '---\nname: sdd-design\ndescription: Fase 2 do SDD Open — cria a arquitetura e a especificação técnica numa passada só, com decisões registradas (ADRs inline), manifest de arquivos, varredura de landmines do playbook por superfície, padrões de código prontos para copiar e estratégia de testes, gravando sdd/features/DESIGN_{FEATURE}.md. Use quando o DEFINE estiver pronto ou o usuário disser /sdd-design.\ncompatibility: Requer bash >= 3.2 e git >= 2.20; roda sdd/bin/playbook-lint.sh --grep por superfície do manifest.\nlicense: MIT\nmetadata:\n  author: Roberto Dias Duarte\n  version: "2.1.1"\n  updated: "2026-10"\n  fase: "2"\n---\n\n# sdd-design — Fase 2\n\nNa primeira resposta desta skill, comece com esta linha, uma vez só, antes do Status:\n`sdd-design v2.1.1 · out/2026 · versão atual: https://github.com/robertodiasduarte/sdd-open/releases/latest`\n\nPlano + especificação + decisões num documento. O DESIGN diz **como** construir o que o\nDEFINE contratou — e é o último ponto em que mudar de abordagem é barato.\n\n## Como falar com o aluno\n\nLeia `references/como-falar.md` antes da primeira resposta: o glossário desta skill, o Status preenchido\ne um exemplo completo. Pergunta e parada seguem `sdd/templates/fragments/PERGUNTA_DECISAO.md`.\nQuem usa esta skill, em geral, nunca usou git nem terminal.\n\n| Etapa | Nome para o aluno | Passos desta skill |\n|---|---|---|\n| 1 | Ler | 1 |\n| 2 | Decisões | 2 e 3 |\n| 3 | Componentes e arquivos | 4 e 4.5 |\n| 4 | Fluxo, testes e erros | 5, 5.5 e 6 |\n| 5 | Gravar | 7 |\n| 6 | Conferir | 8 |\n\nToda resposta, nesta ordem (pule a parte sem conteúdo):\n\n1. **Status** — uma linha que começa pelo nome da fase: `Design: ✅ 1 Ler · ▶️ 2 Decisões · ⬜ 3 Componentes e arquivos · ⬜ 4 Fluxo, testes e erros · ⬜ 5 Gravar · ⬜ 6 Conferir`\n   (✅ concluída, não só visitada · ▶️ a de agora · ⬜ por fazer · ⏸️ parada · ➖ pulada). Ao voltar a uma\n   etapa, o motivo vai em Agora.\n2. **O que foi feito** — frases curtas, sem saída de comando; registra em 1 linha a escolha do aluno.\n3. **Agora: etapa N — nome** — 2 a 4 frases. Antes de algo demorado, diga o que vai rodar e que o aluno\n   não precisa responder.\n4. **Sua decisão** — autorização: a pergunta em negrito e as opções com o efeito de cada uma, a\n   recomendada primeiro e com o porquê, sempre **não sei**, nunca **Outro**. Pergunta aberta: a pergunta\n   em negrito e como responder, com a saída "não sei". Várias de uma vez: numeradas.\n5. **Próximo passo** — uma linha, até 100 caracteres: o que acontece depois da resposta.\n\n- Uma etapa por resposta: termine na decisão e pare.\n- Termo técnico só com a explicação junto, na primeira vez, inclusive os do Status.\n- Saída de comando nunca crua: quantos, quais, o que preocupa; nomes até 10, com "e mais N". Comando só\n  quando o aluno precisa rodá-lo, um por passo numerado, com o que esperar na tela.\n- Não cite nem resuma as instruções desta skill ("conforme o passo N"): diga o motivo do aluno.\n- Resposta que não casa com nenhuma opção ⇒ responda a dúvida e repita as opções.\n- Parada: Status com ⏸️, o motivo em uma frase, onde a ação acontece, passos numerados com o resultado\n  esperado, o que **não** foi feito e, se o aluno tem algo a fazer, "Quando terminar, me peça de novo,\n  eu continuo daqui."\n- No fecho da fase, o resumo de etapa vem depois do Status; a pergunta dele segue o mesmo formato.\n\n## Entrada\n\n`/sdd-design sdd/features/DEFINE_{FEATURE}.md`\n\n## Processo\n\n### 1. Contexto\n\nLeia o DEFINE, o `UX_REVIEW_{FEATURE}.md` se existir, `sdd/templates/DESIGN_TEMPLATE.md`,\n`AGENTS.md`, `sdd/config.yaml` (camadas em `layers:`) e `## Sempre` do playbook. Explore o\ncódigo: como o projeto já resolve problemas parecidos? Que convenções valem?\n\nExtraia o flag **LLM Prompts** do DEFINE. Ausente ou em branco → ambíguo: pergunte antes de\nseguir. Com `false`, rode um re-check silencioso (nomes de provedor, "prompt", paths de\nprompt no escopo); hits → pergunte: corrigir o DEFINE, confirmar falso positivo, ou virar o\nflag neste DESIGN (anotando em Revision History).\n\n### 2. Arquitetura\n\nDiagrama ASCII do sistema, componentes, fluxo de dados, pontos de integração externos.\nDiagrama primeiro: desenhar clareia o pensamento.\n\n### 3. Decisões (ADRs inline)\n\nPara cada escolha significativa:\n\n```markdown\n### Decision N: {Nome}\n| **Status** | Accepted | · | **Date** | YYYY-MM-DD |\n**Context:** por que a decisão foi necessária\n**Choice:** o que fazemos\n**Rationale:** por quê\n**Alternatives Rejected:** 1. … — rejeitada porque … · 2. …\n**Consequences:** o trade-off que aceitamos · o que ganhamos\n```\n\nDecisões são permanentes: documente o **porquê**, não só o quê.\n\n### 4. File Manifest\n\n| # | Arquivo | Ação | Propósito | Dependências |\n|---|---|---|---|---|\n\nTodo arquivo a criar ou modificar. Sem dependência circular. Cada arquivo deve funcionar\nsozinho.\n\n### 4.5. Varredura de landmines (obrigatória, read-only)\n\nPara cada superfície do manifest (nome de arquivo, tabela, comando, conceito central):\n\n```bash\nsdd/bin/playbook-lint.sh --grep "<termo>" sdd/playbook.md   # exit 1 = 0 hits (normal)\n```\n\nToda landmine que casar entra na seção **`## Landmines aplicáveis`** com veredito\n**✔ tratado** (como, ou qual arquivo do manifest trata) ou **N.A.** (por que não se aplica).\nZero achados → `varredura rodada em YYYY-MM-DD, 0 aplicáveis`. **Nunca omita a seção.**\nNunca escreva no playbook a partir daqui.\n\n### 5. Code Patterns\n\nSnippets prontos para copiar dos padrões-chave. Se o projeto tem padrões canônicos\n(`sdd/patterns/` ou equivalente), **cite-os** e declare o que foi adaptado. Se não tem,\nescreva o snippet e registre `candidato a pattern: <camada>`.\n\n### 5.5. LLM Prompts (só se `true`)\n\nInventário: 1 linha por prompt de produção previsto (arquivo do manifest, tipo `one-shot` ×\n`loop` — o processo re-prompta o modelo com base na própria saída anterior? então `loop`),\ne um contrato por prompt: tom/audiência do DEFINE, formato de saída derivado do consumidor,\nfallback aprovado, material de referência concreto, provedor/modelo já decididos. Não\nescreva o prompt aqui: a fase Build o produz com o contrato em mãos.\n\n### 6. Estratégia de testes\n\n| Tipo | Escopo | Ferramenta | Meta |\n|---|---|---|---|\n\nCubra cada AT do DEFINE. O gate composto (se houver) é listado aqui com um bloco por AT.\n\n### 7. Gravar\n\n`sdd/features/DESIGN_{FEATURE}.md`, Status `Ready for Build`.\n\n### 8. Conferir\n\n`python3 sdd/bin/design-lint.py sdd/features/DESIGN_{FEATURE}.md` sobre o arquivo gravado: títulos\n`### Decision N: <nome>` em sequência, `**Total Files:**` igual às linhas do manifest, dependências sem\nciclo, nenhum placeholder. Vermelho ⇒ corrija o DESIGN e rode de novo antes de entregar.\n\n## Review adversarial do DESIGN (recomendado)\n\nÉ o ponto de **maior retorno** de uma revisão externa: mudar a abordagem custa pouco aqui e\nmuito depois do código. Peça a um **segundo vendor** (agente de outra família de modelos) que\nrevise o DESIGN com o contrato de `sdd/templates/fragments/ADVISOR_CONSULT.md` — veredito,\n≤3 riscos ranqueados, correções específicas, o que ignorar. Toda nota recebe **APLICADA ·\nREBATIDA_EVIDENCIA (com arquivo:linha) · REBATIDA_ESCOPO** no Advisor Ledger do DESIGN.\nNunca descartada em silêncio. Com um vendor só, use uma **sessão nova** do mesmo agente e\nregistre `diversidade: nenhuma` — mais fraco, mas honesto.\n\n## Quality Gate\n\n```text\n[ ] Diagrama claro · decisões com rationale · manifest completo, sem ciclos\n[ ] ## Landmines aplicáveis presente (✔ tratado / N.A. por achado, ou "0 aplicáveis")\n[ ] Code patterns prontos para copiar; padrões canônicos citados ou candidato registrado\n[ ] Estratégia de testes cobre todos os ATs\n[ ] LLM Prompts: se true, inventário 100% + contrato por linha; se false, re-check com zero hits\n[ ] Resposta fechada com o resumo de etapa (fragments/RESUMO_ETAPA.md)\n```\n\n## Por que cada regra existe\n\n- **Títulos `### Decision N:` fixos** — outras ferramentas leem as decisões por esse título; renomear\n  para "Decisão 1" ou "ADR-1" faz o `design-lint` reprovar e quem lê as decisões deixar de achá-las.\n- **Manifest sem ciclo e com `Total Files`** — com dependência circular não existe ordem de build\n  possível; o total confere que nenhuma linha se perdeu.\n- **Varredura de landmines sempre registrada, mesmo com 0 achados** — "0 aplicáveis" escrito prova que\n  a varredura rodou; a seção ausente não distingue "rodou e não achou" de "esqueceu".\n- **O DESIGN não escreve o prompt de produção** — escreve o contrato (tom, saída, fallback); o texto\n  final sai no Build, pela skill de prompt, em vez de virar rascunho congelado no documento.\n- **Revisão por outro vendor aqui, antes do código** — é o último ponto em que mudar de abordagem custa\n  uma edição de texto; depois do build, custa reescrever.\n- **`design-lint` no arquivo gravado** — conferir o rascunho na conversa não prova o arquivo que o Build\n  vai ler.\n\n## Encerramento (obrigatório)\n\nFeche com o **resumo de etapa** (`sdd/templates/fragments/RESUMO_ETAPA.md`); o 🏃 é\n`/sdd-design`.\n\n**Próximo passo:** `/sdd-build sdd/features/DESIGN_{FEATURE}.md`\n\n---\n\nParte do SDD Open by RDD — https://github.com/robertodiasduarte/sdd-open\n'
+
+======================================================================
+FAIL: test_despacho_sem_papel_fresco_para_no_exit_40 (test_fluxo.TextoDoPorte)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.ogOmcyQtPI/tests/test_fluxo.py", line 495, in test_despacho_sem_papel_fresco_para_no_exit_40
+    self.assertIn("review-design sdd/features/DESIGN_{FEATURE}.md", ler(SKILLS / "sdd-design/SKILL.md"))
+AssertionError: 'review-design sdd/features/DESIGN_{FEATURE}.md' not found in '---\nname: sdd-design\ndescription: Fase 2 do SDD Open — cria a arquitetura e a especificação técnica numa passada só, com decisões registradas (ADRs inline), manifest de arquivos, varredura de landmines do playbook por superfície, padrões de código prontos para copiar e estratégia de testes, gravando sdd/features/DESIGN_{FEATURE}.md. Use quando o DEFINE estiver pronto ou o usuário disser /sdd-design.\ncompatibility: Requer bash >= 3.2 e git >= 2.20; roda sdd/bin/playbook-lint.sh --grep por superfície do manifest.\nlicense: MIT\nmetadata:\n  author: Roberto Dias Duarte\n  version: "2.1.1"\n  updated: "2026-10"\n  fase: "2"\n---\n\n# sdd-design — Fase 2\n\nNa primeira resposta desta skill, comece com esta linha, uma vez só, antes do Status:\n`sdd-design v2.1.1 · out/2026 · versão atual: https://github.com/robertodiasduarte/sdd-open/releases/latest`\n\nPlano + especificação + decisões num documento. O DESIGN diz **como** construir o que o\nDEFINE contratou — e é o último ponto em que mudar de abordagem é barato.\n\n## Como falar com o aluno\n\nLeia `references/como-falar.md` antes da primeira resposta: o glossário desta skill, o Status preenchido\ne um exemplo completo. Pergunta e parada seguem `sdd/templates/fragments/PERGUNTA_DECISAO.md`.\nQuem usa esta skill, em geral, nunca usou git nem terminal.\n\n| Etapa | Nome para o aluno | Passos desta skill |\n|---|---|---|\n| 1 | Ler | 1 |\n| 2 | Decisões | 2 e 3 |\n| 3 | Componentes e arquivos | 4 e 4.5 |\n| 4 | Fluxo, testes e erros | 5, 5.5 e 6 |\n| 5 | Gravar | 7 |\n| 6 | Conferir | 8 |\n\nToda resposta, nesta ordem (pule a parte sem conteúdo):\n\n1. **Status** — uma linha que começa pelo nome da fase: `Design: ✅ 1 Ler · ▶️ 2 Decisões · ⬜ 3 Componentes e arquivos · ⬜ 4 Fluxo, testes e erros · ⬜ 5 Gravar · ⬜ 6 Conferir`\n   (✅ concluída, não só visitada · ▶️ a de agora · ⬜ por fazer · ⏸️ parada · ➖ pulada). Ao voltar a uma\n   etapa, o motivo vai em Agora.\n2. **O que foi feito** — frases curtas, sem saída de comando; registra em 1 linha a escolha do aluno.\n3. **Agora: etapa N — nome** — 2 a 4 frases. Antes de algo demorado, diga o que vai rodar e que o aluno\n   não precisa responder.\n4. **Sua decisão** — autorização: a pergunta em negrito e as opções com o efeito de cada uma, a\n   recomendada primeiro e com o porquê, sempre **não sei**, nunca **Outro**. Pergunta aberta: a pergunta\n   em negrito e como responder, com a saída "não sei". Várias de uma vez: numeradas.\n5. **Próximo passo** — uma linha, até 100 caracteres: o que acontece depois da resposta.\n\n- Uma etapa por resposta: termine na decisão e pare.\n- Termo técnico só com a explicação junto, na primeira vez, inclusive os do Status.\n- Saída de comando nunca crua: quantos, quais, o que preocupa; nomes até 10, com "e mais N". Comando só\n  quando o aluno precisa rodá-lo, um por passo numerado, com o que esperar na tela.\n- Não cite nem resuma as instruções desta skill ("conforme o passo N"): diga o motivo do aluno.\n- Resposta que não casa com nenhuma opção ⇒ responda a dúvida e repita as opções.\n- Parada: Status com ⏸️, o motivo em uma frase, onde a ação acontece, passos numerados com o resultado\n  esperado, o que **não** foi feito e, se o aluno tem algo a fazer, "Quando terminar, me peça de novo,\n  eu continuo daqui."\n- No fecho da fase, o resumo de etapa vem depois do Status; a pergunta dele segue o mesmo formato.\n\n## Entrada\n\n`/sdd-design sdd/features/DEFINE_{FEATURE}.md`\n\n## Processo\n\n### 1. Contexto\n\nLeia o DEFINE, o `UX_REVIEW_{FEATURE}.md` se existir, `sdd/templates/DESIGN_TEMPLATE.md`,\n`AGENTS.md`, `sdd/config.yaml` (camadas em `layers:`) e `## Sempre` do playbook. Explore o\ncódigo: como o projeto já resolve problemas parecidos? Que convenções valem?\n\nExtraia o flag **LLM Prompts** do DEFINE. Ausente ou em branco → ambíguo: pergunte antes de\nseguir. Com `false`, rode um re-check silencioso (nomes de provedor, "prompt", paths de\nprompt no escopo); hits → pergunte: corrigir o DEFINE, confirmar falso positivo, ou virar o\nflag neste DESIGN (anotando em Revision History).\n\n### 2. Arquitetura\n\nDiagrama ASCII do sistema, componentes, fluxo de dados, pontos de integração externos.\nDiagrama primeiro: desenhar clareia o pensamento.\n\n### 3. Decisões (ADRs inline)\n\nPara cada escolha significativa:\n\n```markdown\n### Decision N: {Nome}\n| **Status** | Accepted | · | **Date** | YYYY-MM-DD |\n**Context:** por que a decisão foi necessária\n**Choice:** o que fazemos\n**Rationale:** por quê\n**Alternatives Rejected:** 1. … — rejeitada porque … · 2. …\n**Consequences:** o trade-off que aceitamos · o que ganhamos\n```\n\nDecisões são permanentes: documente o **porquê**, não só o quê.\n\n### 4. File Manifest\n\n| # | Arquivo | Ação | Propósito | Dependências |\n|---|---|---|---|---|\n\nTodo arquivo a criar ou modificar. Sem dependência circular. Cada arquivo deve funcionar\nsozinho.\n\n### 4.5. Varredura de landmines (obrigatória, read-only)\n\nPara cada superfície do manifest (nome de arquivo, tabela, comando, conceito central):\n\n```bash\nsdd/bin/playbook-lint.sh --grep "<termo>" sdd/playbook.md   # exit 1 = 0 hits (normal)\n```\n\nToda landmine que casar entra na seção **`## Landmines aplicáveis`** com veredito\n**✔ tratado** (como, ou qual arquivo do manifest trata) ou **N.A.** (por que não se aplica).\nZero achados → `varredura rodada em YYYY-MM-DD, 0 aplicáveis`. **Nunca omita a seção.**\nNunca escreva no playbook a partir daqui.\n\n### 5. Code Patterns\n\nSnippets prontos para copiar dos padrões-chave. Se o projeto tem padrões canônicos\n(`sdd/patterns/` ou equivalente), **cite-os** e declare o que foi adaptado. Se não tem,\nescreva o snippet e registre `candidato a pattern: <camada>`.\n\n### 5.5. LLM Prompts (só se `true`)\n\nInventário: 1 linha por prompt de produção previsto (arquivo do manifest, tipo `one-shot` ×\n`loop` — o processo re-prompta o modelo com base na própria saída anterior? então `loop`),\ne um contrato por prompt: tom/audiência do DEFINE, formato de saída derivado do consumidor,\nfallback aprovado, material de referência concreto, provedor/modelo já decididos. Não\nescreva o prompt aqui: a fase Build o produz com o contrato em mãos.\n\n### 6. Estratégia de testes\n\n| Tipo | Escopo | Ferramenta | Meta |\n|---|---|---|---|\n\nCubra cada AT do DEFINE. O gate composto (se houver) é listado aqui com um bloco por AT.\n\n### 7. Gravar\n\n`sdd/features/DESIGN_{FEATURE}.md`, Status `Ready for Build`.\n\n### 8. Conferir\n\n`python3 sdd/bin/design-lint.py sdd/features/DESIGN_{FEATURE}.md` sobre o arquivo gravado: títulos\n`### Decision N: <nome>` em sequência, `**Total Files:**` igual às linhas do manifest, dependências sem\nciclo, nenhum placeholder. Vermelho ⇒ corrija o DESIGN e rode de novo antes de entregar.\n\n## Review adversarial do DESIGN (recomendado)\n\nÉ o ponto de **maior retorno** de uma revisão externa: mudar a abordagem custa pouco aqui e\nmuito depois do código. Peça a um **segundo vendor** (agente de outra família de modelos) que\nrevise o DESIGN com o contrato de `sdd/templates/fragments/ADVISOR_CONSULT.md` — veredito,\n≤3 riscos ranqueados, correções específicas, o que ignorar. Toda nota recebe **APLICADA ·\nREBATIDA_EVIDENCIA (com arquivo:linha) · REBATIDA_ESCOPO** no Advisor Ledger do DESIGN.\nNunca descartada em silêncio. Com um vendor só, use uma **sessão nova** do mesmo agente e\nregistre `diversidade: nenhuma` — mais fraco, mas honesto.\n\n## Quality Gate\n\n```text\n[ ] Diagrama claro · decisões com rationale · manifest completo, sem ciclos\n[ ] ## Landmines aplicáveis presente (✔ tratado / N.A. por achado, ou "0 aplicáveis")\n[ ] Code patterns prontos para copiar; padrões canônicos citados ou candidato registrado\n[ ] Estratégia de testes cobre todos os ATs\n[ ] LLM Prompts: se true, inventário 100% + contrato por linha; se false, re-check com zero hits\n[ ] Resposta fechada com o resumo de etapa (fragments/RESUMO_ETAPA.md)\n```\n\n## Por que cada regra existe\n\n- **Títulos `### Decision N:` fixos** — outras ferramentas leem as decisões por esse título; renomear\n  para "Decisão 1" ou "ADR-1" faz o `design-lint` reprovar e quem lê as decisões deixar de achá-las.\n- **Manifest sem ciclo e com `Total Files`** — com dependência circular não existe ordem de build\n  possível; o total confere que nenhuma linha se perdeu.\n- **Varredura de landmines sempre registrada, mesmo com 0 achados** — "0 aplicáveis" escrito prova que\n  a varredura rodou; a seção ausente não distingue "rodou e não achou" de "esqueceu".\n- **O DESIGN não escreve o prompt de produção** — escreve o contrato (tom, saída, fallback); o texto\n  final sai no Build, pela skill de prompt, em vez de virar rascunho congelado no documento.\n- **Revisão por outro vendor aqui, antes do código** — é o último ponto em que mudar de abordagem custa\n  uma edição de texto; depois do build, custa reescrever.\n- **`design-lint` no arquivo gravado** — conferir o rascunho na conversa não prova o arquivo que o Build\n  vai ler.\n\n## Encerramento (obrigatório)\n\nFeche com o **resumo de etapa** (`sdd/templates/fragments/RESUMO_ETAPA.md`); o 🏃 é\n`/sdd-design`.\n\n**Próximo passo:** `/sdd-build sdd/features/DESIGN_{FEATURE}.md`\n\n---\n\nParte do SDD Open by RDD — https://github.com/robertodiasduarte/sdd-open\n'
+
+======================================================================
+FAIL: test_f10_brainstorm_trata_cada_tipo_de_entrada (test_fluxo.TextoDoPorte)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.ogOmcyQtPI/tests/test_fluxo.py", line 483, in test_f10_brainstorm_trata_cada_tipo_de_entrada
+    self.assertIn(trecho, texto)
+AssertionError: 'Como tratar cada tipo de entrada' not found in '---\nname: sdd-brainstorm\ndescription: Fase 0 do SDD Open — explora uma ideia vaga por diálogo antes de virar requisito. Faz perguntas uma de cada vez, coleta amostras, propõe 2–3 abordagens com prós e contras, aplica YAGNI e grava sdd/features/BRAINSTORM_{FEATURE}.md. Use quando o usuário disser "quero fazer algo mas não sei bem o quê", trouxer notas soltas ou pedir /sdd-brainstorm.\ncompatibility: Requer bash >= 3.2 e git >= 2.20; funciona em qualquer agente que leia AGENTS.md e .agents/skills/.\nlicense: MIT\nmetadata:\n  author: Roberto Dias Duarte\n  version: "2.1.1"\n  updated: "2026-10"\n  fase: "0"\n---\n\n# sdd-brainstorm — Fase 0 (opcional)\n\nNa primeira resposta desta skill, comece com esta linha, uma vez só, antes do Status:\n`sdd-brainstorm v2.1.1 · out/2026 · versão atual: https://github.com/robertodiasduarte/sdd-open/releases/latest`\n\nExplorar antes de especificar. O produto desta fase é **clareza**, não código: um documento\nque o `/sdd-define` consegue transformar em spec com pouca pergunta.\n\n```text\nFase 0: /sdd-brainstorm → sdd/features/BRAINSTORM_{F}.md   (ESTA SKILL)\nFase 1: /sdd-define     → sdd/features/DEFINE_{F}.md\nUX:     /sdd-ux-review  → sdd/reviews/UX_REVIEW_{F}.md\nFase 2: /sdd-design     → sdd/features/DESIGN_{F}.md\nFase 3: /sdd-build      → código + sdd/reports/BUILD_REPORT_{F}.md\nFase 4: /sdd-release    → publicação com 1 OK + sdd/releases/{F}/\n```\n\n## Como falar com o aluno\n\nLeia `references/como-falar.md` antes da primeira resposta: o glossário desta skill, o Status preenchido\ne um exemplo completo. Pergunta e parada seguem `sdd/templates/fragments/PERGUNTA_DECISAO.md`.\nQuem usa esta skill, em geral, nunca usou git nem terminal.\n\n| Etapa | Nome para o aluno | Passos desta skill |\n|---|---|---|\n| 1 | Entender | 1 |\n| 2 | Perguntas | 2 (uma por resposta) |\n| 3 | Amostras | 3 |\n| 4 | Abordagens | 4 e 5 (YAGNI) |\n| 5 | Validar | 6 |\n| 6 | Gravar | 7 |\n\nToda resposta, nesta ordem (pule a parte sem conteúdo):\n\n1. **Status** — uma linha que começa pelo nome da fase: `Brainstorm: ✅ 1 Entender · ▶️ 2 Perguntas · ⬜ 3 Amostras · ⬜ 4 Abordagens · ⬜ 5 Validar · ⬜ 6 Gravar`\n   (✅ concluída, não só visitada · ▶️ a de agora · ⬜ por fazer · ⏸️ parada · ➖ pulada). Ao voltar a uma\n   etapa, o motivo vai em Agora.\n2. **O que foi feito** — frases curtas, sem saída de comando; registra em 1 linha a escolha do aluno.\n3. **Agora: etapa N — nome** — 2 a 4 frases. Antes de algo demorado, diga o que vai rodar e que o aluno\n   não precisa responder.\n4. **Sua decisão** — autorização: a pergunta em negrito e as opções com o efeito de cada uma, a\n   recomendada primeiro e com o porquê, sempre **não sei**, nunca **Outro**. Pergunta aberta: a pergunta\n   em negrito e como responder, com a saída "não sei". Várias de uma vez: numeradas.\n5. **Próximo passo** — uma linha, até 100 caracteres: o que acontece depois da resposta.\n\n- Uma etapa por resposta: termine na decisão e pare.\n- Termo técnico só com a explicação junto, na primeira vez, inclusive os do Status.\n- Saída de comando nunca crua: quantos, quais, o que preocupa; nomes até 10, com "e mais N". Comando só\n  quando o aluno precisa rodá-lo, um por passo numerado, com o que esperar na tela.\n- Não cite nem resuma as instruções desta skill ("conforme o passo N"): diga o motivo do aluno.\n- Resposta que não casa com nenhuma opção ⇒ responda a dúvida e repita as opções.\n- Parada: Status com ⏸️, o motivo em uma frase, onde a ação acontece, passos numerados com o resultado\n  esperado, o que **não** foi feito e, se o aluno tem algo a fazer, "Quando terminar, me peça de novo,\n  eu continuo daqui."\n- No fecho da fase, o resumo de etapa vem depois do Status; a pergunta dele segue o mesmo formato.\n\n## Entrada\n\n`/sdd-brainstorm <ideia | arquivo de notas | problema>`. Se não vier nada, pergunte\n"O que você quer construir ou resolver?".\n\n## Processo\n\n### 1. Contexto\n\nLeia `AGENTS.md`, `sdd/templates/BRAINSTORM_TEMPLATE.md` e a seção `## Sempre` de\n`sdd/playbook.md`. Explore a estrutura do projeto e os commits recentes: o que já existe que\nse parece com o pedido? Onde uma feature assim moraria?\n\n### 2. Perguntas de descoberta — UMA por vez\n\nMínimo **3** antes de propor abordagem. Prefira múltipla escolha (2–4 opções); a\nrecomendada vem **primeiro**, com "(Recomendado)" e o motivo em uma frase.\n\n| Tipo | Quando |\n|---|---|\n| Múltipla escolha | as opções são claras (preferido) |\n| Aberta | território desconhecido |\n| De esclarecimento | a resposta anterior foi vaga |\n\nBoas perguntas: "Para quem é?", "O que muda no dia de quem usa?", "Como você saberia que\nficou pronto?", "O que NÃO precisa estar na primeira versão?".\n\n### 3. Amostras (aterramento)\n\nSempre pergunte: "Existe algo que ancore a solução? (a) arquivos de entrada reais, (b) exemplos\nda saída esperada, (c) dados verificados, (d) nada disponível". Se existir, leia e descreva no\ndocumento — amostra real vale mais que descrição.\n\n### 4. Abordagens — 2 ou 3, com recomendação\n\n```markdown\n### Abordagem A: {Nome} ⭐ Recomendada\n**Por quê:** {1–2 frases}  ·  **Prós:** …  ·  **Contras:** …\n\n### Abordagem B: {Nome}\n**Por que não recomendada:** …\n```\n\nLidere com a recomendação. Nunca entregue três opções sem opinião.\n\n### 5. YAGNI\n\nPara cada funcionalidade que surgiu: precisa para a primeira versão? Resolve o problema\ncentral? Se não, sai — e fica **registrada** na tabela "Removidas", com o motivo e se pode\nvoltar depois. O que sai é tão importante quanto o que fica.\n\n### 6. Validação incremental\n\nApresente o entendimento em blocos de 200–300 palavras e confirme cada um antes do\npróximo. Mínimo **2** confirmações. Se o usuário corrigir, volte: "Entendi diferente. Revisando…".\n\n### 7. Documento\n\nPreencha `sdd/templates/BRAINSTORM_TEMPLATE.md` e grave em\n`sdd/features/BRAINSTORM_{FEATURE}.md` (nome em CAIXA_ALTA_COM_UNDERSCORE, estável — é o\n`feature_id` de toda a linha). Inclua a seção **Suggested Requirements for /define** com\nproblema, usuários, critérios de sucesso mensuráveis e fora de escopo confirmado.\n\n## Se o agente não puder perguntar (sessão autônoma)\n\nResponda cada pergunta pela evidência disponível, marque a resposta como `ASSUMIDO` e liste as\nassunções em "O que precisa de você" no fechamento. Nunca invente uma resposta do usuário.\n\n## Quality Gate\n\n```text\n[ ] ≥3 perguntas de descoberta feitas (ou ASSUMIDO marcado)\n[ ] Pergunta de amostras feita\n[ ] ≥2 abordagens exploradas, com recomendação\n[ ] YAGNI aplicado e registrado\n[ ] ≥2 validações incrementais\n[ ] Abordagem escolhida confirmada pelo usuário (ou marcada pendente)\n[ ] Requisitos-rascunho para o Define incluídos\n[ ] Resposta fechada com o resumo de etapa (fragments/RESUMO_ETAPA.md)\n```\n\n## Por que cada regra existe\n\n- **Uma pergunta por mensagem** — duas perguntas juntas recebem uma resposta só, quase sempre à mais\n  fácil; a outra some sem ninguém perceber.\n- **Pelo menos 3 perguntas antes das abordagens** — abordagem proposta cedo ancora a conversa: as\n  perguntas seguintes passam a confirmar a solução em vez de entender o problema.\n- **Sempre perguntar por amostras** — uma planilha real derruba suposições que uma descrição não\n  derruba (o campo que vem vazio, o formato que muda no meio do mês).\n- **Liderar com a recomendação** — três opções sem opinião devolvem a decisão a quem pediu ajuda\n  justamente para decidir.\n- **O que sai pelo YAGNI fica registrado** — com o motivo e se pode voltar depois, o registro impede\n  que a ideia volte escondida no Design como se ninguém a tivesse descartado.\n- **Duas confirmações antes de gravar** — o documento vira a entrada do Define; um mal-entendido gravado\n  aqui chega ao código com cara de requisito.\n- **Sessão autônoma marca `ASSUMIDO`, nunca inventa a resposta do usuário** — no documento, uma resposta\n  inventada não se distingue de uma real, e o Define a trata como decisão tomada.\n\n## Encerramento (obrigatório)\n\nFeche com o **resumo de etapa** — contrato em `sdd/templates/fragments/RESUMO_ETAPA.md`.\nEsta fase é pré-linha: renderize o kanban completo **sem casa 🏃 própria**. Os 4 blocos, na\nordem: micro-kanban · Onde estamos (≤2 linhas) · O que precisa de você (só se houver pergunta\nbloqueante; senão omita o bloco) · O que vem depois, na ordem (com ⚠️ inline onde uma\nlandmine morde).\n\n**Próximo passo:** `/sdd-define sdd/features/BRAINSTORM_{FEATURE}.md`\n\n---\n\nParte do SDD Open by RDD — https://github.com/robertodiasduarte/sdd-open\n'
+
+======================================================================
+FAIL: test_f11_ux_review_le_as_revisoes_anteriores (test_fluxo.TextoDoPorte)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.ogOmcyQtPI/tests/test_fluxo.py", line 486, in test_f11_ux_review_le_as_revisoes_anteriores
+    self.assertIn("os `sdd/reviews/UX_REVIEW_*.md` anteriores", ler(SKILLS / "sdd-ux-review/SKILL.md"))
+AssertionError: 'os `sdd/reviews/UX_REVIEW_*.md` anteriores' not found in '---\nname: sdd-ux-review\ndescription: Gate de UX/CX do SDD Open, entre o Define e o Design — mapeia a jornada do usuário, acha atrito, estados faltantes e ambiguidade, aplica os dois princípios inegociáveis (premium e "se tem que explicar, está errado") e grava sdd/reviews/UX_REVIEW_{FEATURE}.md com requisitos concretos para o Design. Use em toda feature com interface (tela, CLI, documento gerado), ou quando o usuário disser /sdd-ux-review.\ncompatibility: Requer bash >= 3.2 e git >= 2.20. Independe de stack visual; usa o design system do projeto quando houver.\nlicense: MIT\nmetadata:\n  author: Roberto Dias Duarte\n  version: "2.3.1"\n  updated: "2026-10"\n  fase: "UX"\n---\n\n# sdd-ux-review — gate de UX/CX\n\nNa primeira resposta desta skill, comece com esta linha, uma vez só, antes do Status:\n`sdd-ux-review v2.3.1 · out/2026 · versão atual: https://github.com/robertodiasduarte/sdd-open/releases/latest`\n\nTraduzir requisitos em experiência **antes** que arquitetura e código endureçam. "Interface"\ninclui tela, linha de comando, arquivo gerado, e-mail: qualquer coisa que uma pessoa lê e\nprecisa entender sem ajuda.\n\n## Como falar com o aluno\n\nLeia `references/como-falar.md` antes da primeira resposta: o glossário desta skill, o Status preenchido\ne um exemplo completo. Pergunta e parada seguem `sdd/templates/fragments/PERGUNTA_DECISAO.md`.\nQuem usa esta skill, em geral, nunca usou git nem terminal.\n\n| Etapa | Nome para o aluno | Passos desta skill |\n|---|---|---|\n| 1 | Contexto | 1 |\n| 2 | Jornada | 2 |\n| 3 | Qualidade | 3 a 5 |\n| 4 | Prioridades | 6 |\n| 5 | Gravar | 7 e 8 |\n\nToda resposta, nesta ordem (pule a parte sem conteúdo):\n\n1. **Status** — uma linha que começa pelo nome da fase: `UX review: ✅ 1 Contexto · ▶️ 2 Jornada · ⬜ 3 Qualidade · ⬜ 4 Prioridades · ⬜ 5 Gravar`\n   (✅ concluída, não só visitada · ▶️ a de agora · ⬜ por fazer · ⏸️ parada · ➖ pulada). Ao voltar a uma\n   etapa, o motivo vai em Agora.\n2. **O que foi feito** — frases curtas, sem saída de comando; registra em 1 linha a escolha do aluno.\n3. **Agora: etapa N — nome** — 2 a 4 frases. Antes de algo demorado, diga o que vai rodar e que o aluno\n   não precisa responder.\n4. **Sua decisão** — autorização: a pergunta em negrito e as opções com o efeito de cada uma, a\n   recomendada primeiro e com o porquê, sempre **não sei**, nunca **Outro**. Pergunta aberta: a pergunta\n   em negrito e como responder, com a saída "não sei". Várias de uma vez: numeradas.\n5. **Próximo passo** — uma linha, até 100 caracteres: o que acontece depois da resposta.\n\n- Uma etapa por resposta: termine na decisão e pare.\n- Termo técnico só com a explicação junto, na primeira vez, inclusive os do Status.\n- Saída de comando nunca crua: quantos, quais, o que preocupa; nomes até 10, com "e mais N". Comando só\n  quando o aluno precisa rodá-lo, um por passo numerado, com o que esperar na tela.\n- Não cite nem resuma as instruções desta skill ("conforme o passo N"): diga o motivo do aluno.\n- Resposta que não casa com nenhuma opção ⇒ responda a dúvida e repita as opções.\n- Parada: Status com ⏸️, o motivo em uma frase, onde a ação acontece, passos numerados com o resultado\n  esperado, o que **não** foi feito e, se o aluno tem algo a fazer, "Quando terminar, me peça de novo,\n  eu continuo daqui."\n- No fecho da fase, o resumo de etapa vem depois do Status; a pergunta dele segue o mesmo formato.\n\n## Entrada\n\n`/sdd-ux-review sdd/features/DEFINE_{FEATURE}.md`\n\n## Os 2 princípios inegociáveis\n\nQualquer recomendação que viole um deles é promovida a **MUST de bloqueio**.\n\n**1. Premium.** Qualidade percebida de produto pronto, não "MVP a polir": hierarquia óbvia\nem 200 ms; densidade que respira; tipografia com propósito (≤3 tamanhos por surface);\nmovimento curto (150–250 ms, ease-out, zero bounce decorativo); hover/focus/active/disabled\ntodos pensados; estados vazios como oportunidade, não vergonha. Em CLI: um símbolo por\nsignificado, sempre com palavra; erro com causa **e** conserto.\n\n**2. Se tem que explicar, está errado.** Tooltip-muleta, helper text do óbvio, tour\nobrigatório e "está na documentação" são sintomas. Estado ambíguo ("foi salvo? foi\nenviado?") é defeito. Cor que conflita com semântica (rascunho em verde com ✅) é defeito.\n\n**Teste do estranho:** alguém que nunca viu a feature completa a tarefa em silêncio?\n**Teste do suporte:** você consegue imaginar um usuário mandando print perguntando "isso é\nbug?" ou "como faço X?" — essa pergunta **é** o bug; resolve-se na interface.\n\n## Processo\n\n1. **Contexto.** Leia o DEFINE, `sdd/templates/UX_REVIEW_TEMPLATE.md`, `AGENTS.md` e, se\n   existir, o design system do projeto. Extraia usuário, objetivo, dor, critérios, restrições e\n   fora de escopo.\n   Se o DEFINE não diz quem usa e em que contexto, ou se o aluno pedir, conduza antes a entrevista\n   de `references/entrevista-publico.md` e grave o resultado em `## User and Context`.\n2. **Jornada.** Antes → Entrada → Ação central → Feedback → Recuperação →\n   (Interrupção → Retomada) → Conclusão → Follow-up. Para cada passo: intenção, emoção/risco, atrito, o que o sistema precisa\n   confirmar, o que acontece quando falha.\n3. **Qualidade UX/CX.** Clareza · Eficiência · Confiança · Acessibilidade · Responsividade ·\n   Estados (loading, vazio, erro, sucesso, parcial, sem permissão, desabilitado) ·\n   Continuidade (e-mail, suporte, expectativa) · Premium · Autoexplicativo · Gamificação\n   (só quando serve ao usuário; senão, diga por que não).\n4. **60/30/10.** Fundo dominante, surfaces secundárias (destaque × operacional ×\n   sobreposição) e acento que aponta a próxima ação. Cite os tokens do design system do\n   projeto; sem design system, proponha os papéis e registre como candidato. Contraste\n   **medido** nos pares reais (≥4.5:1 texto, ≥3:1 não-texto). Significado nunca só por cor.\n5. **Lentes cognitivas (não bloqueiam).** Lente nunca gera MUST, não entra no cálculo do\n   status (`Ready for Design`) e nunca rebaixa uma regra: se o achado já viola a regra da última\n   coluna, o MUST vem dela, citado à parte. Todo status diferente de `N.A.` exige evidência.\n   Status: `OK` · `RECOMENDAÇÃO` (SHOULD ou COULD; vai ao handoff como `(lente Lx)`) · `ALERTA`\n   (aplicar a lente ao pé da letra pioraria esta tela) · `N.A.` (com motivo; podem ir juntas numa linha).\n\n   | Lente | Pergunta | Alerta embutido | Regra que manda |\n   |---|---|---|---|\n   | L1 Alcance (Fitts) | Ação principal perto da decisão? Linha/card inteiro clicável? 44 px recomendado | — | acessibilidade do passo 3 (alvo < 24×24 px, WCAG 2.2 AA) |\n   | L2 Escolhas por passo (Hick-Hyman) | Quantas opções competem por decisão? Revelação progressiva cabe? | uso diário: densidade é recurso | 60/30/10 (acento aponta a próxima ação) |\n   | L3 Retomada (Zeigarnik) | Sair no meio preserva o preenchido? A volta mostra o que falta? | sem lembrete que culpe | princípio 2, "Se tem que explicar, está errado" (estado ambíguo) |\n   | L4 Convenção (Jakob) | Padrão fora da convenção de mercado tem justificativa? | não reaprender ação básica | — |\n   | L5 Progresso real (Gradiente de meta) | Progresso vem do estado real e mostra o que falta? | progresso inflado é dark pattern | princípio 2 + gamificação honesta (passo 3) |\n   | L6 Destaque único (Von Restorff) | Só o que importa se destaca? | `ALERTA` só com destaques concorrentes | 60/30/10 (passo 4) |\n   | L7 Agrupamento (Miller) | Campos e dados em grupos com nome? | 7±2 não é regra de contagem | — |\n   | S Sinal de validação real | Que número, depois da entrega, diz se funcionou? | recomendação, nunca critério de aceite | — |\n6. **Priorizar.** MUST (quebra o sucesso do usuário) · SHOULD · COULD · WONT (ideia boa,\n   excluída — diga por quê). Lente nunca é MUST.\n7. **Handoff para o Design.** Requisitos de interação, componentes, estados obrigatórios,\n   guia de copy (CTA com verbo, erro humano e acionável, confirmação com próximo passo),\n   guia visual, gamificação (ou por que não), recomendações `(lente Lx)`, "Como medir\n   depois" (sinal S), notas de aceite.\n8. **Gravar** `sdd/reviews/UX_REVIEW_{FEATURE}.md`.\n\nSe a feature **não tem** interface de nenhum tipo, escreva isso no DEFINE (Constraints) e o\nkanban marca ➖. Não rode a revisão por cerimônia — mas antes pergunte: existe terminal,\narquivo ou mensagem que alguém vai ler? Então existe UX.\n\n## Quality Gate\n\n```text\n[ ] Jornada mapeada · riscos explícitos · 7 estados considerados\n[ ] Acessibilidade e responsividade tratadas · contraste com números medidos\n[ ] 60/30/10 aplicado com papéis claros (ou N.A. justificado para não-visual)\n[ ] Gamificação recomendada ou explicitamente dispensada\n[ ] Premium e Autoexplicativo verificados; teste do estranho e do suporte aplicados\n[ ] Cores nunca conflitam com semântica\n[ ] Recomendações em MUST/SHOULD/COULD/WONT; violação de princípio = MUST\n[ ] Lentes cognitivas com evidência; nenhuma vira MUST nem muda o status\n[ ] Handoff concreto para o Design\n[ ] Resposta fechada com o resumo de etapa (fragments/RESUMO_ETAPA.md)\n```\n\n## Por que cada regra existe\n\n- **Interface inclui linha de comando, arquivo gerado e e-mail** — tudo que uma pessoa lê e precisa\n  entender sem ajuda pode confundir, e o suporte paga por cada confusão.\n- **Violação de princípio vira MUST** — "premium" e "se tem que explicar, está errado" deixados como\n  sugestão são os primeiros cortados quando o prazo aperta.\n- **Contraste medido, nunca estimado** — o olho de quem desenhou se acostuma com a tela; o número\n  (4.5:1, 3:1) não.\n- **Lente cognitiva nunca vira MUST nem muda o status** — as lentes são heurísticas com exceções\n  conhecidas; promovê-las a regra bloqueia telas que estão certas.\n- **Entrevista de público só quando o DEFINE não diz quem usa, ou quando o aluno pede** — perguntar o que\n  já está escrito gasta a paciência que a pessoa vai precisar nas decisões que importam.\n- **Sem interface de nenhum tipo, ➖ registrado; nunca revisão por cerimônia** — revisão sem objeto\n  produz recomendações genéricas que o Design ignora, e ensina a ignorar as próximas.\n\n## Encerramento (obrigatório)\n\nFeche com o **resumo de etapa** (`sdd/templates/fragments/RESUMO_ETAPA.md`); o 🏃 é\n`/sdd-ux-review`.\n\n**Próximo passo:** `/sdd-design sdd/features/DEFINE_{FEATURE}.md`\n\n---\n\nParte do SDD Open by RDD — https://github.com/robertodiasduarte/sdd-open\n'
+
+======================================================================
+FAIL: test_f6_design_decide_sozinho_so_com_o_encadeamento_ligado (test_fluxo.TextoDoPorte)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.ogOmcyQtPI/tests/test_fluxo.py", line 471, in test_f6_design_decide_sozinho_so_com_o_encadeamento_ligado
+    self.assertIn(trecho, texto)
+AssertionError: 'bash sdd/bin/sdd-fluxo.sh estado' not found in '---\nname: sdd-design\ndescription: Fase 2 do SDD Open — cria a arquitetura e a especificação técnica numa passada só, com decisões registradas (ADRs inline), manifest de arquivos, varredura de landmines do playbook por superfície, padrões de código prontos para copiar e estratégia de testes, gravando sdd/features/DESIGN_{FEATURE}.md. Use quando o DEFINE estiver pronto ou o usuário disser /sdd-design.\ncompatibility: Requer bash >= 3.2 e git >= 2.20; roda sdd/bin/playbook-lint.sh --grep por superfície do manifest.\nlicense: MIT\nmetadata:\n  author: Roberto Dias Duarte\n  version: "2.1.1"\n  updated: "2026-10"\n  fase: "2"\n---\n\n# sdd-design — Fase 2\n\nNa primeira resposta desta skill, comece com esta linha, uma vez só, antes do Status:\n`sdd-design v2.1.1 · out/2026 · versão atual: https://github.com/robertodiasduarte/sdd-open/releases/latest`\n\nPlano + especificação + decisões num documento. O DESIGN diz **como** construir o que o\nDEFINE contratou — e é o último ponto em que mudar de abordagem é barato.\n\n## Como falar com o aluno\n\nLeia `references/como-falar.md` antes da primeira resposta: o glossário desta skill, o Status preenchido\ne um exemplo completo. Pergunta e parada seguem `sdd/templates/fragments/PERGUNTA_DECISAO.md`.\nQuem usa esta skill, em geral, nunca usou git nem terminal.\n\n| Etapa | Nome para o aluno | Passos desta skill |\n|---|---|---|\n| 1 | Ler | 1 |\n| 2 | Decisões | 2 e 3 |\n| 3 | Componentes e arquivos | 4 e 4.5 |\n| 4 | Fluxo, testes e erros | 5, 5.5 e 6 |\n| 5 | Gravar | 7 |\n| 6 | Conferir | 8 |\n\nToda resposta, nesta ordem (pule a parte sem conteúdo):\n\n1. **Status** — uma linha que começa pelo nome da fase: `Design: ✅ 1 Ler · ▶️ 2 Decisões · ⬜ 3 Componentes e arquivos · ⬜ 4 Fluxo, testes e erros · ⬜ 5 Gravar · ⬜ 6 Conferir`\n   (✅ concluída, não só visitada · ▶️ a de agora · ⬜ por fazer · ⏸️ parada · ➖ pulada). Ao voltar a uma\n   etapa, o motivo vai em Agora.\n2. **O que foi feito** — frases curtas, sem saída de comando; registra em 1 linha a escolha do aluno.\n3. **Agora: etapa N — nome** — 2 a 4 frases. Antes de algo demorado, diga o que vai rodar e que o aluno\n   não precisa responder.\n4. **Sua decisão** — autorização: a pergunta em negrito e as opções com o efeito de cada uma, a\n   recomendada primeiro e com o porquê, sempre **não sei**, nunca **Outro**. Pergunta aberta: a pergunta\n   em negrito e como responder, com a saída "não sei". Várias de uma vez: numeradas.\n5. **Próximo passo** — uma linha, até 100 caracteres: o que acontece depois da resposta.\n\n- Uma etapa por resposta: termine na decisão e pare.\n- Termo técnico só com a explicação junto, na primeira vez, inclusive os do Status.\n- Saída de comando nunca crua: quantos, quais, o que preocupa; nomes até 10, com "e mais N". Comando só\n  quando o aluno precisa rodá-lo, um por passo numerado, com o que esperar na tela.\n- Não cite nem resuma as instruções desta skill ("conforme o passo N"): diga o motivo do aluno.\n- Resposta que não casa com nenhuma opção ⇒ responda a dúvida e repita as opções.\n- Parada: Status com ⏸️, o motivo em uma frase, onde a ação acontece, passos numerados com o resultado\n  esperado, o que **não** foi feito e, se o aluno tem algo a fazer, "Quando terminar, me peça de novo,\n  eu continuo daqui."\n- No fecho da fase, o resumo de etapa vem depois do Status; a pergunta dele segue o mesmo formato.\n\n## Entrada\n\n`/sdd-design sdd/features/DEFINE_{FEATURE}.md`\n\n## Processo\n\n### 1. Contexto\n\nLeia o DEFINE, o `UX_REVIEW_{FEATURE}.md` se existir, `sdd/templates/DESIGN_TEMPLATE.md`,\n`AGENTS.md`, `sdd/config.yaml` (camadas em `layers:`) e `## Sempre` do playbook. Explore o\ncódigo: como o projeto já resolve problemas parecidos? Que convenções valem?\n\nExtraia o flag **LLM Prompts** do DEFINE. Ausente ou em branco → ambíguo: pergunte antes de\nseguir. Com `false`, rode um re-check silencioso (nomes de provedor, "prompt", paths de\nprompt no escopo); hits → pergunte: corrigir o DEFINE, confirmar falso positivo, ou virar o\nflag neste DESIGN (anotando em Revision History).\n\n### 2. Arquitetura\n\nDiagrama ASCII do sistema, componentes, fluxo de dados, pontos de integração externos.\nDiagrama primeiro: desenhar clareia o pensamento.\n\n### 3. Decisões (ADRs inline)\n\nPara cada escolha significativa:\n\n```markdown\n### Decision N: {Nome}\n| **Status** | Accepted | · | **Date** | YYYY-MM-DD |\n**Context:** por que a decisão foi necessária\n**Choice:** o que fazemos\n**Rationale:** por quê\n**Alternatives Rejected:** 1. … — rejeitada porque … · 2. …\n**Consequences:** o trade-off que aceitamos · o que ganhamos\n```\n\nDecisões são permanentes: documente o **porquê**, não só o quê.\n\n### 4. File Manifest\n\n| # | Arquivo | Ação | Propósito | Dependências |\n|---|---|---|---|---|\n\nTodo arquivo a criar ou modificar. Sem dependência circular. Cada arquivo deve funcionar\nsozinho.\n\n### 4.5. Varredura de landmines (obrigatória, read-only)\n\nPara cada superfície do manifest (nome de arquivo, tabela, comando, conceito central):\n\n```bash\nsdd/bin/playbook-lint.sh --grep "<termo>" sdd/playbook.md   # exit 1 = 0 hits (normal)\n```\n\nToda landmine que casar entra na seção **`## Landmines aplicáveis`** com veredito\n**✔ tratado** (como, ou qual arquivo do manifest trata) ou **N.A.** (por que não se aplica).\nZero achados → `varredura rodada em YYYY-MM-DD, 0 aplicáveis`. **Nunca omita a seção.**\nNunca escreva no playbook a partir daqui.\n\n### 5. Code Patterns\n\nSnippets prontos para copiar dos padrões-chave. Se o projeto tem padrões canônicos\n(`sdd/patterns/` ou equivalente), **cite-os** e declare o que foi adaptado. Se não tem,\nescreva o snippet e registre `candidato a pattern: <camada>`.\n\n### 5.5. LLM Prompts (só se `true`)\n\nInventário: 1 linha por prompt de produção previsto (arquivo do manifest, tipo `one-shot` ×\n`loop` — o processo re-prompta o modelo com base na própria saída anterior? então `loop`),\ne um contrato por prompt: tom/audiência do DEFINE, formato de saída derivado do consumidor,\nfallback aprovado, material de referência concreto, provedor/modelo já decididos. Não\nescreva o prompt aqui: a fase Build o produz com o contrato em mãos.\n\n### 6. Estratégia de testes\n\n| Tipo | Escopo | Ferramenta | Meta |\n|---|---|---|---|\n\nCubra cada AT do DEFINE. O gate composto (se houver) é listado aqui com um bloco por AT.\n\n### 7. Gravar\n\n`sdd/features/DESIGN_{FEATURE}.md`, Status `Ready for Build`.\n\n### 8. Conferir\n\n`python3 sdd/bin/design-lint.py sdd/features/DESIGN_{FEATURE}.md` sobre o arquivo gravado: títulos\n`### Decision N: <nome>` em sequência, `**Total Files:**` igual às linhas do manifest, dependências sem\nciclo, nenhum placeholder. Vermelho ⇒ corrija o DESIGN e rode de novo antes de entregar.\n\n## Review adversarial do DESIGN (recomendado)\n\nÉ o ponto de **maior retorno** de uma revisão externa: mudar a abordagem custa pouco aqui e\nmuito depois do código. Peça a um **segundo vendor** (agente de outra família de modelos) que\nrevise o DESIGN com o contrato de `sdd/templates/fragments/ADVISOR_CONSULT.md` — veredito,\n≤3 riscos ranqueados, correções específicas, o que ignorar. Toda nota recebe **APLICADA ·\nREBATIDA_EVIDENCIA (com arquivo:linha) · REBATIDA_ESCOPO** no Advisor Ledger do DESIGN.\nNunca descartada em silêncio. Com um vendor só, use uma **sessão nova** do mesmo agente e\nregistre `diversidade: nenhuma` — mais fraco, mas honesto.\n\n## Quality Gate\n\n```text\n[ ] Diagrama claro · decisões com rationale · manifest completo, sem ciclos\n[ ] ## Landmines aplicáveis presente (✔ tratado / N.A. por achado, ou "0 aplicáveis")\n[ ] Code patterns prontos para copiar; padrões canônicos citados ou candidato registrado\n[ ] Estratégia de testes cobre todos os ATs\n[ ] LLM Prompts: se true, inventário 100% + contrato por linha; se false, re-check com zero hits\n[ ] Resposta fechada com o resumo de etapa (fragments/RESUMO_ETAPA.md)\n```\n\n## Por que cada regra existe\n\n- **Títulos `### Decision N:` fixos** — outras ferramentas leem as decisões por esse título; renomear\n  para "Decisão 1" ou "ADR-1" faz o `design-lint` reprovar e quem lê as decisões deixar de achá-las.\n- **Manifest sem ciclo e com `Total Files`** — com dependência circular não existe ordem de build\n  possível; o total confere que nenhuma linha se perdeu.\n- **Varredura de landmines sempre registrada, mesmo com 0 achados** — "0 aplicáveis" escrito prova que\n  a varredura rodou; a seção ausente não distingue "rodou e não achou" de "esqueceu".\n- **O DESIGN não escreve o prompt de produção** — escreve o contrato (tom, saída, fallback); o texto\n  final sai no Build, pela skill de prompt, em vez de virar rascunho congelado no documento.\n- **Revisão por outro vendor aqui, antes do código** — é o último ponto em que mudar de abordagem custa\n  uma edição de texto; depois do build, custa reescrever.\n- **`design-lint` no arquivo gravado** — conferir o rascunho na conversa não prova o arquivo que o Build\n  vai ler.\n\n## Encerramento (obrigatório)\n\nFeche com o **resumo de etapa** (`sdd/templates/fragments/RESUMO_ETAPA.md`); o 🏃 é\n`/sdd-design`.\n\n**Próximo passo:** `/sdd-build sdd/features/DESIGN_{FEATURE}.md`\n\n---\n\nParte do SDD Open by RDD — https://github.com/robertodiasduarte/sdd-open\n'
+
+======================================================================
+FAIL: test_f8_define_pontua_forte_e_fraco (test_fluxo.TextoDoPorte)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.ogOmcyQtPI/tests/test_fluxo.py", line 477, in test_f8_define_pontua_forte_e_fraco
+    self.assertIn(trecho, texto)
+AssertionError: '1 forte → `true`' not found in '---\nname: sdd-define\ndescription: Fase 1 do SDD Open — transforma um brainstorm, notas ou pedido direto em especificação com testes de aceitação em EARS, protocolo de ambiguidade (NEEDS CLARIFICATION) e um Verify Gate executável, gravando sdd/features/DEFINE_{FEATURE}.md. Use quando o usuário pedir para especificar, definir requisitos, escrever a spec, ou disser /sdd-define.\ncompatibility: Requer bash >= 3.2 e git >= 2.20; roda sdd/bin/verify-gate.sh --print para validar o bloco do gate.\nlicense: MIT\nmetadata:\n  author: Roberto Dias Duarte\n  version: "2.3.1"\n  updated: "2026-10"\n  fase: "1"\n---\n\n# sdd-define — Fase 1\n\nNa primeira resposta desta skill, comece com esta linha, uma vez só, antes do Status:\n`sdd-define v2.3.1 · out/2026 · versão atual: https://github.com/robertodiasduarte/sdd-open/releases/latest`\n\nCapturar requisitos e validá-los numa passada só. O DEFINE é o **contrato**: tudo que vem\ndepois (design, build, release) é julgado contra ele. Por isso ele sai com um **Verify Gate\nexecutável** — um comando com exit code, não prosa.\n\n## Como falar com o aluno\n\nLeia `references/como-falar.md` antes da primeira resposta: o glossário desta skill, o Status preenchido\ne um exemplo completo. Pergunta e parada seguem `sdd/templates/fragments/PERGUNTA_DECISAO.md`.\nQuem usa esta skill, em geral, nunca usou git nem terminal.\n\n| Etapa | Nome para o aluno | Passos desta skill |\n|---|---|---|\n| 1 | Ler o brainstorm | 1 e 2 |\n| 2 | Requisitos | 3 |\n| 3 | Testes de aceitação | 4 e 5 |\n| 4 | Perguntas | 6 e 7 |\n| 5 | Verify Gate | 8 |\n| 6 | Gravar | 9 e 10 |\n\nToda resposta, nesta ordem (pule a parte sem conteúdo):\n\n1. **Status** — uma linha que começa pelo nome da fase: `Define: ✅ 1 Ler o brainstorm · ✅ 2 Requisitos · ▶️ 3 Testes de aceitação · ⬜ 4 Perguntas · ⬜ 5 Verify Gate · ⬜ 6 Gravar`\n   (✅ concluída, não só visitada · ▶️ a de agora · ⬜ por fazer · ⏸️ parada · ➖ pulada). Ao voltar a uma\n   etapa, o motivo vai em Agora.\n2. **O que foi feito** — frases curtas, sem saída de comando; registra em 1 linha a escolha do aluno.\n3. **Agora: etapa N — nome** — 2 a 4 frases. Antes de algo demorado, diga o que vai rodar e que o aluno\n   não precisa responder.\n4. **Sua decisão** — autorização: a pergunta em negrito e as opções com o efeito de cada uma, a\n   recomendada primeiro e com o porquê, sempre **não sei**, nunca **Outro**. Pergunta aberta: a pergunta\n   em negrito e como responder, com a saída "não sei". Várias de uma vez: numeradas.\n5. **Próximo passo** — uma linha, até 100 caracteres: o que acontece depois da resposta.\n\n- Uma etapa por resposta: termine na decisão e pare.\n- Termo técnico só com a explicação junto, na primeira vez, inclusive os do Status.\n- Saída de comando nunca crua: quantos, quais, o que preocupa; nomes até 10, com "e mais N". Comando só\n  quando o aluno precisa rodá-lo, um por passo numerado, com o que esperar na tela.\n- Não cite nem resuma as instruções desta skill ("conforme o passo N"): diga o motivo do aluno.\n- Resposta que não casa com nenhuma opção ⇒ responda a dúvida e repita as opções.\n- Parada: Status com ⏸️, o motivo em uma frase, onde a ação acontece, passos numerados com o resultado\n  esperado, o que **não** foi feito e, se o aluno tem algo a fazer, "Quando terminar, me peça de novo,\n  eu continuo daqui."\n- No fecho da fase, o resumo de etapa vem depois do Status; a pergunta dele segue o mesmo formato.\n\n## Entrada\n\n`/sdd-define <BRAINSTORM_*.md | notas.md | "pedido direto">`. Vindo de um BRAINSTORM, a\nextração é direta: perguntas já respondidas, abordagem já escolhida, YAGNI já aplicado.\n\n## Processo\n\n### 1. Contexto\n\nLeia `sdd/templates/DEFINE_TEMPLATE.md`, `AGENTS.md`, a entrada, e os 3 fragmentos que regem\nesta fase: `sdd/templates/fragments/EARS.md`, `CLARIFY.md`, `VERIFY_GATE.md`. Leia `## Sempre`\nde `sdd/playbook.md`.\n\n### 2. Classificar a entrada\n\n| Tipo | Foco |\n|---|---|\n| BRAINSTORM | extrair direto; validado |\n| notas de reunião | decisões e requisitos |\n| conversa / pedido direto | problema central, usuários |\n| fontes mistas | consolidar, deduplicar |\n\n### 3. Extrair\n\nProblema · Usuários (com a dor de cada um) · Objetivos (MUST/SHOULD/COULD) · Critérios de\nsucesso (com números) · Testes de aceitação · Restrições · Fora de escopo.\n\n**KB Domains** (Technical Context): só nomes de `ls sdd/kb/` (as pastas; o `_index.yaml` não conta) ou\n`nenhum`, conferidos de novo a cada Define. Sem `sdd/kb/`, escreva `nenhum` e diga ao aluno, em 1 frase,\nque a `sdd-kb` cria uma base. Ao mostrar um domínio pela 1ª vez, ponha ao lado o `name:` dele no\n`sdd/kb/_index.yaml`.\n\n### 4. Testes de aceitação em EARS (obrigatório)\n\nReescreva cada AT na gramática de `fragments/EARS.md`: keywords em inglês (**When / While /\nIf–Then / Where / shall / shall continue to**), corpo na língua do projeto. **Recuse** o DEFINE\n(não grave) se:\n\n- algum AT está fora dos padrões (sem keyword);\n- há gatilho indesejado plausível (provedor fora, permissão negada, fila cheia) e **nenhum**\n  AT If/Then;\n- é bugfix e não há ≥1 **shall continue to**;\n- há adjetivo sem número ("rápido" → "em <2 s");\n- While / If–Then / Where não foram **considerados** (AT presente ou N.A. em 1 linha);\n- há mais de ~10 ATs;\n- há AT de UX visual (isso é gate `manual-ux`, fora do EARS);\n- algum AT está sem `kind` na coluna Gate ou sem cobertura no `cmd` do Verify Gate.\n\n### 5. Clarity Score\n\nPontue Problema · Usuários · Objetivos · Sucesso · Escopo de 0 a 3. **Mínimo 12/15.** Abaixo\ndisso, pergunte (múltipla escolha, recomendada primeiro) até fechar as lacunas.\n\n### 6. Clarify — marcar, nunca chutar\n\nProtocolo em `fragments/CLARIFY.md`. Ambiguidade real vira marcador **no lugar exato da\ndúvida**, na forma canônica (colchete + NEEDS CLARIFICATION + dois-pontos + pergunta). Varra as\n9 categorias (escopo, dados, UX, NFRs, integrações, edge cases, restrições, terminologia,\nsinal de conclusão). Resolva por rodadas de ≤5 perguntas; a resposta entra **no corpo** da spec\ne no log `## Clarifications / ### Session YYYY-MM-DD`. Enquanto houver marcador ativo,\n`sdd/bin/verify-gate.sh` devolve exit **5** e nenhuma fase avança.\n\n### 7. LLM Prompts (flag binário)\n\nA feature cria ou edita prompt que roda em produção (system prompt, classificador, passe de\npipeline)? Sinais: nomes de provedor, "prompt", "embeddings", "RAG", paths `**/prompts/**`,\nchamadas `messages.create`/`chat.completions`. Marque `true`/`false` em Technical Context com\njustificativa. Nomes de provedor citados como **plataforma-alvo** não contam.\n\n### 8. Verify Gate (obrigatório — recuse DEFINE sem gate)\n\nDerive o gate dos ATs e critérios de sucesso, seguindo `fragments/VERIFY_GATE.md`:\n\n| Natureza do aceite | `kind` | `cmd` típico |\n|---|---|---|\n| lógica testável | `test` | `{{TEST_CMD}} -- <arquivo>.test` |\n| rota/HTTP responde | `smoke` | `curl -sS -o /dev/null -w \'%{http_code}\' <url>` |\n| qualidade com limiar | `eval` | limiar embutido no comando |\n| tipos/compilação | `typecheck` | `{{TYPECHECK_CMD}}` |\n| UX pura | `manual-ux` | `N/A (manual-ux)` + `manual_fallback` = checklist |\n\nOs slots `{{TEST_CMD}}`/`{{TYPECHECK_CMD}}` vêm de `sdd/config.yaml`. Slot vazio: pergunte o\ncomando real; nunca adivinhe. Valide o bloco:\n\n```bash\nsdd/bin/verify-gate.sh --print sdd/features/DEFINE_{FEATURE}.md   # lista kind/cmd/pass_when sem erro 64\n```\n\nAnti-padrões a recusar: gate de prosa; `kind: test` com `cmd` vazio; feature de UX marcada\n`test` só para "passar técnico".\n\n**Gate composto** (feature com vários ATs automatizáveis): escreva um script\n`sdd/bin/gates/gate-{feature}.sh` com **um bloco por AT**, imprimindo `AT-00N ✅/❌`, e aponte\no `cmd` para ele. Toda asserção precisa de **baseline vermelho**: rode contra a árvore antes da\nmudança; se já passa, ela não prova nada.\n\n### 9. Gravar\n\n`sdd/features/DEFINE_{FEATURE}.md` com o template preenchido, Status `Ready for Design` (ou\n`Ready for UX Review` se há interface).\n\n### 10. Conferir o KB Domains\n\n`python3 sdd/bin/kb-dominios.py sdd/features/DEFINE_{FEATURE}.md` sobre o arquivo gravado: o KB Domains\nsó cita pastas de `sdd/kb/`, ou diz `nenhum`. Exit 0 segue; exit 1 ⇒ corrija o campo e rode de novo antes\nde entregar. Os testes que ele listar (`<domínio>: <REGRA> → <teste>`, das regras de uma base normativa)\nentram no `cmd` do Verify Gate; se algum não entrar, registre o motivo no DEFINE e rode\n`verify-gate.sh --print` de novo.\n\n## Quality Gate\n\n```text\n[ ] Problema claro e específico · ≥1 persona · critérios de sucesso com números\n[ ] ATs em EARS: keyword em cada um · If/Then presente se há gatilho indesejado · While/If-Then/Where considerados · ≤~10 · zero UX visual · bugfix com shall continue to\n[ ] Rastreabilidade AT→gate: todo AT tem kind e está coberto pelo cmd do Verify Gate\n[ ] Zero marcadores ativos (verify-gate.sh não devolve 5)\n[ ] Fora de escopo explícito · Clarity ≥12/15 · LLM Prompts true/false com nota\n[ ] ## Verify Gate com kind+cmd+pass_when executáveis (ou manual-ux com manual_fallback)\n[ ] verify-gate.sh --print lista o bloco sem erro 64\n[ ] kb-dominios.py sai 0 (KB Domains de ls sdd/kb/ ou nenhum)\n[ ] Resposta fechada com o resumo de etapa (fragments/RESUMO_ETAPA.md)\n```\n\n## Por que cada regra existe\n\n- **O aceite é um comando com exit** — prosa ("o desconto deve funcionar") cada um lê do seu jeito; um\n  comando dá a mesma resposta para quem construiu, para quem revisa e para a release.\n- **EARS, com o padrão indesejado (If–Then)** — a gramática fixa obriga a nomear o gatilho, e o If–Then\n  obriga a nomear a falha antes de construir, quando decidir o que fazer com ela ainda é barato.\n- **Adjetivo sem número é recusado** — "rápido" passa em qualquer teste e não reprova nenhum; "em menos\n  de 2 s" pode falhar, e só o que pode falhar prova alguma coisa.\n- **A dúvida vira marcador no lugar exato, nunca suposição** — a suposição silenciosa vira código; o\n  marcador faz o gate devolver 5 e segura todas as fases até alguém responder.\n- **Cerca de 10 ATs, no máximo** — acima disso a spec está descrevendo implementação ou juntando duas\n  features, e o gate fica caro demais para rodar a cada mudança.\n- **KB Domains só de `ls sdd/kb/`, ou `nenhum`** — um domínio inventado manda o Design procurar padrões\n  onde não há nada; o `kb-dominios.py` reprova o nome que não tem pasta.\n- **O gate composto nasce vermelho** — uma asserção que já passa antes da mudança não prova a mudança;\n  rodá-la contra a árvore antiga mostra que ela avalia alguma coisa.\n\n## Encerramento (obrigatório)\n\nFeche com o **resumo de etapa** (`sdd/templates/fragments/RESUMO_ETAPA.md`); o 🏃 é\n`/sdd-define`. Os 4 blocos na ordem: micro-kanban · Onde estamos · O que precisa de você (só se\nN≥1) · O que vem depois, com ⚠️ inline.\n\n**Próximo passo:** `/sdd-governanca sdd/features/DEFINE_{FEATURE}.md` se o DEFINE trata dinheiro,\nsaldo, lançamento, nota fiscal, tributo, folha ou dado pessoal; senão\n`/sdd-ux-review sdd/features/DEFINE_{FEATURE}.md` se há interface; senão\n`/sdd-design sdd/features/DEFINE_{FEATURE}.md` (registre no DEFINE por que o UX review foi\npulado — kanban marca ➖ só com decisão registrada).\n\n---\n\nParte do SDD Open by RDD — https://github.com/robertodiasduarte/sdd-open\n'
+
+======================================================================
+FAIL: test_sem_python3_todo_verbo_sai_64 (test_fluxo.UsoESemPython) (verbo='review-design')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.ogOmcyQtPI/tests/test_fluxo.py", line 406, in test_sem_python3_todo_verbo_sai_64
+    self.assertEqual(rc, 64, out)
+AssertionError: 127 != 64 : /bin/bash: /private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.ogOmcyQtPI/sdd/bin/sdd-fluxo.sh: No such file or directory
+
+
+======================================================================
+FAIL: test_sem_python3_todo_verbo_sai_64 (test_fluxo.UsoESemPython) (verbo='estado')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.ogOmcyQtPI/tests/test_fluxo.py", line 406, in test_sem_python3_todo_verbo_sai_64
+    self.assertEqual(rc, 64, out)
+AssertionError: 127 != 64 : /bin/bash: /private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.ogOmcyQtPI/sdd/bin/sdd-fluxo.sh: No such file or directory
+
+
+======================================================================
+FAIL: test_sem_python3_todo_verbo_sai_64 (test_fluxo.UsoESemPython) (verbo='--self-test')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.ogOmcyQtPI/tests/test_fluxo.py", line 406, in test_sem_python3_todo_verbo_sai_64
+    self.assertEqual(rc, 64, out)
+AssertionError: 127 != 64 : /bin/bash: /private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.ogOmcyQtPI/sdd/bin/sdd-fluxo.sh: No such file or directory
+
+
+======================================================================
+FAIL: test_sem_python3_todo_verbo_sai_64 (test_fluxo.UsoESemPython) (verbo='despachar')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.ogOmcyQtPI/tests/test_fluxo.py", line 406, in test_sem_python3_todo_verbo_sai_64
+    self.assertEqual(rc, 64, out)
+AssertionError: 127 != 64 : /bin/bash: /private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.ogOmcyQtPI/sdd/bin/sdd-fluxo.sh: No such file or directory
+
+
+======================================================================
+FAIL: test_sem_verbo_ou_verbo_desconhecido_mostra_o_uso (test_fluxo.UsoESemPython) (args=())
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.ogOmcyQtPI/tests/test_fluxo.py", line 390, in test_sem_verbo_ou_verbo_desconhecido_mostra_o_uso
+    self.assertEqual(rc, 64, out)
+AssertionError: 127 != 64 : /bin/bash: /private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.ogOmcyQtPI/sdd/bin/sdd-fluxo.sh: No such file or directory
+
+
+======================================================================
+FAIL: test_sem_verbo_ou_verbo_desconhecido_mostra_o_uso (test_fluxo.UsoESemPython) (args=('pular',))
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.ogOmcyQtPI/tests/test_fluxo.py", line 390, in test_sem_verbo_ou_verbo_desconhecido_mostra_o_uso
+    self.assertEqual(rc, 64, out)
+AssertionError: 127 != 64 : /bin/bash: /private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.ogOmcyQtPI/sdd/bin/sdd-fluxo.sh: No such file or directory
+
+
+----------------------------------------------------------------------
+Ran 39 tests in 0.395s
+
+FAILED (failures=69, errors=14)
+FFFFFFEFF
+======================================================================
+ERROR: test_fixture_que_passa_deixa_o_self_test_vermelho (test_decisoes_lint.SelfTest)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.ogOmcyQtPI/tests/test_decisoes_lint.py", line 153, in test_fixture_que_passa_deixa_o_self_test_vermelho
+    shutil.copy(str(RAIZ / "sdd/fixtures/conversa/decisoes/controle.md"),
+  File "/Library/Developer/CommandLineTools/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/shutil.py", line 418, in copy
+    copyfile(src, dst, follow_symlinks=follow_symlinks)
+  File "/Library/Developer/CommandLineTools/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/shutil.py", line 264, in copyfile
+    with open(src, 'rb') as fsrc, open(dst, 'wb') as fdst:
+FileNotFoundError: [Errno 2] No such file or directory: '/private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.ogOmcyQtPI/sdd/fixtures/conversa/decisoes/controle.md'
+
+======================================================================
+FAIL: test_fragmentos_2_perguntas (test_decisoes_lint.AlvosReais)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.ogOmcyQtPI/tests/test_decisoes_lint.py", line 40, in test_fragmentos_2_perguntas
+    self.assertEqual(rc, 0, out)
+AssertionError: 127 != 0 : /bin/bash: /private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.ogOmcyQtPI/sdd/bin/sdd-decisoes-lint.sh: No such file or directory
+
+
+======================================================================
+FAIL: test_o_ok_da_release_nao_conta_e_a_heuristica_da_kb_tambem_nao (test_decisoes_lint.AlvosReais) (arquivo='.agents/skills/sdd-release/SKILL.md')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.ogOmcyQtPI/tests/test_decisoes_lint.py", line 47, in test_o_ok_da_release_nao_conta_e_a_heuristica_da_kb_tambem_nao
+    self.assertEqual(rc, 64, out)
+AssertionError: 127 != 64 : /bin/bash: /private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.ogOmcyQtPI/sdd/bin/sdd-decisoes-lint.sh: No such file or directory
+
+
+======================================================================
+FAIL: test_o_ok_da_release_nao_conta_e_a_heuristica_da_kb_tambem_nao (test_decisoes_lint.AlvosReais) (arquivo='.agents/skills/sdd-kb/references/kb-protocol.md')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.ogOmcyQtPI/tests/test_decisoes_lint.py", line 47, in test_o_ok_da_release_nao_conta_e_a_heuristica_da_kb_tambem_nao
+    self.assertEqual(rc, 64, out)
+AssertionError: 127 != 64 : /bin/bash: /private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.ogOmcyQtPI/sdd/bin/sdd-decisoes-lint.sh: No such file or directory
+
+
+======================================================================
+FAIL: test_skills_do_pacote_15_perguntas (test_decisoes_lint.AlvosReais)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.ogOmcyQtPI/tests/test_decisoes_lint.py", line 35, in test_skills_do_pacote_15_perguntas
+    self.assertEqual(rc, 0, out)
+AssertionError: 127 != 0 : /bin/bash: /private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.ogOmcyQtPI/sdd/bin/sdd-decisoes-lint.sh: No such file or directory
+
+
+======================================================================
+FAIL: test_cada_regra_reprova_pelo_motivo_certo (test_decisoes_lint.Regras) (caso='sem marca')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.ogOmcyQtPI/tests/test_decisoes_lint.py", line 87, in test_cada_regra_reprova_pelo_motivo_certo
+    self.assertEqual(rc, 2, out)
+AssertionError: 127 != 2 : /bin/bash: /private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.ogOmcyQtPI/sdd/bin/sdd-decisoes-lint.sh: No such file or directory
+
+
+======================================================================
+FAIL: test_cada_regra_reprova_pelo_motivo_certo (test_decisoes_lint.Regras) (caso='duas marcas')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.ogOmcyQtPI/tests/test_decisoes_lint.py", line 87, in test_cada_regra_reprova_pelo_motivo_certo
+    self.assertEqual(rc, 2, out)
+AssertionError: 127 != 2 : /bin/bash: /private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.ogOmcyQtPI/sdd/bin/sdd-decisoes-lint.sh: No such file or directory
+
+
+======================================================================
+FAIL: test_cada_regra_reprova_pelo_motivo_certo (test_decisoes_lint.Regras) (caso='marca fora do lugar')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.ogOmcyQtPI/tests/test_decisoes_lint.py", line 87, in test_cada_regra_reprova_pelo_motivo_certo
+    self.assertEqual(rc, 2, out)
+AssertionError: 127 != 2 : /bin/bash: /private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.ogOmcyQtPI/sdd/bin/sdd-decisoes-lint.sh: No such file or directory
+
+
+======================================================================
+FAIL: test_cada_regra_reprova_pelo_motivo_certo (test_decisoes_lint.Regras) (caso='marca sem rótulo')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.ogOmcyQtPI/tests/test_decisoes_lint.py", line 87, in test_cada_regra_reprova_pelo_motivo_certo
+    self.assertEqual(rc, 2, out)
+AssertionError: 127 != 2 : /bin/bash: /private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.ogOmcyQtPI/sdd/bin/sdd-decisoes-lint.sh: No such file or directory
+
+
+======================================================================
+FAIL: test_cada_regra_reprova_pelo_motivo_certo (test_decisoes_lint.Regras) (caso='marca desconhecida')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.ogOmcyQtPI/tests/test_decisoes_lint.py", line 87, in test_cada_regra_reprova_pelo_motivo_certo
+    self.assertEqual(rc, 2, out)
+AssertionError: 127 != 2 : /bin/bash: /private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.ogOmcyQtPI/sdd/bin/sdd-decisoes-lint.sh: No such file or directory
+
+
+======================================================================
+FAIL: test_cada_regra_reprova_pelo_motivo_certo (test_decisoes_lint.Regras) (caso='rótulo diferente')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.ogOmcyQtPI/tests/test_decisoes_lint.py", line 87, in test_cada_regra_reprova_pelo_motivo_certo
+    self.assertEqual(rc, 2, out)
+AssertionError: 127 != 2 : /bin/bash: /private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.ogOmcyQtPI/sdd/bin/sdd-decisoes-lint.sh: No such file or directory
+
+
+======================================================================
+FAIL: test_cada_regra_reprova_pelo_motivo_certo (test_decisoes_lint.Regras) (caso='nenhuma recomendada')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.ogOmcyQtPI/tests/test_decisoes_lint.py", line 87, in test_cada_regra_reprova_pelo_motivo_certo
+    self.assertEqual(rc, 2, out)
+AssertionError: 127 != 2 : /bin/bash: /private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.ogOmcyQtPI/sdd/bin/sdd-decisoes-lint.sh: No such file or directory
+
+
+======================================================================
+FAIL: test_cada_regra_reprova_pelo_motivo_certo (test_decisoes_lint.Regras) (caso='duas recomendadas')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.ogOmcyQtPI/tests/test_decisoes_lint.py", line 87, in test_cada_regra_reprova_pelo_motivo_certo
+    self.assertEqual(rc, 2, out)
+AssertionError: 127 != 2 : /bin/bash: /private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.ogOmcyQtPI/sdd/bin/sdd-decisoes-lint.sh: No such file or directory
+
+
+======================================================================
+FAIL: test_cada_regra_reprova_pelo_motivo_certo (test_decisoes_lint.Regras) (caso='recomendada depois')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.ogOmcyQtPI/tests/test_decisoes_lint.py", line 87, in test_cada_regra_reprova_pelo_motivo_certo
+    self.assertEqual(rc, 2, out)
+AssertionError: 127 != 2 : /bin/bash: /private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.ogOmcyQtPI/sdd/bin/sdd-decisoes-lint.sh: No such file or directory
+
+
+======================================================================
+FAIL: test_cada_regra_reprova_pelo_motivo_certo (test_decisoes_lint.Regras) (caso='sem não sei')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.ogOmcyQtPI/tests/test_decisoes_lint.py", line 87, in test_cada_regra_reprova_pelo_motivo_certo
+    self.assertEqual(rc, 2, out)
+AssertionError: 127 != 2 : /bin/bash: /private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.ogOmcyQtPI/sdd/bin/sdd-decisoes-lint.sh: No such file or directory
+
+
+======================================================================
+FAIL: test_cada_regra_reprova_pelo_motivo_certo (test_decisoes_lint.Regras) (caso='com Outro')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.ogOmcyQtPI/tests/test_decisoes_lint.py", line 87, in test_cada_regra_reprova_pelo_motivo_certo
+    self.assertEqual(rc, 2, out)
+AssertionError: 127 != 2 : /bin/bash: /private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.ogOmcyQtPI/sdd/bin/sdd-decisoes-lint.sh: No such file or directory
+
+
+======================================================================
+FAIL: test_cada_regra_reprova_pelo_motivo_certo (test_decisoes_lint.Regras) (caso='AT no efeito')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.ogOmcyQtPI/tests/test_decisoes_lint.py", line 87, in test_cada_regra_reprova_pelo_motivo_certo
+    self.assertEqual(rc, 2, out)
+AssertionError: 127 != 2 : /bin/bash: /private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.ogOmcyQtPI/sdd/bin/sdd-decisoes-lint.sh: No such file or directory
+
+
+======================================================================
+FAIL: test_cada_regra_reprova_pelo_motivo_certo (test_decisoes_lint.Regras) (caso='LM na pergunta')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.ogOmcyQtPI/tests/test_decisoes_lint.py", line 87, in test_cada_regra_reprova_pelo_motivo_certo
+    self.assertEqual(rc, 2, out)
+AssertionError: 127 != 2 : /bin/bash: /private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.ogOmcyQtPI/sdd/bin/sdd-decisoes-lint.sh: No such file or directory
+
+
+======================================================================
+FAIL: test_cada_regra_reprova_pelo_motivo_certo (test_decisoes_lint.Regras) (caso='SHA no efeito')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.ogOmcyQtPI/tests/test_decisoes_lint.py", line 87, in test_cada_regra_reprova_pelo_motivo_certo
+    self.assertEqual(rc, 2, out)
+AssertionError: 127 != 2 : /bin/bash: /private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.ogOmcyQtPI/sdd/bin/sdd-decisoes-lint.sh: No such file or directory
+
+
+======================================================================
+FAIL: test_citacao_e_pasta_com_varios_arquivos (test_decisoes_lint.Regras)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.ogOmcyQtPI/tests/test_decisoes_lint.py", line 105, in test_citacao_e_pasta_com_varios_arquivos
+    self.assertEqual(rc, 2, out)
+AssertionError: 127 != 2 : /bin/bash: /private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.ogOmcyQtPI/sdd/bin/sdd-decisoes-lint.sh: No such file or directory
+
+
+======================================================================
+FAIL: test_controle_passa_com_ref_no_fim (test_decisoes_lint.Regras)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.ogOmcyQtPI/tests/test_decisoes_lint.py", line 54, in test_controle_passa_com_ref_no_fim
+    self.assertEqual(rc, 0, out)
+AssertionError: 127 != 0 : /bin/bash: /private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.ogOmcyQtPI/sdd/bin/sdd-decisoes-lint.sh: No such file or directory
+
+
+======================================================================
+FAIL: test_pergunta_em_bloco_markdown_conta_em_outro_bloco_nao (test_decisoes_lint.Regras)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.ogOmcyQtPI/tests/test_decisoes_lint.py", line 95, in test_pergunta_em_bloco_markdown_conta_em_outro_bloco_nao
+    self.assertEqual(rc, 2, out)
+AssertionError: 127 != 2 : /bin/bash: /private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.ogOmcyQtPI/sdd/bin/sdd-decisoes-lint.sh: No such file or directory
+
+
+======================================================================
+FAIL: test_as_4_fixtures_reprovam_e_o_controle_passa (test_decisoes_lint.SelfTest)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.ogOmcyQtPI/tests/test_decisoes_lint.py", line 144, in test_as_4_fixtures_reprovam_e_o_controle_passa
+    self.assertEqual(rc, 0, out)
+AssertionError: 127 != 0 : /bin/bash: /private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.ogOmcyQtPI/sdd/bin/sdd-decisoes-lint.sh: No such file or directory
+
+
+======================================================================
+FAIL: test_64_caminho_inexistente_zero_perguntas_e_tabela_ausente (test_decisoes_lint.Uso)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.ogOmcyQtPI/tests/test_decisoes_lint.py", line 113, in test_64_caminho_inexistente_zero_perguntas_e_tabela_ausente
+    self.assertEqual(rc, 64, out)
+AssertionError: 127 != 64 : /bin/bash: /private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.ogOmcyQtPI/sdd/bin/sdd-decisoes-lint.sh: No such file or directory
+
+
+======================================================================
+FAIL: test_sem_python3_sai_64 (test_decisoes_lint.Uso)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.ogOmcyQtPI/tests/test_decisoes_lint.py", line 137, in test_sem_python3_sai_64
+    self.assertEqual(rc, 64, out)
+AssertionError: 127 != 64 : /bin/bash: /private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.ogOmcyQtPI/sdd/bin/sdd-decisoes-lint.sh: No such file or directory
+
+
+----------------------------------------------------------------------
+Ran 11 tests in 0.087s
+
+FAILED (failures=24, errors=1)
+test_fluxo rc=1 · test_decisoes_lint rc=1
+[exit=0]

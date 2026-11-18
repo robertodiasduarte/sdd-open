@@ -1,0 +1,53 @@
+worktree                     : ~/rdd-worktrees/sdd-open-f25-skills-duplicadas
+branch                       : feat/f25-skills-duplicadas
+protocolo                    : cadeia REVISOR → AUDITOR; paralelo não existe
+base                         : origin/main
+merge_base                   : 2204a149bc3c6d44d5813af0535b92dc7b2effcc
+head                         : 169de127a1843843fac855ff45f4842b084c3996
+paths                        : -
+diff_sha256                  : 52ef70f8d163bc74f72996c347546097e914709ff64f4562530a57d3e505ee90
+diff                         : 94KB (11 arquivo(s))
+contexto                     : 73KB (3 doc SDD)
+docs_sdd                     : DEFINE_F25_SKILLS_DUPLICADAS.md, DESIGN_F25_SKILLS_DUPLICADAS.md, BUILD_REPORT_F25_SKILLS_DUPLICADAS.md
+contexto_cortado             : -
+diversidade                  : vendor
+reviewer_engine_default      : claude
+reviewer_engine_efetivo      : claude
+reviewer_fallback_usado      : nao
+reviewer_motivo              : -
+reviewer_exit                : 0
+reviewer_segundos            : 265
+reviewer_achados             : 5
+reviewer_tokens_entrada      : 89763
+reviewer_tokens_saida        : 28577
+reviewer_tokens_total        : 118340
+reviewer_tokens_cache_lido   : -
+reviewer_tokens_cache_criado : -
+reviewer_modelo              : claude-opus-5-5
+reviewer_custo               : US$ 1.2933
+revisor1_raso                : nao
+gatilho_2o_revisor           : diff sem gatilho de risco — 1 revisor
+gatilho_risco_motivo         : -
+gatilho_regra_antiga         : 11 arquivos (limiar 8)
+dispensas_a_mao              : -
+revisor2_engine              : -
+auditor_engine_default       : codex
+auditor_engine_efetivo       : codex
+auditor_fallback_usado       : nao
+auditor_motivo               : -
+auditor_exit                 : 0
+auditor_segundos             : 279
+auditor_vereditos            : 6
+auditor_tokens_entrada       : 68933
+auditor_tokens_saida         : 9245
+auditor_tokens_total         : 91618
+auditor_tokens_cache_lido    : 13440
+auditor_tokens_cache_criado  : 0
+auditor_modelo               : gpt-6.1-sol
+auditor_custo                : assinatura
+convergencia_1o_passe        : nao
+desempate_alvo               : -
+desempate_engine             : -
+desempate_decisao            : -
+custo_total                  : US$ 1.2933
+quando                       : 20261117-122525

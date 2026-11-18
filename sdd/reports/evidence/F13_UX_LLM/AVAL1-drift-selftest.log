@@ -1,0 +1,8 @@
+$ T=$(mktemp -d); cd $T; /bin/bash /Users/robertoduarte/rdd-worktrees/sdd-open-f13-ux-llm/sdd/bin/prompt-drift-scan.sh --self-test; rc=$?; ls -la $T; rm -rf $T; exit $rc
+✅ 48 casos conferidos
+RESULTADO: VERDE
+→ o prompt-drift-scan.sh está pronto para uso
+total 0
+drwx------@    2 robertoduarte  staff      64 Nov  4 13:46 .
+drwx------@ 6464 robertoduarte  staff  206848 Nov  4 13:46 ..
+[exit=0]

@@ -1,0 +1,25 @@
+$ for f in sdd/fixtures/fluxo/DESIGN_*.md; do echo "== $f"; /bin/bash sdd/bin/sdd-fluxo.sh review-design "$f"; echo "rc=$?"; done
+== sdd/fixtures/fluxo/DESIGN_dispensavel.md
+DISPENSAVEL: 2 arquivo(s) novo(s), sem superfície de segurança no manifest
+rc=1
+== sdd/fixtures/fluxo/DESIGN_ledger_vazio.md
+EXIGIDO: 3 arquivo(s) novo(s) (limiar 3)
+rc=0
+== sdd/fixtures/fluxo/DESIGN_novos.md
+EXIGIDO: 3 arquivo(s) novo(s) (limiar 3)
+rc=0
+== sdd/fixtures/fluxo/DESIGN_numerado.md
+EXIGIDO: 3 arquivo(s) novo(s) (limiar 3)
+rc=0
+== sdd/fixtures/fluxo/DESIGN_pronto.md
+EXIGIDO: 3 arquivo(s) novo(s) (limiar 3)
+rc=0
+== sdd/fixtures/fluxo/DESIGN_seguranca.md
+EXIGIDO: 1 linha(s) do manifest em superfície de segurança (termo login)
+rc=0
+== sdd/fixtures/fluxo/DESIGN_sem_manifest.md
+🛑 sdd-fluxo: DESIGN sem ## File Manifest: sdd/fixtures/fluxo/DESIGN_sem_manifest.md
+RESULTADO: MANIFEST ILEGÍVEL
+→ rode a revisão do DESIGN mesmo assim (default seguro) e registre o motivo no Advisor Ledger.
+rc=64
+[exit=0]

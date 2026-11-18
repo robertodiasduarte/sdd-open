@@ -1,0 +1,2 @@
+{"achado": "R1", "veredito": "AGREE", "justificativa": "O doctor manda rodar o upgrade quando a versão do pacote é desconhecida, mas o upgrade falha com 64 por exigir versão conhecida, criando um beco sem saída."}
+{"achado": "R2", "veredito": "AGREE", "justificativa": "A função instalaveis usa um padrão fixo de skills em vez de skills_da_fonte, divergindo do DESIGN e podendo deixar skills instaladas pelo init fora do registro e do upgrade."}

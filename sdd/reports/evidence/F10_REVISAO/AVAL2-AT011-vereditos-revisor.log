@@ -1,0 +1,18 @@
+$ bash /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f10-revisao/bd420f6e-558d-4962-a0c9-40cdfc2cbd27/scratchpad/p/at011.sh
+=== revisor com bloco: reviewer.md bruto + jsonl
+reviewer.md idêntico à resposta: True
+{"achado": "R1", "arquivo": "src/conta.sh", "linha": 12, "severidade": "HIGH", "confianca": "CONFIRMED", "resumo": "divisão por zero com lista vazia"}
+{"achado": "R2", "arquivo": "src/conta.sh", "linha": 30, "severidade": "MED", "confianca": "PLAUSIBLE", "resumo": "arredondamento perde centavos"}
+['achado', 'arquivo', 'confianca', 'linha', 'resumo', 'severidade']
+['achado', 'arquivo', 'confianca', 'linha', 'resumo', 'severidade']
+=== bloco vazio = 0 achados (2º revisor dispensado; o revisor raso aparece por ser stub instantâneo)
+⚠️ o revisor terminou em 0 s sem achados: isso não conta como revisão
+RESULTADO: REVIEW COMPLETA
+achados: 0 graves, 0 médios, 0 leves
+jsonl bytes: 0
+reviewer_exit           : 0
+reviewer_achados        : 0
+=== MEDIUM vira MED
+"severidade": "HIGH"
+"severidade": "MED"
+[exit=0]

@@ -1,0 +1,76 @@
+$ SDD_TEST_BASH=/bin/bash /usr/bin/python3 -B -m unittest discover -s tests -p 'test_revisao*.py' -k F11Adiados -k Custo -k test_f11_at023
+.F..FF.FFF
+======================================================================
+FAIL: test_at018_no_revisor2_com_gatilho_exige_motivo_no_conferir (test_revisao.F11Adiados)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/robertoduarte/rdd-worktrees/sdd-open-f11-gate/tests/test_revisao.py", line 1114, in test_at018_no_revisor2_com_gatilho_exige_motivo_no_conferir
+    self.assertEqual(rc, 2, out)
+AssertionError: 0 != 2 : ✅ a revisão sdd/reports/reviews/EXTERNAL_REVIEW_20261101-071737 é desta versão do código (sha256 igual).
+review_externo: sdd/reports/reviews/EXTERNAL_REVIEW_20261101-071737 sha256=7c709bc8b10eae3f8f596ed8552ea1b876f8d02efa936cf46548e4199f19b3cb diversidade=modelo
+RESULTADO: CONFERE
+→ copie a linha review_externo para o ledger da release.
+
+
+======================================================================
+FAIL: test_at019_modelo_reportado_sem_preco_e_desconhecido (test_revisao.F11Adiados)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/robertoduarte/rdd-worktrees/sdd-open-f11-gate/tests/test_revisao.py", line 1138, in test_at019_modelo_reportado_sem_preco_e_desconhecido
+    self.assertEqual(meta(self.pasta(r))["reviewer_custo"], "$?")
+AssertionError: '≈US$ 0.0014' != '$?'
+- ≈US$ 0.0014
++ $?
+
+
+======================================================================
+FAIL: test_at020_tentativa_que_estourou_o_teto_marca_custo_incerto (test_revisao.F11Adiados)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/robertoduarte/rdd-worktrees/sdd-open-f11-gate/tests/test_revisao.py", line 1168, in test_at020_tentativa_que_estourou_o_teto_marca_custo_incerto
+    self.assertEqual(m["reviewer_custo"], "US$ 0.0100 + $?")
+AssertionError: 'US$ 0.0100' != 'US$ 0.0100 + $?'
+- US$ 0.0100
++ US$ 0.0100 + $?
+?           +++++
+
+
+======================================================================
+FAIL: test_at021_conferir_pula_pasta_sem_meta (test_revisao.F11Adiados)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/robertoduarte/rdd-worktrees/sdd-open-f11-gate/tests/test_revisao.py", line 1189, in test_at021_conferir_pula_pasta_sem_meta
+    self.assertEqual(rc, 0, out)
+AssertionError: 2 != 0 : 🛑 adversarial-review: sdd/reports/reviews/EXTERNAL_REVIEW_99990101-000000/META.txt ausente
+RESULTADO: NÃO CONFERE
+→ aponte a pasta de uma revisão (EXTERNAL_REVIEW_…).
+
+
+======================================================================
+FAIL: test_at022_feature_sem_documento_avisa_e_segue (test_revisao.F11Adiados)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/robertoduarte/rdd-worktrees/sdd-open-f11-gate/tests/test_revisao.py", line 1196, in test_at022_feature_sem_documento_avisa_e_segue
+    self.assertIn("⚠️ --feature NADA: nenhum documento encontrado (sdd/features/BRAINSTORM_NADA.md, "
+AssertionError: '⚠️ --feature NADA: nenhum documento encontrado (sdd/features/BRAINSTORM_NADA.md, DEFINE_NADA.md, DESIGN_NADA.md, sdd/reports/BUILD_REPORT_NADA.md)' not found in '▶ revisor: stub-a (revisor-ok) — até 1 min\n▶ auditor: stub-b (auditor-agree) — até 1 min\nRESULTADO: REVIEW COMPLETA\npasta: sdd/reports/reviews/EXTERNAL_REVIEW_20261101-071742\ndiff_sha256: b7b426e47a3eb6f46b57de5307436c837b4b8c2c396a457f4d450f20950f439d\nrevisor: stub-a (stub-modelo) — incluído na assinatura\nauditor: stub-b (stub-modelo) — custo desconhecido\ndiversidade: modelo\nachados: 1 grave, 1 médio, 0 leves\ncusto total: incluído na assinatura (+ 1 papel(is) com custo desconhecido)\n→ rode: bash sdd/bin/sdd-fluxo.sh loop --review sdd/reports/reviews/EXTERNAL_REVIEW_20261101-071742 --ledger <ledger da revisão> --rodada <N>\n'
+
+======================================================================
+FAIL: test_f11_at023_gemini_com_dois_modelos_soma_os_tokens (test_revisao_adapters.Extracao)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/robertoduarte/rdd-worktrees/sdd-open-f11-gate/tests/test_revisao_adapters.py", line 65, in test_f11_at023_gemini_com_dois_modelos_soma_os_tokens
+    self.assertEqual((g["tokens_entrada"], g["tokens_saida"], g["modelo"]),
+AssertionError: Tuples differ: (1830, 42, 'gemini-3.8-flash') != (1930, 49, 'gemini-3.8-flash+gemini-roteador-lite')
+
+First differing element 0:
+1830
+1930
+
+- (1830, 42, 'gemini-3.8-flash')
++ (1930, 49, 'gemini-3.8-flash+gemini-roteador-lite')
+
+----------------------------------------------------------------------
+Ran 10 tests in 6.492s
+
+FAILED (failures=6)
+[exit=1]

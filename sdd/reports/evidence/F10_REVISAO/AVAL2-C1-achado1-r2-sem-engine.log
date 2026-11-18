@@ -1,0 +1,202 @@
+$ bash /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f10-revisao/bd420f6e-558d-4962-a0c9-40cdfc2cbd27/scratchpad/p/c1.sh
+revisor2_engine_default : stub-c:sem-cli
+revisor2_engine_efetivo : stub-c:sem-cli
+revisor2_fallback_usado : nao
+revisor2_motivo         : CLI de stub-c:sem-cli fora do PATH
+revisor2_exit           : 66
+revisor2_segundos       : 0
+revisor2_achados        : 0
+revisor2_tokens_entrada : n/d
+revisor2_tokens_saida   : n/d
+revisor2_tokens_total   : n/d
+revisor2_modelo         : n/d
+revisor2_custo          : n/d
+auditor_exit            : 0
+desempate_engine        : -
+custo_total             : assinatura (+ 1 papel(is) com custo $?)
+--- loop
+## /bin/bash /Users/robertoduarte/rdd-worktrees/sdd-open-f10-aval2/sdd/bin/sdd-fluxo.sh loop --review sdd/reports/reviews/EXTERNAL_REVIEW_20261101-001813 --ledger /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.4yT8p70HCd/ledger.md --rodada 1
+ESTADO: BLOQUEADO
+rodada: 1 de 3
+graves_abertos: 1
+aplicadas: 0
+rebatidas: 0
+motivo: D3: 2º revisor acionado e indisponível (stub-c:sem-cli, exit 66) — restaurar a engine ou dispensar o 2º revisor nesta rodada no ledger
+motivo: grave(s) sem veredito no ledger: R1
+RESULTADO: BLOQUEADO
+→ pare e faça a pergunta D4 ou D5 de sdd/templates/fragments/FLUXO_ENCADEADO.md.
+[rc=20]
+=== 2º revisor stub-c:falha-quota (revisão com 1 HIGH e 1 MED do revisor, auditor AGREE)
+## ar --reviewer stub-a --auditor stub-b --revisor2 stub-c:falha-quota
+▶ revisor: stub-a (revisor-ok) — até 1 min
+▶ 2º revisor: stub-c:falha-quota (falha-quota) — até 1 min
+▶ auditor: stub-b (auditor-agree) — até 1 min
+⚠️ sem --feature: a revisão não leu BRAINSTORM, DEFINE nem DESIGN, e decisões já documentadas podem voltar como achado
+⚠️ o 2º revisor (stub-c:falha-quota) falhou (stub-c:falha-quota falhou (cota, cobrança ou erro)): a revisão vale só com a dispensa registrada no ledger
+RESULTADO: REVIEW COMPLETA
+pasta: sdd/reports/reviews/EXTERNAL_REVIEW_20261101-001814
+diff_sha256: dd359fe5a9d8fdb78edf6020c55bcb57f6040ab06430e9e3a490c08f5ce63d95
+revisor: stub-a (stub-modelo) — incluído na assinatura
+2º revisor: stub-c:falha-quota (n/d) — n/d
+auditor: stub-b (stub-modelo) — custo desconhecido
+diversidade: modelo
+achados: 1 grave, 1 médio, 0 leves
+custo total: incluído na assinatura (+ 1 papel(is) com custo desconhecido)
+→ rode: bash sdd/bin/sdd-fluxo.sh loop --review sdd/reports/reviews/EXTERNAL_REVIEW_20261101-001814 --ledger <ledger da revisão> --rodada <N>
+[rc=0]
+diversidade             : modelo
+reviewer_exit           : 0
+revisor2_engine         : stub-c:falha-quota
+revisor2_engine_default : stub-c:falha-quota
+revisor2_engine_efetivo : stub-c:falha-quota
+revisor2_fallback_usado : nao
+revisor2_motivo         : stub-c:falha-quota falhou (cota, cobrança ou erro)
+revisor2_exit           : 67
+revisor2_segundos       : 0
+revisor2_achados        : 0
+revisor2_tokens_entrada : n/d
+revisor2_tokens_saida   : n/d
+revisor2_tokens_total   : n/d
+revisor2_modelo         : n/d
+revisor2_custo          : n/d
+auditor_exit            : 0
+desempate_engine        : -
+custo_total             : assinatura (+ 1 papel(is) com custo $?)
+--- loop
+## /bin/bash /Users/robertoduarte/rdd-worktrees/sdd-open-f10-aval2/sdd/bin/sdd-fluxo.sh loop --review sdd/reports/reviews/EXTERNAL_REVIEW_20261101-001814 --ledger /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.4yT8p70HCd/ledger.md --rodada 1
+ESTADO: CONTINUAR
+rodada: 1 de 3
+graves_abertos: 0
+aplicadas: 0
+rebatidas: 0
+motivo: 2º revisor acionado e falhou (stub-c:falha-quota, exit 67) — refazer a review
+RESULTADO: CONTINUAR
+→ corrija, rode o Verify Gate e a revisão de novo com --rodada 2.
+[rc=10]
+=== 2º revisor stub-c:dorme (revisão com 1 HIGH e 1 MED do revisor, auditor AGREE)
+## ar --reviewer stub-a --auditor stub-b --revisor2 stub-c:dorme
+▶ revisor: stub-a (revisor-ok) — até 1 min
+▶ 2º revisor: stub-c:dorme (dorme) — até 1 min
+▶ auditor: stub-b (auditor-agree) — até 1 min
+⚠️ sem --feature: a revisão não leu BRAINSTORM, DEFINE nem DESIGN, e decisões já documentadas podem voltar como achado
+⚠️ o 2º revisor (stub-c:dorme) falhou (stub-c:dorme passou do teto de tempo): a revisão vale só com a dispensa registrada no ledger
+RESULTADO: REVIEW COMPLETA
+pasta: sdd/reports/reviews/EXTERNAL_REVIEW_20261101-001814
+diff_sha256: dd359fe5a9d8fdb78edf6020c55bcb57f6040ab06430e9e3a490c08f5ce63d95
+revisor: stub-a (stub-modelo) — incluído na assinatura
+2º revisor: stub-c:dorme (n/d) — n/d
+auditor: stub-b (stub-modelo) — custo desconhecido
+diversidade: modelo
+achados: 1 grave, 1 médio, 0 leves
+custo total: incluído na assinatura (+ 1 papel(is) com custo desconhecido)
+→ rode: bash sdd/bin/sdd-fluxo.sh loop --review sdd/reports/reviews/EXTERNAL_REVIEW_20261101-001814 --ledger <ledger da revisão> --rodada <N>
+[rc=0]
+diversidade             : modelo
+reviewer_exit           : 0
+revisor2_engine         : stub-c:dorme
+revisor2_engine_default : stub-c:dorme
+revisor2_engine_efetivo : stub-c:dorme
+revisor2_fallback_usado : nao
+revisor2_motivo         : stub-c:dorme passou do teto de tempo
+revisor2_exit           : 67
+revisor2_segundos       : 5
+revisor2_achados        : 0
+revisor2_tokens_entrada : n/d
+revisor2_tokens_saida   : n/d
+revisor2_tokens_total   : n/d
+revisor2_modelo         : n/d
+revisor2_custo          : n/d
+auditor_exit            : 0
+desempate_engine        : -
+custo_total             : assinatura (+ 1 papel(is) com custo $?)
+--- loop
+## /bin/bash /Users/robertoduarte/rdd-worktrees/sdd-open-f10-aval2/sdd/bin/sdd-fluxo.sh loop --review sdd/reports/reviews/EXTERNAL_REVIEW_20261101-001814 --ledger /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.4yT8p70HCd/ledger.md --rodada 1
+ESTADO: CONTINUAR
+rodada: 1 de 3
+graves_abertos: 0
+aplicadas: 0
+rebatidas: 0
+motivo: 2º revisor acionado e falhou (stub-c:dorme, exit 67) — refazer a review
+RESULTADO: CONTINUAR
+→ corrija, rode o Verify Gate e a revisão de novo com --rodada 2.
+[rc=10]
+=== 2º revisor stub-c:sem-chave (revisão com 1 HIGH e 1 MED do revisor, auditor AGREE)
+## ar --reviewer stub-a --auditor stub-b --revisor2 stub-c:sem-chave
+▶ revisor: stub-a (revisor-ok) — até 1 min
+▶ 2º revisor: stub-c:sem-chave (sem-chave) — até 1 min
+▶ auditor: stub-b (auditor-agree) — até 1 min
+⚠️ sem --feature: a revisão não leu BRAINSTORM, DEFINE nem DESIGN, e decisões já documentadas podem voltar como achado
+⚠️ o 2º revisor (stub-c:sem-chave) falhou (falha de credencial em stub-c:sem-chave): a revisão vale só com a dispensa registrada no ledger
+RESULTADO: REVIEW COMPLETA
+pasta: sdd/reports/reviews/EXTERNAL_REVIEW_20261101-001820
+diff_sha256: dd359fe5a9d8fdb78edf6020c55bcb57f6040ab06430e9e3a490c08f5ce63d95
+revisor: stub-a (stub-modelo) — incluído na assinatura
+2º revisor: stub-c:sem-chave (sem-chave) — custo desconhecido
+auditor: stub-b (stub-modelo) — custo desconhecido
+diversidade: modelo
+achados: 1 grave, 1 médio, 0 leves
+custo total: incluído na assinatura (+ 2 papel(is) com custo desconhecido)
+→ rode: bash sdd/bin/sdd-fluxo.sh loop --review sdd/reports/reviews/EXTERNAL_REVIEW_20261101-001820 --ledger <ledger da revisão> --rodada <N>
+[rc=0]
+diversidade             : modelo
+reviewer_exit           : 0
+revisor2_engine         : stub-c:sem-chave
+revisor2_engine_default : stub-c:sem-chave
+revisor2_engine_efetivo : stub-c:sem-chave
+revisor2_fallback_usado : nao
+revisor2_motivo         : falha de credencial em stub-c:sem-chave
+revisor2_exit           : 65
+revisor2_segundos       : 0
+revisor2_achados        : 0
+revisor2_tokens_entrada : n/d
+revisor2_tokens_saida   : n/d
+revisor2_tokens_total   : n/d
+revisor2_modelo         : sem-chave
+revisor2_custo          : $?
+auditor_exit            : 0
+desempate_engine        : -
+custo_total             : assinatura (+ 2 papel(is) com custo $?)
+--- loop
+## /bin/bash /Users/robertoduarte/rdd-worktrees/sdd-open-f10-aval2/sdd/bin/sdd-fluxo.sh loop --review sdd/reports/reviews/EXTERNAL_REVIEW_20261101-001820 --ledger /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.4yT8p70HCd/ledger.md --rodada 1
+ESTADO: BLOQUEADO
+rodada: 1 de 3
+graves_abertos: 1
+aplicadas: 0
+rebatidas: 0
+motivo: D3: 2º revisor acionado e indisponível (stub-c:sem-chave, exit 65) — restaurar a engine ou dispensar o 2º revisor nesta rodada no ledger
+motivo: grave(s) sem veredito no ledger: R1
+RESULTADO: BLOQUEADO
+→ pare e faça a pergunta D4 ou D5 de sdd/templates/fragments/FLUXO_ENCADEADO.md.
+[rc=20]
+=== desempate com CLI ausente (stub-d:sem-cli é o 1º elegível? registry-stub ordem a,b,c,d) — usa registry próprio
+## ar --reviewer stub-a --auditor stub-b --no-revisor2
+▶ revisor: stub-a (revisor-ok) — até 1 min
+▶ auditor: stub-b (auditor-refuta-high) — até 1 min
+▶ desempate: stub-c (sem-cli) — até 1 min
+⚠️ sem --feature: a revisão não leu BRAINSTORM, DEFINE nem DESIGN, e decisões já documentadas podem voltar como achado
+⚠️ o desempate (stub-c) não decidiu: o achado R1 fica para uma pessoa (D5)
+RESULTADO: REVIEW COMPLETA
+pasta: sdd/reports/reviews/EXTERNAL_REVIEW_20261101-001820
+diff_sha256: ddd497d294d1e7b3855e85da07918f555a021dcc63defd95775e6d21ca8beb68
+revisor: stub-a (stub-modelo) — incluído na assinatura
+auditor: stub-b (stub-modelo) — custo desconhecido
+desempate: stub-c (n/d) — n/d
+diversidade: modelo
+achados: 1 grave, 1 médio, 0 leves
+custo total: incluído na assinatura (+ 1 papel(is) com custo desconhecido)
+→ rode: bash sdd/bin/sdd-fluxo.sh loop --review sdd/reports/reviews/EXTERNAL_REVIEW_20261101-001820 --ledger <ledger da revisão> --rodada <N>
+[rc=0]
+auditor_exit             : 0
+desempate_alvo           : R1
+desempate_engine         : stub-c
+desempate_decisao        : -
+desempate_fallback_usado : nao
+desempate_motivo         : CLI de stub-c fora do PATH
+desempate_exit           : 66
+desempate_segundos       : 0
+desempate_tokens_entrada : n/d
+desempate_tokens_saida   : n/d
+desempate_tokens_total   : n/d
+desempate_modelo         : n/d
+desempate_custo          : n/d
+[exit=0]

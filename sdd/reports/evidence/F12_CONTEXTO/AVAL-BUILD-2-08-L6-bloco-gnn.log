@@ -1,0 +1,60 @@
+$ cat /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f12-contexto/ba201848-0f5b-4f61-8434-538b155d5260/scratchpad/l6.sh; echo ======; bash /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f12-contexto/ba201848-0f5b-4f61-8434-538b155d5260/scratchpad/l6.sh /Users/robertoduarte/rdd-worktrees/sdd-open-f12-contexto
+# sonda L6 + AT-026 com /usr/bin/python3 (3.9): Gnn repetido no bloco e no relatório
+PRJ="$1"; B="$PRJ/sdd/bin/governanca-bloco.py"; D=$(mktemp -d); /usr/bin/python3 --version
+rel() { printf '# GOVERNANCA REVIEW: X\n\n## Lacunas\n\n'; for g in "$@"; do printf '### %s — item\n\ntexto\n\n' "$g"; done; printf '## Já cobertos\n'; }
+blk() { printf '<<<GOVERNANCA\nresultado: REVISADO\nmotivo: m\nrelatorio: %s\ncobertura: x\n' "$D/R.md"; for g in "$@"; do printf 'lacuna: %s | alta | AT-001\nmuda: m\nporque: p\n' "$g"; done; printf '>>>\n'; }
+printf 'MUDOU: %s\nRESULTADO: x\n' "$D/R.md" > "$D/cmp.txt"
+t() { echo ">>> $1"; /usr/bin/python3 -B "$B" "$D/resp.txt" --saida "$D/R.md" --comparar "$D/cmp.txt"; echo "rc=$?"; }
+rel G01 G05 > "$D/R.md"; blk G01 G05 > "$D/resp.txt"; t 'válido G01 G05'
+blk G01 G01 G05 > "$D/resp.txt"; t 'G01 repetido no bloco'
+rel G01 G01 > "$D/R.md"; blk G01 > "$D/resp.txt"; t 'G01 repetido nos títulos do relatório, 1x no bloco'
+rel G01 G05 > "$D/R.md"; blk G01 G05 > "$D/resp.txt"; printf 'RESULTADO: x\n' > "$D/cmp.txt"; t 'REVISADO sem MUDOU no --comparar'
+printf '<<<GOVERNANCA\nresultado: NA\nmotivo: sem tema\nrelatorio: —\ncobertura: —\n>>>\n' > "$D/resp.txt"; t 'NA, relatório existe (gravado)'
+rm -f "$D/R.md"; t 'NA, relatório não gravado'
+/usr/bin/python3 -B "$B"; echo "sem args rc=$?"
+======
+Python 3.9.6
+>>> válido G01 G05
+✅ bloco <<<GOVERNANCA válido: resultado REVISADO, 2 lacuna(s)
+RESULTADO: REVISADO
+→ pergunte uma lacuna por vez (2) e aplique as escolhidas.
+rc=0
+>>> G01 repetido no bloco
+  🛑 lacuna repetida no bloco: G01 (cada Gnn aparece uma vez)
+RESULTADO: BLOCO INVÁLIDO
+→ conte como falha da revisão: 1 redespacho fresco com os mesmos 5 campos.
+rc=2
+>>> G01 repetido nos títulos do relatório, 1x no bloco
+✅ bloco <<<GOVERNANCA válido: resultado REVISADO, 1 lacuna(s)
+RESULTADO: REVISADO
+→ pergunte uma lacuna por vez (1) e aplique as escolhidas.
+rc=0
+>>> REVISADO sem MUDOU no --comparar
+  🛑 REVISADO, mas a fronteira não mostra MUDOU: /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.lFRYrwBOUH/R.md
+RESULTADO: BLOCO INVÁLIDO
+→ conte como falha da revisão: 1 redespacho fresco com os mesmos 5 campos.
+rc=2
+>>> NA, relatório existe (gravado)
+✅ bloco <<<GOVERNANCA válido: resultado NA, 0 lacuna(s)
+RESULTADO: NA
+→ escreva a linha Governança: N.A. — <motivo> e tire o marcador de governança.
+rc=0
+>>> NA, relatório não gravado
+✅ bloco <<<GOVERNANCA válido: resultado NA, 0 lacuna(s)
+RESULTADO: NA
+→ escreva a linha Governança: N.A. — <motivo> e tire o marcador de governança.
+rc=0
+🛑 informe a resposta do revisor
+governanca-bloco.py — confere o bloco <<<GOVERNANCA … >>> que o revisor fresco devolve ao passo 11 do
+sdd-define, contra o relatório gravado e a saída da fronteira. Só stdlib, Python >= 3.9.
+
+Uso:
+    python3 sdd/bin/governanca-bloco.py <resposta.txt> --saida <caminho do relatório> [--comparar <saída.txt>]
+      <resposta.txt>   a resposta do revisor (o último bloco <<<GOVERNANCA … >>> é o que vale)
+      --saida          o `saida:` mandado ao revisor (caminho do relatório)
+      --comparar       a saída de `governanca-fronteira.sh --comparar` (linhas MUDOU:/FORA:)
+
+RESULTADO: ERRO DE USO
+→ chame com <resposta.txt> --saida <relatório> [--comparar <saída>].
+sem args rc=64
+[exit=0]

@@ -1,0 +1,8 @@
+$ SDD_TEST_BASH=/bin/bash /usr/bin/python3 -B -m unittest -v test_sdd_open.Projeto.test_doctor_sem_segredo_diz_que_esta_limpo
+test_doctor_sem_segredo_diz_que_esta_limpo (test_sdd_open.Projeto) ... ok
+
+----------------------------------------------------------------------
+Ran 1 test in 2.126s
+
+OK
+exit=0

@@ -1,0 +1,14 @@
+$ rm -rf /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f17c-starter-etapa3/4be28bc9-cd19-4e52-baaf-378f21755723/scratchpad/proj && mkdir /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f17c-starter-etapa3/4be28bc9-cd19-4e52-baaf-378f21755723/scratchpad/proj && cd /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f17c-starter-etapa3/4be28bc9-cd19-4e52-baaf-378f21755723/scratchpad/proj && git init -q && bash /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f17c-starter-etapa3/4be28bc9-cd19-4e52-baaf-378f21755723/scratchpad/clone/bin/sdd-open.sh init --vendors claude --yes > /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f17c-starter-etapa3/4be28bc9-cd19-4e52-baaf-378f21755723/scratchpad/proj-init.out 2>&1; echo init_rc=$?; tail -3 /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f17c-starter-etapa3/4be28bc9-cd19-4e52-baaf-378f21755723/scratchpad/proj-init.out; echo '-- scripts/starter no projeto:'; find . -path '*scripts/starter*' | head -3; echo '-- gerar-starter no projeto:'; find . -name gerar-starter.py | head; echo '-- web/ copiada com a skill (Decision 1):'; ls .agents/skills/sdd-build/web 2>&1; echo '-- sdd/bin presente:'; ls sdd/bin | wc -l
+init_rc=0
+✅ nenhum segredo salvo no git (.env, .pfx, .p12, .pem com chave privada)
+RESULTADO: INSTALADO
+→ abra seu agente e peça a fase Define (ex.: /sdd-define ou /skill:sdd-define).
+-- scripts/starter no projeto:
+-- gerar-starter no projeto:
+-- web/ copiada com a skill (Decision 1):
+MODO_WEB.md
+assets
+references
+-- sdd/bin presente:
+      33
+rc=0

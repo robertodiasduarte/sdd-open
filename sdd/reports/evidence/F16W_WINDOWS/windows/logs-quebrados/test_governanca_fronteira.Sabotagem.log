@@ -1,0 +1,40 @@
+test_comparar_so_o_caminho_esconde_a_sobrescrita (test_governanca_fronteira.Sabotagem.test_comparar_so_o_caminho_esconde_a_sobrescrita) ... FAIL
+
+
+
+======================================================================
+
+FAIL: test_comparar_so_o_caminho_esconde_a_sobrescrita (test_governanca_fronteira.Sabotagem.test_comparar_so_o_caminho_esconde_a_sobrescrita)
+
+----------------------------------------------------------------------
+
+Traceback (most recent call last):
+
+  File "D:\a\sdd-open\sdd-open\tests\test_governanca_fronteira.py", line 217, in test_comparar_so_o_caminho_esconde_a_sobrescrita
+
+    self.snap("antes", script=str(sab))
+
+  File "D:\a\sdd-open\sdd-open\tests\test_governanca_fronteira.py", line 36, in snap
+
+    self.assertEqual(rc, 0, out)
+
+AssertionError: 64 != 0 : incluir fora do worktree: C:\Users\runneradmin\AppData\Local\Temp\sdd-open-uyyq9t3p\w\sdd\reviews\REL.md
+
+uso: C:\Users\runneradmin\AppData\Local\Temp\sdd-open-uyyq9t3p\sabotado.sh --snapshot <raiz-do-worktree> <arquivo-do-snapshot> [incluir�] | --comparar <antes> <depois> <permitido>�
+
+RESULTADO: ERRO DE USO
+
+\u2192 a fronteira N�O foi verificada; corrija a chamada e rode de novo.
+
+
+
+
+
+----------------------------------------------------------------------
+
+Ran 1 test in 0.393s
+
+
+
+FAILED (failures=1)
+

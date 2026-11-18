@@ -1,0 +1,64 @@
+$ TMPDIR=/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.UV6c0nEADS/ /bin/bash /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.x7MtT861ps/aval/.agents/skills/sdd-kb/scripts/gate.sh; ls -A /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.UV6c0nEADS | wc -l
+RESULTADO: VERDE — 4 aceitas, 12 rejeitadas pelo motivo certo, RULE_MAP do exemplo em dia
+       0
+EXIT=0
+
+$ cd /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.9ZFOjFObTD/proj && /bin/bash /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.x7MtT861ps/aval/bin/sdd-open.sh init --yes --vendors claude 2>&1 | tail -5
+✅ claude: gerado (.claude/skills · CLAUDE.md) · CLI encontrado · cobre também Grok Build e GLM
+✅ skills e sdd/bin/ em dia com o pacote
+✅ nenhum segredo salvo no git (.env, .pfx, .p12, .pem com chave privada)
+RESULTADO: INSTALADO
+→ abra seu agente e peça a fase Define (ex.: /sdd-define ou /skill:sdd-define).
+EXIT=0
+
+$ cd /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.9ZFOjFObTD/proj && ls .claude/skills/ | head -30; head -3 .claude/skills/sdd-kb/scripts/gate.sh
+sdd-auditoria-harness
+sdd-brainstorm
+sdd-build
+sdd-checar-ambiente
+sdd-define
+sdd-design
+sdd-governanca
+sdd-handoff
+sdd-higiene-dado
+sdd-iniciar-repo
+sdd-iterate
+sdd-kb
+sdd-new-session
+sdd-playbook
+sdd-prompt-builder
+sdd-release
+sdd-ux-review
+#!/usr/bin/env bash
+# sdd-open:generated - fonte: .agents/skills/sdd-kb/scripts/gate.sh
+# sdd-open:generated - sync reescreve este arquivo; edite a fonte e rode sync
+EXIT=0
+
+$ cd /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.9ZFOjFObTD/proj && /bin/bash .claude/skills/sdd-kb/scripts/gate.sh
+🛑 cópia gerada pelo sync: os exemplos daqui têm cabeçalho e não valem como prova
+RESULTADO: VERMELHO
+→ rode bash .agents/skills/sdd-kb/scripts/gate.sh
+EXIT=2
+
+$ cd /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.9ZFOjFObTD/proj/.claude/skills/sdd-kb/scripts && /bin/bash gate.sh
+🛑 cópia gerada pelo sync: os exemplos daqui têm cabeçalho e não valem como prova
+RESULTADO: VERMELHO
+→ rode bash .agents/skills/sdd-kb/scripts/gate.sh
+EXIT=2
+
+$ cd /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.9ZFOjFObTD/proj && /bin/bash .agents/skills/sdd-kb/scripts/gate.sh
+RESULTADO: VERDE — 4 aceitas, 12 rejeitadas pelo motivo certo, RULE_MAP do exemplo em dia
+EXIT=0
+
+$ cd /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.9ZFOjFObTD/proj/.agents/skills/sdd-kb/scripts && /bin/bash ./gate.sh
+RESULTADO: VERDE — 4 aceitas, 12 rejeitadas pelo motivo certo, RULE_MAP do exemplo em dia
+EXIT=0
+
+$ cd /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.9ZFOjFObTD/proj && head -3 .claude/skills/sdd-kb/scripts/validate_kb.py; /usr/bin/python3 -B .claude/skills/sdd-kb/scripts/validate_kb.py .claude/skills/sdd-kb/assets/example-kb; echo rc=$?
+#!/usr/bin/env python3
+# sdd-open:generated - fonte: .agents/skills/sdd-kb/scripts/validate_kb.py
+# sdd-open:generated - sync reescreve este arquivo; edite a fonte e rode sync
+PASS: KB lint passed (1 concept(s), 1 pattern(s))
+rc=0
+EXIT=0
+

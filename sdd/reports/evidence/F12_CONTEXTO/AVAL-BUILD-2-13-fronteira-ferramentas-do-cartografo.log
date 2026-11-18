@@ -1,0 +1,11 @@
+$ W=$(mktemp -d); R=$W/p; mkdir $R; git archive HEAD | tar -x -C $R; cd $R; git init -q; git -c user.email=a@b -c user.name=a -c commit.gpgsign=false add -A; git -c user.email=a@b -c user.name=a -c commit.gpgsign=false commit -qm b; FR=sdd/bin/governanca-fronteira.sh; bash $FR --snapshot $R $W/a $R/sdd/contexto/pedidos.md >/dev/null; bash sdd/bin/playbook-lint.sh --grep pedido sdd/fixtures/contexto/playbook.md; echo playbook-lint rc=$?; mkdir -p sdd/contexto; cp sdd/fixtures/contexto/valido-completo.md sdd/contexto/pedidos.md; bash sdd/bin/contexto-lint.sh --dominio sdd/fixtures/contexto/dominio.md --playbook sdd/fixtures/contexto/playbook.md sdd/contexto/pedidos.md >/dev/null; echo contexto-lint rc=$?; bash sdd/bin/contexto-lint.sh --self-test >/dev/null 2>&1; echo self-test rc=$?; bash $FR --snapshot $R $W/d $R/sdd/contexto/pedidos.md >/dev/null; bash $FR --comparar $W/a $W/d $R/sdd/contexto/pedidos.md; echo comparar rc=$?
+LM-001  [Sempre]  Fixture ativa. **Do instead:** nada. · promovido_para: —
+1 bullet(s) para "pedido" (modo sup)
+playbook-lint rc=0
+contexto-lint rc=0
+self-test rc=0
+MUDOU: /private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.TLp0inyLr9/p/sdd/contexto/pedidos.md
+RESULTADO: SÓ O PERMITIDO MUDOU
+→ siga com o arquivo que o agente gravou.
+comparar rc=0
+[exit=0]

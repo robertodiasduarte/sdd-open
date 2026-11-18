@@ -1,0 +1,16 @@
+$ bash -c python3 -B /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f16w-windows/fd210694-ded6-4d95-a500-52e0521f4ae8/scratchpad/aval2/achados.py /Users/robertoduarte/rdd-worktrees/sdd-open-f16w-windows; cd tests; echo '== os 5 testes de ACHADOS no piso:'; SDD_TEST_BASH=/bin/bash /usr/bin/python3 -B -m unittest -v test_windows.Windows.test_stdout_do_curator_sem_crlf test_drive test_report_lint test_sdd_archive 2>&1 | grep -E 'test_stdout_do_curator_sem_crlf|test_trava_de_processo_morto_se_libera|test_log_capturado_da_feature_passa|test_lista_por_lote_e_nao_muda_nada|test_trava_que_e_link_nao_cria_arquivo_fora|^Ran|^OK|^FAILED'; echo '== skip de plataforma fora de apoio.py (busca):'; grep -n -E 'skip(If|Unless)\(.*(os\.name|sys\.platform|platform\.|geteuid)' *.py | grep -v '^apoio.py' | grep -v '^test_windows.py:\(59\|60\):' || echo nenhum
+CRLF no stdout do playbook-curator.sh (F14 Playbook, rodada 4) -> ['test_windows.FimDeLinha.test_stdout_do_curator_sem_crlf'] | unidade: ['test_windows.FimDeLinha'] | fatia: [13]
+ramo tasklist do sdd-drive.sh (dono da trava vivo ou morto)    -> ['test_drive.SegundoPlano.test_trava_de_processo_morto_se_libera'] | unidade: ['test_drive.SegundoPlano'] | fatia: [4]
+report-lint sem prova no Windows                               -> ['test_report_lint.ReportLint.test_log_capturado_da_feature_passa'] | unidade: ['test_report_lint.ReportLint[1de2]'] | fatia: [8]
+sdd-archive sem prova no Windows                               -> ['test_sdd_archive.Simulacao.test_lista_por_lote_e_nao_muda_nada'] | unidade: ['test_sdd_archive.Simulacao'] | fatia: [6]
+trava sem O_NOFOLLOW (link no lugar da trava, F14 Drive, rodad -> ['test_drive.EstadoSoUmPorVez.test_trava_que_e_link_nao_cria_arquivo_fora'] | unidade: ['test_drive.EstadoSoUmPorVez'] | fatia: [11]
+== os 5 testes de ACHADOS no piso:
+test_trava_que_e_link_nao_cria_arquivo_fora (test_drive.EstadoSoUmPorVez) ... ok
+test_trava_de_processo_morto_se_libera (test_drive.SegundoPlano) ... ok
+test_log_capturado_da_feature_passa (test_report_lint.ReportLint) ... ok
+test_lista_por_lote_e_nao_muda_nada (test_sdd_archive.Simulacao) ... ok
+Ran 191 tests in 186.451s
+FAILED (errors=1)
+== skip de plataforma fora de apoio.py (busca):
+test_windows.py:63:        for limpo in ("@unittest.skipIf(*SEM_FCNTL)\n", 'x = "sys.exit(os.name != 1)"  # os.name num texto\n'):
+[exit=0]

@@ -1,0 +1,11 @@
+$ T=$(mktemp -d) && git archive v2.2.4 | tar -x -C $T && cp tests/test_agnostico.py tests/apoio.py $T/tests/ && cd $T/tests && /usr/bin/python3 -B -m unittest test_agnostico 2>&1 | grep -E "AssertionError|^\+|^-  |^FAIL|^Ran|^OK|^FAILED|CLARIFY|BUILD_REPORT"; test ${PIPESTATUS[0]} -ne 0 && echo "(test_agnostico do HEAD reprova a árvore da v2.2.4, como esperado)"
+FAIL: test_pacote_sem_ferramenta_de_um_agente_so (test_agnostico.Agnostico)
+AssertionError: Lists differ: ['sdd/templates/BUILD_REPORT_TEMPLATE.md:7[67 chars]ion'] != []
+'sdd/templates/BUILD_REPORT_TEMPLATE.md:75: Task tool'
++ []
+- ['sdd/templates/BUILD_REPORT_TEMPLATE.md:75: Task tool',
+-  'sdd/templates/fragments/CLARIFY.md:45: AskUserQuestion']
+Ran 7 tests in 0.040s
+FAILED (failures=1)
+(test_agnostico do HEAD reprova a árvore da v2.2.4, como esperado)
+exit=0

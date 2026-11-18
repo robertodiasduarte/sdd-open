@@ -1,0 +1,31 @@
+$ cd tests && SDD_TEST_BASH=/bin/bash python3 -B -m unittest test_f23_custo.AT004NuncaZero test_f23_custo.AT003Contador.test_leitor_que_falha_e_n_d_nunca_zero test_f23_custo.Rodada2 test_f23_custo.Rodada3 test_f23_custo.Rodada4   # HEAD ef217b9
+test_docs_sdd_com_caminho_e_outro_separador (test_f23_custo.AT004NuncaZero)
+R4: o META que traz caminho ou ponto e vírgula continua atribuído à feature. ... ok
+test_fase_marcada_sem_mensagem_lida_e_n_d (test_f23_custo.AT004NuncaZero)
+R1: uma fase com marca e nenhuma mensagem (agente sem leitor, sessão não achada) não sai 0.0000. ... ok
+test_leitor_que_falha_deixa_toda_linha_da_janela_parcial (test_f23_custo.AT004NuncaZero)
+R3: um leitor que sai com erro não some: toda fase e o sem fase ganham n/d. ... ok
+test_linha_ilegivel_deixa_toda_linha_da_janela_parcial (test_f23_custo.AT004NuncaZero)
+R2: não se sabe a que fase a linha perdida pertencia: toda linha da janela vira parcial. ... ok
+test_raiz_por_link_simbolico_acha_as_sessoes (test_f23_custo.AT004NuncaZero)
+R5: o agente grava o caminho físico; a raiz dada por um link simbólico é resolvida antes. ... ok
+test_leitor_que_falha_e_n_d_nunca_zero (test_f23_custo.AT003Contador)
+AT-004: sem preço nenhum, toda célula de sessão é n/d e o total diz + n/d. ... ok
+test_custo_incerto_da_revisao_leva_n_d (test_f23_custo.Rodada2)
+R1: `US$ n + $?` soma n e marca a parte desconhecida, nunca zero. ... ok
+test_sem_marca_e_leitor_que_falha_nao_e_zero (test_f23_custo.Rodada2)
+R4: sem marca, com o leitor do claude falhando e sem sessão do codex, sem fase é n/d. ... ok
+test_total_do_codex_que_volta_atras_nao_some (test_f23_custo.Rodada2)
+R6: um total acumulado menor que o anterior é contagem nova, somada inteira. ... ok
+test_agente_sem_leitor_deixa_sem_fase_n_d (test_f23_custo.Rodada3) ... ok
+test_papel_que_rodou_sem_custo_gravado_e_n_d (test_f23_custo.Rodada3) ... ok
+test_pasta_citada_pelo_ledger_e_ausente_e_n_d (test_f23_custo.Rodada3) ... ok
+test_ledger_ilegivel_e_n_d_com_aviso (test_f23_custo.Rodada4) ... ok
+test_modelo_com_quebra_de_linha_no_fim_sai_interrogacao (test_f23_custo.Rodada4) ... ok
+test_pasta_citada_sem_meta_legivel_e_n_d (test_f23_custo.Rodada4) ... ok
+
+----------------------------------------------------------------------
+Ran 15 tests in 2.137s
+
+OK
+[exit=0]

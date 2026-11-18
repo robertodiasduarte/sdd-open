@@ -1,0 +1,44 @@
+$ bash /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f10-revisao/bd420f6e-558d-4962-a0c9-40cdfc2cbd27/scratchpad/p/c4.sh
+## ar --reviewer stub-a --auditor stub-b --no-revisor2 --feature FX
+▶ revisor: stub-a (revisor-ok) — até 1 min
+▶ auditor: stub-b (auditor-agree) — até 1 min
+RESULTADO: REVIEW COMPLETA
+pasta: sdd/reports/reviews/EXTERNAL_REVIEW_20261101-001900
+diff_sha256: eb97f64eac78384ec61a8db9cabe9af5efe9a1e20131f5fd85f6c84c7d450680
+revisor: stub-a (stub-modelo) — incluído na assinatura
+auditor: stub-b (stub-modelo) — custo desconhecido
+diversidade: modelo
+achados: 1 grave, 1 médio, 0 leves
+custo total: incluído na assinatura (+ 1 papel(is) com custo desconhecido)
+→ rode: bash sdd/bin/sdd-fluxo.sh loop --review sdd/reports/reviews/EXTERNAL_REVIEW_20261101-001900 --ledger <ledger da revisão> --rodada <N>
+[rc=0]
+contexto                : 0KB (3 doc SDD)
+docs_sdd                : DEFINE_FX.md, DESIGN_FX.md, BUILD_REPORT_FX.md
+contexto_cortado        : BRAINSTORM
+### DEFINE_FX.md
+### DESIGN_FX.md
+### BUILD_REPORT_FX.md
+     104
+=== teto 1 KB: BRAINSTORM sai e o resto é cortado com marcador
+## ar --reviewer stub-a --auditor stub-b --no-revisor2 --feature FX
+▶ revisor: stub-a (revisor-ok) — até 1 min
+▶ auditor: stub-b (auditor-agree) — até 1 min
+RESULTADO: REVIEW COMPLETA
+pasta: sdd/reports/reviews/EXTERNAL_REVIEW_20261101-001901
+diff_sha256: 4bef6ed8085eac651ee4bbb37f8bfa05418719e2a46604459b107810778778d1
+revisor: stub-a (stub-modelo) — incluído na assinatura
+auditor: stub-b (stub-modelo) — custo desconhecido
+diversidade: modelo
+achados: 1 grave, 1 médio, 0 leves
+custo total: incluído na assinatura (+ 1 papel(is) com custo desconhecido)
+→ rode: bash sdd/bin/sdd-fluxo.sh loop --review sdd/reports/reviews/EXTERNAL_REVIEW_20261101-001901 --ledger <ledger da revisão> --rodada <N>
+[rc=0]
+contexto                : 1KB (3 doc SDD)
+docs_sdd                : DEFINE_FX.md, DESIGN_FX.md, BUILD_REPORT_FX.md
+contexto_cortado        : BRAINSTORM + corte em 1 KB
+### DEFINE_FX.md
+### DESIGN_FX.md
+    1024
+DDDDDDDDDDDDDDDDD
+[… cortado: teto de 1 KB do contexto SDD (review.context_max_kb) …]
+[exit=0]

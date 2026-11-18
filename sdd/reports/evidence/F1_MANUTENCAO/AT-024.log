@@ -1,0 +1,18 @@
+$ gh release view v2.2.1 -R robertodiasduarte/sdd-open && gh release download v2.2.1 && shasum -a 256 -c SHA256SUMS.txt
+title:	sdd-open v2.2.1
+tag:	v2.2.1
+draft:	false
+prerelease:	false
+immutable:	false
+author:	github-actions[bot]
+created:	2026-10-29T12:40:46Z
+published:	2026-10-29T12:51:05Z
+url:	https://github.com/robertodiasduarte/sdd-open/releases/tag/v2.2.1
+asset:	sdd-open-v2.2.1.tar.gz
+asset:	SHA256SUMS.txt
+--
+--- run 40876615567: Testes (só leitura) ✓ 26s · Publicar release ✓ 8s
+636f702580dca80c2c5ca3214af682cdf1a9434b4ea664048f3344d025d950f7  sdd-open-v2.2.1.tar.gz
+sdd-open-v2.2.1.tar.gz: OK
+exit=0
+--- tag v2.2.1 -> f75fbdb7d3fc · main f75fbdb

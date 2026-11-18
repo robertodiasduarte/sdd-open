@@ -1,0 +1,11 @@
+$ /bin/bash /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f7-evidencia/17ba90ab-414d-4dcc-9a02-576aad29f6c6/scratchpad/probe_rc2.sh /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f7-evidencia/17ba90ab-414d-4dcc-9a02-576aad29f6c6/scratchpad/vg-rc2 /Users/robertoduarte/rdd-worktrees/sdd-open-f7-evidencia/sdd/bin/verify-gate.sh
+== cmd do gate (crash, não asserção): grep -q ok arquivo_que_nao_existe.txt
+🛑 GATE VERMELHO (test) — pass_when: 'exit 0' NÃO satisfeito (rc=2).
+verify-gate exit=2
+== cmd do gate (crash, não asserção): if then fi
+🛑 GATE VERMELHO (test) — pass_when: 'exit 0' NÃO satisfeito (rc=2).
+verify-gate exit=2
+== cmd do gate (crash, não asserção): python3 -c 'import modulo_inexistente'
+🛑 GATE VERMELHO (test) — pass_when: 'exit 0' NÃO satisfeito (rc=1).
+verify-gate exit=2
+[exit=0]

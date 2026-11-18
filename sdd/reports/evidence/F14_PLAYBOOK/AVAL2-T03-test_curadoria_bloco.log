@@ -1,0 +1,7 @@
+$ cd /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.lyAZcjfTsM/nogit/tests && TMPDIR=/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.lyAZcjfTsM/tmp SDD_TRACE=off SDD_TEST_BASH=/bin/bash /usr/bin/python3 -B -m unittest test_curadoria_bloco </dev/null
+.....................................
+----------------------------------------------------------------------
+Ran 37 tests in 8.269s
+
+OK
+[exit=0]

@@ -1,0 +1,177 @@
+$ /bin/bash /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f14-playbook/712319f2-9f99-446d-ba48-ead3df6c700d/scratchpad/aval.iYqyIE/p1.sh
+
+=== C1 baseline AT-001: 3 e 4 colunas, **mordeu**, N.A., N/A, fora das secoes
+DELTA LM-001 ajudou+1 · conf=2026-11-05 · evidencia=DESIGN_X.md:4 · fp=b85acc9893
+DELTA LM-002 mordeu+1 · conf=2026-11-05 · evidencia=BUILD_REPORT_X.md:4 · fp=d8a7d7fb03
+resumo: deltas=2 (ajudou=1 mordeu=1) candidatos=0 rejeitados=0 promocoes=0 sugestoes=0
+RESULTADO: HÁ O QUE JULGAR
+→ despache o curador com esta colheita; nada foi aplicado.
+[rc=0]
+
+=== C2 ATAQUE contagem dobra entre 2 releases: DESIGN e BUILD_REPORT citam a mesma LM (o caso normal)
+--- 1a release
+[rc=0]
+DELTA LM-001 ajudou+1 · conf=2026-11-05 · evidencia=DESIGN_X.md:2 · fp=b85acc9893
+resumo: deltas=1 (ajudou=1 mordeu=0) candidatos=0 rejeitados=0 promocoes=0 sugestoes=0
+RESULTADO: HÁ O QUE JULGAR
+→ despache o curador com esta colheita; nada foi aplicado.
+--- 2a release da mesma feature, nenhum documento mudou
+DELTA LM-001 ajudou+1 · conf=2026-11-05 · evidencia=BUILD_REPORT_X.md:2 · fp=cdde0610bb
+JA_JULGADO 1 linha(s) já julgada(s) numa curadoria anterior desta feature (CURATOR-colhidos.txt): não contam de novo
+resumo: deltas=1 (ajudou=1 mordeu=0) candidatos=0 rejeitados=0 promocoes=0 sugestoes=0
+RESULTADO: HÁ O QUE JULGAR
+→ despache o curador com esta colheita; nada foi aplicado.
+[rc=0]
+
+=== C3 ATAQUE 2 achados na mesma LM: o 2o nao foi registrado e conta na proxima
+--- release 1
+DELTA LM-002 mordeu+1 · conf=2026-11-05 · evidencia=AVAL-1.log:1 · fp=39532ed248
+resumo: deltas=1 (ajudou=0 mordeu=1) candidatos=0 rejeitados=0 promocoes=0 sugestoes=0
+[rc=0]
+--- release 2
+DELTA LM-002 mordeu+1 · conf=2026-11-05 · evidencia=AVAL-1.log:2 · fp=e884822455
+JA_JULGADO 1 linha(s) já julgada(s) numa curadoria anterior desta feature (CURATOR-colhidos.txt): não contam de novo
+resumo: deltas=1 (ajudou=0 mordeu=1) candidatos=0 rejeitados=0 promocoes=0 sugestoes=0
+[rc=0]
+--- release 3
+DELTA LM-002 mordeu+1 · conf=2026-11-05 · evidencia=AVAL-1.log:3 · fp=695782e3a0
+JA_JULGADO 2 linha(s) já julgada(s) numa curadoria anterior desta feature (CURATOR-colhidos.txt): não contam de novo
+resumo: deltas=1 (ajudou=0 mordeu=1) candidatos=0 rejeitados=0 promocoes=0 sugestoes=0
+[rc=0]
+--- release 4
+0 deltas colhidos em st (1 arquivo(s) elegíveis) — ausência é informação, não verde
+JA_JULGADO 3 linha(s) já julgada(s) numa curadoria anterior desta feature (CURATOR-colhidos.txt): não contam de novo
+resumo: deltas=0 (ajudou=0 mordeu=0) candidatos=0 rejeitados=0 promocoes=0 sugestoes=0
+[rc=1]
+
+=== C4 ATAQUE so IGNORADO: AT-007 manda exit 0 com pelo menos 1 linha de qualquer tipo
+0 deltas colhidos em st (1 arquivo(s) elegíveis) — ausência é informação, não verde
+IGNORADO LM-777 (não existe como bullet ativo em pb.md)
+resumo: deltas=0 (ajudou=0 mordeu=0) candidatos=0 rejeitados=0 promocoes=0 sugestoes=0
+RESULTADO: NADA A COLHER
+→ registre "Curadoria: 0 deltas": esta feature não trouxe lição, contagem nem promoção pendente.
+[rc=1]
+
+=== C4b so JA_COLHIDO
+0 deltas colhidos em st (1 arquivo(s) elegíveis) — ausência é informação, não verde
+JA_COLHIDO DESIGN_X.md (data 2020-01-01 < --desde 2026-01-01)
+resumo: deltas=0 (ajudou=0 mordeu=0) candidatos=0 rejeitados=0 promocoes=0 sugestoes=0
+RESULTADO: NADA A COLHER
+→ registre "Curadoria: 0 deltas": esta feature não trouxe lição, contagem nem promoção pendente.
+[rc=1]
+
+=== C4c vizinho: IGNORADO + DELTA
+IGNORADO LM-777 (não existe como bullet ativo em pb.md)
+DELTA LM-001 mordeu+1 · conf=2026-11-05 · evidencia=AVAL-1.log:2 · fp=4e54a22dec
+resumo: deltas=1 (ajudou=0 mordeu=1) candidatos=0 rejeitados=0 promocoes=0 sugestoes=0
+RESULTADO: HÁ O QUE JULGAR
+→ despache o curador com esta colheita; nada foi aplicado.
+[rc=0]
+
+=== C5 ATAQUE LM sem fronteira de palavra
+DELTA LM-001 mordeu+1 · conf=2026-11-05 · evidencia=AVAL-1.log:1 · fp=be100e4957
+DELTA LM-002 mordeu+1 · conf=2026-11-05 · evidencia=AVAL-1.log:2 · fp=872e2bf4ae
+DELTA LM-003 mordeu+1 · conf=2026-11-05 · evidencia=AVAL-1.log:3 · fp=b1b2489cbb
+resumo: deltas=3 (ajudou=0 mordeu=3) candidatos=0 rejeitados=0 promocoes=0 sugestoes=0
+RESULTADO: HÁ O QUE JULGAR
+→ despache o curador com esta colheita; nada foi aplicado.
+[rc=0]
+
+=== C6 ATAQUE tabela: nota cita outra LM
+DELTA LM-001 ajudou+1 · conf=2026-11-05 · evidencia=DESIGN_X.md:2 · fp=89827f957f
+DELTA LM-002 ajudou+1 · conf=2026-11-05 · evidencia=DESIGN_X.md:2 · fp=5674168ae6
+DELTA LM-003 ajudou+1 · conf=2026-11-05 · evidencia=DESIGN_X.md:2 · fp=763c2f6539
+resumo: deltas=3 (ajudou=3 mordeu=0) candidatos=0 rejeitados=0 promocoes=0 sugestoes=0
+RESULTADO: HÁ O QUE JULGAR
+→ despache o curador com esta colheita; nada foi aplicado.
+[rc=0]
+
+=== C7 ATAQUE celula de regra que comeca com mordeu antes do veredito ✔
+DELTA LM-001 mordeu+1 · conf=2026-11-05 · evidencia=DESIGN_X.md:2 · fp=499cd73135
+resumo: deltas=1 (ajudou=0 mordeu=1) candidatos=0 rejeitados=0 promocoes=0 sugestoes=0
+RESULTADO: HÁ O QUE JULGAR
+→ despache o curador com esta colheita; nada foi aplicado.
+[rc=0]
+
+=== C8 marca FAIL: FORCE_FAIL nao; FAIL-FAST?; FAILED sim; fail nao; FAIL: sim; '✅ FAIL' nao
+DELTA LM-002 mordeu+1 · conf=2026-11-05 · evidencia=AVAL-1.log:5 · fp=cc8293a955
+DELTA LM-003 mordeu+1 · conf=2026-11-05 · evidencia=AVAL-1.log:6 · fp=ab0b5bc7e0
+resumo: deltas=2 (ajudou=0 mordeu=2) candidatos=0 rejeitados=0 promocoes=0 sugestoes=0
+RESULTADO: HÁ O QUE JULGAR
+→ despache o curador com esta colheita; nada foi aplicado.
+[rc=0]
+
+=== C9 candidatos: inline, chave, secao invalida, Tombstones, sem crase, evidencia —, bloco sem fechar
+CANDIDATO #1 → LM-010 · secao=Backend · sup=`um_termo` · evidencia=AVAL-1.log:1 · fp=dc1d9f367f
+   delta: ADD Backend :: sup: `um_termo` :: R1. **Do instead:** A1. → ficha: — · promovido_para: —
+REJEITADO candidato em BUILD_REPORT_X.md:7 — secao: 'Tombstones' não é uma das seções ativas · fp=1840dedbf9
+REJEITADO candidato em BUILD_REPORT_X.md:13 — sup: sem termo em crase · fp=5a462b7d4f
+REJEITADO candidato em BUILD_REPORT_X.md:19 — sem linha 'evidencia:' (lição sem verificação piora o contexto) · fp=5845d5868c
+REJEITADO candidato em BUILD_REPORT_X.md:25 — regra: sem 'Do instead:' · fp=5e01b17fa8
+resumo: deltas=0 (ajudou=0 mordeu=0) candidatos=1 rejeitados=4 promocoes=0 sugestoes=0
+RESULTADO: HÁ O QUE JULGAR
+→ despache o curador com esta colheita; nada foi aplicado.
+[rc=0]
+
+=== C10 mesmo candidato no BUILD_REPORT e no HANDOFF (a ficha repete)
+CANDIDATO #1 → LM-010 · secao=Backend · sup=`um_termo` · evidencia=AVAL-1.log:1 · fp=dc1d9f367f
+   delta: ADD Backend :: sup: `um_termo` :: R1. **Do instead:** A1. → ficha: — · promovido_para: —
+CANDIDATO #2 → LM-011 · secao=Backend · sup=`um_termo` · evidencia=AVAL-1.log:1 · fp=98a4c8a663
+   delta: ADD Backend :: sup: `um_termo` :: R1. **Do instead:** A1. → ficha: — · promovido_para: —
+resumo: deltas=0 (ajudou=0 mordeu=0) candidatos=2 rejeitados=0 promocoes=0 sugestoes=0
+RESULTADO: HÁ O QUE JULGAR
+→ despache o curador com esta colheita; nada foi aplicado.
+[rc=0]
+
+=== C11 sugestao: termo 6+, termo de 3 nao, so digitos nao
+SUGESTAO mordeu? LM-001 — termo `alpha_term` em AVAL-1.log:1 (achado sem LM explícito; confirmar a causa antes de virar delta) · fp=6a1e1a58cd
+resumo: deltas=0 (ajudou=0 mordeu=0) candidatos=0 rejeitados=0 promocoes=0 sugestoes=1
+RESULTADO: HÁ O QUE JULGAR
+→ despache o curador com esta colheita; nada foi aplicado.
+[rc=0]
+
+=== C12 --desde: invalida 64; data impossivel 2026-13-45
+🛑 playbook-curator: --desde exige uma data AAAA-MM-DD: '2026/01/01'
+uso:
+  playbook-curator.sh --preparar <FEATURE> [--retomar]
+  playbook-curator.sh --colher <dir> <playbook> [--desde AAAA-MM-DD] [--inv <invariantes>]
+  playbook-curator.sh --aplicar <delta> <playbook> [conf=AAAA-MM-DD]
+  playbook-curator.sh --cruzar <delta|-> <playbook> <invariantes>
+  playbook-curator.sh --validar-inv <playbook> <invariantes>
+  playbook-curator.sh --aplicar-inv <linhas> <invariantes>
+  playbook-curator.sh --selar <staging>
+  playbook-curator.sh --conferir-bloco <colheita> <bloco> <playbook> <selo> <comparar>
+  playbook-curator.sh --self-test
+RESULTADO: ERRO DE USO
+→ corrija a chamada e rode de novo; nada foi lido nem gravado.
+[rc=64]
+RESULTADO: NADA A COLHER
+→ registre "Curadoria: 0 deltas": esta feature não trouxe lição, contagem nem promoção pendente.
+[rc=1]
+
+=== C13 usos: pasta ausente 64; playbook ausente 2; sem bullet 2; --inv ausente 2; arquivo no lugar da pasta 64
+[pasta rc=64]
+[pb rc=2]
+[sem bullet rc=2]
+[inv rc=2]
+[arquivo rc=64]
+
+=== C14 evidencia com espaco no nome de arquivo some da cobertura do conferidor
+DELTA LM-001 mordeu+1 · conf=2026-11-05 · evidencia=AVAL-com espaco.log:1 · fp=e24841e1a0
+resumo: deltas=1 (ajudou=0 mordeu=1) candidatos=0 rejeitados=0 promocoes=0 sugestoes=0
+RESULTADO: HÁ O QUE JULGAR
+→ despache o curador com esta colheita; nada foi aplicado.
+[rc=0]
+
+=== C15 AT-009 trace
+[rc=1]
+BAR.jsonl
+FOO.jsonl
+b_r_o.jsonl
+{"ts":"2026-11-05T13:24:24Z","feature":"BAR","src":"curator","kind":"colher","exit":1,"deltas":0,"ajudou":0,"mordeu":0,"candidatos":0,"rejeitados":0,"promocoes":0,"sugestoes":0}
+{"ts":"2026-11-05T13:24:24Z","feature":"FOO","src":"curator","kind":"colher","exit":1,"deltas":0,"ajudou":0,"mordeu":0,"candidatos":0,"rejeitados":0,"promocoes":0,"sugestoes":0}
+{"ts":"2026-11-05T13:24:24Z","feature":"b_r_o","src":"curator","kind":"colher","exit":1,"deltas":0,"ajudou":0,"mordeu":0,"candidatos":0,"rejeitados":0,"promocoes":0,"sugestoes":0}
+[dir invalido rc=1]
+ls: tr2: No such file or directory
+ls: tr3: No such file or directory
+[exit=0]

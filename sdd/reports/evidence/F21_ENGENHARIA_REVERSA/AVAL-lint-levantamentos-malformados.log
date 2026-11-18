@@ -1,0 +1,87 @@
+$ for py in /usr/bin/python3 python3; do $py -B exp.py <cópia git archive> <projeto novo com init --vendors claude> $py; done  # experimentos do avaliador: levantamentos malformados contra o validate_reverse.py (fonte e cópia gerada)
+== python: /usr/bin/python3
+OK valido (fonte)                                 rc=0 ok=True tb=False intacto=True 
+OK valido (gerada)                                rc=0 ok=True tb=False intacto=True 
+OK observado sem sessao                           rc=2 ok=False tb=False intacto=True ['OBSERVADO_SEM_SESSAO']
+OK observado com sessao (controle)                rc=0 ok=True tb=False intacto=True 
+OK referencia inexistente                         rc=2 ok=False tb=False intacto=True ['REFERENCIA_INEXISTENTE', 'SUPORTE_INDISPONIVEL']
+OK fonte indisponivel sustentando                 rc=2 ok=False tb=False intacto=True ['COBERTURA_SEM_SUPORTE', 'SUPORTE_INDISPONIVEL']
+OK inferido sem suporte                           rc=2 ok=False tb=False intacto=True ['ACHADO_SEM_EVIDENCIA']
+OK ID evidencia duplicado                         rc=2 ok=False tb=False intacto=True ['ID_EVIDENCIA_DUPLICADO']
+OK ID achado duplicado                            rc=2 ok=False tb=False intacto=True ['ID_ACHADO_DUPLICADO']
+OK dimensao faltando                              rc=2 ok=False tb=False intacto=True ['DIMENSOES_COBERTURA']
+OK concluida com lacuna                           rc=2 ok=False tb=False intacto=True ['CONCLUSAO_COM_LACUNAS_OU_ESCOPO_VAZIO']
+OK placeholder                                    rc=2 ok=False tb=False intacto=True ['PLACEHOLDER_NAO_PREENCHIDO']
+OK tabela truncada                                rc=2 ok=False tb=False intacto=True ['LINHA_ACHADOS']
+OK secao duplicada                                rc=2 ok=False tb=False intacto=True ['CABECALHO_METADATA', 'DATA_COLETA', 'METADATA_AUSENTE:Data da coleta', 'METADATA_AUSENTE:Modo de investigação', 'METADATA_AUSENTE:Nova solução', 'METADATA_AUSENTE:Plano e versão', 'METADATA_AUSENTE:SaaS', 'METADATA_AUSENTE:Status da investiga
+OK ordem trocada                                  rc=2 ok=False tb=False intacto=True ['ORDEM_SECOES']
+OK secao faltando                                 rc=2 ok=False tb=False intacto=True ['SECAO_AUSENTE_OU_DUPLICADA:Lacunas e contradições']
+OK vazio                                          rc=2 ok=False tb=False intacto=True ['CABECALHO_ACHADOS', 'CABECALHO_COBERTURA', 'CABECALHO_ESTADO', 'CABECALHO_EVIDENCIAS', 'CABECALHO_METADATA', 'DATA_COLETA', 'DIMENSOES_COBERTURA', 'ESTADO_AUSENTE:Decisoes registradas', 'ESTADO_AUSENTE:Dependencias', 'ESTADO_AUSENTE:Documento
+OK CRLF valido                                    rc=0 ok=True tb=False intacto=True 
+OK BOM                                            rc=2 ok=False tb=False intacto=True ['TITULO']
+OK nao utf8                                       rc=2 ok=False tb=False intacto=True ['ARQUIVO_INACESSIVEL_OU_NAO_UTF8']
+OK nul bytes                                      rc=0 ok=True tb=False intacto=True 
+OK so titulo                                      rc=2 ok=False tb=False intacto=True ['CABECALHO_ACHADOS', 'CABECALHO_COBERTURA', 'CABECALHO_ESTADO', 'CABECALHO_EVIDENCIAS', 'CABECALHO_METADATA', 'DATA_COLETA', 'DIMENSOES_COBERTURA', 'ESTADO_AUSENTE:Decisoes registradas', 'ESTADO_AUSENTE:Dependencias', 'ESTADO_AUSENTE:Documento
+XX placeholder minusculo {saas}                   rc=0 ok=True tb=False intacto=True []
+XX placeholder com hifen {DATA-ISO}               rc=0 ok=True tb=False intacto=True []
+OK linha de texto de ausencia na tabela           rc=0 ok=True tb=False intacto=True 
+OK celula com so pipe                             rc=2 ok=False tb=False intacto=True ['COBERTURA_SEM_SUPORTE', 'LINHA_EVIDENCIAS', 'REFERENCIA_COBERTURA_INEXISTENTE', 'REFERENCIA_INEXISTENTE', 'SUPORTE_INDISPONIVEL']
+XX separador curto |---|                          rc=0 ok=True tb=False intacto=True []
+OK cabecalho dentro de bloco de codigo            rc=2 ok=False tb=False intacto=True ['CABECALHO_METADATA', 'DATA_COLETA', 'METADATA_AUSENTE:Data da coleta', 'METADATA_AUSENTE:Modo de investigação', 'METADATA_AUSENTE:Nova solução', 'METADATA_AUSENTE:Plano e versão', 'METADATA_AUSENTE:SaaS', 'METADATA_AUSENTE:Status da investiga
+OK data impossivel 2026-02-30                     rc=2 ok=False tb=False intacto=True ['DATA_COLETA']
+OK 2MB+                                           rc=2 ok=False tb=False intacto=True ['ARQUIVO_EXCEDE_LIMITE_LOCAL']
+OK erro com acento LC_ALL=C                       rc=2 ok=False tb=False intacto=True ['SECAO_AUSENTE_OU_DUPLICADA:Lacunas e contradições']
+XX erro com acento PYTHONIOENCODING=ascii         rc=1 ok=None tb=True intacto=True NAO_JSON:
+    STDERR: UnicodeEncodeError: 'ascii' codec can't encode characters in position 58-59: ordinal not in range(128)
+XX erro com acento LC_ALL=C sem coercao           rc=1 ok=None tb=True intacto=True NAO_JSON:
+    STDERR: UnicodeEncodeError: 'ascii' codec can't encode characters in position 58-59: ordinal not in range(128)
+OK arquivo ausente                                rc=2 tb=False out={"errors": ["ARQUIVO_INACESSIVEL_OU_NAO_UTF8"], "ok": false} err=
+OK diretorio                                      rc=2 tb=False out={"errors": ["ARQUIVO_INACESSIVEL_OU_NAO_UTF8"], "ok": false} err=
+OK sem argumento                                  rc=2 tb=False out= err=validate_reverse.py: error: the following arguments are required: report
+molde .agents: rc=2 ['DATA_COLETA', 'ETAPA_INVALIDA', 'FORMATO_REFERENCIAS', 'PLACEHOLDER_NAO_PREENCHIDO', 'REFERENCIA_COBERTURA_INEXISTENTE', 'STATUS_ETAPA_INVALIDO']
+molde .claude: rc=2 ['DATA_COLETA', 'ETAPA_INVALIDA', 'FORMATO_REFERENCIAS', 'PLACEHOLDER_NAO_PREENCHIDO', 'REFERENCIA_COBERTURA_INEXISTENTE', 'STATUS_ETAPA_INVALIDO']
+relativo em pasta com espaco: rc=0 {"errors": [], "evidence_count": 1, "fin
+pycache na skill: []
+== python: python3
+OK valido (fonte)                                 rc=0 ok=True tb=False intacto=True 
+OK valido (gerada)                                rc=0 ok=True tb=False intacto=True 
+OK observado sem sessao                           rc=2 ok=False tb=False intacto=True ['OBSERVADO_SEM_SESSAO']
+OK observado com sessao (controle)                rc=0 ok=True tb=False intacto=True 
+OK referencia inexistente                         rc=2 ok=False tb=False intacto=True ['REFERENCIA_INEXISTENTE', 'SUPORTE_INDISPONIVEL']
+OK fonte indisponivel sustentando                 rc=2 ok=False tb=False intacto=True ['COBERTURA_SEM_SUPORTE', 'SUPORTE_INDISPONIVEL']
+OK inferido sem suporte                           rc=2 ok=False tb=False intacto=True ['ACHADO_SEM_EVIDENCIA']
+OK ID evidencia duplicado                         rc=2 ok=False tb=False intacto=True ['ID_EVIDENCIA_DUPLICADO']
+OK ID achado duplicado                            rc=2 ok=False tb=False intacto=True ['ID_ACHADO_DUPLICADO']
+OK dimensao faltando                              rc=2 ok=False tb=False intacto=True ['DIMENSOES_COBERTURA']
+OK concluida com lacuna                           rc=2 ok=False tb=False intacto=True ['CONCLUSAO_COM_LACUNAS_OU_ESCOPO_VAZIO']
+OK placeholder                                    rc=2 ok=False tb=False intacto=True ['PLACEHOLDER_NAO_PREENCHIDO']
+OK tabela truncada                                rc=2 ok=False tb=False intacto=True ['LINHA_ACHADOS']
+OK secao duplicada                                rc=2 ok=False tb=False intacto=True ['CABECALHO_METADATA', 'DATA_COLETA', 'METADATA_AUSENTE:Data da coleta', 'METADATA_AUSENTE:Modo de investigação', 'METADATA_AUSENTE:Nova solução', 'METADATA_AUSENTE:Plano e versão', 'METADATA_AUSENTE:SaaS', 'METADATA_AUSENTE:Status da investiga
+OK ordem trocada                                  rc=2 ok=False tb=False intacto=True ['ORDEM_SECOES']
+OK secao faltando                                 rc=2 ok=False tb=False intacto=True ['SECAO_AUSENTE_OU_DUPLICADA:Lacunas e contradições']
+OK vazio                                          rc=2 ok=False tb=False intacto=True ['CABECALHO_ACHADOS', 'CABECALHO_COBERTURA', 'CABECALHO_ESTADO', 'CABECALHO_EVIDENCIAS', 'CABECALHO_METADATA', 'DATA_COLETA', 'DIMENSOES_COBERTURA', 'ESTADO_AUSENTE:Decisoes registradas', 'ESTADO_AUSENTE:Dependencias', 'ESTADO_AUSENTE:Documento
+OK CRLF valido                                    rc=0 ok=True tb=False intacto=True 
+OK BOM                                            rc=2 ok=False tb=False intacto=True ['TITULO']
+OK nao utf8                                       rc=2 ok=False tb=False intacto=True ['ARQUIVO_INACESSIVEL_OU_NAO_UTF8']
+OK nul bytes                                      rc=0 ok=True tb=False intacto=True 
+OK so titulo                                      rc=2 ok=False tb=False intacto=True ['CABECALHO_ACHADOS', 'CABECALHO_COBERTURA', 'CABECALHO_ESTADO', 'CABECALHO_EVIDENCIAS', 'CABECALHO_METADATA', 'DATA_COLETA', 'DIMENSOES_COBERTURA', 'ESTADO_AUSENTE:Decisoes registradas', 'ESTADO_AUSENTE:Dependencias', 'ESTADO_AUSENTE:Documento
+XX placeholder minusculo {saas}                   rc=0 ok=True tb=False intacto=True []
+XX placeholder com hifen {DATA-ISO}               rc=0 ok=True tb=False intacto=True []
+OK linha de texto de ausencia na tabela           rc=0 ok=True tb=False intacto=True 
+OK celula com so pipe                             rc=2 ok=False tb=False intacto=True ['COBERTURA_SEM_SUPORTE', 'LINHA_EVIDENCIAS', 'REFERENCIA_COBERTURA_INEXISTENTE', 'REFERENCIA_INEXISTENTE', 'SUPORTE_INDISPONIVEL']
+XX separador curto |---|                          rc=0 ok=True tb=False intacto=True []
+OK cabecalho dentro de bloco de codigo            rc=2 ok=False tb=False intacto=True ['CABECALHO_METADATA', 'DATA_COLETA', 'METADATA_AUSENTE:Data da coleta', 'METADATA_AUSENTE:Modo de investigação', 'METADATA_AUSENTE:Nova solução', 'METADATA_AUSENTE:Plano e versão', 'METADATA_AUSENTE:SaaS', 'METADATA_AUSENTE:Status da investiga
+OK data impossivel 2026-02-30                     rc=2 ok=False tb=False intacto=True ['DATA_COLETA']
+OK 2MB+                                           rc=2 ok=False tb=False intacto=True ['ARQUIVO_EXCEDE_LIMITE_LOCAL']
+OK erro com acento LC_ALL=C                       rc=2 ok=False tb=False intacto=True ['SECAO_AUSENTE_OU_DUPLICADA:Lacunas e contradições']
+XX erro com acento PYTHONIOENCODING=ascii         rc=1 ok=None tb=True intacto=True NAO_JSON:
+    STDERR: UnicodeEncodeError: 'ascii' codec can't encode characters in position 58-59: ordinal not in range(128)
+XX erro com acento LC_ALL=C sem coercao           rc=1 ok=None tb=True intacto=True NAO_JSON:
+    STDERR: UnicodeEncodeError: 'ascii' codec can't encode characters in position 58-59: ordinal not in range(128)
+OK arquivo ausente                                rc=2 tb=False out={"errors": ["ARQUIVO_INACESSIVEL_OU_NAO_UTF8"], "ok": false} err=
+OK diretorio                                      rc=2 tb=False out={"errors": ["ARQUIVO_INACESSIVEL_OU_NAO_UTF8"], "ok": false} err=
+OK sem argumento                                  rc=2 tb=False out= err=validate_reverse.py: error: the following arguments are required: report
+molde .agents: rc=2 ['DATA_COLETA', 'ETAPA_INVALIDA', 'FORMATO_REFERENCIAS', 'PLACEHOLDER_NAO_PREENCHIDO', 'REFERENCIA_COBERTURA_INEXISTENTE', 'STATUS_ETAPA_INVALIDO']
+molde .claude: rc=2 ['DATA_COLETA', 'ETAPA_INVALIDA', 'FORMATO_REFERENCIAS', 'PLACEHOLDER_NAO_PREENCHIDO', 'REFERENCIA_COBERTURA_INEXISTENTE', 'STATUS_ETAPA_INVALIDO']
+relativo em pasta com espaco: rc=0 {"errors": [], "evidence_count": 1, "fin
+pycache na skill: []

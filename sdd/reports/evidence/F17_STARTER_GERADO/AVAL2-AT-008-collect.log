@@ -1,0 +1,23 @@
+$ J='import json,sys; d=json.load(sys.stdin); print(d["inventory_count"], [(i["path"], i["type"]) for i in d["items"]])'
+echo '== rep: só .agents/skills/ (2 skills) — Open da tag'; python3 -B open/.agents/skills/sdd-auditoria-harness/scripts/collect_evidence.py rep | python3 -c "$J"
+echo '== rep: mesmo repositório, collect_evidence.py da v2.12.1 (antes)'; python3 -B velho/collect_evidence.py rep | python3 -c "$J"
+echo '== rep2: AGENTS.md + .agents/{skills,agents,scripts} + .codex/ — Open da tag'; python3 -B open/.agents/skills/sdd-auditoria-harness/scripts/collect_evidence.py rep2 | python3 -c "$J"
+echo '== rep2 com a v2.12.1'; python3 -B velho/collect_evidence.py rep2 | python3 -c "$J"
+echo '== mesma skill na cópia gerada do starter'; python3 -B starter/skills/sdd-auditoria-harness/scripts/collect_evidence.py rep2 | python3 -c "$J"
+echo '== precedência CLAUDE.md x AGENTS.md na skill do Open'; grep -n -i 'precedência\|@AGENTS.md' open/.agents/skills/sdd-auditoria-harness/SKILL.md | cut -c1-260
+== rep: só .agents/skills/ (2 skills) — Open da tag
+2 [('.agents/skills/minha-skill/SKILL.md', 'skill'), ('.agents/skills/outra/SKILL.md', 'skill')]
+== rep: mesmo repositório, collect_evidence.py da v2.12.1 (antes)
+0 []
+== rep2: AGENTS.md + .agents/{skills,agents,scripts} + .codex/ — Open da tag
+6 [('.agents/agents/rev.md', 'agente'), ('.agents/scripts/a.sh', 'script'), ('.agents/skills/s1/SKILL.md', 'skill'), ('.codex/config.toml', 'settings'), ('.codex/prompts/p.md', 'comando'), ('AGENTS.md', 'fonte-de-verdade')]
+== rep2 com a v2.12.1
+0 []
+== mesma skill na cópia gerada do starter
+6 [('.agents/agents/rev.md', 'agente'), ('.agents/scripts/a.sh', 'script'), ('.agents/skills/s1/SKILL.md', 'skill'), ('.codex/config.toml', 'settings'), ('.codex/prompts/p.md', 'comando'), ('AGENTS.md', 'fonte-de-verdade')]
+== precedência CLAUDE.md x AGENTS.md na skill do Open
+129:⚠️ **Os dois existem:** registre a precedência real. O Claude Code lê o `CLAUDE.md`; o `AGENTS.md` só vale para ele
+130:se o `CLAUDE.md` o importar com `@AGENTS.md`. Instrução que a pessoa acha que vale e o agente não lê é
+137:- regras de precedência/fonte de verdade, se declaradas.
+251:- **Dois documentos parecem duplicados, mas não há evidência suficiente de precedência** → `AMBÍGUO` somente se disputarem objetivamente o mesmo papel; caso contrário, “Dúvidas”.
+rc=0

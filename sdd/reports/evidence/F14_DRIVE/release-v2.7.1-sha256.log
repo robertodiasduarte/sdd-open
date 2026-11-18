@@ -1,0 +1,4 @@
+$ gh release download v2.7.1 -R robertodiasduarte/sdd-open && shasum -a 256 -c SHA256SUMS.txt
+5aa600aea17a9481d4ac215af574e9c2563adeaf6d6f58e99c6a7c58569930e3  sdd-open-v2.7.1.tar.gz
+sdd-open-v2.7.1.tar.gz: OK
+[exit=0]

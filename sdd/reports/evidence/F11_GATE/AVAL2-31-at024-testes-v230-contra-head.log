@@ -1,0 +1,29 @@
+$ cd /Users/robertoduarte/rdd-worktrees/sdd-open-f11-gate && T=$(mktemp -d) && git archive HEAD | tar -x -C $T && git archive v2.3.0 tests/test_revisao.py tests/test_revisao_adapters.py tests/test_fluxo.py tests/test_contrato_build_release.py tests/apoio.py | tar -x -C $T && cd $T && SDD_TEST_BASH=/bin/bash /usr/bin/python3 -B -m unittest discover -s tests -p 'test_revisao*.py' 2>&1; a=$?; SDD_TEST_BASH=/bin/bash /usr/bin/python3 -B -m unittest discover -s tests -p 'test_fluxo.py' 2>&1; b=$?; SDD_TEST_BASH=/bin/bash /usr/bin/python3 -B -m unittest discover -s tests -p 'test_contrato_build_release.py' 2>&1; c=$?; echo "rc revisao=$a fluxo=$b contrato=$c"; [ $a -eq 0 ] && [ $b -eq 0 ] && [ $c -eq 0 ]
+...................F......................................................................................
+======================================================================
+FAIL: test_quatro_formas_e_nunca_zero_desconhecido (test_revisao.Custo)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.ZkJyFglOZq/tests/test_revisao.py", line 597, in test_quatro_formas_e_nunca_zero_desconhecido
+    self.assertEqual(m["auditor_custo"], "≈US$ 0.0014")
+AssertionError: '$?' != '≈US$ 0.0014'
+- $?
++ ≈US$ 0.0014
+
+
+----------------------------------------------------------------------
+Ran 106 tests in 182.625s
+
+FAILED (failures=1)
+............................................................
+----------------------------------------------------------------------
+Ran 60 tests in 9.910s
+
+OK
+.............................
+----------------------------------------------------------------------
+Ran 29 tests in 0.111s
+
+OK
+rc revisao=1 fluxo=0 contrato=0
+[exit=1]

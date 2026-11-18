@@ -1,0 +1,33 @@
+$ # cópia de git archive HEAD (sem .git), como o Verify Gate; só o arquivo do gerador
+SDD_TEST_BASH=/bin/bash /usr/bin/python3 -B -m unittest discover -s tests -p 'test_gerar_starter.py' -v 2>&1 | tail -40
+test_at001_gera_as_10_e_nao_toca_no_resto (test_gerar_starter.Gera) ... ok
+test_at003_cada_skill_gerada (test_gerar_starter.Gera) ... ok
+test_at005_duas_geracoes_iguais_byte_a_byte (test_gerar_starter.Gera) ... ok
+test_at007_o_starter_passa_nas_checagens_dele (test_gerar_starter.Gera) ... ok
+test_aval1_kb_gerada_sem_caminho_nem_sync_do_open (test_gerar_starter.Gera) ... ok
+test_gerar_de_novo_a_mesma_tag_nao_muda_nada (test_gerar_starter.Gera) ... ok
+test_r1_testes_de_skill_sem_nenhuma_pasta_tests_nao_quebram (test_gerar_starter.Gera) ... ok
+test_r2_arquivo_que_saiu_da_semente_sai_do_destino (test_gerar_starter.Gera) ... ok
+test_regra_de_pasta_so_no_markdown_e_o_par_que_define_a_pasta_fica (test_gerar_starter.Gera) ... ok
+test_at004_a_copia_crua_reprova_e_a_gerada_passa (test_gerar_starter.Lint) ... ok
+test_aval1_lint_pega_caminho_da_skill_gerada_fora_do_par (test_gerar_starter.Lint) ... ok
+test_at010_o_init_nao_copia_scripts (test_gerar_starter.ReadmeEInit) ... ok
+test_readme_cita_toda_skill_gerada (test_gerar_starter.ReadmeEInit) ... ok
+test_readme_sem_ambiente_md (test_gerar_starter.ReadmeEInit) ... ok
+test_at002_destino_sujo_ou_sem_a_forma_do_starter (test_gerar_starter.Recusa) ... ok
+test_at002_lint_do_init_acha_citacao (test_gerar_starter.Recusa) ... ok
+test_at002_skill_sem_linha_no_openai_tsv (test_gerar_starter.Recusa) ... ok
+test_at002_tag_inexistente (test_gerar_starter.Recusa) ... ok
+test_at002_troca_que_nao_casa_exatamente_uma_vez (test_gerar_starter.Recusa) ... ok
+test_at007_versao_que_nao_sobe_reprova_antes_de_gravar (test_gerar_starter.Recusa) ... ok
+test_gerador_diferente_do_da_tag (test_gerar_starter.Recusa) ... ok
+test_at006_cada_mudanca_a_mao_sai_1 (test_gerar_starter.Trava) ... ok
+test_at006_gerado_ilegivel_sai_64 (test_gerar_starter.Trava) ... ok
+test_at006_os_workflows_rodam_a_trava_antes_dos_testes (test_gerar_starter.Trava) ... ok
+test_at006_tudo_igual_sai_0 (test_gerar_starter.Trava) ... ok
+
+----------------------------------------------------------------------
+Ran 25 tests in 21.301s
+
+OK
+rc=0

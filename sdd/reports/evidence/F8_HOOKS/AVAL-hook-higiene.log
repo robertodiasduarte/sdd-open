@@ -1,0 +1,90 @@
+$ cd /tmp/sdd-aval/hook-higiene && git config sdd.higieneDado on && printf 'X=1\n' > .env && printf 'a;b\n' > plan.csv && printf 'pfx' > cert.pfx && git add cliente.txt .env plan.csv cert.pfx chave.pem && git commit -q -m higiene
+
+sdd-open: commit recusado. Encontrei o que não pode entrar nesta versão:
+
+  🛑 [H3] gitleaks: RuleID:      pkcs12-file File:        cert.pfx Line:        0 
+
+Por que importa:
+  [H3] o que entra no git fica no histórico e vai junto em todo push; depois disso, rotacionar a credencial é o único conserto
+
+
+sdd-higiene-dado: commit recusado. Encontrei o que não deveria ir para o git:
+
+  .env: arquivo de senhas (.env)
+  cert.pfx: certificado digital com chave privada (ex.: certificado A1)
+  chave.pem: chave privada (.pem com PRIVATE KEY)
+  plan.csv: planilha nova (pode conter dado de cliente)
+  cliente.txt:1: CPF 307.***.***-01
+
+Por que importa: o que entra no git fica no histórico e vai junto em todo push.
+Apagar depois não desfaz: quem já copiou o repositório continua com o dado.
+
+Como corrigir:
+  1. Tire o arquivo deste commit:      git restore --staged "<arquivo>"
+  2. Se ele nunca deve ir para o git:  echo "<arquivo>" >> .gitignore
+  3. Se o dado é necessário, use um fictício ou anonimizado.
+
+Se você conferiu e o dado é fictício ou autorizado, grave mesmo assim:
+  git commit --no-verify
+Isso pula o alarme só neste commit. Agente de IA: não use --no-verify sem o OK
+explícito da pessoa.
+
+Para desinstalar o alarme: bash .agents/skills/sdd-higiene-dado/scripts/alarme.sh desinstalar
+
+RESULTADO: COMMIT RECUSADO
+→ [H3] troque o valor por um placeholder (${VAR}, CHANGEME, example) ou tire o arquivo desta versão: git restore --staged "<arquivo>"
+→ se você conferiu e quer gravar mesmo assim, só desta vez: git commit --no-verify
+  Agente de IA: não use --no-verify sem o OK explícito da pessoa.
+[exit=1]
+$ cd /tmp/sdd-aval/hook-higiene && git commit -q -m higiene 2>&1 | tail -1
+  Agente de IA: não use --no-verify sem o OK explícito da pessoa.
+[exit=0]
+$ cd /tmp/sdd-aval/hook-higiene && git commit -q -m higiene 2>&1 | tail -1 | grep -c 'rm '
+0
+[exit=1]
+$ cd /tmp/sdd-aval/hook-higiene && git commit -q -m higiene 2>&1 | grep -c 'RESULTADO: COMMIT RECUSADO'
+1
+[exit=0]
+$ cd /tmp/sdd-aval/hook-higiene && git config --unset sdd.higieneDado && git commit -q -m higiene-desligada && echo PASSOU-desligada && git reset -q --soft HEAD~1
+
+sdd-open: commit recusado. Encontrei o que não pode entrar nesta versão:
+
+  🛑 [H3] gitleaks: RuleID:      pkcs12-file File:        cert.pfx Line:        0 
+
+Por que importa:
+  [H3] o que entra no git fica no histórico e vai junto em todo push; depois disso, rotacionar a credencial é o único conserto
+
+RESULTADO: COMMIT RECUSADO
+→ [H3] troque o valor por um placeholder (${VAR}, CHANGEME, example) ou tire o arquivo desta versão: git restore --staged "<arquivo>"
+→ se você conferiu e quer gravar mesmo assim, só desta vez: git commit --no-verify
+  Agente de IA: não use --no-verify sem o OK explícito da pessoa.
+[exit=1]
+$ cd /tmp/sdd-aval/hook-higiene && git config sdd.higieneDado on && mv .agents/skills/sdd-higiene-dado/scripts/pre-commit.sh /tmp/sdd-aval/hig.sh && git commit -q -m higiene-sem-script && echo PASSOU-sem-script-com-aviso && git reset -q --soft HEAD~1; mv /tmp/sdd-aval/hig.sh .agents/skills/sdd-higiene-dado/scripts/pre-commit.sh
+⚠️  sdd-open: alarme da sdd-higiene-dado ligado (sdd.higieneDado=on), mas .agents/skills/sdd-higiene-dado/scripts/pre-commit.sh não existe — rode init
+
+sdd-open: commit recusado. Encontrei o que não pode entrar nesta versão:
+
+  🛑 [H3] gitleaks: RuleID:      pkcs12-file File:        cert.pfx Line:        0 
+
+Por que importa:
+  [H3] o que entra no git fica no histórico e vai junto em todo push; depois disso, rotacionar a credencial é o único conserto
+
+RESULTADO: COMMIT RECUSADO
+→ [H3] troque o valor por um placeholder (${VAR}, CHANGEME, example) ou tire o arquivo desta versão: git restore --staged "<arquivo>"
+→ se você conferiu e quer gravar mesmo assim, só desta vez: git commit --no-verify
+  Agente de IA: não use --no-verify sem o OK explícito da pessoa.
+[exit=0]
+$ cd /tmp/sdd-aval/hook-higiene && git config sdd.higieneDado off && git commit -q -m higiene-off && echo PASSOU-off
+
+sdd-open: commit recusado. Encontrei o que não pode entrar nesta versão:
+
+  🛑 [H3] gitleaks: RuleID:      pkcs12-file File:        cert.pfx Line:        0 
+
+Por que importa:
+  [H3] o que entra no git fica no histórico e vai junto em todo push; depois disso, rotacionar a credencial é o único conserto
+
+RESULTADO: COMMIT RECUSADO
+→ [H3] troque o valor por um placeholder (${VAR}, CHANGEME, example) ou tire o arquivo desta versão: git restore --staged "<arquivo>"
+→ se você conferiu e quer gravar mesmo assim, só desta vez: git commit --no-verify
+  Agente de IA: não use --no-verify sem o OK explícito da pessoa.
+[exit=1]

@@ -1,0 +1,9 @@
+$ bash /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f16w-windows/fd210694-ded6-4d95-a500-52e0521f4ae8/scratchpad/aval2/sabot.sh
+MUTANTE S1 killpg->pass: Ran 9 tests in 10.453s  FAILED (failures=1)  | netos vivos antes/depois: 0/0
+MUTANTE S2 sem start_new_session: Ran 9 tests in 11.666s  FAILED (failures=1)  | netos vivos antes/depois: 0/0
+MUTANTE S3 sem isfinite: Ran 9 tests in 10.985s  FAILED (failures=2)  | netos vivos antes/depois: 0/0
+MUTANTE S4 seleção vazia verde: Ran 9 tests in 10.752s  FAILED (failures=2)  | netos vivos antes/depois: 0/0
+MUTANTE S5 sem partes (GRUPO=10**9): Ran 9 tests in 10.279s  FAILED (failures=1)  | netos vivos antes/depois: 0/0
+MUTANTE S6 lê saída por pipe com neto: Ran 9 tests in 9.281s  FAILED (failures=7)  | netos vivos antes/depois: 0/0
+ORIGINAL: OK
+[exit=0]

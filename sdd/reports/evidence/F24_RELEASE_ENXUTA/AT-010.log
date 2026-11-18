@@ -1,0 +1,11 @@
+$ (cd tests && python3 -B -m unittest -v test_f24_release_enxuta.AT010_EntradaAlterada)   # HEAD 017f09a
+test_entrada_fabricada_num_commit_so (test_f24_release_enxuta.AT010_EntradaAlterada.test_entrada_fabricada_num_commit_so) ... ok
+test_entrada_integra_passa (test_f24_release_enxuta.AT010_EntradaAlterada.test_entrada_integra_passa) ... ok
+test_linha_plantada (test_f24_release_enxuta.AT010_EntradaAlterada.test_linha_plantada) ... ok
+test_pasta_mexida_por_outro_commit (test_f24_release_enxuta.AT010_EntradaAlterada.test_pasta_mexida_por_outro_commit) ... ok
+
+----------------------------------------------------------------------
+Ran 4 tests in 1.635s
+
+OK
+[exit=0]

@@ -1,0 +1,22 @@
+$ cd /tmp/sdd-aval/borda-amend && printf 'ok\n' > a.md && git add a.md && git commit -q -m a && head -c 204800 /dev/zero | tr '\000' 'a' > AGENTS.md && git add AGENTS.md && git commit -q --amend --no-edit -m a2
+
+sdd-open: commit recusado. Encontrei o que não pode entrar nesta versão:
+
+  🛑 [H2] AGENTS.md: 204800 bytes (teto 100 KB)
+
+Por que importa:
+  [H2] o arquivo de contexto entra inteiro em toda sessão do agente; acima do teto, estoura a janela antes do primeiro prompt
+
+RESULTADO: COMMIT RECUSADO
+→ [H2] mova o conteúdo volumoso (changelog, histórico, dumps) para docs/ ou sdd/; ou ajuste project.context_file_max_kb em sdd/config.yaml
+→ se você conferiu e quer gravar mesmo assim, só desta vez: git commit --no-verify
+  Agente de IA: não use --no-verify sem o OK explícito da pessoa.
+[exit=1]
+$ cd /tmp/sdd-aval/borda-amend && git reset -q HEAD AGENTS.md && git checkout -q -- AGENTS.md && git switch -q -c lado && head -c 204800 /dev/zero | tr '\000' 'a' > AGENTS.md && git add AGENTS.md && git commit -q --no-verify -m grande-sem-verify && git switch -q main && git cherry-pick lado 2>&1; echo cherry-pick-rc=$?; git log --oneline -1; git cat-file -s HEAD:AGENTS.md
+[main 1d83755] grande-sem-verify
+ Date: Fri Oct 30 21:25:18 2026 -0300
+ 1 file changed, 1 insertion(+), 42 deletions(-)
+cherry-pick-rc=0
+1d83755 grande-sem-verify
+204800
+[exit=0]

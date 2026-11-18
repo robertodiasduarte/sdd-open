@@ -1,0 +1,14 @@
+$ python3 -m unittest -v test_f23b2_papeis.AT003CustoPorPapel   # AT-003 · HEAD c12a475 · 2026-11-17 08:37
+test_escada_separa_slot_invalido_de_script_antigo (test_f23b2_papeis.AT003CustoPorPapel) ... ok
+test_execucao_mede_so_a_pasta_pedida_e_sem_sessao_e_nd (test_f23b2_papeis.AT003CustoPorPapel) ... ok
+test_marca_de_papel_fora_das_fotos_nao_e_escrita_do_agente (test_f23b2_papeis.AT003CustoPorPapel) ... ok
+test_marca_de_papel_sem_par_vai_para_fora_da_conta (test_f23b2_papeis.AT003CustoPorPapel) ... ok
+test_marca_fase_aceita_o_nome_de_cada_papel_da_escada (test_f23b2_papeis.AT003CustoPorPapel) ... ok
+test_papel_depois_do_fim_das_fases_conta_so_na_sub_linha (test_f23b2_papeis.AT003CustoPorPapel) ... ok
+test_sub_linha_por_papel_fora_do_total (test_f23b2_papeis.AT003CustoPorPapel) ... ok
+
+----------------------------------------------------------------------
+Ran 7 tests in 2.370s
+
+OK
+[exit=0]

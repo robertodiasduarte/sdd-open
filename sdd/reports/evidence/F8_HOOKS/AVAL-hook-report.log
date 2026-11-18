@@ -1,0 +1,96 @@
+$ cd /tmp/sdd-aval/hook-report && mkdir -p sdd/reports && cp /Users/robertoduarte/rdd-worktrees/sdd-open-f8-aval/sdd/fixtures/evidencia/BUILD_REPORT_sem_avaliacao.md sdd/reports/BUILD_REPORT_X.md && git add sdd/reports/BUILD_REPORT_X.md && git commit -q -m report-ruim
+
+sdd-open: commit recusado. Encontrei o que não pode entrar nesta versão:
+
+  🛑 [REPORT] sdd/reports/BUILD_REPORT_X.md não passa no report-lint:
+        🛑 [evidência] AT-001: `true` sem evidência válida — `evidence/sem_avaliacao/AT-001.log` fora de evidence/X/*.log — só evidência da própria feature vale
+        🛑 [avaliação ausente] não há `AVALIACAO_X_<AAAAMMDD-HHMM>.md` em sdd/reviews/ (não vazio e não ignorado pelo git) nem linha sobre o avaliador. Saídas, nesta ordem: (1) rode o avaliador de contexto fresco (passo 5d da `sdd-build`); (2) `avaliador: N.A. (<motivo>)`, só com menos de 2 camadas — contagem impossível: `layers:` do sdd/config.yaml sem nenhum glob preenchido; (3) `avaliador: PENDENTE (<motivo>)`, se o build travou antes do avaliador
+
+Por que importa:
+  [REPORT] um relatório de build que não prova a evidência vira verde falso na fase Release
+
+RESULTADO: COMMIT RECUSADO
+→ [REPORT] acrescente a tabela de critérios e a linha do avaliador (sdd/templates/fragments/EVIDENCIA.md) ou corrija a evidência citada; python3 sdd/bin/report-lint.py <arquivo> mostra cada classe
+→ se você conferiu e quer gravar mesmo assim, só desta vez: git commit --no-verify
+  Agente de IA: não use --no-verify sem o OK explícito da pessoa.
+[exit=1]
+$ cd /tmp/sdd-aval/hook-report && git restore --staged sdd/reports/BUILD_REPORT_X.md && cp /Users/robertoduarte/rdd-worktrees/sdd-open-f8-aval/sdd/fixtures/evidencia/BUILD_REPORT_sem_avaliacao.md sdd/fixtures/evidencia/BUILD_REPORT_novo_fixture.md && mkdir -p sdd/templates/x && cp /Users/robertoduarte/rdd-worktrees/sdd-open-f8-aval/sdd/fixtures/evidencia/BUILD_REPORT_sem_avaliacao.md sdd/templates/x/BUILD_REPORT_T.md && git add sdd/fixtures/evidencia/BUILD_REPORT_novo_fixture.md sdd/templates/x/BUILD_REPORT_T.md && git commit -q -m report-fixture && echo PASSOU-fixture-e-template-pulados
+PASSOU-fixture-e-template-pulados
+[exit=0]
+$ cd /tmp/sdd-aval/hook-report && python3 -B sdd/bin/report-lint.py sdd/fixtures/evidencia/BUILD_REPORT_controle.md; echo lint-controle-rc=$?
+🛑 [evidência] AT-001: `true` sem evidência válida — `evidence/controle/AT-001.log` não existe
+🛑 [evidência] Veredito do avaliador `PASS` sem `AVALIACAO_controle_*.md` existente em sdd/reviews/ (no mesmo parágrafo do veredito)
+🛑 [avaliação ausente] não há `AVALIACAO_controle_<AAAAMMDD-HHMM>.md` em sdd/reviews/ (não vazio e não ignorado pelo git) nem linha sobre o avaliador. Saídas, nesta ordem: (1) rode o avaliador de contexto fresco (passo 5d da `sdd-build`); (2) `avaliador: N.A. (<motivo>)`, só com menos de 2 camadas — contagem impossível: `layers:` do sdd/config.yaml sem nenhum glob preenchido; (3) `avaliador: PENDENTE (<motivo>)`, se o build travou antes do avaliador
+RESULTADO: VERMELHO
+→ produza `evidence/controle/AT-nnn.log` (1ª linha `$ cmd`, output verbatim), cite `AVALIACAO_controle_<ts>.md`, ou `recibo: nome YYYY-MM-DD` (só gate manual-ux) — ou mantenha `false`.
+→ rode o avaliador e grave `sdd/reviews/AVALIACAO_controle_<AAAAMMDD-HHMM>.md`, ou escreva a linha `avaliador: N.A. (<motivo>)` / `avaliador: PENDENTE (<motivo>)` no relatório.
+lint-controle-rc=1
+[exit=0]
+$ cd /tmp/sdd-aval/hook-report && cp sdd/fixtures/evidencia/BUILD_REPORT_controle.md sdd/reports/BUILD_REPORT_X.md && git add sdd/reports/BUILD_REPORT_X.md && git commit -q -m report-controle; echo rc=$?
+
+sdd-open: commit recusado. Encontrei o que não pode entrar nesta versão:
+
+  🛑 [REPORT] sdd/reports/BUILD_REPORT_X.md não passa no report-lint:
+        🛑 [evidência] AT-001: `true` sem evidência válida — `evidence/controle/AT-001.log` fora de evidence/X/*.log — só evidência da própria feature vale
+        🛑 [evidência] Veredito do avaliador `PASS` sem `AVALIACAO_X_*.md` existente em sdd/reviews/ (no mesmo parágrafo do veredito)
+        🛑 [avaliação ausente] não há `AVALIACAO_X_<AAAAMMDD-HHMM>.md` em sdd/reviews/ (não vazio e não ignorado pelo git) nem linha sobre o avaliador. Saídas, nesta ordem: (1) rode o avaliador de contexto fresco (passo 5d da `sdd-build`); (2) `avaliador: N.A. (<motivo>)`, só com menos de 2 camadas — contagem impossível: `layers:` do sdd/config.yaml sem nenhum glob preenchido; (3) `avaliador: PENDENTE (<motivo>)`, se o build travou antes do avaliador
+
+Por que importa:
+  [REPORT] um relatório de build que não prova a evidência vira verde falso na fase Release
+
+RESULTADO: COMMIT RECUSADO
+→ [REPORT] acrescente a tabela de critérios e a linha do avaliador (sdd/templates/fragments/EVIDENCIA.md) ou corrija a evidência citada; python3 sdd/bin/report-lint.py <arquivo> mostra cada classe
+→ se você conferiu e quer gravar mesmo assim, só desta vez: git commit --no-verify
+  Agente de IA: não use --no-verify sem o OK explícito da pessoa.
+rc=1
+[exit=0]
+$ cd /tmp/sdd-aval/hook-report && git show :sdd/reports/BUILD_REPORT_X.md | python3 -B sdd/bin/report-lint.py --stdin sdd/reports/BUILD_REPORT_X.md; echo lint-stdin-rc=$?
+🛑 [evidência] AT-001: `true` sem evidência válida — `evidence/controle/AT-001.log` fora de evidence/X/*.log — só evidência da própria feature vale
+🛑 [evidência] Veredito do avaliador `PASS` sem `AVALIACAO_X_*.md` existente em sdd/reviews/ (no mesmo parágrafo do veredito)
+🛑 [avaliação ausente] não há `AVALIACAO_X_<AAAAMMDD-HHMM>.md` em sdd/reviews/ (não vazio e não ignorado pelo git) nem linha sobre o avaliador. Saídas, nesta ordem: (1) rode o avaliador de contexto fresco (passo 5d da `sdd-build`); (2) `avaliador: N.A. (<motivo>)`, só com menos de 2 camadas — contagem impossível: `layers:` do sdd/config.yaml sem nenhum glob preenchido; (3) `avaliador: PENDENTE (<motivo>)`, se o build travou antes do avaliador
+RESULTADO: VERMELHO
+→ produza `evidence/X/AT-nnn.log` (1ª linha `$ cmd`, output verbatim), cite `AVALIACAO_X_<ts>.md`, ou `recibo: nome YYYY-MM-DD` (só gate manual-ux) — ou mantenha `false`.
+→ rode o avaliador e grave `sdd/reviews/AVALIACAO_X_<AAAAMMDD-HHMM>.md`, ou escreva a linha `avaliador: N.A. (<motivo>)` / `avaliador: PENDENTE (<motivo>)` no relatório.
+lint-stdin-rc=1
+[exit=0]
+$ cd /tmp/sdd-aval/hook-report && cp /Users/robertoduarte/rdd-worktrees/sdd-open-f8-aval/sdd/fixtures/evidencia/BUILD_REPORT_sem_avaliacao.md sdd/reports/BUILD_REPORT_X.md && git add sdd/reports/BUILD_REPORT_X.md && cp sdd/fixtures/evidencia/BUILD_REPORT_controle.md sdd/reports/BUILD_REPORT_X.md && git commit -q -m report-staged-ruim-disco-bom
+
+sdd-open: commit recusado. Encontrei o que não pode entrar nesta versão:
+
+  🛑 [REPORT] sdd/reports/BUILD_REPORT_X.md não passa no report-lint:
+        🛑 [evidência] AT-001: `true` sem evidência válida — `evidence/sem_avaliacao/AT-001.log` fora de evidence/X/*.log — só evidência da própria feature vale
+        🛑 [avaliação ausente] não há `AVALIACAO_X_<AAAAMMDD-HHMM>.md` em sdd/reviews/ (não vazio e não ignorado pelo git) nem linha sobre o avaliador. Saídas, nesta ordem: (1) rode o avaliador de contexto fresco (passo 5d da `sdd-build`); (2) `avaliador: N.A. (<motivo>)`, só com menos de 2 camadas — contagem impossível: `layers:` do sdd/config.yaml sem nenhum glob preenchido; (3) `avaliador: PENDENTE (<motivo>)`, se o build travou antes do avaliador
+
+Por que importa:
+  [REPORT] um relatório de build que não prova a evidência vira verde falso na fase Release
+
+RESULTADO: COMMIT RECUSADO
+→ [REPORT] acrescente a tabela de critérios e a linha do avaliador (sdd/templates/fragments/EVIDENCIA.md) ou corrija a evidência citada; python3 sdd/bin/report-lint.py <arquivo> mostra cada classe
+→ se você conferiu e quer gravar mesmo assim, só desta vez: git commit --no-verify
+  Agente de IA: não use --no-verify sem o OK explícito da pessoa.
+[exit=1]
+$ cd /tmp/sdd-aval/hook-report && git add sdd/reports/BUILD_REPORT_X.md && cp /Users/robertoduarte/rdd-worktrees/sdd-open-f8-aval/sdd/fixtures/evidencia/BUILD_REPORT_sem_avaliacao.md sdd/reports/BUILD_REPORT_X.md && git commit -q -m report-staged-bom-disco-ruim; echo rc=$?
+
+sdd-open: commit recusado. Encontrei o que não pode entrar nesta versão:
+
+  🛑 [REPORT] sdd/reports/BUILD_REPORT_X.md não passa no report-lint:
+        🛑 [evidência] AT-001: `true` sem evidência válida — `evidence/controle/AT-001.log` fora de evidence/X/*.log — só evidência da própria feature vale
+        🛑 [evidência] Veredito do avaliador `PASS` sem `AVALIACAO_X_*.md` existente em sdd/reviews/ (no mesmo parágrafo do veredito)
+        🛑 [avaliação ausente] não há `AVALIACAO_X_<AAAAMMDD-HHMM>.md` em sdd/reviews/ (não vazio e não ignorado pelo git) nem linha sobre o avaliador. Saídas, nesta ordem: (1) rode o avaliador de contexto fresco (passo 5d da `sdd-build`); (2) `avaliador: N.A. (<motivo>)`, só com menos de 2 camadas — contagem impossível: `layers:` do sdd/config.yaml sem nenhum glob preenchido; (3) `avaliador: PENDENTE (<motivo>)`, se o build travou antes do avaliador
+
+Por que importa:
+  [REPORT] um relatório de build que não prova a evidência vira verde falso na fase Release
+
+RESULTADO: COMMIT RECUSADO
+→ [REPORT] acrescente a tabela de critérios e a linha do avaliador (sdd/templates/fragments/EVIDENCIA.md) ou corrija a evidência citada; python3 sdd/bin/report-lint.py <arquivo> mostra cada classe
+→ se você conferiu e quer gravar mesmo assim, só desta vez: git commit --no-verify
+  Agente de IA: não use --no-verify sem o OK explícito da pessoa.
+rc=1
+[exit=0]
+$ cd /tmp/sdd-aval/hook-report && git reset -q --soft HEAD~1; git restore --staged sdd/reports/BUILD_REPORT_X.md; cp /Users/robertoduarte/rdd-worktrees/sdd-open-f8-aval/sdd/fixtures/evidencia/BUILD_REPORT_sem_avaliacao.md sdd/reports/BUILD_REPORT_X.md && git add sdd/reports/BUILD_REPORT_X.md && mv sdd/bin/report-lint.py /tmp/sdd-aval/rl.py && git commit -q -m report-sem-lint && echo PASSOU-sem-lint
+⚠️  sdd-open: sdd/bin/report-lint.py ausente: sdd/reports/BUILD_REPORT_X.md não foi conferido — rode init (completa sdd/bin)
+PASSOU-sem-lint
+[exit=0]
+$ cd /tmp/sdd-aval/hook-report && mv /tmp/sdd-aval/rl.py sdd/bin/report-lint.py && git reset -q --soft HEAD~1 && PATH=/bin:/usr/sbin:/sbin git commit -q -m report-sem-python3 && echo PASSOU-sem-python3
+/private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f8-hooks/8e011512-3e64-4505-a0ff-235ac598d20c/scratchpad/h.sh: line 13: git: command not found
+[exit=127]

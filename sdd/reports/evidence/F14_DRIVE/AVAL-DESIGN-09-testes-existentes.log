@@ -1,0 +1,14 @@
+$ SDD_TEST_BASH=/bin/bash /usr/bin/python3 -B -m unittest discover -s tests -p "test_avaliador_guard.py"; echo "avaliador exit=$?"; SDD_TEST_BASH=/bin/bash /usr/bin/python3 -B -m unittest discover -s tests -p "test_verify_gate.py"; echo "verify exit=$?"
+...........
+----------------------------------------------------------------------
+Ran 11 tests in 3.745s
+
+OK
+avaliador exit=0
+.......................
+----------------------------------------------------------------------
+Ran 23 tests in 2.510s
+
+OK
+verify exit=0
+[exit=0]

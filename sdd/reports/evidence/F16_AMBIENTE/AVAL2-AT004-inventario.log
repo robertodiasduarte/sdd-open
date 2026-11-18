@@ -1,0 +1,26 @@
+$ bash /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f16-ambiente/7a19ff14-fc44-4226-880f-204bc93851d3/scratchpad/at4/sonda.sh /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f16-ambiente/7a19ff14-fc44-4226-880f-204bc93851d3/scratchpad   # AT-004, inventario.sh do HEAD 28caf3a (cópia de git archive); script abaixo
+--- caso ausente: rc=0, 0 s, linhas gh: 1 → gh: ausente
+--- caso ok: rc=0, 0 s, linhas gh: 1 → gh: ok
+--- caso deslogado: rc=0, 0 s, linhas gh: 1 → gh: deslogado
+--- caso lento: rc=0, 11 s, linhas gh: 1 → gh: sem resposta
+--- caso rede: rc=0, 0 s, linhas gh: 1 → gh: sem resposta
+--- bloco gh igual nas 2 cópias?
+IGUAIS (38 linhas)
+----- sonda.sh -----
+#!/bin/bash
+S="$1"; A="$S/at6/arq"; I="$A/.agents/skills/sdd-iniciar-repo/scripts/inventario.sh"; C="$A/.agents/skills/sdd-checar-ambiente/scripts/checar.sh"
+W="$(mktemp -d "$S/at4/w.XXXX")"; P="$W/proj"; mkdir -p "$P"; echo oi > "$P/a.txt"
+mkdir -p "$W/ok" "$W/des" "$W/lento" "$W/rede"
+printf '#!/bin/sh\nexit 0\n' > "$W/ok/gh"
+printf '#!/bin/sh\necho "You are not logged into any GitHub hosts." >&2; exit 1\n' > "$W/des/gh"
+printf '#!/bin/sh\nsleep 30\n' > "$W/lento/gh"
+printf '#!/bin/sh\necho "error connecting to api.github.com" >&2; exit 1\n' > "$W/rede/gh"
+chmod +x "$W"/*/gh
+for c in "ausente:/usr/bin:/bin" "ok:$W/ok:/usr/bin:/bin" "deslogado:$W/des:/usr/bin:/bin" "lento:$W/lento:/usr/bin:/bin" "rede:$W/rede:/usr/bin:/bin"; do
+  n="${c%%:*}"; p="${c#*:}"; t0=$SECONDS
+  out="$(cd "$P" && env PATH="$p" bash "$I" 2>&1)"; rc=$?
+  echo "--- caso $n: rc=$rc, $((SECONDS-t0)) s, linhas gh: $(printf '%s\n' "$out" | grep -c '^gh:') → $(printf '%s\n' "$out" | grep '^gh:')"
+done
+echo "--- bloco gh igual nas 2 cópias?"
+x() { sed -n '/^# ── gh e instalação/,/^# ── fim do gh/p' "$1"; }
+diff <(x "$C") <(x "$I") && echo "IGUAIS ($(x "$C" | wc -l | tr -d ' ') linhas)"

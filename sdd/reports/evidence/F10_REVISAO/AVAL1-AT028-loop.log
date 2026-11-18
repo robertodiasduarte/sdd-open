@@ -1,0 +1,10 @@
+$ bash /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f10-revisao/bd420f6e-558d-4962-a0c9-40cdfc2cbd27/scratchpad/p/a8.sh AT028
+r2-indisponível, ledger vazio (esperado 20):  ESTADO: BLOQUEADO motivo: D3: 2º revisor acionado e indisponível (indisponível, exit 67) — restaurar a engine ou dispensar o 2º revisor nesta rodada no ledger RESULTADO: BLOQUEADO [rc=20]
+r2-indisponível + dispensa rodada=1 (decide no resto): ESTADO: PRONTO motivo: 2º revisor dispensado no ledger (rodada 1) RESULTADO: PRONTO [rc=0]
+r2-indisponível + dispensa rodada=2 numa rodada 1 (esperado 20): ESTADO: PRONTO motivo: 2º revisor dispensado no ledger (rodada 1) RESULTADO: PRONTO [rc=0]
+   com rodada=2 no ledger: ESTADO: BLOQUEADO motivo: D3: 2º revisor acionado e indisponível (indisponível, exit 67) — restaurar a engine ou dispensar o 2º revisor nesta rodada no ledger RESULTADO: BLOQUEADO [rc=20]
+r2-falhou 68 (esperado 10): ESTADO: CONTINUAR motivo: 2º revisor acionado e falhou (engine-b, exit 68) — refazer a review RESULTADO: CONTINUAR [rc=10]
+r2 exit 65 (esperado 20): ESTADO: BLOQUEADO motivo: D3: 2º revisor acionado e indisponível (engine-b, exit 65) — restaurar a engine ou dispensar o 2º revisor nesta rodada no ledger RESULTADO: BLOQUEADO [rc=20]
+r2 exit 66 (esperado 20): ESTADO: BLOQUEADO motivo: D3: 2º revisor acionado e indisponível (engine-b, exit 66) — restaurar a engine ou dispensar o 2º revisor nesta rodada no ledger RESULTADO: BLOQUEADO [rc=20]
+r2 sem revisor2_exit (esperado 64): RESULTADO: ENTRADA ILEGÍVEL [rc=64]
+[exit=0]

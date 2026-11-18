@@ -1,0 +1,19 @@
+$ cd /Users/robertoduarte/rdd-worktrees/sdd-open-f5-conhecimento && /usr/bin/python3 -B /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.x7MtT861ps/aval/sdd/bin/kb-dominios.py /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.x7MtT861ps/aval/sdd/templates/DEFINE_TEMPLATE.md
+🛑 /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.x7MtT861ps/aval/sdd/templates/DEFINE_TEMPLATE.md: KB Domains: '{bases de conhecimento do projeto a consultar (nomes de pasta em sdd/kb/, de ls sdd/kb/), ou nenhum explícito}' não é lista de domínios
+RESULTADO: VERMELHO
+→ corrija o KB Domains com nomes de 'ls sdd/kb/' ou escreva nenhum, e rode de novo
+EXIT=1
+$ cd /Users/robertoduarte/rdd-worktrees/sdd-open-f5-conhecimento && /usr/bin/python3 -B /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.x7MtT861ps/aval/sdd/bin/kb-dominios.py /Users/robertoduarte/rdd-worktrees/sdd-open-f5-conhecimento/sdd/features/DEFINE_F5_CONHECIMENTO.md
+✅ /Users/robertoduarte/rdd-worktrees/sdd-open-f5-conhecimento/sdd/features/DEFINE_F5_CONHECIMENTO.md: KB Domains válido (nenhum)
+RESULTADO: VERDE
+EXIT=0
+$ cd /Users/robertoduarte/rdd-worktrees/sdd-open-f5-conhecimento && /usr/bin/python3 -B /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.x7MtT861ps/aval/sdd/bin/kb-dominios.py /Users/robertoduarte/rdd-worktrees/sdd-open-f5-conhecimento/sdd/features/DEFINE_F4_CONVERSA.md
+🛑 /Users/robertoduarte/rdd-worktrees/sdd-open-f5-conhecimento/sdd/features/DEFINE_F4_CONVERSA.md: KB Domains: 'N/A' não é lista de domínios
+RESULTADO: VERMELHO
+→ corrija o KB Domains com nomes de 'ls sdd/kb/' ou escreva nenhum, e rode de novo
+EXIT=1
+$ cd /Users/robertoduarte/rdd-worktrees/sdd-open-f5-conhecimento && /usr/bin/python3 -B /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.x7MtT861ps/aval/sdd/bin/kb-dominios.py /Users/robertoduarte/rdd-worktrees/sdd-open-f5-conhecimento/sdd/features/DEFINE_F1_MANUTENCAO.md
+🛑 /Users/robertoduarte/rdd-worktrees/sdd-open-f5-conhecimento/sdd/features/DEFINE_F1_MANUTENCAO.md: KB Domains: 'N/A' não é lista de domínios
+RESULTADO: VERMELHO
+→ corrija o KB Domains com nomes de 'ls sdd/kb/' ou escreva nenhum, e rode de novo
+EXIT=1

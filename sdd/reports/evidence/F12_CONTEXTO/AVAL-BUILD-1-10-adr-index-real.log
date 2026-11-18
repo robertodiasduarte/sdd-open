@@ -1,0 +1,40 @@
+$ bash sdd/bin/docs-extract-decisions.sh --out /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.LJMQUnDuje/adr/index.md && grep -c '^| `' /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.LJMQUnDuje/adr/index.md && grep -E '^\| `F12_CONTEXTO#' /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.LJMQUnDuje/adr/index.md && sed -n '/^## Órfãos/,$p' /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.LJMQUnDuje/adr/index.md
+docs-extract-decisions: lidos=12 extraidos=12 orfaos=0 decisoes=106 corrigidas=9
+RESULTADO: VERDE
+→ índice gravado em /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.LJMQUnDuje/adr/index.md.
+106
+| `F12_CONTEXTO#D1` | Porte fiel com raízes e caminhos genéricos | F12_CONTEXTO | 2026-11-03 | Accepted | ✓ | [DESIGN_F12_CONTEXTO.md:79](../../sdd/features/DESIGN_F12_CONTEXTO.md) |
+| `F12_CONTEXTO#D2` | Seções genéricas do CONTEXTO e formato do mapa de domínios | F12_CONTEXTO | 2026-11-03 | Accepted | ✓ | [DESIGN_F12_CONTEXTO.md:95](../../sdd/features/DESIGN_F12_CONTEXTO.md) |
+| `F12_CONTEXTO#D3` | `--sugerir` e `--validade` sem as heurísticas da RDD | F12_CONTEXTO | 2026-11-03 | Accepted | ✓ | [DESIGN_F12_CONTEXTO.md:110](../../sdd/features/DESIGN_F12_CONTEXTO.md) |
+| `F12_CONTEXTO#D4` | Uma fronteira sha256 para os dois agentes frescos | F12_CONTEXTO | 2026-11-03 | Accepted | ✓ | [DESIGN_F12_CONTEXTO.md:129](../../sdd/features/DESIGN_F12_CONTEXTO.md) |
+| `F12_CONTEXTO#D5` | Passo 1.5 e passo 11 no `sdd-define` | F12_CONTEXTO | 2026-11-03 | Accepted | ✓ | [DESIGN_F12_CONTEXTO.md:144](../../sdd/features/DESIGN_F12_CONTEXTO.md) |
+| `F12_CONTEXTO#D6` | Linha `Governança` e o 2º motivo do exit 5 | F12_CONTEXTO | 2026-11-03 | Accepted | ✓ | [DESIGN_F12_CONTEXTO.md:159](../../sdd/features/DESIGN_F12_CONTEXTO.md) |
+| `F12_CONTEXTO#D7` | Texto da parada por papel no `despachar` | F12_CONTEXTO | 2026-11-03 | Accepted | ✓ | [DESIGN_F12_CONTEXTO.md:174](../../sdd/features/DESIGN_F12_CONTEXTO.md) |
+| `F12_CONTEXTO#D8` | Briefs e blocos de retorno | F12_CONTEXTO | 2026-11-03 | Accepted | ✓ | [DESIGN_F12_CONTEXTO.md:189](../../sdd/features/DESIGN_F12_CONTEXTO.md) |
+| `F12_CONTEXTO#D9` | `patterns-lint.sh` sem bomba-relógio | F12_CONTEXTO | 2026-11-03 | Accepted | ✓ | [DESIGN_F12_CONTEXTO.md:207](../../sdd/features/DESIGN_F12_CONTEXTO.md) |
+| `F12_CONTEXTO#D10` | Extrator de ADR num arquivo só, sobre o disco | F12_CONTEXTO | 2026-11-03 | Accepted | ✓ | [DESIGN_F12_CONTEXTO.md:222](../../sdd/features/DESIGN_F12_CONTEXTO.md) |
+| `F12_CONTEXTO#D11` | `sdd-design` — C2, C3, C4, C10 e C11 por texto | F12_CONTEXTO | 2026-11-03 | Accepted | ✓ | [DESIGN_F12_CONTEXTO.md:237](../../sdd/features/DESIGN_F12_CONTEXTO.md) |
+| `F12_CONTEXTO#D12` | `sdd-governanca` com delta mínimo | F12_CONTEXTO | 2026-11-03 | Accepted | ✓ | [DESIGN_F12_CONTEXTO.md:252](../../sdd/features/DESIGN_F12_CONTEXTO.md) |
+| `F12_CONTEXTO#D13` | `WORKFLOW_CONTRACTS.yaml` num subconjunto que a stdlib lê | F12_CONTEXTO | 2026-11-03 | Accepted | ✓ | [DESIGN_F12_CONTEXTO.md:267](../../sdd/features/DESIGN_F12_CONTEXTO.md) |
+| `F12_CONTEXTO#D14` | `init`, release e MANIFEST | F12_CONTEXTO | 2026-11-03 | Accepted | ✓ | [DESIGN_F12_CONTEXTO.md:282](../../sdd/features/DESIGN_F12_CONTEXTO.md) |
+| `F12_CONTEXTO#D15` | Versões e contagens | F12_CONTEXTO | 2026-11-03 | Accepted | ✓ | [DESIGN_F12_CONTEXTO.md:297](../../sdd/features/DESIGN_F12_CONTEXTO.md) |
+| `F12_CONTEXTO#D16` | Docs | F12_CONTEXTO | 2026-11-03 | Accepted | ✓ | [DESIGN_F12_CONTEXTO.md:312](../../sdd/features/DESIGN_F12_CONTEXTO.md) |
+| `F12_CONTEXTO#D17` | Provas | F12_CONTEXTO | 2026-11-03 | Accepted | ✓ | [DESIGN_F12_CONTEXTO.md:327](../../sdd/features/DESIGN_F12_CONTEXTO.md) |
+| `F12_CONTEXTO#D18` | Validador executável do bloco `<<<GOVERNANCA` | F12_CONTEXTO | 2026-11-03 | Accepted | ✓ | [DESIGN_F12_CONTEXTO.md:347](../../sdd/features/DESIGN_F12_CONTEXTO.md) |
+## Órfãos
+
+DESIGNs lidos em que **nenhum** bloco da lista fechada casou. Não somem em silêncio: cada um está
+aqui com o motivo. Um DESIGN novo deve usar `### Decision N: <nome>` sob `## Key Decisions`.
+
+_Nenhum._
+
+## Avisos de Metadata
+
+DESIGNs **extraídos** cuja tabela Metadata não tem `**Feature**` ou `**Date**`; a coluna Feature usa o STEM.
+
+_Nenhum._
+
+## Conservação
+
+extraídos (12) + órfãos (0) = lidos (12) ✓ · decisões = 106 · avisos de Metadata = 0
+[exit=0]

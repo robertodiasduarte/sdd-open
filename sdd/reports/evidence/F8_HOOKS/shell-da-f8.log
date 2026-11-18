@@ -1,0 +1,5 @@
+$ find sdd/reports/evidence/F8_HOOKS -name "*.log" -not -name "AVAL*" -exec bash sdd/bin/gate-shell-evidencia.sh {} +
+✅ 22 log(s) sem exit de formatador.
+RESULTADO: VERDE
+→ siga para o próximo passo.
+[exit=0]

@@ -1,0 +1,9 @@
+{"achado": "R1@claude", "veredito": "AGREE", "justificativa": "A prova de origem ignora arquivos desconhecidos, permitindo que conteúdo forjado entre no staging e viole a S18."}
+{"achado": "R2@claude", "veredito": "AGREE", "justificativa": "A ausência de workflows retorna NAO_PUBLICA em vez de NAO_SEI, contrariando a premissa A-004 do DEFINE."}
+{"achado": "R3@claude", "veredito": "DISAGREE_EVIDENCE", "justificativa": "A Clarification A-001 define que fp= não inclui o ID proposto (LM-nnn), logo a mudança de ID não altera a impressão."}
+{"achado": "R4@claude", "veredito": "AGREE", "justificativa": "git branch -d falha em branches não totalmente integradas, o que ocorre já que a release aterrissa por cherry-pick."}
+{"achado": "R5@claude", "veredito": "DISAGREE_EVIDENCE", "justificativa": "O ramo elif recusada(pe) em remove_falhas executa explicitamente os.remove(pe + '.recusada'), apagando a marca."}
+{"achado": "R1@codex", "veredito": "AGREE", "justificativa": "git diff --quiet compara worktree com index, permitindo que mudanças staged sejam commitadas sem a pergunta D3."}
+{"achado": "R2@codex", "veredito": "AGREE", "justificativa": "O registrar subtrai impressões da entrada anterior sem considerar ausentes.txt, omitindo impressões válidas da entrada nova."}
+{"achado": "R3@codex", "veredito": "AGREE", "justificativa": "Os arquivos temporários usam apenas o timestamp, causando colisão se duas features tiverem entradas no mesmo segundo."}
+{"achado": "R4@codex", "veredito": "DISAGREE_CONCERN", "justificativa": "O parser é intencionalmente simples (stdlib); a limitação com listas é uma característica do parser de linhas, não um defeito de validação."}

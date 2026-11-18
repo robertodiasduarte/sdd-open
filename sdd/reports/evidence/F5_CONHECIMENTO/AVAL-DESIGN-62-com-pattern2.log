@@ -1,0 +1,5 @@
+$ cd <mktemp> && /usr/bin/python3 -B -m unittest tests/test_sdd_kb_normativo.py   (62 do starter contra validate_kb.py + Pattern 2)
+Ran 62 tests in 2.163s
+
+OK
+Python 3.9.6

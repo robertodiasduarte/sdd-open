@@ -1,0 +1,194 @@
+test_avaliacao_em_outro_paragrafo_nao_conta (test_report_lint_evidencia.Veredito.test_avaliacao_em_outro_paragrafo_nao_conta) ... ok
+
+test_rotulos_em_negrito_e_em_tabela_sem_c1 (test_report_lint_evidencia.Veredito.test_rotulos_em_negrito_e_em_tabela_sem_c1) ... ok
+
+test_rotulos_sem_c1 (test_report_lint_evidencia.Veredito.test_rotulos_sem_c1) ... 
+
+  test_rotulos_sem_c1 (test_report_lint_evidencia.Veredito.test_rotulos_sem_c1) (texto='Veredito do avaliador: PASS � ciclos: 1\n') ... FAIL
+
+  test_rotulos_sem_c1 (test_report_lint_evidencia.Veredito.test_rotulos_sem_c1) (texto='## Veredito do avaliador\n\n**PASS**\n') ... FAIL
+
+test_veredito_citado_em_bloco_cercado_nao_vira_exigencia (test_report_lint_evidencia.Veredito.test_veredito_citado_em_bloco_cercado_nao_vira_exigencia) ... FAIL
+
+test_veredito_em_tabela (test_report_lint_evidencia.Veredito.test_veredito_em_tabela) ... FAIL
+
+test_veredito_em_titulo_com_avaliacao_no_paragrafo_seguinte_passa (test_report_lint_evidencia.Veredito.test_veredito_em_titulo_com_avaliacao_no_paragrafo_seguinte_passa) ... FAIL
+
+test_veredito_em_titulo_sem_avaliacao_reprova (test_report_lint_evidencia.Veredito.test_veredito_em_titulo_sem_avaliacao_reprova) ... FAIL
+
+
+
+======================================================================
+
+FAIL: test_rotulos_sem_c1 (test_report_lint_evidencia.Veredito.test_rotulos_sem_c1) (texto='Veredito do avaliador: PASS � ciclos: 1\n')
+
+----------------------------------------------------------------------
+
+Traceback (most recent call last):
+
+  File "D:\a\sdd-open\sdd-open\tests\test_report_lint_evidencia.py", line 254, in test_rotulos_sem_c1
+
+    self.assertIn("Veredito do avaliador `PASS`", out)
+
+AssertionError: 'Veredito do avaliador `PASS`' not found in 'The system cannot find the path specified.\nTraceback (most recent call last):\n  File "C:\\Users\\runneradmin\\AppData\\Local\\Temp\\sdd-open-ydufff2w\\repo\\sdd\\bin\\report-lint.py", line 625, in <module>\n    sys.exit(main(sys.argv))\n             ^^^^^^^^^^^^^^\n  File "C:\\Users\\runneradmin\\AppData\\Local\\Temp\\sdd-open-ydufff2w\\repo\\sdd\\bin\\report-lint.py", line 604, in main\n    imprimir_avisos(warnings)\n  File "C:\\Users\\runneradmin\\AppData\\Local\\Temp\\sdd-open-ydufff2w\\repo\\sdd\\bin\\report-lint.py", line 552, in imprimir_avisos\n    print(f"\\u26a0\\ufe0f  {w}")\n  File "C:\\hostedtoolcache\\windows\\Python\\3.12.10\\x64\\Lib\\encodings\\cp1252.py", line 19, in encode\n    return codecs.charmap_encode(input,self.errors,encoding_table)[0]\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nUnicodeEncodeError: \'charmap\' codec can\'t encode characters in position 0-1: character maps to <undefined>\n'
+
+
+
+======================================================================
+
+FAIL: test_rotulos_sem_c1 (test_report_lint_evidencia.Veredito.test_rotulos_sem_c1) (texto='## Veredito do avaliador\n\n**PASS**\n')
+
+----------------------------------------------------------------------
+
+Traceback (most recent call last):
+
+  File "D:\a\sdd-open\sdd-open\tests\test_report_lint_evidencia.py", line 254, in test_rotulos_sem_c1
+
+    self.assertIn("Veredito do avaliador `PASS`", out)
+
+AssertionError: 'Veredito do avaliador `PASS`' not found in 'The system cannot find the path specified.\nTraceback (most recent call last):\n  File "C:\\Users\\runneradmin\\AppData\\Local\\Temp\\sdd-open-ydufff2w\\repo\\sdd\\bin\\report-lint.py", line 625, in <module>\n    sys.exit(main(sys.argv))\n             ^^^^^^^^^^^^^^\n  File "C:\\Users\\runneradmin\\AppData\\Local\\Temp\\sdd-open-ydufff2w\\repo\\sdd\\bin\\report-lint.py", line 604, in main\n    imprimir_avisos(warnings)\n  File "C:\\Users\\runneradmin\\AppData\\Local\\Temp\\sdd-open-ydufff2w\\repo\\sdd\\bin\\report-lint.py", line 552, in imprimir_avisos\n    print(f"\\u26a0\\ufe0f  {w}")\n  File "C:\\hostedtoolcache\\windows\\Python\\3.12.10\\x64\\Lib\\encodings\\cp1252.py", line 19, in encode\n    return codecs.charmap_encode(input,self.errors,encoding_table)[0]\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nUnicodeEncodeError: \'charmap\' codec can\'t encode characters in position 0-1: character maps to <undefined>\n'
+
+
+
+======================================================================
+
+FAIL: test_veredito_citado_em_bloco_cercado_nao_vira_exigencia (test_report_lint_evidencia.Veredito.test_veredito_citado_em_bloco_cercado_nao_vira_exigencia)
+
+----------------------------------------------------------------------
+
+Traceback (most recent call last):
+
+  File "D:\a\sdd-open\sdd-open\tests\test_report_lint_evidencia.py", line 264, in test_veredito_citado_em_bloco_cercado_nao_vira_exigencia
+
+    self.assertEqual(rc, 0, out)
+
+AssertionError: 1 != 0 : The system cannot find the path specified.
+
+Traceback (most recent call last):
+
+  File "C:\Users\runneradmin\AppData\Local\Temp\sdd-open-tz9eyx6i\repo\sdd\bin\report-lint.py", line 625, in <module>
+
+    sys.exit(main(sys.argv))
+
+             ^^^^^^^^^^^^^^
+
+  File "C:\Users\runneradmin\AppData\Local\Temp\sdd-open-tz9eyx6i\repo\sdd\bin\report-lint.py", line 604, in main
+
+    imprimir_avisos(warnings)
+
+  File "C:\Users\runneradmin\AppData\Local\Temp\sdd-open-tz9eyx6i\repo\sdd\bin\report-lint.py", line 552, in imprimir_avisos
+
+    print(f"\u26a0\ufe0f  {w}")
+
+  File "C:\hostedtoolcache\windows\Python\3.12.10\x64\Lib\encodings\cp1252.py", line 19, in encode
+
+    return codecs.charmap_encode(input,self.errors,encoding_table)[0]
+
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+UnicodeEncodeError: 'charmap' codec can't encode characters in position 0-1: character maps to <undefined>
+
+
+
+
+
+======================================================================
+
+FAIL: test_veredito_em_tabela (test_report_lint_evidencia.Veredito.test_veredito_em_tabela)
+
+----------------------------------------------------------------------
+
+Traceback (most recent call last):
+
+  File "D:\a\sdd-open\sdd-open\tests\test_report_lint_evidencia.py", line 238, in test_veredito_em_tabela
+
+    self.assertEqual(rc, 0, out)
+
+AssertionError: 1 != 0 : The system cannot find the path specified.
+
+Traceback (most recent call last):
+
+  File "C:\Users\runneradmin\AppData\Local\Temp\sdd-open-0wlmzrkl\repo\sdd\bin\report-lint.py", line 625, in <module>
+
+    sys.exit(main(sys.argv))
+
+             ^^^^^^^^^^^^^^
+
+  File "C:\Users\runneradmin\AppData\Local\Temp\sdd-open-0wlmzrkl\repo\sdd\bin\report-lint.py", line 615, in main
+
+    print(f"\u2705 {path}: todo `true` tem evid\ufffdncia abr\ufffdvel e a avalia\ufffd\ufffdo est\ufffd provada ou declarada")
+
+  File "C:\hostedtoolcache\windows\Python\3.12.10\x64\Lib\encodings\cp1252.py", line 19, in encode
+
+    return codecs.charmap_encode(input,self.errors,encoding_table)[0]
+
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+UnicodeEncodeError: 'charmap' codec can't encode character '\u2705' in position 0: character maps to <undefined>
+
+
+
+
+
+======================================================================
+
+FAIL: test_veredito_em_titulo_com_avaliacao_no_paragrafo_seguinte_passa (test_report_lint_evidencia.Veredito.test_veredito_em_titulo_com_avaliacao_no_paragrafo_seguinte_passa)
+
+----------------------------------------------------------------------
+
+Traceback (most recent call last):
+
+  File "D:\a\sdd-open\sdd-open\tests\test_report_lint_evidencia.py", line 227, in test_veredito_em_titulo_com_avaliacao_no_paragrafo_seguinte_passa
+
+    self.assertEqual(rc, 0, out)
+
+AssertionError: 1 != 0 : The system cannot find the path specified.
+
+Traceback (most recent call last):
+
+  File "C:\Users\runneradmin\AppData\Local\Temp\sdd-open-sfjzlyso\repo\sdd\bin\report-lint.py", line 625, in <module>
+
+    sys.exit(main(sys.argv))
+
+             ^^^^^^^^^^^^^^
+
+  File "C:\Users\runneradmin\AppData\Local\Temp\sdd-open-sfjzlyso\repo\sdd\bin\report-lint.py", line 615, in main
+
+    print(f"\u2705 {path}: todo `true` tem evid\ufffdncia abr\ufffdvel e a avalia\ufffd\ufffdo est\ufffd provada ou declarada")
+
+  File "C:\hostedtoolcache\windows\Python\3.12.10\x64\Lib\encodings\cp1252.py", line 19, in encode
+
+    return codecs.charmap_encode(input,self.errors,encoding_table)[0]
+
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+UnicodeEncodeError: 'charmap' codec can't encode character '\u2705' in position 0: character maps to <undefined>
+
+
+
+
+
+======================================================================
+
+FAIL: test_veredito_em_titulo_sem_avaliacao_reprova (test_report_lint_evidencia.Veredito.test_veredito_em_titulo_sem_avaliacao_reprova)
+
+----------------------------------------------------------------------
+
+Traceback (most recent call last):
+
+  File "D:\a\sdd-open\sdd-open\tests\test_report_lint_evidencia.py", line 222, in test_veredito_em_titulo_sem_avaliacao_reprova
+
+    self.assertIn("Veredito do avaliador `PASS`", out)
+
+AssertionError: 'Veredito do avaliador `PASS`' not found in 'The system cannot find the path specified.\nTraceback (most recent call last):\n  File "C:\\Users\\runneradmin\\AppData\\Local\\Temp\\sdd-open-2b74yvp9\\repo\\sdd\\bin\\report-lint.py", line 625, in <module>\n    sys.exit(main(sys.argv))\n             ^^^^^^^^^^^^^^\n  File "C:\\Users\\runneradmin\\AppData\\Local\\Temp\\sdd-open-2b74yvp9\\repo\\sdd\\bin\\report-lint.py", line 604, in main\n    imprimir_avisos(warnings)\n  File "C:\\Users\\runneradmin\\AppData\\Local\\Temp\\sdd-open-2b74yvp9\\repo\\sdd\\bin\\report-lint.py", line 552, in imprimir_avisos\n    print(f"\\u26a0\\ufe0f  {w}")\n  File "C:\\hostedtoolcache\\windows\\Python\\3.12.10\\x64\\Lib\\encodings\\cp1252.py", line 19, in encode\n    return codecs.charmap_encode(input,self.errors,encoding_table)[0]\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nUnicodeEncodeError: \'charmap\' codec can\'t encode characters in position 0-1: character maps to <undefined>\n'
+
+
+
+----------------------------------------------------------------------
+
+Ran 7 tests in 0.751s
+
+
+
+FAILED (failures=6)
+

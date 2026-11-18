@@ -1,0 +1,8 @@
+$ cd /Users/robertoduarte/rdd-worktrees/sdd-open-f16w-windows && P=.agents/skills/sdd-engenharia-reversa-saas/scripts/validate_reverse.py; PYTHONIOENCODING=cp1252 /usr/bin/python3 $P /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f16w-windows/b56e801b-0f18-49ee-b51c-5b9188b29c23/scratchpad/rev.md > /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f16w-windows/b56e801b-0f18-49ee-b51c-5b9188b29c23/scratchpad/rev.out; echo rc=$?; /usr/bin/python3 -c 'import sys; b=open(sys.argv[1],"rb").read(); print("bytes nao-ASCII:", sorted(set(hex(x) for x in b if x>127))); print("decodifica como UTF-8:", end=" "); 
+try:
+    b.decode("utf-8"); print("sim")
+except UnicodeDecodeError as e: print("NAO -", e)' /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f16w-windows/b56e801b-0f18-49ee-b51c-5b9188b29c23/scratchpad/rev.out; grep -o 'SECAO_AUSENTE_OU_DUPLICADA:Invent[^"]*' /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f16w-windows/b56e801b-0f18-49ee-b51c-5b9188b29c23/scratchpad/rev.out | head -1 | od -c | head -2; echo "[rc=$?]"
+rc=2
+bytes nao-ASCII: ['0xe1', '0xe3', '0xe7', '0xea', '0xf3', '0xf5']
+decodifica como UTF-8: NAO - 'utf-8' codec can't decode byte 0xe7 in position 478: invalid continuation byte
+[rc=0]

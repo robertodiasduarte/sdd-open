@@ -1,0 +1,22 @@
+$ bash /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f16w-windows/fd210694-ded6-4d95-a500-52e0521f4ae8/scratchpad/sabot.sh
+### S1: matar_arvore so mata o filho (sem killpg)
+0
+Ran 1 test in 3.143s
+
+OK
+### S2: corta sem o ramo do taskkill (sempre kill de grupo)
+1
+Ran 3 tests in 0.669s
+
+FAILED (errors=1)
+### S3: rc_do_vigia devolve sempre o rc cru
+1
+Ran 3 tests in 0.944s
+
+FAILED (failures=1)
+### S4: inventario.sh diverge do checar.sh no bloco do gh (corta sem taskkill)
+1
+Ran 13 tests in 0.004s
+
+FAILED (failures=1)
+[exit=0]

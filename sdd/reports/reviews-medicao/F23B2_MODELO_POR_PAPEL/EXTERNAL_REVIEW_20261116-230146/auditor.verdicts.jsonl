@@ -1,0 +1,8 @@
+{"achado": "R1", "veredito": "DISAGREE_CONCERN", "justificativa": "O caminho é reutilizado em sdd/bin/papel-serie.sh:347, mas faltam ler_sessoes() e os leitores para confirmar a inclusão dos registros antigos na refeita."}
+{"achado": "R2", "veredito": "AGREE", "justificativa": "sdd/bin/papel-medir.sh:314 verifica estado sem conferir rc, permitindo aprovar execução malsucedida contra o DESIGN."}
+{"achado": "R3", "veredito": "AGREE", "justificativa": "sdd/bin/papel-serie.sh:385 grava inicio.txt antes do snapshot, cuja falha pode gerar uma interrupção com custo n/d sem chamada ao agente."}
+{"achado": "R4", "veredito": "DISAGREE_CONCERN", "justificativa": "A chamada em .agents/skills/sdd-build/references/contexto-fresco.md:39 usa papel-*, mas falta a implementação de marca-fase.sh para verificar sua aceitação."}
+{"achado": "R5", "veredito": "AGREE", "justificativa": "sdd/bin/papel-serie.sh:321 recupera somente interrupções da série atual, deixando gasto de outra série fora do teto compartilhado; a consequência merece MED."}
+{"achado": "R6", "veredito": "AGREE", "justificativa": "sdd/bin/papel-serie.sh:447 transforma qualquer retorno não zero do medidor em referência fora da meta, inclusive parcial e erro de uso."}
+{"achado": "R7", "veredito": "AGREE", "justificativa": "sdd/bin/papel-serie.sh:226 remove aspas externas sem decodificar escapes YAML, entregando aspas literais ao comando Bash."}
+{"achado": "N1", "veredito": "NOVO", "severidade": "HIGH", "arquivo": "sdd/bin/papel-medir.sh", "linha": 272, "resumo": "Gabarito ausente ou ilegível vira veredito None e zero ATs, permitindo que avaliações vazias passem e um candidato seja escolhido sem prova de qualidade."}

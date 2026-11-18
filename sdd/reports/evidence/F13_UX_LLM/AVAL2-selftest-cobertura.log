@@ -1,0 +1,27 @@
+$ /usr/bin/python3 -B /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f13-ux-llm/78ae1e97-e8f5-4e7a-aec5-ff37409eac82/scratchpad/selftest.py
+CAIU      rc=2 nome: *.test.*
+CAIU      rc=2 nome: *.spec.*
+CAIU      rc=2 nome: *_test.*
+CAIU      rc=2 nome: *_spec.*
+CAIU      rc=2 nome: test_*
+CAIU      rc=2 nome: *Test.*
+SOBREVIVE rc=0 nome: *Tests.*
+CAIU      rc=2 pasta: tests
+CAIU      rc=2 pasta: test
+CAIU      rc=2 pasta: spec
+CAIU      rc=2 pasta: __tests__
+CAIU      rc=2 sinal: messages.create
+CAIU      rc=2 sinal: chat.completions
+CAIU      rc=2 sinal: responses.create
+CAIU      rc=2 sinal: generateContent
+SOBREVIVE rc=0 sinal: generate_content
+CAIU      rc=2 sinal: role
+CAIU      rc=2 sinal: nome com prompt
+CAIU      rc=2 exclusão .md
+CAIU      rc=2 64: config ilegível
+SOBREVIVE rc=0 64: arquivo ilegível
+CAIU      rc=2 64: nada na entrada
+CAIU      rc=2 64: pasta com --conteudo
+CAIU      rc=2 64: grep 2 vira não achei
+SOBREVIVE rc=0 64: terminal (só em tests/, por contrato)
+[exit=0]

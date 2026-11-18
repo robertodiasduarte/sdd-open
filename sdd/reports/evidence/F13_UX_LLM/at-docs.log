@@ -1,0 +1,7 @@
+$ SDD_TEST_BASH=/bin/bash /usr/bin/python3 -B -m unittest discover -s tests -p 'test_docs.py'
+....................
+----------------------------------------------------------------------
+Ran 20 tests in 0.037s
+
+OK
+[exit=0]

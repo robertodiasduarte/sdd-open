@@ -1,0 +1,23 @@
+$ bash sdd/reports/evidence/F14_DRIVE/r1-repro.sh
+▶ Verify Gate [test]: ferramenta-que-nao-existe --testa
+   │ bash: ferramenta-que-nao-existe: command not found
+⚠️  ferramenta ausente ao rodar o gate (rc=127) — INCONCLUSIVO, não trava por falta de tool.
+RESULTADO: INCONCLUSIVO
+→ instale a ferramenta ausente ou rode onde ela exista; com --strict isto conta como falha.
+[verify-gate sem --strict: exit=3]
+▶ Verify Gate [test]: ferramenta-que-nao-existe --testa
+   │ bash: ferramenta-que-nao-existe: command not found
+⚠️  ferramenta ausente ao rodar o gate (rc=127) — INCONCLUSIVO, não trava por falta de tool.
+RESULTADO: INCONCLUSIVO
+→ instale a ferramenta ausente ou rode onde ela exista; com --strict isto conta como falha.
+[verify-gate --strict: exit=1]
+▶ rodando o teste final; isso pode levar alguns minutos.
+motivo: gate-inconclusivo
+O teste final não chegou ao fim: isso não é vermelho e não gastou rodada.
+O teste final saiu 3 · log: sdd/reports/evidence/F/DRIVE-gate-r1.log
+RESULTADO: PARADA
+→ instale o que faltou (veja o log) ou rode onde a ferramenta exista, e use --resume.
+[drive verificar: exit=20]
+→ instale a ferramenta ausente ou rode onde ela exista; com --strict isto conta como falha.
+[exit=3]
+[exit=0]

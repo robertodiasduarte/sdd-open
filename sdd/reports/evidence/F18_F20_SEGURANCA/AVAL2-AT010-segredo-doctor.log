@@ -1,0 +1,36 @@
+$ cat /tmp/aval2-f18.hrKa/probes/at010.sh; bash /tmp/aval2-f18.hrKa/probes/at010.sh
+PKG=/Users/robertoduarte/rdd-worktrees/sdd-open-f18-f20-seguranca; B=/tmp/aval2-f18.hrKa
+rm -rf $B/old $B/new; mkdir -p $B/old $B/new; (cd $PKG && git archive 69b7f6b) | tar -x -C $B/old; (cd $PKG && git archive HEAD) | tar -x -C $B/new
+for v in old new; do
+  F=$B/fx-$v; rm -rf $F; mkdir -p $F; cd $F; git init -q -b main; git config user.email a@b; git config user.name t
+  bash $B/$v/bin/sdd-open.sh init --vendors codex --yes >/dev/null 2>&1
+  printf 'X=1\n' > .env; printf 'chave\n' > cert.pfx; printf 'x\n' > k.pem; git add -f .env cert.pfx k.pem; git commit -qm x --no-verify
+  echo "===== $v: checar.sh --segredo"; bash $B/$v/.agents/skills/sdd-checar-ambiente/scripts/checar.sh --segredo 2>&1 | grep -E '\.env|\.pfx|\.pem|RESULTADO' ; echo "exit=${PIPESTATUS[0]}"
+  echo "===== $v: doctor (linhas com .env/.pfx/.pem)"; bash $B/$v/bin/sdd-open.sh doctor 2>&1 | grep -E '\.env|\.pfx|\.pem|segredo|certificado' ; echo "exit=${PIPESTATUS[0]}"
+done
+===== old: checar.sh --segredo
+- O arquivo de senhas .env está salvo no git. Tirar do git não apaga do histórico: se já houve push, quem tem acesso ao repositório tem o arquivo.
+  git rm --cached ".env" && echo ".env" >> .gitignore
+- O certificado digital cert.pfx está salvo no git. Tirar do git não apaga do histórico: se já houve push, quem tem acesso ao repositório tem o arquivo.
+  git rm --cached "cert.pfx" && echo "cert.pfx" >> .gitignore
+exit=1
+===== old: doctor (linhas com .env/.pfx/.pem)
+⚠️  O arquivo de senhas .env está salvo no git. Tirar do git não apaga do histórico: se já houve push, quem tem acesso ao repositório tem o arquivo.
+      git rm --cached ".env" && echo ".env" >> .gitignore
+⚠️  O certificado digital cert.pfx está salvo no git. Tirar do git não apaga do histórico: se já houve push, quem tem acesso ao repositório tem o arquivo.
+      git rm --cached "cert.pfx" && echo "cert.pfx" >> .gitignore
+      Depois, revogue o certificado com a autoridade certificadora e emita outro.
+exit=0
+===== new: checar.sh --segredo
+- O arquivo de senhas .env está salvo no git. Tirar do git não apaga do histórico: se já houve push, quem tem acesso ao repositório tem o arquivo.
+  git rm --cached ".env" && echo ".env" >> .gitignore
+- O certificado digital cert.pfx está salvo no git. Tirar do git não apaga do histórico: se já houve push, quem tem acesso ao repositório tem o arquivo.
+  git rm --cached "cert.pfx" && echo "cert.pfx" >> .gitignore
+exit=1
+===== new: doctor (linhas com .env/.pfx/.pem)
+⚠️  O arquivo de senhas .env está salvo no git. Tirar do git não apaga do histórico: se já houve push, quem tem acesso ao repositório tem o arquivo.
+      git rm --cached ".env" && echo ".env" >> .gitignore
+⚠️  O certificado digital cert.pfx está salvo no git. Tirar do git não apaga do histórico: se já houve push, quem tem acesso ao repositório tem o arquivo.
+      git rm --cached "cert.pfx" && echo "cert.pfx" >> .gitignore
+      Depois, revogue o certificado com a autoridade certificadora e emita outro.
+exit=0

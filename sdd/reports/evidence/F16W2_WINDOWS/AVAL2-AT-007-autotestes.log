@@ -1,0 +1,7 @@
+$ /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f16w-windows/b56e801b-0f18-49ee-b51c-5b9188b29c23/scratchpad/at007.sh; echo "[rc=$?]"
+head  sdd-drive         rc=0 sobras_no_TMPDIR=0 nomes_proibidos_no_Windows=0 | → o script está conforme o contrato.
+head  playbook-curator  rc=0 sobras_no_TMPDIR=0 nomes_proibidos_no_Windows=0 | → o curator prova o que promete nesta máquina.
+base  sdd-drive         rc=0 sobras_no_TMPDIR=0 nomes_proibidos_no_Windows=0 | → o script está conforme o contrato.
+base  playbook-curator  rc=0 sobras_no_TMPDIR=0 nomes_proibidos_no_Windows=1 | → o curator prova o que promete nesta máquina.
+      open	'/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.wcKDj34J7E/pbcur-kkfm1vsw/aspas/BUILD_REPORT_qu"o te.md'
+[rc=0]

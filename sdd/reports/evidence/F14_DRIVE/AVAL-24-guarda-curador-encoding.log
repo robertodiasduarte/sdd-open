@@ -1,0 +1,49 @@
+$ . /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.RRzJHrBpTz/lab.sh; V=$(novo); mkdir -p $V/g; cd $V/g; git init -q; git symbolic-ref HEAD refs/heads/f; mkdir -p sdd/bin sdd/reports/evidence/F sdd/features sdd/handoffs sdd/reviews sdd/traces src; cp $PROJ/sdd/bin/avaliador-guard.sh sdd/bin/; echo r > sdd/reports/RASTREADO.md; echo e > sdd/reports/evidence/F/E.log; echo c > src/c.py; git add -A; git commit -qm b; G="/bin/bash sdd/bin/avaliador-guard.sh"
+echo == AT-032 nao rastreados nas 4 pastas; echo n > sdd/features/N.md; echo n > sdd/handoffs/N.md; echo n > sdd/reports/N.md; echo n > sdd/reviews/N.md; mkdir -p "sdd/reports/sub pasta"; echo n > "sdd/reports/sub pasta/ação.md"; $G; echo rc=$?
+echo == AT-033 rastreado modificado; echo m >> sdd/reports/RASTREADO.md; $G | head -n 4 | cut -c1-120; echo rc=${PIPESTATUS[0]}; git checkout -q -- sdd/reports/RASTREADO.md
+echo == evidence rastreado modificado nao trava; echo m >> sdd/reports/evidence/F/E.log; $G > /dev/null; echo rc=$?; git checkout -q -- sdd/reports/evidence/F/E.log
+echo == nao rastreado em outro lugar; echo n > src/novo.py; $G | head -n 3 | cut -c1-120; echo rc=${PIPESTATUS[0]}; mv src/novo.py $V/; echo n > sdd/outro.md; $G > /dev/null; echo rc-sdd-outro=$?; mv sdd/outro.md $V/; mkdir -p sdd/featuresX; echo n > sdd/featuresX/a.md;  $G > /dev/null; echo rc-prefixo-parecido=$?; mv sdd/featuresX $V/
+echo == rastreado renomeado para a pasta de documento; git mv src/c.py sdd/reports/c.py; git status --short | head -n 1; $G > /dev/null; echo rc-rename-pra-docs=$?; git mv sdd/reports/c.py src/c.py
+echo == AT-034 colheita; P=$V/p; mkdir -p $P/stg; cd $P; printf "## Sempre\n\n- [LM-001] uma regra :: ok\n- [LM-002] outra regra :: ok\n\n## Tombstones\n\n- [LM-009] ☠ 2026-01-01 :: aposentado\n" > pb.md; printf "\$ grep -n LM-001 FAIL x\n❌ delta linha 2: LM-001 ruim\n❌ invariantes linha 3: LM-001 ruim\n🔴 trava INV: INV-001 tem origem=LM-001 ❌\n/tmp/x.md:9: ❌ LM-001 duplicado\n  \$ eco com recuo LM-002 FAIL\n[exit=2]\n" > stg/AVAL-a.log; /bin/bash $PROJ/sdd/bin/playbook-curator.sh --colher stg pb.md 2>&1 | grep -E "DELTA|RESULTADO|deltas" | cut -c1-140; echo rc=${PIPESTATUS[0]}; printf "FAIL LM-001 na conferencia real\n" >> stg/AVAL-a.log; /bin/bash $PROJ/sdd/bin/playbook-curator.sh --colher stg pb.md 2>&1 | grep -E "DELTA|RESULTADO" | cut -c1-140; echo rc=${PIPESTATUS[0]}
+echo == encoding: archive x outros .py do pacote sob cp1252 \(Git Bash do Windows com pipe\); mkdir -p $V/e/sdd/reports; cd $V/e; git init -q; echo a > sdd/reports/X.md; git add -A; git commit -qm x; PYTHONIOENCODING=cp1252 /usr/bin/python3 -B $PROJ/sdd/bin/sdd-archive.py > o.txt 2>&1; echo archive-rc=$?; tail -n 1 o.txt | cut -c1-110; echo "# r" > r.md; PYTHONIOENCODING=cp1252 /usr/bin/python3 -B $PROJ/sdd/bin/report-lint.py r.md > o.txt 2>&1; echo report-lint-rc=$?; tail -n 1 o.txt | cut -c1-110;  PYTHONIOENCODING=cp1252 /usr/bin/python3 -B $PROJ/sdd/bin/skill-lint.py $PROJ/.agents/skills/sdd-drive/SKILL.md > o.txt 2>&1; echo skill-lint-rc=$?; tail -n 1 o.txt | cut -c1-110
+== AT-032 nao rastreados nas 4 pastas
+ℹ️  5 documento(s) de sdd/ não rastreado(s) ficam fora do commit: eles não voltam se a pasta for limpa.
+✅ árvore commitada (fora de sdd/reports/evidence/, sdd/traces/ e dos prefixos permitidos).
+RESULTADO: VERDE
+→ o avaliador pode ser despachado.
+rc=0
+== AT-033 rastreado modificado
+ℹ️  5 documento(s) de sdd/ não rastreado(s) ficam fora do commit: eles não voltam se a pasta for limpa.
+🛑 1 arquivo(s) com mudança não commitada: o avaliador usa o terminal e pode restaurar arquivos do
+   último commit — o que não foi commitado se perde. Commite antes de despachar (é rotina, não decisão):
+   - sdd/reports/RASTREADO.md
+rc=141
+== evidence rastreado modificado nao trava
+rc=0
+== nao rastreado em outro lugar
+ℹ️  5 documento(s) de sdd/ não rastreado(s) ficam fora do commit: eles não voltam se a pasta for limpa.
+🛑 1 arquivo(s) com mudança não commitada: o avaliador usa o terminal e pode restaurar arquivos do
+   último commit — o que não foi commitado se perde. Commite antes de despachar (é rotina, não decisão):
+rc=141
+rc-sdd-outro=1
+rc-prefixo-parecido=1
+== rastreado renomeado para a pasta de documento
+R  src/c.py -> sdd/reports/c.py
+rc-rename-pra-docs=1
+== AT-034 colheita
+DELTA LM-002 mordeu+1 · conf=2026-11-05 · evidencia=AVAL-a.log:6 · fp=cd66d2b29d
+resumo: deltas=1 (ajudou=0 mordeu=1) candidatos=0 rejeitados=0 promocoes=0 sugestoes=0
+RESULTADO: HÁ O QUE JULGAR
+rc=0
+DELTA LM-002 mordeu+1 · conf=2026-11-05 · evidencia=AVAL-a.log:6 · fp=cd66d2b29d
+DELTA LM-001 mordeu+1 · conf=2026-11-05 · evidencia=AVAL-a.log:8 · fp=0ed587577d
+RESULTADO: HÁ O QUE JULGAR
+rc=0
+== encoding: archive x outros .py do pacote sob cp1252 (Git Bash do Windows com pipe)
+archive-rc=1
+UnicodeEncodeError: 'charmap' codec can't encode character '\u2192' in position 0: character maps to <undefine
+report-lint-rc=64
+\U0001f6d1 r.md: o nome precisa ser BUILD_REPORT_{FEATURE}.md
+skill-lint-rc=1
+UnicodeEncodeError: 'charmap' codec can't encode character '\u2705' in position 0: character maps to <undefine
+[exit=0]

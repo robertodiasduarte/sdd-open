@@ -1,0 +1,8 @@
+$ cd tests && SDD_TEST_BASH=/bin/bash /usr/bin/python3 -B -m unittest -v test_revisao.Prompts
+test_prompts_sem_vendor_e_com_o_contrato (test_revisao.Prompts) ... ok
+
+----------------------------------------------------------------------
+Ran 1 test in 0.004s
+
+OK
+[exit=0]

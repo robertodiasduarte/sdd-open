@@ -1,0 +1,16 @@
+feature_id: F22_AVISO_VERSAO
+slice_id: s1
+versao: 2.17.0
+data: 2026-11-15
+estado: shipado
+veredito: CONCERNS
+waived: null
+dod: "Verify Gate verde em 258287d (2.277 testes); avaliador PASS_PENDENTE_RECIBO em 258287d; CI do PR #32 verde em 7ba7eb0 (Ubuntu, piso do macOS e Windows) — o recibo"
+descricao: "Aviso de versão e upgrade: VERSION carimbado pelo git archive, registro sdd/open-instalado.txt no init, versao-nova.sh com teto de 5 s e anônimo, linhas de versão no doctor, verbo upgrade que copia o que é do pacote e deixa ao lado o que a pessoa editou, hooks de outra worktree, aviso em 1 frase na sdd-new-session e na sdd-release"
+deploy: real
+review_externo: sdd/reports/reviews/EXTERNAL_REVIEW_20261115-135049 sha256=3d1b6b4fd8b8ca04b9483e3c13ecc7338134deaef33e7dcc8fe800fd9a18fefd diversidade=vendor revisor2=dispensado — cadeia combinada para o Open: claude revisa, qwen audita, --no-revisor2 (como na F16W2)
+avisos:
+  - "revisão do código em 9 rodadas, da 4ª à 9ª acima do teto (decisões do Roberto); leves da 7ª e da 9ª adiados para a ficha"
+  - "CI do PR vermelho em 258287d (teto da checagem por voltas de sleep: 7,2 s no piso do macOS); consertado em 074ef5a e a 8ª rodada achou o editado que o pacote não mudou (7ba7eb0)"
+  - "9 pendências na ficha (alarme.sh e worktree, proxy só no git, CRLF um a um, duas tags no commit, O1 a O4 do avaliador, teto no Windows só pelo CI)"
+  - "test-baseline --touched pulado (project.test_cmd vazio no pacote); a suíte inteira rodou no Verify Gate"

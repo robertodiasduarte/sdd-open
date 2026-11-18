@@ -1,0 +1,72 @@
+# mesmo projeto do AVAL-guia-instalacao.log; o pacote passa de v2.2.6 para 963c47e (equivale ao git pull)
+$ git -C /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.G56xf8p5be/pkg checkout -q 963c47e
+exit=0
+# o que o guia diz que NÃO basta: sync sozinho
+$ bash /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.G56xf8p5be/pkg/bin/sdd-open.sh sync
+▶ sync — plano
+~ AGENTS.md (só o bloco entre os marcadores) (atualizar)
+0 a criar · 1 a atualizar · 95 já corretos
+RESULTADO: CANCELADO
+→ nenhum arquivo foi escrito; sem terminal interativo, use --yes para aplicar.
+exit=0
+$ grep -m1 -E ^  version: .agents/skills/sdd-build/SKILL.md
+  version: "2.2.0"
+exit=0
+$ bash /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.G56xf8p5be/pkg/bin/sdd-open.sh doctor
+▶ sdd-open doctor — projeto: /private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.G56xf8p5be/proj
+  bash 3.2 · git 2.54.0 (Apple Git-157) · python3 3.15
+✅ sdd/ presente (0 feature(s) em sdd/features/)
+✅ AGENTS.md com o bloco sdd-open
+✅ .agents/skills/ com 17 skill(s) sdd-*
+✅ claude: gerado (.claude/skills · CLAUDE.md) · CLI encontrado · cobre também Grok Build e GLM
+⚠️  sdd-brainstorm 2.1.0 no projeto, 2.1.1 no pacote — para receber: apague .agents/skills/sdd-brainstorm e rode init (edições suas nela se perdem)
+⚠️  sdd-build 2.2.0 no projeto, 2.2.1 no pacote — para receber: apague .agents/skills/sdd-build e rode init (edições suas nela se perdem)
+⚠️  sdd-define 2.3.0 no projeto, 2.3.1 no pacote — para receber: apague .agents/skills/sdd-define e rode init (edições suas nela se perdem)
+⚠️  sdd-design 2.1.0 no projeto, 2.1.1 no pacote — para receber: apague .agents/skills/sdd-design e rode init (edições suas nela se perdem)
+⚠️  sdd-governanca 2.2.0 no projeto, 2.2.1 no pacote — para receber: apague .agents/skills/sdd-governanca e rode init (edições suas nela se perdem)
+⚠️  sdd-release 2.3.0 no projeto, 2.3.1 no pacote — para receber: apague .agents/skills/sdd-release e rode init (edições suas nela se perdem)
+⚠️  sdd-ux-review 2.3.0 no projeto, 2.3.1 no pacote — para receber: apague .agents/skills/sdd-ux-review e rode init (edições suas nela se perdem)
+✅ nenhum segredo salvo no git (.env, .pfx, .p12, .pem com chave privada)
+RESULTADO: DIAGNÓSTICO CONCLUÍDO
+→ se algum item está ⚠️, a linha diz qual comando resolve.
+exit=0
+# o caminho do guia: apagar cada skill apontada, init --yes, sync
+(rm -r das 7 pastas apontadas)
+$ bash /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.G56xf8p5be/pkg/bin/sdd-open.sh init --vendors claude --yes
+▶ init — plano
+~ AGENTS.md (só o bloco entre os marcadores) (atualizar)
++ .agents/skills/sdd-brainstorm (novo)
++ .agents/skills/sdd-build (novo)
++ .agents/skills/sdd-define (novo)
++ .agents/skills/sdd-design (novo)
++ .agents/skills/sdd-governanca (novo)
++ .agents/skills/sdd-release (novo)
++ .agents/skills/sdd-ux-review (novo)
+7 a criar · 1 a atualizar · 80 já corretos
+▶ sdd-open doctor — projeto: /private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.G56xf8p5be/proj
+  bash 3.2 · git 2.54.0 (Apple Git-157) · python3 3.15
+✅ sdd/ presente (0 feature(s) em sdd/features/)
+✅ AGENTS.md com o bloco sdd-open
+✅ .agents/skills/ com 17 skill(s) sdd-*
+✅ claude: gerado (.claude/skills · CLAUDE.md) · CLI encontrado · cobre também Grok Build e GLM
+✅ skills e sdd/bin/ em dia com o pacote
+✅ nenhum segredo salvo no git (.env, .pfx, .p12, .pem com chave privada)
+RESULTADO: INSTALADO
+→ abra seu agente e peça a fase Define (ex.: /sdd-define ou /skill:sdd-define).
+exit=0
+$ bash /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.G56xf8p5be/pkg/bin/sdd-open.sh sync
+▶ sync — plano
+0 a criar · 0 a atualizar · 96 já corretos
+RESULTADO: EM DIA
+→ nada a fazer.
+exit=0
+$ grep -m1 -E ^  version: .agents/skills/sdd-build/SKILL.md
+  version: "2.2.1"
+exit=0
+$ grep -c Por que cada regra existe .claude/skills/sdd-build/SKILL.md
+1
+exit=0
+$ bash /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.G56xf8p5be/pkg/bin/sdd-open.sh sync --check
+RESULTADO: EM DIA
+→ todos os adaptadores refletem .agents/skills/.
+exit=0

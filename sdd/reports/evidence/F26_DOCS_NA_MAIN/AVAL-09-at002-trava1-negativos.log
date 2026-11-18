@@ -1,0 +1,72 @@
+$ bash /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f26-docs-na-main/e1164d6c-42f0-4737-8064-2ce0f93f4e1b/scratchpad/at002.sh
+== base (HEAD da F26 clonado)
+  ⛔ pattern matched: /[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}/
+⛔ publish-gate BLOCKED — fix the findings above. Never retry silently, never loosen a
+  docs no pacote: 2
+== pasta de documento nova sdd/estudos
+  ⛔ pattern matched: /[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}/
+⛔ publish-gate BLOCKED — fix the findings above. Never retry silently, never loosen a
+  docs no pacote: 2
+== linha 'sdd/bin -export-ignore' removida
+  ⛔ declared but missing: sdd/bin/adapters/claude.sh
+  ⛔ declared but missing: sdd/bin/adapters/codex.sh
+  ⛔ declared but missing: sdd/bin/adapters/gemini.sh
+  ⛔ declared but missing: sdd/bin/adapters/openrouter.sh
+  ⛔ declared but missing: sdd/bin/adapters/sessao-claude.py
+  ⛔ declared but missing: sdd/bin/adapters/sessao-codex.py
+  ⛔ declared but missing: sdd/bin/adversarial-review-gate.sh
+  ⛔ declared but missing: sdd/bin/adversarial-review.sh
+  ⛔ declared but missing: sdd/bin/avaliador-guard.sh
+  ⛔ declared but missing: sdd/bin/contexto-lint.sh
+  ⛔ declared but missing: sdd/bin/contraste.sh
+  ⛔ declared but missing: sdd/bin/custo-feature.sh
+  ⛔ declared but missing: sdd/bin/deploy-do-sha.sh
+  ⛔ declared but missing: sdd/bin/design-lint.py
+  ⛔ declared but missing: sdd/bin/docs-extract-decisions.sh
+  ⛔ declared but missing: sdd/bin/eval-agree.sh
+  ⛔ declared but missing: sdd/bin/eval-revisores.sh
+  ⛔ declared but missing: sdd/bin/ficha-publicado.py
+  ⛔ declared but missing: sdd/bin/gate-baseline.sh
+  ⛔ declared but missing: sdd/bin/gate-shell-evidencia.sh
+  ⛔ declared but missing: sdd/bin/governanca-bloco.py
+  ⛔ declared but missing: sdd/bin/governanca-fronteira.sh
+  ⛔ declared but missing: sdd/bin/handoff-lint.py
+  ⛔ declared but missing: sdd/bin/kb-dominios.py
+  ⛔ declared but missing: sdd/bin/ledger-revisao-lint.sh
+  ⛔ declared but missing: sdd/bin/lib/python.sh
+  ⛔ declared but missing: sdd/bin/marca-fase.sh
+  ⛔ declared but missing: sdd/bin/papel-medir.sh
+  ⛔ declared but missing: sdd/bin/papel-serie.sh
+  ⛔ declared but missing: sdd/bin/patterns-lint.sh
+  ⛔ declared but missing: sdd/bin/playbook-curator.sh
+  ⛔ declared but missing: sdd/bin/playbook-lint.sh
+  ⛔ declared but missing: sdd/bin/prompt-drift-scan.sh
+  ⛔ declared but missing: sdd/bin/report-lint.py
+  ⛔ declared but missing: sdd/bin/sdd-archive.py
+  ⛔ declared but missing: sdd/bin/sdd-decisoes-lint.sh
+  ⛔ declared but missing: sdd/bin/sdd-drive.sh
+  ⛔ declared but missing: sdd/bin/sdd-fluxo.sh
+  ⛔ declared but missing: sdd/bin/seguranca-varredura.sh
+  ⛔ declared but missing: sdd/bin/skill-lint.py
+  ⛔ declared but missing: sdd/bin/slot.sh
+  ⛔ declared but missing: sdd/bin/test-baseline.sh
+  ⛔ declared but missing: sdd/bin/trilha.sh
+  ⛔ declared but missing: sdd/bin/verify-gate.sh
+  ⛔ declared but missing: sdd/bin/versao-nova.sh
+  ⛔ DEFINE_FIXTURE_NEEDS_CLARIFICATION.md → exit 127 (expected 5)
+  ⛔ DEFINE_FIXTURE_CONTROLE.md → exit 127 (expected 0)
+  ⛔ DEFINE_FIXTURE_SEM_BLOCO.md → exit 127 (expected 64)
+⛔ publish-gate BLOCKED — fix the findings above. Never retry silently, never loosen a
+  docs no pacote: 2
+== linha 'sdd/** export-ignore' removida (documentos voltam ao pacote)
+  ⛔ pattern matched: /[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}/
+  ⛔ pattern matched: //Users/[a-z]+//
+  ⛔ undeclared file: sdd/estudos/n.md
+  ⛔ undeclared file: sdd/features/DEFINE_F26_DOCS_NA_MAIN.md
+  ⛔ undeclared file: sdd/features/DESIGN_F26_DOCS_NA_MAIN.md
+  ⛔ undeclared file: sdd/GOVERNANCA_PADRAO.md
+  ⛔ undeclared file: sdd/reviews/LEDGER_REVISAO_F26_DOCS_NA_MAIN.md
+  ⛔ undeclared file: sdd/reviews/GOVERNANCA_REVIEW_F26_DOCS_NA_MAIN.md
+⛔ publish-gate BLOCKED — fix the findings above. Never retry silently, never loosen a
+  docs no pacote: 8
+[exit 0]

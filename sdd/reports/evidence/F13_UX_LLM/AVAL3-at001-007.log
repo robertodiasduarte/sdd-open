@@ -1,0 +1,255 @@
+$ /bin/bash /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.VE6HeN93zy/cont.sh
+--- contraste #767676 #ffffff
+stdout:
+4.54:1 PASSA (piso 4.5:1)
+RESULTADO: PASSA
+→ anote o par e o número na tabela da UX review
+stderr:
+rc=0
+--- contraste #777777 #ffffff
+stdout:
+4.47:1 REPROVA (piso 4.5:1)
+RESULTADO: REPROVA
+→ afaste as 2 cores até 4.5:1; texto grande, borda e ícone usam --piso 3
+stderr:
+rc=2
+--- contraste #71796f #ffffff
+stdout:
+4.50:1 PASSA (piso 4.5:1)
+RESULTADO: PASSA
+→ anote o par e o número na tabela da UX review
+stderr:
+rc=0
+--- contraste #6c7b67 #ffffff
+stdout:
+4.49:1 REPROVA (piso 4.5:1)
+RESULTADO: REPROVA
+→ afaste as 2 cores até 4.5:1; texto grande, borda e ícone usam --piso 3
+stderr:
+rc=2
+--- contraste #000 #fff .5
+stdout:
+3.97:1 REPROVA (piso 4.5:1)
+RESULTADO: REPROVA
+→ afaste as 2 cores até 4.5:1; texto grande, borda e ícone usam --piso 3
+stderr:
+rc=2
+--- contraste #000 #fff 1
+stdout:
+21.00:1 PASSA (piso 4.5:1)
+RESULTADO: PASSA
+→ anote o par e o número na tabela da UX review
+stderr:
+rc=0
+--- contraste #000 #fff 0
+stdout:
+1.00:1 REPROVA (piso 4.5:1)
+RESULTADO: REPROVA
+→ afaste as 2 cores até 4.5:1; texto grande, borda e ícone usam --piso 3
+stderr:
+rc=2
+--- contraste #777777 #ffffff --piso 3
+stdout:
+4.47:1 PASSA (piso 3:1)
+RESULTADO: PASSA
+→ anote o par e o número na tabela da UX review
+stderr:
+rc=0
+--- contraste --piso 3 #777777 #ffffff
+stdout:
+4.47:1 PASSA (piso 3:1)
+RESULTADO: PASSA
+→ anote o par e o número na tabela da UX review
+stderr:
+rc=0
+--- contraste #777777 --piso 3 #ffffff
+stdout:
+4.47:1 PASSA (piso 3:1)
+RESULTADO: PASSA
+→ anote o par e o número na tabela da UX review
+stderr:
+rc=0
+--- contraste #ABC #FFF
+stdout:
+1.96:1 REPROVA (piso 4.5:1)
+RESULTADO: REPROVA
+→ afaste as 2 cores até 4.5:1; texto grande, borda e ícone usam --piso 3
+stderr:
+rc=2
+--- contraste 
+stdout:
+stderr:
+🛑 faltam as 2 cores. Sem aspas, o # começa um comentário no shell, e as cores não chegam ao comando.
+RESULTADO: ERRO DE USO
+→ bash sdd/bin/contraste.sh '#767676' '#ffffff'
+rc=64
+--- contraste #000
+stdout:
+stderr:
+🛑 faltam cores: são 2, o primeiro plano e o fundo, cada uma entre aspas
+RESULTADO: ERRO DE USO
+→ bash sdd/bin/contraste.sh '#767676' '#ffffff'
+rc=64
+--- contraste #000 #fff .5 x
+stdout:
+stderr:
+🛑 valores demais: são 2 cores e, se houver, 1 transparência
+RESULTADO: ERRO DE USO
+→ bash sdd/bin/contraste.sh '#767676' '#ffffff'
+rc=64
+--- contraste #zzz #fff
+stdout:
+stderr:
+🛑 cor não reconhecida: #zzz. Aceito #rgb ou #rrggbb.
+RESULTADO: ERRO DE USO
+→ bash sdd/bin/contraste.sh '#767676' '#ffffff'
+rc=64
+--- contraste #12345 #fff
+stdout:
+stderr:
+🛑 cor não reconhecida: #12345. Aceito #rgb ou #rrggbb.
+RESULTADO: ERRO DE USO
+→ bash sdd/bin/contraste.sh '#767676' '#ffffff'
+rc=64
+--- contraste rgba(0,0,0,.5) #fff
+stdout:
+stderr:
+🛑 cor não reconhecida: rgba(0,0,0,.5). Aceito #rgb ou #rrggbb.
+RESULTADO: ERRO DE USO
+→ a transparência vai como 3º valor: bash sdd/bin/contraste.sh '#000000' '#ffffff' .5
+rc=64
+--- contraste RGBA(0,0,0,.5) #fff
+stdout:
+stderr:
+🛑 cor não reconhecida: RGBA(0,0,0,.5). Aceito #rgb ou #rrggbb.
+RESULTADO: ERRO DE USO
+→ a transparência vai como 3º valor: bash sdd/bin/contraste.sh '#000000' '#ffffff' .5
+rc=64
+--- contraste #00000080 #fff
+stdout:
+stderr:
+🛑 cor não reconhecida: #00000080. Aceito #rgb ou #rrggbb.
+RESULTADO: ERRO DE USO
+→ a transparência vai como 3º valor: bash sdd/bin/contraste.sh '#000000' '#ffffff' .5
+rc=64
+--- contraste #000 #fff 1.5
+stdout:
+stderr:
+🛑 transparência fora de 0 a 1: 1.5
+RESULTADO: ERRO DE USO
+→ use um valor como .5 ou 0.5
+rc=64
+--- contraste #000 #fff -1
+stdout:
+stderr:
+🛑 opção desconhecida: -1
+RESULTADO: ERRO DE USO
+→ bash sdd/bin/contraste.sh '#767676' '#ffffff'
+rc=64
+--- contraste #000 #fff --piso
+stdout:
+stderr:
+🛑 --piso sem valor
+RESULTADO: ERRO DE USO
+→ use, por exemplo, --piso 3
+rc=64
+--- contraste #000 #fff --piso 0
+stdout:
+stderr:
+🛑 piso inválido: 0. Precisa ser maior que zero.
+RESULTADO: ERRO DE USO
+→ use, por exemplo, --piso 3
+rc=64
+--- contraste #000 #fff --piso 4.555
+stdout:
+stderr:
+🛑 piso inválido: 4.555. Aceito número com até 2 casas.
+RESULTADO: ERRO DE USO
+→ use, por exemplo, --piso 3
+rc=64
+--- contraste #000 #fff --nada
+stdout:
+stderr:
+🛑 opção desconhecida: --nada
+RESULTADO: ERRO DE USO
+→ bash sdd/bin/contraste.sh '#767676' '#ffffff'
+rc=64
+--- contraste #000 #fff --piso abc
+stdout:
+stderr:
+🛑 piso inválido: abc. Aceito número com até 2 casas.
+RESULTADO: ERRO DE USO
+→ use, por exemplo, --piso 3
+rc=64
+=== locale
+0,5
+--- contraste #767676 #ffffff
+stdout:
+4.54:1 PASSA (piso 4.5:1)
+RESULTADO: PASSA
+→ anote o par e o número na tabela da UX review
+stderr:
+rc=0
+--- contraste #777777 #ffffff
+stdout:
+4.47:1 REPROVA (piso 4.5:1)
+RESULTADO: REPROVA
+→ afaste as 2 cores até 4.5:1; texto grande, borda e ícone usam --piso 3
+stderr:
+rc=2
+--- contraste #71796f #ffffff
+stdout:
+4.50:1 PASSA (piso 4.5:1)
+RESULTADO: PASSA
+→ anote o par e o número na tabela da UX review
+stderr:
+rc=0
+--- contraste #000 #fff .5
+stdout:
+3.97:1 REPROVA (piso 4.5:1)
+RESULTADO: REPROVA
+→ afaste as 2 cores até 4.5:1; texto grande, borda e ícone usam --piso 3
+stderr:
+rc=2
+--- contraste #000 #fff 1
+stdout:
+21.00:1 PASSA (piso 4.5:1)
+RESULTADO: PASSA
+→ anote o par e o número na tabela da UX review
+stderr:
+rc=0
+--- contraste #000 #fff 0
+stdout:
+1.00:1 REPROVA (piso 4.5:1)
+RESULTADO: REPROVA
+→ afaste as 2 cores até 4.5:1; texto grande, borda e ícone usam --piso 3
+stderr:
+rc=2
+--- contraste #777777 #ffffff --piso 3
+stdout:
+4.47:1 PASSA (piso 3:1)
+RESULTADO: PASSA
+→ anote o par e o número na tabela da UX review
+stderr:
+rc=0
+--- contraste #777777 #ffffff --piso 4,5
+stdout:
+stderr:
+🛑 piso inválido: 4,5. Aceito número com até 2 casas.
+RESULTADO: ERRO DE USO
+→ use, por exemplo, --piso 3
+rc=64
+=== self-test
+--- contraste --self-test
+stdout:
+✅ 30 casos conferidos
+RESULTADO: VERDE
+→ o contraste.sh está pronto para uso
+stderr:
+rc=0
+=== relativo cdpath
+✅ 30 casos conferidos
+RESULTADO: VERDE
+→ o contraste.sh está pronto para uso
+rc=0
+[exit=0]

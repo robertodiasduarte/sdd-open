@@ -1,0 +1,15 @@
+$ bash /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f17b-starter-etapa2/4bd671df-4c34-431c-bf11-929368bfac1c/scratchpad/extra.sh
+### lint da cópia crua, exit
+exit lint crua=65
+### fechamento: modo cita references/ledger.md (que cita outros?)
+🛑 o lint do init achou 1 citação(ões) a arquivo que só o init cria:
+  skills/sdd-release/references/ledger.md:40: sdd/bin/
+RESULTADO: NADA FOI GRAVADO
+exit=65
+./SKILL.md
+./agents/openai.yaml
+### sobra: arquivo committed em docs/ do starter que não está na semente é apagado
+→ no starter: python3 scripts/check-gerado.py, os testes dele e um commit numa branch.
+ls: /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f17b-starter-etapa2/4bd671df-4c34-431c-bf11-929368bfac1c/scratchpad/wneg/c/docs/sobra-aval.md: No such file or directory
+ls: /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f17b-starter-etapa2/4bd671df-4c34-431c-bf11-929368bfac1c/scratchpad/wneg/c/tests/test_sobra_aval.py: No such file or directory
+rc=1

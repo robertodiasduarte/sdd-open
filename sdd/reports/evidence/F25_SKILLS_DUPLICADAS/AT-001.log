@@ -1,0 +1,10 @@
+$ cd <git archive HEAD>/tests && /usr/bin/python3 -B -m unittest -v test_f25_skills_duplicadas.AT001Claude
+test_claude_config_dir_troca_a_pasta_global (test_f25_skills_duplicadas.AT001Claude) ... ok
+test_global_e_projeto_o_claude_roda_a_global (test_f25_skills_duplicadas.AT001Claude) ... ok
+test_o_claude_nao_le_as_pastas_agents (test_f25_skills_duplicadas.AT001Claude) ... ok
+
+----------------------------------------------------------------------
+Ran 3 tests in 2.678s
+
+OK
+[exit=0]

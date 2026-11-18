@@ -1,0 +1,66 @@
+$ bash testes.sh
+HEAD 1d8fc65
+test_confere_a_vercel_pelo_status_e_diz_a_url (test_f17b_textos.ModoIniciante) ... ok
+test_description_do_modo_cabe_no_upload (test_f17b_textos.ModoIniciante) ... ok
+test_duas_fontes_independentes_para_saber_se_a_vercel_publica (test_f17b_textos.ModoIniciante) ... ok
+test_falha_da_vercel_nao_refaz_o_deploy (test_f17b_textos.ModoIniciante) ... ok
+test_identificacao_do_modo_igual_a_do_skill_md (test_f17b_textos.ModoIniciante) ... ok
+test_nenhum_token (test_f17b_textos.ModoIniciante) ... ok
+test_o_caminho_do_workflow_continua (test_f17b_textos.ModoIniciante) ... ok
+test_o_open_aponta_o_modo_e_a_release_fica_no_teto (test_f17b_textos.ModoIniciante) ... ok
+test_sem_consultar_o_github_nunca_conclui_que_o_push_nao_publica (test_f17b_textos.ModoIniciante) ... ok
+test_um_ponto_de_aprovacao (test_f17b_textos.ModoIniciante) ... ok
+test_brainstorm (test_f17b_textos.SemTerminal) ... ok
+test_governanca (test_f17b_textos.SemTerminal) ... ok
+test_handoff (test_f17b_textos.SemTerminal) ... ok
+test_a_skill_mora_no_open (test_f17b_textos.UxReviewBuilder) ... ok
+test_a_tabela_do_gerador_tem_o_botao (test_f17b_textos.UxReviewBuilder) ... ok
+test_sdd_ux_review_le_o_padrao (test_f17b_textos.UxReviewBuilder) ... ok
+test_claude_md_de_dependencia_nao_entra_no_inventario (test_f17b_passo0.AuditoriaSemNodeModules) ... ok
+test_arquivo_que_nenhuma_regra_muda_sai_byte_a_byte_mesmo_com_crlf (test_f17b_passo0.Gerador) ... ok
+test_caminho_de_skill_irma_num_script_vira_o_nome_da_pasta (test_f17b_passo0.Gerador) ... ok
+test_gate_da_kb_sai_executavel (test_f17b_passo0.Gerador) ... ok
+test_molde_citado_so_no_changelog_nao_vai_para_references (test_f17b_passo0.Gerador) ... ok
+test_os_dois_workflows_rodam_os_testes_da_raiz_do_mesmo_jeito (test_f17b_passo0.Gerador) ... ok
+test_nome_mais_longo_nao_e_a_pasta_do_init (test_f17b_passo0.LintSemBarra) ... ok
+test_pasta_do_init_sem_a_barra_reprova (test_f17b_passo0.LintSemBarra) ... ok
+test_at006_sem_comando_no_caminho_sem_terminal (test_gerar_starter.CaminhoDoIniciante) ... ok
+test_at001_gera_as_15_e_nao_toca_no_resto (test_gerar_starter.Gera) ... ok
+test_at003_cada_skill_gerada (test_gerar_starter.Gera) ... ok
+test_at005_duas_geracoes_iguais_byte_a_byte (test_gerar_starter.Gera) ... ok
+test_at007_o_starter_passa_nas_checagens_dele (test_gerar_starter.Gera) ... ok
+test_aval1_kb_gerada_sem_caminho_nem_sync_do_open (test_gerar_starter.Gera) ... ok
+test_gerar_de_novo_a_mesma_tag_nao_muda_nada (test_gerar_starter.Gera) ... ok
+test_r1_testes_de_skill_sem_nenhuma_pasta_tests_nao_quebram (test_gerar_starter.Gera) ... ok
+test_r2_arquivo_que_saiu_da_semente_sai_do_destino (test_gerar_starter.Gera) ... ok
+test_r6_ds_store_no_destino_nao_conta_como_mudanca (test_gerar_starter.Gera) ... ok
+test_regra_de_pasta_so_no_markdown_e_o_par_que_define_a_pasta_fica (test_gerar_starter.Gera) ... ok
+test_at004_a_copia_crua_reprova_e_a_gerada_passa (test_gerar_starter.Lint) ... ok
+test_aval1_lint_pega_caminho_da_skill_gerada_fora_do_par (test_gerar_starter.Lint) ... ok
+test_r4_aceite_nao_isenta_outra_citacao_na_mesma_linha (test_gerar_starter.Lint) ... ok
+test_at010_o_init_nao_copia_scripts (test_gerar_starter.ReadmeEInit) ... ok
+test_readme_cita_toda_skill_gerada (test_gerar_starter.ReadmeEInit) ... ok
+test_readme_sem_ambiente_md (test_gerar_starter.ReadmeEInit) ... ok
+test_at002_destino_sujo_ou_sem_a_forma_do_starter (test_gerar_starter.Recusa) ... ok
+test_at002_lint_do_init_acha_citacao (test_gerar_starter.Recusa) ... ok
+test_at002_skill_sem_linha_no_openai_tsv (test_gerar_starter.Recusa) ... ok
+test_at002_tag_inexistente (test_gerar_starter.Recusa) ... ok
+test_at002_troca_que_nao_casa_exatamente_uma_vez (test_gerar_starter.Recusa) ... ok
+test_at007_versao_que_nao_sobe_reprova_antes_de_gravar (test_gerar_starter.Recusa) ... ok
+test_gerador_diferente_do_da_tag (test_gerar_starter.Recusa) ... ok
+test_r6_tag_anterior_ao_gerador_diz_a_causa (test_gerar_starter.Recusa) ... ok
+test_at002_arquivo_citado_pelo_modo_vai_junto_com_o_fecho (test_gerar_starter.SkillDeModo) ... ok
+test_at002_release_gerada_so_do_modo (test_gerar_starter.SkillDeModo) ... ok
+test_at003_a_release_crua_reprova_no_lint (test_gerar_starter.SkillDeModo) ... ok
+test_at003_modo_quebrado_sai_65_sem_gravar (test_gerar_starter.SkillDeModo) ... ok
+test_at009_versao_que_nao_sobe_numa_skill_nova_da_lista (test_gerar_starter.SkillDeModo) ... ok
+test_at006_cada_mudanca_a_mao_sai_1 (test_gerar_starter.Trava) ... ok
+test_at006_gerado_ilegivel_sai_64 (test_gerar_starter.Trava) ... ok
+test_at006_os_workflows_rodam_a_trava_antes_dos_testes (test_gerar_starter.Trava) ... ok
+test_at006_tudo_igual_sai_0 (test_gerar_starter.Trava) ... ok
+
+----------------------------------------------------------------------
+Ran 58 tests in 118.187s
+
+OK
+rc=0

@@ -1,0 +1,2 @@
+{"achado": "R1", "arquivo": "sdd/bin/versao-nova.sh", "linha": 94, "severidade": "LOW", "confianca": "CONFIRMED", "resumo": "A consulta ls-remote roda dentro do repositório do projeto e herda o .git/config local (insteadOf para SSH, extraheader com token), contrariando a promessa de consulta anônima e sem token."}
+{"achado": "R2", "arquivo": "bin/sdd-open.sh", "linha": 1077, "severidade": "LOW", "confianca": "PLAUSIBLE", "resumo": "Na forma tag do --de, uma tag sem MANIFEST.txt sai 1 (falha de escrita, 'rode de novo') em vez de 64, divergindo do AT-007."}

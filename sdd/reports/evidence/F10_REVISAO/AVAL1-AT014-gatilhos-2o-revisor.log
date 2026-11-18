@@ -1,0 +1,54 @@
+$ bash /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f10-revisao/bd420f6e-558d-4962-a0c9-40cdfc2cbd27/scratchpad/p/a4.sh AT014
+--- sem gatilho
+gatilho_2o_revisor      : diff sem gatilho de risco — 1 revisor
+revisor2_engine         : -
+src/auth/x.sh →   2º revisor: segurança (src/auth/x.sh)
+src/login.py →   2º revisor: segurança (src/login.py)
+lib/token-utils.js →   2º revisor: segurança (lib/token-utils.js)
+cfg/tokens.yaml →   2º revisor: segurança (cfg/tokens.yaml)
+a/senha_nova.sh →   2º revisor: segurança (a/senha_nova.sh)
+docs/password.md →   2º revisor: segurança (docs/password.md)
+app/jwt.ts →   2º revisor: segurança (app/jwt.ts)
+--- author.md e authority não contam
+docs/author.md →   2º revisor: sem gatilho no diff (o revisor raso ainda pode acionar)
+src/authority.sh →   2º revisor: sem gatilho no diff (o revisor raso ainda pode acionar)
+src/tokenizer.py →   2º revisor: sem gatilho no diff (o revisor raso ainda pode acionar)
+--- 8 arquivos
+  2º revisor: 8 arquivos (limiar 8)
+  diff: 8 arquivo(s), 1 KB, base main, merge-base 63e30f3be67e
+--- 7 arquivos
+  2º revisor: sem gatilho no diff (o revisor raso ainda pode acionar)
+  diff: 7 arquivo(s), 1 KB, base main, merge-base 63e30f3be67e
+--- 120 KB
+  2º revisor: 120 KB (limiar 120)
+  diff: 4 arquivo(s), 120 KB, base main, merge-base 63e30f3be67e
+  2º revisor: sem gatilho no diff (o revisor raso ainda pode acionar)
+  diff: 4 arquivo(s), 118 KB, base main, merge-base 63e30f3be67e
+--- security_globs
+  2º revisor: segurança (src/novo.sh)
+--- layers.sql
+  2º revisor: segurança (db/m.sql)
+--- 2 camadas de layers:
+  2º revisor: 2 camadas (limiar 2)
+--- revisor raso (0 achados em < 30 s) aciona
+▶ revisor: stub-a:revisor-vazio (revisor-vazio) — até 1 min
+▶ 2º revisor: stub-c (revisor-ok) — até 1 min
+▶ auditor: stub-b:auditor-agree (auditor-agree) — até 1 min
+⚠️ o revisor terminou em 0 s sem achados: isso não conta como revisão
+RESULTADO: REVIEW COMPLETA
+[rc=0]
+revisor1_raso           : sim
+gatilho_2o_revisor      : revisor1 raso (0s, 0 achados)
+revisor2_engine         : stub-c
+revisor2_exit           : 0
+convergencia_1o_passe   : sim
+--- --no-revisor2 registra o porquê
+gatilho_2o_revisor      : 10 arquivos (limiar 8) — dispensado por --no-revisor2
+revisor2_engine         : -
+--- constantes nomeadas no script
+57:SEGUNDO_REVISOR_MIN_ARQUIVOS = 8      # arquivos no diff congelado
+58:SEGUNDO_REVISOR_MIN_KB = 120          # wc -c do patch / 1024
+59:SEGUNDO_REVISOR_MIN_CAMADAS = 2       # camadas de layers: tocadas
+60:RASO_SEGUNDOS = 30                    # revisor abaixo disso, com 0 achados, conta como raso
+61:DIFF_MAX_MB = 8                       # teto do diff congelado
+[exit=0]

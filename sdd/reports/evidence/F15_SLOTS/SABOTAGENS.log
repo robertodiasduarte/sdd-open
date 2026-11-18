@@ -1,0 +1,149 @@
+== S1 L0/L4 slot.sh: exit fora do contrato vira 0
+$ (mutante em sdd/bin/slot.sh) cd tests && SDD_TEST_BASH=/bin/bash /usr/bin/python3 -B -m unittest test_slot.Inconclusivo.test_saida_fora_do_contrato_e_inconclusivo
+FAIL: test_saida_fora_do_contrato_e_inconclusivo (test_slot.Inconclusivo) (cmd='bash falso.sh 1')
+AssertionError: 0 != 3 : ⚠️  SDD_BASE vazio: origin/main não existe neste repositório
+FAIL: test_saida_fora_do_contrato_e_inconclusivo (test_slot.Inconclusivo) (cmd='bash falso.sh 7')
+AssertionError: 0 != 3 : ⚠️  SDD_BASE vazio: origin/main não existe neste repositório
+FAIL: test_saida_fora_do_contrato_e_inconclusivo (test_slot.Inconclusivo) (cmd='comando_que_nao_existe_xyz')
+AssertionError: 0 != 3 : ⚠️  SDD_BASE vazio: origin/main não existe neste repositório
+Ran 1 test in 0.287s
+FAILED (failures=3)
+[exit=1] MORTO (o teste nomeado caiu)
+
+== S2 L3 test-baseline.sh: teste ao lado nunca entra
+$ (mutante em sdd/bin/test-baseline.sh) cd tests && SDD_TEST_BASH=/bin/bash /usr/bin/python3 -B -m unittest test_test_baseline.TestBaseline.test_touched_conta_teste_ao_lado_da_fonte
+FAIL: test_touched_conta_teste_ao_lado_da_fonte (test_test_baseline.TestBaseline) (fonte='src/foo.ts', novo='src/foo.test.ts > Foo > quebra')
+AssertionError: 0 != 2 : ▶ testes: cat saida.txt; exit 1
+FAIL: test_touched_conta_teste_ao_lado_da_fonte (test_test_baseline.TestBaseline) (fonte='src/bar.tsx', novo='src/bar.spec.tsx > Bar > quebra')
+AssertionError: 0 != 2 : ▶ testes: cat saida.txt; exit 1
+FAIL: test_touched_conta_teste_ao_lado_da_fonte (test_test_baseline.TestBaseline) (fonte='pkg/calc.py', novo='pkg.test_calc.Caso.test_soma')
+AssertionError: 0 != 2 : ▶ testes: cat saida.txt; exit 1
+FAIL: test_touched_conta_teste_ao_lado_da_fonte (test_test_baseline.TestBaseline) (fonte='pkg/calc.py', novo='pkg/test_calc.py::test_soma')
+AssertionError: 0 != 2 : ▶ testes: cat saida.txt; exit 1
+FAIL: test_touched_conta_teste_ao_lado_da_fonte (test_test_baseline.TestBaseline) (fonte='src/foo.ts', novo='src/foo.test.ts::quebra')
+AssertionError: 0 != 2 : ▶ testes: cat saida.txt; exit 1
+Ran 1 test in 0.514s
+FAILED (failures=5)
+[exit=1] MORTO (o teste nomeado caiu)
+
+== S3 L4 slot.sh: os arquivos não chegam ao comando
+$ (mutante em sdd/bin/slot.sh) cd tests && SDD_TEST_BASH=/bin/bash /usr/bin/python3 -B -m unittest test_slot.Contrato.test_schema_recebe_os_arquivos_como_argumentos
+FAIL: test_schema_recebe_os_arquivos_como_argumentos (test_slot.Contrato)
+AssertionError: Lists differ: [] != ['db/a b.sql', 'db/c.sql']
+Ran 1 test in 0.101s
+FAILED (failures=1)
+[exit=1] MORTO (o teste nomeado caiu)
+
+== S4 L4 aplicar-migration.md: a seção 2b some
+$ (mutante em .agents/skills/sdd-build/references/aplicar-migration.md) cd tests && SDD_TEST_BASH=/bin/bash /usr/bin/python3 -B -m unittest test_f15_slots_textos.Build.test_aplicar_migration_checa_antes_da_previa
+ERROR: test_aplicar_migration_checa_antes_da_previa (test_f15_slots_textos.Build)
+Ran 1 test in 0.000s
+FAILED (errors=1)
+[exit=1] MORTO (o teste nomeado caiu)
+
+== S5 L0 slot.sh: sem trap, o TERM no próprio script sai 143
+$ (mutante em sdd/bin/slot.sh) cd tests && SDD_TEST_BASH=/bin/bash /usr/bin/python3 -B -m unittest test_slot.Inconclusivo.test_term_no_proprio_slot_e_inconclusivo
+FAIL: test_term_no_proprio_slot_e_inconclusivo (test_slot.Inconclusivo)
+AssertionError: -15 != 3 : ⚠️  SDD_BASE vazio: origin/main não existe neste repositório
+Ran 1 test in 0.134s
+FAILED (failures=1)
+[exit=1] MORTO (o teste nomeado caiu)
+
+== S6 L3 test-baseline.sh: vizinho casado por substring do nome (LM-005)
+$ (mutante em sdd/bin/test-baseline.sh) cd tests && SDD_TEST_BASH=/bin/bash /usr/bin/python3 -B -m unittest test_test_baseline.TestBaseline.test_touched_falha_sem_relacao_continua_fora_do_diff
+FAIL: test_touched_falha_sem_relacao_continua_fora_do_diff (test_test_baseline.TestBaseline) (saida=' FAIL  lib/foo.test.ts > Foo > quebra')
+AssertionError: 2 != 0 : ▶ testes: cat saida.txt; exit 1
+FAIL: test_touched_falha_sem_relacao_continua_fora_do_diff (test_test_baseline.TestBaseline) (saida='FAIL: test_calc_total (outro.modulo.Caso.test_calc_total)')
+AssertionError: 2 != 0 : ▶ testes: cat saida.txt; exit 1
+FAIL: test_touched_falha_sem_relacao_continua_fora_do_diff (test_test_baseline.TestBaseline) (saida='FAILED tests/test_calc.py::test_soma - assert 1 == 2')
+AssertionError: 2 != 0 : ▶ testes: cat saida.txt; exit 1
+Ran 1 test in 0.390s
+FAILED (failures=3)
+[exit=1] MORTO (o teste nomeado caiu)
+
+== S7 L0 slot.sh: before_ok não esvazia a pasta comum
+$ (mutante em sdd/bin/slot.sh) cd tests && SDD_TEST_BASH=/bin/bash /usr/bin/python3 -B -m unittest test_slot.Ambiente.test_before_ok_esvazia_so_a_pasta_padrao
+FAIL: test_before_ok_esvazia_so_a_pasta_padrao (test_slot.Ambiente)
+AssertionError: True is not false
+Ran 1 test in 0.313s
+FAILED (failures=1)
+[exit=1] MORTO (o teste nomeado caiu)
+
+== S9 L0/L4 slot.sh: sem o detector de comentário do bash, os arquivos caem no #
+$ (mutante em sdd/bin/slot.sh) cd tests && SDD_TEST_BASH=/bin/bash /usr/bin/python3 -B -m unittest test_slot.Uso.test_config_que_nao_da_para_rodar_e_64
+FAIL: test_config_que_nao_da_para_rodar_e_64 (test_slot.Uso) (caso='comentario do shell')
+AssertionError: 'comentário (#)' not found in '🛑 o comando de smoke.before_ok_cmd termina num separador (;, &, | ou &&); o exit dele se perderia\nRESULTADO: ERRO DE USO\n→ tire o separador do fim, ou aponte para um script\n'
+Ran 1 test in 0.541s
+FAILED (failures=1)
+[exit=1] MORTO (o teste nomeado caiu)
+
+== S10 L3 test-baseline.sh: id relativo à subpasta deixa de contar (revisão R3)
+$ (mutante em sdd/bin/test-baseline.sh) cd tests && SDD_TEST_BASH=/bin/bash /usr/bin/python3 -B -m unittest test_test_baseline.TestBaseline.test_touched_id_relativo_a_subpasta_conta
+FAIL: test_touched_id_relativo_a_subpasta_conta (test_test_baseline.TestBaseline)
+AssertionError: 0 != 2 : ▶ testes: cat saida.txt; exit 1
+Ran 1 test in 0.198s
+FAILED (failures=1)
+[exit=1] MORTO (o teste nomeado caiu)
+
+== S11 L3 test-baseline.sh: texto depois das aspas volta a ser ignorado (ciclo 2, achado 2)
+$ (mutante em sdd/bin/slot.sh) cd tests && SDD_TEST_BASH=/bin/bash /usr/bin/python3 -B -m unittest test_slot.Uso.test_config_que_nao_da_para_rodar_e_64
+FAIL: test_config_que_nao_da_para_rodar_e_64 (test_slot.Uso) (caso='texto depois das aspas')
+AssertionError: 0 != 64 : ⚠️  SDD_BASE vazio: origin/main não existe neste repositório
+FAIL: test_config_que_nao_da_para_rodar_e_64 (test_slot.Uso) (caso='texto depois das aspas simples')
+AssertionError: True is not false
+FAIL: test_config_que_nao_da_para_rodar_e_64 (test_slot.Uso) (caso='termina em ponto e virgula')
+AssertionError: True is not false
+FAIL: test_config_que_nao_da_para_rodar_e_64 (test_slot.Uso) (caso='termina em e comercial')
+AssertionError: True is not false
+FAIL: test_config_que_nao_da_para_rodar_e_64 (test_slot.Uso) (caso='termina em pipe')
+AssertionError: True is not false
+FAIL: test_config_que_nao_da_para_rodar_e_64 (test_slot.Uso) (caso='termina em e logico')
+AssertionError: True is not false
+Ran 1 test in 0.591s
+FAILED (failures=6)
+[exit=1] MORTO (o teste nomeado caiu)
+
+== S12 L0/L4 slot.sh: separador no fim volta a passar (revisão rodada 2, R1)
+$ (mutante em sdd/bin/slot.sh) cd tests && SDD_TEST_BASH=/bin/bash /usr/bin/python3 -B -m unittest test_slot.Uso.test_config_que_nao_da_para_rodar_e_64
+FAIL: test_config_que_nao_da_para_rodar_e_64 (test_slot.Uso) (caso='termina em ponto e virgula')
+AssertionError: 0 != 64 : ⚠️  SDD_BASE vazio: origin/main não existe neste repositório
+FAIL: test_config_que_nao_da_para_rodar_e_64 (test_slot.Uso) (caso='termina em e comercial')
+AssertionError: 0 != 64 : ⚠️  SDD_BASE vazio: origin/main não existe neste repositório
+FAIL: test_config_que_nao_da_para_rodar_e_64 (test_slot.Uso) (caso='termina em pipe')
+AssertionError: 0 != 64 : ⚠️  SDD_BASE vazio: origin/main não existe neste repositório
+FAIL: test_config_que_nao_da_para_rodar_e_64 (test_slot.Uso) (caso='termina em e logico')
+AssertionError: 2 != 64 : ⚠️  SDD_BASE vazio: origin/main não existe neste repositório
+Ran 1 test in 0.669s
+FAILED (failures=4)
+[exit=1] MORTO (o teste nomeado caiu)
+
+== S13 L4 slot.sh: arquivo relativo à subpasta volta a ser lido da raiz (revisão rodada 2, R2)
+$ (mutante em sdd/bin/slot.sh) cd tests && SDD_TEST_BASH=/bin/bash /usr/bin/python3 -B -m unittest test_slot.Ambiente.test_caminhos_relativos_valem_de_onde_foi_chamado
+FAIL: test_caminhos_relativos_valem_de_onde_foi_chamado (test_slot.Ambiente)
+AssertionError: Lists differ: ['a b.sql', 'nao-existe.sql'] != ['db/a b.sql', 'nao-existe.sql']
+Ran 1 test in 0.134s
+FAILED (failures=1)
+[exit=1] MORTO (o teste nomeado caiu)
+
+== S14 L0/L4 slot.sh: âncora de fim de linha volta e a redireção vira separador (revisão rodada 3, R1@claude)
+$ (mutante em sdd/bin/slot.sh) cd tests && SDD_TEST_BASH=/bin/bash /usr/bin/python3 -B -m unittest test_slot.Cerquilha.test_redirecao_no_fim_roda
+FAIL: test_redirecao_no_fim_roda (test_slot.Cerquilha) (redir='2>&1')
+AssertionError: 64 != 0 : 🛑 o comando de smoke.before_ok_cmd termina num separador (;, &, | ou &&); o exit dele se perderia
+FAIL: test_redirecao_no_fim_roda (test_slot.Cerquilha) (redir='> saida.txt')
+AssertionError: 64 != 0 : 🛑 o comando de smoke.before_ok_cmd termina num separador (;, &, | ou &&); o exit dele se perderia
+FAIL: test_redirecao_no_fim_roda (test_slot.Cerquilha) (redir='< /dev/null')
+AssertionError: 64 != 0 : 🛑 o comando de smoke.before_ok_cmd termina num separador (;, &, | ou &&); o exit dele se perderia
+Ran 1 test in 0.192s
+FAILED (failures=3)
+[exit=1] MORTO (o teste nomeado caiu)
+
+== S8 L0 slot.sh: sem o bash -n, erro de sintaxe vira REPROVOU
+$ (mutante em sdd/bin/slot.sh) cd tests && SDD_TEST_BASH=/bin/bash /usr/bin/python3 -B -m unittest test_slot.Cerquilha.test_comando_nao_escapa_da_checagem
+FAIL: test_comando_nao_escapa_da_checagem (test_slot.Cerquilha)
+AssertionError: 'erro de sintaxe' not found in '🛑 o comando de smoke.before_ok_cmd tem um comentário (#); os arquivos cairiam dentro dele\nRESULTADO: ERRO DE USO\n→ tire o # do comando (o comentário vai numa linha própria do config) ou aponte para um script\n'
+Ran 1 test in 0.075s
+FAILED (failures=1)
+[exit=1] MORTO (o teste nomeado caiu)
+
+RESUMO: 14 de 14 mutantes mortos
+árvore depois das sabotagens: limpa

@@ -1,0 +1,120 @@
+# Rodada 1 da revisão do código: testes novos contra os scripts de HEAD f512f0f (antes do conserto)
+test_marca_fase_aceita_o_nome_de_cada_papel_da_escada (test_f23b2_papeis.AT003CustoPorPapel) ... ERROR
+test_execucao_com_rc_diferente_de_zero_fica_fora_da_meta (test_f23b2_papeis.AT004AT007Medidor) ... FAIL
+test_gabarito_sem_o_que_comparar_e_recusado_antes_de_chamar (test_f23b2_papeis.AT004AT007Medidor) ... FAIL
+test_refeita_em_pasta_nova_nao_cobra_a_interrompida_duas_vezes (test_f23b2_papeis.AT008AT011Executor) ... FAIL
+test_snapshot_que_falha_nao_deixa_execucao_interrompida (test_f23b2_papeis.AT008AT011Executor) ... FAIL
+test_interrompida_de_outra_serie_para_antes_de_chamar (test_f23b2_papeis.AT008AT011Executor) ... FAIL
+test_papel_sem_pontuador_com_candidatos_nao_paga_a_referencia (test_f23b2_papeis.AT008AT011Executor) ... FAIL
+test_serie_cmd_entre_aspas_no_yaml_desfaz_os_escapes (test_f23b2_papeis.AT008AT011Executor) ... FAIL
+test_execucao_interrompida_tem_o_custo_somado_antes_de_refazer (test_f23b2_papeis.AT008AT011Executor) ... FAIL
+
+======================================================================
+ERROR: test_marca_fase_aceita_o_nome_de_cada_papel_da_escada (test_f23b2_papeis.AT003CustoPorPapel)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.Qs5Sb5oxDw/tests/test_f23b2_papeis.py", line 181, in test_marca_fase_aceita_o_nome_de_cada_papel_da_escada
+    trecho = texto[texto.index("o `<papel>` é o nome do despacho"):]
+ValueError: substring not found
+
+======================================================================
+FAIL: test_execucao_com_rc_diferente_de_zero_fica_fora_da_meta (test_f23b2_papeis.AT004AT007Medidor)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.Qs5Sb5oxDw/tests/test_f23b2_papeis.py", line 321, in test_execucao_com_rc_diferente_de_zero_fica_fora_da_meta
+    self.assertEqual(rc, 1, out)
+AssertionError: 0 != 1 : # Medição — cur (papel curador)
+
+Gabarito: 1 caso(s) × 1 repetição(ões). Referência: caro. Limiar de ganho: 30%.
+
+| Candidato | Modelo | Na meta | Mediana nominal US$ | Queda × referência |
+|---|---|---:|---:|---:|
+| caro | modelo-caro | 1 de 1 | 1.001 | 0.0% |
+| barato | modelo-barato | 1 de 1 | 0.2005 | 80.0% |
+
+RESULTADO: ESCOLHIDO: barato
+→ mediana 0.2005 contra 1.001 da referência; preencha o slot do papel com o modelo de barato (escolha local: o pacote não leva nome de modelo).
+
+
+======================================================================
+FAIL: test_gabarito_sem_o_que_comparar_e_recusado_antes_de_chamar (test_f23b2_papeis.AT004AT007Medidor)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.Qs5Sb5oxDw/tests/test_f23b2_papeis.py", line 329, in test_gabarito_sem_o_que_comparar_e_recusado_antes_de_chamar
+    self.assertEqual(rc, 64, out + err)
+AssertionError: 22 != 64 : papel-serie: ava · papel avaliador · 1 caso(s) · 1 repetição(ões) · referência caro · candidatos barato
+▶ a1 · caro · rep 1 · rc 0 · 0s · nominal 1.001 · acumulado 1.001
+🛑 papel-serie: a referência não passou na conferência do papel-medir.sh (exit 3): nenhum candidato foi chamado
+RESULTADO: REFERÊNCIA FORA DA META
+→ nada mais foi chamado; o motivo e os acumulados estão em /private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/sdd-open-166egcdy/projeto/med/ava/PARADA.txt. Retome com o mesmo comando depois de resolver.
+
+
+======================================================================
+FAIL: test_refeita_em_pasta_nova_nao_cobra_a_interrompida_duas_vezes (test_f23b2_papeis.AT008AT011Executor)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.Qs5Sb5oxDw/tests/test_f23b2_papeis.py", line 547, in test_refeita_em_pasta_nova_nao_cobra_a_interrompida_duas_vezes
+    self.assertIn("nominal: 1.001", (pasta / "meta.txt").read_text(encoding="utf-8"))   # só a sessão da refeita
+AssertionError: 'nominal: 1.001' not found in 'estado: ok\npapel: curador\ncaso: c1\ncandidato: caro\nmodelo: modelo-caro\ncobranca: assinatura\nrepeticao: 1\nrc: 0\nsegundos: 0\nnominal: 2.002\npago: 0\nmodelos: modelo-caro\nentrada: 2000\nsaida: 200000\ncache_lido: 0\ncache_criado: 0\n'
+
+======================================================================
+FAIL: test_snapshot_que_falha_nao_deixa_execucao_interrompida (test_f23b2_papeis.AT008AT011Executor)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.Qs5Sb5oxDw/tests/test_f23b2_papeis.py", line 561, in test_snapshot_que_falha_nao_deixa_execucao_interrompida
+    self.assertEqual(list(s.rglob("inicio.txt")), [])
+AssertionError: Lists differ: [PosixPath('/private/var/folders/_s/_r8ph5[89 chars]xt')] != []
+
+First list contains 1 additional elements.
+First extra element 0:
+PosixPath('/private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/sdd-open-te6ay3hi/projeto/med/cur/execucoes/c1/caro/1/inicio.txt')
+
+- [PosixPath('/private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/sdd-open-te6ay3hi/projeto/med/cur/execucoes/c1/caro/1/inicio.txt')]
++ []
+
+======================================================================
+FAIL: test_interrompida_de_outra_serie_para_antes_de_chamar (test_f23b2_papeis.AT008AT011Executor)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.Qs5Sb5oxDw/tests/test_f23b2_papeis.py", line 572, in test_interrompida_de_outra_serie_para_antes_de_chamar
+    self.assertEqual(rc, 20, out)
+AssertionError: 0 != 20 : papel-serie: ava · papel avaliador · 1 caso(s) · 1 repetição(ões) · referência caro · candidatos —
+▶ a1 · caro · rep 1 · rc 0 · 0s · nominal 1.001 · acumulado 1.001
+RESULTADO: COMPLETA
+→ acumulado da medição: nominal 1.001 · pago 0. Rode papel-medir.sh /private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/sdd-open-hzaobsd5/projeto/med/ava para a escolha.
+
+
+======================================================================
+FAIL: test_papel_sem_pontuador_com_candidatos_nao_paga_a_referencia (test_f23b2_papeis.AT008AT011Executor)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.Qs5Sb5oxDw/tests/test_f23b2_papeis.py", line 584, in test_papel_sem_pontuador_com_candidatos_nao_paga_a_referencia
+    self.assertEqual(rc, 64, out + err)
+AssertionError: 22 != 64 : papel-serie: car · papel cartografo · 1 caso(s) · 1 repetição(ões) · referência caro · candidatos barato
+▶ k1 · caro · rep 1 · rc 0 · 0s · nominal 1.001 · acumulado 1.001
+🛑 papel-serie: a referência não passou na conferência do papel-medir.sh (exit 64): nenhum candidato foi chamado
+RESULTADO: REFERÊNCIA FORA DA META
+→ nada mais foi chamado; o motivo e os acumulados estão em /private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/sdd-open-qo37rf4z/projeto/med/car/PARADA.txt. Retome com o mesmo comando depois de resolver.
+
+
+======================================================================
+FAIL: test_serie_cmd_entre_aspas_no_yaml_desfaz_os_escapes (test_f23b2_papeis.AT008AT011Executor)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.Qs5Sb5oxDw/tests/test_f23b2_papeis.py", line 594, in test_serie_cmd_entre_aspas_no_yaml_desfaz_os_escapes
+    self.assertEqual(len(self.chamadas()), 1)
+AssertionError: 0 != 1
+
+======================================================================
+FAIL: test_execucao_interrompida_tem_o_custo_somado_antes_de_refazer (test_f23b2_papeis.AT008AT011Executor)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.Qs5Sb5oxDw/tests/test_f23b2_papeis.py", line 398, in test_execucao_interrompida_tem_o_custo_somado_antes_de_refazer
+    self.assertIn("não chegou a chamar o agente descartada", out)
+AssertionError: 'não chegou a chamar o agente descartada' not found in '↻ execução interrompida medida (execucoes/c1/caro/1): nominal n/d\npapel-serie: cur · papel curador · 1 caso(s) · 1 repetição(ões) · referência caro · candidatos —\n🛑 papel-serie: acumulado com n/d: o teto não se confere\nRESULTADO: PARADO PELO TETO\n→ nada mais foi chamado; o motivo e os acumulados estão em /private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/sdd-open-oree2twj/projeto/med/cur/PARADA.txt. Retome com o mesmo comando depois de resolver.\n'
+
+----------------------------------------------------------------------
+Ran 9 tests in 6.327s
+
+FAILED (failures=8, errors=1)
+[exit=1]

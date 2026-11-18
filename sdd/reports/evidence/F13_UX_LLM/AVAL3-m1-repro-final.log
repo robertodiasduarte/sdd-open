@@ -1,0 +1,7 @@
+$ R=$PWD/sdd/bin/prompt-drift-scan.sh; T=$(mktemp -d); git show 08fbb5b:sdd/bin/prompt-drift-scan.sh > $T/antes.sh; cd $T; git init -q .; for c in "  - role: \"system\"" "- system: \"x\"" "self.system = \"x\"" "  - role: system"; do printf "%s\n" "$c" | /bin/bash $R --conteudo config/agente.yaml >/dev/null 2>&1; h=$?; printf "%s\n" "$c" | /bin/bash antes.sh --conteudo config/agente.yaml >/dev/null 2>&1; a=$?; echo "[$c] HEAD=$h 08fbb5b=$a"; done; cd /; rm -rf $T; echo fim
+[  - role: "system"] HEAD=0 08fbb5b=2
+[- system: "x"] HEAD=0 08fbb5b=2
+[self.system = "x"] HEAD=0 08fbb5b=2
+[  - role: system] HEAD=0 08fbb5b=0
+fim
+[exit=0]

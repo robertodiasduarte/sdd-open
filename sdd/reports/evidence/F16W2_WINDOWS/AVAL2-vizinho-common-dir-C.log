@@ -1,0 +1,6 @@
+$ cd /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f16w-windows/b56e801b-0f18-49ee-b51c-5b9188b29c23/scratchpad/head && for f in .agents/skills/sdd-higiene-dado/scripts/alarme.sh:38 bin/sdd-open.sh:561; do arq=${f%%:*}; n=${f##*:}; linha=$(sed -n "${n}p" $arq); echo "$arq:$n: $linha"; ROOT='C:/Users/aluno/proj-frente' common='C:/Users/aluno/proj/.git' COMMON='C:/Users/aluno/proj/.git' /bin/bash -c "$linha; echo \"  -> \${COMMON:-} \${common:-}\"" ; done; echo "[rc=$?]"
+.agents/skills/sdd-higiene-dado/scripts/alarme.sh:38: case "${COMMON}" in /*) ;; *) COMMON="${ROOT}/${COMMON}" ;; esac
+  -> C:/Users/aluno/proj-frente/C:/Users/aluno/proj/.git C:/Users/aluno/proj/.git
+bin/sdd-open.sh:561:   case "${common}" in /*) ;; *) common="${ROOT}/${common}" ;; esac
+  -> C:/Users/aluno/proj/.git C:/Users/aluno/proj-frente/C:/Users/aluno/proj/.git
+[rc=0]

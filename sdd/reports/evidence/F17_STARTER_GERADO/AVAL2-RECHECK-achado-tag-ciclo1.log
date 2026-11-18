@@ -1,0 +1,14 @@
+$ git -C open diff --stat; python3 -B open/scripts/gerar-starter.py --tag v9.9.0 r; echo rc=$?
+echo '== o conserto que a mensagem manda (em /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f17-starter-gerado/ec173b46-ec5c-43da-887d-2b87a8b93fd4/scratchpad/aval2.XXgg/wt-tag em vez de /tmp/open-v9.9.0)'; (cd open && git worktree add -q --detach /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f17-starter-gerado/ec173b46-ec5c-43da-887d-2b87a8b93fd4/scratchpad/aval2.XXgg/wt-tag v9.9.0) && python3 -B /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f17-starter-gerado/ec173b46-ec5c-43da-887d-2b87a8b93fd4/scratchpad/aval2.XXgg/wt-tag/scripts/gerar-starter.py --tag v9.9.0 r | tail -1; echo rc=${PIPESTATUS[0]}; diff -r -x .git starter r && echo 'saída = a da 1ª geração (diff -r vazio)'; git -C open worktree remove --force /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f17-starter-gerado/ec173b46-ec5c-43da-887d-2b87a8b93fd4/scratchpad/aval2.XXgg/wt-tag; git -C open checkout -q -- scripts/gerar-starter.py; git -C open status --porcelain | wc -l
+ scripts/gerar-starter.py | 1 +
+ 1 file changed, 1 insertion(+)
+🛑 este gerador difere do que está na tag v9.9.0: rode o da tag, de uma worktree dela (git worktree add --detach /tmp/open-v9.9.0 v9.9.0 && python3 /tmp/open-v9.9.0/scripts/gerar-starter.py --tag v9.9.0 <starter>)
+RESULTADO: NADA FOI GRAVADO
+→ corrija a causa acima e rode de novo.
+rc=64
+== o conserto que a mensagem manda (em /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f17-starter-gerado/ec173b46-ec5c-43da-887d-2b87a8b93fd4/scratchpad/aval2.XXgg/wt-tag em vez de /tmp/open-v9.9.0)
+→ no starter: python3 scripts/check-gerado.py, os testes dele e um commit numa branch.
+rc=0
+saída = a da 1ª geração (diff -r vazio)
+       0
+rc=0

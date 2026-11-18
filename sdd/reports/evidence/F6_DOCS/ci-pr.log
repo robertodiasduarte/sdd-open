@@ -1,0 +1,5 @@
+$ GIT_TERMINAL_PROMPT=0 gh pr checks 8 -R robertodiasduarte/sdd-open && GIT_TERMINAL_PROMPT=0 gh run list -R robertodiasduarte/sdd-open --branch feat/f6-docs --limit 3 --json databaseId,headSha,workflowName,conclusion
+Testes no piso (macOS, só leitura)	pass	6m34s	https://github.com/robertodiasduarte/sdd-open/actions/runs/40984992013/job/123833818348	
+gate	pass	3m13s	https://github.com/robertodiasduarte/sdd-open/actions/runs/40984992013/job/123833818566	
+[{"conclusion":"success","databaseId":40984992013,"headSha":"1c9bbc7d3280a44d3452c6411ba8c8e40b4329a0","workflowName":"publish-gate"}]
+exit=0

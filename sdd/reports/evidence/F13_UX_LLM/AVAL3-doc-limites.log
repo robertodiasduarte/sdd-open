@@ -1,0 +1,8 @@
+$ grep -n 'Limits' docs/llm-in-code.md; grep -n 'does fire' docs/llm-in-code.md; grep -n 'ancorados à esquerda' sdd/features/DESIGN_F13_UX_LLM.md; grep -n 'role: "system"\|- role' tests/test_prompt_drift_scan.py; echo fim
+82:evaluated. **Limits:** the search covers common forms, line by line, and is not exhaustive: fixed text on the line after the
+84:is the current folder. A `system: "linux"` in a YAML file does fire: record it as a false positive.
+94:**Choice:** ordem fixa de avaliação, por arquivo: pasta de teste → sinal de pasta `prompts` (em qualquer caixa) → nome de teste → `.md` encerra sem achado → sinal de nome com `prompt` → conteúdo. Conteúdo: SDK (`messages\.create|chat\.completions|responses\.create|generateContent|generate_content`), `system` com literal por `:` ou `=`, inclusive com a chave entre aspas, e `role` de sistema, ancorados à esquerda por `(^|[^[:alnum:]_-])`, para `package-ecosystem:`, `filesystem:` e `operating_system:` não casarem; e `(<slot>)` seguido de espaços e literal. Os parênteses em volta do slot fazem `a|b` valer inteiro. **Normalização:** o caminho, relativo ou absoluto, vira físico pelo ancestral existente mais profundo (`cd … && pwd -P`, sem `realpath`, porque com `--conteudo` a pasta pode não existir); a raiz também é física. Dentro da raiz, os sinais olham o caminho relativo a ela. Fora da raiz, o sinal de `prompts` olha todos os componentes (alarme a mais é melhor que cegueira) e a exclusão de teste olha só o nome do arquivo. `..` no trecho que não existe sai 64.
+72:                             ('{ role: "system", content: x }\n', "role de sistema"),
+84:                      '"file_system": "x"\n', 'file_role: "system"\n', 'role: "user"\n', "system = obter()\n",
+fim
+[exit=0]

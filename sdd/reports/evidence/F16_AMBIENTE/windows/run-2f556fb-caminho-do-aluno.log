@@ -1,0 +1,1824 @@
+﻿2026-11-11T07:08:28.6334712Z Current runner version: '2.338.2'
+2026-11-11T07:08:28.6356638Z ##[group]Runner Image Provisioner
+2026-11-11T07:08:28.6357196Z Hosted Compute Agent
+2026-11-11T07:08:28.6357527Z Version: 20261103.629
+2026-11-11T07:08:28.6357898Z Commit: 15dbd9ccb5dbf34fae002b6ed1a2670f52df37bc
+2026-11-11T07:08:28.6358329Z Build Date: 2026-11-03T17:26:59Z
+2026-11-11T07:08:28.6358742Z Worker ID: {ffae826b-6a46-46b4-a9eb-093dd4beba81}
+2026-11-11T07:08:28.6359151Z Region: centralus
+2026-11-11T07:08:28.6359826Z Cloud: Azure
+2026-11-11T07:08:28.6360169Z ##[endgroup]
+2026-11-11T07:08:28.6361010Z ##[group]Operating System
+2026-11-11T07:08:28.6361351Z Microsoft Windows Server 2025
+2026-11-11T07:08:28.6361754Z 10.0.26100
+2026-11-11T07:08:28.6362044Z Datacenter
+2026-11-11T07:08:28.6362332Z ##[endgroup]
+2026-11-11T07:08:28.6362637Z ##[group]Runner Image
+2026-11-11T07:08:28.6362989Z Image: windows-2025-vs2026
+2026-11-11T07:08:28.6363338Z Version: 20261103.298.1
+2026-11-11T07:08:28.6364396Z Included Software: https://github.com/actions/runner-images/blob/win25-vs2026/20261103.298/images/windows/Windows2025-VS2026-Readme.md
+2026-11-11T07:08:28.6365314Z Image Release: https://github.com/actions/runner-images/releases/tag/win25-vs2026%2F20261103.298
+2026-11-11T07:08:28.6365863Z ##[endgroup]
+2026-11-11T07:08:28.6366550Z ##[group]GITHUB_TOKEN Permissions
+2026-11-11T07:08:28.6367807Z Contents: read
+2026-11-11T07:08:28.6368138Z Metadata: read
+2026-11-11T07:08:28.6368449Z ##[endgroup]
+2026-11-11T07:08:28.6370316Z Secret source: Actions
+2026-11-11T07:08:28.6370842Z Cache mode: write
+2026-11-11T07:08:28.6371273Z Prepare workflow directory
+2026-11-11T07:08:28.6710354Z Prepare all required actions
+2026-11-11T07:08:28.6762458Z Getting action download info
+2026-11-11T07:08:28.9324783Z Download action repository 'actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09' (SHA:fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09)
+2026-11-11T07:08:29.0184812Z Download action repository 'actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0' (SHA:6d4fd22b20465ccc0f7354476588e8df7c9ca0e0)
+2026-11-11T07:08:29.4963244Z Complete job name: Testes no Windows (Git Bash + Python nativo, só leitura)
+2026-11-11T07:08:29.6105785Z ##[group]Run actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09
+2026-11-11T07:08:29.6106621Z with:
+2026-11-11T07:08:29.6106843Z   fetch-depth: 0
+2026-11-11T07:08:29.6107094Z   repository: robertodiasduarte/sdd-open
+2026-11-11T07:08:29.6109567Z   token: ***
+2026-11-11T07:08:29.6109791Z   ssh-strict: true
+2026-11-11T07:08:29.6110024Z   ssh-user: git
+2026-11-11T07:08:29.6110263Z   persist-credentials: true
+2026-11-11T07:08:29.6110534Z   clean: true
+2026-11-11T07:08:29.6110774Z   sparse-checkout-cone-mode: true
+2026-11-11T07:08:29.6111068Z   fetch-tags: false
+2026-11-11T07:08:29.6111312Z   show-progress: true
+2026-11-11T07:08:29.6111558Z   lfs: false
+2026-11-11T07:08:29.6111785Z   submodules: false
+2026-11-11T07:08:29.6112025Z   set-safe-directory: true
+2026-11-11T07:08:29.6112308Z   allow-unsafe-pr-checkout: false
+2026-11-11T07:08:29.6112747Z ##[endgroup]
+2026-11-11T07:08:29.7274349Z Syncing repository: robertodiasduarte/sdd-open
+2026-11-11T07:08:29.7275866Z ##[group]Getting Git version info
+2026-11-11T07:08:29.7276254Z Working directory is 'D:\a\sdd-open\sdd-open'
+2026-11-11T07:08:29.7750097Z [command]"C:\Program Files\Git\bin\git.exe" version
+2026-11-11T07:08:30.0875382Z git version 2.56.0.windows.4
+2026-11-11T07:08:30.0934813Z ##[endgroup]
+2026-11-11T07:08:30.0951805Z Temporarily overriding HOME='D:\a\_temp\11b480c8-c2ab-4c59-83c0-39dd0bcd6962' before making global git config changes
+2026-11-11T07:08:30.0952758Z Adding repository directory to the temporary git global config as a safe directory
+2026-11-11T07:08:30.0960305Z [command]"C:\Program Files\Git\bin\git.exe" config --global --add safe.directory D:\a\sdd-open\sdd-open
+2026-11-11T07:08:30.1672022Z Deleting the contents of 'D:\a\sdd-open\sdd-open'
+2026-11-11T07:08:30.1677544Z ##[group]Initializing the repository
+2026-11-11T07:08:30.1685382Z [command]"C:\Program Files\Git\bin\git.exe" init D:\a\sdd-open\sdd-open
+2026-11-11T07:08:30.2393272Z Initialized empty Git repository in D:/a/sdd-open/sdd-open/.git/
+2026-11-11T07:08:30.2441376Z [command]"C:\Program Files\Git\bin\git.exe" remote add origin https://github.com/robertodiasduarte/sdd-open
+2026-11-11T07:08:30.3094299Z ##[endgroup]
+2026-11-11T07:08:30.3095087Z ##[group]Disabling automatic garbage collection
+2026-11-11T07:08:30.3104462Z [command]"C:\Program Files\Git\bin\git.exe" config --local gc.auto 0
+2026-11-11T07:08:30.3459646Z ##[endgroup]
+2026-11-11T07:08:30.3460930Z ##[group]Setting up auth
+2026-11-11T07:08:30.3469214Z [command]"C:\Program Files\Git\bin\git.exe" config --local --name-only --get-regexp core\.sshCommand
+2026-11-11T07:08:30.3820276Z [command]"C:\Program Files\Git\bin\git.exe" submodule foreach --recursive "sh -c \"git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :\""
+2026-11-11T07:08:31.7553491Z [command]"C:\Program Files\Git\bin\git.exe" config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+2026-11-11T07:08:31.7877913Z [command]"C:\Program Files\Git\bin\git.exe" submodule foreach --recursive "sh -c \"git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :\""
+2026-11-11T07:08:32.2557643Z [command]"C:\Program Files\Git\bin\git.exe" config --local --name-only --get-regexp ^includeIf\.gitdir:
+2026-11-11T07:08:32.2880229Z [command]"C:\Program Files\Git\bin\git.exe" submodule foreach --recursive "git config --local --show-origin --name-only --get-regexp remote.origin.url"
+2026-11-11T07:08:32.8064132Z [command]"C:\Program Files\Git\bin\git.exe" config --local http.https://github.com/.extraheader "AUTHORIZATION: basic ***"
+2026-11-11T07:08:32.8383876Z ##[endgroup]
+2026-11-11T07:08:32.8384647Z ##[group]Fetching the repository
+2026-11-11T07:08:32.8397254Z [command]"C:\Program Files\Git\bin\git.exe" -c protocol.version=2 fetch --prune --no-recurse-submodules origin +refs/heads/*:refs/remotes/origin/* +refs/tags/*:refs/tags/* +bd9e2e9a0701c901562bc9f518a135299a1082af:refs/remotes/pull/25/merge
+2026-11-11T07:08:34.2339149Z From https://github.com/robertodiasduarte/sdd-open
+2026-11-11T07:08:34.2340346Z  * [new branch]      docs/f15-slots                           -> origin/docs/f15-slots
+2026-11-11T07:08:34.2342812Z  * [new branch]      docs/incorporar-starter                  -> origin/docs/incorporar-starter
+2026-11-11T07:08:34.2343944Z  * [new branch]      feat/f10-revisao                         -> origin/feat/f10-revisao
+2026-11-11T07:08:34.2344664Z  * [new branch]      feat/f11-gate                            -> origin/feat/f11-gate
+2026-11-11T07:08:34.2345567Z  * [new branch]      feat/f12-contexto                        -> origin/feat/f12-contexto
+2026-11-11T07:08:34.2346256Z  * [new branch]      feat/f13-ux-llm                          -> origin/feat/f13-ux-llm
+2026-11-11T07:08:34.2347014Z  * [new branch]      feat/f14-drive                           -> origin/feat/f14-drive
+2026-11-11T07:08:34.2347841Z  * [new branch]      feat/f14-drive-v271                      -> origin/feat/f14-drive-v271
+2026-11-11T07:08:34.2348562Z  * [new branch]      feat/f14-playbook                        -> origin/feat/f14-playbook
+2026-11-11T07:08:34.2349251Z  * [new branch]      feat/f15-slots                           -> origin/feat/f15-slots
+2026-11-11T07:08:34.2349904Z  * [new branch]      feat/f16-ambiente                        -> origin/feat/f16-ambiente
+2026-11-11T07:08:34.2350639Z  * [new branch]      feat/f19-custo-revisores                 -> origin/feat/f19-custo-revisores
+2026-11-11T07:08:34.2351517Z  * [new branch]      feat/f21-engenharia-reversa              -> origin/feat/f21-engenharia-reversa
+2026-11-11T07:08:34.2355427Z  * [new branch]      feat/f4-conversa                         -> origin/feat/f4-conversa
+2026-11-11T07:08:34.2356247Z  * [new branch]      feat/f5-conhecimento                     -> origin/feat/f5-conhecimento
+2026-11-11T07:08:34.2357944Z  * [new branch]      feat/f6-docs                             -> origin/feat/f6-docs
+2026-11-11T07:08:34.2358523Z  * [new branch]      feat/f7-evidencia                        -> origin/feat/f7-evidencia
+2026-11-11T07:08:34.2359111Z  * [new branch]      feat/f8-hooks                            -> origin/feat/f8-hooks
+2026-11-11T07:08:34.2359653Z  * [new branch]      feat/f9-fluxo                            -> origin/feat/f9-fluxo
+2026-11-11T07:08:34.2360267Z  * [new branch]      feat/incorporar-starter                  -> origin/feat/incorporar-starter
+2026-11-11T07:08:34.2360856Z  * [new branch]      feat/m1                                  -> origin/feat/m1
+2026-11-11T07:08:34.2361355Z  * [new branch]      feat/w0-m1                               -> origin/feat/w0-m1
+2026-11-11T07:08:34.2361985Z  * [new branch]      fix/guardas-pasta-e-gancho-encadeado     -> origin/fix/guardas-pasta-e-gancho-encadeado
+2026-11-11T07:08:34.2362692Z  * [new branch]      fix/teto-ubuntu-release                  -> origin/fix/teto-ubuntu-release
+2026-11-11T07:08:34.2363342Z  * [new branch]      main                                     -> origin/main
+2026-11-11T07:08:34.2364102Z  * [new tag]         docs-2026-10-29                          -> docs-2026-10-29
+2026-11-11T07:08:34.2364623Z  * [new tag]         v1.0.0                                   -> v1.0.0
+2026-11-11T07:08:34.2365062Z  * [new tag]         v2.0.0                                   -> v2.0.0
+2026-11-11T07:08:34.2365542Z  * [new tag]         v2.0.1                                   -> v2.0.1
+2026-11-11T07:08:34.2365971Z  * [new tag]         v2.1.0                                   -> v2.1.0
+2026-11-11T07:08:34.2366398Z  * [new tag]         v2.10.0                                  -> v2.10.0
+2026-11-11T07:08:34.2366835Z  * [new tag]         v2.10.1                                  -> v2.10.1
+2026-11-11T07:08:34.2367298Z  * [new tag]         v2.2.0                                   -> v2.2.0
+2026-11-11T07:08:34.2367718Z  * [new tag]         v2.2.1                                   -> v2.2.1
+2026-11-11T07:08:34.2368810Z  * [new tag]         v2.2.10                                  -> v2.2.10
+2026-11-11T07:08:34.2369271Z  * [new tag]         v2.2.2                                   -> v2.2.2
+2026-11-11T07:08:34.2369688Z  * [new tag]         v2.2.3                                   -> v2.2.3
+2026-11-11T07:08:34.2370084Z  * [new tag]         v2.2.4                                   -> v2.2.4
+2026-11-11T07:08:34.2370542Z  * [new tag]         v2.2.5                                   -> v2.2.5
+2026-11-11T07:08:34.2370957Z  * [new tag]         v2.2.6                                   -> v2.2.6
+2026-11-11T07:08:34.2371383Z  * [new tag]         v2.2.7                                   -> v2.2.7
+2026-11-11T07:08:34.2371796Z  * [new tag]         v2.2.8                                   -> v2.2.8
+2026-11-11T07:08:34.2372190Z  * [new tag]         v2.2.9                                   -> v2.2.9
+2026-11-11T07:08:34.2372654Z  * [new tag]         v2.3.0                                   -> v2.3.0
+2026-11-11T07:08:34.2373094Z  * [new tag]         v2.3.1                                   -> v2.3.1
+2026-11-11T07:08:34.2373578Z  * [new tag]         v2.4.0                                   -> v2.4.0
+2026-11-11T07:08:34.2374001Z  * [new tag]         v2.5.0                                   -> v2.5.0
+2026-11-11T07:08:34.2374398Z  * [new tag]         v2.6.0                                   -> v2.6.0
+2026-11-11T07:08:34.2374822Z  * [new tag]         v2.7.0                                   -> v2.7.0
+2026-11-11T07:08:34.2375258Z  * [new tag]         v2.7.1                                   -> v2.7.1
+2026-11-11T07:08:34.2375700Z  * [new tag]         v2.7.2                                   -> v2.7.2
+2026-11-11T07:08:34.2376153Z  * [new tag]         v2.8.0                                   -> v2.8.0
+2026-11-11T07:08:34.2376599Z  * [new tag]         v2.9.0                                   -> v2.9.0
+2026-11-11T07:08:34.2377314Z  * [new ref]         bd9e2e9a0701c901562bc9f518a135299a1082af -> pull/25/merge
+2026-11-11T07:08:34.2401495Z ##[endgroup]
+2026-11-11T07:08:34.2402033Z ##[group]Determining the checkout info
+2026-11-11T07:08:34.2402597Z ##[endgroup]
+2026-11-11T07:08:34.2410147Z [command]"C:\Program Files\Git\bin\git.exe" sparse-checkout disable
+2026-11-11T07:08:34.2915841Z [command]"C:\Program Files\Git\bin\git.exe" config --local --unset-all extensions.worktreeConfig
+2026-11-11T07:08:34.3223529Z ##[group]Checking out the ref
+2026-11-11T07:08:34.3231414Z [command]"C:\Program Files\Git\bin\git.exe" checkout --progress --force refs/remotes/pull/25/merge
+2026-11-11T07:08:34.4510863Z Note: switching to 'refs/remotes/pull/25/merge'.
+2026-11-11T07:08:34.4512825Z 
+2026-11-11T07:08:34.4513138Z You are in 'detached HEAD' state. You can look around, make experimental
+2026-11-11T07:08:34.4513589Z changes and commit them, and you can discard any commits you make in this
+2026-11-11T07:08:34.4514203Z state without impacting any branches by switching back to a branch.
+2026-11-11T07:08:34.4514544Z 
+2026-11-11T07:08:34.4514757Z If you want to create a new branch to retain commits you create, you may
+2026-11-11T07:08:34.4515196Z do so (now or later) by using -c with the switch command. Example:
+2026-11-11T07:08:34.4515406Z 
+2026-11-11T07:08:34.4515544Z   git switch -c <new-branch-name>
+2026-11-11T07:08:34.4515683Z 
+2026-11-11T07:08:34.4515790Z Or undo this operation with:
+2026-11-11T07:08:34.4515898Z 
+2026-11-11T07:08:34.4515983Z   git switch -
+2026-11-11T07:08:34.4516062Z 
+2026-11-11T07:08:34.4516220Z Turn off this advice by setting config variable advice.detachedHead to false
+2026-11-11T07:08:34.4516424Z 
+2026-11-11T07:08:34.4516729Z HEAD is now at bd9e2e9 Merge 2f556fb9e2a1c2ec2ba302eb4769198ae5a1d331 into 36d04541bbc862b6c48760a9ee66dc0e2a43a1d3
+2026-11-11T07:08:34.4662949Z ##[endgroup]
+2026-11-11T07:08:34.5072144Z [command]"C:\Program Files\Git\bin\git.exe" log -1 --format=%H
+2026-11-11T07:08:34.5347723Z bd9e2e9a0701c901562bc9f518a135299a1082af
+2026-11-11T07:08:34.5795153Z ##[group]Run actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0
+2026-11-11T07:08:34.5795464Z with:
+2026-11-11T07:08:34.5795578Z   python-version: 3.12
+2026-11-11T07:08:34.5795704Z   check-latest: false
+2026-11-11T07:08:34.5797235Z   token: ***
+2026-11-11T07:08:34.5797411Z   mirror: https://raw.githubusercontent.com/actions/python-versions/main
+2026-11-11T07:08:34.5797629Z   update-environment: true
+2026-11-11T07:08:34.5797762Z   allow-prereleases: false
+2026-11-11T07:08:34.5797884Z   freethreaded: false
+2026-11-11T07:08:34.5798022Z ##[endgroup]
+2026-11-11T07:08:34.6930921Z ##[group]Installed versions
+2026-11-11T07:08:34.7076311Z Successfully set up CPython (3.12.10)
+2026-11-11T07:08:34.7076855Z ##[endgroup]
+2026-11-11T07:08:34.7326724Z ##[group]Run mkdir -p "$RUNNER_TEMP/bin"
+2026-11-11T07:08:34.7327052Z mkdir -p "$RUNNER_TEMP/bin"
+2026-11-11T07:08:34.7327265Z curl -fsSL -o "$RUNNER_TEMP/gitleaks.zip" \
+2026-11-11T07:08:34.7327643Z   https://github.com/gitleaks/gitleaks/releases/download/v8.30.1/gitleaks_8.30.1_windows_x64.zip
+2026-11-11T07:08:34.7327991Z python -m zipfile -e "$RUNNER_TEMP/gitleaks.zip" "$RUNNER_TEMP/bin"
+2026-11-11T07:08:34.7328214Z "$RUNNER_TEMP/bin/gitleaks.exe" version
+2026-11-11T07:08:34.7328395Z echo "$RUNNER_TEMP/bin" >> "$GITHUB_PATH"
+2026-11-11T07:08:34.7343457Z shell: C:\Program Files\Git\bin\bash.EXE --noprofile --norc -e -o pipefail {0}
+2026-11-11T07:08:34.7343689Z env:
+2026-11-11T07:08:34.7343853Z   pythonLocation: C:\hostedtoolcache\windows\Python\3.12.10\x64
+2026-11-11T07:08:34.7344118Z   PKG_CONFIG_PATH: C:\hostedtoolcache\windows\Python\3.12.10\x64/lib/pkgconfig
+2026-11-11T07:08:34.7344406Z   Python_ROOT_DIR: C:\hostedtoolcache\windows\Python\3.12.10\x64
+2026-11-11T07:08:34.7344630Z   Python2_ROOT_DIR: C:\hostedtoolcache\windows\Python\3.12.10\x64
+2026-11-11T07:08:34.7345050Z   Python3_ROOT_DIR: C:\hostedtoolcache\windows\Python\3.12.10\x64
+2026-11-11T07:08:34.7345224Z ##[endgroup]
+2026-11-11T07:08:36.7762698Z 8.30.1
+2026-11-11T07:08:36.7992214Z ##[group]Run command -v bash
+2026-11-11T07:08:36.7992450Z command -v bash
+2026-11-11T07:08:36.7992700Z bash -c 'echo "bash $BASH_VERSION"; uname -s; case "$(uname -s)" in MINGW*|MSYS*) ;; *) exit 1 ;; esac'
+2026-11-11T07:08:36.7993048Z python -c 'import os, sys; print(sys.version, os.name); sys.exit(os.name != "nt")'
+2026-11-11T07:08:36.7993348Z echo "SDD_TEST_BASH=$(cygpath -w "$(command -v bash)")" >> "$GITHUB_ENV"
+2026-11-11T07:08:36.8004790Z shell: C:\Program Files\Git\bin\bash.EXE --noprofile --norc -e -o pipefail {0}
+2026-11-11T07:08:36.8005010Z env:
+2026-11-11T07:08:36.8005172Z   pythonLocation: C:\hostedtoolcache\windows\Python\3.12.10\x64
+2026-11-11T07:08:36.8005426Z   PKG_CONFIG_PATH: C:\hostedtoolcache\windows\Python\3.12.10\x64/lib/pkgconfig
+2026-11-11T07:08:36.8005689Z   Python_ROOT_DIR: C:\hostedtoolcache\windows\Python\3.12.10\x64
+2026-11-11T07:08:36.8005959Z   Python2_ROOT_DIR: C:\hostedtoolcache\windows\Python\3.12.10\x64
+2026-11-11T07:08:36.8006183Z   Python3_ROOT_DIR: C:\hostedtoolcache\windows\Python\3.12.10\x64
+2026-11-11T07:08:36.8006359Z ##[endgroup]
+2026-11-11T07:08:36.8299604Z /usr/bin/bash
+2026-11-11T07:08:36.8568470Z bash 5.3.15(2)-release
+2026-11-11T07:08:36.8827155Z MINGW64_NT-10.0-26100
+2026-11-11T07:08:36.9337287Z 3.12.10 (tags/v3.12.10:0cc8128, Apr  8 2025, 12:21:36) [MSC v.1943 64 bit (AMD64)] nt
+2026-11-11T07:08:36.9993503Z ##[group]Run bash scripts/publish-gate.sh "$(pwd)"
+2026-11-11T07:08:36.9993908Z bash scripts/publish-gate.sh "$(pwd)"
+2026-11-11T07:08:37.0007851Z shell: C:\Program Files\Git\bin\bash.EXE --noprofile --norc -e -o pipefail {0}
+2026-11-11T07:08:37.0008223Z env:
+2026-11-11T07:08:37.0008476Z   pythonLocation: C:\hostedtoolcache\windows\Python\3.12.10\x64
+2026-11-11T07:08:37.0008898Z   PKG_CONFIG_PATH: C:\hostedtoolcache\windows\Python\3.12.10\x64/lib/pkgconfig
+2026-11-11T07:08:37.0009348Z   Python_ROOT_DIR: C:\hostedtoolcache\windows\Python\3.12.10\x64
+2026-11-11T07:08:37.0009748Z   Python2_ROOT_DIR: C:\hostedtoolcache\windows\Python\3.12.10\x64
+2026-11-11T07:08:37.0010135Z   Python3_ROOT_DIR: C:\hostedtoolcache\windows\Python\3.12.10\x64
+2026-11-11T07:08:37.0010474Z   SDD_TEST_BASH: C:\Program Files\Git\usr\bin\bash.exe
+2026-11-11T07:08:37.0010745Z   PUBLISH_GATE_MODE: ci
+2026-11-11T07:08:37.0010931Z ##[endgroup]
+2026-11-11T07:08:37.0749141Z publish-gate — tree: /d/a/sdd-open/sdd-open — mode: ci
+2026-11-11T07:08:37.0752497Z ──────────────────────────────────────────────────────────────────
+2026-11-11T07:08:37.0752708Z G1 secrets (gitleaks)
+2026-11-11T07:08:37.5678577Z   ✅ no secrets detected
+2026-11-11T07:08:37.5888810Z G2 forbidden patterns
+2026-11-11T07:08:39.6545588Z   ✅ no forbidden pattern matched
+2026-11-11T07:08:39.6545917Z G3 allowlist (MANIFEST.txt)
+2026-11-11T07:08:47.5384521Z   ✅ tree and manifest match in both directions
+2026-11-11T07:08:47.5384871Z G4 verify-gate exit contract
+2026-11-11T07:08:48.4142211Z   ✅ DEFINE_FIXTURE_NEEDS_CLARIFICATION.md → exit 5
+2026-11-11T07:08:49.2354125Z   ✅ DEFINE_FIXTURE_CONTROLE.md → exit 0
+2026-11-11T07:08:49.6921725Z   ✅ DEFINE_FIXTURE_SEM_BLOCO.md → exit 64
+2026-11-11T07:08:49.7452527Z G5 documentation
+2026-11-11T07:08:49.7936458Z   ✅ docs present, cross-linked, attribution in place
+2026-11-11T07:08:49.7937207Z ──────────────────────────────────────────────────────────────────
+2026-11-11T07:08:49.7937805Z ✅ publish-gate GREEN — tree is publishable (human review of the file list still required)
+2026-11-11T07:08:49.8098487Z ##[group]Run python -B -m unittest -v test_checar test_inventario test_python_resolver test_windows test_f16_textos
+2026-11-11T07:08:49.8098983Z python -B -m unittest -v test_checar test_inventario test_python_resolver test_windows test_f16_textos
+2026-11-11T07:08:49.8108947Z shell: C:\Program Files\Git\bin\bash.EXE --noprofile --norc -e -o pipefail {0}
+2026-11-11T07:08:49.8109894Z env:
+2026-11-11T07:08:49.8110062Z   pythonLocation: C:\hostedtoolcache\windows\Python\3.12.10\x64
+2026-11-11T07:08:49.8110318Z   PKG_CONFIG_PATH: C:\hostedtoolcache\windows\Python\3.12.10\x64/lib/pkgconfig
+2026-11-11T07:08:49.8110571Z   Python_ROOT_DIR: C:\hostedtoolcache\windows\Python\3.12.10\x64
+2026-11-11T07:08:49.8110811Z   Python2_ROOT_DIR: C:\hostedtoolcache\windows\Python\3.12.10\x64
+2026-11-11T07:08:49.8111049Z   Python3_ROOT_DIR: C:\hostedtoolcache\windows\Python\3.12.10\x64
+2026-11-11T07:08:49.8111273Z   SDD_TEST_BASH: C:\Program Files\Git\usr\bin\bash.exe
+2026-11-11T07:08:49.8111487Z   PYTHONUNBUFFERED: 1
+2026-11-11T07:08:49.8111620Z ##[endgroup]
+2026-11-11T07:08:53.6089739Z test_api_fora_do_ar_nao_diz_nada (test_checar.TestDadoExposto.test_api_fora_do_ar_nao_diz_nada) ... ok
+2026-11-11T07:08:56.6320494Z test_env_example_e_sample_nao_alarmam (test_checar.TestDadoExposto.test_env_example_e_sample_nao_alarmam) ... Exception in thread Thread-56 (_readerthread):
+2026-11-11T07:08:56.6321294Z Traceback (most recent call last):
+2026-11-11T07:08:56.6329132Z   File "C:\hostedtoolcache\windows\Python\3.12.10\x64\Lib\threading.py", line 1075, in _bootstrap_inner
+2026-11-11T07:08:56.6342834Z     self.run()
+2026-11-11T07:08:56.6383186Z   File "C:\hostedtoolcache\windows\Python\3.12.10\x64\Lib\threading.py", line 1012, in run
+2026-11-11T07:08:56.6385897Z     self._target(*self._args, **self._kwargs)
+2026-11-11T07:08:56.6386417Z   File "C:\hostedtoolcache\windows\Python\3.12.10\x64\Lib\subprocess.py", line 1599, in _readerthread
+2026-11-11T07:08:56.6486507Z     buffer.append(fh.read())
+2026-11-11T07:08:56.6490131Z                   ^^^^^^^^^
+2026-11-11T07:08:56.6490642Z   File "C:\hostedtoolcache\windows\Python\3.12.10\x64\Lib\encodings\cp1252.py", line 23, in decode
+2026-11-11T07:08:56.6534523Z     return codecs.charmap_decode(input,self.errors,decoding_table)[0]
+2026-11-11T07:08:56.6536055Z            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+2026-11-11T07:08:56.6536601Z UnicodeDecodeError: 'charmap' codec can't decode byte 0x8f in position 5: character maps to <undefined>
+2026-11-11T07:08:56.6549737Z ERROR
+2026-11-11T07:08:59.5714282Z test_env_ignorado_nao_diz_nada (test_checar.TestDadoExposto.test_env_ignorado_nao_diz_nada) ... ok
+2026-11-11T07:09:02.4309045Z test_env_nao_ignorado_e_aviso (test_checar.TestDadoExposto.test_env_nao_ignorado_e_aviso) ... Exception in thread Thread-110 (_readerthread):
+2026-11-11T07:09:02.4309811Z Traceback (most recent call last):
+2026-11-11T07:09:02.4310698Z   File "C:\hostedtoolcache\windows\Python\3.12.10\x64\Lib\threading.py", line 1075, in _bootstrap_inner
+2026-11-11T07:09:02.4311570Z     self.run()
+2026-11-11T07:09:02.4312038Z   File "C:\hostedtoolcache\windows\Python\3.12.10\x64\Lib\threading.py", line 1012, in run
+2026-11-11T07:09:02.4314891Z     self._target(*self._args, **self._kwargs)
+2026-11-11T07:09:02.4317468Z   File "C:\hostedtoolcache\windows\Python\3.12.10\x64\Lib\subprocess.py", line 1599, in _readerthread
+2026-11-11T07:09:02.4318636Z     buffer.append(fh.read())
+2026-11-11T07:09:02.4319215Z                   ^^^^^^^^^
+2026-11-11T07:09:02.4319921Z   File "C:\hostedtoolcache\windows\Python\3.12.10\x64\Lib\encodings\cp1252.py", line 23, in decode
+2026-11-11T07:09:02.4320451Z     return codecs.charmap_decode(input,self.errors,decoding_table)[0]
+2026-11-11T07:09:02.4322320Z            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+2026-11-11T07:09:02.4323011Z UnicodeDecodeError: 'charmap' codec can't decode byte 0x8f in position 5: character maps to <undefined>
+2026-11-11T07:09:02.4335640Z ERROR
+2026-11-11T07:09:05.4368605Z test_env_rastreado_e_dado_exposto_no_topo (test_checar.TestDadoExposto.test_env_rastreado_e_dado_exposto_no_topo) ... FAIL
+2026-11-11T07:09:12.3915966Z test_npm_ignore_scripts (test_checar.TestDadoExposto.test_npm_ignore_scripts) ... Exception in thread Thread-164 (_readerthread):
+2026-11-11T07:09:12.3917130Z Traceback (most recent call last):
+2026-11-11T07:09:12.3918553Z   File "C:\hostedtoolcache\windows\Python\3.12.10\x64\Lib\threading.py", line 1075, in _bootstrap_inner
+2026-11-11T07:09:12.3918981Z     self.run()
+2026-11-11T07:09:12.3919782Z   File "C:\hostedtoolcache\windows\Python\3.12.10\x64\Lib\threading.py", line 1012, in run
+2026-11-11T07:09:12.3921989Z     self._target(*self._args, **self._kwargs)
+2026-11-11T07:09:12.3924391Z   File "C:\hostedtoolcache\windows\Python\3.12.10\x64\Lib\subprocess.py", line 1599, in _readerthread
+2026-11-11T07:09:12.3926257Z     buffer.append(fh.read())
+2026-11-11T07:09:12.3926738Z                   ^^^^^^^^^
+2026-11-11T07:09:12.3927378Z   File "C:\hostedtoolcache\windows\Python\3.12.10\x64\Lib\encodings\cp1252.py", line 23, in decode
+2026-11-11T07:09:12.3928463Z     return codecs.charmap_decode(input,self.errors,decoding_table)[0]
+2026-11-11T07:09:12.3929784Z            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+2026-11-11T07:09:12.3930503Z UnicodeDecodeError: 'charmap' codec can't decode byte 0x8f in position 5: character maps to <undefined>
+2026-11-11T07:09:12.3939600Z ERROR
+2026-11-11T07:09:15.6970026Z test_p12_e_env_variante (test_checar.TestDadoExposto.test_p12_e_env_variante) ... ok
+2026-11-11T07:09:20.8872590Z test_pem_publico_nao_alarma_privado_alarma (test_checar.TestDadoExposto.test_pem_publico_nao_alarma_privado_alarma) ... ok
+2026-11-11T07:09:23.8665140Z test_pfx_em_repo_publico_diz_que_esta_na_internet (test_checar.TestDadoExposto.test_pfx_em_repo_publico_diz_que_esta_na_internet) ... FAIL
+2026-11-11T07:09:26.7505576Z test_repo_privado_nao_menciona_visibilidade (test_checar.TestDadoExposto.test_repo_privado_nao_menciona_visibilidade) ... ok
+2026-11-11T07:09:29.6464002Z test_repo_publico_sem_segredo_continua_uma_linha (test_checar.TestDadoExposto.test_repo_publico_sem_segredo_continua_uma_linha) ... FAIL
+2026-11-11T07:09:32.4420873Z test_saudavel_e_uma_linha_com_identificacao (test_checar.TestDadoExposto.test_saudavel_e_uma_linha_com_identificacao) ... FAIL
+2026-11-11T07:09:35.2115380Z test_sem_env_nao_fala_de_gitignore (test_checar.TestDadoExposto.test_sem_env_nao_fala_de_gitignore) ... ok
+2026-11-11T07:09:37.8914296Z test_sem_package_json_nao_fala_de_npm (test_checar.TestDadoExposto.test_sem_package_json_nao_fala_de_npm) ... ok
+2026-11-11T07:09:39.4565613Z test_app_do_macos_fora_do_path_vira_open_a (test_checar.TestEditor.test_app_do_macos_fora_do_path_vira_open_a) ... ok
+2026-11-11T07:09:40.2701580Z test_app_do_macos_nao_vale_fora_do_macos (test_checar.TestEditor.test_app_do_macos_nao_vale_fora_do_macos) ... ok
+2026-11-11T07:09:41.1051992Z test_app_na_segunda_pasta_de_aplicativos (test_checar.TestEditor.test_app_na_segunda_pasta_de_aplicativos) ... ok
+2026-11-11T07:09:42.2194040Z test_editor_fora_de_repositorio (test_checar.TestEditor.test_editor_fora_de_repositorio) ... ok
+2026-11-11T07:09:43.5620507Z test_ordem_no_path (test_checar.TestEditor.test_ordem_no_path) ... ok
+2026-11-11T07:09:47.4940528Z test_resumo_cita_o_editor_e_sem_editor_nao_avisa (test_checar.TestEditor.test_resumo_cita_o_editor_e_sem_editor_nao_avisa) ... ok
+2026-11-11T07:09:48.9101270Z test_sem_editor_sai_1_calado (test_checar.TestEditor.test_sem_editor_sai_1_calado) ... ok
+2026-11-11T07:09:49.7797323Z test_windows_cmd_fora_do_path (test_checar.TestEditor.test_windows_cmd_fora_do_path) ... ok
+2026-11-11T07:09:50.4671289Z test_windows_cmd_no_path (test_checar.TestEditor.test_windows_cmd_no_path) ... ok
+2026-11-11T07:09:53.1189413Z test_frente_bloqueia_credencial (test_checar.TestFrente.test_frente_bloqueia_credencial) ... FAIL
+2026-11-11T07:09:54.8402415Z test_frente_bloqueia_host_ssh (test_checar.TestFrente.test_frente_bloqueia_host_ssh) ... FAIL
+2026-11-11T07:10:56.2614786Z test_frente_bloqueia_login_do_editor (test_checar.TestFrente.test_frente_bloqueia_login_do_editor) ... ERROR
+2026-11-11T07:11:05.7581168Z test_frente_bloqueia_rede (test_checar.TestFrente.test_frente_bloqueia_rede) ... FAIL
+2026-11-11T07:11:06.9251989Z test_frente_bloqueia_sem_origin (test_checar.TestFrente.test_frente_bloqueia_sem_origin) ... FAIL
+2026-11-11T07:11:07.7934222Z test_frente_bloqueia_sem_remoto (test_checar.TestFrente.test_frente_bloqueia_sem_remoto) ... FAIL
+2026-11-11T07:11:09.2889684Z test_frente_bloqueia_vazio (test_checar.TestFrente.test_frente_bloqueia_vazio) ... FAIL
+2026-11-11T07:11:10.8211289Z test_frente_nao_olha_dado_exposto (test_checar.TestFrente.test_frente_nao_olha_dado_exposto) ... ok
+2026-11-11T07:11:12.2348323Z test_frente_saudavel_uma_linha (test_checar.TestFrente.test_frente_saudavel_uma_linha) ... FAIL
+2026-11-11T07:11:14.5438924Z test_frente_nao_consulta_o_gh (test_checar.TestGh.test_frente_nao_consulta_o_gh) ... ok
+2026-11-11T07:11:16.0343124Z test_frente_sem_gh_nao_fala_do_gh (test_checar.TestGh.test_frente_sem_gh_nao_fala_do_gh) ... FAIL
+2026-11-11T07:11:18.3609575Z test_gh_deslogado_com_remoto_do_github (test_checar.TestGh.test_gh_deslogado_com_remoto_do_github) ... Exception in thread Thread-933 (_readerthread):
+2026-11-11T07:11:18.3610371Z Traceback (most recent call last):
+2026-11-11T07:11:18.3610913Z   File "C:\hostedtoolcache\windows\Python\3.12.10\x64\Lib\threading.py", line 1075, in _bootstrap_inner
+2026-11-11T07:11:18.3611582Z     self.run()
+2026-11-11T07:11:18.3612355Z   File "C:\hostedtoolcache\windows\Python\3.12.10\x64\Lib\threading.py", line 1012, in run
+2026-11-11T07:11:18.3614415Z     self._target(*self._args, **self._kwargs)
+2026-11-11T07:11:18.3614958Z   File "C:\hostedtoolcache\windows\Python\3.12.10\x64\Lib\subprocess.py", line 1599, in _readerthread
+2026-11-11T07:11:18.3618841Z     buffer.append(fh.read())
+2026-11-11T07:11:18.3619245Z                   ^^^^^^^^^
+2026-11-11T07:11:18.3619792Z   File "C:\hostedtoolcache\windows\Python\3.12.10\x64\Lib\encodings\cp1252.py", line 23, in decode
+2026-11-11T07:11:18.3620438Z     return codecs.charmap_decode(input,self.errors,decoding_table)[0]
+2026-11-11T07:11:18.3621192Z            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+2026-11-11T07:11:18.3621765Z UnicodeDecodeError: 'charmap' codec can't decode byte 0x8f in position 5: character maps to <undefined>
+2026-11-11T07:11:18.3627678Z ERROR
+2026-11-11T07:11:20.1894295Z test_gh_deslogado_sem_remoto_tambem_avisa (test_checar.TestGh.test_gh_deslogado_sem_remoto_tambem_avisa) ... Exception in thread Thread-960 (_readerthread):
+2026-11-11T07:11:20.1895139Z Traceback (most recent call last):
+2026-11-11T07:11:20.1895953Z   File "C:\hostedtoolcache\windows\Python\3.12.10\x64\Lib\threading.py", line 1075, in _bootstrap_inner
+2026-11-11T07:11:20.1896558Z     self.run()
+2026-11-11T07:11:20.1896999Z   File "C:\hostedtoolcache\windows\Python\3.12.10\x64\Lib\threading.py", line 1012, in run
+2026-11-11T07:11:20.1898894Z     self._target(*self._args, **self._kwargs)
+2026-11-11T07:11:20.1899518Z   File "C:\hostedtoolcache\windows\Python\3.12.10\x64\Lib\subprocess.py", line 1599, in _readerthread
+2026-11-11T07:11:20.1903041Z     buffer.append(fh.read())
+2026-11-11T07:11:20.1903357Z                   ^^^^^^^^^
+2026-11-11T07:11:20.1904085Z   File "C:\hostedtoolcache\windows\Python\3.12.10\x64\Lib\encodings\cp1252.py", line 23, in decode
+2026-11-11T07:11:20.1904849Z     return codecs.charmap_decode(input,self.errors,decoding_table)[0]
+2026-11-11T07:11:20.1905597Z            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+2026-11-11T07:11:20.1906423Z UnicodeDecodeError: 'charmap' codec can't decode byte 0x8f in position 5: character maps to <undefined>
+2026-11-11T07:11:20.1912917Z ERROR
+2026-11-11T07:11:22.4669981Z test_gh_logado_nao_diz_nada_e_consulta_so_o_github (test_checar.TestGh.test_gh_logado_nao_diz_nada_e_consulta_so_o_github) ... ok
+2026-11-11T07:11:34.7782241Z test_gh_pendurado_respeita_o_teto (test_checar.TestGh.test_gh_pendurado_respeita_o_teto) ... Exception in thread Thread-1009 (_readerthread):
+2026-11-11T07:11:34.7782959Z Traceback (most recent call last):
+2026-11-11T07:11:34.7783659Z   File "C:\hostedtoolcache\windows\Python\3.12.10\x64\Lib\threading.py", line 1075, in _bootstrap_inner
+2026-11-11T07:11:34.7787376Z     self.run()
+2026-11-11T07:11:34.7787926Z   File "C:\hostedtoolcache\windows\Python\3.12.10\x64\Lib\threading.py", line 1012, in run
+2026-11-11T07:11:34.7788390Z     self._target(*self._args, **self._kwargs)
+2026-11-11T07:11:34.7788883Z   File "C:\hostedtoolcache\windows\Python\3.12.10\x64\Lib\subprocess.py", line 1599, in _readerthread
+2026-11-11T07:11:34.7791193Z     buffer.append(fh.read())
+2026-11-11T07:11:34.7792004Z                   ^^^^^^^^^
+2026-11-11T07:11:34.7792468Z   File "C:\hostedtoolcache\windows\Python\3.12.10\x64\Lib\encodings\cp1252.py", line 23, in decode
+2026-11-11T07:11:34.7793262Z     return codecs.charmap_decode(input,self.errors,decoding_table)[0]
+2026-11-11T07:11:34.7794831Z            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+2026-11-11T07:11:34.7795386Z UnicodeDecodeError: 'charmap' codec can't decode byte 0x8f in position 5: character maps to <undefined>
+2026-11-11T07:11:34.7800567Z ERROR
+2026-11-11T07:11:37.1713508Z test_gh_sem_rede_e_sem_resposta (test_checar.TestGh.test_gh_sem_rede_e_sem_resposta) ... Exception in thread Thread-1034 (_readerthread):
+2026-11-11T07:11:37.1714887Z Traceback (most recent call last):
+2026-11-11T07:11:37.1715609Z   File "C:\hostedtoolcache\windows\Python\3.12.10\x64\Lib\threading.py", line 1075, in _bootstrap_inner
+2026-11-11T07:11:37.1716099Z     self.run()
+2026-11-11T07:11:37.1716650Z   File "C:\hostedtoolcache\windows\Python\3.12.10\x64\Lib\threading.py", line 1012, in run
+2026-11-11T07:11:37.1718702Z     self._target(*self._args, **self._kwargs)
+2026-11-11T07:11:37.1719787Z   File "C:\hostedtoolcache\windows\Python\3.12.10\x64\Lib\subprocess.py", line 1599, in _readerthread
+2026-11-11T07:11:37.1722198Z     buffer.append(fh.read())
+2026-11-11T07:11:37.1722652Z                   ^^^^^^^^^
+2026-11-11T07:11:37.1723265Z   File "C:\hostedtoolcache\windows\Python\3.12.10\x64\Lib\encodings\cp1252.py", line 23, in decode
+2026-11-11T07:11:37.1723975Z     return codecs.charmap_decode(input,self.errors,decoding_table)[0]
+2026-11-11T07:11:37.1725154Z            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+2026-11-11T07:11:37.1725642Z UnicodeDecodeError: 'charmap' codec can't decode byte 0x8f in position 5: character maps to <undefined>
+2026-11-11T07:11:37.1732064Z ERROR
+2026-11-11T07:11:41.2921384Z test_remoto_fora_do_github_nao_chama_nem_cita_o_gh (test_checar.TestGh.test_remoto_fora_do_github_nao_chama_nem_cita_o_gh) ... ok
+2026-11-11T07:11:43.8047531Z test_remoto_recusado_nao_repete_o_login (test_checar.TestGh.test_remoto_recusado_nao_repete_o_login) ... ok
+2026-11-11T07:11:45.7306817Z test_sem_gh_aviso_com_o_comando_do_sistema_e_rc_0 (test_checar.TestGh.test_sem_gh_aviso_com_o_comando_do_sistema_e_rc_0) ... Exception in thread Thread-1117 (_readerthread):
+2026-11-11T07:11:45.7307673Z Traceback (most recent call last):
+2026-11-11T07:11:45.7308902Z   File "C:\hostedtoolcache\windows\Python\3.12.10\x64\Lib\threading.py", line 1075, in _bootstrap_inner
+2026-11-11T07:11:45.7309734Z     self.run()
+2026-11-11T07:11:45.7310687Z   File "C:\hostedtoolcache\windows\Python\3.12.10\x64\Lib\threading.py", line 1012, in run
+2026-11-11T07:11:45.7311650Z     self._target(*self._args, **self._kwargs)
+2026-11-11T07:11:45.7313701Z   File "C:\hostedtoolcache\windows\Python\3.12.10\x64\Lib\subprocess.py", line 1599, in _readerthread
+2026-11-11T07:11:45.7315365Z     buffer.append(fh.read())
+2026-11-11T07:11:45.7315899Z                   ^^^^^^^^^
+2026-11-11T07:11:45.7316428Z   File "C:\hostedtoolcache\windows\Python\3.12.10\x64\Lib\encodings\cp1252.py", line 23, in decode
+2026-11-11T07:11:45.7317450Z     return codecs.charmap_decode(input,self.errors,decoding_table)[0]
+2026-11-11T07:11:45.7319133Z            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+2026-11-11T07:11:45.7319725Z UnicodeDecodeError: 'charmap' codec can't decode byte 0x8f in position 5: character maps to <undefined>
+2026-11-11T07:11:45.7323431Z 
+2026-11-11T07:11:45.7324400Z   test_sem_gh_aviso_com_o_comando_do_sistema_e_rc_0 (test_checar.TestGh.test_sem_gh_aviso_com_o_comando_do_sistema_e_rc_0) (sistema='Darwin') ... ERROR
+2026-11-11T07:11:47.0439009Z Exception in thread Thread-1120 (_readerthread):
+2026-11-11T07:11:47.0439508Z Traceback (most recent call last):
+2026-11-11T07:11:47.0440345Z   File "C:\hostedtoolcache\windows\Python\3.12.10\x64\Lib\threading.py", line 1075, in _bootstrap_inner
+2026-11-11T07:11:47.0441350Z     self.run()
+2026-11-11T07:11:47.0441984Z   File "C:\hostedtoolcache\windows\Python\3.12.10\x64\Lib\threading.py", line 1012, in run
+2026-11-11T07:11:47.0444676Z     self._target(*self._args, **self._kwargs)
+2026-11-11T07:11:47.0446778Z   File "C:\hostedtoolcache\windows\Python\3.12.10\x64\Lib\subprocess.py", line 1599, in _readerthread
+2026-11-11T07:11:47.0448593Z     buffer.append(fh.read())
+2026-11-11T07:11:47.0449419Z                   ^^^^^^^^^
+2026-11-11T07:11:47.0450047Z   File "C:\hostedtoolcache\windows\Python\3.12.10\x64\Lib\encodings\cp1252.py", line 23, in decode
+2026-11-11T07:11:47.0450814Z     return codecs.charmap_decode(input,self.errors,decoding_table)[0]
+2026-11-11T07:11:47.0451750Z            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+2026-11-11T07:11:47.0452707Z UnicodeDecodeError: 'charmap' codec can't decode byte 0x8f in position 5: character maps to <undefined>
+2026-11-11T07:11:47.0456070Z   test_sem_gh_aviso_com_o_comando_do_sistema_e_rc_0 (test_checar.TestGh.test_sem_gh_aviso_com_o_comando_do_sistema_e_rc_0) (sistema='MINGW64_NT-10.0-19045') ... ERROR
+2026-11-11T07:11:48.3276808Z Exception in thread Thread-1123 (_readerthread):
+2026-11-11T07:11:48.3277268Z Traceback (most recent call last):
+2026-11-11T07:11:48.3278102Z   File "C:\hostedtoolcache\windows\Python\3.12.10\x64\Lib\threading.py", line 1075, in _bootstrap_inner
+2026-11-11T07:11:48.3278801Z     self.run()
+2026-11-11T07:11:48.3279687Z   File "C:\hostedtoolcache\windows\Python\3.12.10\x64\Lib\threading.py", line 1012, in run
+2026-11-11T07:11:48.3282390Z     self._target(*self._args, **self._kwargs)
+2026-11-11T07:11:48.3283250Z   File "C:\hostedtoolcache\windows\Python\3.12.10\x64\Lib\subprocess.py", line 1599, in _readerthread
+2026-11-11T07:11:48.3285569Z     buffer.append(fh.read())
+2026-11-11T07:11:48.3286091Z                   ^^^^^^^^^
+2026-11-11T07:11:48.3286565Z   File "C:\hostedtoolcache\windows\Python\3.12.10\x64\Lib\encodings\cp1252.py", line 23, in decode
+2026-11-11T07:11:48.3287580Z     return codecs.charmap_decode(input,self.errors,decoding_table)[0]
+2026-11-11T07:11:48.3288867Z            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+2026-11-11T07:11:48.3289363Z UnicodeDecodeError: 'charmap' codec can't decode byte 0x8f in position 5: character maps to <undefined>
+2026-11-11T07:11:48.3294012Z   test_sem_gh_aviso_com_o_comando_do_sistema_e_rc_0 (test_checar.TestGh.test_sem_gh_aviso_com_o_comando_do_sistema_e_rc_0) (sistema='Linux') ... ERROR
+2026-11-11T07:11:50.1714544Z test_sem_gh_e_sem_remoto_avisa (test_checar.TestGh.test_sem_gh_e_sem_remoto_avisa) ... Exception in thread Thread-1150 (_readerthread):
+2026-11-11T07:11:50.1715460Z Traceback (most recent call last):
+2026-11-11T07:11:50.1716054Z   File "C:\hostedtoolcache\windows\Python\3.12.10\x64\Lib\threading.py", line 1075, in _bootstrap_inner
+2026-11-11T07:11:50.1716617Z     self.run()
+2026-11-11T07:11:50.1717257Z   File "C:\hostedtoolcache\windows\Python\3.12.10\x64\Lib\threading.py", line 1012, in run
+2026-11-11T07:11:50.1719372Z     self._target(*self._args, **self._kwargs)
+2026-11-11T07:11:50.1720372Z   File "C:\hostedtoolcache\windows\Python\3.12.10\x64\Lib\subprocess.py", line 1599, in _readerthread
+2026-11-11T07:11:50.1723658Z     buffer.append(fh.read())
+2026-11-11T07:11:50.1725210Z                   ^^^^^^^^^
+2026-11-11T07:11:50.1725770Z   File "C:\hostedtoolcache\windows\Python\3.12.10\x64\Lib\encodings\cp1252.py", line 23, in decode
+2026-11-11T07:11:50.1726385Z     return codecs.charmap_decode(input,self.errors,decoding_table)[0]
+2026-11-11T07:11:50.1727310Z            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+2026-11-11T07:11:50.1727998Z UnicodeDecodeError: 'charmap' codec can't decode byte 0x8f in position 5: character maps to <undefined>
+2026-11-11T07:11:50.1734690Z ERROR
+2026-11-11T07:11:51.7768448Z test_arquivos_sem_git_oferece_iniciar_repo (test_checar.TestOndeEstou.test_arquivos_sem_git_oferece_iniciar_repo) ... FAIL
+2026-11-11T07:11:52.1573810Z test_documents_sem_icloud_nao_acusa (test_checar.TestOndeEstou.test_documents_sem_icloud_nao_acusa) ... FAIL
+2026-11-11T07:11:52.5211199Z test_git_dentro_de_node_modules_nao_conta (test_checar.TestOndeEstou.test_git_dentro_de_node_modules_nao_conta) ... FAIL
+2026-11-11T07:11:52.9943586Z test_git_em_duas_subpastas_lista_as_duas (test_checar.TestOndeEstou.test_git_em_duas_subpastas_lista_as_duas) ... FAIL
+2026-11-11T07:11:53.4558207Z test_git_em_quatro_subpastas_pergunta_qual (test_checar.TestOndeEstou.test_git_em_quatro_subpastas_pergunta_qual) ... FAIL
+2026-11-11T07:11:53.9434553Z test_git_numa_subpasta_manda_abrir_nela (test_checar.TestOndeEstou.test_git_numa_subpasta_manda_abrir_nela) ... FAIL
+2026-11-11T07:11:54.0940320Z test_icloud_mesa_e_documentos_pelo_symlink (test_checar.TestOndeEstou.test_icloud_mesa_e_documentos_pelo_symlink) ... FAIL
+2026-11-11T07:11:54.7891506Z test_nao_grava_nada_fora_do_repositorio (test_checar.TestOndeEstou.test_nao_grava_nada_fora_do_repositorio) ... ok
+2026-11-11T07:11:55.1746459Z test_nome_parecido_nao_acusa (test_checar.TestOndeEstou.test_nome_parecido_nao_acusa) ... FAIL
+2026-11-11T07:11:55.4767220Z test_pasta_pessoal_nao_varre (test_checar.TestOndeEstou.test_pasta_pessoal_nao_varre) ... FAIL
+2026-11-11T07:11:55.8389297Z test_pasta_vazia_indica_brainstorm (test_checar.TestOndeEstou.test_pasta_vazia_indica_brainstorm) ... FAIL
+2026-11-11T07:11:56.3753352Z test_sem_git_e_sem_a_skill_irma_manda_rodar_o_init (test_checar.TestOndeEstou.test_sem_git_e_sem_a_skill_irma_manda_rodar_o_init) ... ok
+2026-11-11T07:11:56.6393422Z test_sincronizada_dentro_de_repositorio (test_checar.TestOndeEstou.test_sincronizada_dentro_de_repositorio) ... FAIL
+2026-11-11T07:11:56.8926101Z test_sincronizada_para_antes_de_tudo (test_checar.TestOndeEstou.test_sincronizada_para_antes_de_tudo) ... 
+2026-11-11T07:11:56.8926789Z   test_sincronizada_para_antes_de_tudo (test_checar.TestOndeEstou.test_sincronizada_para_antes_de_tudo) (rel='home/Library/Mobile Documents/com~apple~CloudDocs/Financas') ... FAIL
+2026-11-11T07:11:57.1022121Z   test_sincronizada_para_antes_de_tudo (test_checar.TestOndeEstou.test_sincronizada_para_antes_de_tudo) (rel='home/Library/CloudStorage/GoogleDrive-conta/Meu Drive/Financas') ... FAIL
+2026-11-11T07:11:57.3391886Z   test_sincronizada_para_antes_de_tudo (test_checar.TestOndeEstou.test_sincronizada_para_antes_de_tudo) (rel='home/Library/CloudStorage/OneDrive-Pessoal/Financas') ... FAIL
+2026-11-11T07:11:57.5612752Z   test_sincronizada_para_antes_de_tudo (test_checar.TestOndeEstou.test_sincronizada_para_antes_de_tudo) (rel='OneDrive - Escritorio/Documentos/Financas') ... FAIL
+2026-11-11T07:11:57.7980110Z   test_sincronizada_para_antes_de_tudo (test_checar.TestOndeEstou.test_sincronizada_para_antes_de_tudo) (rel='Dropbox/Financas') ... FAIL
+2026-11-11T07:11:58.0321506Z   test_sincronizada_para_antes_de_tudo (test_checar.TestOndeEstou.test_sincronizada_para_antes_de_tudo) (rel='Dropbox (Escritorio)/Financas') ... FAIL
+2026-11-11T07:11:58.2727038Z   test_sincronizada_para_antes_de_tudo (test_checar.TestOndeEstou.test_sincronizada_para_antes_de_tudo) (rel='Users/ana/iCloudDrive/Financas') ... FAIL
+2026-11-11T07:11:58.6212182Z test_so_arquivo_do_sistema_conta_como_vazia (test_checar.TestOndeEstou.test_so_arquivo_do_sistema_conta_como_vazia) ... FAIL
+2026-11-11T07:12:01.3703070Z test_comandos_impressos_sem_prompt (test_checar.TestRemoto.test_comandos_impressos_sem_prompt) ... Exception in thread Thread-1245 (_readerthread):
+2026-11-11T07:12:01.3703968Z Traceback (most recent call last):
+2026-11-11T07:12:01.3704640Z   File "C:\hostedtoolcache\windows\Python\3.12.10\x64\Lib\threading.py", line 1075, in _bootstrap_inner
+2026-11-11T07:12:01.3706207Z     self.run()
+2026-11-11T07:12:01.3706887Z   File "C:\hostedtoolcache\windows\Python\3.12.10\x64\Lib\threading.py", line 1012, in run
+2026-11-11T07:12:01.3707869Z     self._target(*self._args, **self._kwargs)
+2026-11-11T07:12:01.3708862Z   File "C:\hostedtoolcache\windows\Python\3.12.10\x64\Lib\subprocess.py", line 1599, in _readerthread
+2026-11-11T07:12:01.3712390Z     buffer.append(fh.read())
+2026-11-11T07:12:01.3712981Z                   ^^^^^^^^^
+2026-11-11T07:12:01.3713604Z   File "C:\hostedtoolcache\windows\Python\3.12.10\x64\Lib\encodings\cp1252.py", line 23, in decode
+2026-11-11T07:12:01.3714424Z     return codecs.charmap_decode(input,self.errors,decoding_table)[0]
+2026-11-11T07:12:01.3715520Z            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+2026-11-11T07:12:01.3716280Z UnicodeDecodeError: 'charmap' codec can't decode byte 0x8f in position 5: character maps to <undefined>
+2026-11-11T07:12:02.3812409Z ERROR
+2026-11-11T07:12:04.9923945Z test_credencial_github_privado_explica_as_duas_causas (test_checar.TestRemoto.test_credencial_github_privado_explica_as_duas_causas) ... FAIL
+2026-11-11T07:12:07.6889968Z test_credencial_recusada_rapida (test_checar.TestRemoto.test_credencial_recusada_rapida) ... FAIL
+2026-11-11T07:12:08.5129977Z test_git_fora_do_path (test_checar.TestRemoto.test_git_fora_do_path) ... FAIL
+2026-11-11T07:12:11.1357697Z test_host_ssh_desconhecido (test_checar.TestRemoto.test_host_ssh_desconhecido) ... FAIL
+2026-11-11T07:13:12.5696508Z test_login_do_editor_esperando (test_checar.TestRemoto.test_login_do_editor_esperando) ... ERROR
+2026-11-11T07:14:23.9404032Z test_rede_parada_com_editor_nao_e_janela_de_login (test_checar.TestRemoto.test_rede_parada_com_editor_nao_e_janela_de_login) ... 
+2026-11-11T07:14:23.9405134Z   test_rede_parada_com_editor_nao_e_janela_de_login (test_checar.TestRemoto.test_rede_parada_com_editor_nao_e_janela_de_login) [ssh pendurado] ... ERROR
+2026-11-11T07:14:33.8298969Z Exception in thread Thread-1410 (_readerthread):
+2026-11-11T07:14:33.8301443Z Traceback (most recent call last):
+2026-11-11T07:14:33.8302331Z   File "C:\hostedtoolcache\windows\Python\3.12.10\x64\Lib\threading.py", line 1075, in _bootstrap_inner
+2026-11-11T07:14:33.8303566Z     self.run()
+2026-11-11T07:14:33.8304309Z   File "C:\hostedtoolcache\windows\Python\3.12.10\x64\Lib\threading.py", line 1012, in run
+2026-11-11T07:14:33.8304815Z     self._target(*self._args, **self._kwargs)
+2026-11-11T07:14:33.8305348Z   File "C:\hostedtoolcache\windows\Python\3.12.10\x64\Lib\subprocess.py", line 1599, in _readerthread
+2026-11-11T07:14:33.8308367Z     buffer.append(fh.read())
+2026-11-11T07:14:33.8308879Z                   ^^^^^^^^^
+2026-11-11T07:14:33.8309383Z   File "C:\hostedtoolcache\windows\Python\3.12.10\x64\Lib\encodings\cp1252.py", line 23, in decode
+2026-11-11T07:14:33.8310024Z     return codecs.charmap_decode(input,self.errors,decoding_table)[0]
+2026-11-11T07:14:33.8311764Z            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+2026-11-11T07:14:33.8312322Z UnicodeDecodeError: 'charmap' codec can't decode byte 0x8f in position 5: character maps to <undefined>
+2026-11-11T07:14:33.8318465Z   test_rede_parada_com_editor_nao_e_janela_de_login (test_checar.TestRemoto.test_rede_parada_com_editor_nao_e_janela_de_login) [servidor que aceita e n�o responde] ... ERROR
+2026-11-11T07:14:44.3319349Z test_rede_pendurada (test_checar.TestRemoto.test_rede_pendurada) ... Exception in thread Thread-1438 (_readerthread):
+2026-11-11T07:14:44.3320136Z Traceback (most recent call last):
+2026-11-11T07:14:44.3325667Z   File "C:\hostedtoolcache\windows\Python\3.12.10\x64\Lib\threading.py", line 1075, in _bootstrap_inner
+2026-11-11T07:14:44.3326279Z     self.run()
+2026-11-11T07:14:44.3326742Z   File "C:\hostedtoolcache\windows\Python\3.12.10\x64\Lib\threading.py", line 1012, in run
+2026-11-11T07:14:44.3327283Z     self._target(*self._args, **self._kwargs)
+2026-11-11T07:14:44.3328018Z   File "C:\hostedtoolcache\windows\Python\3.12.10\x64\Lib\subprocess.py", line 1599, in _readerthread
+2026-11-11T07:14:44.3329678Z     buffer.append(fh.read())
+2026-11-11T07:14:44.3330454Z                   ^^^^^^^^^
+2026-11-11T07:14:44.3331074Z   File "C:\hostedtoolcache\windows\Python\3.12.10\x64\Lib\encodings\cp1252.py", line 23, in decode
+2026-11-11T07:14:44.3331890Z     return codecs.charmap_decode(input,self.errors,decoding_table)[0]
+2026-11-11T07:14:44.3333376Z            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+2026-11-11T07:14:44.3334911Z UnicodeDecodeError: 'charmap' codec can't decode byte 0x8f in position 5: character maps to <undefined>
+2026-11-11T07:14:44.3341629Z ERROR
+2026-11-11T07:15:55.7447396Z test_rede_pendurada_inteira_api_e_remoto (test_checar.TestRemoto.test_rede_pendurada_inteira_api_e_remoto) ... ERROR
+2026-11-11T07:15:58.4966414Z test_remoto_vazio (test_checar.TestRemoto.test_remoto_vazio) ... Exception in thread Thread-1492 (_readerthread):
+2026-11-11T07:15:58.4967707Z Traceback (most recent call last):
+2026-11-11T07:15:58.4968391Z   File "C:\hostedtoolcache\windows\Python\3.12.10\x64\Lib\threading.py", line 1075, in _bootstrap_inner
+2026-11-11T07:15:58.4971506Z     self.run()
+2026-11-11T07:15:58.4972324Z   File "C:\hostedtoolcache\windows\Python\3.12.10\x64\Lib\threading.py", line 1012, in run
+2026-11-11T07:15:58.4973047Z     self._target(*self._args, **self._kwargs)
+2026-11-11T07:15:58.4973540Z   File "C:\hostedtoolcache\windows\Python\3.12.10\x64\Lib\subprocess.py", line 1599, in _readerthread
+2026-11-11T07:15:58.4975044Z     buffer.append(fh.read())
+2026-11-11T07:15:58.4975695Z                   ^^^^^^^^^
+2026-11-11T07:15:58.4976333Z   File "C:\hostedtoolcache\windows\Python\3.12.10\x64\Lib\encodings\cp1252.py", line 23, in decode
+2026-11-11T07:15:58.4977115Z     return codecs.charmap_decode(input,self.errors,decoding_table)[0]
+2026-11-11T07:15:58.4978101Z            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+2026-11-11T07:15:58.4978983Z UnicodeDecodeError: 'charmap' codec can't decode byte 0x8f in position 5: character maps to <undefined>
+2026-11-11T07:15:58.4983815Z ERROR
+2026-11-11T07:16:00.6125876Z test_sem_remoto_continua_aviso (test_checar.TestRemoto.test_sem_remoto_continua_aviso) ... Exception in thread Thread-1518 (_readerthread):
+2026-11-11T07:16:00.6127600Z Traceback (most recent call last):
+2026-11-11T07:16:00.6129701Z   File "C:\hostedtoolcache\windows\Python\3.12.10\x64\Lib\threading.py", line 1075, in _bootstrap_inner
+2026-11-11T07:16:00.6130338Z     self.run()
+2026-11-11T07:16:00.6131007Z   File "C:\hostedtoolcache\windows\Python\3.12.10\x64\Lib\threading.py", line 1012, in run
+2026-11-11T07:16:00.6131529Z     self._target(*self._args, **self._kwargs)
+2026-11-11T07:16:00.6132036Z   File "C:\hostedtoolcache\windows\Python\3.12.10\x64\Lib\subprocess.py", line 1599, in _readerthread
+2026-11-11T07:16:00.6134895Z     buffer.append(fh.read())
+2026-11-11T07:16:00.6135708Z                   ^^^^^^^^^
+2026-11-11T07:16:00.6136197Z   File "C:\hostedtoolcache\windows\Python\3.12.10\x64\Lib\encodings\cp1252.py", line 23, in decode
+2026-11-11T07:16:00.6136782Z     return codecs.charmap_decode(input,self.errors,decoding_table)[0]
+2026-11-11T07:16:00.6138716Z            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+2026-11-11T07:16:00.6139321Z UnicodeDecodeError: 'charmap' codec can't decode byte 0x8f in position 5: character maps to <undefined>
+2026-11-11T07:16:00.6145029Z ERROR
+2026-11-11T07:17:12.0237140Z test_ssh_pendurado_vigia (test_checar.TestRemoto.test_ssh_pendurado_vigia) ... ERROR
+2026-11-11T07:17:14.5862027Z test_vazio_com_warning (test_checar.TestRemoto.test_vazio_com_warning) ... Exception in thread Thread-1570 (_readerthread):
+2026-11-11T07:17:14.5864812Z Traceback (most recent call last):
+2026-11-11T07:17:14.5867948Z   File "C:\hostedtoolcache\windows\Python\3.12.10\x64\Lib\threading.py", line 1075, in _bootstrap_inner
+2026-11-11T07:17:14.5870651Z     self.run()
+2026-11-11T07:17:14.5871439Z   File "C:\hostedtoolcache\windows\Python\3.12.10\x64\Lib\threading.py", line 1012, in run
+2026-11-11T07:17:14.5873233Z     self._target(*self._args, **self._kwargs)
+2026-11-11T07:17:14.5874721Z   File "C:\hostedtoolcache\windows\Python\3.12.10\x64\Lib\subprocess.py", line 1599, in _readerthread
+2026-11-11T07:17:14.5875331Z     buffer.append(fh.read())
+2026-11-11T07:17:14.5875688Z                   ^^^^^^^^^
+2026-11-11T07:17:14.5876215Z   File "C:\hostedtoolcache\windows\Python\3.12.10\x64\Lib\encodings\cp1252.py", line 23, in decode
+2026-11-11T07:17:14.5877017Z     return codecs.charmap_decode(input,self.errors,decoding_table)[0]
+2026-11-11T07:17:14.5877500Z            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+2026-11-11T07:17:14.5878086Z UnicodeDecodeError: 'charmap' codec can't decode byte 0x8f in position 5: character maps to <undefined>
+2026-11-11T07:17:14.5885060Z ERROR
+2026-11-11T07:17:21.7248470Z test_acusa_cada_tipo_e_sai_1 (test_checar.TestSegredo.test_acusa_cada_tipo_e_sai_1) ... FAIL
+2026-11-11T07:17:28.8358795Z test_nao_sai_para_a_rede (test_checar.TestSegredo.test_nao_sai_para_a_rede) ... ok
+2026-11-11T07:17:36.0103032Z test_repositorio_grande_continua_rapido (test_checar.TestSegredo.test_repositorio_grande_continua_rapido) ... ok
+2026-11-11T07:17:39.3945320Z test_sem_segredo_sai_0_calado (test_checar.TestSegredo.test_sem_segredo_sai_0_calado) ... ok
+2026-11-11T07:17:43.0710975Z test_frente_sem_remoto_cita_iniciar_repo (test_checar.TestSemRemotoIndicaIniciarRepo.test_frente_sem_remoto_cita_iniciar_repo) ... ok
+2026-11-11T07:17:49.2231569Z test_nao_grava_nada (test_checar.TestSomenteLeitura.test_nao_grava_nada) ... Exception in thread Thread-1751 (_readerthread):
+2026-11-11T07:17:49.2240283Z Traceback (most recent call last):
+2026-11-11T07:17:49.2241368Z   File "C:\hostedtoolcache\windows\Python\3.12.10\x64\Lib\threading.py", line 1075, in _bootstrap_inner
+2026-11-11T07:17:49.2242049Z     self.run()
+2026-11-11T07:17:49.2242627Z   File "C:\hostedtoolcache\windows\Python\3.12.10\x64\Lib\threading.py", line 1012, in run
+2026-11-11T07:17:49.2244244Z     self._target(*self._args, **self._kwargs)
+2026-11-11T07:17:49.2244807Z   File "C:\hostedtoolcache\windows\Python\3.12.10\x64\Lib\subprocess.py", line 1599, in _readerthread
+2026-11-11T07:17:49.2245356Z     buffer.append(fh.read())
+2026-11-11T07:17:49.2245643Z                   ^^^^^^^^^
+2026-11-11T07:17:49.2246258Z   File "C:\hostedtoolcache\windows\Python\3.12.10\x64\Lib\encodings\cp1252.py", line 23, in decode
+2026-11-11T07:17:49.2247025Z     return codecs.charmap_decode(input,self.errors,decoding_table)[0]
+2026-11-11T07:17:49.2247459Z            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+2026-11-11T07:17:49.2248036Z UnicodeDecodeError: 'charmap' codec can't decode byte 0x8f in position 619: character maps to <undefined>
+2026-11-11T07:17:49.2252179Z ERROR
+2026-11-11T07:17:51.4433666Z test_cinco_categorias (test_inventario.TestAchados.test_cinco_categorias) ... Exception in thread Thread-1754 (_readerthread):
+2026-11-11T07:17:51.4434352Z Traceback (most recent call last):
+2026-11-11T07:17:51.4438367Z   File "C:\hostedtoolcache\windows\Python\3.12.10\x64\Lib\threading.py", line 1075, in _bootstrap_inner
+2026-11-11T07:17:51.4439163Z     self.run()
+2026-11-11T07:17:51.4439675Z   File "C:\hostedtoolcache\windows\Python\3.12.10\x64\Lib\threading.py", line 1012, in run
+2026-11-11T07:17:51.4440275Z     self._target(*self._args, **self._kwargs)
+2026-11-11T07:17:51.4440873Z   File "C:\hostedtoolcache\windows\Python\3.12.10\x64\Lib\subprocess.py", line 1599, in _readerthread
+2026-11-11T07:17:51.4441450Z     buffer.append(fh.read())
+2026-11-11T07:17:51.4442929Z                   ^^^^^^^^^
+2026-11-11T07:17:51.4444908Z   File "C:\hostedtoolcache\windows\Python\3.12.10\x64\Lib\encodings\cp1252.py", line 23, in decode
+2026-11-11T07:17:51.4445488Z     return codecs.charmap_decode(input,self.errors,decoding_table)[0]
+2026-11-11T07:17:51.4445894Z            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+2026-11-11T07:17:51.4446599Z UnicodeDecodeError: 'charmap' codec can't decode byte 0x8f in position 167: character maps to <undefined>
+2026-11-11T07:17:51.4452557Z ERROR
+2026-11-11T07:17:52.8734038Z test_com_git_ve_o_que_esta_no_repositorio (test_inventario.TestAchados.test_com_git_ve_o_que_esta_no_repositorio) ... ok
+2026-11-11T07:17:53.9116120Z test_conta_arquivos (test_inventario.TestAchados.test_conta_arquivos) ... ok
+2026-11-11T07:17:54.1876303Z test_falha_ao_listar_nao_vira_nada_sensivel (test_inventario.TestAchados.test_falha_ao_listar_nao_vira_nada_sensivel) ... ok
+2026-11-11T07:17:55.2083491Z test_gitignore_existente_ja_esconde_o_arquivo (test_inventario.TestAchados.test_gitignore_existente_ja_esconde_o_arquivo) ... ok
+2026-11-11T07:17:56.2971205Z test_gitignore_existente_nao_repete_linha (test_inventario.TestAchados.test_gitignore_existente_nao_repete_linha) ... ok
+2026-11-11T07:17:57.5934853Z test_historico_mostra_segredo_ja_apagado (test_inventario.TestAchados.test_historico_mostra_segredo_ja_apagado) ... FAIL
+2026-11-11T07:17:58.6828552Z test_limite_de_dez_por_categoria (test_inventario.TestAchados.test_limite_de_dez_por_categoria) ... Exception in thread Thread-1784 (_readerthread):
+2026-11-11T07:17:58.6830192Z Traceback (most recent call last):
+2026-11-11T07:17:58.6831022Z   File "C:\hostedtoolcache\windows\Python\3.12.10\x64\Lib\threading.py", line 1075, in _bootstrap_inner
+2026-11-11T07:17:58.6831711Z     self.run()
+2026-11-11T07:17:58.6832223Z   File "C:\hostedtoolcache\windows\Python\3.12.10\x64\Lib\threading.py", line 1012, in run
+2026-11-11T07:17:58.6832684Z     self._target(*self._args, **self._kwargs)
+2026-11-11T07:17:58.6833204Z   File "C:\hostedtoolcache\windows\Python\3.12.10\x64\Lib\subprocess.py", line 1599, in _readerthread
+2026-11-11T07:17:58.6835619Z     buffer.append(fh.read())
+2026-11-11T07:17:58.6836010Z                   ^^^^^^^^^
+2026-11-11T07:17:58.6836453Z   File "C:\hostedtoolcache\windows\Python\3.12.10\x64\Lib\encodings\cp1252.py", line 23, in decode
+2026-11-11T07:17:58.6837264Z     return codecs.charmap_decode(input,self.errors,decoding_table)[0]
+2026-11-11T07:17:58.6838105Z            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+2026-11-11T07:17:58.6839410Z UnicodeDecodeError: 'charmap' codec can't decode byte 0x8f in position 79: character maps to <undefined>
+2026-11-11T07:17:58.6844667Z ERROR
+2026-11-11T07:17:58.6980403Z test_nome_com_aspas_e_barra (test_inventario.TestAchados.test_nome_com_aspas_e_barra) ... ERROR
+2026-11-11T07:17:58.7296338Z test_nome_com_aspas_no_historico (test_inventario.TestAchados.test_nome_com_aspas_no_historico) ... ERROR
+2026-11-11T07:17:59.7766440Z test_nome_com_espaco (test_inventario.TestAchados.test_nome_com_espaco) ... Exception in thread Thread-1788 (_readerthread):
+2026-11-11T07:17:59.7767295Z Traceback (most recent call last):
+2026-11-11T07:17:59.7768077Z   File "C:\hostedtoolcache\windows\Python\3.12.10\x64\Lib\threading.py", line 1075, in _bootstrap_inner
+2026-11-11T07:17:59.7768908Z     self.run()
+2026-11-11T07:17:59.7769195Z   File "C:\hostedtoolcache\windows\Python\3.12.10\x64\Lib\threading.py", line 1012, in run
+2026-11-11T07:17:59.7771101Z     self._target(*self._args, **self._kwargs)
+2026-11-11T07:17:59.7771840Z   File "C:\hostedtoolcache\windows\Python\3.12.10\x64\Lib\subprocess.py", line 1599, in _readerthread
+2026-11-11T07:17:59.7774546Z     buffer.append(fh.read())
+2026-11-11T07:17:59.7774889Z                   ^^^^^^^^^
+2026-11-11T07:17:59.7775373Z   File "C:\hostedtoolcache\windows\Python\3.12.10\x64\Lib\encodings\cp1252.py", line 23, in decode
+2026-11-11T07:17:59.7776224Z     return codecs.charmap_decode(input,self.errors,decoding_table)[0]
+2026-11-11T07:17:59.7777926Z            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+2026-11-11T07:17:59.7778543Z UnicodeDecodeError: 'charmap' codec can't decode byte 0x8f in position 76: character maps to <undefined>
+2026-11-11T07:17:59.7785103Z ERROR
+2026-11-11T07:18:01.0701123Z test_proposta_cobre_maiuscula (test_inventario.TestAchados.test_proposta_cobre_maiuscula) ... Exception in thread Thread-1790 (_readerthread):
+2026-11-11T07:18:01.0702870Z Traceback (most recent call last):
+2026-11-11T07:18:01.0703696Z   File "C:\hostedtoolcache\windows\Python\3.12.10\x64\Lib\threading.py", line 1075, in _bootstrap_inner
+2026-11-11T07:18:01.0704273Z     self.run()
+2026-11-11T07:18:01.0705133Z   File "C:\hostedtoolcache\windows\Python\3.12.10\x64\Lib\threading.py", line 1012, in run
+2026-11-11T07:18:01.0705675Z     self._target(*self._args, **self._kwargs)
+2026-11-11T07:18:01.0706432Z   File "C:\hostedtoolcache\windows\Python\3.12.10\x64\Lib\subprocess.py", line 1599, in _readerthread
+2026-11-11T07:18:01.0710039Z     buffer.append(fh.read())
+2026-11-11T07:18:01.0710934Z                   ^^^^^^^^^
+2026-11-11T07:18:01.0711587Z   File "C:\hostedtoolcache\windows\Python\3.12.10\x64\Lib\encodings\cp1252.py", line 23, in decode
+2026-11-11T07:18:01.0712704Z     return codecs.charmap_decode(input,self.errors,decoding_table)[0]
+2026-11-11T07:18:01.0714562Z            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+2026-11-11T07:18:01.0715281Z UnicodeDecodeError: 'charmap' codec can't decode byte 0x8f in position 151: character maps to <undefined>
+2026-11-11T07:18:01.0720378Z ERROR
+2026-11-11T07:18:02.6033922Z test_proposta_cobre_o_que_achou (test_inventario.TestAchados.test_proposta_cobre_o_que_achou) ... Exception in thread Thread-1792 (_readerthread):
+2026-11-11T07:18:02.6034764Z Traceback (most recent call last):
+2026-11-11T07:18:02.6035338Z   File "C:\hostedtoolcache\windows\Python\3.12.10\x64\Lib\threading.py", line 1075, in _bootstrap_inner
+2026-11-11T07:18:02.6036197Z     self.run()
+2026-11-11T07:18:02.6037541Z   File "C:\hostedtoolcache\windows\Python\3.12.10\x64\Lib\threading.py", line 1012, in run
+2026-11-11T07:18:02.6039455Z     self._target(*self._args, **self._kwargs)
+2026-11-11T07:18:02.6040000Z   File "C:\hostedtoolcache\windows\Python\3.12.10\x64\Lib\subprocess.py", line 1599, in _readerthread
+2026-11-11T07:18:02.6061082Z     buffer.append(fh.read())
+2026-11-11T07:18:02.6061444Z                   ^^^^^^^^^
+2026-11-11T07:18:02.6061870Z   File "C:\hostedtoolcache\windows\Python\3.12.10\x64\Lib\encodings\cp1252.py", line 23, in decode
+2026-11-11T07:18:02.6062403Z     return codecs.charmap_decode(input,self.errors,decoding_table)[0]
+2026-11-11T07:18:02.6062803Z            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+2026-11-11T07:18:02.6063302Z UnicodeDecodeError: 'charmap' codec can't decode byte 0x8f in position 154: character maps to <undefined>
+2026-11-11T07:18:02.6063763Z ERROR
+2026-11-11T07:18:03.9319009Z test_proposta_escapa_caminho_grande (test_inventario.TestAchados.test_proposta_escapa_caminho_grande) ... Exception in thread Thread-1794 (_readerthread):
+2026-11-11T07:18:03.9320332Z Traceback (most recent call last):
+2026-11-11T07:18:03.9321413Z   File "C:\hostedtoolcache\windows\Python\3.12.10\x64\Lib\threading.py", line 1075, in _bootstrap_inner
+2026-11-11T07:18:03.9322498Z     self.run()
+2026-11-11T07:18:03.9324110Z   File "C:\hostedtoolcache\windows\Python\3.12.10\x64\Lib\threading.py", line 1012, in run
+2026-11-11T07:18:03.9325905Z     self._target(*self._args, **self._kwargs)
+2026-11-11T07:18:03.9326548Z   File "C:\hostedtoolcache\windows\Python\3.12.10\x64\Lib\subprocess.py", line 1599, in _readerthread
+2026-11-11T07:18:03.9327675Z     buffer.append(fh.read())
+2026-11-11T07:18:03.9328084Z                   ^^^^^^^^^
+2026-11-11T07:18:03.9328692Z   File "C:\hostedtoolcache\windows\Python\3.12.10\x64\Lib\encodings\cp1252.py", line 23, in decode
+2026-11-11T07:18:03.9329359Z     return codecs.charmap_decode(input,self.errors,decoding_table)[0]
+2026-11-11T07:18:03.9331083Z            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+2026-11-11T07:18:03.9331845Z UnicodeDecodeError: 'charmap' codec can't decode byte 0x8f in position 76: character maps to <undefined>
+2026-11-11T07:18:03.9340446Z ERROR
+2026-11-11T07:18:05.1055609Z test_proposta_escapa_espaco_no_fim (test_inventario.TestAchados.test_proposta_escapa_espaco_no_fim) ... Exception in thread Thread-1796 (_readerthread):
+2026-11-11T07:18:05.1057738Z Traceback (most recent call last):
+2026-11-11T07:18:05.1058571Z   File "C:\hostedtoolcache\windows\Python\3.12.10\x64\Lib\threading.py", line 1075, in _bootstrap_inner
+2026-11-11T07:18:05.1059304Z     self.run()
+2026-11-11T07:18:05.1059731Z   File "C:\hostedtoolcache\windows\Python\3.12.10\x64\Lib\threading.py", line 1012, in run
+2026-11-11T07:18:05.1060308Z     self._target(*self._args, **self._kwargs)
+2026-11-11T07:18:05.1060875Z   File "C:\hostedtoolcache\windows\Python\3.12.10\x64\Lib\subprocess.py", line 1599, in _readerthread
+2026-11-11T07:18:05.1063718Z     buffer.append(fh.read())
+2026-11-11T07:18:05.1064545Z                   ^^^^^^^^^
+2026-11-11T07:18:05.1064985Z   File "C:\hostedtoolcache\windows\Python\3.12.10\x64\Lib\encodings\cp1252.py", line 23, in decode
+2026-11-11T07:18:05.1065548Z     return codecs.charmap_decode(input,self.errors,decoding_table)[0]
+2026-11-11T07:18:05.1067022Z            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+2026-11-11T07:18:05.1067533Z UnicodeDecodeError: 'charmap' codec can't decode byte 0x8f in position 76: character maps to <undefined>
+2026-11-11T07:18:05.1073206Z ERROR
+2026-11-11T07:18:05.9172719Z test_proposta_vence_negacao_existente (test_inventario.TestAchados.test_proposta_vence_negacao_existente) ... ok
+2026-11-11T07:18:06.9456865Z test_sem_commit_nao_fala_de_historico (test_inventario.TestAchados.test_sem_commit_nao_fala_de_historico) ... ok
+2026-11-11T07:18:08.0334031Z test_sem_planilha_nem_grande_a_proposta_fica_na_base (test_inventario.TestAchados.test_sem_planilha_nem_grande_a_proposta_fica_na_base) ... FAIL
+2026-11-11T07:18:09.1064992Z test_a_linha_vem_logo_depois_do_cabecalho (test_inventario.TestGh.test_a_linha_vem_logo_depois_do_cabecalho) ... FAIL
+2026-11-11T07:18:12.8540715Z test_os_quatro_valores (test_inventario.TestGh.test_os_quatro_valores) ... ok
+2026-11-11T07:18:12.9749040Z test_dentro_de_um_repositorio_maior (test_inventario.TestPreCondicoes.test_dentro_de_um_repositorio_maior) ... FAIL
+2026-11-11T07:18:13.0282291Z test_icloud_mesa_e_documentos (test_inventario.TestPreCondicoes.test_icloud_mesa_e_documentos) ... ok
+2026-11-11T07:18:13.0785270Z test_pasta_pessoal (test_inventario.TestPreCondicoes.test_pasta_pessoal) ... ok
+2026-11-11T07:18:13.1844912Z test_pasta_sincronizada (test_inventario.TestPreCondicoes.test_pasta_sincronizada) ... ok
+2026-11-11T07:18:13.3404225Z test_repositorio_numa_subpasta (test_inventario.TestPreCondicoes.test_repositorio_numa_subpasta) ... ok
+2026-11-11T07:18:14.6392977Z test_nao_grava_nada (test_inventario.TestSomenteLeitura.test_nao_grava_nada) ... Exception in thread Thread-1838 (_readerthread):
+2026-11-11T07:18:14.6393669Z Traceback (most recent call last):
+2026-11-11T07:18:14.6394218Z   File "C:\hostedtoolcache\windows\Python\3.12.10\x64\Lib\threading.py", line 1075, in _bootstrap_inner
+2026-11-11T07:18:14.6395007Z     self.run()
+2026-11-11T07:18:14.6395456Z   File "C:\hostedtoolcache\windows\Python\3.12.10\x64\Lib\threading.py", line 1012, in run
+2026-11-11T07:18:14.6397381Z     self._target(*self._args, **self._kwargs)
+2026-11-11T07:18:14.6397911Z   File "C:\hostedtoolcache\windows\Python\3.12.10\x64\Lib\subprocess.py", line 1599, in _readerthread
+2026-11-11T07:18:14.6400937Z     buffer.append(fh.read())
+2026-11-11T07:18:14.6401265Z                   ^^^^^^^^^
+2026-11-11T07:18:14.6402535Z   File "C:\hostedtoolcache\windows\Python\3.12.10\x64\Lib\encodings\cp1252.py", line 23, in decode
+2026-11-11T07:18:14.6403094Z     return codecs.charmap_decode(input,self.errors,decoding_table)[0]
+2026-11-11T07:18:14.6404317Z            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+2026-11-11T07:18:14.6404739Z UnicodeDecodeError: 'charmap' codec can't decode byte 0x8f in position 140: character maps to <undefined>
+2026-11-11T07:18:14.6423438Z ok
+2026-11-11T07:18:14.6906240Z test_cache_no_ambiente_e_usado_sem_testar (test_python_resolver.Calco.test_cache_no_ambiente_e_usado_sem_testar) ... ok
+2026-11-11T07:18:14.8425635Z test_vale_para_bash_filho_sem_testar_de_novo (test_python_resolver.Calco.test_vale_para_bash_filho_sem_testar_de_novo) ... ERROR
+2026-11-11T07:18:14.9780957Z test_vale_para_env_e_xargs (test_python_resolver.Calco.test_vale_para_env_e_xargs) ... FAIL
+2026-11-11T07:18:15.1082139Z test_vale_para_exec (test_python_resolver.Calco.test_vale_para_exec) ... FAIL
+2026-11-11T07:18:15.2419929Z test_atalho_da_store_e_python_nativo_usa_o_python (test_python_resolver.Escolha.test_atalho_da_store_e_python_nativo_usa_o_python) ... ERROR
+2026-11-11T07:18:15.3802071Z test_atalho_e_so_py_usa_py_menos_3 (test_python_resolver.Escolha.test_atalho_e_so_py_usa_py_menos_3) ... FAIL
+2026-11-11T07:18:15.4537376Z test_python3_que_serve_nao_muda_nada (test_python_resolver.Escolha.test_python3_que_serve_nao_muda_nada) ... FAIL
+2026-11-11T07:18:15.5916547Z test_python3_velho_passa_ao_proximo (test_python_resolver.Escolha.test_python3_velho_passa_ao_proximo) ... FAIL
+2026-11-11T07:18:15.7234128Z test_sdd_python_com_espaco_no_caminho (test_python_resolver.Escolha.test_sdd_python_com_espaco_no_caminho) ... FAIL
+2026-11-11T07:18:15.8036703Z test_atalho_e_python_velho_tambem_para (test_python_resolver.Parada.test_atalho_e_python_velho_tambem_para) ... ok
+2026-11-11T07:18:15.9171756Z test_calco_que_nao_se_cria_e_dito (test_python_resolver.Parada.test_calco_que_nao_se_cria_e_dito) ... ok
+2026-11-11T07:18:15.9719559Z test_exigir_para_com_causa_e_conserto (test_python_resolver.Parada.test_exigir_para_com_causa_e_conserto) ... ok
+2026-11-11T07:18:16.0179663Z test_nenhum_python_a_guarda_falha_calada_e_exigir_para (test_python_resolver.Parada.test_nenhum_python_a_guarda_falha_calada_e_exigir_para) ... FAIL
+2026-11-11T07:18:16.0763005Z test_python_velho_e_dito_pela_versao (test_python_resolver.Parada.test_python_velho_e_dito_pela_versao) ... ok
+2026-11-11T07:18:16.1312180Z test_so_o_atalho_a_carga_segue_e_a_guarda_diz_a_causa_uma_vez (test_python_resolver.Parada.test_so_o_atalho_a_carga_segue_e_a_guarda_diz_a_causa_uma_vez) ... ok
+2026-11-11T07:18:16.1880852Z test_so_python_2_e_dito_pela_versao (test_python_resolver.Parada.test_so_python_2_e_dito_pela_versao) ... ok
+2026-11-11T07:18:16.1887908Z test_cada_achado_tem_teste_que_roda_no_job (test_windows.AchadosGuardados.test_cada_achado_tem_teste_que_roda_no_job) ... ok
+2026-11-11T07:18:16.1900431Z test_gitattributes_poe_lf_em_todo_checkout (test_windows.FimDeLinha.test_gitattributes_poe_lf_em_todo_checkout) ... ok
+2026-11-11T07:18:16.3409093Z test_stdout_do_curator_sem_crlf (test_windows.FimDeLinha.test_stdout_do_curator_sem_crlf) ... ok
+2026-11-11T07:18:16.3411332Z test_a_varredura_acusa_a_pergunta_escrita_a_mao (test_windows.Pulos.test_a_varredura_acusa_a_pergunta_escrita_a_mao) ... ok
+2026-11-11T07:18:16.3412048Z test_cada_constante_tem_motivo_que_nomeia_o_recurso (test_windows.Pulos.test_cada_constante_tem_motivo_que_nomeia_o_recurso) ... ok
+2026-11-11T07:18:16.4806661Z test_pulo_de_plataforma_so_por_constante_do_apoio (test_windows.Pulos.test_pulo_de_plataforma_so_por_constante_do_apoio) ... ok
+2026-11-11T07:18:16.4808016Z test_skill_descreve_o_gh_o_editor_e_o_modo_editor (test_f16_textos.ChecarAmbiente.test_skill_descreve_o_gh_o_editor_e_o_modo_editor) ... ok
+2026-11-11T07:18:16.4810633Z test_passo_0_avisa_do_gh_cedo_sem_parar (test_f16_textos.IniciarRepo.test_passo_0_avisa_do_gh_cedo_sem_parar) ... ok
+2026-11-11T07:18:16.4812297Z test_passo_2_le_a_linha_gh_e_passo_6_mantem_a_checagem (test_f16_textos.IniciarRepo.test_passo_2_le_a_linha_gh_e_passo_6_mantem_a_checagem) ... ok
+2026-11-11T07:18:16.4814913Z test_as_funcoes_do_gh_sao_iguais_nos_2_scripts (test_f16_textos.Instalacao.test_as_funcoes_do_gh_sao_iguais_nos_2_scripts) ... ok
+2026-11-11T07:18:16.4819006Z test_o_bloco_de_instalacao_e_igual_nas_3_skills (test_f16_textos.Instalacao.test_o_bloco_de_instalacao_e_igual_nas_3_skills) ... ok
+2026-11-11T07:18:16.4820710Z test_o_bloco_tem_os_comandos_de_cada_sistema_e_o_login (test_f16_textos.Instalacao.test_o_bloco_tem_os_comandos_de_cada_sistema_e_o_login) ... ok
+2026-11-11T07:18:16.4823630Z test_o_comando_que_o_script_imprime_esta_na_tabela (test_f16_textos.Instalacao.test_o_comando_que_o_script_imprime_esta_na_tabela) ... ok
+2026-11-11T07:18:16.4825284Z test_aviso_final_nas_duas_formas (test_f16_textos.NovaSessao.test_aviso_final_nas_duas_formas) ... ok
+2026-11-11T07:18:16.4826826Z test_modo_terminal_em_3_passos_sem_presumir_um_agente (test_f16_textos.NovaSessao.test_modo_terminal_em_3_passos_sem_presumir_um_agente) ... ok
+2026-11-11T07:18:16.4828495Z test_slot_cheio_como_esta_e_vazio_pelo_checar_editor (test_f16_textos.NovaSessao.test_slot_cheio_como_esta_e_vazio_pelo_checar_editor) ... ok
+2026-11-11T07:18:16.4831161Z test_as_3_skills_sobem_de_versao (test_f16_textos.Versoes.test_as_3_skills_sobem_de_versao) ... ok
+2026-11-11T07:18:16.4831755Z 
+2026-11-11T07:18:16.4831923Z ======================================================================
+2026-11-11T07:18:16.4832569Z ERROR: test_env_example_e_sample_nao_alarmam (test_checar.TestDadoExposto.test_env_example_e_sample_nao_alarmam)
+2026-11-11T07:18:16.4833227Z ----------------------------------------------------------------------
+2026-11-11T07:18:16.4833835Z Traceback (most recent call last):
+2026-11-11T07:18:16.4834393Z   File "D:\a\sdd-open\sdd-open\tests\test_checar.py", line 240, in test_env_example_e_sample_nao_alarmam
+2026-11-11T07:18:16.4834893Z     self.assertNotIn("Dado exposto", out)
+2026-11-11T07:18:16.4835423Z   File "C:\hostedtoolcache\windows\Python\3.12.10\x64\Lib\unittest\case.py", line 1156, in assertNotIn
+2026-11-11T07:18:16.4835935Z     if member in container:
+2026-11-11T07:18:16.4836207Z        ^^^^^^^^^^^^^^^^^^^
+2026-11-11T07:18:16.4836555Z TypeError: argument of type 'NoneType' is not iterable
+2026-11-11T07:18:16.4836785Z 
+2026-11-11T07:18:16.4836919Z ======================================================================
+2026-11-11T07:18:16.4837438Z ERROR: test_env_nao_ignorado_e_aviso (test_checar.TestDadoExposto.test_env_nao_ignorado_e_aviso)
+2026-11-11T07:18:16.4837979Z ----------------------------------------------------------------------
+2026-11-11T07:18:16.4838418Z Traceback (most recent call last):
+2026-11-11T07:18:16.4838890Z   File "D:\a\sdd-open\sdd-open\tests\test_checar.py", line 255, in test_env_nao_ignorado_e_aviso
+2026-11-11T07:18:16.4839390Z     self.assertIn("\u26a0\ufe0f Vale arrumar", out)
+2026-11-11T07:18:16.4839899Z   File "C:\hostedtoolcache\windows\Python\3.12.10\x64\Lib\unittest\case.py", line 1149, in assertIn
+2026-11-11T07:18:16.4840384Z     if member not in container:
+2026-11-11T07:18:16.4840663Z        ^^^^^^^^^^^^^^^^^^^^^^^
+2026-11-11T07:18:16.4841011Z TypeError: argument of type 'NoneType' is not iterable
+2026-11-11T07:18:16.4841240Z 
+2026-11-11T07:18:16.4841385Z ======================================================================
+2026-11-11T07:18:16.4841848Z ERROR: test_npm_ignore_scripts (test_checar.TestDadoExposto.test_npm_ignore_scripts)
+2026-11-11T07:18:16.4842342Z ----------------------------------------------------------------------
+2026-11-11T07:18:16.4842711Z Traceback (most recent call last):
+2026-11-11T07:18:16.4843153Z   File "D:\a\sdd-open\sdd-open\tests\test_checar.py", line 274, in test_npm_ignore_scripts
+2026-11-11T07:18:16.4843661Z     self.assertIn("npm config set ignore-scripts true", out)
+2026-11-11T07:18:16.4844258Z   File "C:\hostedtoolcache\windows\Python\3.12.10\x64\Lib\unittest\case.py", line 1149, in assertIn
+2026-11-11T07:18:16.4844734Z     if member not in container:
+2026-11-11T07:18:16.4844999Z        ^^^^^^^^^^^^^^^^^^^^^^^
+2026-11-11T07:18:16.4845317Z TypeError: argument of type 'NoneType' is not iterable
+2026-11-11T07:18:16.4845566Z 
+2026-11-11T07:18:16.4845899Z ======================================================================
+2026-11-11T07:18:16.4846626Z ERROR: test_frente_bloqueia_login_do_editor (test_checar.TestFrente.test_frente_bloqueia_login_do_editor)
+2026-11-11T07:18:16.4847184Z ----------------------------------------------------------------------
+2026-11-11T07:18:16.4847572Z Traceback (most recent call last):
+2026-11-11T07:18:16.4848191Z   File "D:\a\sdd-open\sdd-open\tests\test_checar.py", line 490, in test_frente_bloqueia_login_do_editor
+2026-11-11T07:18:16.4848736Z     rc, out, t = self.roda("--frente", GIT_ASKPASS=str(askpass))
+2026-11-11T07:18:16.4849112Z                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+2026-11-11T07:18:16.4849524Z   File "D:\a\sdd-open\sdd-open\tests\test_checar.py", line 175, in roda
+2026-11-11T07:18:16.4850058Z     r = subprocess.run([BASH, str(SCRIPT), *args], cwd=self.raiz, capture_output=True, text=True,
+2026-11-11T07:18:16.4850590Z         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+2026-11-11T07:18:16.4851102Z   File "C:\hostedtoolcache\windows\Python\3.12.10\x64\Lib\subprocess.py", line 550, in run
+2026-11-11T07:18:16.4851625Z     stdout, stderr = process.communicate(input, timeout=timeout)
+2026-11-11T07:18:16.4852006Z                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+2026-11-11T07:18:16.4852509Z   File "C:\hostedtoolcache\windows\Python\3.12.10\x64\Lib\subprocess.py", line 1209, in communicate
+2026-11-11T07:18:16.4853052Z     stdout, stderr = self._communicate(input, endtime, timeout)
+2026-11-11T07:18:16.4853453Z                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+2026-11-11T07:18:16.4853958Z   File "C:\hostedtoolcache\windows\Python\3.12.10\x64\Lib\subprocess.py", line 1630, in _communicate
+2026-11-11T07:18:16.4854487Z     raise TimeoutExpired(self.args, orig_timeout)
+2026-11-11T07:18:16.4855342Z subprocess.TimeoutExpired: Command '['C:\\Program Files\\Git\\usr\\bin\\bash.exe', 'D:\\a\\sdd-open\\sdd-open\\.agents\\skills\\sdd-checar-ambiente\\scripts\\checar.sh', '--frente']' timed out after 60 seconds
+2026-11-11T07:18:16.4856069Z 
+2026-11-11T07:18:16.4856181Z ======================================================================
+2026-11-11T07:18:16.4856972Z ERROR: test_gh_deslogado_com_remoto_do_github (test_checar.TestGh.test_gh_deslogado_com_remoto_do_github)
+2026-11-11T07:18:16.4857601Z ----------------------------------------------------------------------
+2026-11-11T07:18:16.4857963Z Traceback (most recent call last):
+2026-11-11T07:18:16.4858470Z   File "D:\a\sdd-open\sdd-open\tests\test_checar.py", line 834, in test_gh_deslogado_com_remoto_do_github
+2026-11-11T07:18:16.4858988Z     self.assertIn("\u26a0\ufe0f Vale arrumar", out)
+2026-11-11T07:18:16.4859517Z   File "C:\hostedtoolcache\windows\Python\3.12.10\x64\Lib\unittest\case.py", line 1149, in assertIn
+2026-11-11T07:18:16.4860017Z     if member not in container:
+2026-11-11T07:18:16.4860287Z        ^^^^^^^^^^^^^^^^^^^^^^^
+2026-11-11T07:18:16.4860612Z TypeError: argument of type 'NoneType' is not iterable
+2026-11-11T07:18:16.4860840Z 
+2026-11-11T07:18:16.4860978Z ======================================================================
+2026-11-11T07:18:16.4861539Z ERROR: test_gh_deslogado_sem_remoto_tambem_avisa (test_checar.TestGh.test_gh_deslogado_sem_remoto_tambem_avisa)
+2026-11-11T07:18:16.4862115Z ----------------------------------------------------------------------
+2026-11-11T07:18:16.4862482Z Traceback (most recent call last):
+2026-11-11T07:18:16.4863011Z   File "D:\a\sdd-open\sdd-open\tests\test_checar.py", line 842, in test_gh_deslogado_sem_remoto_tambem_avisa
+2026-11-11T07:18:16.4864634Z     self.assertIn("O reposit�rio n�o tem remoto", out)
+2026-11-11T07:18:16.4865195Z   File "C:\hostedtoolcache\windows\Python\3.12.10\x64\Lib\unittest\case.py", line 1149, in assertIn
+2026-11-11T07:18:16.4865692Z     if member not in container:
+2026-11-11T07:18:16.4865954Z        ^^^^^^^^^^^^^^^^^^^^^^^
+2026-11-11T07:18:16.4866570Z TypeError: argument of type 'NoneType' is not iterable
+2026-11-11T07:18:16.4866829Z 
+2026-11-11T07:18:16.4866943Z ======================================================================
+2026-11-11T07:18:16.4867487Z ERROR: test_gh_pendurado_respeita_o_teto (test_checar.TestGh.test_gh_pendurado_respeita_o_teto)
+2026-11-11T07:18:16.4868020Z ----------------------------------------------------------------------
+2026-11-11T07:18:16.4868526Z Traceback (most recent call last):
+2026-11-11T07:18:16.4869014Z   File "D:\a\sdd-open\sdd-open\tests\test_checar.py", line 871, in test_gh_pendurado_respeita_o_teto
+2026-11-11T07:18:16.4869722Z     self.assertIn("o GitHub n�o respondeu em 10 s", out)
+2026-11-11T07:18:16.4870238Z   File "C:\hostedtoolcache\windows\Python\3.12.10\x64\Lib\unittest\case.py", line 1149, in assertIn
+2026-11-11T07:18:16.4870688Z     if member not in container:
+2026-11-11T07:18:16.4870940Z        ^^^^^^^^^^^^^^^^^^^^^^^
+2026-11-11T07:18:16.4871259Z TypeError: argument of type 'NoneType' is not iterable
+2026-11-11T07:18:16.4871500Z 
+2026-11-11T07:18:16.4871636Z ======================================================================
+2026-11-11T07:18:16.4872104Z ERROR: test_gh_sem_rede_e_sem_resposta (test_checar.TestGh.test_gh_sem_rede_e_sem_resposta)
+2026-11-11T07:18:16.4872595Z ----------------------------------------------------------------------
+2026-11-11T07:18:16.4872973Z Traceback (most recent call last):
+2026-11-11T07:18:16.4873431Z   File "D:\a\sdd-open\sdd-open\tests\test_checar.py", line 865, in test_gh_sem_rede_e_sem_resposta
+2026-11-11T07:18:16.4874122Z     self.assertIn("N�o deu para conferir o login do gh no GitHub agora", out)
+2026-11-11T07:18:16.4874681Z   File "C:\hostedtoolcache\windows\Python\3.12.10\x64\Lib\unittest\case.py", line 1149, in assertIn
+2026-11-11T07:18:16.4875126Z     if member not in container:
+2026-11-11T07:18:16.4875382Z        ^^^^^^^^^^^^^^^^^^^^^^^
+2026-11-11T07:18:16.4875672Z TypeError: argument of type 'NoneType' is not iterable
+2026-11-11T07:18:16.4875922Z 
+2026-11-11T07:18:16.4876043Z ======================================================================
+2026-11-11T07:18:16.4876708Z ERROR: test_sem_gh_aviso_com_o_comando_do_sistema_e_rc_0 (test_checar.TestGh.test_sem_gh_aviso_com_o_comando_do_sistema_e_rc_0) (sistema='Darwin')
+2026-11-11T07:18:16.4877375Z ----------------------------------------------------------------------
+2026-11-11T07:18:16.4877741Z Traceback (most recent call last):
+2026-11-11T07:18:16.4878256Z   File "D:\a\sdd-open\sdd-open\tests\test_checar.py", line 811, in test_sem_gh_aviso_com_o_comando_do_sistema_e_rc_0
+2026-11-11T07:18:16.4878796Z     self.assertIn("\u26a0\ufe0f Vale arrumar", out)
+2026-11-11T07:18:16.4879306Z   File "C:\hostedtoolcache\windows\Python\3.12.10\x64\Lib\unittest\case.py", line 1149, in assertIn
+2026-11-11T07:18:16.4879793Z     if member not in container:
+2026-11-11T07:18:16.4880050Z        ^^^^^^^^^^^^^^^^^^^^^^^
+2026-11-11T07:18:16.4880347Z TypeError: argument of type 'NoneType' is not iterable
+2026-11-11T07:18:16.4880567Z 
+2026-11-11T07:18:16.4880694Z ======================================================================
+2026-11-11T07:18:16.4881358Z ERROR: test_sem_gh_aviso_com_o_comando_do_sistema_e_rc_0 (test_checar.TestGh.test_sem_gh_aviso_com_o_comando_do_sistema_e_rc_0) (sistema='MINGW64_NT-10.0-19045')
+2026-11-11T07:18:16.4882028Z ----------------------------------------------------------------------
+2026-11-11T07:18:16.4882356Z Traceback (most recent call last):
+2026-11-11T07:18:16.4882848Z   File "D:\a\sdd-open\sdd-open\tests\test_checar.py", line 811, in test_sem_gh_aviso_com_o_comando_do_sistema_e_rc_0
+2026-11-11T07:18:16.4883324Z     self.assertIn("\u26a0\ufe0f Vale arrumar", out)
+2026-11-11T07:18:16.4883773Z   File "C:\hostedtoolcache\windows\Python\3.12.10\x64\Lib\unittest\case.py", line 1149, in assertIn
+2026-11-11T07:18:16.4884191Z     if member not in container:
+2026-11-11T07:18:16.4884415Z        ^^^^^^^^^^^^^^^^^^^^^^^
+2026-11-11T07:18:16.4884810Z TypeError: argument of type 'NoneType' is not iterable
+2026-11-11T07:18:16.4885034Z 
+2026-11-11T07:18:16.4885136Z ======================================================================
+2026-11-11T07:18:16.4885716Z ERROR: test_sem_gh_aviso_com_o_comando_do_sistema_e_rc_0 (test_checar.TestGh.test_sem_gh_aviso_com_o_comando_do_sistema_e_rc_0) (sistema='Linux')
+2026-11-11T07:18:16.4886490Z ----------------------------------------------------------------------
+2026-11-11T07:18:16.4886903Z Traceback (most recent call last):
+2026-11-11T07:18:16.4887374Z   File "D:\a\sdd-open\sdd-open\tests\test_checar.py", line 811, in test_sem_gh_aviso_com_o_comando_do_sistema_e_rc_0
+2026-11-11T07:18:16.4887858Z     self.assertIn("\u26a0\ufe0f Vale arrumar", out)
+2026-11-11T07:18:16.4888297Z   File "C:\hostedtoolcache\windows\Python\3.12.10\x64\Lib\unittest\case.py", line 1149, in assertIn
+2026-11-11T07:18:16.4888742Z     if member not in container:
+2026-11-11T07:18:16.4888981Z        ^^^^^^^^^^^^^^^^^^^^^^^
+2026-11-11T07:18:16.4889264Z TypeError: argument of type 'NoneType' is not iterable
+2026-11-11T07:18:16.4889460Z 
+2026-11-11T07:18:16.4889594Z ======================================================================
+2026-11-11T07:18:16.4890016Z ERROR: test_sem_gh_e_sem_remoto_avisa (test_checar.TestGh.test_sem_gh_e_sem_remoto_avisa)
+2026-11-11T07:18:16.4890463Z ----------------------------------------------------------------------
+2026-11-11T07:18:16.4890793Z Traceback (most recent call last):
+2026-11-11T07:18:16.4891209Z   File "D:\a\sdd-open\sdd-open\tests\test_checar.py", line 849, in test_sem_gh_e_sem_remoto_avisa
+2026-11-11T07:18:16.4891648Z     self.assertIn(GH_AUSENTE, out)
+2026-11-11T07:18:16.4892056Z   File "C:\hostedtoolcache\windows\Python\3.12.10\x64\Lib\unittest\case.py", line 1149, in assertIn
+2026-11-11T07:18:16.4892476Z     if member not in container:
+2026-11-11T07:18:16.4892718Z        ^^^^^^^^^^^^^^^^^^^^^^^
+2026-11-11T07:18:16.4892993Z TypeError: argument of type 'NoneType' is not iterable
+2026-11-11T07:18:16.4893210Z 
+2026-11-11T07:18:16.4893313Z ======================================================================
+2026-11-11T07:18:16.4893772Z ERROR: test_comandos_impressos_sem_prompt (test_checar.TestRemoto.test_comandos_impressos_sem_prompt)
+2026-11-11T07:18:16.4894287Z ----------------------------------------------------------------------
+2026-11-11T07:18:16.4894603Z Traceback (most recent call last):
+2026-11-11T07:18:16.4895020Z   File "D:\a\sdd-open\sdd-open\tests\test_checar.py", line 423, in test_comandos_impressos_sem_prompt
+2026-11-11T07:18:16.4895448Z     for linha in out.splitlines():
+2026-11-11T07:18:16.4895698Z                  ^^^^^^^^^^^^^^
+2026-11-11T07:18:16.4896012Z AttributeError: 'NoneType' object has no attribute 'splitlines'
+2026-11-11T07:18:16.4896274Z 
+2026-11-11T07:18:16.4896376Z ======================================================================
+2026-11-11T07:18:16.4896835Z ERROR: test_login_do_editor_esperando (test_checar.TestRemoto.test_login_do_editor_esperando)
+2026-11-11T07:18:16.4897303Z ----------------------------------------------------------------------
+2026-11-11T07:18:16.4897610Z Traceback (most recent call last):
+2026-11-11T07:18:16.4898009Z   File "D:\a\sdd-open\sdd-open\tests\test_checar.py", line 349, in test_login_do_editor_esperando
+2026-11-11T07:18:16.4898447Z     rc, out, t = self.roda(GIT_ASKPASS=str(askpass))
+2026-11-11T07:18:16.4898745Z                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+2026-11-11T07:18:16.4899091Z   File "D:\a\sdd-open\sdd-open\tests\test_checar.py", line 175, in roda
+2026-11-11T07:18:16.4899573Z     r = subprocess.run([BASH, str(SCRIPT), *args], cwd=self.raiz, capture_output=True, text=True,
+2026-11-11T07:18:16.4900004Z         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+2026-11-11T07:18:16.4900462Z   File "C:\hostedtoolcache\windows\Python\3.12.10\x64\Lib\subprocess.py", line 550, in run
+2026-11-11T07:18:16.4900946Z     stdout, stderr = process.communicate(input, timeout=timeout)
+2026-11-11T07:18:16.4902539Z                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+2026-11-11T07:18:16.4903010Z   File "C:\hostedtoolcache\windows\Python\3.12.10\x64\Lib\subprocess.py", line 1209, in communicate
+2026-11-11T07:18:16.4903512Z     stdout, stderr = self._communicate(input, endtime, timeout)
+2026-11-11T07:18:16.4903845Z                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+2026-11-11T07:18:16.4904393Z   File "C:\hostedtoolcache\windows\Python\3.12.10\x64\Lib\subprocess.py", line 1630, in _communicate
+2026-11-11T07:18:16.4904862Z     raise TimeoutExpired(self.args, orig_timeout)
+2026-11-11T07:18:16.4905580Z subprocess.TimeoutExpired: Command '['C:\\Program Files\\Git\\usr\\bin\\bash.exe', 'D:\\a\\sdd-open\\sdd-open\\.agents\\skills\\sdd-checar-ambiente\\scripts\\checar.sh']' timed out after 60 seconds
+2026-11-11T07:18:16.4906189Z 
+2026-11-11T07:18:16.4906512Z ======================================================================
+2026-11-11T07:18:16.4907103Z ERROR: test_rede_parada_com_editor_nao_e_janela_de_login (test_checar.TestRemoto.test_rede_parada_com_editor_nao_e_janela_de_login) [ssh pendurado]
+2026-11-11T07:18:16.4907722Z ----------------------------------------------------------------------
+2026-11-11T07:18:16.4908050Z Traceback (most recent call last):
+2026-11-11T07:18:16.4908526Z   File "D:\a\sdd-open\sdd-open\tests\test_checar.py", line 369, in test_rede_parada_com_editor_nao_e_janela_de_login
+2026-11-11T07:18:16.4909048Z     rc, out, t = self.roda(*args, GIT_ASKPASS=str(askpass), **env)
+2026-11-11T07:18:16.4909387Z                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+2026-11-11T07:18:16.4909772Z   File "D:\a\sdd-open\sdd-open\tests\test_checar.py", line 175, in roda
+2026-11-11T07:18:16.4910245Z     r = subprocess.run([BASH, str(SCRIPT), *args], cwd=self.raiz, capture_output=True, text=True,
+2026-11-11T07:18:16.4910699Z         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+2026-11-11T07:18:16.4911158Z   File "C:\hostedtoolcache\windows\Python\3.12.10\x64\Lib\subprocess.py", line 550, in run
+2026-11-11T07:18:16.4911628Z     stdout, stderr = process.communicate(input, timeout=timeout)
+2026-11-11T07:18:16.4911975Z                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+2026-11-11T07:18:16.4912450Z   File "C:\hostedtoolcache\windows\Python\3.12.10\x64\Lib\subprocess.py", line 1209, in communicate
+2026-11-11T07:18:16.4912953Z     stdout, stderr = self._communicate(input, endtime, timeout)
+2026-11-11T07:18:16.4913333Z                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+2026-11-11T07:18:16.4913816Z   File "C:\hostedtoolcache\windows\Python\3.12.10\x64\Lib\subprocess.py", line 1630, in _communicate
+2026-11-11T07:18:16.4914297Z     raise TimeoutExpired(self.args, orig_timeout)
+2026-11-11T07:18:16.4915110Z subprocess.TimeoutExpired: Command '['C:\\Program Files\\Git\\usr\\bin\\bash.exe', 'D:\\a\\sdd-open\\sdd-open\\.agents\\skills\\sdd-checar-ambiente\\scripts\\checar.sh', '--frente']' timed out after 60 seconds
+2026-11-11T07:18:16.4915803Z 
+2026-11-11T07:18:16.4915943Z ======================================================================
+2026-11-11T07:18:16.4916676Z ERROR: test_rede_parada_com_editor_nao_e_janela_de_login (test_checar.TestRemoto.test_rede_parada_com_editor_nao_e_janela_de_login) [servidor que aceita e n�o responde]
+2026-11-11T07:18:16.4917344Z ----------------------------------------------------------------------
+2026-11-11T07:18:16.4917742Z Traceback (most recent call last):
+2026-11-11T07:18:16.4918232Z   File "D:\a\sdd-open\sdd-open\tests\test_checar.py", line 372, in test_rede_parada_com_editor_nao_e_janela_de_login
+2026-11-11T07:18:16.4918787Z     self.assertIn("sem internet ou rede bloqueada", out)
+2026-11-11T07:18:16.4919313Z   File "C:\hostedtoolcache\windows\Python\3.12.10\x64\Lib\unittest\case.py", line 1149, in assertIn
+2026-11-11T07:18:16.4919811Z     if member not in container:
+2026-11-11T07:18:16.4920082Z        ^^^^^^^^^^^^^^^^^^^^^^^
+2026-11-11T07:18:16.4920497Z TypeError: argument of type 'NoneType' is not iterable
+2026-11-11T07:18:16.4920719Z 
+2026-11-11T07:18:16.4920850Z ======================================================================
+2026-11-11T07:18:16.4921268Z ERROR: test_rede_pendurada (test_checar.TestRemoto.test_rede_pendurada)
+2026-11-11T07:18:16.4921688Z ----------------------------------------------------------------------
+2026-11-11T07:18:16.4922135Z Traceback (most recent call last):
+2026-11-11T07:18:16.4922549Z   File "D:\a\sdd-open\sdd-open\tests\test_checar.py", line 310, in test_rede_pendurada
+2026-11-11T07:18:16.4923016Z     self.assertIn("sem internet ou rede bloqueada", out)
+2026-11-11T07:18:16.4923538Z   File "C:\hostedtoolcache\windows\Python\3.12.10\x64\Lib\unittest\case.py", line 1149, in assertIn
+2026-11-11T07:18:16.4923968Z     if member not in container:
+2026-11-11T07:18:16.4924171Z        ^^^^^^^^^^^^^^^^^^^^^^^
+2026-11-11T07:18:16.4924415Z TypeError: argument of type 'NoneType' is not iterable
+2026-11-11T07:18:16.4924625Z 
+2026-11-11T07:18:16.4924727Z ======================================================================
+2026-11-11T07:18:16.4925331Z ERROR: test_rede_pendurada_inteira_api_e_remoto (test_checar.TestRemoto.test_rede_pendurada_inteira_api_e_remoto)
+2026-11-11T07:18:16.4925850Z ----------------------------------------------------------------------
+2026-11-11T07:18:16.4926152Z Traceback (most recent call last):
+2026-11-11T07:18:16.4926779Z   File "D:\a\sdd-open\sdd-open\tests\test_checar.py", line 321, in test_rede_pendurada_inteira_api_e_remoto
+2026-11-11T07:18:16.4927340Z     rc, out, t = self.roda(SDD_CHECAR_GITHUB_API=api, GIT_SSH_COMMAND="sh -c 'sleep 60; :'")
+2026-11-11T07:18:16.4927782Z                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+2026-11-11T07:18:16.4928160Z   File "D:\a\sdd-open\sdd-open\tests\test_checar.py", line 175, in roda
+2026-11-11T07:18:16.4928677Z     r = subprocess.run([BASH, str(SCRIPT), *args], cwd=self.raiz, capture_output=True, text=True,
+2026-11-11T07:18:16.4929234Z         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+2026-11-11T07:18:16.4929705Z   File "C:\hostedtoolcache\windows\Python\3.12.10\x64\Lib\subprocess.py", line 550, in run
+2026-11-11T07:18:16.4930177Z     stdout, stderr = process.communicate(input, timeout=timeout)
+2026-11-11T07:18:16.4930518Z                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+2026-11-11T07:18:16.4930934Z   File "C:\hostedtoolcache\windows\Python\3.12.10\x64\Lib\subprocess.py", line 1209, in communicate
+2026-11-11T07:18:16.4931402Z     stdout, stderr = self._communicate(input, endtime, timeout)
+2026-11-11T07:18:16.4931692Z                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+2026-11-11T07:18:16.4932087Z   File "C:\hostedtoolcache\windows\Python\3.12.10\x64\Lib\subprocess.py", line 1630, in _communicate
+2026-11-11T07:18:16.4932558Z     raise TimeoutExpired(self.args, orig_timeout)
+2026-11-11T07:18:16.4933314Z subprocess.TimeoutExpired: Command '['C:\\Program Files\\Git\\usr\\bin\\bash.exe', 'D:\\a\\sdd-open\\sdd-open\\.agents\\skills\\sdd-checar-ambiente\\scripts\\checar.sh']' timed out after 60 seconds
+2026-11-11T07:18:16.4934013Z 
+2026-11-11T07:18:16.4934113Z ======================================================================
+2026-11-11T07:18:16.4934416Z ERROR: test_remoto_vazio (test_checar.TestRemoto.test_remoto_vazio)
+2026-11-11T07:18:16.4934743Z ----------------------------------------------------------------------
+2026-11-11T07:18:16.4935009Z Traceback (most recent call last):
+2026-11-11T07:18:16.4935334Z   File "D:\a\sdd-open\sdd-open\tests\test_checar.py", line 382, in test_remoto_vazio
+2026-11-11T07:18:16.4935683Z     self.assertIn("\u26a0\ufe0f Vale arrumar", out)
+2026-11-11T07:18:16.4936106Z   File "C:\hostedtoolcache\windows\Python\3.12.10\x64\Lib\unittest\case.py", line 1149, in assertIn
+2026-11-11T07:18:16.4936511Z     if member not in container:
+2026-11-11T07:18:16.4936711Z        ^^^^^^^^^^^^^^^^^^^^^^^
+2026-11-11T07:18:16.4937078Z TypeError: argument of type 'NoneType' is not iterable
+2026-11-11T07:18:16.4937286Z 
+2026-11-11T07:18:16.4937371Z ======================================================================
+2026-11-11T07:18:16.4937781Z ERROR: test_sem_remoto_continua_aviso (test_checar.TestRemoto.test_sem_remoto_continua_aviso)
+2026-11-11T07:18:16.4938287Z ----------------------------------------------------------------------
+2026-11-11T07:18:16.4938573Z Traceback (most recent call last):
+2026-11-11T07:18:16.4938963Z   File "D:\a\sdd-open\sdd-open\tests\test_checar.py", line 401, in test_sem_remoto_continua_aviso
+2026-11-11T07:18:16.4939376Z     self.assertIn("\u26a0\ufe0f Vale arrumar", out)
+2026-11-11T07:18:16.4939809Z   File "C:\hostedtoolcache\windows\Python\3.12.10\x64\Lib\unittest\case.py", line 1149, in assertIn
+2026-11-11T07:18:16.4940208Z     if member not in container:
+2026-11-11T07:18:16.4940408Z        ^^^^^^^^^^^^^^^^^^^^^^^
+2026-11-11T07:18:16.4940656Z TypeError: argument of type 'NoneType' is not iterable
+2026-11-11T07:18:16.4940858Z 
+2026-11-11T07:18:16.4940954Z ======================================================================
+2026-11-11T07:18:16.4941333Z ERROR: test_ssh_pendurado_vigia (test_checar.TestRemoto.test_ssh_pendurado_vigia)
+2026-11-11T07:18:16.4941741Z ----------------------------------------------------------------------
+2026-11-11T07:18:16.4942035Z Traceback (most recent call last):
+2026-11-11T07:18:16.4942405Z   File "D:\a\sdd-open\sdd-open\tests\test_checar.py", line 330, in test_ssh_pendurado_vigia
+2026-11-11T07:18:16.4942811Z     rc, out, t = self.roda(GIT_SSH_COMMAND="sh -c 'sleep 60; :'")
+2026-11-11T07:18:16.4943101Z                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+2026-11-11T07:18:16.4943464Z   File "D:\a\sdd-open\sdd-open\tests\test_checar.py", line 175, in roda
+2026-11-11T07:18:16.4943929Z     r = subprocess.run([BASH, str(SCRIPT), *args], cwd=self.raiz, capture_output=True, text=True,
+2026-11-11T07:18:16.4944365Z         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+2026-11-11T07:18:16.4944808Z   File "C:\hostedtoolcache\windows\Python\3.12.10\x64\Lib\subprocess.py", line 550, in run
+2026-11-11T07:18:16.4945263Z     stdout, stderr = process.communicate(input, timeout=timeout)
+2026-11-11T07:18:16.4945581Z                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+2026-11-11T07:18:16.4946027Z   File "C:\hostedtoolcache\windows\Python\3.12.10\x64\Lib\subprocess.py", line 1209, in communicate
+2026-11-11T07:18:16.4946830Z     stdout, stderr = self._communicate(input, endtime, timeout)
+2026-11-11T07:18:16.4947125Z                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+2026-11-11T07:18:16.4947519Z   File "C:\hostedtoolcache\windows\Python\3.12.10\x64\Lib\subprocess.py", line 1630, in _communicate
+2026-11-11T07:18:16.4947913Z     raise TimeoutExpired(self.args, orig_timeout)
+2026-11-11T07:18:16.4948601Z subprocess.TimeoutExpired: Command '['C:\\Program Files\\Git\\usr\\bin\\bash.exe', 'D:\\a\\sdd-open\\sdd-open\\.agents\\skills\\sdd-checar-ambiente\\scripts\\checar.sh']' timed out after 60 seconds
+2026-11-11T07:18:16.4949195Z 
+2026-11-11T07:18:16.4949290Z ======================================================================
+2026-11-11T07:18:16.4949655Z ERROR: test_vazio_com_warning (test_checar.TestRemoto.test_vazio_com_warning)
+2026-11-11T07:18:16.4950057Z ----------------------------------------------------------------------
+2026-11-11T07:18:16.4950372Z Traceback (most recent call last):
+2026-11-11T07:18:16.4950770Z   File "D:\a\sdd-open\sdd-open\tests\test_checar.py", line 396, in test_vazio_com_warning
+2026-11-11T07:18:16.4951281Z     self.assertIn("ainda n�o tem nenhum commit", out)
+2026-11-11T07:18:16.4951743Z   File "C:\hostedtoolcache\windows\Python\3.12.10\x64\Lib\unittest\case.py", line 1149, in assertIn
+2026-11-11T07:18:16.4952140Z     if member not in container:
+2026-11-11T07:18:16.4952339Z        ^^^^^^^^^^^^^^^^^^^^^^^
+2026-11-11T07:18:16.4952700Z TypeError: argument of type 'NoneType' is not iterable
+2026-11-11T07:18:16.4952902Z 
+2026-11-11T07:18:16.4952990Z ======================================================================
+2026-11-11T07:18:16.4953358Z ERROR: test_nao_grava_nada (test_checar.TestSomenteLeitura.test_nao_grava_nada)
+2026-11-11T07:18:16.4953759Z ----------------------------------------------------------------------
+2026-11-11T07:18:16.4954126Z Traceback (most recent call last):
+2026-11-11T07:18:16.4954485Z   File "D:\a\sdd-open\sdd-open\tests\test_checar.py", line 526, in test_nao_grava_nada
+2026-11-11T07:18:16.4954858Z     self.assertIn("Dado exposto", out)
+2026-11-11T07:18:16.4955261Z   File "C:\hostedtoolcache\windows\Python\3.12.10\x64\Lib\unittest\case.py", line 1149, in assertIn
+2026-11-11T07:18:16.4955661Z     if member not in container:
+2026-11-11T07:18:16.4955859Z        ^^^^^^^^^^^^^^^^^^^^^^^
+2026-11-11T07:18:16.4956110Z TypeError: argument of type 'NoneType' is not iterable
+2026-11-11T07:18:16.4956319Z 
+2026-11-11T07:18:16.4956421Z ======================================================================
+2026-11-11T07:18:16.4956803Z ERROR: test_cinco_categorias (test_inventario.TestAchados.test_cinco_categorias)
+2026-11-11T07:18:16.4957216Z ----------------------------------------------------------------------
+2026-11-11T07:18:16.4957508Z Traceback (most recent call last):
+2026-11-11T07:18:16.4957886Z   File "D:\a\sdd-open\sdd-open\tests\test_inventario.py", line 98, in test_cinco_categorias
+2026-11-11T07:18:16.4958269Z     self.assertIn(achado, out)
+2026-11-11T07:18:16.4958649Z   File "C:\hostedtoolcache\windows\Python\3.12.10\x64\Lib\unittest\case.py", line 1149, in assertIn
+2026-11-11T07:18:16.4959057Z     if member not in container:
+2026-11-11T07:18:16.4959256Z        ^^^^^^^^^^^^^^^^^^^^^^^
+2026-11-11T07:18:16.4959489Z TypeError: argument of type 'NoneType' is not iterable
+2026-11-11T07:18:16.4959690Z 
+2026-11-11T07:18:16.4959784Z ======================================================================
+2026-11-11T07:18:16.4960220Z ERROR: test_limite_de_dez_por_categoria (test_inventario.TestAchados.test_limite_de_dez_por_categoria)
+2026-11-11T07:18:16.4960690Z ----------------------------------------------------------------------
+2026-11-11T07:18:16.4960984Z Traceback (most recent call last):
+2026-11-11T07:18:16.4961395Z   File "D:\a\sdd-open\sdd-open\tests\test_inventario.py", line 141, in test_limite_de_dez_por_categoria
+2026-11-11T07:18:16.4961841Z     self.assertIn("planilhas/cliente-09.xlsx", out)
+2026-11-11T07:18:16.4962273Z   File "C:\hostedtoolcache\windows\Python\3.12.10\x64\Lib\unittest\case.py", line 1149, in assertIn
+2026-11-11T07:18:16.4962680Z     if member not in container:
+2026-11-11T07:18:16.4962874Z        ^^^^^^^^^^^^^^^^^^^^^^^
+2026-11-11T07:18:16.4963110Z TypeError: argument of type 'NoneType' is not iterable
+2026-11-11T07:18:16.4963318Z 
+2026-11-11T07:18:16.4963411Z ======================================================================
+2026-11-11T07:18:16.4963836Z ERROR: test_nome_com_aspas_e_barra (test_inventario.TestAchados.test_nome_com_aspas_e_barra)
+2026-11-11T07:18:16.4964527Z ----------------------------------------------------------------------
+2026-11-11T07:18:16.4964822Z Traceback (most recent call last):
+2026-11-11T07:18:16.4965218Z   File "D:\a\sdd-open\sdd-open\tests\test_inventario.py", line 185, in test_nome_com_aspas_e_barra
+2026-11-11T07:18:16.4965636Z     self.escreve('dados "cliente"/cert.pfx')
+2026-11-11T07:18:16.4965985Z   File "D:\a\sdd-open\sdd-open\tests\test_inventario.py", line 51, in escreve
+2026-11-11T07:18:16.4966346Z     p.parent.mkdir(parents=True, exist_ok=True)
+2026-11-11T07:18:16.4966757Z   File "C:\hostedtoolcache\windows\Python\3.12.10\x64\Lib\pathlib.py", line 1311, in mkdir
+2026-11-11T07:18:16.4967131Z     os.mkdir(self, mode)
+2026-11-11T07:18:16.4967875Z OSError: [WinError 123] The filename, directory name, or volume label syntax is incorrect: 'C:\\Users\\runneradmin\\AppData\\Local\\Temp\\inventario-s5uqxlda\\RDD10V8M6Financas\\dados "cliente"'
+2026-11-11T07:18:16.4968515Z 
+2026-11-11T07:18:16.4968607Z ======================================================================
+2026-11-11T07:18:16.4969042Z ERROR: test_nome_com_aspas_no_historico (test_inventario.TestAchados.test_nome_com_aspas_no_historico)
+2026-11-11T07:18:16.4969531Z ----------------------------------------------------------------------
+2026-11-11T07:18:16.4969897Z Traceback (most recent call last):
+2026-11-11T07:18:16.4970336Z   File "D:\a\sdd-open\sdd-open\tests\test_inventario.py", line 194, in test_nome_com_aspas_no_historico
+2026-11-11T07:18:16.4970775Z     self.escreve('dados "cliente"/cert.pfx')
+2026-11-11T07:18:16.4971105Z   File "D:\a\sdd-open\sdd-open\tests\test_inventario.py", line 51, in escreve
+2026-11-11T07:18:16.4971458Z     p.parent.mkdir(parents=True, exist_ok=True)
+2026-11-11T07:18:16.4971861Z   File "C:\hostedtoolcache\windows\Python\3.12.10\x64\Lib\pathlib.py", line 1311, in mkdir
+2026-11-11T07:18:16.4972241Z     os.mkdir(self, mode)
+2026-11-11T07:18:16.4972884Z OSError: [WinError 123] The filename, directory name, or volume label syntax is incorrect: 'C:\\Users\\runneradmin\\AppData\\Local\\Temp\\inventario-t34_0pj2\\RDD10V8M6Financas\\dados "cliente"'
+2026-11-11T07:18:16.4973495Z 
+2026-11-11T07:18:16.4973594Z ======================================================================
+2026-11-11T07:18:16.4973971Z ERROR: test_nome_com_espaco (test_inventario.TestAchados.test_nome_com_espaco)
+2026-11-11T07:18:16.4974364Z ----------------------------------------------------------------------
+2026-11-11T07:18:16.4974656Z Traceback (most recent call last):
+2026-11-11T07:18:16.4975036Z   File "D:\a\sdd-open\sdd-open\tests\test_inventario.py", line 148, in test_nome_com_espaco
+2026-11-11T07:18:16.4975448Z     self.assertIn("Ana Silva/dados clientes.xlsx", out)
+2026-11-11T07:18:16.4975890Z   File "C:\hostedtoolcache\windows\Python\3.12.10\x64\Lib\unittest\case.py", line 1149, in assertIn
+2026-11-11T07:18:16.4976300Z     if member not in container:
+2026-11-11T07:18:16.4976502Z        ^^^^^^^^^^^^^^^^^^^^^^^
+2026-11-11T07:18:16.4976745Z TypeError: argument of type 'NoneType' is not iterable
+2026-11-11T07:18:16.4976947Z 
+2026-11-11T07:18:16.4977042Z ======================================================================
+2026-11-11T07:18:16.4977475Z ERROR: test_proposta_cobre_maiuscula (test_inventario.TestAchados.test_proposta_cobre_maiuscula)
+2026-11-11T07:18:16.4977938Z ----------------------------------------------------------------------
+2026-11-11T07:18:16.4978225Z Traceback (most recent call last):
+2026-11-11T07:18:16.4978623Z   File "D:\a\sdd-open\sdd-open\tests\test_inventario.py", line 229, in test_proposta_cobre_maiuscula
+2026-11-11T07:18:16.4979055Z     self.assertTrue(self.ignorado_depois(nome), nome)
+2026-11-11T07:18:16.4979317Z                     ^^^^^^^^^^^^^^^^^^^^^^^^^^
+2026-11-11T07:18:16.4979673Z   File "D:\a\sdd-open\sdd-open\tests\test_inventario.py", line 206, in ignorado_depois
+2026-11-11T07:18:16.4980044Z     linhas = out.splitlines()
+2026-11-11T07:18:16.4980247Z              ^^^^^^^^^^^^^^
+2026-11-11T07:18:16.4980519Z AttributeError: 'NoneType' object has no attribute 'splitlines'
+2026-11-11T07:18:16.4980754Z 
+2026-11-11T07:18:16.4980852Z ======================================================================
+2026-11-11T07:18:16.4981293Z ERROR: test_proposta_cobre_o_que_achou (test_inventario.TestAchados.test_proposta_cobre_o_que_achou)
+2026-11-11T07:18:16.4981774Z ----------------------------------------------------------------------
+2026-11-11T07:18:16.4982063Z Traceback (most recent call last):
+2026-11-11T07:18:16.4982478Z   File "D:\a\sdd-open\sdd-open\tests\test_inventario.py", line 109, in test_proposta_cobre_o_que_achou
+2026-11-11T07:18:16.4982912Z     linhas = self.proposta(self.inventario())
+2026-11-11T07:18:16.4983171Z              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+2026-11-11T07:18:16.4983517Z   File "D:\a\sdd-open\sdd-open\tests\test_inventario.py", line 81, in proposta
+2026-11-11T07:18:16.4983959Z     linhas = out.splitlines()
+2026-11-11T07:18:16.4984165Z              ^^^^^^^^^^^^^^
+2026-11-11T07:18:16.4984612Z AttributeError: 'NoneType' object has no attribute 'splitlines'
+2026-11-11T07:18:16.4984851Z 
+2026-11-11T07:18:16.4984946Z ======================================================================
+2026-11-11T07:18:16.4985409Z ERROR: test_proposta_escapa_caminho_grande (test_inventario.TestAchados.test_proposta_escapa_caminho_grande)
+2026-11-11T07:18:16.4986004Z ----------------------------------------------------------------------
+2026-11-11T07:18:16.4986302Z Traceback (most recent call last):
+2026-11-11T07:18:16.4986729Z   File "D:\a\sdd-open\sdd-open\tests\test_inventario.py", line 233, in test_proposta_escapa_caminho_grande
+2026-11-11T07:18:16.4987188Z     self.assertTrue(self.ignorado_depois("aula[1].mp4"))
+2026-11-11T07:18:16.4987486Z                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+2026-11-11T07:18:16.4987964Z   File "D:\a\sdd-open\sdd-open\tests\test_inventario.py", line 206, in ignorado_depois
+2026-11-11T07:18:16.4988395Z     linhas = out.splitlines()
+2026-11-11T07:18:16.4988641Z              ^^^^^^^^^^^^^^
+2026-11-11T07:18:16.4988966Z AttributeError: 'NoneType' object has no attribute 'splitlines'
+2026-11-11T07:18:16.4989255Z 
+2026-11-11T07:18:16.4989370Z ======================================================================
+2026-11-11T07:18:16.4989896Z ERROR: test_proposta_escapa_espaco_no_fim (test_inventario.TestAchados.test_proposta_escapa_espaco_no_fim)
+2026-11-11T07:18:16.4990462Z ----------------------------------------------------------------------
+2026-11-11T07:18:16.4990841Z Traceback (most recent call last):
+2026-11-11T07:18:16.4991329Z   File "D:\a\sdd-open\sdd-open\tests\test_inventario.py", line 238, in test_proposta_escapa_espaco_no_fim
+2026-11-11T07:18:16.4991856Z     self.assertTrue(self.ignorado_depois("video.mp4 "))
+2026-11-11T07:18:16.4992191Z                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+2026-11-11T07:18:16.4992612Z   File "D:\a\sdd-open\sdd-open\tests\test_inventario.py", line 206, in ignorado_depois
+2026-11-11T07:18:16.4993037Z     linhas = out.splitlines()
+2026-11-11T07:18:16.4993300Z              ^^^^^^^^^^^^^^
+2026-11-11T07:18:16.4993667Z AttributeError: 'NoneType' object has no attribute 'splitlines'
+2026-11-11T07:18:16.4993931Z 
+2026-11-11T07:18:16.4994068Z ======================================================================
+2026-11-11T07:18:16.4994641Z ERROR: test_vale_para_bash_filho_sem_testar_de_novo (test_python_resolver.Calco.test_vale_para_bash_filho_sem_testar_de_novo)
+2026-11-11T07:18:16.4995228Z ----------------------------------------------------------------------
+2026-11-11T07:18:16.4995587Z Traceback (most recent call last):
+2026-11-11T07:18:16.4996111Z   File "D:\a\sdd-open\sdd-open\tests\test_python_resolver.py", line 177, in test_vale_para_bash_filho_sem_testar_de_novo
+2026-11-11T07:18:16.4996630Z     um, pasta = out.splitlines()
+2026-11-11T07:18:16.4996917Z     ^^^^^^^^^
+2026-11-11T07:18:16.4997208Z ValueError: not enough values to unpack (expected 2, got 1)
+2026-11-11T07:18:16.4997465Z 
+2026-11-11T07:18:16.4997604Z ======================================================================
+2026-11-11T07:18:16.4998207Z ERROR: test_atalho_da_store_e_python_nativo_usa_o_python (test_python_resolver.Escolha.test_atalho_da_store_e_python_nativo_usa_o_python)
+2026-11-11T07:18:16.4998859Z ----------------------------------------------------------------------
+2026-11-11T07:18:16.4999205Z Traceback (most recent call last):
+2026-11-11T07:18:16.4999764Z   File "D:\a\sdd-open\sdd-open\tests\test_python_resolver.py", line 60, in test_atalho_da_store_e_python_nativo_usa_o_python
+2026-11-11T07:18:16.5000334Z     rodou, pasta = out.splitlines()
+2026-11-11T07:18:16.5000611Z     ^^^^^^^^^^^^
+2026-11-11T07:18:16.5000914Z ValueError: not enough values to unpack (expected 2, got 1)
+2026-11-11T07:18:16.5001159Z 
+2026-11-11T07:18:16.5001293Z ======================================================================
+2026-11-11T07:18:16.5001965Z FAIL: test_env_rastreado_e_dado_exposto_no_topo (test_checar.TestDadoExposto.test_env_rastreado_e_dado_exposto_no_topo)
+2026-11-11T07:18:16.5002557Z ----------------------------------------------------------------------
+2026-11-11T07:18:16.5002905Z Traceback (most recent call last):
+2026-11-11T07:18:16.5003429Z   File "D:\a\sdd-open\sdd-open\tests\test_checar.py", line 212, in test_env_rastreado_e_dado_exposto_no_topo
+2026-11-11T07:18:16.5004040Z     self.assertTrue(out.startswith("\U0001f534 Dado exposto"), out)
+2026-11-11T07:18:16.5004834Z AssertionError: False is not true : 🔴 Dado exposto
+2026-11-11T07:18:16.5005536Z - O arquivo de senhas .env está salvo no git. Tirar do git não apaga do histórico: se já houve push, quem tem acesso ao repositório tem o arquivo.
+2026-11-11T07:18:16.5005940Z   git rm --cached ".env" && echo ".env" >> .gitignore
+2026-11-11T07:18:16.5006215Z   Depois, troque as senhas e chaves que estão nele.
+2026-11-11T07:18:16.5006367Z 
+2026-11-11T07:18:16.5006900Z ✅ Repo meu-app, branch main, nenhuma frente aberta, nenhum agente de código no terminal · sdd-checar-ambiente v1.5.0 · nov/2026 · versão atual: https://github.com/robertodiasduarte/sdd-open/releases/latest
+2026-11-11T07:18:16.5007302Z 
+2026-11-11T07:18:16.5007304Z 
+2026-11-11T07:18:16.5007407Z ======================================================================
+2026-11-11T07:18:16.5007798Z FAIL: test_pfx_em_repo_publico_diz_que_esta_na_internet (test_checar.TestDadoExposto.test_pfx_em_repo_publico_diz_que_esta_na_internet)
+2026-11-11T07:18:16.5008202Z ----------------------------------------------------------------------
+2026-11-11T07:18:16.5008453Z Traceback (most recent call last):
+2026-11-11T07:18:16.5008786Z   File "D:\a\sdd-open\sdd-open\tests\test_checar.py", line 222, in test_pfx_em_repo_publico_diz_que_esta_na_internet
+2026-11-11T07:18:16.5009155Z     self.assertTrue(out.startswith("\U0001f534 Dado exposto"), out)
+2026-11-11T07:18:16.5009477Z AssertionError: False is not true : 🔴 Dado exposto
+2026-11-11T07:18:16.5009906Z - O certificado digital certificados/empresa.PFX está salvo no git. Este repositório é público: o arquivo já está na internet.
+2026-11-11T07:18:16.5010346Z   git rm --cached "certificados/empresa.PFX" && echo "certificados/empresa.PFX" >> .gitignore
+2026-11-11T07:18:16.5010698Z   Depois, revogue o certificado com a autoridade certificadora e emita outro.
+2026-11-11T07:18:16.5010906Z 
+2026-11-11T07:18:16.5011376Z ✅ Repo meu-app (público no GitHub), branch main, nenhuma frente aberta, nenhum agente de código no terminal · sdd-checar-ambiente v1.5.0 · nov/2026 · versão atual: https://github.com/robertodiasduarte/sdd-open/releases/latest
+2026-11-11T07:18:16.5011907Z 
+2026-11-11T07:18:16.5011910Z 
+2026-11-11T07:18:16.5012014Z ======================================================================
+2026-11-11T07:18:16.5012394Z FAIL: test_repo_publico_sem_segredo_continua_uma_linha (test_checar.TestDadoExposto.test_repo_publico_sem_segredo_continua_uma_linha)
+2026-11-11T07:18:16.5012794Z ----------------------------------------------------------------------
+2026-11-11T07:18:16.5013029Z Traceback (most recent call last):
+2026-11-11T07:18:16.5013438Z   File "D:\a\sdd-open\sdd-open\tests\test_checar.py", line 196, in test_repo_publico_sem_segredo_continua_uma_linha
+2026-11-11T07:18:16.5013966Z     self.assertIn("repo meu-app (p�blico no GitHub)", out)
+2026-11-11T07:18:16.5015173Z AssertionError: 'repo meu-app (p�blico no GitHub)' not found in '✅ Pronto: repo meu-app (público no GitHub), branch main, nenhuma frente aberta, nenhum agente de código no terminal · sdd-checar-ambiente v1.5.0 · nov/2026 · versão atual: https://github.com/robertodiasduarte/sdd-open/releases/latest\n'
+2026-11-11T07:18:16.5016086Z 
+2026-11-11T07:18:16.5016219Z ======================================================================
+2026-11-11T07:18:16.5016759Z FAIL: test_saudavel_e_uma_linha_com_identificacao (test_checar.TestDadoExposto.test_saudavel_e_uma_linha_com_identificacao)
+2026-11-11T07:18:16.5017449Z ----------------------------------------------------------------------
+2026-11-11T07:18:16.5017776Z Traceback (most recent call last):
+2026-11-11T07:18:16.5018241Z   File "D:\a\sdd-open\sdd-open\tests\test_checar.py", line 189, in test_saudavel_e_uma_linha_com_identificacao
+2026-11-11T07:18:16.5018783Z     self.assertTrue(out.startswith("\u2705 Pronto: repo meu-app"), out)
+2026-11-11T07:18:16.5019975Z AssertionError: False is not true : ✅ Pronto: repo meu-app, branch main, nenhuma frente aberta, nenhum agente de código no terminal · sdd-checar-ambiente v1.5.0 · nov/2026 · versão atual: https://github.com/robertodiasduarte/sdd-open/releases/latest
+2026-11-11T07:18:16.5020788Z 
+2026-11-11T07:18:16.5020792Z 
+2026-11-11T07:18:16.5020893Z ======================================================================
+2026-11-11T07:18:16.5021349Z FAIL: test_frente_bloqueia_credencial (test_checar.TestFrente.test_frente_bloqueia_credencial)
+2026-11-11T07:18:16.5021873Z ----------------------------------------------------------------------
+2026-11-11T07:18:16.5022223Z Traceback (most recent call last):
+2026-11-11T07:18:16.5022671Z   File "D:\a\sdd-open\sdd-open\tests\test_checar.py", line 469, in test_frente_bloqueia_credencial
+2026-11-11T07:18:16.5023104Z     self.bloqueia(out, rc)
+2026-11-11T07:18:16.5023427Z   File "D:\a\sdd-open\sdd-open\tests\test_checar.py", line 436, in bloqueia
+2026-11-11T07:18:16.5023851Z     self.assertTrue(out.startswith("\U0001f534 Impede o trabalho"), out)
+2026-11-11T07:18:16.5024323Z AssertionError: False is not true : 🔴 Impede o trabalho
+2026-11-11T07:18:16.5025012Z - O remoto 127.0.0.1 recusou o acesso deste computador (login ou permissão).
+2026-11-11T07:18:16.5025627Z   Faça login em 127.0.0.1 do jeito desse serviço (token de acesso ou chave SSH cadastrada nele) e rode de novo.
+2026-11-11T07:18:16.5025970Z 
+2026-11-11T07:18:16.5026178Z Nada foi criado. Depois de resolver, peça a frente de novo.
+2026-11-11T07:18:16.5026398Z 
+2026-11-11T07:18:16.5026401Z 
+2026-11-11T07:18:16.5026539Z ======================================================================
+2026-11-11T07:18:16.5027053Z FAIL: test_frente_bloqueia_host_ssh (test_checar.TestFrente.test_frente_bloqueia_host_ssh)
+2026-11-11T07:18:16.5027491Z ----------------------------------------------------------------------
+2026-11-11T07:18:16.5027807Z Traceback (most recent call last):
+2026-11-11T07:18:16.5028260Z   File "D:\a\sdd-open\sdd-open\tests\test_checar.py", line 475, in test_frente_bloqueia_host_ssh
+2026-11-11T07:18:16.5028657Z     self.bloqueia(out, rc)
+2026-11-11T07:18:16.5028997Z   File "D:\a\sdd-open\sdd-open\tests\test_checar.py", line 436, in bloqueia
+2026-11-11T07:18:16.5029371Z     self.assertTrue(out.startswith("\U0001f534 Impede o trabalho"), out)
+2026-11-11T07:18:16.5029783Z AssertionError: False is not true : 🔴 Impede o trabalho
+2026-11-11T07:18:16.5030210Z - Este computador ainda não confirmou a identidade de exemplo.invalid para SSH.
+2026-11-11T07:18:16.5030623Z   ssh -T git@exemplo.invalid   (responda yes quando ele perguntar)
+2026-11-11T07:18:16.5030853Z 
+2026-11-11T07:18:16.5031030Z Nada foi criado. Depois de resolver, peça a frente de novo.
+2026-11-11T07:18:16.5031235Z 
+2026-11-11T07:18:16.5031238Z 
+2026-11-11T07:18:16.5031337Z ======================================================================
+2026-11-11T07:18:16.5031704Z FAIL: test_frente_bloqueia_rede (test_checar.TestFrente.test_frente_bloqueia_rede)
+2026-11-11T07:18:16.5032092Z ----------------------------------------------------------------------
+2026-11-11T07:18:16.5032383Z Traceback (most recent call last):
+2026-11-11T07:18:16.5033064Z   File "D:\a\sdd-open\sdd-open\tests\test_checar.py", line 482, in test_frente_bloqueia_rede
+2026-11-11T07:18:16.5033373Z     self.bloqueia(out, rc)
+2026-11-11T07:18:16.5033663Z   File "D:\a\sdd-open\sdd-open\tests\test_checar.py", line 436, in bloqueia
+2026-11-11T07:18:16.5034014Z     self.assertTrue(out.startswith("\U0001f534 Impede o trabalho"), out)
+2026-11-11T07:18:16.5034528Z AssertionError: False is not true : 🔴 Impede o trabalho
+2026-11-11T07:18:16.5034835Z - Não consegui falar com 127.0.0.1 agora (sem internet ou rede bloqueada).
+2026-11-11T07:18:16.5035235Z   Quando a conexão voltar, rode de novo — sem o remoto não dá para abrir frente nem publicar.
+2026-11-11T07:18:16.5035431Z 
+2026-11-11T07:18:16.5035621Z Nada foi criado. Depois de resolver, peça a frente de novo.
+2026-11-11T07:18:16.5035761Z 
+2026-11-11T07:18:16.5035765Z 
+2026-11-11T07:18:16.5035838Z ======================================================================
+2026-11-11T07:18:16.5036104Z FAIL: test_frente_bloqueia_sem_origin (test_checar.TestFrente.test_frente_bloqueia_sem_origin)
+2026-11-11T07:18:16.5036381Z ----------------------------------------------------------------------
+2026-11-11T07:18:16.5036572Z Traceback (most recent call last):
+2026-11-11T07:18:16.5036824Z   File "D:\a\sdd-open\sdd-open\tests\test_checar.py", line 456, in test_frente_bloqueia_sem_origin
+2026-11-11T07:18:16.5037076Z     self.bloqueia(out, rc)
+2026-11-11T07:18:16.5037271Z   File "D:\a\sdd-open\sdd-open\tests\test_checar.py", line 436, in bloqueia
+2026-11-11T07:18:16.5037528Z     self.assertTrue(out.startswith("\U0001f534 Impede o trabalho"), out)
+2026-11-11T07:18:16.5037785Z AssertionError: False is not true : 🔴 Impede o trabalho
+2026-11-11T07:18:16.5038102Z - O repositório tem remoto, mas nenhum chamado origin — as frentes nascem do origin.
+2026-11-11T07:18:16.5038440Z   git remote rename upstream origin   (ou: git remote add origin <url do repositório>)
+2026-11-11T07:18:16.5038623Z 
+2026-11-11T07:18:16.5038732Z Nada foi criado. Depois de resolver, peça a frente de novo.
+2026-11-11T07:18:16.5038868Z 
+2026-11-11T07:18:16.5038870Z 
+2026-11-11T07:18:16.5038936Z ======================================================================
+2026-11-11T07:18:16.5039194Z FAIL: test_frente_bloqueia_sem_remoto (test_checar.TestFrente.test_frente_bloqueia_sem_remoto)
+2026-11-11T07:18:16.5039469Z ----------------------------------------------------------------------
+2026-11-11T07:18:16.5039655Z Traceback (most recent call last):
+2026-11-11T07:18:16.5039899Z   File "D:\a\sdd-open\sdd-open\tests\test_checar.py", line 449, in test_frente_bloqueia_sem_remoto
+2026-11-11T07:18:16.5040141Z     self.bloqueia(out, rc)
+2026-11-11T07:18:16.5040334Z   File "D:\a\sdd-open\sdd-open\tests\test_checar.py", line 436, in bloqueia
+2026-11-11T07:18:16.5040592Z     self.assertTrue(out.startswith("\U0001f534 Impede o trabalho"), out)
+2026-11-11T07:18:16.5040855Z AssertionError: False is not true : 🔴 Impede o trabalho
+2026-11-11T07:18:16.5041172Z - O repositório não tem remoto — nada que você fizer sai desta máquina, e as frentes nascem dele.
+2026-11-11T07:18:16.5041659Z   git remote add origin <url do repositório>   (projeto ainda sem repositório no GitHub? a skill sdd-iniciar-repo cria um privado e envia)
+2026-11-11T07:18:16.5041939Z 
+2026-11-11T07:18:16.5042048Z Nada foi criado. Depois de resolver, peça a frente de novo.
+2026-11-11T07:18:16.5042194Z 
+2026-11-11T07:18:16.5042197Z 
+2026-11-11T07:18:16.5042258Z ======================================================================
+2026-11-11T07:18:16.5042505Z FAIL: test_frente_bloqueia_vazio (test_checar.TestFrente.test_frente_bloqueia_vazio)
+2026-11-11T07:18:16.5042776Z ----------------------------------------------------------------------
+2026-11-11T07:18:16.5043117Z Traceback (most recent call last):
+2026-11-11T07:18:16.5043427Z   File "D:\a\sdd-open\sdd-open\tests\test_checar.py", line 464, in test_frente_bloqueia_vazio
+2026-11-11T07:18:16.5043700Z     self.bloqueia(out, rc)
+2026-11-11T07:18:16.5043893Z   File "D:\a\sdd-open\sdd-open\tests\test_checar.py", line 436, in bloqueia
+2026-11-11T07:18:16.5044150Z     self.assertTrue(out.startswith("\U0001f534 Impede o trabalho"), out)
+2026-11-11T07:18:16.5044410Z AssertionError: False is not true : 🔴 Impede o trabalho
+2026-11-11T07:18:16.5044696Z - O repositório remoto ainda não tem nenhum commit — as frentes nascem dele.
+2026-11-11T07:18:16.5045001Z   GIT_TERMINAL_PROMPT=0 git push -u origin main
+2026-11-11T07:18:16.5045118Z 
+2026-11-11T07:18:16.5045235Z Nada foi criado. Depois de resolver, peça a frente de novo.
+2026-11-11T07:18:16.5045363Z 
+2026-11-11T07:18:16.5045365Z 
+2026-11-11T07:18:16.5045432Z ======================================================================
+2026-11-11T07:18:16.5045742Z FAIL: test_frente_saudavel_uma_linha (test_checar.TestFrente.test_frente_saudavel_uma_linha)
+2026-11-11T07:18:16.5046010Z ----------------------------------------------------------------------
+2026-11-11T07:18:16.5046193Z Traceback (most recent call last):
+2026-11-11T07:18:16.5046444Z   File "D:\a\sdd-open\sdd-open\tests\test_checar.py", line 444, in test_frente_saudavel_uma_linha
+2026-11-11T07:18:16.5046803Z     self.assertTrue(out.startswith("\u2705 Pronto para abrir a frente: repo meu-app, principal main"), out)
+2026-11-11T07:18:16.5047466Z AssertionError: False is not true : ✅ Pronto para abrir a frente: repo meu-app, principal main · sdd-checar-ambiente v1.5.0 · nov/2026 · versão atual: https://github.com/robertodiasduarte/sdd-open/releases/latest
+2026-11-11T07:18:16.5047864Z 
+2026-11-11T07:18:16.5047866Z 
+2026-11-11T07:18:16.5047928Z ======================================================================
+2026-11-11T07:18:16.5048178Z FAIL: test_frente_sem_gh_nao_fala_do_gh (test_checar.TestGh.test_frente_sem_gh_nao_fala_do_gh)
+2026-11-11T07:18:16.5048453Z ----------------------------------------------------------------------
+2026-11-11T07:18:16.5048633Z Traceback (most recent call last):
+2026-11-11T07:18:16.5048881Z   File "D:\a\sdd-open\sdd-open\tests\test_checar.py", line 820, in test_frente_sem_gh_nao_fala_do_gh
+2026-11-11T07:18:16.5049188Z     self.assertTrue(out.startswith("\u2705 Pronto para abrir a frente"), out)
+2026-11-11T07:18:16.5049769Z AssertionError: False is not true : ✅ Pronto para abrir a frente: repo meu-app, principal main · sdd-checar-ambiente v1.5.0 · nov/2026 · versão atual: https://github.com/robertodiasduarte/sdd-open/releases/latest
+2026-11-11T07:18:16.5050158Z 
+2026-11-11T07:18:16.5050160Z 
+2026-11-11T07:18:16.5050218Z ======================================================================
+2026-11-11T07:18:16.5050525Z FAIL: test_arquivos_sem_git_oferece_iniciar_repo (test_checar.TestOndeEstou.test_arquivos_sem_git_oferece_iniciar_repo)
+2026-11-11T07:18:16.5050847Z ----------------------------------------------------------------------
+2026-11-11T07:18:16.5051032Z Traceback (most recent call last):
+2026-11-11T07:18:16.5051292Z   File "D:\a\sdd-open\sdd-open\tests\test_checar.py", line 646, in test_arquivos_sem_git_oferece_iniciar_repo
+2026-11-11T07:18:16.5051667Z     for out in (self.normal(raiz), self.bloqueia(raiz)):
+2026-11-11T07:18:16.5051879Z                 ^^^^^^^^^^^^^^^^^
+2026-11-11T07:18:16.5052115Z   File "D:\a\sdd-open\sdd-open\tests\test_checar.py", line 591, in normal
+2026-11-11T07:18:16.5052373Z     self.assertTrue(out.startswith("\U0001f534 Impede o trabalho"), out)
+2026-11-11T07:18:16.5052697Z AssertionError: False is not true : 🔴 Impede o trabalho
+2026-11-11T07:18:16.5052932Z - Este projeto ainda não usa git — e a frente nasce do git.
+2026-11-11T07:18:16.5053306Z   use a skill sdd-iniciar-repo: põe o projeto no git e num GitHub privado, conferindo antes o que não pode ir
+2026-11-11T07:18:16.5053592Z 
+2026-11-11T07:18:16.5053973Z ✅ Pasta RDD10V8M6Financas, nenhum agente de código no terminal · sdd-checar-ambiente v1.5.0 · nov/2026 · versão atual: https://github.com/robertodiasduarte/sdd-open/releases/latest
+2026-11-11T07:18:16.5054640Z 
+2026-11-11T07:18:16.5054644Z 
+2026-11-11T07:18:16.5054726Z ======================================================================
+2026-11-11T07:18:16.5055003Z FAIL: test_documents_sem_icloud_nao_acusa (test_checar.TestOndeEstou.test_documents_sem_icloud_nao_acusa)
+2026-11-11T07:18:16.5055294Z ----------------------------------------------------------------------
+2026-11-11T07:18:16.5055474Z Traceback (most recent call last):
+2026-11-11T07:18:16.5055871Z   File "D:\a\sdd-open\sdd-open\tests\test_checar.py", line 701, in test_documents_sem_icloud_nao_acusa
+2026-11-11T07:18:16.5056262Z     out = self.normal(docs)
+2026-11-11T07:18:16.5068586Z           ^^^^^^^^^^^^^^^^^
+2026-11-11T07:18:16.5068933Z   File "D:\a\sdd-open\sdd-open\tests\test_checar.py", line 591, in normal
+2026-11-11T07:18:16.5069400Z     self.assertTrue(out.startswith("\U0001f534 Impede o trabalho"), out)
+2026-11-11T07:18:16.5069712Z AssertionError: False is not true : 🔴 Impede o trabalho
+2026-11-11T07:18:16.5069960Z - Este projeto ainda não usa git — e a frente nasce do git.
+2026-11-11T07:18:16.5070341Z   use a skill sdd-iniciar-repo: põe o projeto no git e num GitHub privado, conferindo antes o que não pode ir
+2026-11-11T07:18:16.5070568Z 
+2026-11-11T07:18:16.5070956Z ✅ Pasta Financas, nenhum agente de código no terminal · sdd-checar-ambiente v1.5.0 · nov/2026 · versão atual: https://github.com/robertodiasduarte/sdd-open/releases/latest
+2026-11-11T07:18:16.5071285Z 
+2026-11-11T07:18:16.5071297Z 
+2026-11-11T07:18:16.5071369Z ======================================================================
+2026-11-11T07:18:16.5071679Z FAIL: test_git_dentro_de_node_modules_nao_conta (test_checar.TestOndeEstou.test_git_dentro_de_node_modules_nao_conta)
+2026-11-11T07:18:16.5072001Z ----------------------------------------------------------------------
+2026-11-11T07:18:16.5072196Z Traceback (most recent call last):
+2026-11-11T07:18:16.5072559Z   File "D:\a\sdd-open\sdd-open\tests\test_checar.py", line 628, in test_git_dentro_de_node_modules_nao_conta
+2026-11-11T07:18:16.5072818Z     out = self.normal(raiz)
+2026-11-11T07:18:16.5072942Z           ^^^^^^^^^^^^^^^^^
+2026-11-11T07:18:16.5073121Z   File "D:\a\sdd-open\sdd-open\tests\test_checar.py", line 591, in normal
+2026-11-11T07:18:16.5073367Z     self.assertTrue(out.startswith("\U0001f534 Impede o trabalho"), out)
+2026-11-11T07:18:16.5073624Z AssertionError: False is not true : 🔴 Impede o trabalho
+2026-11-11T07:18:16.5073866Z - Este projeto ainda não usa git — e a frente nasce do git.
+2026-11-11T07:18:16.5074194Z   use a skill sdd-iniciar-repo: põe o projeto no git e num GitHub privado, conferindo antes o que não pode ir
+2026-11-11T07:18:16.5074400Z 
+2026-11-11T07:18:16.5074728Z ✅ Pasta app, nenhum agente de código no terminal · sdd-checar-ambiente v1.5.0 · nov/2026 · versão atual: https://github.com/robertodiasduarte/sdd-open/releases/latest
+2026-11-11T07:18:16.5075044Z 
+2026-11-11T07:18:16.5075046Z 
+2026-11-11T07:18:16.5075108Z ======================================================================
+2026-11-11T07:18:16.5075396Z FAIL: test_git_em_duas_subpastas_lista_as_duas (test_checar.TestOndeEstou.test_git_em_duas_subpastas_lista_as_duas)
+2026-11-11T07:18:16.5075706Z ----------------------------------------------------------------------
+2026-11-11T07:18:16.5075886Z Traceback (most recent call last):
+2026-11-11T07:18:16.5076144Z   File "D:\a\sdd-open\sdd-open\tests\test_checar.py", line 610, in test_git_em_duas_subpastas_lista_as_duas
+2026-11-11T07:18:16.5076391Z     out = self.normal(raiz)
+2026-11-11T07:18:16.5076507Z           ^^^^^^^^^^^^^^^^^
+2026-11-11T07:18:16.5076678Z   File "D:\a\sdd-open\sdd-open\tests\test_checar.py", line 591, in normal
+2026-11-11T07:18:16.5076925Z     self.assertTrue(out.startswith("\U0001f534 Impede o trabalho"), out)
+2026-11-11T07:18:16.5077176Z AssertionError: False is not true : 🔴 Impede o trabalho
+2026-11-11T07:18:16.5077461Z - Há repositórios git nas subpastas ./app-a, ./sub/app-b — o projeto é uma delas.
+2026-11-11T07:18:16.5077733Z   cd <uma delas>   (e abra o chat de novo lá dentro)
+2026-11-11T07:18:16.5077846Z 
+2026-11-11T07:18:16.5078185Z ✅ Pasta modulos, nenhum agente de código no terminal · sdd-checar-ambiente v1.5.0 · nov/2026 · versão atual: https://github.com/robertodiasduarte/sdd-open/releases/latest
+2026-11-11T07:18:16.5078506Z 
+2026-11-11T07:18:16.5078508Z 
+2026-11-11T07:18:16.5078566Z ======================================================================
+2026-11-11T07:18:16.5079030Z FAIL: test_git_em_quatro_subpastas_pergunta_qual (test_checar.TestOndeEstou.test_git_em_quatro_subpastas_pergunta_qual)
+2026-11-11T07:18:16.5079702Z ----------------------------------------------------------------------
+2026-11-11T07:18:16.5079888Z Traceback (most recent call last):
+2026-11-11T07:18:16.5080147Z   File "D:\a\sdd-open\sdd-open\tests\test_checar.py", line 619, in test_git_em_quatro_subpastas_pergunta_qual
+2026-11-11T07:18:16.5081766Z     out = self.bloqueia(raiz)
+2026-11-11T07:18:16.5081895Z           ^^^^^^^^^^^^^^^^^^^
+2026-11-11T07:18:16.5082085Z   File "D:\a\sdd-open\sdd-open\tests\test_checar.py", line 583, in bloqueia
+2026-11-11T07:18:16.5082341Z     self.assertTrue(out.startswith("\U0001f534 Impede o trabalho"), out)
+2026-11-11T07:18:16.5082617Z AssertionError: False is not true : 🔴 Impede o trabalho
+2026-11-11T07:18:16.5082896Z - Há 4 pastas com git aqui dentro (./m1, ./m2, ./m3, …) — qual delas é o projeto?
+2026-11-11T07:18:16.5083193Z   cd <pasta do projeto>   (e abra o chat de novo lá dentro)
+2026-11-11T07:18:16.5083414Z 
+2026-11-11T07:18:16.5083637Z Nada foi criado. Depois de resolver, peça a frente de novo.
+2026-11-11T07:18:16.5083771Z 
+2026-11-11T07:18:16.5083774Z 
+2026-11-11T07:18:16.5083832Z ======================================================================
+2026-11-11T07:18:16.5084122Z FAIL: test_git_numa_subpasta_manda_abrir_nela (test_checar.TestOndeEstou.test_git_numa_subpasta_manda_abrir_nela)
+2026-11-11T07:18:16.5084430Z ----------------------------------------------------------------------
+2026-11-11T07:18:16.5084613Z Traceback (most recent call last):
+2026-11-11T07:18:16.5084870Z   File "D:\a\sdd-open\sdd-open\tests\test_checar.py", line 602, in test_git_numa_subpasta_manda_abrir_nela
+2026-11-11T07:18:16.5085145Z     for out in (self.normal(raiz), self.bloqueia(raiz)):
+2026-11-11T07:18:16.5085311Z                 ^^^^^^^^^^^^^^^^^
+2026-11-11T07:18:16.5085565Z   File "D:\a\sdd-open\sdd-open\tests\test_checar.py", line 591, in normal
+2026-11-11T07:18:16.5085893Z     self.assertTrue(out.startswith("\U0001f534 Impede o trabalho"), out)
+2026-11-11T07:18:16.5086234Z AssertionError: False is not true : 🔴 Impede o trabalho
+2026-11-11T07:18:16.5086501Z - O projeto está em ./meu-app — o terminal foi aberto uma pasta acima dele.
+2026-11-11T07:18:16.5086755Z   cd "./meu-app"   (e abra o chat de novo lá dentro)
+2026-11-11T07:18:16.5086876Z 
+2026-11-11T07:18:16.5087247Z ✅ Pasta RDD10Financas, nenhum agente de código no terminal · sdd-checar-ambiente v1.5.0 · nov/2026 · versão atual: https://github.com/robertodiasduarte/sdd-open/releases/latest
+2026-11-11T07:18:16.5087584Z 
+2026-11-11T07:18:16.5087586Z 
+2026-11-11T07:18:16.5087644Z ======================================================================
+2026-11-11T07:18:16.5087944Z FAIL: test_icloud_mesa_e_documentos_pelo_symlink (test_checar.TestOndeEstou.test_icloud_mesa_e_documentos_pelo_symlink)
+2026-11-11T07:18:16.5088269Z ----------------------------------------------------------------------
+2026-11-11T07:18:16.5088447Z Traceback (most recent call last):
+2026-11-11T07:18:16.5088708Z   File "D:\a\sdd-open\sdd-open\tests\test_checar.py", line 695, in test_icloud_mesa_e_documentos_pelo_symlink
+2026-11-11T07:18:16.5088962Z     out = self.bloqueia(docs)
+2026-11-11T07:18:16.5089087Z           ^^^^^^^^^^^^^^^^^^^
+2026-11-11T07:18:16.5089274Z   File "D:\a\sdd-open\sdd-open\tests\test_checar.py", line 583, in bloqueia
+2026-11-11T07:18:16.5089524Z     self.assertTrue(out.startswith("\U0001f534 Impede o trabalho"), out)
+2026-11-11T07:18:16.5089779Z AssertionError: False is not true : 🔴 Impede o trabalho
+2026-11-11T07:18:16.5090200Z - Esta pasta está dentro do iCloud Drive (Documents), que sincroniza tudo o que muda — e o .git e as frentes se corrompem ou duplicam com a sincronização.
+2026-11-11T07:18:16.5090710Z   mova o projeto para uma pasta fora da nuvem (ex.: ~/Projetos), pelo Finder ou Explorador de Arquivos, e abra o terminal lá
+2026-11-11T07:18:16.5090947Z 
+2026-11-11T07:18:16.5091130Z Nada foi criado. Depois de resolver, peça a frente de novo.
+2026-11-11T07:18:16.5091265Z 
+2026-11-11T07:18:16.5091267Z 
+2026-11-11T07:18:16.5091325Z ======================================================================
+2026-11-11T07:18:16.5091576Z FAIL: test_nome_parecido_nao_acusa (test_checar.TestOndeEstou.test_nome_parecido_nao_acusa)
+2026-11-11T07:18:16.5091909Z ----------------------------------------------------------------------
+2026-11-11T07:18:16.5092092Z Traceback (most recent call last):
+2026-11-11T07:18:16.5092327Z   File "D:\a\sdd-open\sdd-open\tests\test_checar.py", line 707, in test_nome_parecido_nao_acusa
+2026-11-11T07:18:16.5092563Z     out = self.normal(raiz)
+2026-11-11T07:18:16.5092683Z           ^^^^^^^^^^^^^^^^^
+2026-11-11T07:18:16.5092854Z   File "D:\a\sdd-open\sdd-open\tests\test_checar.py", line 591, in normal
+2026-11-11T07:18:16.5093100Z     self.assertTrue(out.startswith("\U0001f534 Impede o trabalho"), out)
+2026-11-11T07:18:16.5093362Z AssertionError: False is not true : 🔴 Impede o trabalho
+2026-11-11T07:18:16.5093591Z - Este projeto ainda não usa git — e a frente nasce do git.
+2026-11-11T07:18:16.5093925Z   use a skill sdd-iniciar-repo: põe o projeto no git e num GitHub privado, conferindo antes o que não pode ir
+2026-11-11T07:18:16.5094135Z 
+2026-11-11T07:18:16.5094491Z ✅ Pasta dropbox-sync, nenhum agente de código no terminal · sdd-checar-ambiente v1.5.0 · nov/2026 · versão atual: https://github.com/robertodiasduarte/sdd-open/releases/latest
+2026-11-11T07:18:16.5094829Z 
+2026-11-11T07:18:16.5094831Z 
+2026-11-11T07:18:16.5094888Z ======================================================================
+2026-11-11T07:18:16.5095135Z FAIL: test_pasta_pessoal_nao_varre (test_checar.TestOndeEstou.test_pasta_pessoal_nao_varre)
+2026-11-11T07:18:16.5095405Z ----------------------------------------------------------------------
+2026-11-11T07:18:16.5095581Z Traceback (most recent call last):
+2026-11-11T07:18:16.5095823Z   File "D:\a\sdd-open\sdd-open\tests\test_checar.py", line 665, in test_pasta_pessoal_nao_varre
+2026-11-11T07:18:16.5096094Z     for out in (self.normal(self.home), self.bloqueia(self.home)):
+2026-11-11T07:18:16.5096275Z                 ^^^^^^^^^^^^^^^^^^^^^^
+2026-11-11T07:18:16.5096468Z   File "D:\a\sdd-open\sdd-open\tests\test_checar.py", line 591, in normal
+2026-11-11T07:18:16.5096720Z     self.assertTrue(out.startswith("\U0001f534 Impede o trabalho"), out)
+2026-11-11T07:18:16.5096979Z AssertionError: False is not true : 🔴 Impede o trabalho
+2026-11-11T07:18:16.5097245Z - O terminal está na sua pasta pessoal, não na pasta de um projeto.
+2026-11-11T07:18:16.5097498Z   cd <pasta do projeto>   (e abra o chat de novo lá dentro)
+2026-11-11T07:18:16.5097623Z 
+2026-11-11T07:18:16.5097957Z ✅ Pasta home, nenhum agente de código no terminal · sdd-checar-ambiente v1.5.0 · nov/2026 · versão atual: https://github.com/robertodiasduarte/sdd-open/releases/latest
+2026-11-11T07:18:16.5098274Z 
+2026-11-11T07:18:16.5098276Z 
+2026-11-11T07:18:16.5098340Z ======================================================================
+2026-11-11T07:18:16.5098609Z FAIL: test_pasta_vazia_indica_brainstorm (test_checar.TestOndeEstou.test_pasta_vazia_indica_brainstorm)
+2026-11-11T07:18:16.5098901Z ----------------------------------------------------------------------
+2026-11-11T07:18:16.5099074Z Traceback (most recent call last):
+2026-11-11T07:18:16.5099322Z   File "D:\a\sdd-open\sdd-open\tests\test_checar.py", line 634, in test_pasta_vazia_indica_brainstorm
+2026-11-11T07:18:16.5099587Z     for out in (self.normal(raiz), self.bloqueia(raiz)):
+2026-11-11T07:18:16.5099752Z                 ^^^^^^^^^^^^^^^^^
+2026-11-11T07:18:16.5099936Z   File "D:\a\sdd-open\sdd-open\tests\test_checar.py", line 591, in normal
+2026-11-11T07:18:16.5100178Z     self.assertTrue(out.startswith("\U0001f534 Impede o trabalho"), out)
+2026-11-11T07:18:16.5100433Z AssertionError: False is not true : 🔴 Impede o trabalho
+2026-11-11T07:18:16.5100644Z - Ainda não há projeto nesta pasta.
+2026-11-11T07:18:16.5100947Z   comece pela skill sdd-brainstorm — o git entra quando houver o que guardar
+2026-11-11T07:18:16.5101105Z 
+2026-11-11T07:18:16.5101449Z ✅ Pasta ideia-nova, nenhum agente de código no terminal · sdd-checar-ambiente v1.5.0 · nov/2026 · versão atual: https://github.com/robertodiasduarte/sdd-open/releases/latest
+2026-11-11T07:18:16.5101841Z 
+2026-11-11T07:18:16.5101843Z 
+2026-11-11T07:18:16.5101900Z ======================================================================
+2026-11-11T07:18:16.5102194Z FAIL: test_sincronizada_dentro_de_repositorio (test_checar.TestOndeEstou.test_sincronizada_dentro_de_repositorio)
+2026-11-11T07:18:16.5102504Z ----------------------------------------------------------------------
+2026-11-11T07:18:16.5102683Z Traceback (most recent call last):
+2026-11-11T07:18:16.5102935Z   File "D:\a\sdd-open\sdd-open\tests\test_checar.py", line 713, in test_sincronizada_dentro_de_repositorio
+2026-11-11T07:18:16.5103186Z     out = self.normal(raiz)
+2026-11-11T07:18:16.5103352Z           ^^^^^^^^^^^^^^^^^
+2026-11-11T07:18:16.5103733Z   File "D:\a\sdd-open\sdd-open\tests\test_checar.py", line 591, in normal
+2026-11-11T07:18:16.5103976Z     self.assertTrue(out.startswith("\U0001f534 Impede o trabalho"), out)
+2026-11-11T07:18:16.5104236Z AssertionError: False is not true : 🔴 Impede o trabalho
+2026-11-11T07:18:16.5104624Z - Esta pasta está dentro do Dropbox, que sincroniza tudo o que muda — e o .git e as frentes se corrompem ou duplicam com a sincronização.
+2026-11-11T07:18:16.5105087Z   mova o projeto para uma pasta fora da nuvem (ex.: ~/Projetos), pelo Finder ou Explorador de Arquivos, e abra o terminal lá
+2026-11-11T07:18:16.5105324Z 
+2026-11-11T07:18:16.5105657Z ✅ Pasta meu-app, nenhum agente de código no terminal · sdd-checar-ambiente v1.5.0 · nov/2026 · versão atual: https://github.com/robertodiasduarte/sdd-open/releases/latest
+2026-11-11T07:18:16.5105981Z 
+2026-11-11T07:18:16.5105984Z 
+2026-11-11T07:18:16.5106046Z ======================================================================
+2026-11-11T07:18:16.5106455Z FAIL: test_sincronizada_para_antes_de_tudo (test_checar.TestOndeEstou.test_sincronizada_para_antes_de_tudo) (rel='home/Library/Mobile Documents/com~apple~CloudDocs/Financas')
+2026-11-11T07:18:16.5106865Z ----------------------------------------------------------------------
+2026-11-11T07:18:16.5107051Z Traceback (most recent call last):
+2026-11-11T07:18:16.5107300Z   File "D:\a\sdd-open\sdd-open\tests\test_checar.py", line 685, in test_sincronizada_para_antes_de_tudo
+2026-11-11T07:18:16.5107571Z     for out in (self.normal(raiz), self.bloqueia(raiz)):
+2026-11-11T07:18:16.5107734Z                 ^^^^^^^^^^^^^^^^^
+2026-11-11T07:18:16.5107919Z   File "D:\a\sdd-open\sdd-open\tests\test_checar.py", line 591, in normal
+2026-11-11T07:18:16.5108165Z     self.assertTrue(out.startswith("\U0001f534 Impede o trabalho"), out)
+2026-11-11T07:18:16.5108417Z AssertionError: False is not true : 🔴 Impede o trabalho
+2026-11-11T07:18:16.5108804Z - Esta pasta está dentro do iCloud Drive, que sincroniza tudo o que muda — e o .git e as frentes se corrompem ou duplicam com a sincronização.
+2026-11-11T07:18:16.5109271Z   mova o projeto para uma pasta fora da nuvem (ex.: ~/Projetos), pelo Finder ou Explorador de Arquivos, e abra o terminal lá
+2026-11-11T07:18:16.5109506Z 
+2026-11-11T07:18:16.5109837Z ✅ Pasta Financas, nenhum agente de código no terminal · sdd-checar-ambiente v1.5.0 · nov/2026 · versão atual: https://github.com/robertodiasduarte/sdd-open/releases/latest
+2026-11-11T07:18:16.5110165Z 
+2026-11-11T07:18:16.5110168Z 
+2026-11-11T07:18:16.5110227Z ======================================================================
+2026-11-11T07:18:16.5110637Z FAIL: test_sincronizada_para_antes_de_tudo (test_checar.TestOndeEstou.test_sincronizada_para_antes_de_tudo) (rel='home/Library/CloudStorage/GoogleDrive-conta/Meu Drive/Financas')
+2026-11-11T07:18:16.5111062Z ----------------------------------------------------------------------
+2026-11-11T07:18:16.5111306Z Traceback (most recent call last):
+2026-11-11T07:18:16.5111549Z   File "D:\a\sdd-open\sdd-open\tests\test_checar.py", line 685, in test_sincronizada_para_antes_de_tudo
+2026-11-11T07:18:16.5111814Z     for out in (self.normal(raiz), self.bloqueia(raiz)):
+2026-11-11T07:18:16.5111980Z                 ^^^^^^^^^^^^^^^^^
+2026-11-11T07:18:16.5112167Z   File "D:\a\sdd-open\sdd-open\tests\test_checar.py", line 591, in normal
+2026-11-11T07:18:16.5112474Z     self.assertTrue(out.startswith("\U0001f534 Impede o trabalho"), out)
+2026-11-11T07:18:16.5112726Z AssertionError: False is not true : 🔴 Impede o trabalho
+2026-11-11T07:18:16.5113106Z - Esta pasta está dentro do Google Drive, que sincroniza tudo o que muda — e o .git e as frentes se corrompem ou duplicam com a sincronização.
+2026-11-11T07:18:16.5113566Z   mova o projeto para uma pasta fora da nuvem (ex.: ~/Projetos), pelo Finder ou Explorador de Arquivos, e abra o terminal lá
+2026-11-11T07:18:16.5113802Z 
+2026-11-11T07:18:16.5114139Z ✅ Pasta Financas, nenhum agente de código no terminal · sdd-checar-ambiente v1.5.0 · nov/2026 · versão atual: https://github.com/robertodiasduarte/sdd-open/releases/latest
+2026-11-11T07:18:16.5114459Z 
+2026-11-11T07:18:16.5114462Z 
+2026-11-11T07:18:16.5114547Z ======================================================================
+2026-11-11T07:18:16.5114931Z FAIL: test_sincronizada_para_antes_de_tudo (test_checar.TestOndeEstou.test_sincronizada_para_antes_de_tudo) (rel='home/Library/CloudStorage/OneDrive-Pessoal/Financas')
+2026-11-11T07:18:16.5115333Z ----------------------------------------------------------------------
+2026-11-11T07:18:16.5115511Z Traceback (most recent call last):
+2026-11-11T07:18:16.5115753Z   File "D:\a\sdd-open\sdd-open\tests\test_checar.py", line 685, in test_sincronizada_para_antes_de_tudo
+2026-11-11T07:18:16.5116022Z     for out in (self.normal(raiz), self.bloqueia(raiz)):
+2026-11-11T07:18:16.5116187Z                 ^^^^^^^^^^^^^^^^^
+2026-11-11T07:18:16.5116372Z   File "D:\a\sdd-open\sdd-open\tests\test_checar.py", line 591, in normal
+2026-11-11T07:18:16.5116617Z     self.assertTrue(out.startswith("\U0001f534 Impede o trabalho"), out)
+2026-11-11T07:18:16.5116866Z AssertionError: False is not true : 🔴 Impede o trabalho
+2026-11-11T07:18:16.5117239Z - Esta pasta está dentro do OneDrive, que sincroniza tudo o que muda — e o .git e as frentes se corrompem ou duplicam com a sincronização.
+2026-11-11T07:18:16.5117699Z   mova o projeto para uma pasta fora da nuvem (ex.: ~/Projetos), pelo Finder ou Explorador de Arquivos, e abra o terminal lá
+2026-11-11T07:18:16.5117930Z 
+2026-11-11T07:18:16.5118263Z ✅ Pasta Financas, nenhum agente de código no terminal · sdd-checar-ambiente v1.5.0 · nov/2026 · versão atual: https://github.com/robertodiasduarte/sdd-open/releases/latest
+2026-11-11T07:18:16.5118582Z 
+2026-11-11T07:18:16.5118584Z 
+2026-11-11T07:18:16.5118644Z ======================================================================
+2026-11-11T07:18:16.5119022Z FAIL: test_sincronizada_para_antes_de_tudo (test_checar.TestOndeEstou.test_sincronizada_para_antes_de_tudo) (rel='OneDrive - Escritorio/Documentos/Financas')
+2026-11-11T07:18:16.5119409Z ----------------------------------------------------------------------
+2026-11-11T07:18:16.5119589Z Traceback (most recent call last):
+2026-11-11T07:18:16.5119831Z   File "D:\a\sdd-open\sdd-open\tests\test_checar.py", line 685, in test_sincronizada_para_antes_de_tudo
+2026-11-11T07:18:16.5120101Z     for out in (self.normal(raiz), self.bloqueia(raiz)):
+2026-11-11T07:18:16.5120261Z                 ^^^^^^^^^^^^^^^^^
+2026-11-11T07:18:16.5120441Z   File "D:\a\sdd-open\sdd-open\tests\test_checar.py", line 591, in normal
+2026-11-11T07:18:16.5120689Z     self.assertTrue(out.startswith("\U0001f534 Impede o trabalho"), out)
+2026-11-11T07:18:16.5121018Z AssertionError: False is not true : 🔴 Impede o trabalho
+2026-11-11T07:18:16.5121625Z - Esta pasta está dentro do OneDrive, que sincroniza tudo o que muda — e o .git e as frentes se corrompem ou duplicam com a sincronização.
+2026-11-11T07:18:16.5122143Z   mova o projeto para uma pasta fora da nuvem (ex.: ~/Projetos), pelo Finder ou Explorador de Arquivos, e abra o terminal lá
+2026-11-11T07:18:16.5122375Z 
+2026-11-11T07:18:16.5122706Z ✅ Pasta Financas, nenhum agente de código no terminal · sdd-checar-ambiente v1.5.0 · nov/2026 · versão atual: https://github.com/robertodiasduarte/sdd-open/releases/latest
+2026-11-11T07:18:16.5123090Z 
+2026-11-11T07:18:16.5123092Z 
+2026-11-11T07:18:16.5123148Z ======================================================================
+2026-11-11T07:18:16.5123476Z FAIL: test_sincronizada_para_antes_de_tudo (test_checar.TestOndeEstou.test_sincronizada_para_antes_de_tudo) (rel='Dropbox/Financas')
+2026-11-11T07:18:16.5123812Z ----------------------------------------------------------------------
+2026-11-11T07:18:16.5123990Z Traceback (most recent call last):
+2026-11-11T07:18:16.5124234Z   File "D:\a\sdd-open\sdd-open\tests\test_checar.py", line 685, in test_sincronizada_para_antes_de_tudo
+2026-11-11T07:18:16.5124504Z     for out in (self.normal(raiz), self.bloqueia(raiz)):
+2026-11-11T07:18:16.5124668Z                 ^^^^^^^^^^^^^^^^^
+2026-11-11T07:18:16.5124851Z   File "D:\a\sdd-open\sdd-open\tests\test_checar.py", line 591, in normal
+2026-11-11T07:18:16.5125099Z     self.assertTrue(out.startswith("\U0001f534 Impede o trabalho"), out)
+2026-11-11T07:18:16.5125356Z AssertionError: False is not true : 🔴 Impede o trabalho
+2026-11-11T07:18:16.5125732Z - Esta pasta está dentro do Dropbox, que sincroniza tudo o que muda — e o .git e as frentes se corrompem ou duplicam com a sincronização.
+2026-11-11T07:18:16.5126182Z   mova o projeto para uma pasta fora da nuvem (ex.: ~/Projetos), pelo Finder ou Explorador de Arquivos, e abra o terminal lá
+2026-11-11T07:18:16.5126413Z 
+2026-11-11T07:18:16.5126744Z ✅ Pasta Financas, nenhum agente de código no terminal · sdd-checar-ambiente v1.5.0 · nov/2026 · versão atual: https://github.com/robertodiasduarte/sdd-open/releases/latest
+2026-11-11T07:18:16.5127064Z 
+2026-11-11T07:18:16.5127072Z 
+2026-11-11T07:18:16.5127133Z ======================================================================
+2026-11-11T07:18:16.5127477Z FAIL: test_sincronizada_para_antes_de_tudo (test_checar.TestOndeEstou.test_sincronizada_para_antes_de_tudo) (rel='Dropbox (Escritorio)/Financas')
+2026-11-11T07:18:16.5127837Z ----------------------------------------------------------------------
+2026-11-11T07:18:16.5128024Z Traceback (most recent call last):
+2026-11-11T07:18:16.5128265Z   File "D:\a\sdd-open\sdd-open\tests\test_checar.py", line 685, in test_sincronizada_para_antes_de_tudo
+2026-11-11T07:18:16.5128530Z     for out in (self.normal(raiz), self.bloqueia(raiz)):
+2026-11-11T07:18:16.5128694Z                 ^^^^^^^^^^^^^^^^^
+2026-11-11T07:18:16.5128885Z   File "D:\a\sdd-open\sdd-open\tests\test_checar.py", line 591, in normal
+2026-11-11T07:18:16.5129129Z     self.assertTrue(out.startswith("\U0001f534 Impede o trabalho"), out)
+2026-11-11T07:18:16.5129386Z AssertionError: False is not true : 🔴 Impede o trabalho
+2026-11-11T07:18:16.5129754Z - Esta pasta está dentro do Dropbox, que sincroniza tudo o que muda — e o .git e as frentes se corrompem ou duplicam com a sincronização.
+2026-11-11T07:18:16.5130201Z   mova o projeto para uma pasta fora da nuvem (ex.: ~/Projetos), pelo Finder ou Explorador de Arquivos, e abra o terminal lá
+2026-11-11T07:18:16.5130442Z 
+2026-11-11T07:18:16.5130770Z ✅ Pasta Financas, nenhum agente de código no terminal · sdd-checar-ambiente v1.5.0 · nov/2026 · versão atual: https://github.com/robertodiasduarte/sdd-open/releases/latest
+2026-11-11T07:18:16.5131089Z 
+2026-11-11T07:18:16.5131092Z 
+2026-11-11T07:18:16.5131154Z ======================================================================
+2026-11-11T07:18:16.5131503Z FAIL: test_sincronizada_para_antes_de_tudo (test_checar.TestOndeEstou.test_sincronizada_para_antes_de_tudo) (rel='Users/ana/iCloudDrive/Financas')
+2026-11-11T07:18:16.5131865Z ----------------------------------------------------------------------
+2026-11-11T07:18:16.5132599Z Traceback (most recent call last):
+2026-11-11T07:18:16.5132850Z   File "D:\a\sdd-open\sdd-open\tests\test_checar.py", line 685, in test_sincronizada_para_antes_de_tudo
+2026-11-11T07:18:16.5133116Z     for out in (self.normal(raiz), self.bloqueia(raiz)):
+2026-11-11T07:18:16.5133282Z                 ^^^^^^^^^^^^^^^^^
+2026-11-11T07:18:16.5133524Z   File "D:\a\sdd-open\sdd-open\tests\test_checar.py", line 591, in normal
+2026-11-11T07:18:16.5133767Z     self.assertTrue(out.startswith("\U0001f534 Impede o trabalho"), out)
+2026-11-11T07:18:16.5134021Z AssertionError: False is not true : 🔴 Impede o trabalho
+2026-11-11T07:18:16.5134402Z - Esta pasta está dentro do iCloud Drive, que sincroniza tudo o que muda — e o .git e as frentes se corrompem ou duplicam com a sincronização.
+2026-11-11T07:18:16.5134866Z   mova o projeto para uma pasta fora da nuvem (ex.: ~/Projetos), pelo Finder ou Explorador de Arquivos, e abra o terminal lá
+2026-11-11T07:18:16.5135100Z 
+2026-11-11T07:18:16.5135438Z ✅ Pasta Financas, nenhum agente de código no terminal · sdd-checar-ambiente v1.5.0 · nov/2026 · versão atual: https://github.com/robertodiasduarte/sdd-open/releases/latest
+2026-11-11T07:18:16.5135754Z 
+2026-11-11T07:18:16.5135757Z 
+2026-11-11T07:18:16.5135818Z ======================================================================
+2026-11-11T07:18:16.5136127Z FAIL: test_so_arquivo_do_sistema_conta_como_vazia (test_checar.TestOndeEstou.test_so_arquivo_do_sistema_conta_como_vazia)
+2026-11-11T07:18:16.5136443Z ----------------------------------------------------------------------
+2026-11-11T07:18:16.5136621Z Traceback (most recent call last):
+2026-11-11T07:18:16.5136878Z   File "D:\a\sdd-open\sdd-open\tests\test_checar.py", line 641, in test_so_arquivo_do_sistema_conta_como_vazia
+2026-11-11T07:18:16.5137136Z     out = self.normal(raiz)
+2026-11-11T07:18:16.5137258Z           ^^^^^^^^^^^^^^^^^
+2026-11-11T07:18:16.5137431Z   File "D:\a\sdd-open\sdd-open\tests\test_checar.py", line 591, in normal
+2026-11-11T07:18:16.5137678Z     self.assertTrue(out.startswith("\U0001f534 Impede o trabalho"), out)
+2026-11-11T07:18:16.5137928Z AssertionError: False is not true : 🔴 Impede o trabalho
+2026-11-11T07:18:16.5138133Z - Ainda não há projeto nesta pasta.
+2026-11-11T07:18:16.5138369Z   comece pela skill sdd-brainstorm — o git entra quando houver o que guardar
+2026-11-11T07:18:16.5138538Z 
+2026-11-11T07:18:16.5138878Z ✅ Pasta ideia-nova, nenhum agente de código no terminal · sdd-checar-ambiente v1.5.0 · nov/2026 · versão atual: https://github.com/robertodiasduarte/sdd-open/releases/latest
+2026-11-11T07:18:16.5139201Z 
+2026-11-11T07:18:16.5139203Z 
+2026-11-11T07:18:16.5139265Z ======================================================================
+2026-11-11T07:18:16.5139600Z FAIL: test_credencial_github_privado_explica_as_duas_causas (test_checar.TestRemoto.test_credencial_github_privado_explica_as_duas_causas)
+2026-11-11T07:18:16.5139945Z ----------------------------------------------------------------------
+2026-11-11T07:18:16.5140131Z Traceback (most recent call last):
+2026-11-11T07:18:16.5140412Z   File "D:\a\sdd-open\sdd-open\tests\test_checar.py", line 300, in test_credencial_github_privado_explica_as_duas_causas
+2026-11-11T07:18:16.5140804Z     self.assertIn("O GitHub n�o deixou este computador ler escritorio/privado", out)
+2026-11-11T07:18:16.5142655Z AssertionError: 'O GitHub n�o deixou este computador ler escritorio/privado' not found in '🔴 Impede o trabalho\n- O GitHub não deixou este computador ler escritorio/privado: ou o endereço está errado, ou o repositório é privado e este computador não está logado no GitHub.\n  gh auth login\n  Alternativas: chave SSH (ssh-keygen e cadastrar a chave pública no GitHub) ou o gerenciador de credenciais do git.\n\n✅ Repo meu-app, branch main, nenhuma frente aberta, nenhum agente de código no terminal · sdd-checar-ambiente v1.5.0 · nov/2026 · versão atual: https://github.com/robertodiasduarte/sdd-open/releases/latest\n'
+2026-11-11T07:18:16.5143791Z 
+2026-11-11T07:18:16.5144070Z ======================================================================
+2026-11-11T07:18:16.5144334Z FAIL: test_credencial_recusada_rapida (test_checar.TestRemoto.test_credencial_recusada_rapida)
+2026-11-11T07:18:16.5144609Z ----------------------------------------------------------------------
+2026-11-11T07:18:16.5144788Z Traceback (most recent call last):
+2026-11-11T07:18:16.5145096Z   File "D:\a\sdd-open\sdd-open\tests\test_checar.py", line 288, in test_credencial_recusada_rapida
+2026-11-11T07:18:16.5145392Z     self.assertTrue(out.startswith("\U0001f534 Impede o trabalho"), out)
+2026-11-11T07:18:16.5145649Z AssertionError: False is not true : 🔴 Impede o trabalho
+2026-11-11T07:18:16.5145912Z - O remoto 127.0.0.1 recusou o acesso deste computador (login ou permissão).
+2026-11-11T07:18:16.5146281Z   Faça login em 127.0.0.1 do jeito desse serviço (token de acesso ou chave SSH cadastrada nele) e rode de novo.
+2026-11-11T07:18:16.5146490Z 
+2026-11-11T07:18:16.5146902Z ✅ Repo meu-app, branch main, nenhuma frente aberta, nenhum agente de código no terminal · sdd-checar-ambiente v1.5.0 · nov/2026 · versão atual: https://github.com/robertodiasduarte/sdd-open/releases/latest
+2026-11-11T07:18:16.5147286Z 
+2026-11-11T07:18:16.5147288Z 
+2026-11-11T07:18:16.5147347Z ======================================================================
+2026-11-11T07:18:16.5147570Z FAIL: test_git_fora_do_path (test_checar.TestRemoto.test_git_fora_do_path)
+2026-11-11T07:18:16.5147801Z ----------------------------------------------------------------------
+2026-11-11T07:18:16.5147983Z Traceback (most recent call last):
+2026-11-11T07:18:16.5148204Z   File "D:\a\sdd-open\sdd-open\tests\test_checar.py", line 413, in test_git_fora_do_path
+2026-11-11T07:18:16.5148475Z     self.assertIn("O git n�o est� instalado", out)
+2026-11-11T07:18:16.5149040Z AssertionError: 'O git n�o est� instalado' not found in '🔴 Impede o trabalho\n- O git não está instalado — sem ele não há frentes nem publicação.\n  Instale em https://git-scm.com/downloads e abra o terminal de novo.\n\n✅ \n'
+2026-11-11T07:18:16.5149449Z 
+2026-11-11T07:18:16.5149507Z ======================================================================
+2026-11-11T07:18:16.5149739Z FAIL: test_host_ssh_desconhecido (test_checar.TestRemoto.test_host_ssh_desconhecido)
+2026-11-11T07:18:16.5149996Z ----------------------------------------------------------------------
+2026-11-11T07:18:16.5150176Z Traceback (most recent call last):
+2026-11-11T07:18:16.5150403Z   File "D:\a\sdd-open\sdd-open\tests\test_checar.py", line 339, in test_host_ssh_desconhecido
+2026-11-11T07:18:16.5150727Z     self.assertIn("ainda n�o confirmou a identidade de exemplo.invalid", out)
+2026-11-11T07:18:16.5151837Z AssertionError: 'ainda n�o confirmou a identidade de exemplo.invalid' not found in '🔴 Impede o trabalho\n- Este computador ainda não confirmou a identidade de exemplo.invalid para SSH.\n  ssh -T git@exemplo.invalid   (responda yes quando ele perguntar)\n\n✅ Repo meu-app, branch main, nenhuma frente aberta, nenhum agente de código no terminal · sdd-checar-ambiente v1.5.0 · nov/2026 · versão atual: https://github.com/robertodiasduarte/sdd-open/releases/latest\n'
+2026-11-11T07:18:16.5152671Z 
+2026-11-11T07:18:16.5152734Z ======================================================================
+2026-11-11T07:18:16.5152973Z FAIL: test_acusa_cada_tipo_e_sai_1 (test_checar.TestSegredo.test_acusa_cada_tipo_e_sai_1)
+2026-11-11T07:18:16.5153234Z ----------------------------------------------------------------------
+2026-11-11T07:18:16.5153413Z Traceback (most recent call last):
+2026-11-11T07:18:16.5153647Z   File "D:\a\sdd-open\sdd-open\tests\test_checar.py", line 745, in test_acusa_cada_tipo_e_sai_1
+2026-11-11T07:18:16.5153925Z     self.assertTrue(out.startswith("\U0001f534 Dado exposto"), out)
+2026-11-11T07:18:16.5154164Z AssertionError: False is not true : 🔴 Dado exposto
+2026-11-11T07:18:16.5154625Z - O arquivo de senhas .env está salvo no git. Tirar do git não apaga do histórico: se já houve push, quem tem acesso ao repositório tem o arquivo.
+2026-11-11T07:18:16.5154962Z   git rm --cached ".env" && echo ".env" >> .gitignore
+2026-11-11T07:18:16.5155171Z   Depois, troque as senhas e chaves que estão nele.
+2026-11-11T07:18:16.5155563Z - O certificado digital a.p12 está salvo no git. Tirar do git não apaga do histórico: se já houve push, quem tem acesso ao repositório tem o arquivo.
+2026-11-11T07:18:16.5155967Z   git rm --cached "a.p12" && echo "a.p12" >> .gitignore
+2026-11-11T07:18:16.5156198Z   Depois, revogue o certificado com a autoridade certificadora e emita outro.
+2026-11-11T07:18:16.5156675Z - O certificado digital certificados/empresa.pfx está salvo no git. Tirar do git não apaga do histórico: se já houve push, quem tem acesso ao repositório tem o arquivo.
+2026-11-11T07:18:16.5157129Z   git rm --cached "certificados/empresa.pfx" && echo "certificados/empresa.pfx" >> .gitignore
+2026-11-11T07:18:16.5157423Z   Depois, revogue o certificado com a autoridade certificadora e emita outro.
+2026-11-11T07:18:16.5157909Z - O arquivo de senhas config/.env.local está salvo no git. Tirar do git não apaga do histórico: se já houve push, quem tem acesso ao repositório tem o arquivo.
+2026-11-11T07:18:16.5158304Z   git rm --cached "config/.env.local" && echo "config/.env.local" >> .gitignore
+2026-11-11T07:18:16.5158552Z   Depois, troque as senhas e chaves que estão nele.
+2026-11-11T07:18:16.5158970Z - A chave privada chaves/servidor.pem está salvo no git. Tirar do git não apaga do histórico: se já houve push, quem tem acesso ao repositório tem o arquivo.
+2026-11-11T07:18:16.5159373Z   git rm --cached "chaves/servidor.pem" && echo "chaves/servidor.pem" >> .gitignore
+2026-11-11T07:18:16.5159609Z   Depois, gere uma chave nova e descarte esta.
+2026-11-11T07:18:16.5159718Z 
+2026-11-11T07:18:16.5159720Z 
+2026-11-11T07:18:16.5159787Z ======================================================================
+2026-11-11T07:18:16.5160092Z FAIL: test_historico_mostra_segredo_ja_apagado (test_inventario.TestAchados.test_historico_mostra_segredo_ja_apagado)
+2026-11-11T07:18:16.5160412Z ----------------------------------------------------------------------
+2026-11-11T07:18:16.5160591Z Traceback (most recent call last):
+2026-11-11T07:18:16.5160859Z   File "D:\a\sdd-open\sdd-open\tests\test_inventario.py", line 173, in test_historico_mostra_segredo_ja_apagado
+2026-11-11T07:18:16.5161350Z     self.assertIn("hist�rico", out)
+2026-11-11T07:18:16.5162576Z AssertionError: 'hist�rico' not found in 'Inventário de RDD10V8M6Financas — 1 arquivo está ou entraria no git.\ngh: ok\n🔴 Já passaram pelo histórico do git (publicar leva o histórico inteiro, inclusive o que foi apagado depois):\n- .env\n- dados/clientes.csv\n\nProposta de .gitignore (linhas que faltam):\n# senhas e certificados\n.env\n.env.*\n!.env.example\n!.env.sample\n*.pfx\n*.p12\n*.pem\n*.key\n# dependências (reinstaláveis)\nnode_modules/\n.venv/\nvenv/\n# arquivos do sistema\n.DS_Store\nThumbs.db\ndesktop.ini\n'
+2026-11-11T07:18:16.5163508Z 
+2026-11-11T07:18:16.5163573Z ======================================================================
+2026-11-11T07:18:16.5163917Z FAIL: test_sem_planilha_nem_grande_a_proposta_fica_na_base (test_inventario.TestAchados.test_sem_planilha_nem_grande_a_proposta_fica_na_base)
+2026-11-11T07:18:16.5164272Z ----------------------------------------------------------------------
+2026-11-11T07:18:16.5164462Z Traceback (most recent call last):
+2026-11-11T07:18:16.5164751Z   File "D:\a\sdd-open\sdd-open\tests\test_inventario.py", line 117, in test_sem_planilha_nem_grande_a_proposta_fica_na_base
+2026-11-11T07:18:16.5165068Z     self.assertIn("Nada sens�vel", out)
+2026-11-11T07:18:16.5166114Z AssertionError: 'Nada sens�vel' not found in 'Inventário de RDD10V8M6Financas — 1 arquivo entraria no git.\ngh: ok\n✅ Nada sens�\xadvel encontrado entre os arquivos.\n\nProposta de .gitignore (linhas que faltam):\n# senhas e certificados\n.env\n.env.*\n!.env.example\n!.env.sample\n*.pfx\n*.p12\n*.pem\n*.key\n# dependências (reinstaláveis)\nnode_modules/\n.venv/\nvenv/\n# arquivos do sistema\n.DS_Store\nThumbs.db\ndesktop.ini\n'
+2026-11-11T07:18:16.5166867Z 
+2026-11-11T07:18:16.5166923Z ======================================================================
+2026-11-11T07:18:16.5167221Z FAIL: test_a_linha_vem_logo_depois_do_cabecalho (test_inventario.TestGh.test_a_linha_vem_logo_depois_do_cabecalho)
+2026-11-11T07:18:16.5167588Z ----------------------------------------------------------------------
+2026-11-11T07:18:16.5167768Z Traceback (most recent call last):
+2026-11-11T07:18:16.5168029Z   File "D:\a\sdd-open\sdd-open\tests\test_inventario.py", line 349, in test_a_linha_vem_logo_depois_do_cabecalho
+2026-11-11T07:18:16.5168380Z     self.assertTrue(linhas[0].startswith("Invent�rio de "), linhas)
+2026-11-11T07:18:16.5169364Z AssertionError: False is not true : ['Inventário de RDD10V8M6Financas — 1 arquivo entraria no git.', 'gh: ok', '✅ Nada sens�\xadvel encontrado entre os arquivos.', '', 'Proposta de .gitignore (linhas que faltam):', '# senhas e certificados', '.env', '.env.*', '!.env.example', '!.env.sample', '*.pfx', '*.p12', '*.pem', '*.key', '# dependências (reinstaláveis)', 'node_modules/', '.venv/', 'venv/', '# arquivos do sistema', '.DS_Store', 'Thumbs.db', 'desktop.ini']
+2026-11-11T07:18:16.5170112Z 
+2026-11-11T07:18:16.5170167Z ======================================================================
+2026-11-11T07:18:16.5170465Z FAIL: test_dentro_de_um_repositorio_maior (test_inventario.TestPreCondicoes.test_dentro_de_um_repositorio_maior)
+2026-11-11T07:18:16.5170778Z ----------------------------------------------------------------------
+2026-11-11T07:18:16.5170956Z Traceback (most recent call last):
+2026-11-11T07:18:16.5171214Z   File "D:\a\sdd-open\sdd-open\tests\test_inventario.py", line 309, in test_dentro_de_um_repositorio_maior
+2026-11-11T07:18:16.5171476Z     self.assertIn(str(self.raiz), out)
+2026-11-11T07:18:16.5172437Z AssertionError: 'C:\\Users\\runneradmin\\AppData\\Local\\Temp\\inventario-dwr_uoel\\RDD10V8M6Financas' not found in '🔴 Esta pasta está dentro do repositório /c/Users/runneradmin/AppData/Local/Temp/inventario-dwr_uoel/RDD10V8M6Financas, que já usa git.\n  cd "/c/Users/runneradmin/AppData/Local/Temp/inventario-dwr_uoel/RDD10V8M6Financas"   (e abra o chat de novo lá; se o projeto é só esta subpasta, mova-a para fora)\n'
+2026-11-11T07:18:16.5173201Z 
+2026-11-11T07:18:16.5173269Z ======================================================================
+2026-11-11T07:18:16.5173507Z FAIL: test_vale_para_env_e_xargs (test_python_resolver.Calco.test_vale_para_env_e_xargs)
+2026-11-11T07:18:16.5173761Z ----------------------------------------------------------------------
+2026-11-11T07:18:16.5173940Z Traceback (most recent call last):
+2026-11-11T07:18:16.5174183Z   File "D:\a\sdd-open\sdd-open\tests\test_python_resolver.py", line 172, in test_vale_para_env_e_xargs
+2026-11-11T07:18:16.5174468Z     self.assertEqual((rc, out.split()), (0, ["env", "xargs"]), err)
+2026-11-11T07:18:16.5174701Z AssertionError: Tuples differ: (127, []) != (0, ['env', 'xargs'])
+2026-11-11T07:18:16.5174843Z 
+2026-11-11T07:18:16.5174900Z First differing element 0:
+2026-11-11T07:18:16.5175021Z 127
+2026-11-11T07:18:16.5175120Z 0
+2026-11-11T07:18:16.5175172Z 
+2026-11-11T07:18:16.5175220Z - (127, [])
+2026-11-11T07:18:16.5175470Z + (0, ['env', 'xargs']) : C:\Users\runneradmin\AppData\Local\Temp\sdd-open-adne856k\script.sh: line 2: env: command not found
+2026-11-11T07:18:16.5175860Z C:\Users\runneradmin\AppData\Local\Temp\sdd-open-adne856k\script.sh: line 3: xargs: command not found
+2026-11-11T07:18:16.5176070Z 
+2026-11-11T07:18:16.5176073Z 
+2026-11-11T07:18:16.5176132Z ======================================================================
+2026-11-11T07:18:16.5176347Z FAIL: test_vale_para_exec (test_python_resolver.Calco.test_vale_para_exec)
+2026-11-11T07:18:16.5176580Z ----------------------------------------------------------------------
+2026-11-11T07:18:16.5176761Z Traceback (most recent call last):
+2026-11-11T07:18:16.5177064Z   File "D:\a\sdd-open\sdd-open\tests\test_python_resolver.py", line 167, in test_vale_para_exec
+2026-11-11T07:18:16.5177333Z     self.assertEqual((rc, out.strip()), (0, "exec"), err)
+2026-11-11T07:18:16.5177531Z AssertionError: Tuples differ: (49, '') != (0, 'exec')
+2026-11-11T07:18:16.5177654Z 
+2026-11-11T07:18:16.5177703Z First differing element 0:
+2026-11-11T07:18:16.5177878Z 49
+2026-11-11T07:18:16.5177968Z 0
+2026-11-11T07:18:16.5178023Z 
+2026-11-11T07:18:16.5178066Z - (49, '')
+2026-11-11T07:18:16.5178165Z + (0, 'exec') : 
+2026-11-11T07:18:16.5178228Z 
+2026-11-11T07:18:16.5178289Z ======================================================================
+2026-11-11T07:18:16.5178561Z FAIL: test_atalho_e_so_py_usa_py_menos_3 (test_python_resolver.Escolha.test_atalho_e_so_py_usa_py_menos_3)
+2026-11-11T07:18:16.5178842Z ----------------------------------------------------------------------
+2026-11-11T07:18:16.5179019Z Traceback (most recent call last):
+2026-11-11T07:18:16.5179280Z   File "D:\a\sdd-open\sdd-open\tests\test_python_resolver.py", line 69, in test_atalho_e_so_py_usa_py_menos_3
+2026-11-11T07:18:16.5179575Z     self.assertEqual((rc, out.strip()), (0, "via py"), err)
+2026-11-11T07:18:16.5179777Z AssertionError: Tuples differ: (49, '') != (0, 'via py')
+2026-11-11T07:18:16.5179897Z 
+2026-11-11T07:18:16.5179950Z First differing element 0:
+2026-11-11T07:18:16.5180068Z 49
+2026-11-11T07:18:16.5180155Z 0
+2026-11-11T07:18:16.5180208Z 
+2026-11-11T07:18:16.5180245Z - (49, '')
+2026-11-11T07:18:16.5180345Z + (0, 'via py') : 
+2026-11-11T07:18:16.5180417Z 
+2026-11-11T07:18:16.5180474Z ======================================================================
+2026-11-11T07:18:16.5180761Z FAIL: test_python3_que_serve_nao_muda_nada (test_python_resolver.Escolha.test_python3_que_serve_nao_muda_nada)
+2026-11-11T07:18:16.5181053Z ----------------------------------------------------------------------
+2026-11-11T07:18:16.5181266Z Traceback (most recent call last):
+2026-11-11T07:18:16.5181705Z   File "D:\a\sdd-open\sdd-open\tests\test_python_resolver.py", line 83, in test_python3_que_serve_nao_muda_nada
+2026-11-11T07:18:16.5182053Z     self.assertEqual(path, str(self.bin) + ":" + str(self.ferr))   # o PATH de quem chamou, intacto
+2026-11-11T07:18:16.5182301Z     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+2026-11-11T07:18:16.5182622Z AssertionError: '/c/Users/runneradmin/AppData/Local/Temp/s[86 chars]ntas' != 'C:\\Users\\runneradmin\\AppData\\Local\\T[100 chars]ntas'
+2026-11-11T07:18:16.5183115Z - /c/Users/runneradmin/AppData/Local/Temp/sdd-open-zruc5n5a/bin:C:/Users/runneradmin/AppData/Local/Temp/sdd-open-zruc5n5a/ferramentas
+2026-11-11T07:18:16.5183483Z ? ^^^     ^           ^       ^     ^    ^                 ^      ^     ^           ^       ^     ^    ^                 ^
+2026-11-11T07:18:16.5183839Z + C:\Users\runneradmin\AppData\Local\Temp\sdd-open-zruc5n5a\bin:C:\Users\runneradmin\AppData\Local\Temp\sdd-open-zruc5n5a\ferramentas
+2026-11-11T07:18:16.5184189Z ? ^^^     ^           ^       ^     ^    ^                 ^      ^     ^           ^       ^     ^    ^                 ^
+2026-11-11T07:18:16.5184333Z 
+2026-11-11T07:18:16.5184335Z 
+2026-11-11T07:18:16.5184394Z ======================================================================
+2026-11-11T07:18:16.5184670Z FAIL: test_python3_velho_passa_ao_proximo (test_python_resolver.Escolha.test_python3_velho_passa_ao_proximo)
+2026-11-11T07:18:16.5184964Z ----------------------------------------------------------------------
+2026-11-11T07:18:16.5185140Z Traceback (most recent call last):
+2026-11-11T07:18:16.5185401Z   File "D:\a\sdd-open\sdd-open\tests\test_python_resolver.py", line 75, in test_python3_velho_passa_ao_proximo
+2026-11-11T07:18:16.5185685Z     self.assertEqual((rc, out.strip()), (0, "True"), err)
+2026-11-11T07:18:16.5185880Z AssertionError: Tuples differ: (1, '') != (0, 'True')
+2026-11-11T07:18:16.5185999Z 
+2026-11-11T07:18:16.5186046Z First differing element 0:
+2026-11-11T07:18:16.5186160Z 1
+2026-11-11T07:18:16.5186254Z 0
+2026-11-11T07:18:16.5186365Z 
+2026-11-11T07:18:16.5186407Z - (1, '')
+2026-11-11T07:18:16.5186505Z + (0, 'True') : 
+2026-11-11T07:18:16.5186567Z 
+2026-11-11T07:18:16.5186629Z ======================================================================
+2026-11-11T07:18:16.5186911Z FAIL: test_sdd_python_com_espaco_no_caminho (test_python_resolver.Escolha.test_sdd_python_com_espaco_no_caminho)
+2026-11-11T07:18:16.5187272Z ----------------------------------------------------------------------
+2026-11-11T07:18:16.5187446Z Traceback (most recent call last):
+2026-11-11T07:18:16.5187705Z   File "D:\a\sdd-open\sdd-open\tests\test_python_resolver.py", line 92, in test_sdd_python_com_espaco_no_caminho
+2026-11-11T07:18:16.5188005Z     self.assertEqual((rc, out.strip()), (0, "escolhido"), err)
+2026-11-11T07:18:16.5188220Z AssertionError: Tuples differ: (49, '') != (0, 'escolhido')
+2026-11-11T07:18:16.5188348Z 
+2026-11-11T07:18:16.5188398Z First differing element 0:
+2026-11-11T07:18:16.5188513Z 49
+2026-11-11T07:18:16.5188600Z 0
+2026-11-11T07:18:16.5188651Z 
+2026-11-11T07:18:16.5188688Z - (49, '')
+2026-11-11T07:18:16.5188884Z + (0, 'escolhido') : D:/a/sdd-open/sdd-open/sdd/bin/lib/python.sh: line 29: sed: command not found
+2026-11-11T07:18:16.5189073Z 
+2026-11-11T07:18:16.5189075Z 
+2026-11-11T07:18:16.5189136Z ======================================================================
+2026-11-11T07:18:16.5189476Z FAIL: test_nenhum_python_a_guarda_falha_calada_e_exigir_para (test_python_resolver.Parada.test_nenhum_python_a_guarda_falha_calada_e_exigir_para)
+2026-11-11T07:18:16.5189831Z ----------------------------------------------------------------------
+2026-11-11T07:18:16.5190010Z Traceback (most recent call last):
+2026-11-11T07:18:16.5190304Z   File "D:\a\sdd-open\sdd-open\tests\test_python_resolver.py", line 147, in test_nenhum_python_a_guarda_falha_calada_e_exigir_para
+2026-11-11T07:18:16.5190663Z     self.assertIn("\U0001f6d1 script.sh: precisa do Python 3.9 ou mais novo", err)
+2026-11-11T07:18:16.5191559Z AssertionError: '\U0001f6d1 script.sh: precisa do Python 3.9 ou mais novo' not found in '\U0001f6d1 C:\\Users\\runneradmin\\AppData\\Local\\Temp\\sdd-open-5ub2bp4a\\script.sh: precisa do Python 3.9 ou mais novo.\nRESULTADO: PAROU\n\u2192 instale o Python 3.9 ou mais novo (Windows: winget install --id Python.Python.3.12 -e; macOS: brew install python; Linux: sudo apt install python3), feche e abra o terminal e rode de novo.\n'
+2026-11-11T07:18:16.5192317Z 
+2026-11-11T07:18:16.5192401Z ----------------------------------------------------------------------
+2026-11-11T07:18:16.5192578Z Ran 136 tests in 565.810s
+2026-11-11T07:18:16.5192659Z 
+2026-11-11T07:18:16.5192709Z FAILED (failures=47, errors=34)
+2026-11-11T07:18:16.5206383Z ##[error]Process completed with exit code 1.
+2026-11-11T07:18:16.5410814Z Post job cleanup.
+2026-11-11T07:18:16.6540458Z [command]"C:\Program Files\Git\bin\git.exe" version
+2026-11-11T07:18:16.6794162Z git version 2.56.0.windows.4
+2026-11-11T07:18:16.6841762Z Temporarily overriding HOME='D:\a\_temp\3dffefe5-313d-45ba-abf9-15c1960e8e94' before making global git config changes
+2026-11-11T07:18:16.6842433Z Adding repository directory to the temporary git global config as a safe directory
+2026-11-11T07:18:16.6849503Z [command]"C:\Program Files\Git\bin\git.exe" config --global --add safe.directory D:\a\sdd-open\sdd-open
+2026-11-11T07:18:16.7131334Z [command]"C:\Program Files\Git\bin\git.exe" config --local --name-only --get-regexp core\.sshCommand
+2026-11-11T07:18:16.7394382Z [command]"C:\Program Files\Git\bin\git.exe" submodule foreach --recursive "sh -c \"git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :\""
+2026-11-11T07:18:17.1714029Z [command]"C:\Program Files\Git\bin\git.exe" config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+2026-11-11T07:18:17.1983061Z http.https://github.com/.extraheader
+2026-11-11T07:18:17.2017301Z [command]"C:\Program Files\Git\bin\git.exe" config --local --unset-all http.https://github.com/.extraheader
+2026-11-11T07:18:17.2300511Z [command]"C:\Program Files\Git\bin\git.exe" submodule foreach --recursive "sh -c \"git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :\""
+2026-11-11T07:18:17.6357546Z [command]"C:\Program Files\Git\bin\git.exe" config --local --name-only --get-regexp ^includeIf\.gitdir:
+2026-11-11T07:18:17.6615034Z [command]"C:\Program Files\Git\bin\git.exe" submodule foreach --recursive "git config --local --show-origin --name-only --get-regexp remote.origin.url"
+2026-11-11T07:18:18.0709312Z Cleaning up orphan processes

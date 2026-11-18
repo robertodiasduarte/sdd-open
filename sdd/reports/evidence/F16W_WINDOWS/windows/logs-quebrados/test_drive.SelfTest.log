@@ -1,0 +1,46 @@
+test_fica_vermelho_num_script_quebrado_e_diz_o_caso (test_drive.SelfTest.test_fica_vermelho_num_script_quebrado_e_diz_o_caso) ... ok
+
+test_nao_depende_da_configuracao_global_do_git (test_drive.SelfTest.test_nao_depende_da_configuracao_global_do_git) ... ok
+
+test_verde_sem_git_e_sem_deixar_nada (test_drive.SelfTest.test_verde_sem_git_e_sem_deixar_nada) ... FAIL
+
+
+
+======================================================================
+
+FAIL: test_verde_sem_git_e_sem_deixar_nada (test_drive.SelfTest.test_verde_sem_git_e_sem_deixar_nada)
+
+----------------------------------------------------------------------
+
+Traceback (most recent call last):
+
+  File "D:\a\sdd-open\sdd-open\tests\test_drive.py", line 1412, in test_verde_sem_git_e_sem_deixar_nada
+
+    self.assertEqual(list(temp.iterdir()), [])
+
+AssertionError: Lists differ: [WindowsPath('C:/Users/runneradmin/AppData[51 chars]8x')] != []
+
+
+
+First list contains 1 additional elements.
+
+First extra element 0:
+
+WindowsPath('C:/Users/runneradmin/AppData/Local/Temp/sdd-open-5zeuehqv/temp/sdd-drive-f62o818x')
+
+
+
+- [WindowsPath('C:/Users/runneradmin/AppData/Local/Temp/sdd-open-5zeuehqv/temp/sdd-drive-f62o818x')]
+
++ []
+
+
+
+----------------------------------------------------------------------
+
+Ran 3 tests in 212.204s
+
+
+
+FAILED (failures=1)
+

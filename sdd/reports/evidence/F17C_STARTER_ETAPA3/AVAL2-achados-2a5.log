@@ -1,0 +1,29 @@
+$ python3 -I /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f17c-starter-etapa3/4be28bc9-cd19-4e52-baaf-378f21755723/scratchpad/aval2-scripts/achados.py
+== achado 2 (AT-007): o parágrafo 'Sem acesso, não finja' de cada SKILL.md do Open
+sdd-define {'leu': True, 'inspecionou': True, 'escreveu': True, 'gravou': True, 'rodou': True, 'não inventa caminho': True}
+    **Sem acesso, não finja:** não diga que leu, inspecionou, escreveu, gravou ou rodou o que não leu, inspecionou, escreveu, gravou ou rodou; sem o código à vista, não invente caminho, comando nem biblioteca: o que falta vira pergunta ou suposição rotulada.
+sdd-design {'leu': True, 'inspecionou': True, 'escreveu': True, 'gravou': True, 'rodou': True, 'não inventa caminho': True}
+    **Sem acesso, não finja:** não diga que leu, inspecionou, escreveu, gravou ou rodou o que não leu, inspecionou, escreveu, gravou ou rodou; sem o código à vista, não invente caminho, comando nem biblioteca, nem agente. Sem código e sem a stack escrita no projeto (`AGENTS.md`, `sdd/config.yaml`, README), pergunte a stack e a estrutura mínima (pastas, linguagem, como roda) antes do File Manifest; projeto novo só depois 
+sdd-build {'leu': True, 'inspecionou': True, 'escreveu': True, 'gravou': True, 'rodou': True, 'não inventa caminho': True}
+    **Sem acesso, não finja:** não diga que leu, inspecionou, escreveu, gravou ou rodou o que não leu, inspecionou, escreveu, gravou ou rodou; sem o código à vista, não invente caminho, comando nem biblioteca; sem o projeto acessível, peça o projeto e não monte um BUILD_REPORT só a partir dos documentos. **Conte as camadas** do manifest usando `layers:` do config (ex.: `api`, `ui`, `sql`): ≥2 camadas distintas ⇒ os passo
+define: pergunta da 1a vez: True | 'nunca é atalho para não perguntar': True
+define: tabela 'UX pura -> manual-ux': True
+design: pergunta stack antes do File Manifest: True
+
+== achado 3: a linha de desvio diz que os caminhos são os de web/; os citados existem em web/
+sdd-define: linha=True; citados=7; faltam em web/=[]; existem também na raiz (ambíguos sem a linha)=['references/como-falar.md']
+   gerado: cita 'web/'? False
+sdd-design: linha=True; citados=5; faltam em web/=[]; existem também na raiz (ambíguos sem a linha)=['references/como-falar.md']
+   gerado: cita 'web/'? False
+sdd-build: linha=True; citados=10; faltam em web/=[]; existem também na raiz (ambíguos sem a linha)=['references/aplicar-migration.md', 'references/como-falar.md']
+   gerado: cita 'web/'? False
+
+== achado 4: 'validad' no build gerado (todos os .md)
+nenhum
+
+== achado 5: fragmento VERIFY_GATE
+exemplo manual-ux: verify_gate: { kind: manual-ux, cmd: "N/A (manual-ux)", pass_when: "checklist assinado", threshold: "—", manual_fallback: "Eu abri o app no celular e vi a tela inicial em menos de 2 s. Eu rolei as listas e vi todas rolarem. Eu toquei em ▶ Continuar e vi a aula seguinte. Eu abri o início e vi o card 
+frases 'Eu …': 5 | todas com ' e vi '? True
+regra 1: 1. **`manual-ux` NÃO finge automação.** É gate humano explícito (anti "passa técnico, é lixo    estético"). `cmd: "N/A (manual-ux)"`; o `manual_fallback` é um checklist assinado no BUILD_REPORT.    Escreva o checklist como 3 a 5 frases "Eu abri … e vi …" (o que a pessoa faz e o que ela vê). Fora da UX    pura (aparência, que nenhum comando julga), `manual-ux` vem só depois de perguntar "existe um comando que devolve    0 quando funciona?": nunca é atalho para não perguntar.
+isenção 'Fora da UX pura' no fragmento: True | isenção na SKILL.md do define: False
+rc=0

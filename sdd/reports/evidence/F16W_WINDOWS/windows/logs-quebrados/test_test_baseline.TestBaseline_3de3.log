@@ -1,0 +1,72 @@
+test_touched_fonte_sem_teste_ao_lado_nao_inventa_vizinho (test_test_baseline.TestBaseline.test_touched_fonte_sem_teste_ao_lado_nao_inventa_vizinho) ... ok
+
+test_touched_id_relativo_a_subpasta_conta (test_test_baseline.TestBaseline.test_touched_id_relativo_a_subpasta_conta) ... FAIL
+
+test_touched_so_aborta_por_arquivo_tocado (test_test_baseline.TestBaseline.test_touched_so_aborta_por_arquivo_tocado) ... ok
+
+test_touched_vizinho_commitado_na_branch_tambem_conta (test_test_baseline.TestBaseline.test_touched_vizinho_commitado_na_branch_tambem_conta) ... FAIL
+
+test_uso (test_test_baseline.TestBaseline.test_uso) ... ok
+
+
+
+======================================================================
+
+FAIL: test_touched_id_relativo_a_subpasta_conta (test_test_baseline.TestBaseline.test_touched_id_relativo_a_subpasta_conta)
+
+----------------------------------------------------------------------
+
+Traceback (most recent call last):
+
+  File "D:\a\sdd-open\sdd-open\tests\test_test_baseline.py", line 136, in test_touched_id_relativo_a_subpasta_conta
+
+    self.assertEqual(rc, 2, out)
+
+AssertionError: 0 != 2 : \u25b6 testes: cat saida.txt; exit 1
+
+\u26a0\ufe0f  nova, fora do diff (n�o aborta com --touched): foo.test.ts > Foo > quebra
+
+\u2705 nenhuma falha nova (0 conhecida(s)).
+
+RESULTADO: VERDE
+
+\u2192 siga para o pr�ximo passo.
+
+
+
+
+
+======================================================================
+
+FAIL: test_touched_vizinho_commitado_na_branch_tambem_conta (test_test_baseline.TestBaseline.test_touched_vizinho_commitado_na_branch_tambem_conta)
+
+----------------------------------------------------------------------
+
+Traceback (most recent call last):
+
+  File "D:\a\sdd-open\sdd-open\tests\test_test_baseline.py", line 144, in test_touched_vizinho_commitado_na_branch_tambem_conta
+
+    self.assertEqual(rc, 2, out)
+
+AssertionError: 0 != 2 : \u25b6 testes: cat saida.txt; exit 1
+
+\u26a0\ufe0f  nova, fora do diff (n�o aborta com --touched): src/foo.test.ts > Foo > quebra
+
+\u2705 nenhuma falha nova (0 conhecida(s)).
+
+RESULTADO: VERDE
+
+\u2192 siga para o pr�ximo passo.
+
+
+
+
+
+----------------------------------------------------------------------
+
+Ran 5 tests in 5.776s
+
+
+
+FAILED (failures=2)
+

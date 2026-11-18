@@ -1,0 +1,48 @@
+$ sabotar.sh <repo> dcf95ac  (dcf95ac)
+== MUTANTE M1 pago deixa de somar o custo da engine paga — sdd/bin/eval-revisores.sh
+FAIL: test_custo_que_existe_nunca_aparece_como_zero (test_eval_revisores.Custo.test_custo_que_existe_nunca_aparece_como_zero)
+FAIL: test_desempate_e_lido_pelos_campos_que_o_adversarial_review_grava (test_eval_revisores.Custo.test_desempate_e_lido_pelos_campos_que_o_adversarial_review_grava)
+FAIL: test_formas_do_custo (test_eval_revisores.Custo.test_formas_do_custo) (custo='US$ 0.1000')
+FAIL: test_formas_do_custo (test_eval_revisores.Custo.test_formas_do_custo) (custo='≈US$ 0.1000')
+FAIL: test_formas_do_custo (test_eval_revisores.Custo.test_formas_do_custo) (custo='US$ 0.1000 + $?')
+FAIL: test_formas_do_custo (test_eval_revisores.Custo.test_formas_do_custo) (custo='US$ 0,25')
+FAILED (failures=14)
+MORTO por test_cada_celula_da_tabela [exit=1]
+== MUTANTE M2 sem custo informado vira zero — sdd/bin/eval-revisores.sh
+FAIL: test_dado_corrompido_e_64_com_a_causa_nunca_traceback (test_eval_revisores.Custo.test_dado_corrompido_e_64_com_a_causa_nunca_traceback) (caso='custo com 31 dígitos')
+FAIL: test_formas_do_custo (test_eval_revisores.Custo.test_formas_do_custo) (custo='$?')
+FAIL: test_formas_do_custo (test_eval_revisores.Custo.test_formas_do_custo) (custo='n/d')
+FAIL: test_formas_do_custo (test_eval_revisores.Custo.test_formas_do_custo) (custo='assinatura')
+FAIL: test_cada_celula_da_tabela (test_eval_revisores.Tabela.test_cada_celula_da_tabela) (linha='2º revisor codex (-)', coluna='Nominal US$')
+FAIL: test_cada_celula_da_tabela (test_eval_revisores.Tabela.test_cada_celula_da_tabela) (linha='2º revisor codex (-)', coluna='Nominal por dano')
+FAILED (failures=10)
+MORTO por test_sem_custo_informado_nunca_vira_zero [exit=1]
+== MUTANTE M3 rebatida com evidência deixa de contar como falso positivo — sdd/bin/eval-revisores.sh
+FAIL: test_linha_de_tabela_em_bloco_cercado_ou_comentario_conta_como_no_loop (test_eval_revisores.Ledgers.test_linha_de_tabela_em_bloco_cercado_ou_comentario_conta_como_no_loop)
+FAIL: test_nenhuma_linha_de_tabela_some_em_silencio (test_eval_revisores.Ledgers.test_nenhuma_linha_de_tabela_some_em_silencio)
+FAIL: test_rebatida_marcada_sim_nao_conta_como_dano_e_e_avisada (test_eval_revisores.Ledgers.test_rebatida_marcada_sim_nao_conta_como_dano_e_e_avisada)
+FAIL: test_rotulo_da_engine_certa_casa_com_id_sem_rotulo (test_eval_revisores.Ledgers.test_rotulo_da_engine_certa_casa_com_id_sem_rotulo)
+FAIL: test_rotulo_escrito_como_o_id_cru_da_engine_tambem_casa (test_eval_revisores.Ledgers.test_rotulo_escrito_como_o_id_cru_da_engine_tambem_casa)
+FAIL: test_cada_celula_da_tabela (test_eval_revisores.Tabela.test_cada_celula_da_tabela) (linha='revisor claude (claude-x)', coluna='Falsos positivos')
+FAILED (failures=10)
+MORTO por test_novo_do_auditor_rebatido_duas_vezes_e_falso_positivo_dele [exit=1]
+== MUTANTE M4 lint aceita dano = sim sem teste — sdd/bin/ledger-revisao-lint.sh
+FAIL: test_arquivo_vazio_nao_esconde_as_violacoes_de_outro (test_ledger_revisao_lint.Lint.test_arquivo_vazio_nao_esconde_as_violacoes_de_outro)
+FAIL: test_cada_fixture_reprova_pelo_seu_motivo (test_ledger_revisao_lint.Lint.test_cada_fixture_reprova_pelo_seu_motivo) (fixture='sim-sem-teste.md')
+FAIL: test_linhas_depois_de_linha_em_branco_continuam_sendo_o_ledger (test_ledger_revisao_lint.Lint.test_linhas_depois_de_linha_em_branco_continuam_sendo_o_ledger)
+FAIL: test_saida_nao_depende_do_locale (test_ledger_revisao_lint.Lint.test_saida_nao_depende_do_locale)
+FAIL: test_teste_citado_tem_de_ter_forma_de_teste (test_ledger_revisao_lint.Lint.test_teste_citado_tem_de_ter_forma_de_teste) (evidencia='commit abc; o teste: falha')
+FAIL: test_teste_citado_tem_de_ter_forma_de_teste (test_ledger_revisao_lint.Lint.test_teste_citado_tem_de_ter_forma_de_teste) (evidencia='sem teste: nenhum')
+FAILED (failures=8)
+MORTO por test_cada_fixture_reprova_pelo_seu_motivo [exit=1]
+== MUTANTE M5 lint aceita ? fora de retroativo — sdd/bin/ledger-revisao-lint.sh
+FAIL: test_cada_fixture_reprova_pelo_seu_motivo (test_ledger_revisao_lint.Lint.test_cada_fixture_reprova_pelo_seu_motivo) (fixture='interrogacao-fora-de-retroativo.md')
+FAIL: test_comentario_html_nao_e_conferido (test_ledger_revisao_lint.Lint.test_comentario_html_nao_e_conferido)
+FAIL: test_retroativo_so_vale_como_linha_propria_e_fora_de_cerca (test_ledger_revisao_lint.Lint.test_retroativo_so_vale_como_linha_propria_e_fora_de_cerca)
+FAILED (failures=3)
+MORTO por test_cada_fixture_reprova_pelo_seu_motivo [exit=1]
+== MUTANTE M6 skill de build deixa de mandar conferir o ledger — .agents/skills/sdd-build/SKILL.md
+ERROR: test_build_5c_manda_gravar_conferir_e_passar_o_ledger (test_f19_textos.Skills.test_build_5c_manda_gravar_conferir_e_passar_o_ledger)
+FAIL: test_build_5c_manda_gravar_conferir_e_passar_o_ledger (test_f19_textos.Skills.test_build_5c_manda_gravar_conferir_e_passar_o_ledger) (termo='bash sdd/bin/ledger-revisao-lint.sh sdd/reviews/LEDGER_REVISAO_{F}.md')
+FAILED (failures=1, errors=1)
+MORTO por test_build_5c_manda_gravar_conferir_e_passar_o_ledger [exit=1]

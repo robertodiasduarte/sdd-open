@@ -1,0 +1,24 @@
+$ T=$(mktemp -d); bad=0; for id in 7C640EB 7c640eb 1234567 abcdefa; do mkdir "$T/$id"; sed "s/o AT-003 cobre o objetivo 2/o commit $id cobre o objetivo 2/" sdd/fixtures/conversa/decisoes/com-jargao.md > "$T/$id/q.md"; bash sdd/bin/sdd-decisoes-lint.sh --sites "$T/$id" > "$T/$id.out" 2>&1; rc=$?; echo "id=$id rc=$rc"; cat "$T/$id.out"; echo; done; mkdir "$T/dp"; sed "s/^\*\*Sua decisão\*\* —/**Sua decisão:**/; s/\[auto · de rotina\] //" sdd/fixtures/conversa/decisoes/controle.md > "$T/dp/q.md"; grep -n "Sua decisão" "$T/dp/q.md"; bash sdd/bin/sdd-decisoes-lint.sh --sites "$T/dp"; echo "**Sua decisão:** sem marca rc=$?"; bash sdd/bin/sdd-decisoes-lint.sh --sites "$T/7C640EB" >/dev/null 2>&1; u=$?; rm -rf "${T:?}"; test $u -eq 2
+id=7C640EB rc=2
+🛑 /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.CqflmsFrgB/7C640EB/q.md:5 — identificador técnico fora do (ref: …): 7C640EB
+RESULTADO: VERMELHO
+→ corrija as perguntas acima (formato e marcas: sdd/templates/fragments/PERGUNTA_DECISAO.md, item 9).
+
+mkdir: /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.CqflmsFrgB/7c640eb: File exists
+id=7c640eb rc=2
+🛑 /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.CqflmsFrgB/7c640eb/q.md:5 — identificador técnico fora do (ref: …): 7c640eb
+RESULTADO: VERMELHO
+→ corrija as perguntas acima (formato e marcas: sdd/templates/fragments/PERGUNTA_DECISAO.md, item 9).
+
+id=1234567 rc=0
+🟢 sdd-decisoes-lint --sites: 1 pergunta(s) em 1 arquivo(s), cada uma com a marca de classe e no formato.
+
+id=abcdefa rc=0
+🟢 sdd-decisoes-lint --sites: 1 pergunta(s) em 1 arquivo(s), cada uma com a marca de classe e no formato.
+
+5:**Sua decisão:** **Posso gravar o DEFINE com estes 6 testes de aceitação?**
+🛑 sdd-decisoes-lint: nenhuma pergunta de decisão (linha com **Sua decisão**) em: /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.CqflmsFrgB/dp
+RESULTADO: ERRO DE USO
+→ nada conferido nunca é verde; confira os caminhos.
+**Sua decisão:** sem marca rc=64
+[exit=0]

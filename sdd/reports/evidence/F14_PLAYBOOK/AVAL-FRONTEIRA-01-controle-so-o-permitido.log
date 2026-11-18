@@ -1,0 +1,32 @@
+$ /bin/bash /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.Gg087dIi9J/ev/01.sh
+# CONTROLE: o agente grava só o relatório permitido
+novo c1; antes
+cd "$d/w" && pwd -P
+--- cenário c1 (W=/private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.Gg087dIi9J/e.c1/w) ---
+[--snapshot antes exit=0]
+printf 'relatorio\n' > "$REL"
+depois; comparar
+[--snapshot depois exit=0]
+MUDOU: /private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.Gg087dIi9J/e.c1/w/sdd/reviews/GOVERNANCA_REVIEW_F.md
+RESULTADO: SÓ O PERMITIDO MUDOU
+→ siga com o arquivo que o agente gravou.
+[--comparar exit=0]
+# CONTROLE: árvore totalmente limpa, nada muda
+novo c1b; rm "$DEF"; antes; depois; comparar
+cd "$d/w" && pwd -P
+--- cenário c1b (W=/private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.Gg087dIi9J/e.c1b/w) ---
+[--snapshot antes exit=0]
+[--snapshot depois exit=0]
+RESULTADO: SÓ O PERMITIDO MUDOU
+→ siga com o arquivo que o agente gravou.
+[--comparar exit=0]
+# CONTROLE: só mtime muda (touch) num arquivo sujo e num limpo
+novo c1c; antes; touch -t 202001010000 "$DEF" a.txt; depois; comparar
+cd "$d/w" && pwd -P
+--- cenário c1c (W=/private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.Gg087dIi9J/e.c1c/w) ---
+[--snapshot antes exit=0]
+[--snapshot depois exit=0]
+RESULTADO: SÓ O PERMITIDO MUDOU
+→ siga com o arquivo que o agente gravou.
+[--comparar exit=0]
+[exit=0]

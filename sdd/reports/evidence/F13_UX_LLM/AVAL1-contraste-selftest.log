@@ -1,0 +1,5 @@
+$ SDD_TEST_BASH=/bin/bash /bin/bash sdd/bin/contraste.sh --self-test
+✅ 28 casos conferidos
+RESULTADO: VERDE
+→ o contraste.sh está pronto para uso
+[exit=0]

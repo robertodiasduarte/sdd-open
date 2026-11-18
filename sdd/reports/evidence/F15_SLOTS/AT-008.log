@@ -1,0 +1,18 @@
+$ cd tests && SDD_TEST_BASH=/bin/bash /usr/bin/python3 -B -m unittest -v test_f15_slots_textos.Release
+# commit: 9013b10
+test_0a_roda_os_testes_do_diff_depois_do_verify_gate (test_f15_slots_textos.Release) ... ok
+test_0b_usa_o_resultado_dos_testes_do_diff (test_f15_slots_textos.Release) ... ok
+test_10_smoke_depois_do_deploy_confirmado (test_f15_slots_textos.Release) ... ok
+test_6b_smoke_antes_do_ok_sobre_o_worktree_landado (test_f15_slots_textos.Release) ... ok
+test_7b_smoke_antes_do_push_nunca_segura (test_f15_slots_textos.Release) ... ok
+test_abortar_lista_os_testes_do_diff (test_f15_slots_textos.Release) ... ok
+test_exemplo_do_como_falar_acompanha (test_f15_slots_textos.Release) ... ok
+test_linha_verificacoes_do_bloco_do_ok (test_f15_slots_textos.Release) ... ok
+test_slots_listados (test_f15_slots_textos.Release) ... ok
+test_versao (test_f15_slots_textos.Release) ... ok
+
+----------------------------------------------------------------------
+Ran 10 tests in 0.001s
+
+OK
+[exit=0]

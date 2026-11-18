@@ -1,0 +1,10 @@
+$ python3 -B -m unittest -v test_f23b3_revisao.AT009Escapou   # HEAD 5e110b2
+test_escape_em_frente_com_o_2o_revisor_por_risco_nao_avisa (test_f23b3_revisao.AT009Escapou.test_escape_em_frente_com_o_2o_revisor_por_risco_nao_avisa) ... ok
+test_eval_conta_o_escape_e_avisa_conforme_a_rodada_evitada (test_f23b3_revisao.AT009Escapou.test_eval_conta_o_escape_e_avisa_conforme_a_rodada_evitada) ... ok
+test_lint_aceita_com_os_3_campos_e_recusa_sem_um_deles (test_f23b3_revisao.AT009Escapou.test_lint_aceita_com_os_3_campos_e_recusa_sem_um_deles) ... ok
+
+----------------------------------------------------------------------
+Ran 3 tests in 0.389s
+
+OK
+[exit=0]

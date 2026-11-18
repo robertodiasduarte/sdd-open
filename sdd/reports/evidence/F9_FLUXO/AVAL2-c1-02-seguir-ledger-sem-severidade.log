@@ -1,0 +1,15 @@
+$ T=$(mktemp -d); W=$PWD; S="$W/sdd/bin/sdd-fluxo.sh"; fails=0; caso() { R="$T/$1"; mkdir -p "$R/sdd/features"; cp sdd/fixtures/fluxo/DEFINE_pronto.md "$R/sdd/features/DEFINE_X.md"; cp sdd/fixtures/fluxo/config-autonomo.yaml "$R/sdd/config.yaml"; sed "$2" sdd/fixtures/fluxo/DESIGN_pronto.md > "$R/sdd/features/DESIGN_X.md"; (cd "$R" && git init -q && bash "$S" seguir design sdd/features/DEFINE_X.md build); rc=$?; echo "[$1] rc=$rc (esperado $3)"; echo; [ $rc -eq $3 ] || fails=$((fails+1)); }; caso sev-en "s/| # | Nota | Severidade | Veredito | Evidência |/| # | Note | Sev | Verdict | Evidence |/; s/| HIGH | APLICADA (Decision 1)/| HIGH | PENDENTE/" 1; caso formato-F5F6 "s/| # | Nota | Severidade | Veredito | Evidência |/| # | Nota | Decisão | Onde | Evidência |/; s/| HIGH | APLICADA (Decision 1)/| HIGH | PENDENTE/" 1; caso controle-fixture "s/x/x/" 0; rm -rf "${T:?}"; test $fails -eq 0
+PARAR: HIGH aberto no Advisor Ledger: A1
+RESULTADO: PARAR
+→ Próximo passo: /sdd-build sdd/features/DESIGN_X.md
+[sev-en] rc=1 (esperado 1)
+
+PARAR: Advisor Ledger sem coluna de severidade (Severidade ou Severity): não dá para conferir HIGH aberto
+RESULTADO: PARAR
+→ Próximo passo: /sdd-build sdd/features/DESIGN_X.md
+[formato-F5F6] rc=1 (esperado 1)
+
+✅ DESIGN pronto → seguindo para o BUILD (encadeamento ligado em sdd/config.yaml)
+→ /sdd-build sdd/features/DESIGN_X.md
+[controle-fixture] rc=0 (esperado 0)
+[exit=0]

@@ -1,0 +1,18 @@
+$ (cópia de git archive 9581740, antes da F19, + os 3 testes novos e o test_fluxo.py novo) python3 -B -m unittest discover -s tests -p <cada um>
+== test_f19_textos.py
+Ran 17 tests in 26.079s
+
+FAILED (failures=14, errors=10)
+== test_eval_revisores.py
+Ran 32 tests in 0.213s
+
+FAILED (failures=32, errors=11)
+== test_ledger_revisao_lint.py
+Ran 16 tests in 0.142s
+
+FAILED (failures=39)
+== test_fluxo.py
+Ran 69 tests in 13.300s
+
+FAILED (failures=2)
+[os 4 saem 1: a linha de base é vermelha]

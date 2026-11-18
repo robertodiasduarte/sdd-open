@@ -1,0 +1,6 @@
+{"achado": "R1", "veredito": "AGREE", "justificativa": "grep -Eq com ^...$ avalia linha a linha; se a primeira linha casar, o grep retorna 0 e as linhas subsequentes com JSON forjado são gravadas, ferindo AT-001 e S17."}
+{"achado": "R2", "veredito": "AGREE", "justificativa": "Decision 5 define a janela até a última marca; mensagens após um inicio sem fim na última marca ficam fora da janela, violando o AT-007 que exige fechar no fim da sessão."}
+{"achado": "R3", "veredito": "AGREE", "justificativa": "O identificador <F> como F23 não casa com DEFINE_F23_ECONOMIA_MENSURAVEL.md na Decision 8, impedindo a computação do custo da revisão e quebrando o AT-006."}
+{"achado": "R4", "veredito": "DISAGREE_CONCERN", "justificativa": "A premissa A-003 foi validada, mas a dúvida sobre a regra exata de conversão de caminho do Claude Code no Windows e com caracteres especiais é razoável e exige confirmação."}
+{"achado": "R5", "veredito": "DISAGREE_CONCERN", "justificativa": "Não há evidência de que o publish-gate.sh inclua sdd/features/ no pacote ou de que este diff seja para a branch main; a restrição de branch pode estar sendo respeitada."}
+{"achado": "R6", "veredito": "DISAGREE_CONCERN", "justificativa": "A lacuna é real, mas a severidade é LOW e o tratamento pode ser definido no Build (ex: classificar como sem fase ou n/d), não configurando defeito grave."}

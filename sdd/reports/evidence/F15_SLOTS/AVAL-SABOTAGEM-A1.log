@@ -1,0 +1,9 @@
+$ /bin/bash /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f15-slots/80a83c1b-4077-4625-ba69-e27f11f530a1/scratchpad/p8.sh
+186c186
+<   0)
+---
+>   0|7)
+FAIL: test_saida_fora_do_contrato_e_inconclusivo (test_slot.Inconclusivo) (cmd='bash falso.sh 7')
+Ran 16 tests in 3.119s
+FAILED (failures=1)
+[exit=1]

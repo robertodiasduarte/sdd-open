@@ -1,0 +1,14 @@
+$ bash sdd/reports/evidence/V272_GUARDAS/sabotagens-v272.sh "$PWD"
+✅ morta: S1 guard sem o filtro de pasta (teste caiu)
+✅ morta: S2 pre-commit volta a casar pelo nome (teste caiu)
+✅ morta: S3 pre-commit aceita subpasta de sdd/reports (teste caiu)
+✅ morta: S4 hooks_estado ignora o encadeamento (teste caiu)
+✅ morta: S6 doctor não confere o bit de execução (teste caiu)
+✅ morta: S7 pre-commit legado encadeado não reconhecido (teste caiu)
+✅ morta: S9 husky v9: a linha no script não é vista (R1@claude) (teste caiu)
+✅ morta: S10 chamada entre aspas conta como encadeada (R1@codex r2) (teste caiu)
+✅ morta: S11 qualquer pasta _ vale como husky (R1@claude e R2@codex r2) (teste caiu)
+✅ morta: S12 /h comentado no stub vale como husky (R1@codex r3) (teste caiu)
+✅ morta: S13 ~ no core.hooksPath não é expandido (R1@claude r3) (teste caiu)
+restaurado: 
+[exit=0]

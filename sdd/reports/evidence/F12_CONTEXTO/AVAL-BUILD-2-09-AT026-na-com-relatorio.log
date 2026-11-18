@@ -1,0 +1,10 @@
+$ D=$(mktemp -d); echo x > $D/R.md; printf 'MUDOU: %s\nRESULTADO: x\n' $D/R.md > $D/c.txt; printf '<<<GOVERNANCA\nresultado: NA\nmotivo: sem tema\nrelatorio: —\ncobertura: —\n>>>\n' > $D/r.txt; /usr/bin/python3 -B sdd/bin/governanca-bloco.py $D/r.txt --saida $D/R.md --comparar $D/c.txt; echo rc=$?; printf '<<<GOVERNANCA\nresultado: PADRAO_AUSENTE\nmotivo: tributo\nrelatorio: —\n>>>\n' > $D/r.txt; /usr/bin/python3 -B sdd/bin/governanca-bloco.py $D/r.txt --saida $D/R.md --comparar $D/c.txt; echo rc=$?
+  🛑 NA, mas o revisor gravou o relatório (MUDOU: /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.b6DImlhpJM/R.md)
+RESULTADO: BLOCO INVÁLIDO
+→ conte como falha da revisão: 1 redespacho fresco com os mesmos 5 campos.
+rc=2
+  🛑 PADRAO_AUSENTE, mas o revisor gravou o relatório (MUDOU: /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.b6DImlhpJM/R.md)
+RESULTADO: BLOCO INVÁLIDO
+→ conte como falha da revisão: 1 redespacho fresco com os mesmos 5 campos.
+rc=2
+[exit=0]

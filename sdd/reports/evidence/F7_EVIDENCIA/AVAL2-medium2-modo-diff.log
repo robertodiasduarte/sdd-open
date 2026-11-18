@@ -1,0 +1,89 @@
+$ P=$PWD; T=$(mktemp -d); cd "$T" && git init -q -b main r && cd r && git config user.email a@b.c && git config user.name t
+mkdir -p sdd/bin sdd/reports/evidence/X && cp "$P"/sdd/bin/gate-shell-evidencia.sh sdd/bin/
+BAD="\$ cmd | tail -1
+ok
+[exit=0]"
+GOOD="\$ cmd
+ok
+[exit=0]"
+printf "%s\n" "$GOOD" > sdd/reports/evidence/X/rastreado.log; printf "%s\n" "$GOOD" > sdd/reports/evidence/X/renomear.log
+git add -A && git commit -qm base && git update-ref refs/remotes/origin/main HEAD
+git checkout -qb feat
+G() { bash sdd/bin/gate-shell-evidencia.sh "$@"; echo "exit=$?"; }
+echo "== 0: sem mudança"; G
+echo "== 1: log novo STAGED (não commitado)"; printf "%s\n" "$BAD" > sdd/reports/evidence/X/staged.log; git add sdd/reports/evidence/X/staged.log; G
+git rm -q --cached sdd/reports/evidence/X/staged.log; rm sdd/reports/evidence/X/staged.log
+echo "== 2: log rastreado MODIFICADO sem stage"; printf "%s\n" "$BAD" > sdd/reports/evidence/X/rastreado.log; G
+echo "== 3: o mesmo, staged"; git add sdd/reports/evidence/X/rastreado.log; G
+git checkout -q HEAD -- sdd/reports/evidence/X/rastreado.log
+echo "== 4: renomeação staged com conteúdo ruim"; git mv sdd/reports/evidence/X/renomear.log sdd/reports/evidence/X/renomeado.log; printf "%s\n" "$BAD" > sdd/reports/evidence/X/renomeado.log; git add -A; G
+git reset -q --hard
+echo "== 5: commitado na branch"; printf "%s\n" "$BAD" > sdd/reports/evidence/X/commit.log; git add -A; git commit -qm c; G
+echo "== 6: não rastreado"; printf "%s\n" "$BAD" > sdd/reports/evidence/X/novo.log; G
+echo "== 7: --base inválida"; G --base nao/existe
+echo "== 8: rodando de subpasta"; (cd sdd/reports && bash ../bin/gate-shell-evidencia.sh; echo "exit=$?")
+cd /; rm -rf "${T:?}"
+== 0: sem mudança
+ℹ️  nenhum *.log no escopo (diff): nada a conferir.
+RESULTADO: VERDE
+→ siga para o próximo passo.
+exit=0
+== 1: log novo STAGED (não commitado)
+🛑 sdd/reports/evidence/X/staged.log:3 — o número gravado ([exit=0]) é o exit de `tail`, não do seu comando
+      $ cmd | tail -1
+🛑 1 linha(s) de exit que não provam o comando, em 1 log(s).
+RESULTADO: VERMELHO
+→ refaça o log gravando o exit antes de formatar: out=$(cmd 2>&1); rc=$?; printf '%s\n' "$out" | tail -n 200; echo "[exit=$rc]"
+exit=2
+== 2: log rastreado MODIFICADO sem stage
+🛑 sdd/reports/evidence/X/rastreado.log:3 — o número gravado ([exit=0]) é o exit de `tail`, não do seu comando
+      $ cmd | tail -1
+🛑 1 linha(s) de exit que não provam o comando, em 1 log(s).
+RESULTADO: VERMELHO
+→ refaça o log gravando o exit antes de formatar: out=$(cmd 2>&1); rc=$?; printf '%s\n' "$out" | tail -n 200; echo "[exit=$rc]"
+exit=2
+== 3: o mesmo, staged
+🛑 sdd/reports/evidence/X/rastreado.log:3 — o número gravado ([exit=0]) é o exit de `tail`, não do seu comando
+      $ cmd | tail -1
+🛑 1 linha(s) de exit que não provam o comando, em 1 log(s).
+RESULTADO: VERMELHO
+→ refaça o log gravando o exit antes de formatar: out=$(cmd 2>&1); rc=$?; printf '%s\n' "$out" | tail -n 200; echo "[exit=$rc]"
+exit=2
+== 4: renomeação staged com conteúdo ruim
+🛑 sdd/reports/evidence/X/renomeado.log:3 — o número gravado ([exit=0]) é o exit de `tail`, não do seu comando
+      $ cmd | tail -1
+🛑 1 linha(s) de exit que não provam o comando, em 1 log(s).
+RESULTADO: VERMELHO
+→ refaça o log gravando o exit antes de formatar: out=$(cmd 2>&1); rc=$?; printf '%s\n' "$out" | tail -n 200; echo "[exit=$rc]"
+exit=2
+== 5: commitado na branch
+🛑 sdd/reports/evidence/X/commit.log:3 — o número gravado ([exit=0]) é o exit de `tail`, não do seu comando
+      $ cmd | tail -1
+🛑 1 linha(s) de exit que não provam o comando, em 1 log(s).
+RESULTADO: VERMELHO
+→ refaça o log gravando o exit antes de formatar: out=$(cmd 2>&1); rc=$?; printf '%s\n' "$out" | tail -n 200; echo "[exit=$rc]"
+exit=2
+== 6: não rastreado
+🛑 sdd/reports/evidence/X/commit.log:3 — o número gravado ([exit=0]) é o exit de `tail`, não do seu comando
+      $ cmd | tail -1
+🛑 sdd/reports/evidence/X/novo.log:3 — o número gravado ([exit=0]) é o exit de `tail`, não do seu comando
+      $ cmd | tail -1
+🛑 2 linha(s) de exit que não provam o comando, em 2 log(s).
+RESULTADO: VERMELHO
+→ refaça o log gravando o exit antes de formatar: out=$(cmd 2>&1); rc=$?; printf '%s\n' "$out" | tail -n 200; echo "[exit=$rc]"
+exit=2
+== 7: --base inválida
+🛑 git diff nao/existe...HEAD falhou: sem escopo confiável, não avalio
+RESULTADO: ERRO DE USO
+→ passe --base <ref> existente, ou os logs.
+exit=64
+== 8: rodando de subpasta
+🛑 sdd/reports/evidence/X/commit.log:3 — o número gravado ([exit=0]) é o exit de `tail`, não do seu comando
+      $ cmd | tail -1
+🛑 sdd/reports/evidence/X/novo.log:3 — o número gravado ([exit=0]) é o exit de `tail`, não do seu comando
+      $ cmd | tail -1
+🛑 2 linha(s) de exit que não provam o comando, em 2 log(s).
+RESULTADO: VERMELHO
+→ refaça o log gravando o exit antes de formatar: out=$(cmd 2>&1); rc=$?; printf '%s\n' "$out" | tail -n 200; echo "[exit=$rc]"
+exit=2
+[exit=0]

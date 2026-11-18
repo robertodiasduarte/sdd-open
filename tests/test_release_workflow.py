@@ -157,7 +157,7 @@ class Windows(unittest.TestCase):
                 self.assertIn("gitleaks_8.30.1_windows_x64.zip", bloco)
                 self.assertIn("sys.exit(os.name != \"nt\")", bloco)   # o Python é o nativo, afirmado
                 self.assertIn('echo "SDD_TEST_BASH=$(cygpath -w "$(command -v bash)")" >> "$GITHUB_ENV"', bloco)
-                self.assertIn('run: bash scripts/publish-gate.sh "$(pwd)"', bloco)
+                self.assertIn('P="$(bash scripts/montar-pacote.sh)" || exit 1\n          bash scripts/publish-gate.sh "$P"', bloco)   # F26: sobre o pacote
                 self.assertIn("PUBLISH_GATE_MODE: ci", bloco)
                 # F16W: a suíte inteira, módulo a módulo, em 16 fatias paralelas pelo executor
                 self.assertRegex(bloco, r"(?m)^    strategy:\n      fail-fast: false.*\n      matrix:\n"

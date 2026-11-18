@@ -1,0 +1,30 @@
+$ python3 -B -m unittest discover -v -s tests -p test_checar.py -k TestGh
+  test_frente_nao_consulta_o_gh (test_checar.TestGh.test_frente_nao_consulta_o_gh) ... ok
+  test_frente_sem_gh_nao_fala_do_gh (test_checar.TestGh.test_frente_sem_gh_nao_fala_do_gh) ... ok
+  test_gh_deslogado_com_remoto_do_github (test_checar.TestGh.test_gh_deslogado_com_remoto_do_github) ... ok
+  test_gh_deslogado_sem_remoto_tambem_avisa (test_checar.TestGh.test_gh_deslogado_sem_remoto_tambem_avisa) ... ok
+  test_gh_logado_nao_diz_nada_e_consulta_so_o_github (test_checar.TestGh.test_gh_logado_nao_diz_nada_e_consulta_so_o_github) ... ok
+  test_gh_pendurado_respeita_o_teto (test_checar.TestGh.test_gh_pendurado_respeita_o_teto) ... ok
+  test_gh_sem_rede_e_sem_resposta (test_checar.TestGh.test_gh_sem_rede_e_sem_resposta) ... ok
+  test_remoto_fora_do_github_nao_chama_nem_cita_o_gh (test_checar.TestGh.test_remoto_fora_do_github_nao_chama_nem_cita_o_gh) ... ok
+  test_remoto_recusado_nao_repete_o_login (test_checar.TestGh.test_remoto_recusado_nao_repete_o_login) ... ok
+  test_sem_gh_aviso_com_o_comando_do_sistema_e_rc_0 (test_checar.TestGh.test_sem_gh_aviso_com_o_comando_do_sistema_e_rc_0) ... ok
+  test_sem_gh_e_sem_remoto_avisa (test_checar.TestGh.test_sem_gh_e_sem_remoto_avisa) ... ok
+  Ran 11 tests in 18.568s
+  OK
+$ python3 -B -m unittest discover -v -s tests -p test_checar.py -k TestRemoto
+  test_comandos_impressos_sem_prompt (test_checar.TestRemoto.test_comandos_impressos_sem_prompt) ... ok
+  test_credencial_github_privado_explica_as_duas_causas (test_checar.TestRemoto.test_credencial_github_privado_explica_as_duas_causas) ... ok
+  test_credencial_recusada_rapida (test_checar.TestRemoto.test_credencial_recusada_rapida) ... ok
+  test_git_fora_do_path (test_checar.TestRemoto.test_git_fora_do_path) ... ok
+  test_host_ssh_desconhecido (test_checar.TestRemoto.test_host_ssh_desconhecido) ... ok
+  test_login_do_editor_esperando (test_checar.TestRemoto.test_login_do_editor_esperando) ... ok
+  test_rede_parada_com_editor_nao_e_janela_de_login (test_checar.TestRemoto.test_rede_parada_com_editor_nao_e_janela_de_login) ... ok
+  test_rede_pendurada (test_checar.TestRemoto.test_rede_pendurada) ... ok
+  test_rede_pendurada_inteira_api_e_remoto (test_checar.TestRemoto.test_rede_pendurada_inteira_api_e_remoto) ... ok
+  test_remoto_vazio (test_checar.TestRemoto.test_remoto_vazio) ... ok
+  test_sem_remoto_continua_aviso (test_checar.TestRemoto.test_sem_remoto_continua_aviso) ... ok
+  test_ssh_pendurado_vigia (test_checar.TestRemoto.test_ssh_pendurado_vigia) ... ok
+  test_vazio_com_warning (test_checar.TestRemoto.test_vazio_com_warning) ... ok
+  Ran 13 tests in 65.316s
+  OK

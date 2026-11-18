@@ -1,0 +1,8 @@
+$ /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/aval2w.zHdF4lN0AJ/sabota.sh novo-severidade-sempre-HIGH sdd/bin/adversarial-review.sh '            j["severidade"] = "MED" if s == "MEDIUM" else s
+            ok = j["severidade"]' '            j["severidade"] = "HIGH"
+            ok = j["severidade"]'
+### sabotagem novo-severidade-sempre-HIGH em sdd/bin/adversarial-review.sh
+103 asserções, 0 falha(s) em 7 s
+RESULTADO: GATE VERDE
+[gate_rc=0]
+[exit=0]

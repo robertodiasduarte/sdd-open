@@ -1,0 +1,5 @@
+$ /usr/bin/python3 -B /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f4-conversa/5e736f5b-fdb5-4cdd-a304-706fff11b1bb/scratchpad/integridade.py .agents/skills && grep -n 'skill-lint' .github/workflows/publish-gate.yml && /usr/bin/python3 -B sdd/bin/skill-lint.py --conversa .agents/skills/sdd-*/SKILL.md | tail -1
+skill integrity: 0 finding(s) in 57 file(s) under .agents/skills
+109:        run: python3 sdd/bin/skill-lint.py --conversa .agents/skills/sdd-*/SKILL.md
+✅ .agents/skills/sdd-ux-review/SKILL.md: frontmatter válido · camada de conversa ok
+exit=0

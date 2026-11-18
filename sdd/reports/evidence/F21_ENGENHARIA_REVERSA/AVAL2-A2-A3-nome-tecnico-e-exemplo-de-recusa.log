@@ -1,0 +1,108 @@
+$ grep -rnE "SDD Brainstorm|SDD Define" <skill>; sed -n 78,90p references/como-falar.md; skill-lint --conversa; sabotagens em copia (repor a forma antiga de A2 e de A3) e /usr/bin/python3 -B -m unittest discover -s tests -p test_f21_textos.py -k <teste>
+## [A2] grep -rnE 'SDD Brainstorm|SDD Define' .agents/skills/sdd-engenharia-reversa-saas
+.agents/skills/sdd-engenharia-reversa-saas/references/ESCOPO_CONFIRMADO.md:16:- Orquestração das skills instaladas SDD Brainstorm e SDD Define com seus assets e gates.
+.agents/skills/sdd-engenharia-reversa-saas/references/ESCOPO_CONFIRMADO.md:34:- Skills SDD Brainstorm e SDD Define instaladas com seus assets e referências.
+.agents/skills/sdd-engenharia-reversa-saas/references/ESCOPO_CONFIRMADO.md:39:- Na execução: BRAINSTORM_{NOVA_SOLUCAO}.md conforme gates do SDD Brainstorm.
+.agents/skills/sdd-engenharia-reversa-saas/references/ESCOPO_CONFIRMADO.md:40:- Na execução: DEFINE_{NOVA_SOLUCAO}.md conforme gates do SDD Define; rascunho explícito se bloqueado.
+.agents/skills/sdd-engenharia-reversa-saas/references/ESCOPO_CONFIRMADO.md:69:Conversa de criação como caso ilustrativo, incluindo contraexemplo aprovado; arquivos instalados das skills SDD Brainstorm e SDD Define, com templates e referências inventariados em FONTES.md. Snapshots de planejamento não são dependências embarcadas no pacote da filha.
+exit=0
+## [A2] grep -rnE 'sdd-brainstorm|sdd-define' COMO_FUNCIONA.md e cases.json
+.agents/skills/sdd-engenharia-reversa-saas/references/COMO_FUNCIONA.md:19:As skills `sdd-brainstorm` e `sdd-define` precisam estar disponíveis no ambiente. Este pacote não inclui cópias delas. A integração ocorre antes do Brainstorm, por documentos e contexto; não altera comandos nem configurações do projeto.
+.agents/skills/sdd-engenharia-reversa-saas/evals/cases.json:57:      "entrada": "Não há skill sdd-brainstorm instalada após concluir o relatório.",
+## [A2] ESCOPO_CONFIRMADO.md declara que e registro historico?
+71:## Operação e revisão
+72:Perfil operacional C. Pesquisa progressiva e fontes datadas. Usuário revisa as decisões da nova solução, uma pergunta principal por interação. Sem evidências suficientes, relatório parcial e avanço com limitações, sem simular gates concluídos.
+76:O texto acima é o escopo aprovado para a 1.0.0, mantido como registro. A 1.1.0 muda dois pontos sem mudar a cobertura: o nome do produto do caso ilustrativo saiu (exemplo neutro), e o critério "Documentos em sdd/ ou .claude/sdd/ existente" passa a ser a regra de pasta do `SKILL.md` (com `sdd/config.yaml`, `sdd/features/`; sem ele, `sdd/` na raiz; `.claude/sdd/` só quando já existe e não há `sdd/config.yaml`).
+## [A3] sed -n 78,90p .agents/skills/sdd-engenharia-reversa-saas/references/como-falar.md
+cat: illegal option -- A
+usage: cat [-belnstuv] [file ...]
+## [A3] grep -n 'Diga a frase\|SKILL.md' como-falar.md
+4:um site e o que é suposição. A seção "Como falar com o aluno" do `SKILL.md` dá o formato; este arquivo dá
+exit=0
+## [A3] texto canonico de recusa identico no SKILL.md e no exemplo
+.agents/skills/sdd-engenharia-reversa-saas/references/como-falar.md:86:"Posso analisar fontes públicas e acessos autorizados. Não realizo acesso indevido nem ob
+.agents/skills/sdd-engenharia-reversa-saas/SKILL.md:190:"Posso analisar fontes públicas e acessos autorizados. Não realizo acesso indevido nem obtenho código pr
+## skill-lint --conversa da skill
+✅ .agents/skills/sdd-engenharia-reversa-saas/SKILL.md: frontmatter válido · camada de conversa ok
+exit=0
+## json valido
+ok
+exit=0
+######## SABOTAGEM A2a: repor 'SDD Brainstorm' em COMO_FUNCIONA.md
+19:As skills SDD Brainstorm e SDD Define precisam estar disponíveis no ambiente. Este pacote não inclui cópias delas. A integração ocorre antes do Brainstorm, por documentos e contexto; não altera comandos nem configurações do projeto.
+  File "/private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f21-f19/8ca3f42f-d684-434d-9f0b-19bdcf0aef88/scratchpad/c3/sab/tests/test_f21_textos.py", line 138, in test_dependencias_so_pelo_nome_tecnico
+    self.assertEqual(achados, [])
+AssertionError: Lists differ: ['.agents/skills/sdd-engenharia-reversa-saas/references/COMO_FUNCIONA.md:19'] != []
+
+First list contains 1 additional elements.
+First extra element 0:
+'.agents/skills/sdd-engenharia-reversa-saas/references/COMO_FUNCIONA.md:19'
+
+- ['.agents/skills/sdd-engenharia-reversa-saas/references/COMO_FUNCIONA.md:19']
++ []
+
+----------------------------------------------------------------------
+Ran 3 tests in 0.003s
+
+FAILED (failures=1)
+exit=1
+######## SABOTAGEM A2b: repor 'SDD Brainstorm' em evals/cases.json
+57:      "entrada": "Não há skill SDD Brainstorm instalada após concluir o relatório.",
+  File "/private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f21-f19/8ca3f42f-d684-434d-9f0b-19bdcf0aef88/scratchpad/c3/sab/tests/test_f21_textos.py", line 138, in test_dependencias_so_pelo_nome_tecnico
+    self.assertEqual(achados, [])
+AssertionError: Lists differ: ['.agents/skills/sdd-engenharia-reversa-saas/evals/cases.json:57'] != []
+
+First list contains 1 additional elements.
+First extra element 0:
+'.agents/skills/sdd-engenharia-reversa-saas/evals/cases.json:57'
+
+- ['.agents/skills/sdd-engenharia-reversa-saas/evals/cases.json:57']
++ []
+
+----------------------------------------------------------------------
+Ran 3 tests in 0.003s
+
+FAILED (failures=1)
+exit=1
+######## SABOTAGEM A2c: 'SDD Define' no SKILL.md
+
+- ['.agents/skills/sdd-engenharia-reversa-saas/SKILL.md:212']
++ []
+
+----------------------------------------------------------------------
+Ran 3 tests in 0.003s
+
+FAILED (failures=1)
+exit=1
+######## SABOTAGEM A3: repor a instrucao ao agente no corpo do exemplo
+85:**Agora: etapa 2 — Investigar** — Diga a frase de recusa inteira, como está no `SKILL.md`:
+======================================================================
+FAIL: test_exemplo_de_recusa_nao_traz_instrucao_ao_agente (test_f21_textos.Texto)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f21-f19/8ca3f42f-d684-434d-9f0b-19bdcf0aef88/scratchpad/c3/sab/tests/test_f21_textos.py", line 144, in test_exemplo_de_recusa_nao_traz_instrucao_ao_agente
+    self.assertNotIn("SKILL.md", corpo)
+AssertionError: 'SKILL.md' unexpectedly found in ' — Não fiz o que você pediu.\n\n**Agora: etapa 2 — Investigar** — Diga a frase de recusa inteira, como está no `SKILL.md`:\n"Posso analisar fontes públicas e acessos autorizados. Não realizo acesso indevido nem obtenho código privado."\nEntrar na conta de outra empresa sem permissão dela é acesso indevido, e eu não ajudo com isso de nenhuma\nforma. O estudo continua com o site, a ajuda, vídeos de demonstração e o que for seu.\n\n**Próximo passo** — Sigo com as fontes públicas; se você tiver conta própria, me avise.\n'
+
+----------------------------------------------------------------------
+Ran 1 test in 0.001s
+
+FAILED (failures=1)
+exit=1
+######## SABOTAGEM A1: tirar sys.dont_write_bytecode do teste
+0
+======================================================================
+ERROR: test_o_teste_do_lint_nao_grava_bytecode_na_pasta_da_skill (test_f21_textos.Texto)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f21-f19/8ca3f42f-d684-434d-9f0b-19bdcf0aef88/scratchpad/c3/sab/tests/test_f21_textos.py", line 149, in test_o_teste_do_lint_nao_grava_bytecode_na_pasta_da_skill
+    self.assertLess(fonte.index("sys.dont_write_bytecode = True"), fonte.index("spec.loader.exec_module"))
+ValueError: substring not found
+
+----------------------------------------------------------------------
+Ran 1 test in 0.001s
+
+FAILED (errors=1)
+exit=1
+######## copia restaurada: diff contra outra copia intacta
+identicas

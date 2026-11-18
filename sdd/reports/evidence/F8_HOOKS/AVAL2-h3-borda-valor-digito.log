@@ -1,0 +1,23 @@
+$ cd /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f8-hooks/8e011512-3e64-4505-a0ff-235ac598d20c/scratchpad/aval2/s2-h3c || exit 99; echo '== .env: valor hex que começa com dígito, sem ponto'; bash /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f8-hooks/8e011512-3e64-4505-a0ff-235ac598d20c/scratchpad/h3case.sh .env.prod 'SECRET=%s\n' 3f a-f0-9
+== .env: valor hex que começa com dígito, sem ponto
+valor: 24 chars, começa com '3f', vezes-que-o-valor-aparece=0
+  🛑 [H3] .env.prod: credencial em texto claro (chave: SECRET)
+RESULTADO: COMMIT RECUSADO
+[exit=1]
+$ cd /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f8-hooks/8e011512-3e64-4505-a0ff-235ac598d20c/scratchpad/aval2/s2-h3c || exit 99; echo '== json com aspas: valor hex que começa com dígito'; bash /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f8-hooks/8e011512-3e64-4505-a0ff-235ac598d20c/scratchpad/h3case.sh cfg.json '{"db_password": "%s"}\n' 9a a-f0-9
+== json com aspas: valor hex que começa com dígito
+valor: 24 chars, começa com '9a', vezes-que-o-valor-aparece=0
+  🛑 [H3] cfg.json: credencial em texto claro (chave: db_password)
+RESULTADO: COMMIT RECUSADO
+[exit=1]
+$ cd /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f8-hooks/8e011512-3e64-4505-a0ff-235ac598d20c/scratchpad/aval2/s2-h3c || exit 99; echo '== .env: começa com dígito e ponto (1.xxxx), um ponto só'; bash /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f8-hooks/8e011512-3e64-4505-a0ff-235ac598d20c/scratchpad/h3case.sh .env.prod 'SECRET=%s\n' 1. a-f0-9
+== .env: começa com dígito e ponto (1.xxxx), um ponto só
+valor: 24 chars, começa com '1.', vezes-que-o-valor-aparece=0
+  🛑 [H3] .env.prod: credencial em texto claro (chave: SECRET)
+RESULTADO: COMMIT RECUSADO
+[exit=1]
+$ cd /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f8-hooks/8e011512-3e64-4505-a0ff-235ac598d20c/scratchpad/aval2/s2-h3c || exit 99; echo '== .env: 2.0.<hex> parece versão: passa (regra de versão, por desenho)'; bash /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f8-hooks/8e011512-3e64-4505-a0ff-235ac598d20c/scratchpad/h3case.sh .env.prod 'SECRET=%s\n' 2.0. a-f0-9
+== .env: 2.0.<hex> parece versão: passa (regra de versão, por desenho)
+valor: 24 chars, começa com '2.', vezes-que-o-valor-aparece=0
+PASSOU-SEM-RECUSA (commit 0763a9b)
+[exit=0]

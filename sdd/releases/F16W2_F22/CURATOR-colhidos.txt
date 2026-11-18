@@ -1,0 +1,25 @@
+DELTA LM-006 ajudou+1 · conf=2026-11-15 · evidencia=DESIGN_F22_AVISO_VERSAO.md:363 · fp=ecff1ef371,342de8dfd9,ee5c9cc0ce
+DELTA LM-009 ajudou+1 · conf=2026-11-15 · evidencia=DESIGN_F22_AVISO_VERSAO.md:364 · fp=a39ca91a87,f6b5205020
+DELTA LM-010 ajudou+1 · conf=2026-11-15 · evidencia=DESIGN_F22_AVISO_VERSAO.md:365 · fp=7f882c4384,f42b8a2e4e
+DELTA LM-012 ajudou+1 · conf=2026-11-15 · evidencia=DESIGN_F22_AVISO_VERSAO.md:366 · fp=12089cc860,1247526e89,3b52e512bf
+DELTA LM-014 ajudou+1 · conf=2026-11-15 · evidencia=DESIGN_F22_AVISO_VERSAO.md:367 · fp=5f6ad11cf7,b07549caa5,1e13fe9467
+DELTA LM-016 ajudou+1 · conf=2026-11-15 · evidencia=DESIGN_F22_AVISO_VERSAO.md:368 · fp=78b1ea4e2f,9528cb3661,87577af064
+DELTA LM-017 ajudou+1 · conf=2026-11-15 · evidencia=DESIGN_F22_AVISO_VERSAO.md:369 · fp=788784557b,be5ad8382a,7802aab2f9
+DELTA LM-018 ajudou+1 · conf=2026-11-15 · evidencia=DESIGN_F22_AVISO_VERSAO.md:370 · fp=47756e34ce,7168e15200,386560ea61
+DELTA LM-025 ajudou+1 · conf=2026-11-15 · evidencia=DESIGN_F22_AVISO_VERSAO.md:372 · fp=235b4e4d01,ac70b48786
+DELTA LM-029 ajudou+1 · conf=2026-11-15 · evidencia=DESIGN_F22_AVISO_VERSAO.md:373 · fp=954a40c387,c0238dbb09,82fac43a7e
+DELTA LM-030 ajudou+1 · conf=2026-11-15 · evidencia=DESIGN_F22_AVISO_VERSAO.md:374 · fp=1ca440ce71,7819c8d907,387d97976d
+DELTA LM-031 ajudou+1 · conf=2026-11-15 · evidencia=DESIGN_F22_AVISO_VERSAO.md:375 · fp=de054077e9,5adb190ef0,e9bcf0776e
+DELTA LM-001 ajudou+1 · conf=2026-11-15 · evidencia=BUILD_REPORT_F16W2_WINDOWS.md:52 · fp=ba2f526d3f
+DELTA LM-002 ajudou+1 · conf=2026-11-15 · evidencia=BUILD_REPORT_F16W2_WINDOWS.md:53 · fp=8a7aa95167
+DELTA LM-003 ajudou+1 · conf=2026-11-15 · evidencia=BUILD_REPORT_F16W2_WINDOWS.md:54 · fp=34bb3ba9d3
+DELTA LM-005 ajudou+1 · conf=2026-11-15 · evidencia=BUILD_REPORT_F16W2_WINDOWS.md:55 · fp=d14c0f4a33
+DELTA LM-013 ajudou+1 · conf=2026-11-15 · evidencia=BUILD_REPORT_F16W2_WINDOWS.md:58 · fp=b5a89be48f
+DELTA LM-015 ajudou+1 · conf=2026-11-15 · evidencia=BUILD_REPORT_F16W2_WINDOWS.md:60 · fp=4caad884c4,f6edebb34c
+SUGESTAO mordeu? LM-014 — termo `Windows` em BUILD_REPORT_F16W2_WINDOWS.md:176 (achado sem LM explícito; confirmar a causa antes de virar delta) · fp=cf65a6db53,00acc8c36a
+SUGESTAO mordeu? LM-016 — termo `Windows` em BUILD_REPORT_F16W2_WINDOWS.md:176 (achado sem LM explícito; confirmar a causa antes de virar delta) · fp=3e0e0be5e6,77befbb3a7
+SUGESTAO mordeu? LM-030 — termo `Windows` em BUILD_REPORT_F16W2_WINDOWS.md:176 (achado sem LM explícito; confirmar a causa antes de virar delta) · fp=49ef388c7c,b95ee6af02
+CANDIDATO #1 → LM-032 · secao=Reviews / harness · sup=`calço` `PATH` `-X utf8` `vaza` `comando do aluno` · evidencia=sdd/features/DESIGN_F16W2_WINDOWS.md · fp=128e633eb5
+CANDIDATO #2 → LM-033 · secao=Reviews / harness · sup=`git grep` `color.ui` `--no-color` `config do usuário` `parse` · evidencia=sdd/reports/evidence/F16W2_WINDOWS/RAIO-hook-baseline-vermelho.log · fp=85747e8a82
+CANDIDATO #3 → LM-034 · secao=Reviews / harness · sup=`link simbólico` `PATH restrito` `DLL` `Windows` `dirname vazio` · evidencia=sdd/reports/evidence/F16W2_WINDOWS/DIAGNOSTICO.md · fp=8c57a36a3a
+CANDIDATO #4 → LM-035 · secao=Reviews / harness · sup=`grep` `\|` `macOS` `alternância` `BSD` · evidencia=sdd/reports/BUILD_REPORT_F22_AVISO_VERSAO.md (Issues Encountered, item 3) · fp=215c576d20

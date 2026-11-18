@@ -1,0 +1,6 @@
+$ git diff --stat v2.2.3 HEAD -- sdd/bin/ sdd/fixtures/ scripts/ .github/ && echo "(diff vazio: sdd/bin, fixtures, scripts e workflows iguais a v2.2.3)" && bash sdd/bin/playbook-lint.sh --self-test | tail -n 3
+(diff vazio: sdd/bin, fixtures, scripts e workflows iguais a v2.2.3)
+  ✅ --anti-collapse 2/5 = 40% ⇒ exit 1 → exit 1
+  ✅ --anti-collapse só CONTINUAÇÃO de LM-005 reescrita (1/5) ⇒ conta como alterado (20%) → exit 0
+🟢 self-test: todos os baselines vermelhos e verdes confirmados
+exit=0

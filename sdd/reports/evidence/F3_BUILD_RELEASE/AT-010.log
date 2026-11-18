@@ -1,0 +1,11 @@
+$ cd tests && SDD_TEST_BASH=/bin/bash /usr/bin/python3 -B -m unittest -v test_deploy_espera_testes.DeployEsperaTestes.test_workflow_real_que_publica_sem_teste_e_nao test_deploy_espera_testes.DeployEsperaTestes.test_lint_sozinho_nao_conta_como_teste test_deploy_espera_testes.DeployEsperaTestes.test_instalar_a_ferramenta_de_teste_nao_e_testar test_deploy_espera_testes.DeployEsperaTestes.test_alvo_de_make_que_comeca_com_test_nao_e_teste test_deploy_espera_testes.DeployEsperaTestes.test_acao_que_faz_push_de_imagem_publica
+test_workflow_real_que_publica_sem_teste_e_nao (test_deploy_espera_testes.DeployEsperaTestes) ... ok
+test_lint_sozinho_nao_conta_como_teste (test_deploy_espera_testes.DeployEsperaTestes) ... ok
+test_instalar_a_ferramenta_de_teste_nao_e_testar (test_deploy_espera_testes.DeployEsperaTestes) ... ok
+test_alvo_de_make_que_comeca_com_test_nao_e_teste (test_deploy_espera_testes.DeployEsperaTestes) ... ok
+test_acao_que_faz_push_de_imagem_publica (test_deploy_espera_testes.DeployEsperaTestes) ... ok
+
+----------------------------------------------------------------------
+Ran 5 tests in 0.396s
+
+OK

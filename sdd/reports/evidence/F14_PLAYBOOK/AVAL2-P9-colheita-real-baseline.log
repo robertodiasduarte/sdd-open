@@ -1,0 +1,76 @@
+$ /bin/bash /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.lyAZcjfTsM/scripts/sonda9.sh
+=== colheita real da própria F14 (staging e trace fora do projeto)
+staging: /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.lyAZcjfTsM/tmp/sdd-curadoria-d97842246539/F14_PLAYBOOK
+copiado: sdd/features/DESIGN_F14_PLAYBOOK.md
+copiado: sdd/reviews/AVALIACAO_F14_PLAYBOOK_20261105-ciclo1.md
+RESULTADO: STAGING PRONTO (112 arquivo(s))
+→ os originais não foram tocados; rode --colher "/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.lyAZcjfTsM/tmp/sdd-curadoria
+DELTA LM-001 ajudou+1 · conf=2026-11-05 · evidencia=DESIGN_F14_PLAYBOOK.md:510 · fp=312d848fbf
+DELTA LM-002 ajudou+1 · conf=2026-11-05 · evidencia=DESIGN_F14_PLAYBOOK.md:511 · fp=e5efe377bf
+DELTA LM-003 ajudou+1 · conf=2026-11-05 · evidencia=DESIGN_F14_PLAYBOOK.md:512 · fp=6a45837f24
+IGNORADO LM-999 (não existe como bullet ativo em sdd/playbook.md)
+IGNORADO LM-005 (não existe como bullet ativo em sdd/playbook.md)
+IGNORADO LM-016 (não existe como bullet ativo em sdd/playbook.md)
+IGNORADO LM-030 (não existe como bullet ativo em sdd/playbook.md)
+IGNORADO LM-020 (não existe como bullet ativo em sdd/playbook.md)
+resumo: deltas=3 (ajudou=3 mordeu=0) candidatos=0 rejeitados=0 promocoes=0 sugestoes=0
+RESULTADO: HÁ O QUE JULGAR
+→ despache o curador com esta colheita; nada foi aplicado.
+[colher exit=0]
+?? sdd/features/
+?? sdd/handoffs/
+?? sdd/reports/
+?? sdd/reviews/
+?? sdd/traces/
+[check-ignore no sdd-open exit=1]
+       0
+
+=== AT-032: variantes de mapa em fluxo
+[prompts: {}~] exit=0 · RESULTADO: LIMPO
+[prompts: {outra: 1}~] exit=0 · RESULTADO: LIMPO
+[prompts: { wrapper_pattern: "x" }~] exit=64 · 🛑 prompts.wrapper_pattern malformado em sdd/config.yaml: use uma linha só, com a aspa fechada e nada depois dela
+[prompts : {wrapper_pattern: "x"}~] exit=64 · 🛑 prompts.wrapper_pattern malformado em sdd/config.yaml: use uma linha só, com a aspa fechada e nada depois dela
+["prompts": {wrapper_pattern: "x"}~] exit=64 · 🛑 prompts.wrapper_pattern malformado em sdd/config.yaml: use uma linha só, com a aspa fechada e nada depois dela
+[prompts:~  wrapper_pattern: !!seq [a]~] exit=64 · 🛑 prompts.wrapper_pattern malformado em sdd/config.yaml: use uma linha só, com a aspa fechada e nada depois dela
+[prompts:~  wrapper_pattern: &a "x"~] exit=64 · 🛑 prompts.wrapper_pattern malformado em sdd/config.yaml: use uma linha só, com a aspa fechada e nada depois dela
+[prompts:~  wrapper_pattern: *a~] exit=64 · 🛑 prompts.wrapper_pattern começa com [, { ou * sem aspas: o YAML lê isso como lista, mapa ou referência, que esta varred
+
+=== AT-039: baseline independente na v2.5.0
+test_playbook_curator: rc=1 · FAILED (failures=123, errors=11)
+test_playbook_invariantes: rc=1 · FAILED (failures=47, errors=1)
+test_curadoria_bloco: rc=1 · FileNotFoundError: [Errno 2] No such file or directory: '/private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.lyAZcjfTsM/base/sdd/fixtures/playbook/curadoria/bloco-ok.txt'
+test_copiar_docs: rc=1 · FAILED (failures=27)
+test_f14_textos: rc=1 · FileNotFoundError: [Errno 2] No such file or directory: '/private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.lyAZcjfTsM/base/.agents/skills/sdd-playbook/references/curator.md'
+test_apoio_ambiente: rc=1 · FAILED (failures=2)
+
+=== AT-033
+1:# REVISAO FRONTEIRA: F14_PLAYBOOK
+34:### F1 — MEDIUM — `governanca-bloco.py` devolve ✅ e exit 0 com `FORA:` no `comparar.txt`, ou com ele vazio
+44:### F2 — MEDIUM — A restauração do item 5 apaga o DEFINE quando a cópia não é alcançada
+54:### F3 — MEDIUM — Estado do git fora do snapshot: índice, branch, flags do índice e `.git/` passam como "nada mudou"
+63:### F4 — LOW — Pasta sem permissão faz o `git status` avisar no stderr e sair 0: enumeração parcial vira verde
+69:### F5 — LOW — Repositório ou worktree aninhado que já existia entra como `AUSENTE`; escrita dentro é invisível
+74:### F6 — LOW — Mudança só de permissão em arquivo já sujo ou não rastreado não é vista
+79:### F7 — LOW — Falso vermelho: o permitido escrito de outro jeito no `--comparar` sai `FORA:` para o próprio relatório
+86:### F8 — LOW — Raiz do projeto com `&`, barra vertical ou contrabarra: a lista de arquivos do commit do agente sai errada
+93:### F9 — LOW — Retomada que refaz o item 2 lava a escrita do revisor
+
+=== AT-040: stdout/stderr por modo
+[preparar sem docs: stderr tem RESULTADO? 0]
+RESULTADO: FALHA
+→ isto não é "0 deltas": confira o caminho do playbook e rode de novo.
+RESULTADO: FALHA
+→ confira o caminho do delta e rode de novo; nada foi aplicado.
+RESULTADO: FALHA
+→ confira o caminho e rode de novo; nada foi conferido.
+RESULTADO: FALHA
+→ confira o caminho e rode de novo; nada foi cruzado.
+0
+
+=== item 15 antes do 17b: frente removida antes da curadoria
+251:15. Worktree/branch da feature: se a feature fechou, oferecer o comando de remoção (rodado
+263:17b. **Curadoria do playbook (incondicional; roda depois do push e nunca desfaz a publicação).** Um
+271:       formal, registre `Curadoria: 0 deltas (sem documentos)` e encerre o 17b; senão é falha (confira o
+283:       | `1` | nada, de nenhum tipo: registre `Curadoria: 0 deltas` na ficha, diga que esta feature não trouxe lição
+284:       | qualquer outro (`2`, `64`, `126`, `127`…) | **não é "0 deltas"**: pare o 17b, registre `Curadoria: FALHOU (
+[exit=0]

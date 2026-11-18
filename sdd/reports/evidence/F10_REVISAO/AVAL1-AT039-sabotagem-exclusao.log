@@ -1,0 +1,7 @@
+$ bash /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f10-revisao/bd420f6e-558d-4962-a0c9-40cdfc2cbd27/scratchpad/p/sab.sh exclusao
+sabotado sdd/bin/adversarial-review.sh: 'if auditores[0]["id"] == revisores[0]["id"] and not flags["--um-engine' -> 'if False:'
+FAIL: test_auditor_igual_ao_revisor_e_67_sem_chamar_nada (test_revisao.Exclusao)
+Ran 122 tests in 64.090s
+FAILED (failures=1)
+[unittest rc=1]
+[exit=0]

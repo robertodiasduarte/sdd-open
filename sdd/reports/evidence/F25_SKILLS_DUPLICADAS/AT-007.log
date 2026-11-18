@@ -1,0 +1,9 @@
+$ cd <git archive HEAD>/tests && /usr/bin/python3 -B -m unittest -v test_f25_skills_duplicadas.AT007Matriz
+test_matriz (test_f25_skills_duplicadas.AT007Matriz) ... ok
+test_matriz_com_atalhos (test_f25_skills_duplicadas.AT007Matriz) ... ok
+
+----------------------------------------------------------------------
+Ran 2 tests in 2.162s
+
+OK
+[exit=0]

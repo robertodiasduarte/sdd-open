@@ -1,0 +1,22 @@
+$ /usr/bin/python3 -B /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f10-revisao/bd420f6e-558d-4962-a0c9-40cdfc2cbd27/scratchpad/p/at034_037.py
+## AT-034 sdd/config.example.yaml review:
+  registry        valor=sdd/review/registry.tsv    ok=True · comentário acima: 2 linha(s)
+  revisor1        valor=""                         ok=True · comentário acima: 4 linha(s)
+  auditor         valor=""                         ok=True · comentário acima: 0 linha(s)
+  output_dir      valor=sdd/reports/reviews        ok=True · comentário acima: 2 linha(s)
+  context_max_kb  valor=180                        ok=True · comentário acima: 2 linha(s)
+  security_globs  valor=""                         ok=True · comentário acima: 4 linha(s)
+  'vendors' no bloco review: False
+  unidade do context_max_kb no comentário: True
+  comentário de security_globs cita o 2º revisor? False
+  docs/adversarial-review.md cita security_globs? True · liga a gatilho do 2º revisor? False
+  código: security_globs aciona o 2º revisor em adversarial-review.sh? True
+## AT-036 prompts
+  reviewer   vendor=nenhum · inline=True · sem ferramenta=True · contrato=True
+  auditor    vendor=nenhum · inline=True · sem ferramenta=True · contrato=True
+  desempate  vendor=nenhum · inline=True · sem ferramenta=True · contrato=True
+## AT-037 templates
+  sdd/templates/fragments/RESUMO_ETAPA.md        script=True · output_dir=True · /adversarial-review=False · EXTERNAL_REVIEW antigo=False
+  sdd/templates/fragments/ADVISOR_CONSULT.md     script=True · output_dir=False · /adversarial-review=False · EXTERNAL_REVIEW antigo=False
+  sdd/templates/BUILD_REPORT_TEMPLATE.md         script=True · output_dir=True · /adversarial-review=False · EXTERNAL_REVIEW antigo=False
+[exit=0]

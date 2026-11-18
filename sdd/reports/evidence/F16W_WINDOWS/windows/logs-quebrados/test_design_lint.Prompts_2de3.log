@@ -1,0 +1,488 @@
+test_fragmento_preenchido_passa (test_design_lint.Prompts.test_fragmento_preenchido_passa) ... FAIL
+
+test_json_preenchido_nao_e_chave_sem_preencher (test_design_lint.Prompts.test_json_preenchido_nao_e_chave_sem_preencher) ... FAIL
+
+test_numero_de_blocos_diferente_do_de_linhas (test_design_lint.Prompts.test_numero_de_blocos_diferente_do_de_linhas) ... FAIL
+
+test_o_que_esta_entre_chaves_nunca_passa (test_design_lint.Prompts.test_o_que_esta_entre_chaves_nunca_passa) ... FAIL
+
+test_outra_secao_que_so_comeca_igual_nao_e_a_de_prompts (test_design_lint.Prompts.test_outra_secao_que_so_comeca_igual_nao_e_a_de_prompts) ... 
+
+  test_outra_secao_que_so_comeca_igual_nao_e_a_de_prompts (test_design_lint.Prompts.test_outra_secao_que_so_comeca_igual_nao_e_a_de_prompts) (titulo='## LLM Prompt Injection') ... FAIL
+
+  test_outra_secao_que_so_comeca_igual_nao_e_a_de_prompts (test_design_lint.Prompts.test_outra_secao_que_so_comeca_igual_nao_e_a_de_prompts) (titulo='## LLM Prompt-Injection') ... FAIL
+
+  test_outra_secao_que_so_comeca_igual_nao_e_a_de_prompts (test_design_lint.Prompts.test_outra_secao_que_so_comeca_igual_nao_e_a_de_prompts) (titulo='## LLM Prompts-Review') ... FAIL
+
+  test_outra_secao_que_so_comeca_igual_nao_e_a_de_prompts (test_design_lint.Prompts.test_outra_secao_que_so_comeca_igual_nao_e_a_de_prompts) (titulo='## LLM Prompts Review') ... FAIL
+
+  test_outra_secao_que_so_comeca_igual_nao_e_a_de_prompts (test_design_lint.Prompts.test_outra_secao_que_so_comeca_igual_nao_e_a_de_prompts) (titulo='## LLM Promptness') ... FAIL
+
+  test_outra_secao_que_so_comeca_igual_nao_e_a_de_prompts (test_design_lint.Prompts.test_outra_secao_que_so_comeca_igual_nao_e_a_de_prompts) (titulo='### LLM Prompts') ... FAIL
+
+test_prefixo_numerado_de_varios_niveis_e_conferido (test_design_lint.Prompts.test_prefixo_numerado_de_varios_niveis_e_conferido) ... 
+
+  test_prefixo_numerado_de_varios_niveis_e_conferido (test_design_lint.Prompts.test_prefixo_numerado_de_varios_niveis_e_conferido) (titulo='## 5.5. LLM Prompts') ... FAIL
+
+  test_prefixo_numerado_de_varios_niveis_e_conferido (test_design_lint.Prompts.test_prefixo_numerado_de_varios_niveis_e_conferido) (titulo='## 5.5 LLM Prompts') ... FAIL
+
+  test_prefixo_numerado_de_varios_niveis_e_conferido (test_design_lint.Prompts.test_prefixo_numerado_de_varios_niveis_e_conferido) (titulo='## 5. LLM Prompts') ... FAIL
+
+test_secao_so_dentro_de_cerca_nao_conta (test_design_lint.Prompts.test_secao_so_dentro_de_cerca_nao_conta) ... FAIL
+
+test_sem_a_secao_nada_muda (test_design_lint.Prompts.test_sem_a_secao_nada_muda) ... FAIL
+
+
+
+======================================================================
+
+FAIL: test_fragmento_preenchido_passa (test_design_lint.Prompts.test_fragmento_preenchido_passa)
+
+----------------------------------------------------------------------
+
+Traceback (most recent call last):
+
+  File "D:\a\sdd-open\sdd-open\tests\test_design_lint.py", line 131, in test_fragmento_preenchido_passa
+
+    self.assertEqual(rc, 0, out)
+
+AssertionError: 1 != 0 : Traceback (most recent call last):
+
+  File "D:\a\sdd-open\sdd-open\sdd\bin\design-lint.py", line 283, in <module>
+
+    sys.exit(main(sys.argv))
+
+             ^^^^^^^^^^^^^^
+
+  File "D:\a\sdd-open\sdd-open\sdd\bin\design-lint.py", line 278, in main
+
+    print(f"\u2705 {argv[1]}: DESIGN v\ufffdlido")
+
+  File "C:\hostedtoolcache\windows\Python\3.12.10\x64\Lib\encodings\cp1252.py", line 19, in encode
+
+    return codecs.charmap_encode(input,self.errors,encoding_table)[0]
+
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+UnicodeEncodeError: 'charmap' codec can't encode character '\u2705' in position 0: character maps to <undefined>
+
+
+
+
+
+======================================================================
+
+FAIL: test_json_preenchido_nao_e_chave_sem_preencher (test_design_lint.Prompts.test_json_preenchido_nao_e_chave_sem_preencher)
+
+----------------------------------------------------------------------
+
+Traceback (most recent call last):
+
+  File "D:\a\sdd-open\sdd-open\tests\test_design_lint.py", line 251, in test_json_preenchido_nao_e_chave_sem_preencher
+
+    self.assertEqual(rc, 0, out)
+
+AssertionError: 1 != 0 : Traceback (most recent call last):
+
+  File "D:\a\sdd-open\sdd-open\sdd\bin\design-lint.py", line 283, in <module>
+
+    sys.exit(main(sys.argv))
+
+             ^^^^^^^^^^^^^^
+
+  File "D:\a\sdd-open\sdd-open\sdd\bin\design-lint.py", line 278, in main
+
+    print(f"\u2705 {argv[1]}: DESIGN v\ufffdlido")
+
+  File "C:\hostedtoolcache\windows\Python\3.12.10\x64\Lib\encodings\cp1252.py", line 19, in encode
+
+    return codecs.charmap_encode(input,self.errors,encoding_table)[0]
+
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+UnicodeEncodeError: 'charmap' codec can't encode character '\u2705' in position 0: character maps to <undefined>
+
+
+
+
+
+======================================================================
+
+FAIL: test_numero_de_blocos_diferente_do_de_linhas (test_design_lint.Prompts.test_numero_de_blocos_diferente_do_de_linhas)
+
+----------------------------------------------------------------------
+
+Traceback (most recent call last):
+
+  File "D:\a\sdd-open\sdd-open\tests\test_design_lint.py", line 177, in test_numero_de_blocos_diferente_do_de_linhas
+
+    self.reprova(duas, "2 linha(s) no invent�rio e 1 bloco(s)")
+
+  File "D:\a\sdd-open\sdd-open\tests\test_design_lint.py", line 122, in reprova
+
+    self.assertIn(trecho, out)
+
+AssertionError: '2 linha(s) no invent�rio e 1 bloco(s)' not found in '\\U0001f6d1 C:\\Users\\runneradmin\\AppData\\Local\\Temp\\sdd-open-g96fr668\\DESIGN_X.md: a se\ufffd\ufffdo de prompts est\ufffd fora do formato, que mudou na v2.5.0; nada no c\ufffddigo precisa mudar; faltam:\n\\U0001f6d1 C:\\Users\\runneradmin\\AppData\\Local\\Temp\\sdd-open-g96fr668\\DESIGN_X.md:   s\ufffdo 2 linha(s) no invent\ufffdrio e 1 bloco(s) de contrato\nRESULTADO: VERMELHO\n\\u2192 copie as colunas e os campos de sdd/templates/fragments/LLM_PROMPTS_DESIGN.md\n'
+
+
+
+======================================================================
+
+FAIL: test_o_que_esta_entre_chaves_nunca_passa (test_design_lint.Prompts.test_o_que_esta_entre_chaves_nunca_passa)
+
+----------------------------------------------------------------------
+
+Traceback (most recent call last):
+
+  File "D:\a\sdd-open\sdd-open\tests\test_design_lint.py", line 270, in test_o_que_esta_entre_chaves_nunca_passa
+
+    self.assertIn("linha 1 do invent�rio com o que est� entre chaves", out)
+
+AssertionError: 'linha 1 do invent�rio com o que est� entre chaves' not found in '\\U0001f6d1 C:\\Users\\runneradmin\\AppData\\Local\\Temp\\sdd-open-8201_we3\\DESIGN_X.md: a se\ufffd\ufffdo de prompts est\ufffd fora do formato, que mudou na v2.5.0; nada no c\ufffddigo precisa mudar; faltam:\n\\U0001f6d1 C:\\Users\\runneradmin\\AppData\\Local\\Temp\\sdd-open-8201_we3\\DESIGN_X.md:   linha 1 do invent\ufffdrio com o que est\ufffd entre chaves sem preencher\n\\U0001f6d1 C:\\Users\\runneradmin\\AppData\\Local\\Temp\\sdd-open-8201_we3\\DESIGN_X.md:   Prompt 1 com Aut\ufffdnomo? sem preencher\n\\U0001f6d1 C:\\Users\\runneradmin\\AppData\\Local\\Temp\\sdd-open-8201_we3\\DESIGN_X.md:   Prompt 1 com Verification interna sem preencher\n\\U0001f6d1 C:\\Users\\runneradmin\\AppData\\Local\\Temp\\sdd-open-8201_we3\\DESIGN_X.md:   Prompt 1 com Eval m\ufffdnimo pr\ufffd-ship sem preencher\n\\U0001f6d1 C:\\Users\\runneradmin\\AppData\\Local\\Temp\\sdd-open-8201_we3\\DESIGN_X.md:   Prompt 1 com Tom/audi\ufffdncia sem preencher\n\\U0001f6d1 C:\\Users\\runneradmin\\AppData\\Local\\Temp\\sdd-open-8201_we3\\DESIGN_X.md:   Prompt 1 com Tipo de sa\ufffdda sem preencher\n\\U0001f6d1 C:\\Users\\runneradmin\\AppData\\Local\\Temp\\sdd-open-8201_we3\\DESIGN_X.md:   Prompt 1 com Fallback aprovado sem preencher\n\\U0001f6d1 C:\\Users\\runneradmin\\AppData\\Local\\Temp\\sdd-open-8201_we3\\DESIGN_X.md:   Prompt 1 com Perfil de risco dos efeitos sem preencher\n\\U0001f6d1 C:\\Users\\runneradmin\\AppData\\Local\\Temp\\sdd-open-8201_we3\\DESIGN_X.md:   Prompt 1 com Ground truth dispon\ufffdvel sem preencher\n\\U0001f6d1 C:\\Users\\runneradmin\\AppData\\Local\\Temp\\sdd-open-8201_we3\\DESIGN_X.md: linha 134: placeholder do template sem preencher: {provedor e modelo}\n\\U0001f6d1 C:\\Users\\runneradmin\\AppData\\Local\\Temp\\sdd-open-8201_we3\\DESIGN_X.md: linha 149: placeholder do template sem preencher: {do DEFINE ou do UX_REVIEW; n\ufffdo invente}\n\\U0001f6d1 C:\\Users\\runneradmin\\AppData\\Local\\Temp\\sdd-open-8201_we3\\DESIGN_X.md: linha 150: placeholder do template sem preencher: {JSON, Markdown, texto; derivado do consumidor}\n\\U0001f6d1 C:\\Users\\runneradmin\\AppData\\Local\\Temp\\sdd-open-8201_we3\\DESIGN_X.md: linha 151: placeholder do template sem preencher: {o que devolver sem dado suficiente}\n\\U0001f6d1 C:\\Users\\runneradmin\\AppData\\Local\\Temp\\sdd-open-8201_we3\\DESIGN_X.md: linha 152: placeholder do template sem preencher: {sim, n\ufffdo pode pedir nada de volta; ou n\ufffdo, pode pedir}\n\\U0001f6d1 C:\\Users\\runneradmin\\AppData\\Local\\Temp\\sdd-open-8201_we3\\DESIGN_X.md: linha 153: placeholder do template sem preencher: {sim, com os pontos; ou n\ufffdo}\n\\U0001f6d1 C:\\Users\\runneradmin\\AppData\\Local\\Temp\\sdd-open-8201_we3\\DESIGN_X.md: linha 154: placeholder do template sem preencher: {comando e amostras; por exemplo, 5 de 5 no contrato}\n\\U0001f6d1 C:\\Users\\runneradmin\\AppData\\Local\\Temp\\sdd-open-8201_we3\\DESIGN_X.md: linha 160: placeholder do template sem preencher: {o que o processo produz, para quem, e o que "pronto" significa de forma verific\ufffdvel}\n\\U0001f6d1 C:\\Users\\runneradmin\\AppData\\Local\\Temp\\sdd-open-8201_we3\\DESIGN_X.md: linha 161: placeholder do template sem preencher: {locais e revers\ufffdveis, locais e irrevers\ufffdveis, ou externos}\n\\U0001f6d1 C:\\Users\\runneradmin\\AppData\\Local\\Temp\\sdd-open-8201_we3\\DESIGN_X.md: linha 162: placeholder do template sem preencher: {onde est\ufffdo os dados, ou nenhum}\n\\U0001f6d1 C:\\Users\\runneradmin\\AppData\\Local\\Temp\\sdd-open-8201_we3\\DESIGN_X.md: linha 165: placeholder do template sem preencher: {schema da sa\ufffdda}\n\\U0001f6d1 C:\\Users\\runneradmin\\AppData\\Local\\Temp\\sdd-open-8201_we3\\DESIGN_X.md: linha 166: placeholder do template sem preencher: {regra do dom\ufffdnio}\n\\U0001f6d1 C:\\Users\\runneradmin\\AppData\\Local\\Temp\\sdd-open-8201_we3\\DESIGN_X.md: linha 169: placeholder do template sem preencher: {provedor e modelo}\n\\U0001f6d1 C:\\Users\\runneradmin\\AppData\\Local\\Temp\\sdd-open-8201_we3\\DESIGN_X.md: linha 170: placeholder do template sem preencher: {formato de sa\ufffdda}\nRESULTADO: VERMELHO\n\\u2192 copie as colunas e os campos de sdd/templates/fragments/LLM_PROMPTS_DESIGN.md; corrija tamb\ufffdm os outros pontos acima\n'
+
+
+
+======================================================================
+
+FAIL: test_outra_secao_que_so_comeca_igual_nao_e_a_de_prompts (test_design_lint.Prompts.test_outra_secao_que_so_comeca_igual_nao_e_a_de_prompts) (titulo='## LLM Prompt Injection')
+
+----------------------------------------------------------------------
+
+Traceback (most recent call last):
+
+  File "D:\a\sdd-open\sdd-open\tests\test_design_lint.py", line 208, in test_outra_secao_que_so_comeca_igual_nao_e_a_de_prompts
+
+    self.assertEqual(rc, 0, out)
+
+AssertionError: 1 != 0 : Traceback (most recent call last):
+
+  File "D:\a\sdd-open\sdd-open\sdd\bin\design-lint.py", line 283, in <module>
+
+    sys.exit(main(sys.argv))
+
+             ^^^^^^^^^^^^^^
+
+  File "D:\a\sdd-open\sdd-open\sdd\bin\design-lint.py", line 278, in main
+
+    print(f"\u2705 {argv[1]}: DESIGN v\ufffdlido")
+
+  File "C:\hostedtoolcache\windows\Python\3.12.10\x64\Lib\encodings\cp1252.py", line 19, in encode
+
+    return codecs.charmap_encode(input,self.errors,encoding_table)[0]
+
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+UnicodeEncodeError: 'charmap' codec can't encode character '\u2705' in position 0: character maps to <undefined>
+
+
+
+
+
+======================================================================
+
+FAIL: test_outra_secao_que_so_comeca_igual_nao_e_a_de_prompts (test_design_lint.Prompts.test_outra_secao_que_so_comeca_igual_nao_e_a_de_prompts) (titulo='## LLM Prompt-Injection')
+
+----------------------------------------------------------------------
+
+Traceback (most recent call last):
+
+  File "D:\a\sdd-open\sdd-open\tests\test_design_lint.py", line 208, in test_outra_secao_que_so_comeca_igual_nao_e_a_de_prompts
+
+    self.assertEqual(rc, 0, out)
+
+AssertionError: 1 != 0 : Traceback (most recent call last):
+
+  File "D:\a\sdd-open\sdd-open\sdd\bin\design-lint.py", line 283, in <module>
+
+    sys.exit(main(sys.argv))
+
+             ^^^^^^^^^^^^^^
+
+  File "D:\a\sdd-open\sdd-open\sdd\bin\design-lint.py", line 278, in main
+
+    print(f"\u2705 {argv[1]}: DESIGN v\ufffdlido")
+
+  File "C:\hostedtoolcache\windows\Python\3.12.10\x64\Lib\encodings\cp1252.py", line 19, in encode
+
+    return codecs.charmap_encode(input,self.errors,encoding_table)[0]
+
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+UnicodeEncodeError: 'charmap' codec can't encode character '\u2705' in position 0: character maps to <undefined>
+
+
+
+
+
+======================================================================
+
+FAIL: test_outra_secao_que_so_comeca_igual_nao_e_a_de_prompts (test_design_lint.Prompts.test_outra_secao_que_so_comeca_igual_nao_e_a_de_prompts) (titulo='## LLM Prompts-Review')
+
+----------------------------------------------------------------------
+
+Traceback (most recent call last):
+
+  File "D:\a\sdd-open\sdd-open\tests\test_design_lint.py", line 208, in test_outra_secao_que_so_comeca_igual_nao_e_a_de_prompts
+
+    self.assertEqual(rc, 0, out)
+
+AssertionError: 1 != 0 : Traceback (most recent call last):
+
+  File "D:\a\sdd-open\sdd-open\sdd\bin\design-lint.py", line 283, in <module>
+
+    sys.exit(main(sys.argv))
+
+             ^^^^^^^^^^^^^^
+
+  File "D:\a\sdd-open\sdd-open\sdd\bin\design-lint.py", line 278, in main
+
+    print(f"\u2705 {argv[1]}: DESIGN v\ufffdlido")
+
+  File "C:\hostedtoolcache\windows\Python\3.12.10\x64\Lib\encodings\cp1252.py", line 19, in encode
+
+    return codecs.charmap_encode(input,self.errors,encoding_table)[0]
+
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+UnicodeEncodeError: 'charmap' codec can't encode character '\u2705' in position 0: character maps to <undefined>
+
+
+
+
+
+======================================================================
+
+FAIL: test_outra_secao_que_so_comeca_igual_nao_e_a_de_prompts (test_design_lint.Prompts.test_outra_secao_que_so_comeca_igual_nao_e_a_de_prompts) (titulo='## LLM Prompts Review')
+
+----------------------------------------------------------------------
+
+Traceback (most recent call last):
+
+  File "D:\a\sdd-open\sdd-open\tests\test_design_lint.py", line 208, in test_outra_secao_que_so_comeca_igual_nao_e_a_de_prompts
+
+    self.assertEqual(rc, 0, out)
+
+AssertionError: 1 != 0 : Traceback (most recent call last):
+
+  File "D:\a\sdd-open\sdd-open\sdd\bin\design-lint.py", line 283, in <module>
+
+    sys.exit(main(sys.argv))
+
+             ^^^^^^^^^^^^^^
+
+  File "D:\a\sdd-open\sdd-open\sdd\bin\design-lint.py", line 278, in main
+
+    print(f"\u2705 {argv[1]}: DESIGN v\ufffdlido")
+
+  File "C:\hostedtoolcache\windows\Python\3.12.10\x64\Lib\encodings\cp1252.py", line 19, in encode
+
+    return codecs.charmap_encode(input,self.errors,encoding_table)[0]
+
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+UnicodeEncodeError: 'charmap' codec can't encode character '\u2705' in position 0: character maps to <undefined>
+
+
+
+
+
+======================================================================
+
+FAIL: test_outra_secao_que_so_comeca_igual_nao_e_a_de_prompts (test_design_lint.Prompts.test_outra_secao_que_so_comeca_igual_nao_e_a_de_prompts) (titulo='## LLM Promptness')
+
+----------------------------------------------------------------------
+
+Traceback (most recent call last):
+
+  File "D:\a\sdd-open\sdd-open\tests\test_design_lint.py", line 208, in test_outra_secao_que_so_comeca_igual_nao_e_a_de_prompts
+
+    self.assertEqual(rc, 0, out)
+
+AssertionError: 1 != 0 : Traceback (most recent call last):
+
+  File "D:\a\sdd-open\sdd-open\sdd\bin\design-lint.py", line 283, in <module>
+
+    sys.exit(main(sys.argv))
+
+             ^^^^^^^^^^^^^^
+
+  File "D:\a\sdd-open\sdd-open\sdd\bin\design-lint.py", line 278, in main
+
+    print(f"\u2705 {argv[1]}: DESIGN v\ufffdlido")
+
+  File "C:\hostedtoolcache\windows\Python\3.12.10\x64\Lib\encodings\cp1252.py", line 19, in encode
+
+    return codecs.charmap_encode(input,self.errors,encoding_table)[0]
+
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+UnicodeEncodeError: 'charmap' codec can't encode character '\u2705' in position 0: character maps to <undefined>
+
+
+
+
+
+======================================================================
+
+FAIL: test_outra_secao_que_so_comeca_igual_nao_e_a_de_prompts (test_design_lint.Prompts.test_outra_secao_que_so_comeca_igual_nao_e_a_de_prompts) (titulo='### LLM Prompts')
+
+----------------------------------------------------------------------
+
+Traceback (most recent call last):
+
+  File "D:\a\sdd-open\sdd-open\tests\test_design_lint.py", line 208, in test_outra_secao_que_so_comeca_igual_nao_e_a_de_prompts
+
+    self.assertEqual(rc, 0, out)
+
+AssertionError: 1 != 0 : Traceback (most recent call last):
+
+  File "D:\a\sdd-open\sdd-open\sdd\bin\design-lint.py", line 283, in <module>
+
+    sys.exit(main(sys.argv))
+
+             ^^^^^^^^^^^^^^
+
+  File "D:\a\sdd-open\sdd-open\sdd\bin\design-lint.py", line 278, in main
+
+    print(f"\u2705 {argv[1]}: DESIGN v\ufffdlido")
+
+  File "C:\hostedtoolcache\windows\Python\3.12.10\x64\Lib\encodings\cp1252.py", line 19, in encode
+
+    return codecs.charmap_encode(input,self.errors,encoding_table)[0]
+
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+UnicodeEncodeError: 'charmap' codec can't encode character '\u2705' in position 0: character maps to <undefined>
+
+
+
+
+
+======================================================================
+
+FAIL: test_prefixo_numerado_de_varios_niveis_e_conferido (test_design_lint.Prompts.test_prefixo_numerado_de_varios_niveis_e_conferido) (titulo='## 5.5. LLM Prompts')
+
+----------------------------------------------------------------------
+
+Traceback (most recent call last):
+
+  File "D:\a\sdd-open\sdd-open\tests\test_design_lint.py", line 231, in test_prefixo_numerado_de_varios_niveis_e_conferido
+
+    self.assertIn("falta o subt�tulo ### Invent�rio", out)
+
+AssertionError: 'falta o subt�tulo ### Invent�rio' not found in '\\U0001f6d1 C:\\Users\\runneradmin\\AppData\\Local\\Temp\\sdd-open-a_nzrf8p\\DESIGN_X.md: a se\ufffd\ufffdo de prompts est\ufffd fora do formato, que mudou na v2.5.0; nada no c\ufffddigo precisa mudar; faltam:\n\\U0001f6d1 C:\\Users\\runneradmin\\AppData\\Local\\Temp\\sdd-open-a_nzrf8p\\DESIGN_X.md:   falta o subt\ufffdtulo ### Invent\ufffdrio\nRESULTADO: VERMELHO\n\\u2192 copie as colunas e os campos de sdd/templates/fragments/LLM_PROMPTS_DESIGN.md\n'
+
+
+
+======================================================================
+
+FAIL: test_prefixo_numerado_de_varios_niveis_e_conferido (test_design_lint.Prompts.test_prefixo_numerado_de_varios_niveis_e_conferido) (titulo='## 5.5 LLM Prompts')
+
+----------------------------------------------------------------------
+
+Traceback (most recent call last):
+
+  File "D:\a\sdd-open\sdd-open\tests\test_design_lint.py", line 231, in test_prefixo_numerado_de_varios_niveis_e_conferido
+
+    self.assertIn("falta o subt�tulo ### Invent�rio", out)
+
+AssertionError: 'falta o subt�tulo ### Invent�rio' not found in '\\U0001f6d1 C:\\Users\\runneradmin\\AppData\\Local\\Temp\\sdd-open-a_nzrf8p\\DESIGN_X.md: a se\ufffd\ufffdo de prompts est\ufffd fora do formato, que mudou na v2.5.0; nada no c\ufffddigo precisa mudar; faltam:\n\\U0001f6d1 C:\\Users\\runneradmin\\AppData\\Local\\Temp\\sdd-open-a_nzrf8p\\DESIGN_X.md:   falta o subt\ufffdtulo ### Invent\ufffdrio\nRESULTADO: VERMELHO\n\\u2192 copie as colunas e os campos de sdd/templates/fragments/LLM_PROMPTS_DESIGN.md\n'
+
+
+
+======================================================================
+
+FAIL: test_prefixo_numerado_de_varios_niveis_e_conferido (test_design_lint.Prompts.test_prefixo_numerado_de_varios_niveis_e_conferido) (titulo='## 5. LLM Prompts')
+
+----------------------------------------------------------------------
+
+Traceback (most recent call last):
+
+  File "D:\a\sdd-open\sdd-open\tests\test_design_lint.py", line 231, in test_prefixo_numerado_de_varios_niveis_e_conferido
+
+    self.assertIn("falta o subt�tulo ### Invent�rio", out)
+
+AssertionError: 'falta o subt�tulo ### Invent�rio' not found in '\\U0001f6d1 C:\\Users\\runneradmin\\AppData\\Local\\Temp\\sdd-open-a_nzrf8p\\DESIGN_X.md: a se\ufffd\ufffdo de prompts est\ufffd fora do formato, que mudou na v2.5.0; nada no c\ufffddigo precisa mudar; faltam:\n\\U0001f6d1 C:\\Users\\runneradmin\\AppData\\Local\\Temp\\sdd-open-a_nzrf8p\\DESIGN_X.md:   falta o subt\ufffdtulo ### Invent\ufffdrio\nRESULTADO: VERMELHO\n\\u2192 copie as colunas e os campos de sdd/templates/fragments/LLM_PROMPTS_DESIGN.md\n'
+
+
+
+======================================================================
+
+FAIL: test_secao_so_dentro_de_cerca_nao_conta (test_design_lint.Prompts.test_secao_so_dentro_de_cerca_nao_conta)
+
+----------------------------------------------------------------------
+
+Traceback (most recent call last):
+
+  File "D:\a\sdd-open\sdd-open\tests\test_design_lint.py", line 140, in test_secao_so_dentro_de_cerca_nao_conta
+
+    self.assertEqual(rc, 0, out)
+
+AssertionError: 1 != 0 : Traceback (most recent call last):
+
+  File "D:\a\sdd-open\sdd-open\sdd\bin\design-lint.py", line 283, in <module>
+
+    sys.exit(main(sys.argv))
+
+             ^^^^^^^^^^^^^^
+
+  File "D:\a\sdd-open\sdd-open\sdd\bin\design-lint.py", line 278, in main
+
+    print(f"\u2705 {argv[1]}: DESIGN v\ufffdlido")
+
+  File "C:\hostedtoolcache\windows\Python\3.12.10\x64\Lib\encodings\cp1252.py", line 19, in encode
+
+    return codecs.charmap_encode(input,self.errors,encoding_table)[0]
+
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+UnicodeEncodeError: 'charmap' codec can't encode character '\u2705' in position 0: character maps to <undefined>
+
+
+
+
+
+======================================================================
+
+FAIL: test_sem_a_secao_nada_muda (test_design_lint.Prompts.test_sem_a_secao_nada_muda)
+
+----------------------------------------------------------------------
+
+Traceback (most recent call last):
+
+  File "D:\a\sdd-open\sdd-open\tests\test_design_lint.py", line 135, in test_sem_a_secao_nada_muda
+
+    self.assertEqual(rc, 0, out + err)
+
+AssertionError: 1 != 0 : Traceback (most recent call last):
+
+  File "D:\a\sdd-open\sdd-open\sdd\bin\design-lint.py", line 283, in <module>
+
+    sys.exit(main(sys.argv))
+
+             ^^^^^^^^^^^^^^
+
+  File "D:\a\sdd-open\sdd-open\sdd\bin\design-lint.py", line 278, in main
+
+    print(f"\u2705 {argv[1]}: DESIGN v\ufffdlido")
+
+  File "C:\hostedtoolcache\windows\Python\3.12.10\x64\Lib\encodings\cp1252.py", line 19, in encode
+
+    return codecs.charmap_encode(input,self.errors,encoding_table)[0]
+
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+UnicodeEncodeError: 'charmap' codec can't encode character '\u2705' in position 0: character maps to <undefined>
+
+
+
+
+
+----------------------------------------------------------------------
+
+Ran 8 tests in 1.131s
+
+
+
+FAILED (failures=15)
+

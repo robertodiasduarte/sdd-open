@@ -1,0 +1,68 @@
+$ bash /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f10-revisao/bd420f6e-558d-4962-a0c9-40cdfc2cbd27/scratchpad/p/at012.sh
+=== revisor: revisor-sem-bloco
+RESULTADO: REVIEW INVÁLIDA
+revisor (stub-a:revisor-sem-bloco): a engine respondeu fora do formato; isto não é zero achados
+[rc=68]
+reviewer_motivo         : stub-a:revisor-sem-bloco: bloco <<<VERDICTS ausente ou malformado
+reviewer_exit           : 68
+auditor_exit            : -
+jsonl do revisor existe? nao · achados em palavras? 0
+=== revisor: r-falta-chave
+RESULTADO: REVIEW INVÁLIDA
+revisor (stub-a:r-falta-chave): a engine respondeu fora do formato; isto não é zero achados
+[rc=68]
+reviewer_motivo         : stub-a:r-falta-chave: linha do bloco sem as chaves obrigatórias: {"achado":"R1","arquivo":"a","linha":1,"severidade":"HIGH","confianca":"C"}
+reviewer_exit           : 68
+auditor_exit            : -
+jsonl do revisor existe? nao · achados em palavras? 0
+=== revisor: r-lista
+RESULTADO: REVIEW INVÁLIDA
+revisor (stub-a:r-lista): a engine respondeu fora do formato; isto não é zero achados
+[rc=68]
+reviewer_motivo         : stub-a:r-lista: linha do bloco sem as chaves obrigatórias: [{"achado":"R1"}]
+reviewer_exit           : 68
+auditor_exit            : -
+jsonl do revisor existe? nao · achados em palavras? 0
+=== revisor: r-prosa
+RESULTADO: REVIEW INVÁLIDA
+revisor (stub-a:r-prosa): a engine respondeu fora do formato; isto não é zero achados
+[rc=68]
+reviewer_motivo         : stub-a:r-prosa: linha do bloco não é JSON: não há achados
+reviewer_exit           : 68
+auditor_exit            : -
+jsonl do revisor existe? nao · achados em palavras? 0
+=== revisor: r-sev
+RESULTADO: REVIEW INVÁLIDA
+revisor (stub-a:r-sev): a engine respondeu fora do formato; isto não é zero achados
+[rc=68]
+reviewer_motivo         : stub-a:r-sev: severidade inválida: {"achado":"R1","arquivo":"a","linha":1,"severidade":"CRITICAL","confianca":"C","
+reviewer_exit           : 68
+auditor_exit            : -
+jsonl do revisor existe? nao · achados em palavras? 0
+=== revisor: r-sem-fim
+RESULTADO: REVIEW INVÁLIDA
+revisor (stub-a:r-sem-fim): a engine respondeu fora do formato; isto não é zero achados
+[rc=68]
+reviewer_motivo         : stub-a:r-sem-fim: bloco <<<VERDICTS ausente ou malformado
+reviewer_exit           : 68
+auditor_exit            : -
+jsonl do revisor existe? nao · achados em palavras? 0
+=== auditor: auditor-sem-bloco
+RESULTADO: REVIEW INVÁLIDA
+auditor (stub-b:auditor-sem-bloco): a engine respondeu fora do formato; isto não é zero achados
+[rc=68]
+auditor_motivo          : stub-b:auditor-sem-bloco: bloco <<<VERDICTS ausente ou malformado
+auditor_exit            : 68
+=== auditor: a-veredito
+RESULTADO: REVIEW INVÁLIDA
+auditor (stub-b:a-veredito): a engine respondeu fora do formato; isto não é zero achados
+[rc=68]
+auditor_motivo          : stub-b:a-veredito: linha do bloco inválida para o auditor: {"achado":"R1","veredito":"TALVEZ"}
+auditor_exit            : 68
+=== auditor: a-novo-sem-sev
+RESULTADO: REVIEW INVÁLIDA
+auditor (stub-b:a-novo-sem-sev): a engine respondeu fora do formato; isto não é zero achados
+[rc=68]
+auditor_motivo          : stub-b:a-novo-sem-sev: linha do bloco inválida para o auditor: {"achado":"N1","veredito":"NOVO"}
+auditor_exit            : 68
+[exit=0]

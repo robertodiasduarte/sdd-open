@@ -1,0 +1,24 @@
+$ /usr/bin/python3 -B /tmp/aval-f18.SxgC/probes/at008.py; SDD_TEST_BASH=/bin/bash /usr/bin/python3 -B -m unittest discover -s tests -p 'test_seguranca_catalogo.py' -v
+itens: 22 ids S01..S22 em ordem: True
+fichas com campos fora da ordem/quantidade: nenhuma
+bloqueia=sim: ['S01', 'S11']
+agents=sim: [('S01', 'supabase'), ('S07', 'web'), ('S08', 'web'), ('S11', 'todas'), ('S13', 'web')]
+com padrão (re:/regra:): ['S01', 'S02', 'S03', 'S04', 'S11', 'S12', 'S14', 'S15', 'S16']
+ref sem OWASP/CWE: nenhum
+confira vazio: nenhum
+test_22_itens_em_sequencia_com_os_13_campos (test_seguranca_catalogo.Catalogo) ... ok
+test_at_em_ears_com_palavra_chave (test_seguranca_catalogo.Catalogo) ... ok
+test_bancada_fora_do_app (test_seguranca_catalogo.Catalogo) ... ok
+test_o_leitor_aceita_o_catalogo_do_pacote (test_seguranca_catalogo.Catalogo) ... ok
+test_os_5_de_maior_risco_vao_para_o_agents (test_seguranca_catalogo.Catalogo) ... ok
+test_so_s01_e_s11_bloqueiam (test_seguranca_catalogo.Catalogo) ... ok
+test_toda_referencia_e_publica (test_seguranca_catalogo.Catalogo) ... ok
+test_todo_padrao_tem_caso_que_acusa_e_caso_que_nao_acusa (test_seguranca_catalogo.Catalogo) ... ok
+test_nenhum_arquivo_cita_o_material_de_origem (test_seguranca_catalogo.SemMaterialDeOrigem) ... ok
+test_os_arquivos_da_frente_nao_citam_a_rdd_alem_da_assinatura (test_seguranca_catalogo.SemMaterialDeOrigem) ... ok
+
+----------------------------------------------------------------------
+Ran 10 tests in 0.484s
+
+OK
+exit=0

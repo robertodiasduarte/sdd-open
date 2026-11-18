@@ -1,0 +1,168 @@
+test_fixture_completa_com_as_6_secoes_passa (test_handoff_lint.HandoffLint.test_fixture_completa_com_as_6_secoes_passa) ... FAIL
+
+test_fixture_nao_tem_eventos_e_tem_comando_com_chaves_no_prompt (test_handoff_lint.HandoffLint.test_fixture_nao_tem_eventos_e_tem_comando_com_chaves_no_prompt) ... ok
+
+test_fixture_valida_passa (test_handoff_lint.HandoffLint.test_fixture_valida_passa) ... FAIL
+
+test_secao_extra_passa (test_handoff_lint.HandoffLint.test_secao_extra_passa) ... FAIL
+
+test_secao_nova_com_o_texto_do_molde_reprova (test_handoff_lint.HandoffLint.test_secao_nova_com_o_texto_do_molde_reprova) ... ok
+
+test_sem_argumento_e_64 (test_handoff_lint.HandoffLint.test_sem_argumento_e_64) ... ok
+
+test_titulo_dentro_do_prompt_nao_encerra_a_secao (test_handoff_lint.HandoffLint.test_titulo_dentro_do_prompt_nao_encerra_a_secao) ... FAIL
+
+
+
+======================================================================
+
+FAIL: test_fixture_completa_com_as_6_secoes_passa (test_handoff_lint.HandoffLint.test_fixture_completa_com_as_6_secoes_passa)
+
+----------------------------------------------------------------------
+
+Traceback (most recent call last):
+
+  File "D:\a\sdd-open\sdd-open\tests\test_handoff_lint.py", line 46, in test_fixture_completa_com_as_6_secoes_passa
+
+    self.assertEqual(rc, 0, out)
+
+AssertionError: 1 != 0 : Traceback (most recent call last):
+
+  File "D:\a\sdd-open\sdd-open\sdd\bin\handoff-lint.py", line 129, in <module>
+
+    sys.exit(main(sys.argv))
+
+             ^^^^^^^^^^^^^^
+
+  File "D:\a\sdd-open\sdd-open\sdd\bin\handoff-lint.py", line 124, in main
+
+    print(f"\u2705 {argv[1]}: HANDOFF v\ufffdlido")
+
+  File "C:\hostedtoolcache\windows\Python\3.12.10\x64\Lib\encodings\cp1252.py", line 19, in encode
+
+    return codecs.charmap_encode(input,self.errors,encoding_table)[0]
+
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+UnicodeEncodeError: 'charmap' codec can't encode character '\u2705' in position 0: character maps to <undefined>
+
+
+
+
+
+======================================================================
+
+FAIL: test_fixture_valida_passa (test_handoff_lint.HandoffLint.test_fixture_valida_passa)
+
+----------------------------------------------------------------------
+
+Traceback (most recent call last):
+
+  File "D:\a\sdd-open\sdd-open\tests\test_handoff_lint.py", line 55, in test_fixture_valida_passa
+
+    self.assertEqual(rc, 0, out + err)
+
+AssertionError: 1 != 0 : Traceback (most recent call last):
+
+  File "D:\a\sdd-open\sdd-open\sdd\bin\handoff-lint.py", line 129, in <module>
+
+    sys.exit(main(sys.argv))
+
+             ^^^^^^^^^^^^^^
+
+  File "D:\a\sdd-open\sdd-open\sdd\bin\handoff-lint.py", line 124, in main
+
+    print(f"\u2705 {argv[1]}: HANDOFF v\ufffdlido")
+
+  File "C:\hostedtoolcache\windows\Python\3.12.10\x64\Lib\encodings\cp1252.py", line 19, in encode
+
+    return codecs.charmap_encode(input,self.errors,encoding_table)[0]
+
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+UnicodeEncodeError: 'charmap' codec can't encode character '\u2705' in position 0: character maps to <undefined>
+
+
+
+
+
+======================================================================
+
+FAIL: test_secao_extra_passa (test_handoff_lint.HandoffLint.test_secao_extra_passa)
+
+----------------------------------------------------------------------
+
+Traceback (most recent call last):
+
+  File "D:\a\sdd-open\sdd-open\tests\test_handoff_lint.py", line 70, in test_secao_extra_passa
+
+    self.assertEqual(rc, 0, out)
+
+AssertionError: 1 != 0 : Traceback (most recent call last):
+
+  File "D:\a\sdd-open\sdd-open\sdd\bin\handoff-lint.py", line 129, in <module>
+
+    sys.exit(main(sys.argv))
+
+             ^^^^^^^^^^^^^^
+
+  File "D:\a\sdd-open\sdd-open\sdd\bin\handoff-lint.py", line 124, in main
+
+    print(f"\u2705 {argv[1]}: HANDOFF v\ufffdlido")
+
+  File "C:\hostedtoolcache\windows\Python\3.12.10\x64\Lib\encodings\cp1252.py", line 19, in encode
+
+    return codecs.charmap_encode(input,self.errors,encoding_table)[0]
+
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+UnicodeEncodeError: 'charmap' codec can't encode character '\u2705' in position 0: character maps to <undefined>
+
+
+
+
+
+======================================================================
+
+FAIL: test_titulo_dentro_do_prompt_nao_encerra_a_secao (test_handoff_lint.HandoffLint.test_titulo_dentro_do_prompt_nao_encerra_a_secao)
+
+----------------------------------------------------------------------
+
+Traceback (most recent call last):
+
+  File "D:\a\sdd-open\sdd-open\tests\test_handoff_lint.py", line 81, in test_titulo_dentro_do_prompt_nao_encerra_a_secao
+
+    self.assertEqual(rc, 0, out)
+
+AssertionError: 1 != 0 : Traceback (most recent call last):
+
+  File "D:\a\sdd-open\sdd-open\sdd\bin\handoff-lint.py", line 129, in <module>
+
+    sys.exit(main(sys.argv))
+
+             ^^^^^^^^^^^^^^
+
+  File "D:\a\sdd-open\sdd-open\sdd\bin\handoff-lint.py", line 124, in main
+
+    print(f"\u2705 {argv[1]}: HANDOFF v\ufffdlido")
+
+  File "C:\hostedtoolcache\windows\Python\3.12.10\x64\Lib\encodings\cp1252.py", line 19, in encode
+
+    return codecs.charmap_encode(input,self.errors,encoding_table)[0]
+
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+UnicodeEncodeError: 'charmap' codec can't encode character '\u2705' in position 0: character maps to <undefined>
+
+
+
+
+
+----------------------------------------------------------------------
+
+Ran 7 tests in 0.171s
+
+
+
+FAILED (failures=4)
+

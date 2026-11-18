@@ -1,0 +1,79 @@
+$ cat /tmp/aval-f18.SxgC/probes/at004.sh; bash /tmp/aval-f18.SxgC/probes/at004.sh
+. /tmp/aval-f18.SxgC/probes/lib.sh
+mk8() {
+  printf 'module.exports = { productionBrowserSourceMaps: true };\n' > next.config.js        # S15 baixa
+  printf "const r = supabase.from('t').select('*');\nconst u = s.getPublicUrl('x');\n" > a.ts   # S02 media, S04 media
+  printf "res.setHeader('Access-Control-Allow-Origin', '*');\n" > b.js                          # S14 media
+  printf 'el.innerHTML = t;\nconst r = eval(x);\nconst f = new Function(b);\n' > c.js              # S12 alta, S16 alta x2
+  printf 'create function public.f() returns int language sql security definer as $$ select 1 $$;\n' > supabase/migrations/1.sql  # S03 alta
+  printf 'k = "sk_live_%s"\n' "$(rnd 24)" > k.py                                                 # S11 bloqueio
+}
+echo "### (a) 8 avisos + 1 bloqueio, max_warnings: 5 (slot)"
+novo at004a; grep -n 'max_warnings' sdd/config.yaml; mk8; V --saida /tmp/aval-f18.SxgC/c/at004a/lista.txt
+echo "--- conteúdo de --saida:"; cat /tmp/aval-f18.SxgC/c/at004a/lista.txt
+echo; echo "### (b) slot vazio (= 5), sem --saida"
+novo at004b; sed -i '' 's/^  max_warnings: .*/  max_warnings: ""/' sdd/config.yaml; grep -n 'max_warnings' sdd/config.yaml; mk8; rm k.py; V | grep -v "confira à mão"
+echo; echo "### (c) max_warnings: 2"
+novo at004c; sed -i '' 's/^  max_warnings: .*/  max_warnings: 2/' sdd/config.yaml; mk8; rm k.py; V | grep -v "confira à mão"
+### (a) 8 avisos + 1 bloqueio, max_warnings: 5 (slot)
+114:# para qualquer stack. Item de outra stack nunca dispara. max_warnings: avisos que a varredura mostra na tela (os mais
+118:  max_warnings: 5
+▶ seguranca-varredura — stack: supabase, web (detectada) · base: origin/main · 8 arquivo(s) varrido(s), 0 pulado(s)
+🛑 S11 alta k.py:1 — Chave secreta no código (bloqueia: novo nesta publicação)
+   confira à mão: Procure no código e no histórico do repositório por `sk-`, `sk_live_`, `service_role`, `PRIVATE KEY` e `secret`: nada pode aparecer com valor. Achou uma chave real? Ela vazou: troque-a antes de qualquer outra coisa (modo incidente).
+⚠️ S03 alta supabase/migrations/1.sql:1 — Função de banco que qualquer um chama
+   confira à mão: Para cada função: quem pode chamá-la sem login? Ela confere quem está chamando antes de agir? Ela roda com mais poder que quem chamou? Uma resposta errada é falha.
+⚠️ S12 alta c.js:1 — HTML vindo do usuário sem escapar
+   confira à mão: Grave `<b>teste</b>` em cada campo de texto livre e abra as telas que o mostram: tem de aparecer literal, sem negrito.
+⚠️ S16 alta c.js:2 — Texto virando código
+   confira à mão: Procure `eval(`, `new Function(` e `exec(` no código: cada achado precisa de motivo escrito, e nenhum pode receber texto de fora.
+⚠️ S16 alta c.js:3 — Texto virando código
+⚠️ S02 media a.ts:1 — Consulta que devolve colunas demais
+   confira à mão: Abra a tela, as ferramentas do navegador e a aba de rede; clique na chamada da listagem e leia a resposta: coluna que a tela não mostra não deveria estar ali.
+… e mais 3 aviso(s): lista inteira em /tmp/aval-f18.SxgC/c/at004a/lista.txt
+RESULTADO: BLOQUEADO
+→ tire o segredo do código (se era real, ele vazou: troque-o) ou ligue a RLS na tabela, e rode de novo; achado falso leva a dispensa na linha, com motivo.
+exit=2
+--- conteúdo de --saida:
+▶ seguranca-varredura — stack: supabase, web (detectada) · base: origin/main · 8 arquivo(s) varrido(s), 0 pulado(s)
+🛑 S11 alta k.py:1 — Chave secreta no código (bloqueia: novo nesta publicação)
+   confira à mão: Procure no código e no histórico do repositório por `sk-`, `sk_live_`, `service_role`, `PRIVATE KEY` e `secret`: nada pode aparecer com valor. Achou uma chave real? Ela vazou: troque-a antes de qualquer outra coisa (modo incidente).
+⚠️ S03 alta supabase/migrations/1.sql:1 — Função de banco que qualquer um chama
+   confira à mão: Para cada função: quem pode chamá-la sem login? Ela confere quem está chamando antes de agir? Ela roda com mais poder que quem chamou? Uma resposta errada é falha.
+⚠️ S12 alta c.js:1 — HTML vindo do usuário sem escapar
+   confira à mão: Grave `<b>teste</b>` em cada campo de texto livre e abra as telas que o mostram: tem de aparecer literal, sem negrito.
+⚠️ S16 alta c.js:2 — Texto virando código
+   confira à mão: Procure `eval(`, `new Function(` e `exec(` no código: cada achado precisa de motivo escrito, e nenhum pode receber texto de fora.
+⚠️ S16 alta c.js:3 — Texto virando código
+⚠️ S02 media a.ts:1 — Consulta que devolve colunas demais
+   confira à mão: Abra a tela, as ferramentas do navegador e a aba de rede; clique na chamada da listagem e leia a resposta: coluna que a tela não mostra não deveria estar ali.
+⚠️ S04 media a.ts:2 — Arquivo privado com link público
+   confira à mão: Copie o endereço de um documento, abra numa janela anônima: não pode abrir. Tente enviar um arquivo enorme ou de tipo estranho: tem de ser recusado.
+⚠️ S14 media b.js:1 — CORS aberto para qualquer origem
+   confira à mão: Procure `Access-Control-Allow-Origin` e `origin:` no código das funções de servidor e na configuração do host: o valor tem de ser o seu domínio, nunca `*`.
+⚠️ S15 baixa next.config.js:1 — Código-fonte e detalhes vazando em produção
+   confira à mão: No navegador, ferramentas, aba de fontes: a pasta do código original não pode aparecer. Provoque um erro (endereço que não existe, campo inválido): a mensagem não pode citar tabela nem arquivo.
+RESULTADO: BLOQUEADO
+
+### (b) slot vazio (= 5), sem --saida
+114:# para qualquer stack. Item de outra stack nunca dispara. max_warnings: avisos que a varredura mostra na tela (os mais
+118:  max_warnings: ""
+▶ seguranca-varredura — stack: supabase, web (detectada) · base: origin/main · 7 arquivo(s) varrido(s), 0 pulado(s)
+⚠️ S03 alta supabase/migrations/1.sql:1 — Função de banco que qualquer um chama
+⚠️ S12 alta c.js:1 — HTML vindo do usuário sem escapar
+⚠️ S16 alta c.js:2 — Texto virando código
+⚠️ S16 alta c.js:3 — Texto virando código
+⚠️ S02 media a.ts:1 — Consulta que devolve colunas demais
+… e mais 3 aviso(s): rode com --saida <arquivo> para ver todos
+RESULTADO: AVISOS
+→ confira cada aviso pela prova à mão; o que for falso positivo leva a dispensa na linha, com motivo.
+exit=1
+
+### (c) max_warnings: 2
+▶ seguranca-varredura — stack: supabase, web (detectada) · base: origin/main · 7 arquivo(s) varrido(s), 0 pulado(s)
+⚠️ S03 alta supabase/migrations/1.sql:1 — Função de banco que qualquer um chama
+⚠️ S12 alta c.js:1 — HTML vindo do usuário sem escapar
+… e mais 6 aviso(s): rode com --saida <arquivo> para ver todos
+RESULTADO: AVISOS
+→ confira cada aviso pela prova à mão; o que for falso positivo leva a dispensa na linha, com motivo.
+exit=1

@@ -1,0 +1,17 @@
+$ bash sdd/reports/evidence/F14_DRIVE/sabotagens-resto.sh
+archive: sem fronteira de palavra: rc=1 · FAILED (failures=2) 
+FAIL: test_ficha_aberta_protege_e_diz_por_que (test_sdd_archive.Protecao)
+FAIL: test_palavra_inteira_nao_protege_vizinho (test_sdd_archive.Protecao)
+deploy: corrida sai 2: rc=1 · FAILED (failures=4) 
+FAIL: test_corrida_sem_o_run_novo_sai_4_nunca_2 (test_deploy_do_sha.Redisparo)
+FAIL: test_dispatch_sem_resposta_clara_nao_vira_recusa_nem_repete (test_deploy_do_sha.Redisparo)
+FAIL: test_duas_chamadas_juntas_repetem_uma_vez (test_deploy_do_sha.Redisparo)
+drive: concluir ignora o proximo: rc=1 · FAILED (failures=9) 
+FAIL: test_commit_de_codigo_no_meio_nao_ganha_o_verde (test_drive.CommitDuranteOGate)
+FAIL: test_troca_de_comando_no_meio_nao_vale_o_gate_que_nao_rodou (test_drive.CommitDuranteOGate)
+FAIL: test_codigo_depois_do_verde_volta_ao_gate (test_drive.Concluir)
+drive: rename some do diff entre commits (H1 do ciclo 2): rc=1 · FAILED (failures=2) 
+FAIL: test_rename_commitado_depois_do_vermelho_roda_o_gate (test_drive.Verificar)
+FAIL: test_rename_commitado_para_documento_nao_conta_como_so_documento (test_drive.Verificar)
+sabotagens vivas: 0
+[exit=0]

@@ -1,0 +1,8 @@
+$ cd /tmp/sdd-aval/hook && printf 'ok\n' > limpo.md && git add limpo.md && git commit -m limpo
+[main 2bf12cc] limpo
+ 1 file changed, 1 insertion(+)
+ create mode 100644 limpo.md
+[exit=0]
+$ cd /tmp/sdd-aval/hook && git status --short | wc -l
+       0
+[exit=0]

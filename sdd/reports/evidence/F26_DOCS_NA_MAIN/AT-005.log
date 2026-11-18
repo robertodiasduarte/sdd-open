@@ -1,0 +1,12 @@
+$ SDD_TEST_BASH=/bin/bash /usr/bin/python3 -B -m unittest -v -k at005 test_f26_docs_na_main
+# AT-005 · HEAD e99136d · cópia de git archive HEAD · piso (/usr/bin/python3, /bin/bash)
+test_at005_cada_desvio_sai_1 (test_f26_docs_na_main.Migracao) ... ok
+test_at005_commit_depois_da_migracao_nao_conta (test_f26_docs_na_main.Migracao) ... ok
+test_at005_copia_classifica_e_confere (test_f26_docs_na_main.Migracao) ... ok
+test_at005_copiar_recusa_documento_da_main_com_outro_conteudo (test_f26_docs_na_main.Migracao) ... ok
+
+----------------------------------------------------------------------
+Ran 4 tests in 4.328s
+
+OK
+[exit=0]

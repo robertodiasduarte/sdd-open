@@ -1,0 +1,11 @@
+$ /usr/bin/python3 -B -m unittest -v test_matriz_new_session.Matriz
+test_o_script_tem_as_mensagens_esperadas (test_matriz_new_session.Matriz) ... ok
+test_toda_mensagem_de_bloqueio_tem_linha_na_tabela (test_matriz_new_session.Matriz) ... ok
+test_todo_trecho_da_tabela_existe_no_script (test_matriz_new_session.Matriz) ... ok
+test_trechos_sao_literais_e_longos (test_matriz_new_session.Matriz) ... ok
+
+----------------------------------------------------------------------
+Ran 4 tests in 0.002s
+
+OK
+exit=0

@@ -1,0 +1,19 @@
+$ /usr/bin/python3 -B sdd/bin/skill-lint.py --conversa .agents/skills/*/SKILL.md
+✅ .agents/skills/sdd-auditoria-harness/SKILL.md: frontmatter válido · camada de conversa ok
+✅ .agents/skills/sdd-brainstorm/SKILL.md: frontmatter válido · camada de conversa ok
+✅ .agents/skills/sdd-build/SKILL.md: frontmatter válido · camada de conversa ok
+✅ .agents/skills/sdd-checar-ambiente/SKILL.md: frontmatter válido · camada de conversa ok
+✅ .agents/skills/sdd-define/SKILL.md: frontmatter válido · camada de conversa ok
+✅ .agents/skills/sdd-design/SKILL.md: frontmatter válido · camada de conversa ok
+✅ .agents/skills/sdd-governanca/SKILL.md: frontmatter válido · camada de conversa ok
+✅ .agents/skills/sdd-handoff/SKILL.md: frontmatter válido · camada de conversa ok
+✅ .agents/skills/sdd-higiene-dado/SKILL.md: frontmatter válido · camada de conversa ok
+✅ .agents/skills/sdd-iniciar-repo/SKILL.md: frontmatter válido · camada de conversa ok
+✅ .agents/skills/sdd-iterate/SKILL.md: frontmatter válido · camada de conversa ok
+✅ .agents/skills/sdd-kb/SKILL.md: frontmatter válido · camada de conversa ok
+✅ .agents/skills/sdd-new-session/SKILL.md: frontmatter válido · camada de conversa ok
+✅ .agents/skills/sdd-playbook/SKILL.md: frontmatter válido · camada de conversa ok
+✅ .agents/skills/sdd-prompt-builder/SKILL.md: frontmatter válido · camada de conversa ok
+✅ .agents/skills/sdd-release/SKILL.md: frontmatter válido · camada de conversa ok
+✅ .agents/skills/sdd-ux-review/SKILL.md: frontmatter válido · camada de conversa ok
+[exit=0]

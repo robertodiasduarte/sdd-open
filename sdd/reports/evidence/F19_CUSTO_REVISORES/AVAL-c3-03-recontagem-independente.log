@@ -1,0 +1,13 @@
+$ /usr/bin/python3 -I casos/recontagem.py <reais> <repo>/sdd/reviews   (conta própria do avaliador, sem código do script avaliado)
+revisor claude-opus-5-5: {'n': 21, 'ach': 83, 'apl': 62, 'dano': 28, 'fp': 6, 'esc': 15, 'nominal': 50.3657, 'parcelas': 21}
+auditor qwen via Alibaba: AGREE 78 de 100
+linhas JSON ilegíveis nos arquivos de vereditos: 0
+chaves com custo/exit/engine no META: ['auditor_custo', 'auditor_engine_default', 'auditor_engine_efetivo', 'auditor_exit', 'custo_total', 'desempate_custo', 'desempate_engine', 'desempate_exit', 'reviewer_custo', 'reviewer_engine_default', 'reviewer_engine_efetivo', 'reviewer_exit', 'revisor2_custo', 'revisor2_engine', 'revisor2_engine_default', 'revisor2_engine_efetivo', 'revisor2_exit']
+exit=0
+
+linha do script avaliado:
+| revisor | claude (claude-opus-5-5) | assinatura | 21 | 0 | 0.0000 | 50.3657 | 83 | 62 de 83 | 28 de 83 | 6 de 83 | 15 de 83 | 34 de 83 | 0.0000 | 1.7988 | — |
+| auditor | openrouter (qwen/qwen3.7-plus via Alibaba) | pay-per-token | 23 | 0 | 1.0933 | 1.0933 | 5 | 1 de 5 | 1 de 5 | 4 de 5 | 0 de 5 | 0 de 5 | 1.0933 | 1.0933 | 78.0% (78 de 100) |
+
+$ diff das 16 linhas de tabela contra AVAL-c2-02-reais-25-pastas.log
+diff vazio: tabela idêntica à do ciclo 2

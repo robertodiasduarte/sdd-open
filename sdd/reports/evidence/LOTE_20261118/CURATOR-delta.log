@@ -1,0 +1,68 @@
+$ bash sdd/bin/playbook-curator.sh --cruzar - sdd/playbook.md sdd/invariants.md  # deltas do lote, sem as linhas inv
+INV_PENDENTE LM-037 (mordeu 0→1) · delta: LM-037 mordeu+1
+   proposta A: - [INV-003] estado=<ok|auto|humano> origem=LM-037 :: <regra> · por quê: <…> · tarefa|motivo: <…>
+   proposta B: - [LM-037] descartado :: <motivo>
+resumo-inv: afetadas=0 pendentes=1
+RESULTADO: HÁ AVISO DE INVARIANTE
+→ cada INV_AFETADA vai na mesma opção do delta que a causa; cada INV_PENDENTE vai na mesma opção da contagem que a causa.
+[exit=3]
+
+$ cat lote-delta.txt
+LM-001 ajudou+1
+LM-002 ajudou+1
+LM-003 ajudou+1
+LM-005 ajudou+1
+LM-006 ajudou+1
+LM-009 ajudou+1
+LM-010 ajudou+1
+LM-011 ajudou+1
+LM-012 ajudou+1
+LM-014 ajudou+1
+LM-015 ajudou+1
+LM-016 ajudou+1
+LM-017 ajudou+1
+LM-018 ajudou+1
+LM-021 ajudou+1
+LM-028 ajudou+1
+LM-029 ajudou+1
+LM-030 ajudou+1
+LM-031 ajudou+1
+LM-033 ajudou+1
+LM-036 ajudou+1
+LM-037 ajudou+1
+LM-038 ajudou+1
+ADD Reviews / harness :: sup: `papel-serie` `caixa de areia` `sandbox` `allowLocalBinding` `mktemp` `serie_cmd` :: Medir um papel por série num agente com caixa de areia mede outra coisa quando a caixa é mais fechada que a sessão em que o papel rodou de verdade: na F23B2, a 1ª série do avaliador rodou sem porta local (o gate do caso sobe stub) e sem a pasta temporária do macOS, e saiu quase toda NAO_VERIFICADO; as 2 seguintes ainda tinham o `/tmp` bloqueado, e o veredito ficou pendente de recibo porque o gate do caso grava lá. **Do instead:** antes da série, rode o comando do Verify Gate de um caso dentro do comando da série e compare com a sessão real; libere na caixa de areia só o que faltar (porta local, pasta temporária), nunca as permissões inteiras, e só então gaste a série. → ficha: — · promovido_para: —
+ADD Reviews / harness :: sup: `gabarito` `avaliador` `referência fora da meta` `papel-medir` `calibração` :: Caso de gabarito do avaliador tirado do histórico só calibra se a falha dele aparece por execução direta, e mesmo assim o modelo de referência pode errar: na F23B2, no F11 a falha só tinha aparecido por sabotagem e no F21 a referência buscou só uma grafia da dependência; nos 2 ela deu como aprovado o AT que falha já na 1ª execução, e o avaliador ficou sem modelo escolhido (a LM-011 segurou os candidatos; esta trata da escolha do caso). **Do instead:** monte o caso com falha que a execução direta do Verify Gate ou dos ATs mostre; rode 1 execução da referência por caso antes da série inteira e, se ela já sai da meta, troque o caso ou redesenhe a meta antes de rodar os candidatos, nunca depois de ver os dados deles. → ficha: — · promovido_para: —
+ADD Reviews / harness :: sup: `papel-serie` `retomada` `interrupção` `SIGKILL` `trava` `flock` `msvcrt` `executor de agente` :: Um executor que lança agente em sessão própria e retoma depois de interrupção tem uma matriz de casos (Ctrl-C, SIGTERM, executor morto com o agente vivo, 2 séries na mesma pasta, retomada com outro modelo, interrompida que gravou no projeto, refeita que cobra a interrompida de novo): na F23B2, cada uma das rodadas 1 a 4 da revisão achou um grave novo dessa matriz, e a trava do Windows (msvcrt no byte 0) ainda caiu no CI. **Do instead:** no DESIGN, escreva a matriz de interrupção e concorrência do executor com um teste por célula antes do 1º commit; use trava do sistema que some com o processo (flock; no Windows, msvcrt num byte além do fim do arquivo, para não bloquear a leitura) e rode o job do Windows antes da release. → ficha: — · promovido_para: —
+ADD Reviews / harness :: sup: `os.name` `sys.platform` `test_windows` `apoio.py` `WINDOWS` :: Teste que pergunta a plataforma com `os.name` (ou `sys.platform`) em vez das constantes de `tests/apoio.py` derruba o Verify Gate inteiro no `test_windows.Pulos`: na F23B2, uma linha do teste da trava custou um gate de 26 minutos. **Do instead:** importe `WINDOWS` ou a constante `SEM_*` de `tests/apoio.py` e rode `python3 -B -m unittest discover -s tests -p 'test_windows.py'` junto do módulo novo antes do gate. → ficha: — · promovido_para: —
+LM-006 ajudou+1
+LM-014 ajudou+1
+LM-017 ajudou+1
+LM-018 ajudou+1
+LM-029 ajudou+1
+LM-035 ajudou+1
+LM-037 ajudou+1
+LM-038 ajudou+1
+LM-037 mordeu+1
+$ cat lote-inv.txt
+- [LM-037] descartado :: regra de publicação deste pacote (o `MANIFEST.txt` e o `scripts/publish-gate.sh`, que já barra o arquivo não declarado), que não é instalada no projeto do aluno; não é regra do sistema que o aluno constrói (mesmo motivo do descarte da LM-012)
+
+$ bash sdd/bin/playbook-curator.sh --aplicar lote-delta.txt sdd/playbook.md > novo.md
+[exit=0]
+
+$ bash sdd/bin/playbook-lint.sh novo.md
+🟢 /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/novo.md: formato OK — 42 ativos, 0 tombstones, Sempre=4 bullets/322 palavras, 0 aviso(s)
+[exit=0]
+
+$ bash sdd/bin/playbook-lint.sh --anti-collapse sdd/playbook.md novo.md
+anti-collapse OK: 38 IDs em HEAD, 0 sumiram, 0 (0%) alterados (limite 20%)
+[exit=0]
+
+$ bash sdd/bin/playbook-curator.sh --aplicar-inv lote-inv.txt sdd/invariants.md > inv.md
+[exit=0]
+
+$ bash sdd/bin/playbook-curator.sh --validar-inv novo.md inv.md
+🟢 trava INV: par válido (2 invariante(s), 3 descartado(s), pendentes=0)
+RESULTADO: PAR VÁLIDO
+→ copie os 2 arquivos por cima dos originais.
+[exit=0]

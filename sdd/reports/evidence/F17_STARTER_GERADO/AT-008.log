@@ -1,0 +1,17 @@
+$ (cd tests && python3 -B -m unittest -v test_f17_textos.AuditoriaVariosMotores test_f17_textos.PromptBuilderSemScript test_f17_textos.NewSessionDoStarter)   # AT-008, commit d813954
+test_projeto_so_com_agents_e_codex_nao_volta_vazio (test_f17_textos.AuditoriaVariosMotores.test_projeto_so_com_agents_e_codex_nao_volta_vazio) ... ok
+test_prompt_do_codex_chamado_como_prompts_nome_tem_referencia (test_f17_textos.AuditoriaVariosMotores.test_prompt_do_codex_chamado_como_prompts_nome_tem_referencia) ... ok
+test_protocolo_diz_que_copia_gerada_nao_e_duplicata (test_f17_textos.AuditoriaVariosMotores.test_protocolo_diz_que_copia_gerada_nao_e_duplicata) ... ok
+test_skill_cita_os_motores_e_a_precedencia (test_f17_textos.AuditoriaVariosMotores.test_skill_cita_os_motores_e_a_precedencia) ... ok
+test_drift_a_mao_quando_o_script_nao_existe (test_f17_textos.PromptBuilderSemScript.test_drift_a_mao_quando_o_script_nao_existe) ... ok
+test_a_do_remoto_nao_vem_do_pre_voo (test_f17_textos.NewSessionDoStarter.test_a_do_remoto_nao_vem_do_pre_voo) ... ok
+test_c1_pre_voo_a_mao_com_a_nuvem_e_os_4_casos (test_f17_textos.NewSessionDoStarter.test_c1_pre_voo_a_mao_com_a_nuvem_e_os_4_casos) ... ok
+test_c2_skills_fora_do_git_vao_para_a_frente (test_f17_textos.NewSessionDoStarter.test_c2_skills_fora_do_git_vao_para_a_frente) ... ok
+test_c3_as_duas_notas_do_por_que (test_f17_textos.NewSessionDoStarter.test_c3_as_duas_notas_do_por_que) ... ok
+test_c4_textos_curtos (test_f17_textos.NewSessionDoStarter.test_c4_textos_curtos) ... ok
+
+----------------------------------------------------------------------
+Ran 10 tests in 0.204s
+
+OK
+[exit=0]

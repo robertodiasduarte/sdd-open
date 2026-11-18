@@ -1,0 +1,46 @@
+$ bash sdd/bin/gate-shell-evidencia.sh $(ls -d sdd/reports/evidence/*/ | grep -v F7_EVIDENCIA)
+🛑 sdd/reports/evidence/F3_BUILD_RELEASE/AT-022.log:7 — o número gravado (exit=0) é o exit de `tail`, não do seu comando
+      $ git diff --stat v2.2.2 HEAD -- sdd/bin/verify-gate.sh sdd/fixtures/ scripts/publish-gate.sh scripts/publi...
+🛑 sdd/reports/evidence/F3_BUILD_RELEASE/GATE-1-vermelho.log:57 — `exit=` vazio: não há exit nenhum aqui (no zsh, ${PIPESTATUS[0]} sai vazio)
+🛑 sdd/reports/evidence/F4_CONVERSA/AVAL-at006-017-grep.log:18 — o número gravado (exit=0) é o exit de `tr`, não do seu comando
+      $ for d in .agents/skills/sdd-*/; do s=$(basename $d); f=$d/SKILL.md; v=$(sed -n "s/^  version: \"\(.*\)\"/...
+🛑 sdd/reports/evidence/F4_CONVERSA/AVAL-at013-uso-e-erros.log:28 — o número gravado (exit=0) é o exit de `sed`, não do seu comando
+      $ T=$(mktemp -d); cp sdd/fixtures/handoff/HANDOFF_VALIDO.md $T/H.md; cp sdd/fixtures/design/DESIGN_VALIDO.m...
+🛑 sdd/reports/evidence/F4_CONVERSA/AVAL-at020-bytes-identicos.log:20 — o número gravado (exit=0) é o exit de `tr`, não do seu comando
+      $ for f in sdd/bin/verify-gate.sh sdd/bin/report-lint.py sdd/bin/playbook-lint.sh scripts/publish-gate.sh s...
+🛑 sdd/reports/evidence/F4_CONVERSA/AVAL-at022-integridade-e-skill-frontmatter.log:5 — o número gravado (exit=0) é o exit de `tail`, não do seu comando
+      $ /usr/bin/python3 -B /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f4-conversa/5e736...
+🛑 sdd/reports/evidence/F4_CONVERSA/escopo.log:65 — o número gravado (exit=0) é o exit de `tail`, não do seu comando
+      $ git diff --stat v2.2.4 HEAD | tail -1 && git diff --name-status v2.2.4 HEAD
+🛑 sdd/reports/evidence/F4_CONVERSA/linhas.log:6 — o número gravado (exit=0) é o exit de `tail`, não do seu comando
+      $ wc -l .agents/skills/sdd-*/SKILL.md | sort -n | tail -4
+🛑 sdd/reports/evidence/F5_CONHECIMENTO/escopo.log:53 — o número gravado (exit=0) é o exit de `tail`, não do seu comando
+      $ git diff --stat v2.2.5 HEAD | tail -1 && git diff --name-status v2.2.5 HEAD
+🛑 sdd/reports/evidence/F5_CONHECIMENTO/linhas.log:6 — o número gravado (exit=0) é o exit de `tail`, não do seu comando
+      $ wc -l .agents/skills/sdd-*/SKILL.md | sort -n | tail -4
+🛑 sdd/reports/evidence/F6_DOCS/AVAL-baseline.log:54 — `exit=` vazio: não há exit nenhum aqui (no zsh, ${PIPESTATUS[0]} sai vazio)
+🛑 sdd/reports/evidence/F6_DOCS/AVAL-contratos-intactos.log:7 — o número gravado (exit=0) é o exit de `tail`, não do seu comando
+      $ git diff --stat v2.2.6 HEAD -- sdd/bin sdd/fixtures sdd/templates sdd/playbook.md scripts bin .github; ec...
+🛑 sdd/reports/evidence/F6_DOCS/AVAL-versoes-secao-lint.log:27 — o número gravado (exit=0) é o exit de `head`, não do seu comando
+      $ for s in brainstorm define governanca ux-review design build release; do f=.agents/skills/sdd-$s/SKILL.md...
+🛑 sdd/reports/evidence/F6_DOCS/AVAL2-achados-ciclo1.log:94 — o número gravado (exit=0) é o exit de `head`, não do seu comando
+      $ grep -n 'def existe' -A15 tests/test_docs.py | head -16
+🛑 sdd/reports/evidence/F6_DOCS/AVAL2-achados-novos.log:17 — o número gravado (exit=0) é o exit de `cut`, não do seu comando
+      $ sed -n 584p docs/pt-BR/guia-do-aluno.md | cut -c1-120
+🛑 sdd/reports/evidence/F6_DOCS/AVAL2-achados-novos.log:54 — o número gravado (exit=0) é o exit de `cut`, não do seu comando
+      $ sed -n 582p docs/pt-BR/guia-do-aluno.md | cut -c1-110
+🛑 sdd/reports/evidence/F6_DOCS/AVAL2-achados-novos.log:57 — o número gravado (exit=0) é o exit de `cut`, não do seu comando
+      $ sed -n 285p docs/pt-BR/guia-do-aluno.md | cut -c1-260
+🛑 sdd/reports/evidence/F6_DOCS/AVAL2-verify-gate-5-e-python.log:8 — `exit=` vazio: não há exit nenhum aqui (no zsh, ${PIPESTATUS[0]} sai vazio)
+🛑 sdd/reports/evidence/F6_DOCS/check-versions.log:12 — o número gravado (exit=0) é o exit de `sed`, não do seu comando
+      $ python3 -B scripts/check-versions.py --base v2.2.6 --base-obrigatoria && for s in brainstorm define gover...
+🛑 sdd/reports/evidence/F6_DOCS/escopo.log:26 — o número gravado (exit=0) é o exit de `tail`, não do seu comando
+      $ git diff --stat v2.2.6 HEAD | tail -1 && git diff --name-status v2.2.6 HEAD
+🛑 sdd/reports/evidence/F6_DOCS/linhas.log:6 — o número gravado (exit=0) é o exit de `tail`, não do seu comando
+      $ wc -l .agents/skills/sdd-*/SKILL.md | sort -n | tail -4
+🛑 sdd/reports/evidence/W0/contratos-intactos.log:6 — o número gravado (exit=0) é o exit de `tail`, não do seu comando
+      $ git diff --stat v2.2.3 HEAD -- sdd/bin/ sdd/fixtures/ scripts/ .github/ && echo "(diff vazio: sdd/bin, fi...
+🛑 22 linha(s) de exit que não provam o comando, em 245 log(s).
+RESULTADO: VERMELHO
+→ refaça o log gravando o exit antes de formatar: out=$(cmd 2>&1); rc=$?; printf '%s\n' "$out" | tail -n 200; echo "[exit=$rc]"
+[exit=2]

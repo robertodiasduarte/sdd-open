@@ -1,0 +1,14 @@
+$ W=/tmp/aval1-f11.wvW4zp; P=/Users/robertoduarte/rdd-worktrees/sdd-open-f11-gate; cd $W/r18 && mkdir -p sdd/reports/reviews/EXTERNAL_REVIEW_29991231-235959 && echo parcial > sdd/reports/reviews/EXTERNAL_REVIEW_29991231-235959/reviewer.md && ls sdd/reports/reviews && /bin/bash $P/sdd/bin/adversarial-review.sh --conferir --aceitar-sem-revisor2 'motivo de teste'; echo "[conferir_rc=$?]"; echo '--- baseline v2.3.0'; B=$(mktemp -d) && (cd $P && git archive v2.3.0 sdd/bin | tar -x -C $B) && /bin/bash $B/sdd/bin/adversarial-review.sh --conferir; echo "[conferir_v230_rc=$?]"; rm -rf sdd/reports/reviews/EXTERNAL_REVIEW_29991231-235959
+EXTERNAL_REVIEW_20261101-073755
+EXTERNAL_REVIEW_29991231-235959
+✅ a revisão sdd/reports/reviews/EXTERNAL_REVIEW_20261101-073755 é desta versão do código (sha256 igual).
+review_externo: sdd/reports/reviews/EXTERNAL_REVIEW_20261101-073755 sha256=2706745b9beb05e5bfb502d56cec3ab585e189548011598c18f69d4f39b21b68 diversidade=vendor revisor2=dispensado — motivo de teste
+RESULTADO: CONFERE
+→ copie a linha review_externo para o ledger da release.
+[conferir_rc=0]
+--- baseline v2.3.0
+🛑 adversarial-review: registry ilegível: /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.YNhC6bQ3Ka/sdd/review/registry.tsv
+RESULTADO: PAROU
+→ rode `adversarial-review.sh --help` para ver o uso.
+[conferir_v230_rc=64]
+[exit=0]

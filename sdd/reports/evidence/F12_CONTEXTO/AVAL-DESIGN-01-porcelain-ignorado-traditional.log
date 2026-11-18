@@ -1,0 +1,8 @@
+$ T=$(mktemp -d) && cd "$T" && git init -q . && printf "sdd/traces/\n" > .gitignore && mkdir -p sdd/traces && printf "a\n" > sdd/traces/X.jsonl && echo "-- -uall --ignored=matching" && git status --porcelain --untracked-files=all --ignored=matching && echo "-- -uall --ignored=traditional" && git status --porcelain --untracked-files=all --ignored=traditional; rc=$?; rm -rf "$T"; exit $rc
+-- -uall --ignored=matching
+?? .gitignore
+!! sdd/traces/
+-- -uall --ignored=traditional
+?? .gitignore
+!! sdd/traces/X.jsonl
+[exit=0]

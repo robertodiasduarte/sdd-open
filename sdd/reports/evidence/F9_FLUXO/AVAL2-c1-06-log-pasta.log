@@ -1,0 +1,7 @@
+$ grep -n "\-\-log" sdd/templates/fragments/FLUXO_ENCADEADO.md; grep -c "\-\-log evidence/" sdd/templates/fragments/FLUXO_ENCADEADO.md; T=$(mktemp -d); bash sdd/bin/sdd-fluxo.sh loop --review sdd/fixtures/fluxo/review-impasse --rodada 1 --log "$T/sdd/reports/evidence/F/LOOP-rodada-1.log" >/dev/null; rc=$?; ls "$T/sdd/reports/evidence/F/"; test -f "$T/sdd/reports/evidence/F/LOOP-rodada-1.log"; f=$?; rm -rf "${T:?}"; echo "loop rc=$rc (20), log criado com a pasta: $f (0=sim)"; test $rc -eq 20 -a $f -eq 0
+88:- Grave o resultado com `--log sdd/reports/evidence/<F>/LOOP-rodada-N.log`, nunca com `| tee`: o exit
+89:  de um pipeline é o do `tee` (0), e o BLOQUEADO viraria "seguir". O `--log` é regravado em toda
+0
+LOOP-rodada-1.log
+loop rc=20 (20), log criado com a pasta: 0 (0=sim)
+[exit=0]

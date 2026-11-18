@@ -1,0 +1,8 @@
+$ cd <git archive HEAD>/tests && /usr/bin/python3 -B -m unittest -v test_f25_skills_duplicadas.AT006Plano
+test_plano_da_tabela_21 (test_f25_skills_duplicadas.AT006Plano) ... ok
+
+----------------------------------------------------------------------
+Ran 1 test in 0.950s
+
+OK
+[exit=0]

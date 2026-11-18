@@ -1,0 +1,57 @@
+$ cat /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.5rZgwRfwzB/p13.sh; /bin/bash /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.5rZgwRfwzB/p13.sh
+. /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.5rZgwRfwzB/lab.sh
+echo "=== AT-006 com a forma do molde do sdd-design: File Manifest + Agent Assignment Rationale (1a execucao real)"
+mkrepo "$(novo)"
+for s in design-lint.py; do :; done
+/usr/bin/python3 -I -B - "$PROJ/sdd/features/DESIGN_F14_DRIVE.md" <<'PY'
+import sys,re,shutil
+t=open(sys.argv[1],encoding='utf-8').read()
+open('sdd/features/DESIGN_F.md','w',encoding='utf-8').write(t)
+PY
+git add -A; git commit -qm d; drv iniciar $D; sed -n '$p;' /dev/null; grep -n '' sdd/reports/progress/PROGRESS_F.md | tail -14
+echo "--- o executor marca as linhas de arquivo reais; a proxima acao segue pedindo as do rationale"
+/usr/bin/python3 -I -B - <<'PY'
+import re
+p='sdd/reports/progress/PROGRESS_F.md'; t=open(p,encoding='utf-8').read().split('\n')
+s=[]
+pare=False
+for ln in t:
+    if 'Files Assigned' in ln: pare=True
+    s.append(ln.replace('- [ ]','- [x]') if not pare else ln)
+open(p,'w',encoding='utf-8').write('\n'.join(s))
+PY
+drv proximo $D; drv proximo $D | sed -n 2,4p
+=== AT-006 com a forma do molde do sdd-design: File Manifest + Agent Assignment Rationale (1a execucao real)
+--- sdd-drive iniciar sdd/features/DEFINE_F.md
+ACAO: RODADA
+rodada: 1/3
+tarefa: 1 de 40 — sdd/bin/verify-gate.sh
+RESULTADO: CONTINUAR
+→ despache o executor (references/executor.md) só para esta tarefa, em contexto fresco, e chame proximo.
+[rc=10]
+29:- [ ] tests/test_sdd_archive.py
+30:- [ ] tests/test_f14_drive_textos.py
+31:- [ ] tests/test_avaliador_guard.py
+32:- [ ] tests/test_playbook_curator.py
+33:- [ ] tests/test_verify_gate.py
+34:- [ ] tests/test_fluxo.py
+35:- [ ] tests/test_skill_lint.py
+36:- [ ] tests/test_conversa.py
+37:- [ ] tests/test_docs.py
+38:- [ ] tests/test_decisoes_lint.py
+39:- [ ] tests/test_contrato_build_release.py
+40:- [ ] tests/test_f14_textos.py
+41:- [ ] Files Assigned
+42:- [ ] todos
+--- o executor marca as linhas de arquivo reais; a proxima acao segue pedindo as do rationale
+--- sdd-drive proximo sdd/features/DEFINE_F.md
+ACAO: RODADA
+rodada: 1/3
+tarefa: 39 de 40 — Files Assigned
+RESULTADO: CONTINUAR
+→ despache o executor (references/executor.md) só para esta tarefa, em contexto fresco, e chame proximo.
+[rc=10]
+ACAO: RODADA
+rodada: 1/3
+tarefa: 39 de 40 — Files Assigned
+[exit=0]

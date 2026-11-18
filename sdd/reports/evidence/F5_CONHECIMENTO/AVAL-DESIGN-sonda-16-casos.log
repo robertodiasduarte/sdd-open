@@ -1,0 +1,24 @@
+$ /bin/bash scratchpad/sonda-gate.sh <mktemp: skills/sdd-kb do starter + Pattern 2 do DESIGN no validate_kb.py>
+ACEITA   geral rc=0 PASS: KB lint passed (1 concept(s), 1 pattern(s))
+ACEITA   norm rc=0 PASS: KB lint passed (1 concept(s), 1 pattern(s); normativo: 3 rule(s), 4 source(s), 1 table(s), 1 case(s))
+ACEITA   bom-codigo rc=0 PASS: KB lint passed (1 concept(s), 1 pattern(s))
+ACEITA   strict-teste-ok rc=0 PASS: KB lint passed (1 concept(s), 1 pattern(s); normativo: 3 rule(s), 4 source(s), 1 table(s), 1 case(s))
+REJEITA  limite-conceito rc=2 razao[limit is 150]=sim
+REJEITA  limite-receita rc=2 razao[limit is 200]=sim
+REJEITA  limite-consulta rc=2 razao[limit is 100]=sim
+REJEITA  nao-registrado rc=2 razao[is not registered]=sim
+REJEITA  placeholder rc=2 razao[unsubstituted placeholder]=sim
+REJEITA  placeholder-codigo rc=2 razao[unsubstituted placeholder]=sim
+REJEITA  sem-vigencia rc=2 razao[vigencia.de missing]=sim
+REJEITA  fonte-fora rc=2 razao[not in fontes/CATALOGO.md]=sim
+REJEITA  sha-divergente rc=2 razao[differs from the catalog]=sim
+REJEITA  pendente-strict rc=2 razao[refuses an unreviewed normative KB]=sim
+REJEITA  teste-vazio-strict rc=2 razao[has no teste]=sim
+REJEITA  teste-inexistente-strict rc=2 razao[not found from the project root]=sim
+--- extras do revisor
+ACEITA   fora-de-sdd-kb-cwd-raiz rc=2 FAIL: rules/UB12-10-CRT3.md: teste 'tests/test_regras.py::test_crt3': tests/test_regras.py not found from the project root /
+ACEITA   teste-vazio-sem-strict rc=0 PASS: KB lint passed (1 concept(s), 1 pattern(s); normativo: 3 rule(s), 4 source(s), 1 table(s), 1 case(s))
+ACEITA   teste-inexistente-sem-strict rc=0 PASS: KB lint passed (1 concept(s), 1 pattern(s); normativo: 3 rule(s), 4 source(s), 1 table(s), 1 case(s))
+PASS: RULE_MAP.md matches rules/
+rule-map --check rc=0
+| UB12-10-CRT3 | 2026-08-03 → em vigor | NT 2025.002-RTC — NF-e/NFC-e com IBS, CBS e IS · p. 42, regra UB12-10, Observações 1 e 2 · ato-tecnico | confirmado | — | src/regras.py | tests/test_regras.py::test_crt3 | E | 1115 |

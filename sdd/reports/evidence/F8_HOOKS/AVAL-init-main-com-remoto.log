@@ -1,0 +1,57 @@
+$ cd /tmp/sdd-aval/init-main-remoto && git branch --show-current && git rev-parse --verify -q refs/remotes/origin/main >/dev/null && echo tem-origin-main
+main
+tem-origin-main
+[exit=0]
+$ cd /tmp/sdd-aval/init-main-remoto && bash /Users/robertoduarte/rdd-worktrees/sdd-open-f8-aval/bin/sdd-open.sh init --yes --vendors codex
+▶ init — plano
++ AGENTS.md (novo)
++ sdd/ (templates, fixtures, bin, hooks, playbook, config) (novo)
++ core.hooksPath = sdd/hooks — 5 regras + relatório + alarme passam a conferir cada commit (teto do arquivo de contexto, credencial, playbook, byte NUL, branch padrão); git commit --no-verify pula uma vez (novo)
++ .agents/skills/sdd-auditoria-harness (novo)
++ .agents/skills/sdd-brainstorm (novo)
++ .agents/skills/sdd-build (novo)
++ .agents/skills/sdd-checar-ambiente (novo)
++ .agents/skills/sdd-define (novo)
++ .agents/skills/sdd-design (novo)
++ .agents/skills/sdd-governanca (novo)
++ .agents/skills/sdd-handoff (novo)
++ .agents/skills/sdd-higiene-dado (novo)
++ .agents/skills/sdd-iniciar-repo (novo)
++ .agents/skills/sdd-iterate (novo)
++ .agents/skills/sdd-kb (novo)
++ .agents/skills/sdd-new-session (novo)
++ .agents/skills/sdd-playbook (novo)
++ .agents/skills/sdd-prompt-builder (novo)
++ .agents/skills/sdd-release (novo)
++ .agents/skills/sdd-ux-review (novo)
+20 a criar · 0 a atualizar · 0 já corretos
+▶ sdd-open doctor — projeto: /private/tmp/sdd-aval/init-main-remoto
+  bash 3.2 · git 2.54.0 (Apple Git-157) · python3 3.9
+✅ sdd/ presente (0 feature(s) em sdd/features/)
+✅ AGENTS.md com o bloco sdd-open
+✅ .agents/skills/ com 17 skill(s) sdd-*
+✅ hooks ligados (sdd/hooks: pre-commit com 5 regras + relatório + alarme da higiene off, pre-push)
+✅ codex: nativo — nada a gerar (lê .agents/skills/ e AGENTS.md nativamente) · CLI encontrado
+✅ skills e sdd/bin/ em dia com o pacote
+✅ nenhum segredo salvo no git (.env, .pfx, .p12, .pem com chave privada)
+RESULTADO: INSTALADO
+→ leve a instalação para uma branch nova antes de commitar (a branch padrão já tem remoto e o hook recusa commit direto): git switch -c sdd-open-init · depois, abra seu agente e peça a fase Define (ex.: /sdd-define ou /skill:sdd-define).
+[exit=0]
+$ cd /tmp/sdd-aval/init-main-remoto && git add -A && git commit -q -m 'sdd-open init'
+
+sdd-open: commit recusado. Encontrei o que não pode entrar nesta versão:
+
+  🛑 [H6] commit direto em main (a branch padrão do projeto, que já tem origin/main)
+
+Por que importa:
+  [H6] a branch padrão é o que está publicado; trabalho novo nasce numa frente e chega lá por PR
+
+RESULTADO: COMMIT RECUSADO
+→ [H6] leve o que está preparado para uma frente nova: git switch -c <nome> (o que está staged vai junto) e commite lá; para a próxima feature, peça a sdd-new-session
+→ se você conferiu e quer gravar mesmo assim, só desta vez: git commit --no-verify
+  Agente de IA: não use --no-verify sem o OK explícito da pessoa.
+[exit=1]
+$ cd /tmp/sdd-aval/init-main-remoto && git switch -c sdd-open-init && git commit -q -m 'sdd-open init' && echo COMMIT-OK-na-frente
+Switched to a new branch 'sdd-open-init'
+COMMIT-OK-na-frente
+[exit=0]

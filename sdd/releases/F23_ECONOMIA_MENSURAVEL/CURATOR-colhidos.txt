@@ -1,0 +1,12 @@
+DELTA LM-001 ajudou+1 · conf=2026-11-16 · evidencia=BUILD_REPORT_F23_ECONOMIA_MENSURAVEL.md:51 · fp=7c86d4eaff
+DELTA LM-002 ajudou+1 · conf=2026-11-16 · evidencia=BUILD_REPORT_F23_ECONOMIA_MENSURAVEL.md:52 · fp=aa677f2bd1
+DELTA LM-003 ajudou+1 · conf=2026-11-16 · evidencia=BUILD_REPORT_F23_ECONOMIA_MENSURAVEL.md:53 · fp=a48fb87751
+DELTA LM-006 ajudou+1 · conf=2026-11-16 · evidencia=BUILD_REPORT_F23_ECONOMIA_MENSURAVEL.md:54 · fp=db4e03eddd
+DELTA LM-012 ajudou+1 · conf=2026-11-16 · evidencia=BUILD_REPORT_F23_ECONOMIA_MENSURAVEL.md:55 · fp=58a909666f
+DELTA LM-014 ajudou+1 · conf=2026-11-16 · evidencia=BUILD_REPORT_F23_ECONOMIA_MENSURAVEL.md:56 · fp=b2055d8b92
+DELTA LM-015 ajudou+1 · conf=2026-11-16 · evidencia=BUILD_REPORT_F23_ECONOMIA_MENSURAVEL.md:57 · fp=a7ddbc2b85
+DELTA LM-017 ajudou+1 · conf=2026-11-16 · evidencia=BUILD_REPORT_F23_ECONOMIA_MENSURAVEL.md:58 · fp=61a8af397f
+DELTA LM-029 ajudou+1 · conf=2026-11-16 · evidencia=BUILD_REPORT_F23_ECONOMIA_MENSURAVEL.md:59 · fp=472c65592c
+DELTA LM-030 ajudou+1 · conf=2026-11-16 · evidencia=BUILD_REPORT_F23_ECONOMIA_MENSURAVEL.md:60 · fp=9cc58a4cb1
+CANDIDATO #1 → LM-035 · secao=Sempre · sup=`starter` `gerar-starter` `sdd/bin` `trocas` · evidencia=sdd/reports/evidence/F23_ECONOMIA_MENSURAVEL/VERIFY-GATE-c32f48d.log · fp=4e086dac64
+CANDIDATO #2 → LM-036 · secao=Sempre · sup=`usage` `message.id` `cache_read_input_tokens` `token_count` `custo` · evidencia=sdd/reports/evidence/F23_ECONOMIA_MENSURAVEL/MUTANTE-AGRUPAR.log · fp=8e0f95ab4d

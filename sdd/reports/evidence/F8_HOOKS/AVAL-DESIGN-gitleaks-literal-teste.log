@@ -1,0 +1,5 @@
+$ gitleaks detect --source <tmp>/c --no-git --redact --no-banner --exit-code 1 2>&1 | tail -8; echo "exit(pipe)=${PIPESTATUS[0]}"
+[90m7:55PM[0m [32mINF[0m [1mscanned ~180 bytes (180 bytes) in 14ms[0m
+[90m7:55PM[0m [33mWRN[0m [1mleaks found: 2[0m
+exit(pipe)=1
+[exit=0]

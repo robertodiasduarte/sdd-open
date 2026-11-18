@@ -1,0 +1,8 @@
+$ cd tests && SDD_TEST_BASH=/bin/bash /usr/bin/python3 -B -m unittest test_sdd_kb_normativo test_sdd_kb test_kb_dominios
+Ran 94 tests in 16.799s
+
+OK
+$ ... -m unittest test_sdd_kb_normativo (contagem)
+Ran 62 tests in 2.960s
+
+OK

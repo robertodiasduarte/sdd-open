@@ -1,0 +1,21 @@
+$ /bin/bash /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f15-slots/80a83c1b-4077-4625-ba69-e27f11f530a1/scratchpad/p10.sh
+== --feature sem valor, seguida de --arvore
+⚠️  SDD_BASE vazio: origin/main não existe neste repositório
+▶ smoke.before_push_cmd (before_push): bash e.sh
+FEATURE=[--arvore] ARVORE=[/private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.Z3Cy139Ysb] DIR=[/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/sdd-slot-f430f3999dd0/--arvore] args=[/tmp]
+RESULTADO: OK
+→ siga para o próximo passo.
+[exit=0]
+== --arvore sem valor, seguida de --feature F1
+⚠️  SDD_BASE vazio: origin/main não existe neste repositório
+▶ smoke.before_push_cmd (before_push): bash e.sh
+FEATURE=[] ARVORE=[--feature] DIR=[/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/sdd-slot-f430f3999dd0/_sem-feature] args=[F1]
+RESULTADO: OK
+→ siga para o próximo passo.
+[exit=0]
+== # dentro de palavra (URL com fragmento), sem comentario do shell
+bash puro: FEATURE=[] ARVORE=[] DIR=[] args=[https://app.local/#/pedidos]
+🛑 sdd/config.yaml, linha 2: o comando de smoke.before_push_cmd tem um comentário (#); os arquivos cairiam dentro dele
+RESULTADO: ERRO DE USO
+→ tire o # do comando (o comentário vai numa linha própria do config) ou aponte para um script
+[exit=64]

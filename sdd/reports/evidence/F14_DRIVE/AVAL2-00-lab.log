@@ -1,0 +1,85 @@
+$ cat /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.5rZgwRfwzB/lab.sh /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.5rZgwRfwzB/ghshim/gh /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.5rZgwRfwzB/cen.py /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.5rZgwRfwzB/gitshim/git; /bin/bash --version; /usr/bin/python3 --version; git -C /Users/robertoduarte/rdd-worktrees/sdd-open-f14-drive rev-parse HEAD
+# lab.sh: repositorio de sonda, scripts reais do projeto, bash 3.2 e python 3.9
+PROJ=/Users/robertoduarte/rdd-worktrees/sdd-open-f14-drive
+LAB=/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.5rZgwRfwzB
+export TMPDIR=$LAB/tmp PATH=/usr/bin:/bin:/usr/sbin:/sbin
+export GIT_AUTHOR_NAME=t GIT_AUTHOR_EMAIL=t@example.com GIT_COMMITTER_NAME=t GIT_COMMITTER_EMAIL=t@example.com GIT_TERMINAL_PROMPT=0 SDD_TRACE=off
+export GIT_CONFIG_NOSYSTEM=1 GIT_CONFIG_GLOBAL=/dev/null
+D=sdd/features/DEFINE_F.md
+define() { # define <cmd> [kind]
+  printf "# DEFINE: F\n\n## Technical Context\n\n| Aspect | Value | Notes |\n|---|---|---|\n| **Governança** | N.A. — sonda | t |\n\n## Verify Gate\n\n\`\`\`yaml\nverify_gate:\n  kind: %s\n  cmd: \"%s\"\n  pass_when: \"exit 0\"\n  threshold: \"—\"\n  manual_fallback: \"—\"\n\`\`\`\n" "${2:-test}" "$1"
+}
+design() { # design <arq>...
+  printf "# DESIGN: F\n\n## Metadata\n\n| Attribute | Value |\n|---|---|\n| **Status** | Ready for Build |\n\n## Key Decisions\n\n### Decision 1: x\n\nx\n\n## File Manifest\n\n| # | File | Action | Purpose | Agent / Owner | Dependencies |\n|---:|---|---|---|---|---|\n"
+  k=0; for a in "$@"; do k=$((k+1)); printf "| %d | \`%s\` | Modify | x | (general) | None |\n" $k "$a"; done
+  printf "\n**Total Files:** %d\n" $k
+}
+mkrepo() { # mkrepo <pasta> [cmd do gate]  -> cd, branch frente, 1 commit, report-lint de mentira
+  R="$1"; mkdir -p "$R/sdd/bin" "$R/sdd/features"; cd "$R" || exit 9
+  for s in sdd-drive.sh verify-gate.sh sdd-fluxo.sh design-lint.py; do cp "$PROJ/sdd/bin/$s" sdd/bin/; done
+  printf 'import sys\nsys.exit(0)\n' > sdd/bin/report-lint.py
+  define "${2:-echo x >> gate.calls; test -f .verde}" > $D
+  design a b > sdd/features/DESIGN_F.md
+  printf ".verde\ngate.calls\n.go\n" > .gitignore
+  git init -q; git symbolic-ref HEAD refs/heads/frente; git add -A; git commit -q -m base
+}
+drv() { echo "--- sdd-drive $*"; /bin/bash sdd/bin/sdd-drive.sh "$@"; echo "[rc=$?]"; }
+feito() { mkdir -p sdd/reports/progress; printf -- "- [x] a\n- [x] b\n" > sdd/reports/progress/PROGRESS_F.md; }
+rel() { mkdir -p sdd/reports; echo x > sdd/reports/BUILD_REPORT_F.md; }
+novo() { mktemp -d "$LAB/r.XXXXXX"; }
+st() { /usr/bin/python3 -I -B -c "import json;d=json.load(open('sdd/reports/progress/DRIVE_F.json'));$1"; }
+# --- deploy
+mkdep() { R="$1"; mkdir -p "$R"; git init -q --bare "$R/remoto.git"; mkdir -p "$R/clone"; cd "$R/clone" || exit 9; git init -q; git symbolic-ref HEAD refs/heads/main; echo 1 > a.txt; git add -A; git commit -q -m 1; git remote add origin "$R/remoto.git"; git push -q origin main; X=$(git rev-parse HEAD); GH_DIR="$R/gh"; mkdir -p "$GH_DIR"; export GH_DIR; export PATH="$LAB/ghshim:$PATH"; }
+novoc() { echo $RANDOM$RANDOM >> a.txt; git add -A; git commit -q -m c; git push -q origin main; git rev-parse HEAD; }
+cen() { /usr/bin/python3 -I -B "$LAB/cen.py" "$GH_DIR" "$1" "$X" "${Y:-}" "${Z:-}"; : > "$GH_DIR/gh.log"; echo 0 > "$GH_DIR/pos"; }
+dep() { echo "--- deploy-do-sha $*"; /bin/bash "$PROJ/sdd/bin/deploy-do-sha.sh" "$@" 2>&1; echo "[rc=$?]"; }
+d1() { dep --commit "$X" --workflow deploy.yml --intervalo 0 --teto 1 --sem-run 0 "$@"; }
+reg() { echo "--- gh.log:"; cat "$GH_DIR/gh.log"; }
+# --- archive
+ARQ="/usr/bin/python3 -I -B $PROJ/sdd/bin/sdd-archive.py"
+mkarq() { R="$1"; mkdir -p "$R/sdd/features" "$R/sdd/reports" "$R/sdd/reviews" "$R/sdd/handoffs"; cd "$R" || exit 9; git init -q; git symbolic-ref HEAD refs/heads/main; }
+velho() { GIT_AUTHOR_DATE="2020-01-01T00:00:00" GIT_COMMITTER_DATE="2020-01-01T00:00:00" git commit -q --allow-empty -m velho; }
+arq() { echo "--- sdd-archive $*"; $ARQ "$@" 2>&1; echo "[rc=$?]"; }
+#!/usr/bin/python3 -B
+# gh de mentira: passos em $GH_DIR/cenario.json, argv em $GH_DIR/gh.log
+import json, os, sys
+a = sys.argv[1:]; d = os.environ["GH_DIR"]
+open(os.path.join(d, "gh.log"), "a").write(" ".join(a) + "\n")
+c = json.load(open(os.path.join(d, "cenario.json")))
+if c.get("erro"):
+    sys.stderr.write(c["erro"] + "\n"); sys.exit(1)
+pos = os.path.join(d, "pos"); i = int(open(pos).read()) if os.path.exists(pos) else 0
+passos = c["passos"]
+if a[:2] == ["run", "list"]:
+    if "--commit" in a:
+        open(pos, "w").write(str(i + 1)); p = passos[min(i, len(passos) - 1)]
+        print(json.dumps([r for r in p["runs"] if r.get("headSha") == a[a.index("--commit") + 1] or c.get("sem_filtro")]))
+    else:
+        p = passos[min(max(i - 1, 0), len(passos) - 1)]; print(json.dumps(p["runs"]))
+elif a[:2] == ["run", "view"]:
+    if c.get("view_erro"):
+        sys.stderr.write(c["view_erro"] + "\n"); sys.exit(1)
+    if "view_bruto" in c: print(c["view_bruto"])
+    else: print(json.dumps(dict(jobs=c.get("jobs") or [dict(steps=[dict(name=c.get("passo", "x"), conclusion="failure")])])))
+elif a[:2] == ["workflow", "run"]:
+    if c.get("dispatch_erro"):
+        sys.stderr.write(c["dispatch_erro"] + "\n"); sys.exit(1)
+    open(pos, "w").write(str(i + 1))
+else:
+    sys.exit(9)
+# cen.py <dir> <python-expr>: grava cenario.json; R(id, sha, ...) monta um run
+import json, sys
+def R(i, s, st="completed", c="success", t="2026-01-01T00:00:00Z", b="main", e="push"):
+    return dict(databaseId=i, headSha=s, headBranch=b, status=st, conclusion=c, createdAt=t, workflowName="deploy", event=e)
+d, expr = sys.argv[1], sys.argv[2]
+X, Y, Z = (sys.argv[3:] + [""]*3)[:3]
+json.dump(eval(expr), open(d + "/cenario.json", "w"))
+#!/bin/bash
+# git de mentira: registra argv em $SHIM_LOG e chama o git real
+printf 'git %s\n' "$*" >> "$SHIM_LOG"
+exec /usr/bin/git "$@"
+GNU bash, version 3.2.57(1)-release (arm64-apple-darwin25)
+Copyright (C) 2007 Free Software Foundation, Inc.
+Python 3.9.6
+58d0175988552a34e32e9c4dfb2ccf15ac457036
+[exit=0]

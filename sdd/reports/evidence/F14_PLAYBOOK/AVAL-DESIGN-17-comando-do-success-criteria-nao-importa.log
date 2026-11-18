@@ -1,0 +1,31 @@
+$ cd /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.8ThIJgJWOa/base && env -u SDD_TRACE -u SDD_TRACE_DIR SDD_TEST_BASH=/bin/bash TMPDIR=/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.8ThIJgJWOa/tmp /usr/bin/python3 -B -m unittest tests.test_verify_gate_trace tests.test_governanca_gate
+EE
+======================================================================
+ERROR: test_verify_gate_trace (unittest.loader._FailedTest)
+----------------------------------------------------------------------
+ImportError: Failed to import test module: test_verify_gate_trace
+Traceback (most recent call last):
+  File "/Library/Developer/CommandLineTools/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/unittest/loader.py", line 154, in loadTestsFromName
+    module = __import__(module_name)
+  File "/private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.8ThIJgJWOa/base/tests/test_verify_gate_trace.py", line 10, in <module>
+    from apoio import BASH, Sandbox
+ModuleNotFoundError: No module named 'apoio'
+
+
+======================================================================
+ERROR: test_governanca_gate (unittest.loader._FailedTest)
+----------------------------------------------------------------------
+ImportError: Failed to import test module: test_governanca_gate
+Traceback (most recent call last):
+  File "/Library/Developer/CommandLineTools/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/unittest/loader.py", line 154, in loadTestsFromName
+    module = __import__(module_name)
+  File "/private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.8ThIJgJWOa/base/tests/test_governanca_gate.py", line 10, in <module>
+    from apoio import BASH, Sandbox
+ModuleNotFoundError: No module named 'apoio'
+
+
+----------------------------------------------------------------------
+Ran 2 tests in 0.000s
+
+FAILED (errors=2)
+[exit=1]

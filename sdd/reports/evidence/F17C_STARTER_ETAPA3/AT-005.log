@@ -1,0 +1,10 @@
+$ cd <git archive 97503a7>/tests && SDD_TEST_BASH=/bin/bash python3 -B -m unittest -v test_f17c_textos.ModoWebGerado.test_at005_define_e_design_nao_pedem_comando_ao_aluno test_f17c_textos.ModoWebGerado.test_at005_nenhuma_das_3_cita_validador test_f17c_textos.ModoWebGerado.test_at005_build_le_a_saida_do_comando_sem_o_verify_gate_sh
+test_at005_define_e_design_nao_pedem_comando_ao_aluno (test_f17c_textos.ModoWebGerado.test_at005_define_e_design_nao_pedem_comando_ao_aluno) ... ok
+test_at005_nenhuma_das_3_cita_validador (test_f17c_textos.ModoWebGerado.test_at005_nenhuma_das_3_cita_validador) ... ok
+test_at005_build_le_a_saida_do_comando_sem_o_verify_gate_sh (test_f17c_textos.ModoWebGerado.test_at005_build_le_a_saida_do_comando_sem_o_verify_gate_sh) ... ok
+
+----------------------------------------------------------------------
+Ran 3 tests in 12.134s
+
+OK
+rc=0

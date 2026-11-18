@@ -1,0 +1,36 @@
+$ cd /Users/robertoduarte/rdd-worktrees/sdd-open-f11-gate && SDD_TEST_BASH=/bin/bash /usr/bin/python3 -B -m unittest discover -v -s tests -p 'test_revisao_gate.py' && SDD_TEST_BASH=/bin/bash /usr/bin/python3 -B -m unittest discover -v -s tests -p 'test_eval_agree.py'
+test_aval1_l1_custo_do_claude_lido_do_modelusage_e_pego (test_revisao_gate.Gate) ... ok
+test_aval1_l2_sinal_de_credencial_de_cada_engine (test_revisao_gate.Gate) ... ok
+test_aval1_m1_parser_que_so_aceita_agree_e_pego (test_revisao_gate.Gate) ... ok
+test_bash_env_e_funcao_exportada_nao_chamam_a_cli_real (test_revisao_gate.Gate) ... ok
+test_extracao_nula_derruba_uma_assercao_de_cada_engine (test_revisao_gate.Gate) ... ok
+test_pacote_intacto_sai_0_sem_rede (test_revisao_gate.Gate) ... ok
+test_preco_atualizado_no_projeto_nao_quebra_o_gate (test_revisao_gate.Gate) ... ok
+test_registry_sem_engine_sai_3 (test_revisao_gate.Gate) ... ok
+test_sabotagem_custo_da_openrouter (test_revisao_gate.Gate) ... ok
+test_sabotagem_custo_do_claude (test_revisao_gate.Gate) ... ok
+test_sabotagem_exclusao_dentro_do_papel (test_revisao_gate.Gate) ... ok
+test_sabotagem_modelo_do_gemini (test_revisao_gate.Gate) ... ok
+test_sabotagem_tarifa_do_modelo_configurado (test_revisao_gate.Gate) ... ok
+test_sabotagem_tokens_do_codex (test_revisao_gate.Gate) ... ok
+test_sem_stub_sai_3_antes_de_chamar (test_revisao_gate.Gate) ... ok
+test_uso (test_revisao_gate.Gate) ... ok
+test_verboso_mostra_o_valor_lido (test_revisao_gate.Gate) ... ok
+
+----------------------------------------------------------------------
+Ran 17 tests in 129.937s
+
+OK
+test_at014_numeros_exatos_da_fixture (test_eval_agree.EvalAgree) ... ok
+test_at014_pasta_padrao_vem_do_output_dir (test_eval_agree.EvalAgree) ... ok
+test_at015_fora_da_conta_com_o_motivo (test_eval_agree.EvalAgree) ... ok
+test_at016_sem_dados_e_uso (test_eval_agree.EvalAgree) ... ok
+test_at017_so_le_arquivos (test_eval_agree.EvalAgree) ... ok
+test_aval1_l3_projeto_sem_revisoes_ainda_e_sem_dados (test_eval_agree.EvalAgree) ... ok
+test_aval1_l4_sem_git_no_path_usa_a_pasta_atual (test_eval_agree.EvalAgree) ... ok
+
+----------------------------------------------------------------------
+Ran 7 tests in 0.899s
+
+OK
+[exit=0]

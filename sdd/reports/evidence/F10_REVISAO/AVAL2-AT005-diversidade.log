@@ -1,0 +1,29 @@
+$ bash /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f10-revisao/bd420f6e-558d-4962-a0c9-40cdfc2cbd27/scratchpad/p/at005.sh
+=== --um-engine: mesma engine, chamadas separadas (cenário a+b: 1ª chamada revisor-ok, depois auditor-agree)
+## ar --reviewer stub-a:revisor-ok+auditor-agree --um-engine --no-revisor2
+▶ revisor: stub-a:revisor-ok+auditor-agree (revisor-ok+auditor-agree) — até 1 min
+▶ auditor: stub-a:revisor-ok+auditor-agree (revisor-ok+auditor-agree) — até 1 min
+⚠️ a mesma engine revisou e auditou: a auditoria tem os mesmos pontos cegos da revisão
+⚠️ sem --feature: a revisão não leu BRAINSTORM, DEFINE nem DESIGN, e decisões já documentadas podem voltar como achado
+RESULTADO: REVIEW COMPLETA
+pasta: sdd/reports/reviews/EXTERNAL_REVIEW_20261101-002020
+diff_sha256: 373d6a164c040c00b4bf57ea64e213b7c97f40de1713e69304d2712f607e2417
+revisor: stub-a:revisor-ok+auditor-agree (stub-modelo) — incluído na assinatura
+auditor: stub-a:revisor-ok+auditor-agree (stub-modelo) — incluído na assinatura
+diversidade: nenhuma
+achados: 1 grave, 1 médio, 0 leves
+custo total: incluído na assinatura
+→ rode: bash sdd/bin/sdd-fluxo.sh loop --review sdd/reports/reviews/EXTERNAL_REVIEW_20261101-002020 --ledger <ledger da revisão> --rodada <N>
+[rc=0]
+chamadas=2
+diversidade             : nenhuma
+reviewer_engine_efetivo : stub-a:revisor-ok+auditor-agree
+auditor_engine_efetivo  : stub-a:revisor-ok+auditor-agree
+auditor_exit            : 0
+=== mesmo adapter, outro modelo → modelo
+diversidade             : modelo
+=== outro adapter → vendor (cópia do stub como adapter stub2)
+RESULTADO: REVIEW COMPLETA
+diversidade: vendor
+diversidade             : vendor
+[exit=0]

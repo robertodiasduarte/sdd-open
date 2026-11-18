@@ -1,0 +1,66 @@
+$ (cd tests && python3 -B -m unittest -v test_skill_lint test_agnostico test_gerar_starter.ReadmeEInit test_sdd_open.Projeto.test_doctor_avisa_skill_do_starter_no_mesmo_projeto test_conversa)   # AT-010, commit d813954
+test_as_18_skills_reais_passam (test_skill_lint.SkillLint.test_as_18_skills_reais_passam) ... ok
+test_as_18_skills_reais_passam_com_conversa (test_skill_lint.SkillLint.test_as_18_skills_reais_passam_com_conversa) ... ok
+test_cada_fixture_reprova_pelo_seu_motivo (test_skill_lint.SkillLint.test_cada_fixture_reprova_pelo_seu_motivo) ... ok
+test_como_falar_sem_pergunta_de_decisao_reprova (test_skill_lint.SkillLint.test_como_falar_sem_pergunta_de_decisao_reprova) ... ok
+test_controle_passa_com_conversa (test_skill_lint.SkillLint.test_controle_passa_com_conversa) ... ok
+test_description_com_1024_caracteres_passa (test_skill_lint.SkillLint.test_description_com_1024_caracteres_passa) ... ok
+test_description_com_1025_caracteres_reprova (test_skill_lint.SkillLint.test_description_com_1025_caracteres_reprova) ... ok
+test_description_vazia_reprova (test_skill_lint.SkillLint.test_description_vazia_reprova) ... ok
+test_fixtures_passam_sem_conversa (test_skill_lint.SkillLint.test_fixtures_passam_sem_conversa) ... ok
+test_flag_desconhecida_e_64 (test_skill_lint.SkillLint.test_flag_desconhecida_e_64) ... ok
+test_name_diferente_da_pasta_reprova (test_skill_lint.SkillLint.test_name_diferente_da_pasta_reprova) ... ok
+test_opcao_em_duas_linhas_nao_esconde_as_seguintes (test_skill_lint.SkillLint.test_opcao_em_duas_linhas_nao_esconde_as_seguintes) ... ok
+test_opcoes_depois_de_linha_em_branco_ou_com_asterisco_sao_conferidas (test_skill_lint.SkillLint.test_opcoes_depois_de_linha_em_branco_ou_com_asterisco_sao_conferidas) ... ok
+test_outro_com_complemento_reprova (test_skill_lint.SkillLint.test_outro_com_complemento_reprova) ... ok
+test_outros_no_plural_reprova (test_skill_lint.SkillLint.test_outros_no_plural_reprova) ... ok
+test_pergunta_aberta_sem_opcoes_nao_e_conferida (test_skill_lint.SkillLint.test_pergunta_aberta_sem_opcoes_nao_e_conferida) ... ok
+test_pergunta_em_citacao_com_linha_vazia_e_conferida (test_skill_lint.SkillLint.test_pergunta_em_citacao_com_linha_vazia_e_conferida) ... ok
+test_proximo_passo_com_dois_pontos_ou_em_citacao_tambem_tem_limite (test_skill_lint.SkillLint.test_proximo_passo_com_dois_pontos_ou_em_citacao_tambem_tem_limite) ... ok
+test_proximo_passo_com_mais_de_100_caracteres_reprova (test_skill_lint.SkillLint.test_proximo_passo_com_mais_de_100_caracteres_reprova) ... ok
+test_recomendada_fora_do_primeiro_lugar_reprova (test_skill_lint.SkillLint.test_recomendada_fora_do_primeiro_lugar_reprova) ... ok
+test_secao_dentro_de_bloco_de_codigo_nao_conta (test_skill_lint.SkillLint.test_secao_dentro_de_bloco_de_codigo_nao_conta) ... ok
+test_secao_repetida_reprova (test_skill_lint.SkillLint.test_secao_repetida_reprova) ... ok
+test_secao_sem_tabela_de_etapas_reprova (test_skill_lint.SkillLint.test_secao_sem_tabela_de_etapas_reprova) ... ok
+test_secao_sem_uma_das_5_partes_reprova (test_skill_lint.SkillLint.test_secao_sem_uma_das_5_partes_reprova) ... ok
+test_sem_argumento_e_64 (test_skill_lint.SkillLint.test_sem_argumento_e_64) ... ok
+test_sem_flag_mensagem_de_frontmatter_nao_muda (test_skill_lint.SkillLint.test_sem_flag_mensagem_de_frontmatter_nao_muda) ... ok
+test_sem_flag_skill_sem_secao_passa (test_skill_lint.SkillLint.test_sem_flag_skill_sem_secao_passa) ... ok
+test_sem_frontmatter_reprova (test_skill_lint.SkillLint.test_sem_frontmatter_reprova) ... ok
+test_skill_minima_valida (test_skill_lint.SkillLint.test_skill_minima_valida) ... ok
+test_binario_no_escopo_nao_quebra_a_varredura (test_agnostico.Agnostico.test_binario_no_escopo_nao_quebra_a_varredura) ... ok
+test_controle_com_conceito_passa (test_agnostico.Agnostico.test_controle_com_conceito_passa) ... ok
+test_escopo_existe_e_nao_e_vazio (test_agnostico.Agnostico.test_escopo_existe_e_nao_e_vazio) ... ok
+test_fixture_com_nome_de_ferramenta_reprova (test_agnostico.Agnostico.test_fixture_com_nome_de_ferramenta_reprova) ... ok
+test_os_8_termos_e_arquivo_sem_extensao_reprovam (test_agnostico.Agnostico.test_os_8_termos_e_arquivo_sem_extensao_reprovam) ... ok
+test_pacote_sem_ferramenta_de_um_agente_so (test_agnostico.Agnostico.test_pacote_sem_ferramenta_de_um_agente_so) ... ok
+test_texto_fora_de_utf8_reprova (test_agnostico.Agnostico.test_texto_fora_de_utf8_reprova) ... ok
+test_at010_o_init_nao_copia_scripts (test_gerar_starter.ReadmeEInit.test_at010_o_init_nao_copia_scripts) ... ok
+test_readme_cita_toda_skill_gerada (test_gerar_starter.ReadmeEInit.test_readme_cita_toda_skill_gerada) ... ok
+test_readme_sem_ambiente_md (test_gerar_starter.ReadmeEInit.test_readme_sem_ambiente_md) ... ok
+test_doctor_avisa_skill_do_starter_no_mesmo_projeto (test_sdd_open.Projeto.test_doctor_avisa_skill_do_starter_no_mesmo_projeto) ... ok
+test_bloco_comum_igual_nas_16 (test_conversa.Camada.test_bloco_comum_igual_nas_16) ... ok
+test_como_falar_existe_e_cita_o_fragmento (test_conversa.Camada.test_como_falar_existe_e_cita_o_fragmento) ... ok
+test_skill_portada_nao_cita_o_starter (test_conversa.Camada.test_skill_portada_nao_cita_o_starter) ... ok
+test_status_comeca_pelo_nome_da_fase (test_conversa.Camada.test_status_comeca_pelo_nome_da_fase) ... ok
+test_cobre_publico_estagio_referencia_e_url (test_conversa.EntrevistaPublico.test_cobre_publico_estagio_referencia_e_url) ... ok
+test_confirmacao_passa_no_skill_lint (test_conversa.EntrevistaPublico.test_confirmacao_passa_no_skill_lint) ... ok
+test_passo_1_aponta_a_entrevista (test_conversa.EntrevistaPublico.test_passo_1_aponta_a_entrevista) ... ok
+test_pergunta_so_o_que_muda_a_experiencia (test_conversa.EntrevistaPublico.test_pergunta_so_o_que_muda_a_experiencia) ... ok
+test_perguntas_de_fato_sao_abertas (test_conversa.EntrevistaPublico.test_perguntas_de_fato_sao_abertas) ... ok
+test_so_a_confirmacao_tem_opcoes (test_conversa.EntrevistaPublico.test_so_a_confirmacao_tem_opcoes) ... ok
+test_parada_tem_os_campos (test_conversa.Fragmento.test_parada_tem_os_campos) ... ok
+test_pergunta_tem_as_regras (test_conversa.Fragmento.test_pergunta_tem_as_regras) ... ok
+test_linha_de_identificacao_tem_a_versao_do_frontmatter (test_conversa.Identificacao.test_linha_de_identificacao_tem_a_versao_do_frontmatter) ... ok
+test_metadata_tem_updated (test_conversa.Identificacao.test_metadata_tem_updated) ... ok
+test_nenhuma_abre_com_banner (test_conversa.Identificacao.test_nenhuma_abre_com_banner) ... ok
+test_sao_18_e_as_16_da_camada_existem (test_conversa.Identificacao.test_sao_18_e_as_16_da_camada_existem) ... ok
+test_skill_com_ate_500_linhas (test_conversa.Identificacao.test_skill_com_ate_500_linhas) ... ok
+test_design_confere_com_design_lint (test_conversa.LintNoFimDaFase.test_design_confere_com_design_lint) ... ok
+test_handoff_confere_com_handoff_lint_entre_o_3_e_o_4 (test_conversa.LintNoFimDaFase.test_handoff_confere_com_handoff_lint_entre_o_3_e_o_4) ... ok
+
+----------------------------------------------------------------------
+Ran 59 tests in 24.684s
+
+OK
+[exit=0]

@@ -1,0 +1,12 @@
+$ bash -c cd tests; echo "== nome errado que usei na sonda anterior (a origem do errors=1):"; /usr/bin/python3 -B -m unittest test_windows.Windows.test_stdout_do_curator_sem_crlf 2>&1 | grep -E "^(ERROR|AttributeError|Ran|OK|FAILED)"; echo "== nome certo:"; SDD_TEST_BASH=/bin/bash /usr/bin/python3 -B -m unittest -v test_windows.FimDeLinha.test_stdout_do_curator_sem_crlf 2>&1 | tail -4
+== nome errado que usei na sonda anterior (a origem do errors=1):
+ERROR: Windows (unittest.loader._FailedTest)
+AttributeError: module 'test_windows' has no attribute 'Windows'
+Ran 1 test in 0.000s
+FAILED (errors=1)
+== nome certo:
+----------------------------------------------------------------------
+Ran 1 test in 0.111s
+
+OK
+[exit=0]

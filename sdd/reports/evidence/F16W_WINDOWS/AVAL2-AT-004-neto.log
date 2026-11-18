@@ -1,0 +1,15 @@
+$ bash /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f16w-windows/fd210694-ded6-4d95-a500-52e0521f4ae8/scratchpad/aval2/at004.sh
+bash: GNU bash, version 3.2.57(1)-release (arm64-apple-darwin25)
+== checar.sh --frente: rc=1, 10.57 s
+- Não consegui falar com example.invalid agora (sem internet ou rede bloqueada).
+  Quando a conexão voltar, rode de novo — sem o remoto não dá para abrir frente nem publicar.
+   órfãos 'sleep 77'/'sleep 78' vivos: 0
+== checar.sh (normal): rc=0, 10.73 s
+- Não consegui falar com example.invalid agora (sem internet ou rede bloqueada).
+  Quando a conexão voltar, rode de novo — sem o remoto não dá para abrir frente nem publicar.
+   órfãos 'sleep 77'/'sleep 78' vivos: 0
+== inventario.sh (gh com neto, SDD_CHECAR_GH):
+   rc=0, 10.14 s
+gh: sem resposta
+   órfãos vivos: 0
+[exit=0]

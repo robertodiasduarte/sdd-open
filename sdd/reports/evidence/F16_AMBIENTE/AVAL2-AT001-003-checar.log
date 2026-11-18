@@ -1,0 +1,166 @@
+$ bash /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f16-ambiente/7a19ff14-fc44-4226-880f-204bc93851d3/scratchpad/at3/sonda.sh /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f16-ambiente/7a19ff14-fc44-4226-880f-204bc93851d3/scratchpad   # sonda AT-001/002/003, checar.sh do HEAD 28caf3a (cópia de git archive); script abaixo da saída
+--- PATH com zed e cursor (cursor vence)
+cursor
+rc=0
+--- code na 2ª pasta vence cursor na 1ª (ordem da lista)
+code
+rc=0
+--- achado 4: Zed em A, VS Code em B
+open -a "Visual Studio Code"
+dica: para abrir pelo terminal com 'code', no Visual Studio Code: Command Palette (Cmd+Shift+P) → Shell Command: Install 'code' command in PATH
+rc=0
+--- Zed em A, Sublime em B (Zed antes na lista)
+open -a "Zed"
+rc=0
+--- Linux sem nada
+rc=1
+--- Windows só cursor.cmd
+"/private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f16-ambiente/7a19ff14-fc44-4226-880f-204bc93851d3/scratchpad/at3/w.DxE1/lad/Programs/cursor/resources/app/bin/cursor.cmd"
+dica: o editor está instalado, mas o comando dele não está no PATH: reinstale marcando 'Add to PATH', ou use o caminho acima
+rc=0
+--- Windows code.cmd e cursor.cmd
+"/private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f16-ambiente/7a19ff14-fc44-4226-880f-204bc93851d3/scratchpad/at3/w.DxE1/lad/Programs/Microsoft VS Code/bin/code.cmd"
+dica: o editor está instalado, mas o comando dele não está no PATH: reinstale marcando 'Add to PATH', ou use o caminho acima
+rc=0
+--- Windows code.cmd no PATH
+code
+rc=0
+--- macOS real (sem injeção de apps)
+open -a "Visual Studio Code"
+dica: para abrir pelo terminal com 'code', no Visual Studio Code: Command Palette (Cmd+Shift+P) → Shell Command: Install 'code' command in PATH
+rc=0
+--- AT-001 sem gh, sem remoto, Darwin
+⚠️ Vale arrumar
+- O repositório não tem remoto — nada que você fizer sai desta máquina, e as frentes nascem dele.
+  git remote add origin <url do repositório>   (projeto ainda sem repositório no GitHub? a skill sdd-iniciar-repo cria um privado e envia)
+- O programa do GitHub para o terminal (gh) não está instalado — sem ele, publicar o projeto e logar no GitHub ficam manuais.
+  brew install gh   (sem Homebrew: instalador em https://cli.github.com); depois feche e abra o terminal
+
+✅ Repo repo, branch main, nenhuma frente aberta, nenhum agente de código no terminal · sdd-checar-ambiente v1.5.0 · nov/2026 · versão atual: https://github.com/robertodiasduarte/sdd-open/releases/latest
+rc=0 (0-0s)
+chamadas ao gh: 0 
+--- AT-001 sem gh, sem remoto, MINGW64_NT
+⚠️ Vale arrumar
+- O repositório não tem remoto — nada que você fizer sai desta máquina, e as frentes nascem dele.
+  git remote add origin <url do repositório>   (projeto ainda sem repositório no GitHub? a skill sdd-iniciar-repo cria um privado e envia)
+- O programa do GitHub para o terminal (gh) não está instalado — sem ele, publicar o projeto e logar no GitHub ficam manuais.
+  winget install --id GitHub.cli -e   (depois feche e abra o terminal)
+
+✅ Repo repo, branch main, nenhuma frente aberta, nenhum agente de código no terminal · sdd-checar-ambiente v1.5.0 · nov/2026 · versão atual: https://github.com/robertodiasduarte/sdd-open/releases/latest
+rc=0 (0-0s)
+chamadas ao gh: 0 
+--- AT-001 sem gh, sem remoto, Linux
+⚠️ Vale arrumar
+- O repositório não tem remoto — nada que você fizer sai desta máquina, e as frentes nascem dele.
+  git remote add origin <url do repositório>   (projeto ainda sem repositório no GitHub? a skill sdd-iniciar-repo cria um privado e envia)
+- O programa do GitHub para o terminal (gh) não está instalado — sem ele, publicar o projeto e logar no GitHub ficam manuais.
+  siga https://github.com/cli/cli/blob/trunk/docs/install_linux.md   (depois feche e abra o terminal)
+
+✅ Repo repo, branch main, nenhuma frente aberta, nenhum agente de código no terminal · sdd-checar-ambiente v1.5.0 · nov/2026 · versão atual: https://github.com/robertodiasduarte/sdd-open/releases/latest
+rc=0 (0-0s)
+chamadas ao gh: 0 
+--- AT-001 sem gh, remoto GitHub, Darwin
+⚠️ Vale arrumar
+- O programa do GitHub para o terminal (gh) não está instalado — sem ele, publicar o projeto e logar no GitHub ficam manuais.
+  brew install gh   (sem Homebrew: instalador em https://cli.github.com); depois feche e abra o terminal
+
+✅ Repo repo, branch main, nenhuma frente aberta, nenhum agente de código no terminal · sdd-checar-ambiente v1.5.0 · nov/2026 · versão atual: https://github.com/robertodiasduarte/sdd-open/releases/latest
+rc=0 (1-0s)
+chamadas ao gh: 0 
+--- AT-001 --frente sem gh, remoto GitHub
+✅ Pronto para abrir a frente: repo repo, principal main · sdd-checar-ambiente v1.5.0 · nov/2026 · versão atual: https://github.com/robertodiasduarte/sdd-open/releases/latest
+rc=0 (1-1s)
+chamadas ao gh: 0 
+--- AT-002 gh-logado, remoto GitHub
+✅ Pronto: repo repo, branch main, nenhuma frente aberta, nenhum agente de código no terminal, editor code · sdd-checar-ambiente v1.5.0 · nov/2026 · versão atual: https://github.com/robertodiasduarte/sdd-open/releases/latest
+rc=0 (1-1s)
+chamadas ao gh: 1 auth status --hostname github.com
+--- AT-002 gh-deslogado, remoto GitHub
+⚠️ Vale arrumar
+- O gh está instalado, mas nenhuma conta do GitHub está logada nele — publicar o projeto vai pedir esse login.
+  gh auth login   (GitHub.com → HTTPS → Yes → Login with a web browser)
+
+✅ Repo repo, branch main, nenhuma frente aberta, nenhum agente de código no terminal, editor code · sdd-checar-ambiente v1.5.0 · nov/2026 · versão atual: https://github.com/robertodiasduarte/sdd-open/releases/latest
+rc=0 (2-1s)
+chamadas ao gh: 1 auth status --hostname github.com
+--- AT-002 gh-lento, remoto GitHub
+⚠️ Vale arrumar
+- Não deu para conferir o login do gh no GitHub agora (o GitHub não respondeu em 10 s).
+  Rode de novo quando a conexão voltar; para ver na hora: gh auth status
+
+✅ Repo repo, branch main, nenhuma frente aberta, nenhum agente de código no terminal, editor code · sdd-checar-ambiente v1.5.0 · nov/2026 · versão atual: https://github.com/robertodiasduarte/sdd-open/releases/latest
+rc=0 (12-2s)
+chamadas ao gh: 1 auth status --hostname github.com
+--- AT-002 --frente gh-deslogado
+✅ Pronto para abrir a frente: repo repo, principal main · sdd-checar-ambiente v1.5.0 · nov/2026 · versão atual: https://github.com/robertodiasduarte/sdd-open/releases/latest
+rc=0 (12-12s)
+chamadas ao gh: 0 
+--- AT-002 gh-deslogado, sem remoto
+⚠️ Vale arrumar
+- O repositório não tem remoto — nada que você fizer sai desta máquina, e as frentes nascem dele.
+  git remote add origin <url do repositório>   (projeto ainda sem repositório no GitHub? a skill sdd-iniciar-repo cria um privado e envia)
+- O gh está instalado, mas nenhuma conta do GitHub está logada nele — publicar o projeto vai pedir esse login.
+  gh auth login   (GitHub.com → HTTPS → Yes → Login with a web browser)
+
+✅ Repo repo, branch main, nenhuma frente aberta, nenhum agente de código no terminal · sdd-checar-ambiente v1.5.0 · nov/2026 · versão atual: https://github.com/robertodiasduarte/sdd-open/releases/latest
+rc=0 (13-12s)
+chamadas ao gh: 1 auth status --hostname github.com
+--- AT-002 gh-deslogado, remoto gitlab
+✅ Pronto: repo repo, branch main, nenhuma frente aberta, nenhum agente de código no terminal · sdd-checar-ambiente v1.5.0 · nov/2026 · versão atual: https://github.com/robertodiasduarte/sdd-open/releases/latest
+rc=0 (13-13s)
+chamadas ao gh: 0 
+--- AT-003 resumo com open -a
+✅ Pronto: repo repo, branch main, nenhuma frente aberta, nenhum agente de código no terminal, editor open -a "Zed" · sdd-checar-ambiente v1.5.0 · nov/2026 · versão atual: https://github.com/robertodiasduarte/sdd-open/releases/latest
+rc=0 (13-13s)
+chamadas ao gh: 0 
+----- sonda.sh -----
+#!/bin/bash
+# Sonda AT-001/002/003 (ciclo 2), checar.sh do HEAD em cópia de git archive.
+S="$1"; C="$S/at6/arq/.agents/skills/sdd-checar-ambiente/scripts/checar.sh"
+W="$(mktemp -d "$S/at3/w.XXXX")"; V=/var/empty
+# ---- AT-003 editor
+mkdir -p "$W/p1" "$W/p2" "$W/A" "$W/B" "$W/lad/Programs/Microsoft VS Code/bin" "$W/lad/Programs/cursor/resources/app/bin"
+for e in zed cursor; do printf '#!/bin/sh\n' > "$W/p1/$e"; chmod +x "$W/p1/$e"; done
+printf '#!/bin/sh\n' > "$W/p2/code"; chmod +x "$W/p2/code"
+ed() { echo "--- $1"; shift; env "$@" bash "$C" --editor; echo "rc=$?"; }
+ed "PATH com zed e cursor (cursor vence)" SDD_CHECAR_EDITOR_PATH="$W/p1" SDD_CHECAR_UNAME=Darwin SDD_APPS_DIRS=$V
+ed "code na 2ª pasta vence cursor na 1ª (ordem da lista)" SDD_CHECAR_EDITOR_PATH="$W/p1:$W/p2" SDD_CHECAR_UNAME=Darwin SDD_APPS_DIRS=$V
+mkdir "$W/A/Zed.app" "$W/B/Visual Studio Code.app"
+ed "achado 4: Zed em A, VS Code em B" SDD_CHECAR_EDITOR_PATH=$V SDD_CHECAR_UNAME=Darwin SDD_APPS_DIRS="$W/A:$W/B"
+rm -rf "$W/B/Visual Studio Code.app"; mkdir "$W/B/Sublime Text.app"
+ed "Zed em A, Sublime em B (Zed antes na lista)" SDD_CHECAR_EDITOR_PATH=$V SDD_CHECAR_UNAME=Darwin SDD_APPS_DIRS="$W/A:$W/B"
+ed "Linux sem nada" SDD_CHECAR_EDITOR_PATH=$V SDD_CHECAR_UNAME=Linux SDD_APPS_DIRS="$W/A"
+touch "$W/lad/Programs/cursor/resources/app/bin/cursor.cmd"
+ed "Windows só cursor.cmd" SDD_CHECAR_EDITOR_PATH=$V SDD_CHECAR_UNAME=MINGW64_NT LOCALAPPDATA="$W/lad"
+touch "$W/lad/Programs/Microsoft VS Code/bin/code.cmd"
+ed "Windows code.cmd e cursor.cmd" SDD_CHECAR_EDITOR_PATH=$V SDD_CHECAR_UNAME=MINGW64_NT LOCALAPPDATA="$W/lad"
+ed "Windows code.cmd no PATH" SDD_CHECAR_EDITOR_PATH="$W/lad/Programs/Microsoft VS Code/bin" SDD_CHECAR_UNAME=MINGW64_NT
+ed "macOS real (sem injeção de apps)" SDD_CHECAR_EDITOR_PATH=$V SDD_CHECAR_UNAME=Darwin
+# ---- AT-001/002/003 modo normal
+R="$W/repo"; git init -q -b main "$R"; git -C "$R" -c user.name=t -c user.email=t@t commit -q --allow-empty -m x
+git init -q --bare "$W/bare.git"; git -C "$R" push -q "$W/bare.git" main 2>/dev/null
+mkdir -p "$W/gh-logado" "$W/gh-deslogado" "$W/gh-lento"
+printf '#!/bin/sh\necho "$@" >> "%s/gh.log"\nexit 0\n' "$W" > "$W/gh-logado/gh"
+printf '#!/bin/sh\necho "$@" >> "%s/gh.log"\necho "You are not logged into any GitHub hosts." >&2; exit 1\n' "$W" > "$W/gh-deslogado/gh"
+printf '#!/bin/sh\necho "$@" >> "%s/gh.log"\nsleep 30\n' "$W" > "$W/gh-lento/gh"
+chmod +x "$W"/gh-*/gh
+GHPATH() { echo "$W/$1:/usr/bin:/bin"; }
+cn() { local rot="$1"; shift; echo "--- $rot"; : > "$W/gh.log"; local t0=$SECONDS
+  ( cd "$R" && env "$@" bash "$C" ${MODOARG:-} 2>&1 ); echo "rc=$? (${SECONDS}-${t0}s)"; echo "chamadas ao gh: $(wc -l < "$W/gh.log" | tr -d ' ') $(cat "$W/gh.log" | head -1)"; }
+CFG="url.$W/bare.git.insteadOf=https://github.com/exemplo/proj.git"
+git -C "$R" config "$CFG" 2>/dev/null; git -C "$R" config "url.$W/bare.git.insteadOf" "https://github.com/exemplo/proj.git"
+for so in Darwin MINGW64_NT Linux; do
+  cn "AT-001 sem gh, sem remoto, $so" PATH=/usr/bin:/bin SDD_CHECAR_UNAME=$so SDD_CHECAR_EDITOR_PATH=$V SDD_APPS_DIRS=$V SDD_CHECAR_GITHUB_API=http://127.0.0.1:9
+done
+git -C "$R" remote add origin https://github.com/exemplo/proj.git
+cn "AT-001 sem gh, remoto GitHub, Darwin" PATH=/usr/bin:/bin SDD_CHECAR_UNAME=Darwin SDD_CHECAR_EDITOR_PATH=$V SDD_APPS_DIRS=$V SDD_CHECAR_GITHUB_API=http://127.0.0.1:9
+MODOARG=--frente cn "AT-001 --frente sem gh, remoto GitHub" PATH=/usr/bin:/bin SDD_CHECAR_UNAME=Darwin SDD_CHECAR_GITHUB_API=http://127.0.0.1:9
+for g in logado deslogado lento; do
+  cn "AT-002 gh-$g, remoto GitHub" PATH="$(GHPATH gh-$g)" SDD_CHECAR_UNAME=Darwin SDD_CHECAR_EDITOR_PATH="$W/p2" SDD_CHECAR_GITHUB_API=http://127.0.0.1:9
+done
+MODOARG=--frente cn "AT-002 --frente gh-deslogado" PATH="$(GHPATH gh-deslogado)" SDD_CHECAR_UNAME=Darwin SDD_CHECAR_GITHUB_API=http://127.0.0.1:9
+git -C "$R" remote remove origin
+cn "AT-002 gh-deslogado, sem remoto" PATH="$(GHPATH gh-deslogado)" SDD_CHECAR_UNAME=Darwin SDD_CHECAR_EDITOR_PATH=$V SDD_APPS_DIRS=$V SDD_CHECAR_GITHUB_API=http://127.0.0.1:9
+git -C "$R" remote add origin https://gitlab.com/exemplo/proj.git; git -C "$R" config "url.$W/bare.git.insteadOf" "https://gitlab.com/exemplo/proj.git"
+cn "AT-002 gh-deslogado, remoto gitlab" PATH="$(GHPATH gh-deslogado)" SDD_CHECAR_UNAME=Darwin SDD_CHECAR_EDITOR_PATH=$V SDD_APPS_DIRS=$V SDD_CHECAR_GITHUB_API=http://127.0.0.1:9
+cn "AT-003 resumo com open -a" PATH="$(GHPATH gh-logado)" SDD_CHECAR_UNAME=Darwin SDD_CHECAR_EDITOR_PATH=$V SDD_APPS_DIRS="$W/A" SDD_CHECAR_GITHUB_API=http://127.0.0.1:9

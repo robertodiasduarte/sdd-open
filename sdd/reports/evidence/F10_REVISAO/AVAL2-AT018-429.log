@@ -1,0 +1,30 @@
+$ bash /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f10-revisao/bd420f6e-558d-4962-a0c9-40cdfc2cbd27/scratchpad/p/at018.sh
+=== 429 e depois ok na mesma engine
+▶ revisor: stub-a:falha-429+revisor-ok (falha-429+revisor-ok) — até 1 min
+▶ auditor: stub-b (auditor-agree) — até 1 min
+RESULTADO: REVIEW COMPLETA
+[rc=0] chamadas=3 segundos=1
+  conta-auditor_agree=1
+  conta-falha_429_revisor_ok=2
+=== 429 persistente: 3 chamadas e avança
+▶ revisor: stub-a:falha-429 (falha-429) — até 1 min
+▶ revisor: stub-c (revisor-ok) — até 1 min
+▶ auditor: stub-b (auditor-agree) — até 1 min
+⚠️ o revisor previsto (stub-a:falha-429) falhou (stub-a:falha-429 seguiu no limite passageiro (429) depois de 3 tentativas); quem revisou foi stub-c
+RESULTADO: REVIEW COMPLETA
+[rc=0] chamadas=5 segundos=0
+  conta-auditor_agree=1
+  conta-falha_429=3
+  conta-revisor_ok=1
+=== SDD_REVIEW_ESPERA=1: 2 esperas de 1 s
+▶ revisor: stub-a:falha-429 (falha-429) — até 1 min
+▶ revisor: stub-c (revisor-ok) — até 1 min
+▶ auditor: stub-b (auditor-agree) — até 1 min
+⚠️ o revisor previsto (stub-a:falha-429) falhou (stub-a:falha-429 seguiu no limite passageiro (429) depois de 3 tentativas); quem revisou foi stub-c
+RESULTADO: REVIEW COMPLETA
+[rc=0] chamadas=5 segundos=3
+  conta-auditor_agree=1
+  conta-falha_429=3
+  conta-revisor_ok=1
+padrão: 54:ESPERA = int(os.environ.get("SDD_REVIEW_ESPERA") or "30")
+[exit=0]

@@ -1,0 +1,3 @@
+$ /usr/bin/python3 -B <passo 'Skill integrity' do publish-gate.yml> <starter>/skills/sdd-kb
+skill integrity: 0 finding(s) in 37 file(s) under /Users/robertoduarte/rdd-public/sdd-starter/skills/sdd-kb
+rc=0

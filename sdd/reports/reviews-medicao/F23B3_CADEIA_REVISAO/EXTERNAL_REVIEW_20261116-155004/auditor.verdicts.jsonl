@@ -1,0 +1,5 @@
+{"achado": "R1", "veredito": "AGREE", "justificativa": "sdd/bin/ledger-revisao-lint.sh:80 e sdd/bin/custo-feature.sh:75 mantêm sem achados restrito a rodadas numéricas, excluindo uma revisão D1 sem achados."}
+{"achado": "R2", "veredito": "DISAGREE_EVIDENCE", "justificativa": "O DESIGN, Decision 1 e Pattern 2, documenta preservar o gatilho segurança seguido apenas do caminho, como implementado em sdd/bin/adversarial-review.sh:570."}
+{"achado": "R3", "veredito": "DISAGREE_CONCERN", "justificativa": "Falta o código que seleciona as linhas do ledger no loop para confirmar se rodada=D1 é lida corretamente."}
+{"achado": "R4", "veredito": "DISAGREE_CONCERN", "justificativa": "A função não normaliza Unicode, mas falta o trecho de obtenção dos caminhos para confirmar que NFD chega intacto ao gatilho."}
+{"achado": "N1", "veredito": "NOVO", "severidade": "MED", "arquivo": "sdd/bin/eval-revisores.sh", "linha": 711, "resumo": "O custo evitado descarta o indicador de custo parcial de custo_de e apresenta US$ 1.2500 + $? como 1.2500, sem + n/d."}

@@ -1,0 +1,7 @@
+$ git diff --stat v2.2.4 HEAD && git diff --name-only v2.2.4 HEAD | grep -vxE "\.github/workflows/(publish-gate|release)\.yml|tests/test_release_workflow\.py"; test $? -eq 1 && echo "(só os 2 workflows e tests/test_release_workflow.py mudaram; nenhuma skill)"
+ .github/workflows/publish-gate.yml |  86 ++++++++++++++++++++-
+ .github/workflows/release.yml      |  91 ++++++++++++++++++++++-
+ tests/test_release_workflow.py     | 148 ++++++++++++++++++++++++++++++++++++-
+ 3 files changed, 319 insertions(+), 6 deletions(-)
+(só os 2 workflows e tests/test_release_workflow.py mudaram; nenhuma skill)
+exit=0

@@ -1,0 +1,39 @@
+# Rodada 3 da revisão do código: testes novos contra os scripts e textos de HEAD e60222c (antes do conserto)
+test_agente_que_grava_no_projeto_invalida_a_execucao (test_f23b2_papeis.AT008AT011Executor) ... FAIL
+test_interrompida_que_gravou_no_projeto_para_na_retomada (test_f23b2_papeis.AT008AT011Executor) ... FAIL
+test_escada_le_o_slot_antes_de_marcar_o_inicio (test_f23b2_papeis.AT010Pacote) ... FAIL
+
+======================================================================
+FAIL: test_agente_que_grava_no_projeto_invalida_a_execucao (test_f23b2_papeis.AT008AT011Executor)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.lap0ksoDJm/tests/test_f23b2_papeis.py", line 486, in test_agente_que_grava_no_projeto_invalida_a_execucao
+    self.assertIn("guardada como invalida-1.txt e refeita", out)
+AssertionError: 'guardada como invalida-1.txt e refeita' not found in 'papel-serie: cur · papel curador · 1 caso(s) · 1 repetição(ões) · referência caro · candidatos —\nRESULTADO: COMPLETA\n→ acumulado da medição: nominal 1.001 · pago 0. Rode papel-medir.sh /private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/sdd-open-bha6ortk/projeto/med/cur para a escolha.\n'
+
+======================================================================
+FAIL: test_interrompida_que_gravou_no_projeto_para_na_retomada (test_f23b2_papeis.AT008AT011Executor)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.lap0ksoDJm/tests/test_f23b2_papeis.py", line 523, in test_interrompida_que_gravou_no_projeto_para_na_retomada
+    self.assertEqual(rc, 21, out)
+AssertionError: 0 != 21 : ↻ execução interrompida medida (execucoes/c1/caro/1): nominal 1.001
+papel-serie: cur · papel curador · 1 caso(s) · 1 repetição(ões) · referência caro · candidatos —
+▶ c1 · caro · rep 1 · rc 0 · 0s · nominal 1.001 · acumulado 2.002
+RESULTADO: COMPLETA
+→ acumulado da medição: nominal 2.002 · pago 0. Rode papel-medir.sh /private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/sdd-open-gdwzo55e/projeto/med/cur para a escolha.
+
+
+======================================================================
+FAIL: test_escada_le_o_slot_antes_de_marcar_o_inicio (test_f23b2_papeis.AT010Pacote)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.lap0ksoDJm/tests/test_f23b2_papeis.py", line 813, in test_escada_le_o_slot_antes_de_marcar_o_inicio
+    self.assertLess(secao.index("sdd-fluxo.sh modelo <slot>"), secao.index("marca-fase.sh inicio papel-<papel>"))
+AssertionError: 537 not less than 304
+
+----------------------------------------------------------------------
+Ran 3 tests in 2.024s
+
+FAILED (failures=3)
+[exit=1]

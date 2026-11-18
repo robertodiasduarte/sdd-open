@@ -1,0 +1,54 @@
+$ cd tests && SDD_TEST_BASH=/bin/bash /usr/bin/python3 -B -m unittest -v test_correcoes_w0 test_contrato_build_release test_verify_gate
+test_evidencia_espera_o_prefixo_aval (test_correcoes_w0.AvaliadorFrescoSoGravaEvidencia) ... ok
+test_os_dois_briefs_permitem_so_o_log_aval (test_correcoes_w0.AvaliadorFrescoSoGravaEvidencia) ... ok
+test_versao_do_build (test_correcoes_w0.AvaliadorFrescoSoGravaEvidencia) ... ok
+test_as_chamadas_da_skill_acusam_o_marcador (test_correcoes_w0.IterateVeClarificacaoAberta) ... ok
+test_as_chamadas_da_skill_nao_acusam_sem_marcador (test_correcoes_w0.IterateVeClarificacaoAberta) ... ok
+test_fixture_de_clarificacao_da_0_com_print_e_5_sem (test_correcoes_w0.IterateVeClarificacaoAberta) ... ok
+test_passo_4_explica_o_que_cada_exit_quer_dizer (test_correcoes_w0.IterateVeClarificacaoAberta) ... ok
+test_passo_4_tem_as_duas_chamadas (test_correcoes_w0.IterateVeClarificacaoAberta) ... ok
+test_versao (test_correcoes_w0.IterateVeClarificacaoAberta) ... ok
+test_evidencia_e_template_apontam_o_report_lint_que_existe (test_correcoes_w0.PacoteNaoPrometeOQueNaoTem) ... ok
+test_evidencia_nao_descreve_hook_de_um_agente_so (test_correcoes_w0.PacoteNaoPrometeOQueNaoTem) ... ok
+test_grep_da_w0_sem_achado (test_correcoes_w0.PacoteNaoPrometeOQueNaoTem) ... ok
+test_passo_4b_manda_ler_a_referencia (test_contrato_build_release.SddBuild) ... ok
+test_referencia_sem_arquivo_de_ambiente_do_starter (test_contrato_build_release.SddBuild) ... ok
+test_referencia_tem_as_regras_do_starter (test_contrato_build_release.SddBuild) ... ok
+test_versao (test_contrato_build_release.SddBuild) ... ok
+test_bloco_tem_os_campos_na_ordem (test_contrato_build_release.SddRelease) ... ok
+test_cada_resultado_do_script_tem_traducao (test_contrato_build_release.SddRelease) ... ok
+test_item_7_roda_o_script (test_contrato_build_release.SddRelease) ... ok
+test_report_lint_da_fase_0_cita_migration (test_contrato_build_release.SddRelease) ... ok
+test_uma_pergunta_so_e_a_ultima_linha (test_contrato_build_release.SddRelease) ... ok
+test_versao (test_contrato_build_release.SddRelease) ... ok
+test_lm_004_no_sempre_e_playbook_valido (test_contrato_build_release.TemplateEPlaybook) ... ok
+test_template_tem_a_secao_com_as_colunas (test_contrato_build_release.TemplateEPlaybook) ... ok
+test_fixtures_canonicas (test_verify_gate.FixturesDoRepositorio) ... ok
+test_fixtures_existem_no_pacote (test_verify_gate.FixturesDoRepositorio) ... ok
+test_0_verde_quando_cmd_passa (test_verify_gate.VerifyGate) ... ok
+test_2_vermelho_declarado_vence_ruido_de_ferramenta (test_verify_gate.VerifyGate) ... ok
+test_2_vermelho_quando_cmd_falha (test_verify_gate.VerifyGate) ... ok
+test_3_comando_que_declara_inconclusivo_propaga (test_verify_gate.VerifyGate) ... ok
+test_3_inconclusivo_quando_ferramenta_ausente (test_verify_gate.VerifyGate) ... ok
+test_3_smoke_com_403_inesperado_e_ruido_de_infra (test_verify_gate.VerifyGate) ... ok
+test_4_manual_ux_exige_assinatura (test_verify_gate.VerifyGate) ... ok
+test_5_marcador_ativo_fora_de_fence (test_verify_gate.VerifyGate) ... ok
+test_64_arquivo_inexistente (test_verify_gate.VerifyGate) ... ok
+test_64_fora_de_repositorio_git (test_verify_gate.VerifyGate) ... ok
+test_64_kind_invalido (test_verify_gate.VerifyGate) ... ok
+test_64_kind_test_sem_cmd_executavel (test_verify_gate.VerifyGate) ... ok
+test_64_sem_bloco (test_verify_gate.VerifyGate) ... ok
+test_contains_ausente_e_vermelho (test_verify_gate.VerifyGate) ... ok
+test_contains_presente_passa (test_verify_gate.VerifyGate) ... ok
+test_exit_n_explicito (test_verify_gate.VerifyGate) ... ok
+test_marcador_dentro_de_fence_e_documentacao_nao_duvida (test_verify_gate.VerifyGate) ... ok
+test_print_lista_o_bloco_mesmo_com_marcador (test_verify_gate.VerifyGate) ... ok
+test_smoke_com_403_esperado_passa (test_verify_gate.VerifyGate) ... ok
+test_strict_preserva_0_2_64 (test_verify_gate.VerifyGate) ... ok
+test_strict_remapeia_3_4_5_para_1 (test_verify_gate.VerifyGate) ... ok
+
+----------------------------------------------------------------------
+Ran 47 tests in 2.186s
+
+OK
+exit=0

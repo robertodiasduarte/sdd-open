@@ -1,0 +1,11 @@
+$ bash sdd/reports/evidence/F9_FLUXO/sabotagem.sh
+✅ review-design: limiar de 3 vira 99 → vermelho (test_tres_arquivos_novos_exige_e_modify_nao_conta ) · restaurado → verde
+✅ loop: linha MED fecha HIGH → vermelho (test_continuar_por_cada_causa ) · restaurado → verde
+✅ seguir: não confere a revisão do DESIGN → vermelho (test_para_por_cada_motivo ) · restaurado → verde
+✅ despachar: sai 0 em vez de 40 → vermelho (test_grava_o_brief_imprime_a_parada_e_sai_40 ) · restaurado → verde
+✅ despachar: faixa [A-Za-z] de volta (aceita acento em UTF-8) → vermelho (test_nome_acentuado_sai_64_em_locale_utf8 ) · restaurado → verde
+✅ seguir: severidade formatada não conta → vermelho (test_severidade_formatada_e_ledger_de_exemplo_cercado ) · restaurado → verde
+✅ decisoes-lint: pergunta sem marca passa → vermelho (test_cada_regra_reprova_pelo_motivo_certo ) · restaurado → verde
+✅ decisoes-lint: rótulo errado passa → vermelho (test_cada_regra_reprova_pelo_motivo_certo ) · restaurado → verde
+RESULTADO: VERDE — 8/8 sabotagens derrubaram um teste nomeado
+[exit=0]

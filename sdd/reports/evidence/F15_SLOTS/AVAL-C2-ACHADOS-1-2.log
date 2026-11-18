@@ -1,0 +1,170 @@
+$ /bin/bash /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f15-slots/80a83c1b-4077-4625-ba69-e27f11f530a1/scratchpad/c2a.sh
+######## ACHADO 1: flag sem valor seguida de flag
+---- --feature --arvore /tmp
+🛑 --feature recebeu outra flag (--arvore) como valor
+RESULTADO: ERRO DE USO
+→ passe --feature <valor>; um nome vazio indica variável não preenchida na chamada
+[exit=64]
+---- --arvore --feature F1
+🛑 --arvore recebeu outra flag (--feature) como valor
+RESULTADO: ERRO DE USO
+→ passe --arvore <valor>; um nome vazio indica variável não preenchida na chamada
+[exit=64]
+---- --feature --base origin/main
+🛑 --feature recebeu outra flag (--base) como valor
+RESULTADO: ERRO DE USO
+→ passe --feature <valor>; um nome vazio indica variável não preenchida na chamada
+[exit=64]
+---- --base --commit HEAD
+🛑 --base recebeu outra flag (--commit) como valor
+RESULTADO: ERRO DE USO
+→ passe --base <valor>; um nome vazio indica variável não preenchida na chamada
+[exit=64]
+---- --commit --dir /tmp
+🛑 --commit recebeu outra flag (--dir) como valor
+RESULTADO: ERRO DE USO
+→ passe --commit <valor>; um nome vazio indica variável não preenchida na chamada
+[exit=64]
+---- --dir --feature F1
+🛑 --dir recebeu outra flag (--feature) como valor
+RESULTADO: ERRO DE USO
+→ passe --dir <valor>; um nome vazio indica variável não preenchida na chamada
+[exit=64]
+---- --feature F1 --arvore
+🛑 --arvore exige um valor
+RESULTADO: ERRO DE USO
+→ passe --arvore <valor>; um nome vazio indica variável não preenchida na chamada
+[exit=64]
+---- --feature  --base HEAD
+🛑 --feature exige um valor
+RESULTADO: ERRO DE USO
+→ passe --feature <valor>; um nome vazio indica variável não preenchida na chamada
+[exit=64]
+---- --feature --
+🛑 --feature recebeu outra flag (--) como valor
+RESULTADO: ERRO DE USO
+→ passe --feature <valor>; um nome vazio indica variável não preenchida na chamada
+[exit=64]
+---- --feature F1 --arvore /tmp -- --nao-e-flag.txt
+⚠️  SDD_BASE vazio: origin/main não existe neste repositório
+▶ smoke.before_push_cmd (before_push): bash e.sh
+RODOU FEATURE=[F1] ARVORE=[/tmp] DIR=[/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/sdd-slot-d51f4e7a77ce/F1] n=1 args=[--nao-e-flag.txt]
+RESULTADO: OK
+→ siga para o próximo passo.
+[exit=0]
+---- --feature F1 -x
+⚠️  SDD_BASE vazio: origin/main não existe neste repositório
+▶ smoke.before_push_cmd (before_push): bash e.sh
+RODOU FEATURE=[F1] ARVORE=[/private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.1xQjG571g2] DIR=[/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/sdd-slot-d51f4e7a77ce/F1] n=1 args=[-x]
+RESULTADO: OK
+→ siga para o próximo passo.
+[exit=0]
+######## ACHADO 2: # no meio da palavra
+---- config: before_push_cmd: "bash e.sh https://app.local/#/pedidos"
+     bash -c puro (com 'f1' no fim): RODOU FEATURE=[] ARVORE=[] DIR=[] n=2 args=[https://app.local/#/pedidos f1.txt]
+⚠️  SDD_BASE vazio: origin/main não existe neste repositório
+▶ smoke.before_push_cmd (before_push): bash e.sh https://app.local/#/pedidos
+RODOU FEATURE=[] ARVORE=[/private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.1xQjG571g2] DIR=[/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/sdd-slot-d51f4e7a77ce/_sem-feature] n=2 args=[https://app.local/#/pedidos f1.txt]
+RESULTADO: OK
+→ siga para o próximo passo.
+[exit=0]
+---- config: before_push_cmd: "bash e.sh a#b"
+     bash -c puro (com 'f1' no fim): RODOU FEATURE=[] ARVORE=[] DIR=[] n=2 args=[a#b f1.txt]
+⚠️  SDD_BASE vazio: origin/main não existe neste repositório
+▶ smoke.before_push_cmd (before_push): bash e.sh a#b
+RODOU FEATURE=[] ARVORE=[/private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.1xQjG571g2] DIR=[/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/sdd-slot-d51f4e7a77ce/_sem-feature] n=2 args=[a#b f1.txt]
+RESULTADO: OK
+→ siga para o próximo passo.
+[exit=0]
+---- config: before_push_cmd: "bash e.sh 'x # y'"
+     bash -c puro (com 'f1' no fim): RODOU FEATURE=[] ARVORE=[] DIR=[] n=2 args=[x # y f1.txt]
+⚠️  SDD_BASE vazio: origin/main não existe neste repositório
+▶ smoke.before_push_cmd (before_push): bash e.sh 'x # y'
+RODOU FEATURE=[] ARVORE=[/private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.1xQjG571g2] DIR=[/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/sdd-slot-d51f4e7a77ce/_sem-feature] n=2 args=[x # y f1.txt]
+RESULTADO: OK
+→ siga para o próximo passo.
+[exit=0]
+---- config: before_push_cmd: "bash e.sh \"x # y\""
+     bash -c puro (com 'f1' no fim): RODOU FEATURE=[] ARVORE=[] DIR=[] n=1 args=["x]
+⚠️  SDD_BASE vazio: origin/main não existe neste repositório
+▶ smoke.before_push_cmd (before_push): bash e.sh "x # y"
+RODOU FEATURE=[] ARVORE=[/private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.1xQjG571g2] DIR=[/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/sdd-slot-d51f4e7a77ce/_sem-feature] n=2 args=[x # y f1.txt]
+RESULTADO: OK
+→ siga para o próximo passo.
+[exit=0]
+---- config: before_push_cmd: "bash e.sh $#"
+     bash -c puro (com 'f1' no fim): RODOU FEATURE=[] ARVORE=[] DIR=[] n=2 args=[1 f1.txt]
+⚠️  SDD_BASE vazio: origin/main não existe neste repositório
+▶ smoke.before_push_cmd (before_push): bash e.sh $#
+RODOU FEATURE=[] ARVORE=[/private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.1xQjG571g2] DIR=[/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/sdd-slot-d51f4e7a77ce/_sem-feature] n=2 args=[1 f1.txt]
+RESULTADO: OK
+→ siga para o próximo passo.
+[exit=0]
+---- config: before_push_cmd: "bash e.sh ${#HOME}"
+     bash -c puro (com 'f1' no fim): RODOU FEATURE=[] ARVORE=[] DIR=[] n=2 args=[20 f1.txt]
+⚠️  SDD_BASE vazio: origin/main não existe neste repositório
+▶ smoke.before_push_cmd (before_push): bash e.sh ${#HOME}
+RODOU FEATURE=[] ARVORE=[/private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.1xQjG571g2] DIR=[/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/sdd-slot-d51f4e7a77ce/_sem-feature] n=2 args=[20 f1.txt]
+RESULTADO: OK
+→ siga para o próximo passo.
+[exit=0]
+---- config: before_push_cmd: bash e.sh https://app.local/#/pedidos
+     bash -c puro (com 'f1' no fim): RODOU FEATURE=[] ARVORE=[] DIR=[] n=2 args=[https://app.local/#/pedidos f1.txt]
+<stdin>:33: DeprecationWarning: 'maxsplit' is passed as positional argument
+⚠️  SDD_BASE vazio: origin/main não existe neste repositório
+▶ smoke.before_push_cmd (before_push): bash e.sh https://app.local/#/pedidos
+RODOU FEATURE=[] ARVORE=[/private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.1xQjG571g2] DIR=[/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/sdd-slot-d51f4e7a77ce/_sem-feature] n=2 args=[https://app.local/#/pedidos f1.txt]
+RESULTADO: OK
+→ siga para o próximo passo.
+[exit=0]
+---- config: before_push_cmd: "bash e.sh oi # comentario"
+     bash -c puro (com 'f1' no fim): RODOU FEATURE=[] ARVORE=[] DIR=[] n=1 args=[oi]
+🛑 sdd/config.yaml, linha 2: o comando de smoke.before_push_cmd tem um comentário (#); os arquivos cairiam dentro dele
+RESULTADO: ERRO DE USO
+→ tire o # do comando (o comentário vai numa linha própria do config) ou aponte para um script
+[exit=64]
+---- config: before_push_cmd: "bash e.sh oi;# c"
+     bash -c puro (com 'f1' no fim): RODOU FEATURE=[] ARVORE=[] DIR=[] n=1 args=[oi]
+🛑 sdd/config.yaml, linha 2: o comando de smoke.before_push_cmd tem um comentário (#); os arquivos cairiam dentro dele
+RESULTADO: ERRO DE USO
+→ tire o # do comando (o comentário vai numa linha própria do config) ou aponte para um script
+[exit=64]
+---- config: before_push_cmd: "bash e.sh oi|#c"
+     bash -c puro (com 'f1' no fim): slot: -c: line 1: syntax error: unexpected end of file
+🛑 sdd/config.yaml, linha 2: o comando de smoke.before_push_cmd tem um comentário (#); os arquivos cairiam dentro dele
+RESULTADO: ERRO DE USO
+→ tire o # do comando (o comentário vai numa linha própria do config) ou aponte para um script
+[exit=64]
+---- config: before_push_cmd: "#bash e.sh"
+     bash -c puro (com 'f1' no fim): 🛑 sdd/config.yaml, linha 2: o comando de smoke.before_push_cmd tem um comentário (#); os arquivos cairiam dentro dele
+RESULTADO: ERRO DE USO
+→ tire o # do comando (o comentário vai numa linha própria do config) ou aponte para um script
+[exit=64]
+---- config: before_push_cmd: "bash e.sh oi	#tab"
+     bash -c puro (com 'f1' no fim): RODOU FEATURE=[] ARVORE=[] DIR=[] n=1 args=[oi]
+🛑 sdd/config.yaml, linha 2: o comando de smoke.before_push_cmd tem um comentário (#); os arquivos cairiam dentro dele
+RESULTADO: ERRO DE USO
+→ tire o # do comando (o comentário vai numa linha própria do config) ou aponte para um script
+[exit=64]
+---- config: before_push_cmd: bash e.sh oi # yaml-comentario
+     bash -c puro (com 'f1' no fim): RODOU FEATURE=[] ARVORE=[] DIR=[] n=2 args=[oi f1.txt]
+<stdin>:33: DeprecationWarning: 'maxsplit' is passed as positional argument
+⚠️  SDD_BASE vazio: origin/main não existe neste repositório
+▶ smoke.before_push_cmd (before_push): bash e.sh oi
+RODOU FEATURE=[] ARVORE=[/private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.1xQjG571g2] DIR=[/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/sdd-slot-d51f4e7a77ce/_sem-feature] n=2 args=[oi f1.txt]
+RESULTADO: OK
+→ siga para o próximo passo.
+[exit=0]
+---- config: before_push_cmd: "bash e.sh a\\\\ #b"
+     bash -c puro (com 'f1' no fim): RODOU FEATURE=[] ARVORE=[] DIR=[] n=1 args=[a\]
+🛑 sdd/config.yaml, linha 2: o comando de smoke.before_push_cmd tem um comentário (#); os arquivos cairiam dentro dele
+RESULTADO: ERRO DE USO
+→ tire o # do comando (o comentário vai numa linha própria do config) ou aponte para um script
+[exit=64]
+---- config: before_push_cmd: "bash e.sh $'it\\\\'s' # c"
+     bash -c puro (com 'f1' no fim): slot: -c: line 0: unexpected EOF while looking for matching `''
+slot: -c: line 1: syntax error: unexpected end of file
+🛑 o comando de smoke.before_push_cmd tem erro de sintaxe: bash: -c: line 0: unexpected EOF while looking for matching `''
+RESULTADO: ERRO DE USO
+→ corrija o comando em sdd/config.yaml (uma linha só; com |, ; ou &&, aponte para um script)
+[exit=64]

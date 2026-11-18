@@ -1,0 +1,254 @@
+test_cancelado_espera_o_substituto_aparecer (test_deploy_do_sha.Substituto.test_cancelado_espera_o_substituto_aparecer) ... FAIL
+
+test_cancelado_sem_substituto_na_janela_sai_2 (test_deploy_do_sha.Substituto.test_cancelado_sem_substituto_na_janela_sai_2) ... FAIL
+
+test_commit_que_o_clone_nao_conhece_nunca_decide (test_deploy_do_sha.Substituto.test_commit_que_o_clone_nao_conhece_nunca_decide) ... ok
+
+test_contem_o_commit_e_terminou_bem (test_deploy_do_sha.Substituto.test_contem_o_commit_e_terminou_bem) ... 
+
+  test_contem_o_commit_e_terminou_bem (test_deploy_do_sha.Substituto.test_contem_o_commit_e_terminou_bem) (conclusao='cancelled') ... FAIL
+
+  test_contem_o_commit_e_terminou_bem (test_deploy_do_sha.Substituto.test_contem_o_commit_e_terminou_bem) (conclusao='failure') ... FAIL
+
+  test_contem_o_commit_e_terminou_bem (test_deploy_do_sha.Substituto.test_contem_o_commit_e_terminou_bem) (conclusao='timed_out') ... FAIL
+
+test_mais_novo_que_nao_contem_nao_vale (test_deploy_do_sha.Substituto.test_mais_novo_que_nao_contem_nao_vale) ... FAIL
+
+test_substituto_andando_e_esperado (test_deploy_do_sha.Substituto.test_substituto_andando_e_esperado) ... FAIL
+
+test_substituto_que_terminou_mal_e_nomeado (test_deploy_do_sha.Substituto.test_substituto_que_terminou_mal_e_nomeado) ... FAIL
+
+
+
+======================================================================
+
+FAIL: test_cancelado_espera_o_substituto_aparecer (test_deploy_do_sha.Substituto.test_cancelado_espera_o_substituto_aparecer)
+
+----------------------------------------------------------------------
+
+Traceback (most recent call last):
+
+  File "D:\a\sdd-open\sdd-open\tests\test_deploy_do_sha.py", line 172, in test_cancelado_espera_o_substituto_aparecer
+
+    self.assertSai(res, 0, "\u2705 no ar via substituto")
+
+  File "D:\a\sdd-open\sdd-open\tests\test_deploy_do_sha.py", line 111, in assertSai
+
+    self.assertEqual(rc, exitc, out + err)
+
+AssertionError: 4 != 0 : \u23f3 ainda n�o sei � o deploy n�o terminou em 0 min (run �); isso n�o � falha. �ltimo erro de consulta: gh: To use GitHub CLI in a GitHub Actions workflow, set the GH_TOKEN environment variable. Example:.
+
+RESULTADO: AINDA NAO SEI
+
+\u2192 rode de novo para continuar esperando, ou abra o run citado; nada foi repetido por causa disso.
+
+\u23f3 consulta falhou (gh: To use GitHub CLI in a GitHub Actions workflow, set the GH_TOKEN environment variable. Example:), tentando de novo � 0/0 min � run �
+
+
+
+
+
+======================================================================
+
+FAIL: test_cancelado_sem_substituto_na_janela_sai_2 (test_deploy_do_sha.Substituto.test_cancelado_sem_substituto_na_janela_sai_2)
+
+----------------------------------------------------------------------
+
+Traceback (most recent call last):
+
+  File "D:\a\sdd-open\sdd-open\tests\test_deploy_do_sha.py", line 178, in test_cancelado_sem_substituto_na_janela_sai_2
+
+    self.assertSai(res, 2, "\U0001f534 n�o est� no ar")
+
+  File "D:\a\sdd-open\sdd-open\tests\test_deploy_do_sha.py", line 111, in assertSai
+
+    self.assertEqual(rc, exitc, out + err)
+
+AssertionError: 4 != 2 : \u23f3 ainda n�o sei � o deploy n�o terminou em 0 min (run �); isso n�o � falha. �ltimo erro de consulta: gh: To use GitHub CLI in a GitHub Actions workflow, set the GH_TOKEN environment variable. Example:.
+
+RESULTADO: AINDA NAO SEI
+
+\u2192 rode de novo para continuar esperando, ou abra o run citado; nada foi repetido por causa disso.
+
+\u23f3 consulta falhou (gh: To use GitHub CLI in a GitHub Actions workflow, set the GH_TOKEN environment variable. Example:), tentando de novo � 0/0 min � run �
+
+
+
+
+
+======================================================================
+
+FAIL: test_contem_o_commit_e_terminou_bem (test_deploy_do_sha.Substituto.test_contem_o_commit_e_terminou_bem) (conclusao='cancelled')
+
+----------------------------------------------------------------------
+
+Traceback (most recent call last):
+
+  File "D:\a\sdd-open\sdd-open\tests\test_deploy_do_sha.py", line 150, in test_contem_o_commit_e_terminou_bem
+
+    self.assertSai(self.sha(), 0, "\u2705 no ar via substituto", "run 2")
+
+  File "D:\a\sdd-open\sdd-open\tests\test_deploy_do_sha.py", line 111, in assertSai
+
+    self.assertEqual(rc, exitc, out + err)
+
+AssertionError: 4 != 0 : \u23f3 ainda n�o sei � o deploy n�o terminou em 0 min (run �); isso n�o � falha. �ltimo erro de consulta: gh: To use GitHub CLI in a GitHub Actions workflow, set the GH_TOKEN environment variable. Example:.
+
+RESULTADO: AINDA NAO SEI
+
+\u2192 rode de novo para continuar esperando, ou abra o run citado; nada foi repetido por causa disso.
+
+\u23f3 consulta falhou (gh: To use GitHub CLI in a GitHub Actions workflow, set the GH_TOKEN environment variable. Example:), tentando de novo � 0/0 min � run �
+
+
+
+
+
+======================================================================
+
+FAIL: test_contem_o_commit_e_terminou_bem (test_deploy_do_sha.Substituto.test_contem_o_commit_e_terminou_bem) (conclusao='failure')
+
+----------------------------------------------------------------------
+
+Traceback (most recent call last):
+
+  File "D:\a\sdd-open\sdd-open\tests\test_deploy_do_sha.py", line 150, in test_contem_o_commit_e_terminou_bem
+
+    self.assertSai(self.sha(), 0, "\u2705 no ar via substituto", "run 2")
+
+  File "D:\a\sdd-open\sdd-open\tests\test_deploy_do_sha.py", line 111, in assertSai
+
+    self.assertEqual(rc, exitc, out + err)
+
+AssertionError: 4 != 0 : \u23f3 ainda n�o sei � o deploy n�o terminou em 0 min (run �); isso n�o � falha. �ltimo erro de consulta: gh: To use GitHub CLI in a GitHub Actions workflow, set the GH_TOKEN environment variable. Example:.
+
+RESULTADO: AINDA NAO SEI
+
+\u2192 rode de novo para continuar esperando, ou abra o run citado; nada foi repetido por causa disso.
+
+\u23f3 consulta falhou (gh: To use GitHub CLI in a GitHub Actions workflow, set the GH_TOKEN environment variable. Example:), tentando de novo � 0/0 min � run �
+
+
+
+
+
+======================================================================
+
+FAIL: test_contem_o_commit_e_terminou_bem (test_deploy_do_sha.Substituto.test_contem_o_commit_e_terminou_bem) (conclusao='timed_out')
+
+----------------------------------------------------------------------
+
+Traceback (most recent call last):
+
+  File "D:\a\sdd-open\sdd-open\tests\test_deploy_do_sha.py", line 150, in test_contem_o_commit_e_terminou_bem
+
+    self.assertSai(self.sha(), 0, "\u2705 no ar via substituto", "run 2")
+
+  File "D:\a\sdd-open\sdd-open\tests\test_deploy_do_sha.py", line 111, in assertSai
+
+    self.assertEqual(rc, exitc, out + err)
+
+AssertionError: 4 != 0 : \u23f3 ainda n�o sei � o deploy n�o terminou em 0 min (run �); isso n�o � falha. �ltimo erro de consulta: gh: To use GitHub CLI in a GitHub Actions workflow, set the GH_TOKEN environment variable. Example:.
+
+RESULTADO: AINDA NAO SEI
+
+\u2192 rode de novo para continuar esperando, ou abra o run citado; nada foi repetido por causa disso.
+
+\u23f3 consulta falhou (gh: To use GitHub CLI in a GitHub Actions workflow, set the GH_TOKEN environment variable. Example:), tentando de novo � 0/0 min � run �
+
+
+
+
+
+======================================================================
+
+FAIL: test_mais_novo_que_nao_contem_nao_vale (test_deploy_do_sha.Substituto.test_mais_novo_que_nao_contem_nao_vale)
+
+----------------------------------------------------------------------
+
+Traceback (most recent call last):
+
+  File "D:\a\sdd-open\sdd-open\tests\test_deploy_do_sha.py", line 160, in test_mais_novo_que_nao_contem_nao_vale
+
+    self.assertSai(self.sha(commit=y), 2, "\U0001f534 n�o est� no ar", "nenhum deploy mais novo cont�m")
+
+  File "D:\a\sdd-open\sdd-open\tests\test_deploy_do_sha.py", line 111, in assertSai
+
+    self.assertEqual(rc, exitc, out + err)
+
+AssertionError: 4 != 2 : \u23f3 ainda n�o sei � o deploy n�o terminou em 0 min (run �); isso n�o � falha. �ltimo erro de consulta: gh: To use GitHub CLI in a GitHub Actions workflow, set the GH_TOKEN environment variable. Example:.
+
+RESULTADO: AINDA NAO SEI
+
+\u2192 rode de novo para continuar esperando, ou abra o run citado; nada foi repetido por causa disso.
+
+\u23f3 consulta falhou (gh: To use GitHub CLI in a GitHub Actions workflow, set the GH_TOKEN environment variable. Example:), tentando de novo � 0/0 min � run �
+
+
+
+
+
+======================================================================
+
+FAIL: test_substituto_andando_e_esperado (test_deploy_do_sha.Substituto.test_substituto_andando_e_esperado)
+
+----------------------------------------------------------------------
+
+Traceback (most recent call last):
+
+  File "D:\a\sdd-open\sdd-open\tests\test_deploy_do_sha.py", line 184, in test_substituto_andando_e_esperado
+
+    self.assertSai(self.sha(), 0, "via substituto")
+
+  File "D:\a\sdd-open\sdd-open\tests\test_deploy_do_sha.py", line 111, in assertSai
+
+    self.assertEqual(rc, exitc, out + err)
+
+AssertionError: 4 != 0 : \u23f3 ainda n�o sei � o deploy n�o terminou em 0 min (run �); isso n�o � falha. �ltimo erro de consulta: gh: To use GitHub CLI in a GitHub Actions workflow, set the GH_TOKEN environment variable. Example:.
+
+RESULTADO: AINDA NAO SEI
+
+\u2192 rode de novo para continuar esperando, ou abra o run citado; nada foi repetido por causa disso.
+
+\u23f3 consulta falhou (gh: To use GitHub CLI in a GitHub Actions workflow, set the GH_TOKEN environment variable. Example:), tentando de novo � 0/0 min � run �
+
+
+
+
+
+======================================================================
+
+FAIL: test_substituto_que_terminou_mal_e_nomeado (test_deploy_do_sha.Substituto.test_substituto_que_terminou_mal_e_nomeado)
+
+----------------------------------------------------------------------
+
+Traceback (most recent call last):
+
+  File "D:\a\sdd-open\sdd-open\tests\test_deploy_do_sha.py", line 165, in test_substituto_que_terminou_mal_e_nomeado
+
+    self.assertSai(self.sha(), 2, "\U0001f534 n�o est� no ar", "run 2")
+
+  File "D:\a\sdd-open\sdd-open\tests\test_deploy_do_sha.py", line 111, in assertSai
+
+    self.assertEqual(rc, exitc, out + err)
+
+AssertionError: 4 != 2 : \u23f3 ainda n�o sei � o deploy n�o terminou em 0 min (run �); isso n�o � falha. �ltimo erro de consulta: gh: To use GitHub CLI in a GitHub Actions workflow, set the GH_TOKEN environment variable. Example:.
+
+RESULTADO: AINDA NAO SEI
+
+\u2192 rode de novo para continuar esperando, ou abra o run citado; nada foi repetido por causa disso.
+
+\u23f3 consulta falhou (gh: To use GitHub CLI in a GitHub Actions workflow, set the GH_TOKEN environment variable. Example:), tentando de novo � 0/0 min � run �
+
+
+
+
+
+----------------------------------------------------------------------
+
+Ran 7 tests in 248.772s
+
+
+
+FAILED (failures=8)
+

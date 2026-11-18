@@ -1,0 +1,91 @@
+$ cat /tmp/aval-f18.SxgC/probes/at002.sh; bash /tmp/aval-f18.SxgC/probes/at002.sh
+. /tmp/aval-f18.SxgC/probes/lib.sh
+M=supabase/migrations
+echo "### (a) Supabase: migração nova com create table sem RLS em nenhuma migração"
+novo at002a; printf -- '-- pedidos\ncreate table public.pedidos (id bigint primary key, dono uuid);\n' > $M/20260101_pedidos.sql; V
+echo; echo "### (b) RLS ligada em OUTRA migração (posterior), nome com aspas"
+novo at002b; printf 'create table if not exists public."Pedidos" (id int);\n' > $M/20260101_a.sql; printf 'alter table public."Pedidos" enable row level security;\n' > $M/20260102_b.sql; V
+echo; echo "### (c) RLS só num comentário SQL ⇒ não vale"
+novo at002c; printf 'create table clientes (id int);\n-- alter table clientes enable row level security;\n' > $M/20260101_c.sql; V
+echo; echo "### (d) RLS ligada e depois desligada (disable) ⇒ tabela aberta"
+novo at002d; printf 'create table notas (id int);\nalter table notas enable row level security;\n' > $M/20260101_d.sql; printf 'alter table notas disable row level security;\n' > $M/20260102_d.sql; V
+echo; echo "### (e) sem Supabase (stack nenhuma pelo slot) ⇒ S01 não é avaliado"
+novo at002e; sed -i '' 's/^  stack: ""/  stack: web/' sdd/config.yaml; grep -n -A2 '^security:' sdd/config.yaml; printf 'create table pedidos (id int);\n' > $M/20260101_e.sql; V --stack; V
+echo; echo "### (f) projeto sem Supabase detectado (sem package.json com @supabase, sem pasta supabase/) e .sql em db/migrations"
+novo at002f; git rm -rq package.json; rm -rf supabase; mkdir -p db/migrations; printf 'create table pedidos (id int);\n' > db/migrations/1.sql; V --stack; V
+echo; echo "### (g) Supabase, camada sql em layers: (db/sql/*.sql)"
+novo at002g; mkdir -p db/migrations; sed -i '' 's#^  sql: ""#  sql: "db/migrations/**"#' sdd/config.yaml; grep -n -A3 '^layers:' sdd/config.yaml; printf 'create table pedidos (id int);\n' > db/migrations/1.sql; V
+echo; echo "### (h) create table numa linha que já existia na base, sem RLS ⇒ aviso (já existia), não bloqueio"
+novo at002h; git switch -q main; printf 'create table velha (id int);\n' > $M/0001.sql; git add $M; git commit -qm v --no-verify; git push -q origin main --no-verify; git switch -q feat; git merge -q main; V
+### (a) Supabase: migração nova com create table sem RLS em nenhuma migração
+▶ seguranca-varredura — stack: supabase, web (detectada) · base: origin/main · 3 arquivo(s) varrido(s), 0 pulado(s)
+🛑 S01 alta supabase/migrations/20260101_pedidos.sql:2 — Tabela sem RLS (bloqueia: novo nesta publicação)
+   confira à mão: No painel do banco, cada tabela mostra se a segurança por linha está ligada; abra cada política e leia a condição: `true`, ou condição que não cita o usuário logado, é aberta. Depois, numa janela anônima, chame a API da tabela com a chave pública: tem de voltar vazio.
+RESULTADO: BLOQUEADO
+→ tire o segredo do código (se era real, ele vazou: troque-o) ou ligue a RLS na tabela, e rode de novo; achado falso leva a dispensa na linha, com motivo.
+exit=2
+
+### (b) RLS ligada em OUTRA migração (posterior), nome com aspas
+▶ seguranca-varredura — stack: supabase, web (detectada) · base: origin/main · 4 arquivo(s) varrido(s), 0 pulado(s)
+RESULTADO: NADA ACHADO
+→ siga; a varredura só acha o que dá para ver por texto: a conferência à mão (--checklist) continua.
+exit=0
+
+### (c) RLS só num comentário SQL ⇒ não vale
+▶ seguranca-varredura — stack: supabase, web (detectada) · base: origin/main · 3 arquivo(s) varrido(s), 0 pulado(s)
+🛑 S01 alta supabase/migrations/20260101_c.sql:1 — Tabela sem RLS (bloqueia: novo nesta publicação)
+   confira à mão: No painel do banco, cada tabela mostra se a segurança por linha está ligada; abra cada política e leia a condição: `true`, ou condição que não cita o usuário logado, é aberta. Depois, numa janela anônima, chame a API da tabela com a chave pública: tem de voltar vazio.
+RESULTADO: BLOQUEADO
+→ tire o segredo do código (se era real, ele vazou: troque-o) ou ligue a RLS na tabela, e rode de novo; achado falso leva a dispensa na linha, com motivo.
+exit=2
+
+### (d) RLS ligada e depois desligada (disable) ⇒ tabela aberta
+▶ seguranca-varredura — stack: supabase, web (detectada) · base: origin/main · 4 arquivo(s) varrido(s), 0 pulado(s)
+🛑 S01 alta supabase/migrations/20260102_d.sql:1 — Tabela sem RLS (bloqueia: novo nesta publicação)
+   confira à mão: No painel do banco, cada tabela mostra se a segurança por linha está ligada; abra cada política e leia a condição: `true`, ou condição que não cita o usuário logado, é aberta. Depois, numa janela anônima, chame a API da tabela com a chave pública: tem de voltar vazio.
+RESULTADO: BLOQUEADO
+→ tire o segredo do código (se era real, ele vazou: troque-o) ou ligue a RLS na tabela, e rode de novo; achado falso leva a dispensa na linha, com motivo.
+exit=2
+
+### (e) sem Supabase (stack nenhuma pelo slot) ⇒ S01 não é avaliado
+116:security:
+117-  stack: web
+118-  max_warnings: 5
+stack: web (slot security.stack)
+RESULTADO: OK
+→ os itens de outras stacks não disparam; para mudar, preencha security.stack em sdd/config.yaml.
+exit=0
+▶ seguranca-varredura — stack: web (slot security.stack) · base: origin/main · 3 arquivo(s) varrido(s), 0 pulado(s)
+RESULTADO: NADA ACHADO
+→ siga; a varredura só acha o que dá para ver por texto: a conferência à mão (--checklist) continua.
+exit=0
+
+### (f) projeto sem Supabase detectado (sem package.json com @supabase, sem pasta supabase/) e .sql em db/migrations
+stack: nenhuma (detectada)
+RESULTADO: OK
+→ os itens de outras stacks não disparam; para mudar, preencha security.stack em sdd/config.yaml.
+exit=0
+▶ seguranca-varredura — stack: nenhuma (detectada) · base: origin/main · 2 arquivo(s) varrido(s), 0 pulado(s)
+RESULTADO: NADA ACHADO
+→ siga; a varredura só acha o que dá para ver por texto: a conferência à mão (--checklist) continua.
+exit=0
+
+### (g) Supabase, camada sql em layers: (db/sql/*.sql)
+25:layers:
+26-  api: ""
+27-  ui: ""
+28-  sql: "db/migrations/**"
+▶ seguranca-varredura — stack: supabase, web (detectada) · base: origin/main · 3 arquivo(s) varrido(s), 0 pulado(s)
+🛑 S01 alta db/migrations/1.sql:1 — Tabela sem RLS (bloqueia: novo nesta publicação)
+   confira à mão: No painel do banco, cada tabela mostra se a segurança por linha está ligada; abra cada política e leia a condição: `true`, ou condição que não cita o usuário logado, é aberta. Depois, numa janela anônima, chame a API da tabela com a chave pública: tem de voltar vazio.
+RESULTADO: BLOQUEADO
+→ tire o segredo do código (se era real, ele vazou: troque-o) ou ligue a RLS na tabela, e rode de novo; achado falso leva a dispensa na linha, com motivo.
+exit=2
+
+### (h) create table numa linha que já existia na base, sem RLS ⇒ aviso (já existia), não bloqueio
+▶ seguranca-varredura — stack: supabase, web (detectada) · base: origin/main · 3 arquivo(s) varrido(s), 0 pulado(s)
+⚠️ S01 alta supabase/migrations/0001.sql:1 — Tabela sem RLS (já existia)
+   confira à mão: No painel do banco, cada tabela mostra se a segurança por linha está ligada; abra cada política e leia a condição: `true`, ou condição que não cita o usuário logado, é aberta. Depois, numa janela anônima, chame a API da tabela com a chave pública: tem de voltar vazio.
+RESULTADO: AVISOS
+→ confira cada aviso pela prova à mão; o que for falso positivo leva a dispensa na linha, com motivo.
+exit=1

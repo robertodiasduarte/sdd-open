@@ -1,0 +1,7 @@
+$ SDD_TEST_BASH=/bin/bash /usr/bin/python3 -B -m unittest discover -s tests -p 'test_conversa.py'
+...................
+----------------------------------------------------------------------
+Ran 19 tests in 0.073s
+
+OK
+[exit=0]

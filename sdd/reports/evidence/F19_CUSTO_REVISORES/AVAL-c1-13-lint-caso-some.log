@@ -1,0 +1,21 @@
+$ cat -n /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f21-f19/8ca3f42f-d684-434d-9f0b-19bdcf0aef88/scratchpad/aval-f19/casos/some/LEDGER_REVISAO_SOME.md; PATH=/usr/bin:/bin /bin/bash sdd/bin/ledger-revisao-lint.sh /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f21-f19/8ca3f42f-d684-434d-9f0b-19bdcf0aef88/scratchpad/aval-f19/casos/some/LEDGER_REVISAO_SOME.md
+     1	# x
+     2	
+     3	| achado | sev | veredito | rodada | evidência | dano | revisão |
+     4	|---|---|---|---|---|---|---|
+     5	| R1 | HIGH | APLICADA | rodada=1 | ok | nao | EXTERNAL_REVIEW_20260301-000001 |
+     6	
+     7	| **R2** | HIGH | APLICADA | rodada=2 | 1ª linha do bloco depois da linha em branco, id em negrito | nao | EXTERNAL_REVIEW_20260301-000001 |
+     8	| R3 | HIGH | APLICADA | rodada=2 | dano sim SEM teste, no mesmo bloco | sim | EXTERNAL_REVIEW_20260301-000001 |
+     9	
+    10	| Achado (rodada 3) | sev | veredito | rodada | evidência | dano | revisão |
+    11	|---|---|---|---|---|---|---|
+    12	| R4 | HIGH | REBATIDA_EVIDENCIA | rodada=3 | tabela com cabeçalho `Achado (rodada 3)` | sim | EXTERNAL_REVIEW_20260301-000001 |
+    13	
+    14	R5 | HIGH | APLICADA | rodada=4 | linha sem a barra inicial | nao | EXTERNAL_REVIEW_20260301-000001
+    15	
+    16	    | R6 | HIGH | APLICADA | rodada=5 | indentada | nao | EXTERNAL_REVIEW_20260301-000001 |
+✅ ledger da revisão: 2 linha(s) e 0 rodada(s) sem achados em 1 arquivo(s), cada linha com veredito, dano e a pasta da revisão.
+RESULTADO: VERDE
+→ passe o arquivo ao `sdd-fluxo.sh loop --ledger` e ao `eval-revisores.sh`.
+[exit=0]

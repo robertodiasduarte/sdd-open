@@ -1,0 +1,25 @@
+$ python3 -B -m unittest discover -v -s tests -p test_python_resolver.py
+  test_cache_no_ambiente_e_usado_sem_testar (test_python_resolver.Calco.test_cache_no_ambiente_e_usado_sem_testar) ... ok
+  test_vale_para_bash_filho_sem_testar_de_novo (test_python_resolver.Calco.test_vale_para_bash_filho_sem_testar_de_novo) ... ok
+  test_vale_para_env_e_xargs (test_python_resolver.Calco.test_vale_para_env_e_xargs) ... ok
+  test_vale_para_exec (test_python_resolver.Calco.test_vale_para_exec) ... ok
+  test_atalho_da_store_e_python_nativo_usa_o_python (test_python_resolver.Escolha.test_atalho_da_store_e_python_nativo_usa_o_python) ... ok
+  test_atalho_e_so_py_usa_py_menos_3 (test_python_resolver.Escolha.test_atalho_e_so_py_usa_py_menos_3) ... ok
+  test_python3_que_serve_nao_muda_nada (test_python_resolver.Escolha.test_python3_que_serve_nao_muda_nada) ... ok
+  test_python3_velho_passa_ao_proximo (test_python_resolver.Escolha.test_python3_velho_passa_ao_proximo) ... ok
+  test_sdd_python_com_espaco_no_caminho (test_python_resolver.Escolha.test_sdd_python_com_espaco_no_caminho) ... ok
+  test_calco_velho_sai_e_o_novo_fica (test_python_resolver.Limpeza.test_calco_velho_sai_e_o_novo_fica) ... ok
+  test_atalho_e_python_velho_tambem_para (test_python_resolver.Parada.test_atalho_e_python_velho_tambem_para) ... ok
+  test_calco_que_nao_se_cria_e_dito (test_python_resolver.Parada.test_calco_que_nao_se_cria_e_dito) ... ok
+  test_exigir_para_com_causa_e_conserto (test_python_resolver.Parada.test_exigir_para_com_causa_e_conserto) ... ok
+  test_nenhum_python_a_guarda_falha_calada_e_exigir_para (test_python_resolver.Parada.test_nenhum_python_a_guarda_falha_calada_e_exigir_para) ... ok
+  test_python_velho_e_dito_pela_versao (test_python_resolver.Parada.test_python_velho_e_dito_pela_versao) ... ok
+  test_so_o_atalho_a_carga_segue_e_a_guarda_diz_a_causa_uma_vez (test_python_resolver.Parada.test_so_o_atalho_a_carga_segue_e_a_guarda_diz_a_causa_uma_vez) ... ok
+  test_so_python_2_e_dito_pela_versao (test_python_resolver.Parada.test_so_python_2_e_dito_pela_versao) ... ok
+  test_candidato_que_imprime_lixo_nao_serve (test_python_resolver.RevisaoRodada3.test_candidato_que_imprime_lixo_nao_serve) ... ok
+  test_candidato_que_imprime_versao_e_sai_com_erro_nao_serve (test_python_resolver.RevisaoRodada3.test_candidato_que_imprime_versao_e_sai_com_erro_nao_serve) ... ok
+  test_script_real_de_sdd_bin_com_o_atalho_da_store (test_python_resolver.RevisaoRodada3.test_script_real_de_sdd_bin_com_o_atalho_da_store) ... ok
+  test_sdd_python_igual_a_python3_nao_entra_em_laco (test_python_resolver.RevisaoRodada3.test_sdd_python_igual_a_python3_nao_entra_em_laco) ... ok
+  test_set_e_com_calco_que_nao_se_cria_nao_derruba_na_carga (test_python_resolver.RevisaoRodada3.test_set_e_com_calco_que_nao_se_cria_nao_derruba_na_carga) ... ok
+  Ran 22 tests in 13.081s
+  OK

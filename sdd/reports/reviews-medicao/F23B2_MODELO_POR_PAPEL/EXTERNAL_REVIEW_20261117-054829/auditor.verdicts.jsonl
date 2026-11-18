@@ -1,0 +1,7 @@
+{"achado": "R1", "veredito": "AGREE", "justificativa": "A retomada arquiva PARADA.txt antes de possíveis saídas sem recriá-lo, e o medidor não considera incompleto um candidato sem nenhuma execução."}
+{"achado": "R2", "veredito": "AGREE", "justificativa": "Em sdd/bin/papel-medir.sh:249, a mesma proposta de ADD pode satisfazer vários ADD esperados e inflar a cobertura."}
+{"achado": "R3", "veredito": "AGREE", "justificativa": "Em sdd/bin/papel-serie.sh:310–313, --precos é repassado sem normalização enquanto o subprocesso roda com cwd=raiz."}
+{"achado": "R4", "veredito": "DISAGREE_CONCERN", "justificativa": "Falta a implementação de governanca-fronteira.sh para confirmar se o PARADA.txt da outra série participa da comparação."}
+{"achado": "R5", "veredito": "DISAGREE_CONCERN", "justificativa": "Falta o mapeamento le/retorno de cmd_despachar para confirmar se revisor-design pede um bloco incompatível com o modo contrato."}
+{"achado": "N1", "veredito": "NOVO", "severidade": "HIGH", "arquivo": "sdd/bin/papel-serie.sh", "linha": 408, "resumo": "Após SIGKILL do executor, a retomada pode medir e refazer uma execução cujo agente continua vivo, deixando o gasto posterior dele fora do teto."}
+{"achado": "N2", "veredito": "NOVO", "severidade": "MED", "arquivo": "sdd/bin/papel-serie.sh", "linha": 352, "resumo": "Duas retomadas podem remover uma trava recém-adquirida usando a leitura da trava obsoleta e executar chamadas simultâneas contra o mesmo teto."}

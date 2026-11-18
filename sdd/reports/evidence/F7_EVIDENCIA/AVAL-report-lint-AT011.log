@@ -1,0 +1,31 @@
+$ for f in sdd/reports/BUILD_REPORT_{F1_MANUTENCAO,F2_TERRENO,F3_BUILD_RELEASE,F4_CONVERSA,F5_CONHECIMENTO,F6_DOCS,M1,W0}.md; do echo "== $f"; o=$(/usr/bin/python3 -B sdd/bin/report-lint.py "$f" 2>&1); rc=$?; printf "%s\n" "$o" | grep -E "^(🛑|⚠️|RESULTADO)" | cut -c1-160; echo "rc=$rc"; done
+== sdd/reports/BUILD_REPORT_F1_MANUTENCAO.md
+🛑 [avaliação ausente] não há `AVALIACAO_F1_MANUTENCAO_<AAAAMMDD-HHMM>.md` em sdd/reviews/ (não vazio e não ignorado pelo git) nem linha sobre o avaliador. Saída
+RESULTADO: VERMELHO
+rc=1
+== sdd/reports/BUILD_REPORT_F2_TERRENO.md
+🛑 [avaliação ausente] não há `AVALIACAO_F2_TERRENO_<AAAAMMDD-HHMM>.md` em sdd/reviews/ (não vazio e não ignorado pelo git) nem linha sobre o avaliador. Saídas, 
+RESULTADO: VERMELHO
+rc=1
+== sdd/reports/BUILD_REPORT_F3_BUILD_RELEASE.md
+🛑 [avaliação ausente] não há `AVALIACAO_F3_BUILD_RELEASE_<AAAAMMDD-HHMM>.md` em sdd/reviews/ (não vazio e não ignorado pelo git) nem linha sobre o avaliador. Sa
+RESULTADO: VERMELHO
+rc=1
+== sdd/reports/BUILD_REPORT_F4_CONVERSA.md
+RESULTADO: VERDE
+rc=0
+== sdd/reports/BUILD_REPORT_F5_CONHECIMENTO.md
+RESULTADO: VERDE
+rc=0
+== sdd/reports/BUILD_REPORT_F6_DOCS.md
+RESULTADO: VERDE
+rc=0
+== sdd/reports/BUILD_REPORT_M1.md
+🛑 [avaliação ausente] não há `AVALIACAO_M1_<AAAAMMDD-HHMM>.md` em sdd/reviews/ (não vazio e não ignorado pelo git) nem linha sobre o avaliador. Saídas, nesta or
+RESULTADO: VERMELHO
+rc=1
+== sdd/reports/BUILD_REPORT_W0.md
+🛑 [avaliação ausente] não há `AVALIACAO_W0_<AAAAMMDD-HHMM>.md` em sdd/reviews/ (não vazio e não ignorado pelo git) nem linha sobre o avaliador. Saídas, nesta or
+RESULTADO: VERMELHO
+rc=1
+[exit=0]

@@ -1,0 +1,50 @@
+test_as_13_skills_do_open_passam (test_check_versions.SkillsDoPacote.test_as_13_skills_do_open_passam) ... FAIL
+
+
+
+======================================================================
+
+FAIL: test_as_13_skills_do_open_passam (test_check_versions.SkillsDoPacote.test_as_13_skills_do_open_passam)
+
+----------------------------------------------------------------------
+
+Traceback (most recent call last):
+
+  File "D:\a\sdd-open\sdd-open\tests\test_check_versions.py", line 123, in test_as_13_skills_do_open_passam
+
+    self.assertEqual(rc, 0, out + err)
+
+AssertionError: 1 != 0 : PASS: check-versions \ufffd 22 skills com vers\ufffdo coerente.
+
+Traceback (most recent call last):
+
+  File "D:\a\sdd-open\sdd-open\scripts\check-versions.py", line 131, in <module>
+
+    sys.exit(main(sys.argv[1:]))
+
+             ^^^^^^^^^^^^^^^^^^
+
+  File "D:\a\sdd-open\sdd-open\scripts\check-versions.py", line 126, in main
+
+    print("RESULTADO: VERDE\n\u2192 siga para o pr\ufffdximo passo.")
+
+  File "C:\hostedtoolcache\windows\Python\3.12.10\x64\Lib\encodings\cp1252.py", line 19, in encode
+
+    return codecs.charmap_encode(input,self.errors,encoding_table)[0]
+
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+UnicodeEncodeError: 'charmap' codec can't encode character '\u2192' in position 18: character maps to <undefined>
+
+
+
+
+
+----------------------------------------------------------------------
+
+Ran 1 test in 0.075s
+
+
+
+FAILED (failures=1)
+

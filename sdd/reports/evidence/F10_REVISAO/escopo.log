@@ -1,0 +1,14 @@
+$ grep -c "" MANIFEST.txt sdd/bin/adversarial-review.sh sdd/bin/adapters/claude.sh sdd/bin/adapters/codex.sh sdd/bin/adapters/gemini.sh sdd/bin/adapters/openrouter.sh && git diff --shortstat --diff-filter=A v2.2.10 HEAD && git log --oneline v2.2.10..HEAD && git diff --shortstat v2.2.10 HEAD
+MANIFEST.txt:328
+sdd/bin/adversarial-review.sh:1041
+sdd/bin/adapters/claude.sh:60
+sdd/bin/adapters/codex.sh:56
+sdd/bin/adapters/gemini.sh:53
+sdd/bin/adapters/openrouter.sh:76
+ 55 files changed, 3117 insertions(+)
+486ed2e fix(f10): revisão de contexto fresco do build, ciclo 2 — 1 MEDIUM e 4 LOW
+9846919 fix(f10): revisão de contexto fresco do build, ciclo 1 — 1 HIGH e 4 LOW
+6f4ee5b fix(f10): achados da revisão adversarial real (claude → openrouter:qwen) — 3 MED e 5 LOW
+7ecbc78 feat(f10): revisão adversarial — adversarial-review.sh (revisor → auditor sobre diff congelado), 4 adapters, registry e preços, loop com 2º revisor e desempate, R1 na sdd-release, R12 na sdd-design, R13 no sdd-build
+ 83 files changed, 3582 insertions(+), 66 deletions(-)
+[exit=0]

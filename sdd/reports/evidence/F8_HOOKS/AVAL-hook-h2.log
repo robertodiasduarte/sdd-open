@@ -1,0 +1,66 @@
+$ cd /tmp/sdd-aval/hook && head -c 204800 /dev/zero | tr '\000' 'a' > AGENTS.md && git add AGENTS.md && git commit -q -m h2
+
+sdd-open: commit recusado. Encontrei o que não pode entrar nesta versão:
+
+  🛑 [H2] AGENTS.md: 204800 bytes (teto 100 KB)
+
+Por que importa:
+  [H2] o arquivo de contexto entra inteiro em toda sessão do agente; acima do teto, estoura a janela antes do primeiro prompt
+
+RESULTADO: COMMIT RECUSADO
+→ [H2] mova o conteúdo volumoso (changelog, histórico, dumps) para docs/ ou sdd/; ou ajuste project.context_file_max_kb em sdd/config.yaml
+→ se você conferiu e quer gravar mesmo assim, só desta vez: git commit --no-verify
+  Agente de IA: não use --no-verify sem o OK explícito da pessoa.
+[exit=1]
+$ cd /tmp/sdd-aval/hook && git restore --staged AGENTS.md && git checkout -- AGENTS.md && mkdir -p sub && head -c 102401 /dev/zero | tr '\000' 'a' > sub/CLAUDE.md && git add sub/CLAUDE.md && git commit -q -m h2-sub
+
+sdd-open: commit recusado. Encontrei o que não pode entrar nesta versão:
+
+  🛑 [H2] sub/CLAUDE.md: 102401 bytes (teto 100 KB)
+
+Por que importa:
+  [H2] o arquivo de contexto entra inteiro em toda sessão do agente; acima do teto, estoura a janela antes do primeiro prompt
+
+RESULTADO: COMMIT RECUSADO
+→ [H2] mova o conteúdo volumoso (changelog, histórico, dumps) para docs/ ou sdd/; ou ajuste project.context_file_max_kb em sdd/config.yaml
+→ se você conferiu e quer gravar mesmo assim, só desta vez: git commit --no-verify
+  Agente de IA: não use --no-verify sem o OK explícito da pessoa.
+[exit=1]
+$ cd /tmp/sdd-aval/hook && head -c 102400 /dev/zero | tr '\000' 'a' > sub/CLAUDE.md && git add sub/CLAUDE.md && git commit -q -m h2-no-limite && echo PASSOU-102400
+PASSOU-102400
+[exit=0]
+$ cd /tmp/sdd-aval/hook && sed -i '' 's/^  context_file_max_kb:.*/  context_file_max_kb: 1   # teto em KB/' sdd/config.yaml && grep -n context_file_max_kb sdd/config.yaml && head -c 2048 /dev/zero | tr '\000' 'b' > GEMINI.md && git add GEMINI.md sdd/config.yaml && git commit -q -m h2-slot1
+20:  context_file_max_kb: 1   # teto em KB
+
+sdd-open: commit recusado. Encontrei o que não pode entrar nesta versão:
+
+  🛑 [H2] GEMINI.md: 2048 bytes (teto 1 KB)
+
+Por que importa:
+  [H2] o arquivo de contexto entra inteiro em toda sessão do agente; acima do teto, estoura a janela antes do primeiro prompt
+
+RESULTADO: COMMIT RECUSADO
+→ [H2] mova o conteúdo volumoso (changelog, histórico, dumps) para docs/ ou sdd/; ou ajuste project.context_file_max_kb em sdd/config.yaml
+→ se você conferiu e quer gravar mesmo assim, só desta vez: git commit --no-verify
+  Agente de IA: não use --no-verify sem o OK explícito da pessoa.
+[exit=1]
+$ cd /tmp/sdd-aval/hook && sed -i '' 's/^  context_file_max_kb:.*/  context_file_max_kb: "abc"/' sdd/config.yaml && git add sdd/config.yaml && git commit -q -m h2-slot-invalido && echo PASSOU-slot-invalido-2KB-com-teto-100
+PASSOU-slot-invalido-2KB-com-teto-100
+[exit=0]
+$ cd /tmp/sdd-aval/hook && sed -i '' 's/^  context_file_max_kb:.*/  context_file_max_kb:/' sdd/config.yaml && head -c 102401 /dev/zero | tr '\000' 'c' > .cursorrules && git add .cursorrules sdd/config.yaml && git commit -q -m h2-slot-vazio
+
+sdd-open: commit recusado. Encontrei o que não pode entrar nesta versão:
+
+  🛑 [H2] .cursorrules: 102401 bytes (teto 100 KB)
+
+Por que importa:
+  [H2] o arquivo de contexto entra inteiro em toda sessão do agente; acima do teto, estoura a janela antes do primeiro prompt
+
+RESULTADO: COMMIT RECUSADO
+→ [H2] mova o conteúdo volumoso (changelog, histórico, dumps) para docs/ ou sdd/; ou ajuste project.context_file_max_kb em sdd/config.yaml
+→ se você conferiu e quer gravar mesmo assim, só desta vez: git commit --no-verify
+  Agente de IA: não use --no-verify sem o OK explícito da pessoa.
+[exit=1]
+$ cd /tmp/sdd-aval/hook && git restore --staged .cursorrules GEMINI.md sdd/config.yaml 2>/dev/null; rm -f .cursorrules GEMINI.md; git checkout -- sdd/config.yaml; git status --short
+ D GEMINI.md
+[exit=0]

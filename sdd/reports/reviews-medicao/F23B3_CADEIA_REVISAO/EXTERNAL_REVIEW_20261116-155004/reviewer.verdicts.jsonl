@@ -1,0 +1,4 @@
+{"achado": "R1", "arquivo": "sdd/bin/ledger-revisao-lint.sh", "linha": 80, "severidade": "MED", "confianca": "CONFIRMED", "resumo": "sem achados: só aceita rodada=<N>; revisão do DESIGN sem achados não tem linha válida e a pasta fica fora da conta"}
+{"achado": "R2", "arquivo": "sdd/bin/adversarial-review.sh", "linha": 570, "severidade": "LOW", "confianca": "CONFIRMED", "resumo": "gatilho de risco grava só o caminho; o AT-002 pede também o termo ou glob que casou"}
+{"achado": "R3", "arquivo": "sdd/bin/sdd-fluxo.sh", "linha": 590, "severidade": "LOW", "confianca": "PLAUSIBLE", "resumo": "loop aceita --rodada D<n>, mas a leitura das linhas rodada=D<n> do ledger não está no diff e o teste não a distingue"}
+{"achado": "R4", "arquivo": "sdd/bin/adversarial-review.sh", "linha": 97, "severidade": "LOW", "confianca": "PLAUSIBLE", "resumo": "termo_de_seguranca não normaliza Unicode; caminho acentuado em NFD não casa os termos acentuados"}

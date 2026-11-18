@@ -1,0 +1,20 @@
+$ T=$(mktemp -d); cd "$T"; cat > r.awk <<"AWK"
+/^prompts:/{p=1;next} /^[^[:space:]#]/{p=0}
+p && /^[[:space:]]+wrapper_pattern:/{ v=$0; sub(/^[[:space:]]+wrapper_pattern:[[:space:]]*/,"",v);
+ if (v ~ /^"/) { sub(/^"/,"",v); sub(/"$/,"",v); gsub(/\\\\/,"\\",v); gsub(/\\"/,"\"",v) }
+ else if (v ~ /^\x27/) { sub(/^\x27/,"",v); sub(/\x27$/,"",v) }
+ else { sub(/[[:space:]]+#.*$/,"",v) }
+ print "[" v "]"; exit }
+AWK
+for l in "  wrapper_pattern: \"callLLM\\\\\\\\(\"" "  wrapper_pattern: \"callLLM\\\\\\\\(\"  # ex.: wrapper" "  wrapper_pattern: \"\"  # vazio = so sinais genericos" "  wrapper_pattern: systemPrompt:  # ex" "  wrapper_pattern: systemPrompt:" ; do printf "prompts:\n  builder_skill: x\n%s\n" "$l" > c.yaml; printf "%s  => " "$l"; LC_ALL=C /usr/bin/awk -f r.awk c.yaml; done; printf "prompts:\r\n  wrapper_pattern: systemPrompt:\r\n" > c.yaml; printf "CRLF => "; LC_ALL=C /usr/bin/awk -f r.awk c.yaml | od -c | head -2; echo "--- leitura ingenua da aspa final com comentario: valor nao vazio, gate cego sem aviso"; printf "x: \`y\`\nsystemPrompt: \`y\`\n" > f.ts; /usr/bin/grep -cE "(systemPrompt:\"  # ex)[[:space:]]*[\`\x27\"]" f.ts; echo "rc=$?"; cd /; rm -rf "$T"
+  wrapper_pattern: "callLLM\\\\("  => [callLLM\\(]
+  wrapper_pattern: "callLLM\\\\("  # ex.: wrapper  => [callLLM\\("  # ex.: wrapper]
+  wrapper_pattern: ""  # vazio = so sinais genericos  => ["  # vazio = so sinais genericos]
+  wrapper_pattern: systemPrompt:  # ex  => [systemPrompt:]
+  wrapper_pattern: systemPrompt:  => [systemPrompt:]
+CRLF => 0000000    [   s   y   s   t   e   m   P   r   o   m   p   t   :  \r   ]
+0000020   \n                                                            
+--- leitura ingenua da aspa final com comentario: valor nao vazio, gate cego sem aviso
+0
+rc=1
+[exit=0]

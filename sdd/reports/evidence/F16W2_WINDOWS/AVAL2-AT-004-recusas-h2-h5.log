@@ -1,0 +1,17 @@
+$ /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f16w-windows/b56e801b-0f18-49ee-b51c-5b9188b29c23/scratchpad/recusas2.sh /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f16w-windows/b56e801b-0f18-49ee-b51c-5b9188b29c23/scratchpad/head; echo; /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f16w-windows/b56e801b-0f18-49ee-b51c-5b9188b29c23/scratchpad/recusas2.sh /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f16w-windows/b56e801b-0f18-49ee-b51c-5b9188b29c23/scratchpad/base; echo "[rc=$?]"
+árvore: head
+[H5] NUL num .md                         rc=1   🛑 [H5] docs/z.md: 1 byte(s) NUL em arquivo de texto   [H5] um byte NUL faz o git e o grep tratarem o arquivo como binário: o diff fica inv
+[H5] NUL num .md, color.ui=always        rc=1   🛑 [H5] docs/z.md: 1 byte(s) NUL em arquivo de texto   [H5] um byte NUL faz o git e o grep tratarem o arquivo como binário: o diff fica inv
+[H5] NUL num .png (binário, controle)   rc=0 
+[H2] AGENTS.md de 150 KB                 rc=1   🛑 [H2] AGENTS.md: 153600 bytes (teto 100 KB)   [H2] o arquivo de contexto entra inteiro em toda sessão do agente; acima do teto, estoura a
+[H2] AGENTS.md de 50 KB (controle)       rc=0 
+[H3] .env com senha (ENV_RE)             rc=0 
+
+árvore: base
+[H5] NUL num .md                         rc=1   🛑 [H5] docs/z.md: 1 byte(s) NUL em arquivo de texto   [H5] um byte NUL faz o git e o grep tratarem o arquivo como binário: o diff fica inv
+[H5] NUL num .md, color.ui=always        rc=1   🛑 [H5] docs/z.md: 1 byte(s) NUL em arquivo de texto   [H5] um byte NUL faz o git e o grep tratarem o arquivo como binário: o diff fica inv
+[H5] NUL num .png (binário, controle)   rc=0 
+[H2] AGENTS.md de 150 KB                 rc=1   🛑 [H2] AGENTS.md: 153600 bytes (teto 100 KB)   [H2] o arquivo de contexto entra inteiro em toda sessão do agente; acima do teto, estoura a
+[H2] AGENTS.md de 50 KB (controle)       rc=0 
+[H3] .env com senha (ENV_RE)             rc=0 
+[rc=0]

@@ -1,0 +1,9 @@
+$ bash sdd/bin/patterns-lint.sh sdd/patterns; echo "[rc pacote=$?]"; cd /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.iKg4zpjEH3 && D=$(mktemp -d /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.iKg4zpjEH3/pt.XXXX) && sed "s/__HOJE__/$(date +%Y-%m-%d)/" sdd/fixtures/patterns/valido-completo.md > $D/pedidos.md && cp sdd/fixtures/contexto/dominio.md $D/dominio.md && bash sdd/bin/patterns-lint.sh --playbook sdd/fixtures/contexto/playbook.md $D; rc=$?; rm -rf $D; exit $rc
+✅ patterns-lint: 0 pattern(s) OK, 0 aviso(s)
+RESULTADO: VERDE
+→ os patterns podem ser citados.
+[rc pacote=0]
+✅ patterns-lint: 2 pattern(s) OK, 0 aviso(s)
+RESULTADO: VERDE
+→ os patterns podem ser citados.
+[exit=0]

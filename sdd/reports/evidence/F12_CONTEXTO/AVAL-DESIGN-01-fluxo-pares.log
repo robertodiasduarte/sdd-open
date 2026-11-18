@@ -1,0 +1,5 @@
+$ grep -n 'PARES = \|"governanca": define\|governanca, ux-review ou design' sdd/bin/sdd-fluxo.sh .agents/skills/sdd-define/SKILL.md
+sdd/bin/sdd-fluxo.sh:566:PARES = {"define": ("governanca", "ux-review", "design"), "governanca": ("ux-review", "design"),
+sdd/bin/sdd-fluxo.sh:641:    artefato = {"define": define, "governanca": define, "design": design,
+.agents/skills/sdd-define/SKILL.md:231:passo acima (governanca, ux-review ou design).
+[exit=0]

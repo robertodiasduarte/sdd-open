@@ -1,0 +1,17 @@
+$ bash /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f17c-starter-etapa3/4be28bc9-cd19-4e52-baaf-378f21755723/scratchpad/aval2-scripts/gerar.sh
+open HEAD archive: 72667a3
+✅ sdd-governanca: 12 arquivo(s), 5 troca(s)
+✅ sdd-release: 2 arquivo(s), 0 troca(s), de modo (references/MODO_INICIANTE.md)
+✅ ux-review-builder: 20 arquivo(s), 0 troca(s)
+RESULTADO: GERADO
+→ no starter: python3 scripts/check-gerado.py, os testes dele e um commit numa branch.
+gerador_rc=0
+✅ 18 skill(s) gerada(s) e a infra conferidas: tudo igual ao que o sdd-open gerou
+RESULTADO: VERDE
+check_gerado_rc=0
+pastas em skills/: 18; sem GERADO.txt: 0
+--- diff -r gerado-head/sdd-build (série 3) × gerado agora:
+IGUAIS
+sdd-define: igual ao gerado-head
+sdd-design: igual ao gerado-head
+rc=0

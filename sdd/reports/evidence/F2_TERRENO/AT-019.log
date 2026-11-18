@@ -1,0 +1,10 @@
+$ SDD_TEST_BASH=/bin/bash /usr/bin/python3 -B -m unittest -v test_sdd_open.Projeto.test_sync_e_idempotente_e_check_fica_em_dia test_sdd_open.Projeto.test_copias_geradas_dos_scripts_portados_passam_bash_n test_sdd_open.Projeto.test_init_de_novo_e_idempotente
+test_sync_e_idempotente_e_check_fica_em_dia (test_sdd_open.Projeto) ... ok
+test_copias_geradas_dos_scripts_portados_passam_bash_n (test_sdd_open.Projeto) ... ok
+test_init_de_novo_e_idempotente (test_sdd_open.Projeto) ... ok
+
+----------------------------------------------------------------------
+Ran 3 tests in 10.132s
+
+OK
+exit=0

@@ -1,0 +1,42 @@
+$ verify-gate.sh sdd/features/DEFINE_F25_SKILLS_DUPLICADAS.md
+▶ Verify Gate [test]: T=$(mktemp -d) && git archive HEAD | tar -x -C $T && cd $T/tests && SDD_TEST_BASH=/bin/bash /usr/bin/python3 -B -m unittest test_f25_skills_duplicadas test_checar test_bash32 test_matriz_new_session test_f16_textos test_f17_textos test_gerar_starter && cd $T && PUBLISH_GATE_MODE=ci bash scripts/publish-gate.sh $T && SDD_TEST_BASH=/bin/bash /usr/bin/python3 -B -m unittest discover -s tests -p 'test_*.py'
+   │ ...................s..............................................................................................................................................................................
+   │ ----------------------------------------------------------------------
+   │ Ran 194 tests in 261.448s
+   │ 
+   │ OK (skipped=1)
+   │ publish-gate — tree: <tmp>/tmp.zGOBT1f5Cm — mode: ci
+   │ ──────────────────────────────────────────────────────────────────
+   │ G1 secrets (gitleaks)
+   │   ✅ no secrets detected
+   │ G2 forbidden patterns
+   │   ✅ no forbidden pattern matched
+   │ G3 allowlist (MANIFEST.txt)
+   │   ⛔ undeclared file: sdd/features/DESIGN_F25_SKILLS_DUPLICADAS.md
+   │   ⛔ undeclared file: sdd/features/DEFINE_F25_SKILLS_DUPLICADAS.md
+   │   ⛔ undeclared file: sdd/reports/evidence/F25_SKILLS_DUPLICADAS/prototipo/duplicadas.sh
+   │   ⛔ undeclared file: sdd/reports/evidence/F25_SKILLS_DUPLICADAS/prototipo/SKILL.md.diff
+   │   ⛔ undeclared file: sdd/reports/evidence/F25_SKILLS_DUPLICADAS/prototipo/test_matriz_new_session.py.diff
+   │   ⛔ undeclared file: sdd/reports/evidence/F25_SKILLS_DUPLICADAS/prototipo/checar.sh.diff
+   │   ⛔ undeclared file: sdd/reports/evidence/F25_SKILLS_DUPLICADAS/prototipo/test_bash32.py.diff
+   │   ⛔ undeclared file: sdd/reports/evidence/F25_SKILLS_DUPLICADAS/prototipo/MANIFEST.txt.diff
+   │   ⛔ undeclared file: sdd/reports/evidence/F25_SKILLS_DUPLICADAS/prototipo/test_f25_skills_duplicadas.py
+   │   ⛔ undeclared file: sdd/reports/evidence/F25_SKILLS_DUPLICADAS/prototipo/test_checar.py.diff
+   │   ⛔ undeclared file: sdd/reports/evidence/F25_SKILLS_DUPLICADAS/prototipo/como-falar.md.diff
+   │   ⛔ undeclared file: sdd/reports/evidence/F25_SKILLS_DUPLICADAS/prototipo/test_f16_textos.py.diff
+   │   ⛔ undeclared file: sdd/reports/evidence/F25_SKILLS_DUPLICADAS/EXP-2-CODEX-PASTAS.log
+   │   ⛔ undeclared file: sdd/reports/evidence/F25_SKILLS_DUPLICADAS/EXP-3-NPX.log
+   │   ⛔ undeclared file: sdd/reports/evidence/F25_SKILLS_DUPLICADAS/EXP-1-CLAUDE-PRECEDENCIA.log
+   │   ⛔ undeclared file: sdd/reviews/UX_REVIEW_F25_SKILLS_DUPLICADAS.md
+   │ G4 verify-gate exit contract
+   │   ✅ DEFINE_FIXTURE_NEEDS_CLARIFICATION.md → exit 5
+   │   ✅ DEFINE_FIXTURE_CONTROLE.md → exit 0
+   │   ✅ DEFINE_FIXTURE_SEM_BLOCO.md → exit 64
+   │ G5 documentation
+   │ ──────────────────────────────────────────────────────────────────
+   │ ⛔ publish-gate BLOCKED — fix the findings above. Never retry silently, never loosen a
+   │    pattern without adding an equivalent one.
+🛑 GATE VERMELHO (test) — pass_when: 'exit 0' NÃO satisfeito (rc=1).
+RESULTADO: VERMELHO
+→ corrija o que o comando acima apontou e rode de novo.
+[exit=2]

@@ -1,0 +1,20 @@
+$ for f in sdd/bin/*.sh com --self-test; do PATH=<winpy>:$PATH bash $f --self-test; done  # base=ad32fe1, head=3ba89de; winpy = /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f16w-windows/b56e801b-0f18-49ee-b51c-5b9188b29c23/scratchpad/emul.py
+sdd/bin/contexto-lint.sh           base rc=0   unicode_err=0   RESULTADO: VERDE
+sdd/bin/contexto-lint.sh           head rc=0   unicode_err=0   RESULTADO: VERDE
+sdd/bin/contraste.sh               base rc=0   unicode_err=0   RESULTADO: VERDE
+sdd/bin/contraste.sh               head rc=0   unicode_err=0   RESULTADO: VERDE
+sdd/bin/patterns-lint.sh           base rc=0   unicode_err=0   RESULTADO: VERDE
+sdd/bin/patterns-lint.sh           head rc=0   unicode_err=0   RESULTADO: VERDE
+sdd/bin/playbook-curator.sh        base rc=0   unicode_err=0   RESULTADO: SELF-TEST OK
+sdd/bin/playbook-curator.sh        head rc=0   unicode_err=0   RESULTADO: SELF-TEST OK
+sdd/bin/playbook-lint.sh           base rc=0   unicode_err=0   
+sdd/bin/playbook-lint.sh           head rc=0   unicode_err=0   
+sdd/bin/prompt-drift-scan.sh       base rc=0   unicode_err=0   RESULTADO: VERDE
+sdd/bin/prompt-drift-scan.sh       head rc=0   unicode_err=0   RESULTADO: VERDE
+sdd/bin/sdd-decisoes-lint.sh       base rc=1   unicode_err=5   RESULTADO: VERMELHO
+sdd/bin/sdd-decisoes-lint.sh       head rc=0   unicode_err=0   RESULTADO: VERDE
+sdd/bin/sdd-drive.sh               base rc=2   unicode_err=0   RESULTADO: FALHA
+sdd/bin/sdd-drive.sh               head rc=0   unicode_err=0   RESULTADO: VERDE
+tr: Illegal byte sequence
+sdd/bin/sdd-fluxo.sh               base rc=1   unicode_err=19  
+sdd/bin/sdd-fluxo.sh               head rc=0   unicode_err=0   RESULTADO: VERDE

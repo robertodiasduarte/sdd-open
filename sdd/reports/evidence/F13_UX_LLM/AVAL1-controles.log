@@ -1,0 +1,12 @@
+$ /bin/bash sdd/reports/evidence/F13_UX_LLM/controles.sh
+🛑 falta src/notas/LOOP_SPEC.md com <LOOP_SPEC v="2"
+🛑 o transcript não mostra a leitura de sdd-loop-builder/SKILL.md como comando
+🛑 o transcript não mostra a leitura de sdd-prompt-builder como comando
+RESULTADO: REPROVA
+🛑 sem prompt-drift-scan.sh --conteudo executado para src/notas/LOOP_SPEC.md
+🛑 sem prompt-drift-scan.sh --conteudo executado para src/notas/redigir.txt
+🛑 o transcript não mostra a leitura de sdd-loop-builder/SKILL.md como comando
+🛑 o transcript não mostra a leitura de sdd-prompt-builder como comando
+RESULTADO: REPROVA
+controle vazio rc=1 · controle sem skills rc=1
+[exit=0]

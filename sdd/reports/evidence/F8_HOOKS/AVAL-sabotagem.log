@@ -1,0 +1,54 @@
+$ cd /Users/robertoduarte/rdd-worktrees/sdd-open-f8-aval && git archive HEAD | tar -x -C /tmp/sdd-aval/sabotagem && echo copia-ok
+copia-ok
+[exit=0]
+$ cd /tmp/sdd-aval/sabotagem && cp sdd/hooks/pre-commit sdd/hooks/pre-commit.bak && sed -i '' 's/^regra_h6; regra_h2; regra_h5; regra_h3; regra_h4; regra_report; regra_higiene$/regra_h6; regra_h5; regra_h3; regra_h4; regra_report; regra_higiene/' sdd/hooks/pre-commit && cmp -s sdd/hooks/pre-commit sdd/hooks/pre-commit.bak && echo SABOTAGEM-NAO-APLICADA; SDD_TEST_BASH=/bin/bash /usr/bin/python3 -B -m unittest discover -s tests -p 'test_hooks.py' 2>&1 | grep -E '^(FAIL|ERROR|OK|FAILED|Ran)' | head -8; mv sdd/hooks/pre-commit.bak sdd/hooks/pre-commit
+FAIL: test_h2_default_100kb_com_slot_vazio_ou_invalido (test_hooks.Hooks) (slot='""')
+FAIL: test_h2_default_100kb_com_slot_vazio_ou_invalido (test_hooks.Hooks) (slot='abc')
+FAIL: test_h2_default_100kb_com_slot_vazio_ou_invalido (test_hooks.Hooks) (slot='0')
+FAIL: test_h2_teto_do_arquivo_de_contexto (test_hooks.Hooks)
+FAIL: test_varios_achados_numa_recusa_so_e_no_verify_grava (test_hooks.Hooks)
+Ran 22 tests in 28.442s
+FAILED (failures=5)
+[exit=0]
+$ cd /tmp/sdd-aval/sabotagem && cp sdd/hooks/pre-push sdd/hooks/pre-push.bak && sed -i '' 's/-gt 0 \]; then/-gt 999 ]; then/' sdd/hooks/pre-push && cmp -s sdd/hooks/pre-push sdd/hooks/pre-push.bak && echo SABOTAGEM-NAO-APLICADA; SDD_TEST_BASH=/bin/bash /usr/bin/python3 -B -m unittest discover -s tests -p 'test_hooks.py' 2>&1 | grep -E '^(FAIL|ERROR|OK|FAILED|Ran)' | head -8; mv sdd/hooks/pre-push.bak sdd/hooks/pre-push
+FAIL: test_pre_push_avisa_base_velha_e_sai_0 (test_hooks.Hooks)
+Ran 22 tests in 29.677s
+FAILED (failures=1)
+[exit=0]
+$ cd /tmp/sdd-aval/sabotagem && cp bin/sdd-open.sh bin/sdd-open.sh.bak && sed -i '' 's/git config core.hooksPath sdd\/hooks || die/true || die/' bin/sdd-open.sh && cmp -s bin/sdd-open.sh bin/sdd-open.sh.bak && echo SABOTAGEM-NAO-APLICADA; SDD_TEST_BASH=/bin/bash /usr/bin/python3 -B -m unittest discover -s tests -p 'test_sdd_open.py' 2>&1 | grep -E '^(FAIL|ERROR|OK|FAILED|Ran)' | head -8; mv bin/sdd-open.sh.bak bin/sdd-open.sh
+FAIL: test_doctor_diz_o_estado_dos_hooks_com_o_comando (test_sdd_open.Hooks)
+FAIL: test_init_liga_os_hooks_e_a_linha_do_plano_diz_o_efeito (test_sdd_open.Hooks)
+FAIL: test_init_na_branch_padrao_com_remoto_diz_como_commitar (test_sdd_open.Hooks)
+FAIL: test_init_repetido_e_idempotente_e_completa_hook_apagado (test_sdd_open.Hooks)
+FAIL: test_migra_o_alarme_da_higiene_sem_perder_a_protecao (test_sdd_open.Hooks)
+Ran 28 tests in 110.252s
+FAILED (failures=5)
+[exit=0]
+$ cd /tmp/sdd-aval/sabotagem && cp bin/lib/vendors.sh bin/lib/vendors.sh.bak && sed -i '' 's/^VENDOR_ARQUIVOS_CONTEXTO=.*/VENDOR_ARQUIVOS_CONTEXTO="AGENTS.md CLAUDE.md"/' bin/lib/vendors.sh && cmp -s bin/lib/vendors.sh bin/lib/vendors.sh.bak && echo SABOTAGEM-NAO-APLICADA; SDD_TEST_BASH=/bin/bash /usr/bin/python3 -B -m unittest discover -s tests -p 'test_hooks.py' 2>&1 | grep -E '^(FAIL|ERROR|OK|FAILED|Ran)' | head -8; mv bin/lib/vendors.sh.bak bin/lib/vendors.sh
+FAIL: test_lista_de_arquivos_de_contexto_igual_a_do_pacote (test_hooks.Hooks)
+Ran 22 tests in 35.303s
+FAILED (failures=1)
+[exit=0]
+$ cd /tmp/sdd-aval/sabotagem && cp .agents/skills/sdd-higiene-dado/scripts/alarme.sh .agents/skills/sdd-higiene-dado/scripts/alarme.sh.bak && sed -i '' 's/MODO="hooks"/MODO="outro"/' .agents/skills/sdd-higiene-dado/scripts/alarme.sh && cmp -s .agents/skills/sdd-higiene-dado/scripts/alarme.sh .agents/skills/sdd-higiene-dado/scripts/alarme.sh.bak && echo SABOTAGEM-NAO-APLICADA; SDD_TEST_BASH=/bin/bash /usr/bin/python3 -B -m unittest discover -s tests -p 'test_alarme.py' 2>&1 | grep -E '^(FAIL|ERROR|OK|FAILED|Ran)' | head -8; mv .agents/skills/sdd-higiene-dado/scripts/alarme.sh.bak .agents/skills/sdd-higiene-dado/scripts/alarme.sh
+FAIL: test_copia_gerada_liga_o_alarme_nos_hooks_do_projeto (test_alarme.TestCopiaGerada)
+FAIL: test_desinstalar_remove_o_arquivo_legado_da_migracao_e_so_ele (test_alarme.TestModoHooks)
+FAIL: test_verificar_instalar_desinstalar_pela_config (test_alarme.TestModoHooks)
+Ran 34 tests in 25.525s
+FAILED (failures=3)
+[exit=0]
+$ cd /tmp/sdd-aval/sabotagem && cp bin/adapters/claude/sdd-report-guard.py bin/adapters/claude/sdd-report-guard.py.bak && sed -i '' 's/if r.returncode == 1:/if r.returncode == 99:/' bin/adapters/claude/sdd-report-guard.py && cmp -s bin/adapters/claude/sdd-report-guard.py bin/adapters/claude/sdd-report-guard.py.bak && echo SABOTAGEM-NAO-APLICADA; SDD_TEST_BASH=/bin/bash /usr/bin/python3 -B -m unittest discover -s tests -p 'test_claude_adapter.py' 2>&1 | grep -E '^(FAIL|ERROR|OK|FAILED|Ran)' | head -8; mv bin/adapters/claude/sdd-report-guard.py.bak bin/adapters/claude/sdd-report-guard.py
+ERROR: test_report_guard_nega_write_que_o_lint_reprova (test_claude_adapter.Projeto)
+ERROR: test_report_guard_simula_o_edit (test_claude_adapter.Projeto)
+Ran 10 tests in 66.386s
+FAILED (errors=2)
+[exit=0]
+$ cd /tmp/sdd-aval/sabotagem && cp bin/adapters/claude/sdd-avaliador-guard.py bin/adapters/claude/sdd-avaliador-guard.py.bak && sed -i '' 's/"veredito" not in texto.lower()/"xyzzy" not in texto.lower()/' bin/adapters/claude/sdd-avaliador-guard.py && cmp -s bin/adapters/claude/sdd-avaliador-guard.py bin/adapters/claude/sdd-avaliador-guard.py.bak && echo SABOTAGEM-NAO-APLICADA; SDD_TEST_BASH=/bin/bash /usr/bin/python3 -B -m unittest discover -s tests -p 'test_claude_adapter.py' 2>&1 | grep -E '^(FAIL|ERROR|OK|FAILED|Ran)' | head -8; mv bin/adapters/claude/sdd-avaliador-guard.py.bak bin/adapters/claude/sdd-avaliador-guard.py
+ERROR: test_avaliador_guard_nega_com_arvore_suja_e_so_com_veredito (test_claude_adapter.Projeto)
+Ran 10 tests in 68.804s
+FAILED (errors=1)
+[exit=0]
+$ cd /tmp/sdd-aval/sabotagem && git -C /Users/robertoduarte/rdd-worktrees/sdd-open-f8-aval diff --quiet HEAD -- sdd/hooks bin .agents/skills/sdd-higiene-dado/scripts && echo projeto-intacto; SDD_TEST_BASH=/bin/bash /usr/bin/python3 -B -m unittest discover -s tests -p 'test_hooks.py' 2>&1 | tail -1; SDD_TEST_BASH=/bin/bash /usr/bin/python3 -B -m unittest discover -s tests -p 'test_claude_adapter.py' 2>&1 | tail -1
+projeto-intacto
+OK
+OK
+[exit=0]

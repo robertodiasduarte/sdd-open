@@ -1,0 +1,24 @@
+$ S=$(mktemp -d); export SDD_STUB_ESTADO=$S; unset SDD_STUB_CLAUDE SDD_STUB_CODEX SDD_STUB_GEMINI SDD_STUB_OPENROUTER; for e in claude codex gemini; do echo prompt | /usr/bin/python3 -B /Users/robertoduarte/rdd-worktrees/sdd-open-f11-gate/sdd/review/stubs/$e.py -p; echo "[$e rc=$?]"; done; /usr/bin/python3 -B /Users/robertoduarte/rdd-worktrees/sdd-open-f11-gate/sdd/review/stubs/openrouter.py & pid=$!; for i in 1 2 3 4 5 6 7 8 9 10; do [ -f $S/openrouter.porta ] && break; sleep 0.2; done; /usr/bin/python3 -I -c 'import sys,urllib.request,urllib.error
+o=urllib.request.build_opener(urllib.request.ProxyHandler({}))
+try:
+    o.open(urllib.request.Request("http://127.0.0.1:%s/api/v1/chat/completions" % open(sys.argv[1]).read().strip(), data=b"{}", headers={"Authorization":"Bearer x"}))
+except urllib.error.HTTPError as e:
+    print("openrouter HTTP", e.code, e.read().decode())' $S/openrouter.porta; kill $pid; echo '--- sentinela:'; cat $S/sentinela; echo '--- fila com cenário desconhecido:'; SDD_STUB_CODEX=inexistente /usr/bin/python3 -B /Users/robertoduarte/rdd-worktrees/sdd-open-f11-gate/sdd/review/stubs/codex.py exec </dev/null; echo "[codex rc=$?]"; tail -1 $S/sentinela
+stub claude: chamada fora da fila do teste
+[claude rc=99]
+stub codex: chamada fora da fila do teste
+[codex rc=99]
+stub gemini: chamada fora da fila do teste
+[gemini rc=99]
+openrouter HTTP 599 sentinela
+--- sentinela:
+claude
+codex
+gemini
+openrouter
+/bin/bash: line 5: 82359 Terminated: 15          /usr/bin/python3 -B /Users/robertoduarte/rdd-worktrees/sdd-open-f11-gate/sdd/review/stubs/openrouter.py
+--- fila com cenário desconhecido:
+stub codex: chamada fora da fila do teste
+[codex rc=99]
+codex (cenário desconhecido: inexistente)
+[exit=0]

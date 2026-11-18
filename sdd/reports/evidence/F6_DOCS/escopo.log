@@ -1,0 +1,26 @@
+$ git diff --stat v2.2.6 HEAD | tail -1 && git diff --name-status v2.2.6 HEAD
+ 23 files changed, 1394 insertions(+), 41 deletions(-)
+M	.agents/skills/sdd-brainstorm/SKILL.md
+M	.agents/skills/sdd-build/SKILL.md
+M	.agents/skills/sdd-define/SKILL.md
+M	.agents/skills/sdd-design/SKILL.md
+M	.agents/skills/sdd-governanca/SKILL.md
+M	.agents/skills/sdd-release/SKILL.md
+M	.agents/skills/sdd-ux-review/SKILL.md
+M	AGENTS.md.tmpl
+M	MANIFEST.txt
+M	README.md
+M	README.pt-BR.md
+M	docs/adaptation-guide.md
+M	docs/comparison.md
+M	docs/pt-BR/adaptation-guide.md
+M	docs/pt-BR/comparison.md
+A	docs/pt-BR/guia-do-aluno.md
+M	docs/pt-BR/quickstart.md
+A	docs/pt-BR/roadmap.md
+M	docs/quickstart.md
+A	docs/roadmap.md
+M	tests/test_contrato_build_release.py
+M	tests/test_correcoes_w0.py
+A	tests/test_docs.py
+exit=0

@@ -1,0 +1,6 @@
+$ bash -c echo "HEAD $(git rev-parse --short HEAD)"; echo "branch remota:"; git ls-remote origin feat/f16w-windows; echo "PRs da branch:"; gh pr list --head feat/f16w-windows --state all 2>&1; echo "runs da branch:"; gh run list --branch feat/f16w-windows --limit 5 2>&1
+HEAD c65e658
+branch remota:
+PRs da branch:
+runs da branch:
+[exit=0]

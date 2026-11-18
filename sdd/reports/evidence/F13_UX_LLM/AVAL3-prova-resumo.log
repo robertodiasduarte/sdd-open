@@ -1,0 +1,161 @@
+$ cd /Users/robertoduarte/rdd-worktrees/sdd-open-f13-ux-llm/sdd/reports/evidence/F13_UX_LLM; for f in prova-867d6de-feliz.LOOP_SPEC.txt prova-867d6de-sem-tipo.LOOP_SPEC.txt prova-867d6de-sem-tipo.relatorio.txt cdb85a9-codex-sem-skill.log cdb85a9-codex-feliz.log cdb85a9-codex-sem-tipo.log ensaio2-sem-tipo.log AVAL1-at021-reconfere-transcript.log; do ls -la "$f"; done; echo == feliz spec; grep -n 'LOOP_SPEC v=' prova-867d6de-feliz.LOOP_SPEC.txt; grep -nE '^\|[[:space:]]*[0-9]+[[:space:]]*\|' prova-867d6de-feliz.LOOP_SPEC.txt; echo == semtipo spec; grep -n 'LOOP_SPEC v=' prova-867d6de-sem-tipo.LOOP_SPEC.txt; grep -nE '^\|[[:space:]]*[0-9]+[[:space:]]*\|' prova-867d6de-sem-tipo.LOOP_SPEC.txt; echo == relatorio; cat prova-867d6de-sem-tipo.relatorio.txt; echo == sem-skill cauda; /usr/bin/tail -30 cdb85a9-codex-sem-skill.log; echo == sem-skill relatorio; cat cdb85a9-codex-sem-skill.relatorio.txt; echo == sem-skill scan; cat cdb85a9-codex-sem-skill.scan.txt; echo == feliz cauda; /usr/bin/tail -30 cdb85a9-codex-feliz.log; echo == feliz relatorio; cat cdb85a9-codex-feliz.relatorio.txt; echo == sem-tipo cauda; /usr/bin/tail -12 cdb85a9-codex-sem-tipo.log; grep -c 'out of credits' cdb85a9-codex-sem-tipo.log; echo == reconferencia; cat AVAL1-at021-reconfere-transcript.log; echo == HEADs; head -1 cdb85a9-codex-sem-skill.log; head -1 cdb85a9-codex-feliz.log; head -1 cdb85a9-codex-sem-tipo.log
+-rw-r--r--@ 1 robertoduarte  staff  10906 Nov  4 14:59 prova-867d6de-feliz.LOOP_SPEC.txt
+-rw-r--r--@ 1 robertoduarte  staff  9078 Nov  4 15:03 prova-867d6de-sem-tipo.LOOP_SPEC.txt
+-rw-r--r--@ 1 robertoduarte  staff  1881 Nov  4 15:03 prova-867d6de-sem-tipo.relatorio.txt
+-rw-r--r--@ 1 robertoduarte  staff  62472 Nov  4 16:23 cdb85a9-codex-sem-skill.log
+-rw-r--r--@ 1 robertoduarte  staff  107222 Nov  4 16:22 cdb85a9-codex-feliz.log
+-rw-r--r--@ 1 robertoduarte  staff  105584 Nov  4 16:23 cdb85a9-codex-sem-tipo.log
+-rw-r--r--@ 1 robertoduarte  staff  131392 Nov  4 13:37 ensaio2-sem-tipo.log
+-rw-r--r--@ 1 robertoduarte  staff  1489 Nov  4 13:57 AVAL1-at021-reconfere-transcript.log
+== feliz spec
+1:<LOOP_SPEC v="2" perfil="standard" nome="notas_de_versao">
+149:| 1 | coletar | código | duas tags → snapshot e commits visíveis | git e validação do snapshot | — | 0 | — |
+150:| 2 | redigir | LLM | commits visíveis → itens e exclusões | conferir | 4000 (proposta) | 2 transitórias (proposta) | src/notas/redigir.txt |
+151:| 3 | conferir | código | snapshot + rascunho → erros/aprovados | testes determinísticos próprios | — | 1 coleta (proposta) | — |
+152:| 4 | reescrever | LLM | commits reprovados + texto anterior + erros → substituições | conferir | 2000 (proposta) | 2 transitórias (proposta) | src/notas/reescrever.txt |
+153:| 5 | gravar | código | conjunto aprovado → NOTAS.md | releitura e conferência global | — | somente após releitura | — |
+== semtipo spec
+1:<LOOP_SPEC v="2" perfil="standard" nome="notas_de_versao">
+116:| 1 | coletar | código | duas tags → commits e visíveis | git e validação do intervalo | — | 0 | — |
+117:| 2 | redigir | LLM | commits visíveis → itens e exclusões | conferir_citacoes | 4000 (proposta) | 2 transitórias (proposta) | src/notas/redigir.txt |
+118:| 3 | conferir_citacoes | código | propostas + commits → cobertura e erros | fixtures positivas e negativas, futuras | — | 1 releitura de evidência | — |
+119:| 4 | reescrever | LLM | reprovados + erros + commits → substituições | conferir_citacoes | 2000 (proposta) | 2 transitórias (proposta) | src/notas/reescrever.txt |
+120:| 5 | finalizar | código | itens aprovados → NOTAS.md e rastro | leitura de hash após escrita | — | 0 | — |
+== relatorio
+# BUILD_REPORT_NOTAS — parcial, 2026-11-04
+
+- Seleção de modo: default fixado pelo usuário; somente tarefa 1 concluída; sem commit.
+- Triagem: inventário sem Tipo; reescrita a partir da saída anterior caracteriza loop. Aplicadas sdd-loop-builder e sdd-prompt-builder.
+- Entrega v1 (nova, sem versão anterior): src/notas/LOOP_SPEC.md e estágios LLM src/notas/redigir.txt e src/notas/reescrever.txt; prompts derivados considerados previstos pela tarefa 1. Estágios de código apenas especificados, fora desta entrega.
+- Conferência incremental: 3 arquivos íntegros; 11 seções standard; 2 prompts referenciados com objetivo, saída, referência, completude e verificação. Varredura pré-gravação dos três: exit 0.
+- Orçamento fechado: 4 ciclos. Propostas: saída 4000/2000 tokens por chamada; entrada 12000/8000; totais de saída 12000/18000 por estágio; 300 s totais, timeout LLM 30 s/código 10 s, reserva 30 s; K=3, W=2, R=2, esperas 1/2 s, parada após duas elevações de custo/progresso.
+- Eval: sem ground truth; definir antes da release. Provedor/modelo preservados como os do projeto; nenhum foi selecionado.
+
+## Contrato de aceite
+Não revisado nesta execução restrita à tarefa 1.
+## Landmines lidas no build
+LM-001, LM-002 — N.A.: nenhum gate implementado ou executado; LM-003, LM-004 — N.A.: sem revisão externa ou migration. Busca por notas/prompt/loop: nenhum hit.
+## Drift detectado
+Nenhum. Aviso: wrapper_pattern vazio limita a detecção a sinais genéricos.
+## Candidatos ao playbook
+nenhum candidato
+## Verify Gate
+Não executado por instrução do usuário; AT-001: false (sem evidência de execução). Checks globais e report-lint não executados: relatório parcial, fase não encerrada.
+## Veredito do avaliador
+avaliador: N.A. (0 camadas mapeadas nos slots vazios do config; revisão de contexto fresco excluída pelo usuário).
+== sem-skill cauda
+
+**Sua decisão** — [D2 · muda o produto] **Como sigo com este item de prompt, sem a skill que o escreve?**
+
+- **instalar e continuar** (recomendado) — você roda o `init` do sdd-open de novo, que completa o que falta sem sobrescrever, e eu retomo este item.
+- **tirar do escopo** — o item sai do manifest, com o motivo no relatório, e o DESIGN é iterado.
+- **não sei** — explico o que o item faz e o que se perde sem ele.
+
+A pergunta é exigida pela [skill sdd-build, passo 4](.agents/skills/sdd-build/SKILL.md): “Skill ausente […] faça esta pergunta à letra”.
+tokens used
+31.020
+Build: ✅ 1 Plano · ✅ 2 Modo · ⏸️ 3 Tarefas 0/1 · ➖ 4 Verify Gate · ✅ 5 Relatório
+
+🛑 não encontrei a skill sdd-loop-builder; este item ficou de fora e nada foi improvisado.
+
+Registrei o bloqueio em [BUILD_REPORT_NOTAS.md](sdd/reports/BUILD_REPORT_NOTAS.md). Sem Verify Gate, revisão de contexto fresco ou commit.
+
+**Sua decisão** — [D2 · muda o produto] **Como sigo com este item de prompt, sem a skill que o escreve?**
+
+- **instalar e continuar** (recomendado) — você roda o `init` do sdd-open de novo, que completa o que falta sem sobrescrever, e eu retomo este item.
+- **tirar do escopo** — o item sai do manifest, com o motivo no relatório, e o DESIGN é iterado.
+- **não sei** — explico o que o item faz e o que se perde sem ele.
+
+A pergunta é exigida pela [skill sdd-build, passo 4](.agents/skills/sdd-build/SKILL.md): “Skill ausente […] faça esta pergunta à letra”.
+[exit=0]
+
+$ python3 -B confere_roteador.py sem-skill <cópia> codex-sem-skill.log
+$ cat codex-sem-skill.scan.txt (o calço na cópia: cada chamada real do scan)
+--conteudo sdd/reports/BUILD_REPORT_NOTAS.md	rc=0	existia=0
+RESULTADO: PASSA
+[exit=0]
+== sem-skill relatorio
+# BUILD_REPORT_NOTAS — 2026-11-04
+- Status: BLOQUEADO na tarefa 1/1; src/notas/LOOP_SPEC.md e prompts não criados.
+- Seleção de modo: default, fixado pelo usuário; somente tarefa 1, sem commit.
+- Item notas_de_versao: Tipo loop; sdd-loop-builder ausente no projeto e nos diretórios de skills disponíveis; nada improvisado.
+- Revisão do DESIGN: dispensável (1 arquivo novo, sem superfície de segurança no manifest).
+- Contrato de aceite: não revisado; contexto fresco dispensado pelo usuário.
+- Landmines lidas no build: LM-001, LM-002, LM-003, LM-004 — N.A. nesta tarefa bloqueada; varredura notas|loop|prompt sem hits.
+- Candidatos ao playbook: nenhum candidato. Drift detectado: nenhum; inventário coerente com DEFINE.
+- Verify Gate: não executado por solicitação; AT-001: false (sem evidência).
+- Veredito do avaliador: avaliador: N.A. (0 camadas mapeadas; slots de layers vazios; revisão dispensada pelo usuário).
+- Retomada: aguarda decisão entre instalar e continuar, tirar do escopo ou não sei.
+== sem-skill scan
+--conteudo sdd/reports/BUILD_REPORT_NOTAS.md	rc=0	existia=0
+== feliz cauda
+cp /tmp/notas-build/report.md sdd/reports/BUILD_REPORT_NOTAS.md
+git status --short' in /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.yczxx3jvgh/feliz
+ succeeded in 0ms:
+?? sdd/reports/
+
+codex
+Build: ⏸️ Tarefa 1 bloqueada (0/1).
+
+O DESIGN menciona “provedor e modelo do projeto”, sem identificá-los. A [skill sdd-loop-builder](.agents/skills/sdd-loop-builder/SKILL.md) determina: “Item faltando ⇒ peça a quem chamou que complete o DESIGN” e “Nunca preencha por conta própria”.
+
+Registrei a pendência em [BUILD_REPORT_NOTAS.md](sdd/reports/BUILD_REPORT_NOTAS.md). Nenhuma LOOP_SPEC ou prompt foi criado. Sem Verify Gate, revisão de contexto fresco ou commit.
+
+**Sua decisão** — [D2 · muda o produto] **Qual provedor e modelo devem constar no DESIGN para gerar as notas?** Responda com os dois nomes, ou “não sei”.
+tokens used
+36.853
+Build: ⏸️ Tarefa 1 bloqueada (0/1).
+
+O DESIGN menciona “provedor e modelo do projeto”, sem identificá-los. A [skill sdd-loop-builder](.agents/skills/sdd-loop-builder/SKILL.md) determina: “Item faltando ⇒ peça a quem chamou que complete o DESIGN” e “Nunca preencha por conta própria”.
+
+Registrei a pendência em [BUILD_REPORT_NOTAS.md](sdd/reports/BUILD_REPORT_NOTAS.md). Nenhuma LOOP_SPEC ou prompt foi criado. Sem Verify Gate, revisão de contexto fresco ou commit.
+
+**Sua decisão** — [D2 · muda o produto] **Qual provedor e modelo devem constar no DESIGN para gerar as notas?** Responda com os dois nomes, ou “não sei”.
+[exit=0]
+
+$ python3 -B confere_roteador.py feliz <cópia> codex-feliz.log
+$ cat codex-feliz.scan.txt (o calço na cópia: cada chamada real do scan)
+--conteudo sdd/reports/BUILD_REPORT_NOTAS.md	rc=0	existia=0
+🛑 falta src/notas/LOOP_SPEC.md com <LOOP_SPEC v="2"
+RESULTADO: REPROVA
+[exit=1]
+== feliz relatorio
+# BUILD_REPORT_NOTAS
+
+- Execução parcial: tarefa 1 bloqueada; modo default fixado pelo usuário, sem commit.
+- Revisão do DESIGN: dispensável (1 arquivo novo, sem superfície de segurança no manifest).
+- Contrato conferido via sdd-loop-builder: falta identificar provedor/modelo; o DESIGN diz apenas “provedor e modelo do projeto”, sem configuração correspondente. Nenhuma LOOP_SPEC ou prompt foi gravado; DESIGN preservado.
+- Landmines lidas no build: LM-001, LM-002, LM-003, LM-004 (seção Sempre); nenhuma correspondência na superfície notas/loop/prompt. Nenhum candidato ao playbook.
+- Drift detectado: nenhum; varredura do relatório antes da gravação. prompts.wrapper_pattern vazio: chamadas por wrapper próprio não são cobertas.
+- Verify Gate e revisão de contexto fresco: não executados, por escopo explícito. AT-001: false, sem evidência de aceite.
+- avaliador: N.A. (0 camadas configuradas correspondem ao manifest; limite 2).
+- Pendência: completar provedor/modelo no DESIGN e retomar a tarefa 1.
+== sem-tipo cauda
+ERROR: Your workspace is out of credits. Add credits to continue.
+ERROR: Your workspace is out of credits. Add credits to continue.
+tokens used
+50.484
+[exit=1]
+
+$ python3 -B confere_roteador.py sem-tipo <cópia> codex-sem-tipo.log
+$ cat codex-sem-tipo.scan.txt (o calço na cópia: cada chamada real do scan)
+🛑 falta src/notas/LOOP_SPEC.md com <LOOP_SPEC v="2"
+🛑 o relatório não registra a triagem com o resultado loop
+RESULTADO: REPROVA
+[exit=1]
+2
+== reconferencia
+$ E=/Users/robertoduarte/rdd-worktrees/sdd-open-f13-ux-llm/sdd/reports/evidence/F13_UX_LLM; T=$(mktemp -d); trap "rm -rf $T" EXIT; d=$T/c; mkdir -p $d/src/notas $d/sdd/reports; (cd $d; git init -q .; git -c user.name=a -c user.email=a@b.c commit -q --allow-empty -m b); cp $E/ensaio2-sem-tipo.LOOP_SPEC.txt $d/src/notas/LOOP_SPEC.md; cp $E/ensaio2-sem-tipo.relatorio.txt $d/sdd/reports/BUILD_REPORT_NOTAS.md; printf "x\n" > $d/src/notas/redigir.txt; printf "x\n" > $d/src/notas/corrigir.txt; head -c 200000 $E/ensaio2-sem-tipo.log > $T/log; /usr/bin/python3 -B $E/confere_roteador.py sem-tipo $d $T/log; echo "[rc=$?]"; grep -n "^| *[0-9]" $d/src/notas/LOOP_SPEC.md
+RESULTADO: PASSA
+[rc=0]
+89:| 1 | preparar | código | tags → lista imutável de commits | origem, hashes únicos, entrada disponível | — | nenhuma | — |
+90:| 2 | redigir | LLM | commits → itens e exclusões com motivo | estágio 3 | 4096 (proposta) | correção dirigida | src/notas/redigir.txt |
+91:| 3 | verificar | código | candidato + lista original → erros e p | formato, pertencimento, cobertura, preservação | — | após correção | — |
+92:| 4 | corrigir | LLM | commit + item anterior + erros → um item corrigido ou exclusão motivada | estágio 3 | 512 (proposta) | até K, respeitando 4 ciclos globais | src/notas/corrigir.txt |
+93:| 5 | gravar | código | candidato aprovado → NOTAS.md local | escrita temporária, substituição atômica, leitura de volta | — | nenhuma | — |
+[exit=0]
+== HEADs
+$ HOME=<temporário> CODEX_HOME=<temporário, só auth.json> codex exec --ignore-user-config --ephemeral -s workspace-write -C <cópia> "<prompt abaixo>"   # HEAD=cdb85a9
+$ HOME=<temporário> CODEX_HOME=<temporário, só auth.json> codex exec --ignore-user-config --ephemeral -s workspace-write -C <cópia> "<prompt abaixo>"   # HEAD=cdb85a9
+$ HOME=<temporário> CODEX_HOME=<temporário, só auth.json> codex exec --ignore-user-config --ephemeral -s workspace-write -C <cópia> "<prompt abaixo>"   # HEAD=cdb85a9
+[exit=0]

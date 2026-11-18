@@ -1,0 +1,22 @@
+$ bash /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.LJMQUnDuje/fronteira.sh /Users/robertoduarte/rdd-worktrees/sdd-open-f12-contexto/sdd/bin/governanca-fronteira.sh
+== so-permitido                 exit=0 | MUDOU: /privatesdd/reviews/GOVERNANCA_REVIEW_X.md 
+== sobrescreve-ja-sujo          exit=1 | FORA: /privatesrc/b.py 
+== define-ignorado-sdd          exit=1 | FORA: /privatesdd/features/DEFINE_X.md 
+== novo-em-pasta-nova           exit=1 | FORA: /privatenovo/sub/c.txt 
+== apaga-limpo                  exit=1 | FORA: /privatesrc/a.py 
+== nome-acento                  exit=1 | FORA: /privatesrc/ação.py 
+== edita-limpo-e-commita        exit=0 | 
+== commita-o-sujo               exit=1 | FORA: /privatenovo/sub/c.txt FORA: /privatesrc/ação.py FORA: /privatesrc/b.py 
+== ignorado-fora-sdd            exit=0 | 
+== chmod-only                   exit=1 | FORA: /privatesrc/a.py 
+--- 64s
+snapshot dentro do worktree: 64
+raiz = subpasta: 64
+antes ausente: 64
+antes ilegível: 64
+sem permitido: 64
+sem argumento: 64
+raiz inexistente: 64
+antes = arquivo que não é snapshot: 1
+dois snapshots vazios: 0
+[exit=0]

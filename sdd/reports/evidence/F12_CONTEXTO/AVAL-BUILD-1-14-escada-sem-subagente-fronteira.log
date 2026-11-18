@@ -1,0 +1,26 @@
+$ bash /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.LJMQUnDuje/escada-sem-subagente.sh /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.iKg4zpjEH3
+?? DESIGN_DO_TEMPLATE.md
+?? real-f12.md
+?? sdd/traces/
+### passo 1.5 (cartógrafo)
+RESULTADO: SNAPSHOT GRAVADO
+despachar rc=40
+RESULTADO: SNAPSHOT GRAVADO
+MUDOU: /private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.iKg4zpjEH3/sdd/contexto/pedidos.md
+FORA: /private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.iKg4zpjEH3/sdd/reports/briefs/BRIEF_cartografo_FX.md
+RESULTADO: ESCRITA FORA DO PERMITIDO
+→ não apague nada: liste os caminhos FORA para a pessoa conferir, regrave o DEFINE se ele mudou e conte como falha (1 redespacho).
+comparar rc=1
+### passo 11 (revisor)
+RESULTADO: SNAPSHOT GRAVADO
+despachar rc=40
+RESULTADO: SNAPSHOT GRAVADO
+FORA: /private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.iKg4zpjEH3/sdd/reports/briefs/BRIEF_revisor-governanca_FX.md
+RESULTADO: ESCRITA FORA DO PERMITIDO
+→ não apague nada: liste os caminhos FORA para a pessoa conferir, regrave o DEFINE se ele mudou e conte como falha (1 redespacho).
+comparar rc=1
+✅ bloco <<<GOVERNANCA válido: resultado NA, 0 lacuna(s)
+RESULTADO: NA
+→ escreva a linha Governança: N.A. — <motivo> e tire o marcador de governança.
+bloco rc=0
+[exit=0]

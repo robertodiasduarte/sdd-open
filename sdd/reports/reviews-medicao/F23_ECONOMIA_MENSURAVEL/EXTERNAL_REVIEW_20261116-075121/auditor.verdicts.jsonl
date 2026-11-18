@@ -1,0 +1,3 @@
+{"achado": "R1", "veredito": "AGREE", "justificativa": "Em sdd/bin/adapters/sessao-codex.py:97, session_meta ausente provoca retorno antes de propagar a corrupção, permitindo subcontagem sem n/d contra o AT-004."}
+{"achado": "R2", "veredito": "AGREE", "justificativa": "sdd/bin/custo-feature.sh:660 aceita linhas pelo número de colunas e posteriormente descarta features inválidas sem impedir MEDIDO com tabela vazia, contrariando o exit 64 documentado."}
+{"achado": "N1", "veredito": "NOVO", "severidade": "MED", "arquivo": "sdd/bin/adapters/sessao-claude.py", "linha": 155, "resumo": "Registros de sessões concorrentes são unidos sem identidade de sessão, fazendo turnos() substituir inícios e subcontar o tempo ativo exigido como soma por turno."}

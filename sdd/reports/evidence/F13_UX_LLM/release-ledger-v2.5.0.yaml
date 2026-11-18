@@ -1,0 +1,7 @@
+feature_id: F13_UX_LLM
+slice_id: ux-llm-no-codigo
+versao: v2.5.0
+estado: shipado
+dod: Verify Gate verde em b1348bd (1134 testes no piso); CI verde em Ubuntu e macOS; avaliador de contexto fresco em NEEDS_WORK no ciclo 3, com o achado corrigido e conferido pela rodada 6 (D4 do Roberto); prova real completa em 867d6de, sem os transcritos, e sem-skill em cdb85a9 (risco aceito, D4)
+descricao: tabela WCAG na sdd-ux-review, contraste.sh, skill sdd-loop-builder, roteador loop x prompt na sdd-build, inventário de prompts conferido pelo design-lint, prompt-drift-scan.sh
+review_externo: sdd/reports/reviews/EXTERNAL_REVIEW_20261104-182724 sha256=485ea94b02d2e58dace00b640425c085a36a72d81db5970908d1ea5d769c7699 diversidade=vendor revisor2=dispensado — sem créditos na conta do Codex; decisão D4 do Roberto, 2026-11-04

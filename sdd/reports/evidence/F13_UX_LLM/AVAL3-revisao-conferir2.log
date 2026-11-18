@@ -1,0 +1,7 @@
+$ /bin/bash sdd/bin/adversarial-review.sh --conferir sdd/reports/reviews/EXTERNAL_REVIEW_20261104-164103 --aceitar-sem-revisor2 'sem créditos na conta do Codex; decisão D4 do Roberto, 2026-11-04'; echo rc=$?
+✅ a revisão sdd/reports/reviews/EXTERNAL_REVIEW_20261104-164103 é desta versão do código (sha256 igual).
+review_externo: sdd/reports/reviews/EXTERNAL_REVIEW_20261104-164103 sha256=9edfc752e542a295b9299d0bb78130ae4a5d210bdf0d2d6d0cffd4cac5b0eaf0 diversidade=vendor revisor2=dispensado — sem créditos na conta do Codex; decisão D4 do Roberto, 2026-11-04
+RESULTADO: CONFERE
+→ copie a linha review_externo para o ledger da release.
+rc=0
+[exit=0]

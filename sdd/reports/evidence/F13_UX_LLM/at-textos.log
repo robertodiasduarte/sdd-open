@@ -1,0 +1,7 @@
+$ SDD_TEST_BASH=/bin/bash /usr/bin/python3 -B -m unittest discover -s tests -p 'test_f13_textos.py'
+........................................
+----------------------------------------------------------------------
+Ran 40 tests in 18.166s
+
+OK
+[exit=0]

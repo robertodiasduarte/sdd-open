@@ -1,0 +1,10 @@
+$ /bin/bash /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f10-revisao/bd420f6e-558d-4962-a0c9-40cdfc2cbd27/scratchpad/sonda-adapter.sh
+rc=0
+bash=3.2.57(1)-release modelo=openrouter/x y prompt=/private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f10-revisao/bd420f6e-558d-4962-a0c9-40cdfc2cbd27/scratchpad/ad.EbIy/p.txt out=/private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f10-revisao/bd420f6e-558d-4962-a0c9-40cdfc2cbd27/scratchpad/ad.EbIy/o.txt nargs=3
+conteúdo do prompt
+--- PATH bash (o Pattern 2 chama "bash" do PATH): /bin/bash 3.2.57(1)-release
+--- timeout do subprocess.run sobre bash -c com neto
+TimeoutExpired em 2.0s
+neto ainda vivo depois do timeout: sim (pids 11085)
+com start_new_session + killpg, neto vivo: nao
+[exit=0]

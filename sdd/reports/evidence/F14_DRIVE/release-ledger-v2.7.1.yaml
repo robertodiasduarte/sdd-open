@@ -1,0 +1,7 @@
+feature_id: INCORPORAR_STARTER
+slice_id: F14_DRIVE
+versao: v2.7.1
+estado: shipado
+dod: "os 5 achados da rodada 5, o teste do slice e os 3 achados da rodada 6 consertados; curadoria da F14 Drive enviada"
+descricao: "trava de estado do drive pelo sistema operacional; 401 devolve a marca; teto de 8 chamadas no item 10; solto recente em Recentes; ficha de slice protege e cita a ficha real (sdd-release 2.8.1)"
+review_externo: sdd/reports/reviews/EXTERNAL_REVIEW_20261107-133717 sha256=9a3ee072107b2542f581e95f6dafbd34c0874200ff397a367a78c400c69534d9 diversidade=vendor

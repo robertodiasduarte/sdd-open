@@ -1,0 +1,3 @@
+$ gh pr checks 7 -R robertodiasduarte/sdd-open
+Testes no piso (macOS, só leitura)	pass	6m49s	https://github.com/robertodiasduarte/sdd-open/actions/runs/40969129265/job/123781125401	
+gate	pass	3m34s	https://github.com/robertodiasduarte/sdd-open/actions/runs/40969129265/job/123781125775	

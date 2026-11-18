@@ -1,0 +1,308 @@
+$ cat /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.5rZgwRfwzB/p10.sh; /bin/bash /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.5rZgwRfwzB/p10.sh
+. /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.5rZgwRfwzB/lab.sh
+acao() { grep -E '^(---|ACAO:|motivo:|retomando|\[rc|rodada:|RESULTADO: (FALHA|ERRO)|🛑|tarefa:|antes:|agora:)' ; }
+nostate() { [ -e sdd/reports/progress/DRIVE_F.json ] && echo "!!! ESTADO GRAVADO" || echo "sem estado"; }
+echo "=== AT-002 branch: main, master sem slot, slot develop, origin/HEAD trunk, HEAD destacado"
+for b in main master; do mkrepo "$(novo)"; git branch -q -m $b; drv iniciar $D | acao; drv --dry-run $D | acao; nostate; done
+mkrepo "$(novo)"; git branch -q -m develop; printf 'project:\n  default_branch: develop  # x\n' > sdd/config.yaml; drv iniciar $D | acao; nostate
+mkrepo "$(novo)"; git update-ref refs/remotes/origin/trunk HEAD; git symbolic-ref refs/remotes/origin/HEAD refs/remotes/origin/trunk; git branch -q -m trunk; drv iniciar $D | acao; nostate
+mkrepo "$(novo)"; git checkout -q --detach; drv iniciar $D | acao; drv --dry-run $D | acao; nostate
+echo "=== AT-002 slot e origin/HEAD divergem: frente=slot antigo main, origin/HEAD trunk, rodando em main"
+mkrepo "$(novo)"; git update-ref refs/remotes/origin/trunk HEAD; git symbolic-ref refs/remotes/origin/HEAD refs/remotes/origin/trunk; printf 'project:\n  default_branch: main\n' > sdd/config.yaml; git add -A; git commit -qm s; git branch -q -m main; drv iniciar $D | acao; nostate
+echo "=== AT-002 master com origin/HEAD trunk (frente em master nao e padrao)"
+mkrepo "$(novo)"; git update-ref refs/remotes/origin/trunk HEAD; git symbolic-ref refs/remotes/origin/HEAD refs/remotes/origin/trunk; git branch -q -m master; drv iniciar $D | acao; rm -rf sdd/reports
+echo "=== AT-002 define: kind xyz, cmd nao executavel, sem bloco, sem arquivo, marcador, sem Governanca"
+mkrepo "$(novo)"; sed -i '' 's/kind: test/kind: xyz/' $D; drv iniciar $D | acao; nostate
+mkrepo "$(novo)" 'comando-que-nao-existe-xyz --a'; drv iniciar $D | acao; nostate
+mkrepo "$(novo)" 'TODO: definir'; drv iniciar $D | acao; nostate
+mkrepo "$(novo)"; printf '# DEFINE\n' > $D; drv iniciar $D | acao; nostate
+mkrepo "$(novo)"; drv iniciar sdd/features/DEFINE_NADA.md | acao
+mkrepo "$(novo)"; printf '\n[NEEDS CLARIFICATION: qual]\n' >> $D; drv iniciar $D | acao; drv --dry-run $D | acao; nostate
+mkrepo "$(novo)"; sed -i '' '/Governan/d' $D; drv iniciar $D | acao; nostate
+echo "=== AT-002 vizinho velho: verify-gate sem --checar; sdd-fluxo sem --drive"
+mkrepo "$(novo)"; cp $PROJ/sdd/bin/verify-gate.sh $LAB/vg; git -C $PROJ show v2.6.0:sdd/bin/verify-gate.sh > sdd/bin/verify-gate.sh; drv iniciar $D 2>&1 | acao; nostate
+mkrepo "$(novo)"; git -C $PROJ show v2.6.0:sdd/bin/sdd-fluxo.sh > sdd/bin/sdd-fluxo.sh; drv iniciar $D 2>&1 | acao; drv --dry-run $D 2>&1 | acao; nostate
+mkrepo "$(novo)"; rm sdd/bin/sdd-fluxo.sh; drv --dry-run $D 2>&1 | acao; nostate
+echo "=== AT-003 dry-run nao grava (git status + find)"
+mkrepo "$(novo)"; drv --dry-run $D; git status --porcelain; find . -path ./.git -prune -o -newer sdd/bin/sdd-drive.sh -type f -print | grep -v '^./sdd/bin\|DEFINE\|DESIGN\|gitignore' ; ls sdd
+rm -f sdd/features/DESIGN_F.md; drv --dry-run $D | sed -n 2,3p
+echo "=== AT-004 limite: flag, slot, default, invalidos"
+mkrepo "$(novo)"; drv iniciar $D --max 7 | acao; rm -rf sdd/reports
+printf 'drive:\n  max_rounds: 5 # c\n' > sdd/config.yaml; git add -A; git commit -qm s; drv iniciar $D | acao; rm -rf sdd/reports
+for v in 0 -1 abc 1.5 '""' "" ' 2 x' 2; do printf 'drive:\n  max_rounds: %s\n' "$v" > sdd/config.yaml; git add -A; git commit -qm s -q; echo "slot='$v'"; drv iniciar $D 2>&1 | acao; rm -rf sdd/reports; done
+printf 'drive:\n  max_rounds: abc\n' > sdd/config.yaml; git add -A; git commit -qm s; drv iniciar $D --max 2 2>&1 | acao; rm -rf sdd/reports; drv --dry-run $D 2>&1 | acao; drv iniciar $D 2>&1 | grep -E 'max_rounds|rc='; rm -rf sdd/reports; 
+printf 'drive:\n  max_rounds: 2\n' > sdd/config.yaml; git add -A; git commit -qm s
+for v in 0 -3 abc '' 1e3 '٣'; do echo "flag='$v'"; drv iniciar $D --max "$v" 2>&1 | grep -E '🛑|rc='; done; drv iniciar $D --max 2>&1 | grep -E '🛑|rc='; nostate
+echo "=== AT-009 exits com verify-gate de mentira"
+for x in 3 4 5 64 1 137 7; do mkrepo "$(novo)"; drv iniciar $D > /dev/null; feito
+ /usr/bin/python3 -I -B - $x <<'PY'
+import sys
+o=open('sdd/bin/verify-gate.sh',encoding='utf-8').read()
+open('sdd/bin/verify-gate.sh','w',encoding='utf-8').write(o.replace('DEFINE="${1:-}"','DEFINE="${1:-}"\n[ "${PRINT_ONLY}" = 0 ] && [ "${CHECAR}" = 0 ] && exit %s'%sys.argv[1],1))
+PY
+ git add -A sdd/bin; git commit -qm stub; echo "gate sai $x"; drv verificar $D 2>&1 | acao; st "print('vermelhos',sum(1 for g in d['gates'] if g['exit']==2),'parada',d.get('parada_gate'))"; drv proximo $D | acao; tail -1 sdd/reports/evidence/F/DRIVE-gate-r1.log; done
+=== AT-002 branch: main, master sem slot, slot develop, origin/HEAD trunk, HEAD destacado
+--- sdd-drive iniciar sdd/features/DEFINE_F.md
+motivo: branch-padrao
+[rc=20]
+--- sdd-drive --dry-run sdd/features/DEFINE_F.md
+motivo: branch-padrao
+[rc=20]
+sem estado
+--- sdd-drive iniciar sdd/features/DEFINE_F.md
+motivo: branch-padrao
+[rc=20]
+--- sdd-drive --dry-run sdd/features/DEFINE_F.md
+motivo: branch-padrao
+[rc=20]
+sem estado
+--- sdd-drive iniciar sdd/features/DEFINE_F.md
+motivo: branch-padrao
+[rc=20]
+sem estado
+--- sdd-drive iniciar sdd/features/DEFINE_F.md
+motivo: branch-padrao
+[rc=20]
+sem estado
+--- sdd-drive iniciar sdd/features/DEFINE_F.md
+motivo: branch-padrao
+[rc=20]
+--- sdd-drive --dry-run sdd/features/DEFINE_F.md
+motivo: branch-padrao
+[rc=20]
+sem estado
+=== AT-002 slot e origin/HEAD divergem: frente=slot antigo main, origin/HEAD trunk, rodando em main
+--- sdd-drive iniciar sdd/features/DEFINE_F.md
+motivo: branch-padrao
+[rc=20]
+sem estado
+=== AT-002 master com origin/HEAD trunk (frente em master nao e padrao)
+--- sdd-drive iniciar sdd/features/DEFINE_F.md
+ACAO: RODADA
+rodada: 1/3
+tarefa: 1 de 2 — a
+[rc=10]
+=== AT-002 define: kind xyz, cmd nao executavel, sem bloco, sem arquivo, marcador, sem Governanca
+--- sdd-drive iniciar sdd/features/DEFINE_F.md
+motivo: define-invalido
+[rc=20]
+sem estado
+--- sdd-drive iniciar sdd/features/DEFINE_F.md
+ACAO: RODADA
+rodada: 1/3
+tarefa: 1 de 2 — a
+[rc=10]
+!!! ESTADO GRAVADO
+--- sdd-drive iniciar sdd/features/DEFINE_F.md
+ACAO: RODADA
+rodada: 1/3
+tarefa: 1 de 2 — a
+[rc=10]
+!!! ESTADO GRAVADO
+--- sdd-drive iniciar sdd/features/DEFINE_F.md
+motivo: clarificacao-pendente
+[rc=20]
+sem estado
+--- sdd-drive iniciar sdd/features/DEFINE_NADA.md
+motivo: define-invalido
+[rc=20]
+--- sdd-drive iniciar sdd/features/DEFINE_F.md
+motivo: clarificacao-pendente
+[rc=20]
+--- sdd-drive --dry-run sdd/features/DEFINE_F.md
+motivo: clarificacao-pendente
+[rc=20]
+sem estado
+--- sdd-drive iniciar sdd/features/DEFINE_F.md
+motivo: clarificacao-pendente
+[rc=20]
+sem estado
+=== AT-002 vizinho velho: verify-gate sem --checar; sdd-fluxo sem --drive
+--- sdd-drive iniciar sdd/features/DEFINE_F.md
+🛑 sdd-drive: sdd/bin/verify-gate.sh é de uma versão anterior: não conhece --checar.
+RESULTADO: FALHA
+[rc=2]
+sem estado
+--- sdd-drive iniciar sdd/features/DEFINE_F.md
+🛑 sdd-drive: sdd/bin/sdd-fluxo.sh é de uma versão anterior: não conhece --drive.
+RESULTADO: FALHA
+[rc=2]
+--- sdd-drive --dry-run sdd/features/DEFINE_F.md
+🛑 sdd-drive: sdd/bin/sdd-fluxo.sh é de uma versão anterior: não conhece --drive.
+RESULTADO: FALHA
+[rc=2]
+sem estado
+--- sdd-drive --dry-run sdd/features/DEFINE_F.md
+🛑 sdd-drive: sdd/bin/sdd-fluxo.sh é de uma versão anterior: não conhece --drive.
+RESULTADO: FALHA
+[rc=2]
+sem estado
+=== AT-003 dry-run nao grava (git status + find)
+--- sdd-drive --dry-run sdd/features/DEFINE_F.md
+Simulação de sdd/features/DEFINE_F.md, com até 3 rodada(s). Eu faria, nesta ordem:
+  1. reaproveitar sdd/features/DESIGN_F.md, com a revisão se ela for exigida;
+  2. construir o que falta, uma tarefa por sessão nova, com 1 commit por tarefa;
+  3. rodar o teste final (Verify Gate) e, se vermelho, corrigir e voltar ao passo 2;
+  4. com o verde, avaliador e relatórios; e parar antes de publicar.
+kind: test
+cmd: echo x >> gate.calls; test -f .verde
+motivo: simulacao
+Simulação: nada foi executado nem gravado.
+RESULTADO: CONCLUIDO
+→ para executar de verdade, rode sdd-drive.sh iniciar com este DEFINE.
+[rc=0]
+bin
+features
+Simulação de sdd/features/DEFINE_F.md, com até 3 rodada(s). Eu faria, nesta ordem:
+  1. escrever sdd/features/DESIGN_F.md, com a revisão se ela for exigida;
+=== AT-004 limite: flag, slot, default, invalidos
+--- sdd-drive iniciar sdd/features/DEFINE_F.md --max 7
+ACAO: RODADA
+rodada: 1/7
+tarefa: 1 de 2 — a
+[rc=10]
+--- sdd-drive iniciar sdd/features/DEFINE_F.md
+ACAO: RODADA
+rodada: 1/5
+tarefa: 1 de 2 — a
+[rc=10]
+slot='0'
+--- sdd-drive iniciar sdd/features/DEFINE_F.md
+🛑 sdd-drive: drive.max_rounds em sdd/config.yaml precisa ser um inteiro a partir de 1: '0'
+RESULTADO: ERRO DE USO
+[rc=64]
+slot='-1'
+--- sdd-drive iniciar sdd/features/DEFINE_F.md
+🛑 sdd-drive: drive.max_rounds em sdd/config.yaml precisa ser um inteiro a partir de 1: '-1'
+RESULTADO: ERRO DE USO
+[rc=64]
+slot='abc'
+--- sdd-drive iniciar sdd/features/DEFINE_F.md
+🛑 sdd-drive: drive.max_rounds em sdd/config.yaml precisa ser um inteiro a partir de 1: 'abc'
+RESULTADO: ERRO DE USO
+[rc=64]
+slot='1.5'
+--- sdd-drive iniciar sdd/features/DEFINE_F.md
+🛑 sdd-drive: drive.max_rounds em sdd/config.yaml precisa ser um inteiro a partir de 1: '1.5'
+RESULTADO: ERRO DE USO
+[rc=64]
+slot='""'
+--- sdd-drive iniciar sdd/features/DEFINE_F.md
+ACAO: RODADA
+rodada: 1/3
+tarefa: 1 de 2 — a
+[rc=10]
+slot=''
+--- sdd-drive iniciar sdd/features/DEFINE_F.md
+ACAO: RODADA
+rodada: 1/3
+tarefa: 1 de 2 — a
+[rc=10]
+slot=' 2 x'
+--- sdd-drive iniciar sdd/features/DEFINE_F.md
+🛑 sdd-drive: drive.max_rounds em sdd/config.yaml precisa ser um inteiro a partir de 1: '2 x'
+RESULTADO: ERRO DE USO
+[rc=64]
+slot='2'
+--- sdd-drive iniciar sdd/features/DEFINE_F.md
+ACAO: RODADA
+rodada: 1/2
+tarefa: 1 de 2 — a
+[rc=10]
+--- sdd-drive iniciar sdd/features/DEFINE_F.md --max 2
+ACAO: RODADA
+rodada: 1/2
+tarefa: 1 de 2 — a
+[rc=10]
+--- sdd-drive --dry-run sdd/features/DEFINE_F.md
+🛑 sdd-drive: drive.max_rounds em sdd/config.yaml precisa ser um inteiro a partir de 1: 'abc'
+RESULTADO: ERRO DE USO
+[rc=64]
+🛑 sdd-drive: drive.max_rounds em sdd/config.yaml precisa ser um inteiro a partir de 1: 'abc'
+[rc=64]
+flag='0'
+🛑 sdd-drive: --max precisa ser um inteiro a partir de 1: '0'
+[rc=64]
+flag='-3'
+🛑 sdd-drive: --max precisa ser um inteiro a partir de 1: '-3'
+[rc=64]
+flag='abc'
+🛑 sdd-drive: --max precisa ser um inteiro a partir de 1: 'abc'
+[rc=64]
+flag=''
+🛑 sdd-drive: --max precisa ser um inteiro a partir de 1: ''
+[rc=64]
+flag='1e3'
+🛑 sdd-drive: --max precisa ser um inteiro a partir de 1: '1e3'
+[rc=64]
+flag='٣'
+🛑 sdd-drive: --max precisa ser um inteiro a partir de 1: '٣'
+[rc=64]
+🛑 sdd-drive: --max exige um número
+[rc=64]
+sem estado
+=== AT-009 exits com verify-gate de mentira
+gate sai 3
+--- sdd-drive verificar sdd/features/DEFINE_F.md
+motivo: gate-inconclusivo
+[rc=20]
+vermelhos 0 parada gate-inconclusivo
+--- sdd-drive proximo sdd/features/DEFINE_F.md
+motivo: gate-inconclusivo
+[rc=20]
+[exit=3]
+gate sai 4
+--- sdd-drive verificar sdd/features/DEFINE_F.md
+motivo: manual-ux
+[rc=20]
+vermelhos 0 parada manual-ux
+--- sdd-drive proximo sdd/features/DEFINE_F.md
+motivo: manual-ux
+[rc=20]
+[exit=4]
+gate sai 5
+--- sdd-drive verificar sdd/features/DEFINE_F.md
+motivo: clarificacao-pendente
+[rc=20]
+vermelhos 0 parada clarificacao-pendente
+--- sdd-drive proximo sdd/features/DEFINE_F.md
+motivo: clarificacao-pendente
+[rc=20]
+[exit=5]
+gate sai 64
+--- sdd-drive verificar sdd/features/DEFINE_F.md
+motivo: define-invalido
+[rc=20]
+vermelhos 0 parada define-invalido
+--- sdd-drive proximo sdd/features/DEFINE_F.md
+motivo: define-invalido
+[rc=20]
+[exit=64]
+gate sai 1
+--- sdd-drive verificar sdd/features/DEFINE_F.md
+motivo: gate-inconclusivo
+[rc=20]
+vermelhos 0 parada gate-inconclusivo
+--- sdd-drive proximo sdd/features/DEFINE_F.md
+motivo: gate-inconclusivo
+[rc=20]
+[exit=1]
+gate sai 137
+--- sdd-drive verificar sdd/features/DEFINE_F.md
+motivo: gate-inconclusivo
+[rc=20]
+vermelhos 0 parada gate-inconclusivo
+--- sdd-drive proximo sdd/features/DEFINE_F.md
+motivo: gate-inconclusivo
+[rc=20]
+[exit=137]
+gate sai 7
+--- sdd-drive verificar sdd/features/DEFINE_F.md
+motivo: gate-inconclusivo
+[rc=20]
+vermelhos 0 parada gate-inconclusivo
+--- sdd-drive proximo sdd/features/DEFINE_F.md
+motivo: gate-inconclusivo
+[rc=20]
+[exit=7]
+[exit=0]

@@ -1,0 +1,6 @@
+{"achado": "R1", "veredito": "AGREE", "justificativa": "A regex captura o sufixo + $? mas a função o descarta, tratando custo incerto como exato e violando o AT-004."}
+{"achado": "R2", "veredito": "AGREE", "justificativa": "O laço pula papéis com custo vazio ou - sem chamar soma, fazendo a linha revisão sair 0.0000 em vez de n/d, violando o AT-004."}
+{"achado": "R3", "veredito": "DISAGREE_EVIDENCE", "justificativa": "O código implementa estritamente a regra da Decision 8 do DESIGN para associar revisão à feature; decisão documentada não é defeito."}
+{"achado": "R4", "veredito": "AGREE", "justificativa": "Sem marcas e com leitor que falhou sem gerar mensagens, sem fase fica com itens 0 e dinheiro retorna 0.0000, violando o AT-004."}
+{"achado": "R5", "veredito": "DISAGREE_EVIDENCE", "justificativa": "A Decision 4 do DESIGN não exclui a espera por ferramentas do tempo ativo; o código soma os segundos conforme o desenho."}
+{"achado": "R6", "veredito": "DISAGREE_EVIDENCE", "justificativa": "A Decision 3 do DESIGN manda descartar diferença zero; descartar diferença negativa para reiniciar a base é tratamento padrão para reset de contadores."}

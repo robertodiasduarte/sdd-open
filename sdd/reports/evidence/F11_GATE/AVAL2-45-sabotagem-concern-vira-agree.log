@@ -1,0 +1,14 @@
+$ /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/aval2w.zHdF4lN0AJ/sabota.sh concern-vira-agree sdd/bin/adversarial-review.sh '        if not ok:
+            return None, "linha do bloco inválida para o auditor: " + l[:80]
+        out.append(j)' '        if not ok:
+            return None, "linha do bloco inválida para o auditor: " + l[:80]
+        if j["veredito"] == "DISAGREE_CONCERN": j["veredito"] = "AGREE"
+        out.append(j)'
+### sabotagem concern-vira-agree em sdd/bin/adversarial-review.sh
+  ❌ 76. auditor com os 4 tipos de veredito: jsonl com DISAGREE_EVIDENCE, DISAGREE_CONCERN e NOVO
+        → lido [('R1', 'DISAGREE_EVIDENCE'), ('R2', 'AGREE'), ('N1', 'NOVO')], esperado [('R1', 'DISAGREE_EVIDENCE'), ('R2', 'DISAGREE_CONCERN'), ('N1', 'NOVO')]
+103 asserções, 1 falha(s) em 7 s
+RESULTADO: GATE VERMELHO
+→ cada ❌ acima diz o campo e o valor lido; o adapter da engine citada não extrai mais o que a CLI devolve (ou o script mudou de comportamento). Corrija e rode o gate de novo.
+[gate_rc=2]
+[exit=2]

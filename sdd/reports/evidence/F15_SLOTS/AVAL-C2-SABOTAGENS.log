@@ -1,0 +1,112 @@
+$ /bin/bash /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f15-slots/80a83c1b-4077-4625-ba69-e27f11f530a1/scratchpad/c2sab.sh
+== N1 slot.sh: valor que começa com -- volta a ser aceito (sdd/bin/slot.sh)
+   diff| 55d54
+   diff| <   case "${2}" in --*) uso "${1} recebeu outra flag (${2}) como valor" "passe ${1} <valor>; um nome vazio indica variável não preenchida na chamada" ;; esac
+   [exit unittest=1]
+   FAIL: test_chamada_errada_e_64 (test_slot.Uso) (args=['smoke.before_ok_cmd', '--feature', '--arvore', '/tmp'])
+   FAIL: test_chamada_errada_e_64 (test_slot.Uso) (args=['smoke.before_ok_cmd', '--arvore', '--feature', 'F1'])
+   FAIL: test_chamada_errada_e_64 (test_slot.Uso) (args=['smoke.before_ok_cmd', '--feature', '', '--base', 'main'])
+   FAIL: test_chamada_errada_e_64 (test_slot.Uso) (args=['smoke.before_ok_cmd', '--base', 'nao-existe-abc'])
+   Ran 19 tests in 3.419s
+   FAILED (failures=4)
+== N2 slot.sh: # em qualquer posição vira comentário (volta do achado 2) (sdd/bin/slot.sh)
+   diff| 130c130
+   diff| <         elif c == "#" and (anterior.isspace() or anterior in ";|&()<>"):
+   diff| ---
+   diff| >         elif c == "#":
+   [exit unittest=1]
+   FAIL: test_cerquilha_no_meio_da_palavra_roda (test_slot.Cerquilha) (arg='https://app.example.com/#/pedidos')
+   FAIL: test_cerquilha_no_meio_da_palavra_roda (test_slot.Cerquilha) (arg='a#b')
+   Ran 19 tests in 3.169s
+   FAILED (failures=2)
+== N3 slot.sh: detector de comentário desligado (sdd/bin/slot.sh)
+   diff| 131c131
+   diff| <             print("COMENTARIO %d" % n); sys.exit(0)
+   diff| ---
+   diff| >             pass
+   [exit unittest=1]
+   FAIL: test_cerquilha_depois_de_ponto_e_virgula_e_comentario (test_slot.Cerquilha)
+   FAIL: test_config_que_nao_da_para_rodar_e_64 (test_slot.Uso) (caso='comentario do shell')
+   Ran 19 tests in 3.363s
+   FAILED (failures=2)
+== N4 slot.sh: # depois de ; deixa de ser comentário (sdd/bin/slot.sh)
+   diff| 130c130
+   diff| <         elif c == "#" and (anterior.isspace() or anterior in ";|&()<>"):
+   diff| ---
+   diff| >         elif c == "#" and (anterior.isspace() or anterior in "|&()<>"):
+   [exit unittest=1]
+   FAIL: test_cerquilha_depois_de_ponto_e_virgula_e_comentario (test_slot.Cerquilha)
+   Ran 19 tests in 3.262s
+   FAILED (failures=1)
+== A1 slot.sh: exit 7 vira OK (sdd/bin/slot.sh)
+   diff| 202c202
+   diff| <   0)
+   diff| ---
+   diff| >   0|7)
+   [exit unittest=1]
+   FAIL: test_saida_fora_do_contrato_e_inconclusivo (test_slot.Inconclusivo) (cmd='bash falso.sh 7')
+   Ran 19 tests in 3.264s
+   FAILED (failures=1)
+== A2 slot.sh: 11 vira 0 (vazio=OK) (sdd/bin/slot.sh)
+   diff| 150c150
+   diff| <   exit 11
+   diff| ---
+   diff| >   exit 0
+   [exit unittest=1]
+   FAIL: test_vazio_ausente_e_sem_config_sao_pulados (test_slot.Pulado) (caso='vazio')
+   FAIL: test_vazio_ausente_e_sem_config_sao_pulados (test_slot.Pulado) (caso='chave ausente')
+   FAIL: test_vazio_ausente_e_sem_config_sao_pulados (test_slot.Pulado) (caso='secao ausente')
+   FAIL: test_vazio_ausente_e_sem_config_sao_pulados (test_slot.Pulado) (caso='aspas simples vazias')
+   FAIL: test_vazio_ausente_e_sem_config_sao_pulados (test_slot.Pulado)
+   Ran 19 tests in 3.331s
+   FAILED (failures=5)
+== A3 slot.sh: before_ok nao esvazia (sdd/bin/slot.sh)
+   diff| 189c189
+   diff| <     rm -rf "${DIR}" || uso "não consegui esvaziar ${DIR}" "apague a pasta à mão e rode de novo"
+   diff| ---
+   diff| >     true || uso "não consegui esvaziar ${DIR}" "apague a pasta à mão e rode de novo"
+   [exit unittest=1]
+   FAIL: test_before_ok_esvazia_so_a_pasta_padrao (test_slot.Ambiente)
+   Ran 19 tests in 3.225s
+   FAILED (failures=1)
+== A4 slot.sh: sem trap de sinal (sdd/bin/slot.sh)
+   diff| 194d193
+   diff| < trap 'echo "⚠️  slot.sh interrompido por sinal"; printf "RESULTADO: INCONCLUSIVO\n→ rode de novo; isto não é verde.\n"; exit 3' INT TERM
+   [exit unittest=1]
+   FAIL: test_term_no_proprio_slot_e_inconclusivo (test_slot.Inconclusivo)
+   Ran 19 tests in 3.238s
+   FAILED (failures=1)
+== A5 test-baseline: unittest sem ancora (sdd/bin/test-baseline.sh)
+   diff| 227c227
+   diff| <             if mod and "/" not in i and re.search(r"(^|\.)" + re.escape(mod) + r"\.", i):
+   diff| ---
+   diff| >             if mod and "/" not in i and re.search(re.escape(mod), i):
+   [exit unittest=1]
+   FAIL: test_touched_falha_sem_relacao_continua_fora_do_diff (test_test_baseline.TestBaseline) (saida='FAIL: test_calc_total (outro.modulo.Caso.test_calc_total)')
+   Ran 18 tests in 2.962s
+   FAILED (failures=1)
+== A6 release: item 9 some (.agents/skills/sdd-release/SKILL.md)
+   diff| 131c131
+   diff| < 9. **Testes do diff:** `bash sdd/bin/test-baseline.sh --touched` (base `origin/{default_branch}`), **depois do item 4**,
+   diff| ---
+   diff| > 9. Testes: `bash sdd/bin/test-baseline.sh --touched` (base `origin/{default_branch}`), **depois do item 4**,
+   [exit unittest=1]
+   FAIL: test_0a_roda_os_testes_do_diff_depois_do_verify_gate (test_f15_slots_textos.Release)
+   Ran 18 tests in 0.018s
+   FAILED (failures=1)
+== A7 release: 7b vira bloqueante (.agents/skills/sdd-release/SKILL.md)
+   diff| 235c235
+   diff| <    O resultado nunca segura o push nem pede pergunta, seja qual for o exit: vai para o relatório (16) e para a ficha (17).
+   diff| ---
+   diff| >    O exit 2 segura o push nem pede pergunta, seja qual for o exit: vai para o relatório (16) e para a ficha (17).
+   [exit unittest=1]
+   FAIL: test_7b_smoke_antes_do_push_nunca_segura (test_f15_slots_textos.Release)
+   Ran 18 tests in 0.018s
+   FAILED (failures=1)
+== A8 build: linha Checagem some (.agents/skills/sdd-build/references/aplicar-migration.md)
+   diff| 136d135
+   diff| < **Checagem:** ok — `evidence/{F}/SCHEMA-CHECK.log` (ou: nada a conferir · pulada — slot vazio)
+   [exit unittest=1]
+   FAIL: test_aplicar_migration_checa_antes_da_previa (test_f15_slots_textos.Build)
+   Ran 18 tests in 0.019s
+   FAILED (failures=1)

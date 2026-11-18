@@ -1,0 +1,8 @@
+$ /usr/bin/python3 -B sdd/bin/report-lint.py --stdin sdd/fixtures/evidencia/BUILD_REPORT_controle.md < sdd/fixtures/evidencia/BUILD_REPORT_controle.md
+🛑 [evidência] AT-001: `true` sem evidência válida — `evidence/controle/AT-001.log` não existe
+🛑 [evidência] Veredito do avaliador `PASS` sem `AVALIACAO_controle_*.md` existente em sdd/reviews/ (no mesmo parágrafo do veredito)
+🛑 [avaliação ausente] não há `AVALIACAO_controle_<AAAAMMDD-HHMM>.md` em sdd/reviews/ (não vazio e não ignorado pelo git) nem linha sobre o avaliador. Saídas, nesta ordem: (1) rode o avaliador de contexto fresco (passo 5d da `sdd-build`); (2) `avaliador: N.A. (<motivo>)`, só com menos de 2 camadas — contagem impossível: `layers:` do sdd/config.yaml sem nenhum glob preenchido; (3) `avaliador: PENDENTE (<motivo>)`, se o build travou antes do avaliador
+RESULTADO: VERMELHO
+→ produza `evidence/controle/AT-nnn.log` (1ª linha `$ cmd`, output verbatim), cite `AVALIACAO_controle_<ts>.md`, ou `recibo: nome YYYY-MM-DD` (só gate manual-ux) — ou mantenha `false`.
+→ rode o avaliador e grave `sdd/reviews/AVALIACAO_controle_<AAAAMMDD-HHMM>.md`, ou escreva a linha `avaliador: N.A. (<motivo>)` / `avaliador: PENDENTE (<motivo>)` no relatório.
+[exit=1]

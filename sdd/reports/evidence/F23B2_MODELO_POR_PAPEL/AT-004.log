@@ -1,0 +1,9 @@
+$ python3 -m unittest -v test_f23b2_papeis.AT004AT007Medidor.test_curador_escolhe_o_barato_e_reprova_o_que_descarta_o_add test_f23b2_papeis.AT004AT007Medidor.test_curador_contagem_a_mais_e_delta_recusado_ficam_fora   # AT-004 · HEAD c12a475 · 2026-11-17 08:38
+test_curador_escolhe_o_barato_e_reprova_o_que_descarta_o_add (test_f23b2_papeis.AT004AT007Medidor) ... ok
+test_curador_contagem_a_mais_e_delta_recusado_ficam_fora (test_f23b2_papeis.AT004AT007Medidor) ... ok
+
+----------------------------------------------------------------------
+Ran 2 tests in 6.789s
+
+OK
+[exit=0]

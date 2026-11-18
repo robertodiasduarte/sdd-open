@@ -1,0 +1,8 @@
+$ python3 -I /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f17-starter-gerado/ec173b46-ec5c-43da-887d-2b87a8b93fd4/scratchpad/sondas/at003.py open starter | grep -v '^ok' ; python3 -I /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f17-starter-gerado/ec173b46-ec5c-43da-887d-2b87a8b93fd4/scratchpad/sondas/at003.py open starter | grep -c '^ok'
+FAIL sdd-new-session: molde sdd/templates/fragments/FLUXO_ENCADEADO.md copiado em references/FLUXO_ENCADEADO.md
+FAIL sdd-seguranca: frontmatter idêntico ao do Open
+FAIL sdd-seguranca: molde sdd/templates/fragments/FLUXO_ENCADEADO.md copiado em references/FLUXO_ENCADEADO.md
+FAIL sdd-engenharia-reversa-saas: molde sdd/templates/BRAINSTORM_TEMPLATE.md copiado em references/BRAINSTORM_TEMPLATE.md
+FALHAS: 4
+120
+rc=0

@@ -1,0 +1,7 @@
+$ cd tests && SDD_TEST_BASH=/bin/bash /usr/bin/python3 -B -m unittest test_f22_versao.AvisoNasSkills test_f22_versao.StarterSemOAviso
+...
+----------------------------------------------------------------------
+Ran 3 tests in 2.451s
+
+OK
+rc=0

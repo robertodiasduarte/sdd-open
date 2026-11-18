@@ -1,0 +1,7 @@
+$ (código de 6b3a295 + testes da rodada 2) python3 -m unittest test_f23_custo.Rodada2 test_f23_custo.AT003Contador.test_tabela_por_fase_sem_fase_revisao_e_total
+FAIL: test_custo_incerto_da_revisao_leva_n_d (test_f23_custo.Rodada2)
+FAIL: test_sem_marca_e_leitor_que_falha_nao_e_zero (test_f23_custo.Rodada2)
+FAIL: test_total_do_codex_que_volta_atras_nao_some (test_f23_custo.Rodada2)
+FAIL: test_tabela_por_fase_sem_fase_revisao_e_total (test_f23_custo.AT003Contador)
+Ran 4 tests in 0.534s
+FAILED (failures=4)

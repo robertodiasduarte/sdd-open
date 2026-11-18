@@ -1,0 +1,23 @@
+$ (cópia de git archive HEAD=2af3d6c, sem .git) for py in /usr/bin/python3 python3; do SDD_TEST_BASH=/bin/bash $py -B -m unittest discover -s tests -p test_validate_reverse.py; ... -p test_f21_textos.py; done
+Python 3.9.6
+== test_validate_reverse.py
+----------------------------------------------------------------------
+Ran 18 tests in 0.061s
+
+OK
+== test_f21_textos.py
+----------------------------------------------------------------------
+Ran 26 tests in 26.545s
+
+OK
+Python 3.15.0
+== test_validate_reverse.py
+----------------------------------------------------------------------
+Ran 18 tests in 0.063s
+
+OK
+== test_f21_textos.py
+----------------------------------------------------------------------
+Ran 26 tests in 26.788s
+
+OK

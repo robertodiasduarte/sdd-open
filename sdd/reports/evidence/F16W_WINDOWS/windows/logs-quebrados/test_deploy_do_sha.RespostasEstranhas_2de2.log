@@ -1,0 +1,116 @@
+test_run_sem_sha_nao_quebra_nem_decide (test_deploy_do_sha.RespostasEstranhas.test_run_sem_sha_nao_quebra_nem_decide) ... FAIL
+
+test_run_verde_sem_sha_nao_e_no_ar (test_deploy_do_sha.RespostasEstranhas.test_run_verde_sem_sha_nao_e_no_ar) ... ok
+
+test_view_com_forma_inesperada_nao_quebra (test_deploy_do_sha.RespostasEstranhas.test_view_com_forma_inesperada_nao_quebra) ... FAIL
+
+test_view_que_falha_tenta_de_novo_e_nao_conclui (test_deploy_do_sha.RespostasEstranhas.test_view_que_falha_tenta_de_novo_e_nao_conclui) ... FAIL
+
+test_workflow_com_nome_errado_sai_64_na_hora (test_deploy_do_sha.RespostasEstranhas.test_workflow_com_nome_errado_sai_64_na_hora) ... FAIL
+
+
+
+======================================================================
+
+FAIL: test_run_sem_sha_nao_quebra_nem_decide (test_deploy_do_sha.RespostasEstranhas.test_run_sem_sha_nao_quebra_nem_decide)
+
+----------------------------------------------------------------------
+
+Traceback (most recent call last):
+
+  File "D:\a\sdd-open\sdd-open\tests\test_deploy_do_sha.py", line 353, in test_run_sem_sha_nao_quebra_nem_decide
+
+    self.assertSai(self.sha(), 2, "\U0001f534 n�o est� no ar")
+
+  File "D:\a\sdd-open\sdd-open\tests\test_deploy_do_sha.py", line 111, in assertSai
+
+    self.assertEqual(rc, exitc, out + err)
+
+AssertionError: 4 != 2 : \u23f3 ainda n�o sei � o deploy n�o terminou em 0 min (run �); isso n�o � falha. �ltimo erro de consulta: gh: To use GitHub CLI in a GitHub Actions workflow, set the GH_TOKEN environment variable. Example:.
+
+RESULTADO: AINDA NAO SEI
+
+\u2192 rode de novo para continuar esperando, ou abra o run citado; nada foi repetido por causa disso.
+
+\u23f3 consulta falhou (gh: To use GitHub CLI in a GitHub Actions workflow, set the GH_TOKEN environment variable. Example:), tentando de novo � 0/0 min � run �
+
+
+
+
+
+======================================================================
+
+FAIL: test_view_com_forma_inesperada_nao_quebra (test_deploy_do_sha.RespostasEstranhas.test_view_com_forma_inesperada_nao_quebra)
+
+----------------------------------------------------------------------
+
+Traceback (most recent call last):
+
+  File "D:\a\sdd-open\sdd-open\tests\test_deploy_do_sha.py", line 358, in test_view_com_forma_inesperada_nao_quebra
+
+    self.assertSai(res, 2, "\U0001f534 falhou � run 1")
+
+  File "D:\a\sdd-open\sdd-open\tests\test_deploy_do_sha.py", line 111, in assertSai
+
+    self.assertEqual(rc, exitc, out + err)
+
+AssertionError: 4 != 2 : \u23f3 ainda n�o sei � o deploy n�o terminou em 0 min (run �); isso n�o � falha. �ltimo erro de consulta: gh: To use GitHub CLI in a GitHub Actions workflow, set the GH_TOKEN environment variable. Example:.
+
+RESULTADO: AINDA NAO SEI
+
+\u2192 rode de novo para continuar esperando, ou abra o run citado; nada foi repetido por causa disso.
+
+\u23f3 consulta falhou (gh: To use GitHub CLI in a GitHub Actions workflow, set the GH_TOKEN environment variable. Example:), tentando de novo � 0/0 min � run �
+
+
+
+
+
+======================================================================
+
+FAIL: test_view_que_falha_tenta_de_novo_e_nao_conclui (test_deploy_do_sha.RespostasEstranhas.test_view_que_falha_tenta_de_novo_e_nao_conclui)
+
+----------------------------------------------------------------------
+
+Traceback (most recent call last):
+
+  File "D:\a\sdd-open\sdd-open\tests\test_deploy_do_sha.py", line 330, in test_view_que_falha_tenta_de_novo_e_nao_conclui
+
+    self.assertIn("HTTP 502", out)
+
+AssertionError: 'HTTP 502' not found in '\u23f3 ainda n�o sei � o deploy n�o terminou em 0 min (run �); isso n�o � falha. �ltimo erro de consulta: gh: To use GitHub CLI in a GitHub Actions workflow, set the GH_TOKEN environment variable. Example:.\nRESULTADO: AINDA NAO SEI\n\u2192 rode de novo para continuar esperando, ou abra o run citado; nada foi repetido por causa disso.\n'
+
+
+
+======================================================================
+
+FAIL: test_workflow_com_nome_errado_sai_64_na_hora (test_deploy_do_sha.RespostasEstranhas.test_workflow_com_nome_errado_sai_64_na_hora)
+
+----------------------------------------------------------------------
+
+Traceback (most recent call last):
+
+  File "D:\a\sdd-open\sdd-open\tests\test_deploy_do_sha.py", line 364, in test_workflow_com_nome_errado_sai_64_na_hora
+
+    self.assertEqual(rc, 64, out + err)
+
+AssertionError: 4 != 64 : \u23f3 ainda n�o sei � o deploy n�o terminou em 0 min (run �); isso n�o � falha. �ltimo erro de consulta: gh: To use GitHub CLI in a GitHub Actions workflow, set the GH_TOKEN environment variable. Example:.
+
+RESULTADO: AINDA NAO SEI
+
+\u2192 rode de novo para continuar esperando, ou abra o run citado; nada foi repetido por causa disso.
+
+\u23f3 consulta falhou (gh: To use GitHub CLI in a GitHub Actions workflow, set the GH_TOKEN environment variable. Example:), tentando de novo � 0/0 min � run �
+
+
+
+
+
+----------------------------------------------------------------------
+
+Ran 5 tests in 96.386s
+
+
+
+FAILED (failures=4)
+

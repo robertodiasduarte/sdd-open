@@ -1,0 +1,6 @@
+$ python3 -B -m unittest discover -s tests -p test_skill_lint.py   # HEAD c30b54c
+----------------------------------------------------------------------
+Ran 29 tests in 1.307s
+
+OK
+[exit=0]

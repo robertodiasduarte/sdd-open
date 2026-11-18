@@ -1,0 +1,13 @@
+$ bash sdd/reports/evidence/F16W_WINDOWS/scripts/sabotagem.sh c65e658
+MORTO  executor não mata a árvore no teto (test_testes_por_modulo.Executor.test_teto_mata_a_arvore_e_segue rc=1)
+MORTO  fatias: tudo na 1ª (test_testes_por_modulo.Executor.test_fatias_disjuntas_completas_e_estaveis rc=1)
+MORTO  unidade volta a ser o módulo (test_testes_por_modulo.Executor.test_classes_viram_unidades_e_a_herdada_conta_uma_vez rc=1)
+MORTO  subprocess de texto sem encoding no produto (test_windows.Decodificacao rc=1)
+MORTO  vigia do checar não corta nada (test_checar.TestRemoto.test_ssh_pendurado_vigia rc=1)
+MORTO  matriz cancela as outras fatias (test_release_workflow.Windows rc=1)
+MORTO  executor mata só o filho, não o grupo (avaliador, ciclo 1, A2) (test_testes_por_modulo.Executor.test_teto_mata_a_arvore_e_segue rc=1)
+MORTO  teto aceita nan (avaliador, A1) (test_testes_por_modulo.Executor.test_uso_errado_sai_64_sem_rodar rc=1)
+MORTO  classe grande inteira numa unidade (test_testes_por_modulo.Executor.test_classe_grande_vira_partes_que_somam_tudo rc=1)
+MORTO  rc_do_vigia sem o caso vizinho (rc 0 tarde vira corte) (test_checar.TestVigiaNoWindows.test_regra_do_relogio_e_o_caso_vizinho rc=1)
+total: 10 de 10 mortos
+[exit=0]

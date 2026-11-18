@@ -1,0 +1,12 @@
+$ bash /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f10-revisao/bd420f6e-558d-4962-a0c9-40cdfc2cbd27/scratchpad/p/at021.sh
+6 6 colunas openrouter qwen/qwen3.7-plus fonte https: True https://openrouter.ai/api/v1/models ISO: True 0.32 1.28
+7 6 colunas openrouter deepseek/deepseek-v4-flash fonte https: True https://openrouter.ai/api/v1/models ISO: True 0.091 0.182
+=== modelo ausente de precos.tsv (openrouter:outro/modelo sem custo reportado) → $?
+RESULTADO: REVIEW COMPLETA
+auditor: openrouter:outro/modelo (stub-modelo) — custo desconhecido
+auditor_custo           : $?
+=== modelo presente (qwen/qwen3.7-plus) → ≈US$
+RESULTADO: REVIEW COMPLETA
+auditor: openrouter (stub-modelo) — ≈ US$ 0,0006 (estimado)
+auditor_custo           : ≈US$ 0.0006
+[exit=0]

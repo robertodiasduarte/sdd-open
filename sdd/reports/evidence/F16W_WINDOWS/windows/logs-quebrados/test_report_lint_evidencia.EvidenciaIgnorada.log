@@ -1,0 +1,46 @@
+test_avaliacao_citada_e_ignorada_reprova (test_report_lint_evidencia.EvidenciaIgnorada.test_avaliacao_citada_e_ignorada_reprova) ... FAIL
+
+test_log_ignorado_pelo_git_reprova (test_report_lint_evidencia.EvidenciaIgnorada.test_log_ignorado_pelo_git_reprova) ... FAIL
+
+
+
+======================================================================
+
+FAIL: test_avaliacao_citada_e_ignorada_reprova (test_report_lint_evidencia.EvidenciaIgnorada.test_avaliacao_citada_e_ignorada_reprova)
+
+----------------------------------------------------------------------
+
+Traceback (most recent call last):
+
+  File "D:\a\sdd-open\sdd-open\tests\test_report_lint_evidencia.py", line 211, in test_avaliacao_citada_e_ignorada_reprova
+
+    self.assertIn("IGNORA", out)
+
+AssertionError: 'IGNORA' not found in 'The system cannot find the path specified.\nTraceback (most recent call last):\n  File "C:\\Users\\runneradmin\\AppData\\Local\\Temp\\sdd-open-opyo3vkc\\repo\\sdd\\bin\\report-lint.py", line 625, in <module>\n    sys.exit(main(sys.argv))\n             ^^^^^^^^^^^^^^\n  File "C:\\Users\\runneradmin\\AppData\\Local\\Temp\\sdd-open-opyo3vkc\\repo\\sdd\\bin\\report-lint.py", line 604, in main\n    imprimir_avisos(warnings)\n  File "C:\\Users\\runneradmin\\AppData\\Local\\Temp\\sdd-open-opyo3vkc\\repo\\sdd\\bin\\report-lint.py", line 552, in imprimir_avisos\n    print(f"\\u26a0\\ufe0f  {w}")\n  File "C:\\hostedtoolcache\\windows\\Python\\3.12.10\\x64\\Lib\\encodings\\cp1252.py", line 19, in encode\n    return codecs.charmap_encode(input,self.errors,encoding_table)[0]\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nUnicodeEncodeError: \'charmap\' codec can\'t encode characters in position 0-1: character maps to <undefined>\n'
+
+
+
+======================================================================
+
+FAIL: test_log_ignorado_pelo_git_reprova (test_report_lint_evidencia.EvidenciaIgnorada.test_log_ignorado_pelo_git_reprova)
+
+----------------------------------------------------------------------
+
+Traceback (most recent call last):
+
+  File "D:\a\sdd-open\sdd-open\tests\test_report_lint_evidencia.py", line 203, in test_log_ignorado_pelo_git_reprova
+
+    self.assertIn("o git o IGNORA", out)
+
+AssertionError: 'o git o IGNORA' not found in 'The system cannot find the path specified.\nTraceback (most recent call last):\n  File "C:\\Users\\runneradmin\\AppData\\Local\\Temp\\sdd-open-ni0bih2l\\repo\\sdd\\bin\\report-lint.py", line 625, in <module>\n    sys.exit(main(sys.argv))\n             ^^^^^^^^^^^^^^\n  File "C:\\Users\\runneradmin\\AppData\\Local\\Temp\\sdd-open-ni0bih2l\\repo\\sdd\\bin\\report-lint.py", line 604, in main\n    imprimir_avisos(warnings)\n  File "C:\\Users\\runneradmin\\AppData\\Local\\Temp\\sdd-open-ni0bih2l\\repo\\sdd\\bin\\report-lint.py", line 552, in imprimir_avisos\n    print(f"\\u26a0\\ufe0f  {w}")\n  File "C:\\hostedtoolcache\\windows\\Python\\3.12.10\\x64\\Lib\\encodings\\cp1252.py", line 19, in encode\n    return codecs.charmap_encode(input,self.errors,encoding_table)[0]\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nUnicodeEncodeError: \'charmap\' codec can\'t encode characters in position 0-1: character maps to <undefined>\n'
+
+
+
+----------------------------------------------------------------------
+
+Ran 2 tests in 0.308s
+
+
+
+FAILED (failures=2)
+

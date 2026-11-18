@@ -1,0 +1,93 @@
+$ bash -c cd /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f16w-windows/b56e801b-0f18-49ee-b51c-5b9188b29c23/scratchpad/a1/tests && SDD_TEST_BASH=/bin/bash /usr/bin/python3 -B -m unittest test_f16w2_caminhos
+F..............F.F..
+======================================================================
+FAIL: test_os_lotes_saem_como_no_mac (test_f16w2_caminhos.ArchiveComNtpath)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f16w-windows/b56e801b-0f18-49ee-b51c-5b9188b29c23/scratchpad/a1/tests/test_f16w2_caminhos.py", line 94, in test_os_lotes_saem_como_no_mac
+    self.assertIn("== Lote com-ledger: 2 arquivo(s) ==", out)
+AssertionError: '== Lote com-ledger: 2 arquivo(s) ==' not found in '\n== Lote com-ledger: 0 arquivo(s) ==\n\n== Lote sem-ledger: 0 arquivo(s) ==\n\n== Lote soltos: 0 arquivo(s) ==\n\n== Protegidos: 0 grupo(s) ==\n\n== Recentes (ficam): 2 grupo(s) ==\n  A (2 documento(s), quieto há -9 dia(s), limite 30)\n  B (1 documento(s), quieto há -9 dia(s), limite 60)\n\n== Sem classificação (decisão sua): 0 ==\n\n== Subpastas (ficam): 0 ==\n\nTOTAIS: com-ledger=0 · sem-ledger=0 · soltos=0 · protegidos=0 · recentes=2 · sem classificação=0 · subpastas=0\nNada foi movido.\nRESULTADO: SIMULACAO\n→ para mover, rode com --lote <nome> --aplicar, um lote por vez.\n'
+
+======================================================================
+FAIL: test_touched_conta_teste_ao_lado_da_fonte (test_f16w2_caminhos.BaselineComNtpath) (fonte='src/foo.ts', novo='src/foo.test.ts > Foo > quebra')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f16w-windows/b56e801b-0f18-49ee-b51c-5b9188b29c23/scratchpad/a1/tests/test_test_baseline.py", line 127, in test_touched_conta_teste_ao_lado_da_fonte
+    self.assertEqual(rc, 2, out)
+AssertionError: 0 != 2 : ▶ testes: cat saida.txt; exit 1
+⚠️  nova, fora do diff (não aborta com --touched): src/foo.test.ts > Foo > quebra
+✅ nenhuma falha nova (0 conhecida(s)).
+RESULTADO: VERDE
+→ siga para o próximo passo.
+
+
+======================================================================
+FAIL: test_touched_conta_teste_ao_lado_da_fonte (test_f16w2_caminhos.BaselineComNtpath) (fonte='src/bar.tsx', novo='src/bar.spec.tsx > Bar > quebra')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f16w-windows/b56e801b-0f18-49ee-b51c-5b9188b29c23/scratchpad/a1/tests/test_test_baseline.py", line 127, in test_touched_conta_teste_ao_lado_da_fonte
+    self.assertEqual(rc, 2, out)
+AssertionError: 0 != 2 : ▶ testes: cat saida.txt; exit 1
+⚠️  nova, fora do diff (não aborta com --touched): src/bar.spec.tsx > Bar > quebra
+✅ nenhuma falha nova (0 conhecida(s)).
+RESULTADO: VERDE
+→ siga para o próximo passo.
+
+
+======================================================================
+FAIL: test_touched_conta_teste_ao_lado_da_fonte (test_f16w2_caminhos.BaselineComNtpath) (fonte='pkg/calc.py', novo='pkg/test_calc.py::test_soma')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f16w-windows/b56e801b-0f18-49ee-b51c-5b9188b29c23/scratchpad/a1/tests/test_test_baseline.py", line 127, in test_touched_conta_teste_ao_lado_da_fonte
+    self.assertEqual(rc, 2, out)
+AssertionError: 0 != 2 : ▶ testes: cat saida.txt; exit 1
+⚠️  nova, fora do diff (não aborta com --touched): pkg/test_calc.py::test_soma
+✅ nenhuma falha nova (0 conhecida(s)).
+RESULTADO: VERDE
+→ siga para o próximo passo.
+
+
+======================================================================
+FAIL: test_touched_conta_teste_ao_lado_da_fonte (test_f16w2_caminhos.BaselineComNtpath) (fonte='src/foo.ts', novo='src/foo.test.ts::quebra')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f16w-windows/b56e801b-0f18-49ee-b51c-5b9188b29c23/scratchpad/a1/tests/test_test_baseline.py", line 127, in test_touched_conta_teste_ao_lado_da_fonte
+    self.assertEqual(rc, 2, out)
+AssertionError: 0 != 2 : ▶ testes: cat saida.txt; exit 1
+⚠️  nova, fora do diff (não aborta com --touched): src/foo.test.ts::quebra
+✅ nenhuma falha nova (0 conhecida(s)).
+RESULTADO: VERDE
+→ siga para o próximo passo.
+
+
+======================================================================
+FAIL: test_touched_id_relativo_a_subpasta_conta (test_f16w2_caminhos.BaselineComNtpath)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f16w-windows/b56e801b-0f18-49ee-b51c-5b9188b29c23/scratchpad/a1/tests/test_test_baseline.py", line 136, in test_touched_id_relativo_a_subpasta_conta
+    self.assertEqual(rc, 2, out)
+AssertionError: 0 != 2 : ▶ testes: cat saida.txt; exit 1
+⚠️  nova, fora do diff (não aborta com --touched): foo.test.ts > Foo > quebra
+✅ nenhuma falha nova (0 conhecida(s)).
+RESULTADO: VERDE
+→ siga para o próximo passo.
+
+
+======================================================================
+FAIL: test_touched_vizinho_commitado_na_branch_tambem_conta (test_f16w2_caminhos.BaselineComNtpath)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f16w-windows/b56e801b-0f18-49ee-b51c-5b9188b29c23/scratchpad/a1/tests/test_test_baseline.py", line 144, in test_touched_vizinho_commitado_na_branch_tambem_conta
+    self.assertEqual(rc, 2, out)
+AssertionError: 0 != 2 : ▶ testes: cat saida.txt; exit 1
+⚠️  nova, fora do diff (não aborta com --touched): src/foo.test.ts > Foo > quebra
+✅ nenhuma falha nova (0 conhecida(s)).
+RESULTADO: VERDE
+→ siga para o próximo passo.
+
+
+----------------------------------------------------------------------
+Ran 21 tests in 15.964s
+
+FAILED (failures=7)
+[exit=1]

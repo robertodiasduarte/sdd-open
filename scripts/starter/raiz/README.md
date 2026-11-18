@@ -66,7 +66,7 @@ Dois caminhos, dependendo do seu agente — instruções completas no [Quickstar
 - **Cursor, Kimi, Gemini CLI e outros** — mesmo comando com o nome do seu agente em `-a`. Sem Node.js, clone este repositório e copie as pastas de `skills/` para o diretório de skills do seu agente.
 - **claude.ai ou ChatGPT (web)** — baixe os `.zip` prontos, um por skill, anexados na [última Release](../../releases/latest) e faça o upload no seu agente.
 
-Cada skill diz a própria versão e a data na primeira resposta (ex.: `sdd-define v1.0.0 · out/2026`). Se você instalou pelo `.zip` e a [última Release](../../releases/latest) traz uma versão mais nova, baixe de novo — o `.zip` não se atualiza sozinho.
+Cada skill diz a própria versão, marcada SDD Starter, e a data na primeira resposta (ex.: `sdd-define v1.0.0 · SDD Starter · out/2026`); a descrição dela, na lista de skills do seu agente, também diz "SDD Starter" logo no começo. Se aparecer "SDD Open" no lugar, é a cópia do projeto irmão. Se você instalou pelo `.zip` e a [última Release](../../releases/latest) traz uma versão mais nova, baixe de novo — o `.zip` não se atualiza sozinho.
 
 ## Documentação
 
@@ -167,7 +167,7 @@ Two paths, depending on your agent — full instructions in the [Quickstart](doc
 - **Cursor, Kimi, Gemini CLI and others** — same command with your agent's name in `-a`. Without Node.js, clone this repo and copy the folders under `skills/` into your agent's skills directory.
 - **claude.ai or ChatGPT (web)** — download the ready-made per-skill `.zip` files attached to the [latest Release](../../releases/latest) and upload them to your agent.
 
-Each skill states its own version and date in its first reply (e.g. `sdd-define v1.0.0 · out/2026`). If you installed from a `.zip` and the [latest Release](../../releases/latest) has a newer version, download it again — a `.zip` does not update itself.
+Each skill states its own version, marked SDD Starter, and date in its first reply (e.g. `sdd-define v1.0.0 · SDD Starter · out/2026`); its description in your agent's skill list also says "SDD Starter" near the start. If you see "SDD Open" instead, that is the sibling project's copy. If you installed from a `.zip` and the [latest Release](../../releases/latest) has a newer version, download it again — a `.zip` does not update itself.
 
 ## Documentation
 

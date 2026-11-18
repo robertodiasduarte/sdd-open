@@ -1,0 +1,36 @@
+$ S=/private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f14-playbook/712319f2-9f99-446d-ba48-ead3df6c700d/scratchpad/aval3.qzV7tu /bin/bash /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f14-playbook/712319f2-9f99-446d-ba48-ead3df6c700d/scratchpad/aval3.qzV7tu/scripts/s07.sh </dev/null
+--- conjunto
+contador AUTO + tombstone ACEITAR, mesma licao (ataque)    esperado=2 observado=2 ok o conjunto do bloco não vale junto — LM-901 é aposentado e alterado no mesmo delta: escolha um dos dois
+contador DESCARTAR + tombstone ACEITAR, mesma (legitimo)   esperado=0 observado=0 cruzar_rc=0 ok resumo-bloco: auto=0 pergunta=1 descartar=1 nao_julgado=0 contaminacao=nao
+contador NAO_JULGADO + tombstone ACEITAR, mesma            esperado=0 observado=0 cruzar_rc=0 ok resumo-bloco: auto=0 pergunta=1 descartar=0 nao_julgado=1 contaminacao=nao
+contador AUTO + tombstone DESCARTAR, mesma (legitimo)      esperado=0 observado=0 cruzar_rc=0 ok resumo-bloco: auto=1 pergunta=0 descartar=1 nao_julgado=0 contaminacao=nao
+contador AUTO + tombstone NAO_JULGADO, mesma (legitimo)    esperado=0 observado=0 cruzar_rc=0 ok resumo-bloco: auto=1 pergunta=0 descartar=0 nao_julgado=1 contaminacao=nao
+contador AUTO + tombstone outra licao (legitimo)           esperado=0 observado=0 cruzar_rc=0 ok resumo-bloco: auto=1 pergunta=1 descartar=0 nao_julgado=0 contaminacao=nao
+contador AUTO + refine mesma (legitimo)                    esperado=0 observado=0 cruzar_rc=0 ok resumo-bloco: auto=1 pergunta=1 descartar=0 nao_julgado=0 contaminacao=nao
+contador AUTO + promover mesma (legitimo)                  esperado=0 observado=0 cruzar_rc=3 ok resumo-bloco: auto=1 pergunta=1 descartar=0 nao_julgado=0 contaminacao=nao
+tombstone + refine mesma (ataque)                          esperado=2 observado=2 ok o conjunto do bloco não vale junto — LM-902 é aposentado e alterado no mesmo delta: escolha um dos dois
+tombstone + promover mesma (ataque; PERGUNTA OBRIGATORIA)  esperado=2 observado=2 ok o conjunto do bloco não vale junto — LM-902 é aposentado e alterado no mesmo delta: escolha um dos dois
+2 tombstones mesma (ataque)                                esperado=2 observado=2 ok o conjunto do bloco não vale junto — LM-902 aposentado 2 vezes no mesmo delta
+tombstone + inv REMOVER (legitimo)                         esperado=0 observado=0 cruzar_rc=0 ok resumo-bloco: auto=1 pergunta=2 descartar=0 nao_julgado=0 contaminacao=nao
+--- evidencia: arquivo com espaco (N-L1 e vizinhos)
+colheita rc=0: ['SUGESTAO mordeu? LM-901 — termo `sondaum` em AVAL-a b.log:1 (achado sem LM explícito; conf']
+sugestao ACEITAR com evidencia em arquivo com espaco (legitimo; esperado=0) observado=2 🔴 bloco: linha 1: ACEITAR exige a Evidência começando por arquivo:linha
+contador AUTO evidencia=AVAL-a b.log:1         esperado=0 observado=0
+contador AUTO evidencia=`AVAL-a b.log:1`       esperado=0 observado=0
+contador AUTO evidencia=AVAL-a b.log:1 (a linha) esperado=0 observado=0
+contador AUTO evidencia=AVAL-a b.log:2         esperado=2 observado=2
+contador AUTO evidencia=AVAL-a b.log:11        esperado=2 observado=2
+contador AUTO evidencia=outro.log:1            esperado=2 observado=2
+contador AUTO evidencia=colheita.txt:1         esperado=2 observado=2
+contador AUTO evidencia=colheita.rc:1          esperado=2 observado=2
+--- N-L7: detalhes
+CONTAMINAÇÃO: nãosei (ataque)                              esperado=2 observado=2 ok a linha CONTAMINAÇÃO: precisa dizer 'não' ou 'sim — <o que veio>'
+CONTAMINAÇÃO: Não (legitimo)                               esperado=0 observado=0 cruzar_rc=0 ok resumo-bloco: auto=1 pergunta=0 descartar=0 nao_julgado=0 contaminacao=nao
+CONTAMINAÇÃO: não. (legitimo)                              esperado=0 observado=0 cruzar_rc=0 ok resumo-bloco: auto=1 pergunta=0 descartar=0 nao_julgado=0 contaminacao=nao
+CONTAMINAÇÃO: sim — veio o nome (legitimo)                 esperado=0 observado=0 cruzar_rc=0 ok resumo-bloco: auto=1 pergunta=0 descartar=0 nao_julgado=0 contaminacao=sim
+CONTAMINAÇÃO: simples (ataque)                             esperado=2 observado=2 ok a linha CONTAMINAÇÃO: precisa dizer 'não' ou 'sim — <o que veio>'
+DESCARTAR () (ataque)                                      esperado=2 observado=2 ok linha 1: DESCARTAR pede o motivo: DESCARTAR (motivo)
+DESCARTAR (   ) (ataque)                                   esperado=2 observado=2 ok linha 1: DESCARTAR pede o motivo: DESCARTAR (motivo)
+DESCARTAR (motivo) (legitimo)                              esperado=0 observado=0 cruzar_rc=0 ok resumo-bloco: auto=0 pergunta=0 descartar=1 nao_julgado=0 contaminacao=nao
+sugestao/tomb ACEITAR com colheita.rc:1 (ataque)           esperado=2 observado=2 ok linha 2: a colheita não é evidência de si mesma: cite o documento de onde a linha veio
+[exit=0]

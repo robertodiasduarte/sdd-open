@@ -1,0 +1,29 @@
+$ bash /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f10-revisao/bd420f6e-558d-4962-a0c9-40cdfc2cbd27/scratchpad/p/a2.sh AT007
+--- diff vazio
++ adversarial-review.sh --base HEAD --reviewer stub-a --auditor stub-b
+🛑 adversarial-review: o diff contra HEAD está vazio: a revisão não teria o que revisar
+RESULTADO: PAROU
+→ rode `adversarial-review.sh --help` para ver o uso.
+[rc=64]
+chamadas=0
+--- base inexistente
++ adversarial-review.sh --base nao-existe --reviewer stub-a --auditor stub-b
+🛑 adversarial-review: --base nao-existe não resolve para um commit
+RESULTADO: PAROU
+→ rode `adversarial-review.sh --help` para ver o uso.
+[rc=64]
+chamadas=0
+--- diff > 8 MB
+9000000
++ adversarial-review.sh --base main --reviewer stub-a --auditor stub-b
+🛑 adversarial-review: o diff tem 8877 KB, acima do teto de 8 MB: use --paths para revisar por partes
+RESULTADO: PAROU
+→ rode `adversarial-review.sh --help` para ver o uso.
+[rc=64]
+chamadas=0
+--- diff logo abaixo de 8 MB passa no dry-run
+  diff: 4 arquivo(s), 8088 KB, base main, merge-base 13751e4ac25a
+RESULTADO: PLANO
+[rc=0]
+pastas criadas:        0
+[exit=0]

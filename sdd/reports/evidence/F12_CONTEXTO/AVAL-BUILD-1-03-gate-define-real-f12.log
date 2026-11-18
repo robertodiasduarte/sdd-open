@@ -1,0 +1,7 @@
+$ S=/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.iKg4zpjEH3; awk '/^  cmd:/{print "  cmd: \"true\""; next}{print}' sdd/features/DEFINE_F12_CONTEXTO.md > $S/real-f12.md && cd $S && bash sdd/bin/verify-gate.sh $S/real-f12.md
+▶ Verify Gate [test]: true
+   │ 
+✅ GATE VERDE (test) — pass_when: 'exit 0' satisfeito (rc=0).
+RESULTADO: VERDE
+→ siga para o próximo passo.
+[exit=0]

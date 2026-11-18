@@ -1,0 +1,14 @@
+$ cd tests && SDD_TEST_BASH=/bin/bash /usr/bin/python3 -B -m unittest -v test_revisao.Falhas
+test_429_persistente_faz_3_chamadas_e_avanca (test_revisao.Falhas) ... ok
+test_429_tenta_de_novo_na_mesma_engine (test_revisao.Falhas) ... ok
+test_auth_para_sem_chamar_a_proxima (test_revisao.Falhas) ... ok
+test_lista_esgotada_67_e_so_cli_ausente_66 (test_revisao.Falhas) ... ok
+test_quota_avanca_registra_e_avisa (test_revisao.Falhas) ... ok
+test_sinal_dentro_de_resposta_valida_nao_e_falha (test_revisao.Falhas) ... ok
+test_tempo_esgotado_mata_e_avanca (test_revisao.Falhas) ... ok
+
+----------------------------------------------------------------------
+Ran 7 tests in 3.850s
+
+OK
+[exit=0]

@@ -1,0 +1,22 @@
+$ python3 -B /Users/robertoduarte/rdd-worktrees/sdd-open-v2.15.0/scripts/gerar-starter.py --tag v2.15.0 <clone limpo do starter, branch feat/f17c-terceira-geracao de da907b7>
+✅ sdd-checar-ambiente: 5 arquivo(s), 1 troca(s)
+✅ sdd-iniciar-repo: 3 arquivo(s), 1 troca(s)
+✅ sdd-higiene-dado: 10 arquivo(s), 0 troca(s)
+✅ sdd-new-session: 6 arquivo(s), 1 troca(s)
+✅ sdd-kb: 38 arquivo(s), 2 troca(s)
+✅ sdd-seguranca: 9 arquivo(s), 6 troca(s)
+✅ sdd-auditoria-harness: 7 arquivo(s), 0 troca(s)
+✅ sdd-prompt-builder: 9 arquivo(s), 2 troca(s)
+✅ sdd-engenharia-reversa-saas: 15 arquivo(s), 4 troca(s)
+✅ sdd-loop-builder: 6 arquivo(s), 0 troca(s)
+✅ sdd-brainstorm: 6 arquivo(s), 4 troca(s)
+✅ sdd-define: 9 arquivo(s), 0 troca(s), de modo (web/MODO_WEB.md)
+✅ sdd-design: 7 arquivo(s), 0 troca(s), de modo (web/MODO_WEB.md)
+✅ sdd-build: 12 arquivo(s), 0 troca(s), de modo (web/MODO_WEB.md)
+✅ sdd-handoff: 6 arquivo(s), 8 troca(s)
+✅ sdd-governanca: 12 arquivo(s), 5 troca(s)
+✅ sdd-release: 2 arquivo(s), 0 troca(s), de modo (references/MODO_INICIANTE.md)
+✅ ux-review-builder: 20 arquivo(s), 0 troca(s)
+RESULTADO: GERADO
+→ no starter: python3 scripts/check-gerado.py, os testes dele e um commit numa branch.
+rc=0

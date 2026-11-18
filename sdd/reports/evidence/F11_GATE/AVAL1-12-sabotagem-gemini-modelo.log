@@ -1,0 +1,11 @@
+$ /tmp/aval1-f11.wvW4zp/sabota.sh gemini-modelo sdd/bin/adapters/gemini.sh 'modelo = "+".join(nomes) or None' 'modelo = "gemini-outro"'
+### sabotagem gemini-modelo em sdd/bin/adapters/gemini.sh
+  ❌ 21. gemini (auditor): modelo de stats.models
+        → lido 'gemini-outro', esperado 'gemini-stub-pro'
+  ❌ 31. gemini (revisor): modelo de stats.models
+        → lido 'gemini-outro', esperado 'gemini-stub-pro'
+90 asserções, 2 falha(s) em 8 s
+RESULTADO: GATE VERMELHO
+→ cada ❌ acima diz o campo e o valor lido; o adapter da engine citada não extrai mais o que a CLI devolve (ou o script mudou de comportamento). Corrija e rode o gate de novo.
+[gate_rc=2]
+[exit=2]

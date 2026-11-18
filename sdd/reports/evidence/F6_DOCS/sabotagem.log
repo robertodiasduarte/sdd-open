@@ -1,0 +1,28 @@
+$ /bin/bash sdd/reports/evidence/F6_DOCS/sabotagem.sh
+── sabotagem: link do sumário do guia aponta para âncora inexistente
+    FAIL: test_todo_link_relativo_abre (test_docs.Links)
+    FAILED (failures=1)
+    ✓ vermelho
+── sabotagem: seção Por que cada regra existe apagada da sdd-build
+    FAIL: test_secao_com_itens (test_docs.PorQueCadaRegra) (skill='sdd-build')
+    FAILED (failures=1)
+    ✓ vermelho
+── sabotagem: Specs como deltas marcado ✅ na coluna do SDD Open (PT)
+    FAIL: test_deltas_continua_em_avaliacao_na_coluna_do_open (test_docs.Comparison) (lingua='pt')
+    FAILED (failures=1)
+    ✓ vermelho
+── sabotagem do próprio comandos-intactos.py: 1 palavra mudada no Quality Gate da sdd-build, commitada
+    OK    sdd-brainstorm: extração 7 → 7 linhas (idêntica) · texto normalizado igual · seção nova presente
+    OK    sdd-define: extração 14 → 14 linhas (idêntica) · texto normalizado igual · seção nova presente
+    OK    sdd-governanca: extração 4 → 4 linhas (idêntica) · texto normalizado igual · seção nova presente
+    OK    sdd-ux-review: extração 8 → 8 linhas (idêntica) · texto normalizado igual · seção nova presente
+    OK    sdd-design: extração 12 → 12 linhas (idêntica) · texto normalizado igual · seção nova presente
+    FALHA sdd-build: extração 16 → 16 linhas (idêntica) · texto normalizado DIFERENTE · seção nova presente
+    OK    sdd-release: extração 55 → 55 linhas (idêntica) · texto normalizado igual · seção nova presente
+    skills: 7 · com diferença: 1
+    ✓ vermelho na sdd-build
+── clone limpo de HEAD
+    OK
+    ✓ verde
+sabotagens: 4 · não pegas ou limpo vermelho: 0
+exit=0

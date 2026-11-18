@@ -1,0 +1,14 @@
+$ bash /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f10-revisao/bd420f6e-558d-4962-a0c9-40cdfc2cbd27/scratchpad/p/at031.sh
+rc=10 (v2.2.10 rc=10) · RESULTADO: CONTINUAR · loop --review /Users/robertoduarte/rdd-worktrees/sdd-open-f10-aval2/sdd/fixtures/fluxo/review-ok --rodada 1
+rc=20 (v2.2.10 rc=20) · RESULTADO: BLOQUEADO · loop --review /Users/robertoduarte/rdd-worktrees/sdd-open-f10-aval2/sdd/fixtures/fluxo/review-ok --rodada 1 --ledger /Users/robertoduarte/rdd-worktrees/sdd-open-f10-aval2/sdd/fixtures/fluxo/ledger-rebatida.md --avaliacao /Users/robertoduarte/rdd-worktrees/sdd-open-f10-aval2/sdd/fixtures/fluxo/AVALIACAO_needs_work.md --ciclo-avaliador 2
+rc=30 (v2.2.10 rc=30) · RESULTADO: AGUARDANDO_RECIBO · loop --review /Users/robertoduarte/rdd-worktrees/sdd-open-f10-aval2/sdd/fixtures/fluxo/review-ok --rodada 1 --ledger /Users/robertoduarte/rdd-worktrees/sdd-open-f10-aval2/sdd/fixtures/fluxo/ledger-rebatida.md --avaliacao /Users/robertoduarte/rdd-worktrees/sdd-open-f10-aval2/sdd/fixtures/fluxo/AVALIACAO_recibo.md --ciclo-avaliador 1
+rc=20 (v2.2.10 rc=20) · RESULTADO: BLOQUEADO · loop --review /Users/robertoduarte/rdd-worktrees/sdd-open-f10-aval2/sdd/fixtures/fluxo/review-impasse --rodada 1
+rc=10 (v2.2.10 rc=10) · RESULTADO: CONTINUAR · loop --review /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.DWsoDMskUo/invalida-sem-jsonl --rodada 1
+combinações: 144 · diferenças de saída ou exit em relação à v2.2.10: 0
+=== --self-test
+  ✅ estado inválido → exit 64
+  ✅ seguir slot inválido → exit 64
+RESULTADO: VERDE
+→ todos os cenários bateram.
+[self-test rc=0]
+[exit=0]

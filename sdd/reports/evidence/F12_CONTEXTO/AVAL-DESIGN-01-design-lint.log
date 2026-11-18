@@ -1,0 +1,3 @@
+$ /usr/bin/python3 -B sdd/bin/design-lint.py sdd/features/DESIGN_F12_CONTEXTO.md
+✅ sdd/features/DESIGN_F12_CONTEXTO.md: DESIGN válido
+[exit=0]

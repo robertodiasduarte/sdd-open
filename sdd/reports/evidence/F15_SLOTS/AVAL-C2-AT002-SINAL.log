@@ -1,0 +1,34 @@
+$ /usr/bin/python3 -B /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f15-slots/80a83c1b-4077-4625-ba69-e27f11f530a1/scratchpad/p3.py
+==== INT so no slot.sh: exit=3 em 30.1s
+⚠️  SDD_BASE vazio: origin/main não existe neste repositório
+⚠️  SDD_COMMIT vazio: o repositório ainda não tem commit
+▶ smoke.before_ok_cmd (before_ok): sleep 30
+⚠️  slot.sh interrompido por sinal
+RESULTADO: INCONCLUSIVO
+→ rode de novo; isto não é verde.
+
+==== INT no grupo (Ctrl-C): exit=3 em 1.5s
+⚠️  SDD_BASE vazio: origin/main não existe neste repositório
+⚠️  SDD_COMMIT vazio: o repositório ainda não tem commit
+▶ smoke.before_ok_cmd (before_ok): sleep 30
+⚠️  slot.sh interrompido por sinal
+RESULTADO: INCONCLUSIVO
+→ rode de novo; isto não é verde.
+
+==== TERM so no slot.sh: exit=3 em 30.1s
+⚠️  SDD_BASE vazio: origin/main não existe neste repositório
+⚠️  SDD_COMMIT vazio: o repositório ainda não tem commit
+▶ smoke.before_ok_cmd (before_ok): sleep 30
+⚠️  slot.sh interrompido por sinal
+RESULTADO: INCONCLUSIVO
+→ rode de novo; isto não é verde.
+
+==== TERM no grupo: exit=3 em 1.5s
+⚠️  SDD_BASE vazio: origin/main não existe neste repositório
+⚠️  SDD_COMMIT vazio: o repositório ainda não tem commit
+▶ smoke.before_ok_cmd (before_ok): sleep 30
+Terminated: 15
+⚠️  slot.sh interrompido por sinal
+RESULTADO: INCONCLUSIVO
+→ rode de novo; isto não é verde.
+

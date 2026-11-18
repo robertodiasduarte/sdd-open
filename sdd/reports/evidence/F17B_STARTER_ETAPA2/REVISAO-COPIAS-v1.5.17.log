@@ -1,0 +1,13 @@
+$ diff -rq <starter v1.5.17>/{docs,exemplos,tests,skills/ux-review-builder} <open e583889>/{scripts/starter/raiz/...,.agents/skills/ux-review-builder}
+Files /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.cmr6EqsBio/docs/quickstart.md and scripts/starter/raiz/docs/quickstart.md differ
+Files /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.cmr6EqsBio/docs/quickstart.pt-BR.md and scripts/starter/raiz/docs/quickstart.pt-BR.md differ
+Files /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.cmr6EqsBio/skills/ux-review-builder/CHANGELOG.md and .agents/skills/ux-review-builder/CHANGELOG.md differ
+Files /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.cmr6EqsBio/skills/ux-review-builder/SKILL.md and .agents/skills/ux-review-builder/SKILL.md differ
+Only in /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.cmr6EqsBio/skills/ux-review-builder: agents
+Files /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.cmr6EqsBio/skills/ux-review-builder/evals/cases.json and .agents/skills/ux-review-builder/evals/cases.json differ
+Files /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.cmr6EqsBio/skills/ux-review-builder/manifest.json and .agents/skills/ux-review-builder/manifest.json differ
+Files /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.cmr6EqsBio/skills/ux-review-builder/references/como-falar.md and .agents/skills/ux-review-builder/references/como-falar.md differ
+arquivos comparados: 68
+os que diferem e estavam nas --paths da revisão: quickstart.md, quickstart.pt-BR.md, ux-review-builder/{SKILL.md,CHANGELOG.md,references/como-falar.md}
+os que diferem fora das --paths: ux-review-builder/{evals/cases.json,manifest.json} (só a versão: -  "version": "1.4.0", +  "version": "1.5.0", )
+rc=0

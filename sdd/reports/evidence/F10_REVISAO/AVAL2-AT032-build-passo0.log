@@ -1,0 +1,19 @@
+$ bash /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f10-revisao/bd420f6e-558d-4962-a0c9-40cdfc2cbd27/scratchpad/p/at032.sh
+review-design DESIGN_pronto → rc=0 · 
+review-design DESIGN_seguranca → rc=0 · 
+review-design DESIGN_dispensavel → rc=1 · 
+review-design DESIGN_sem_manifest → rc=64 · RESULTADO: MANIFEST ILEGÍVEL
+review-design DESIGN_ledger_vazio → rc=0 · 
+=== revisão do DESIGN por --paths (DEFINE + DESIGN commitados)
+RESULTADO: REVIEW COMPLETA
+achados: 1 grave, 1 médio, 0 leves
+[rc=0]
+paths                   : sdd/features/DEFINE_FX.md sdd/features/DESIGN_FX.md
+diff                    : 0KB (2 arquivo(s))
+docs_sdd                : DEFINE_FX.md, DESIGN_FX.md
+diff --git a/sdd/features/DEFINE_FX.md b/sdd/features/DEFINE_FX.md
+diff --git a/sdd/features/DESIGN_FX.md b/sdd/features/DESIGN_FX.md
+=== texto do passo 0 no sdd-build
+68:Antes da 1ª tarefa, rode `bash sdd/bin/sdd-fluxo.sh review-design sdd/features/DESIGN_{F}.md`:
+72:| `0` exigida | se o Advisor Ledger do DESIGN não tem nenhuma linha de revisão, rode a revisão do DESIGN antes de codar — revisor e depois auditor, `bash sdd/bin/adversarial-review.sh --feature {F} --paths "sdd/features/DEFINE_{F}.md sdd/features/DESIGN_{F}.md"`, como na `sdd-design` — e registre cada nota no ledger |
+[exit=0]

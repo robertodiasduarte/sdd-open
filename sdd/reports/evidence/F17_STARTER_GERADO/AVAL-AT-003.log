@@ -1,0 +1,121 @@
+$ python3 -I probes/at003.py starter open   # starter = 1ª geração; open = repo temp da tag v9.9.0
+OK   sdd-checar-ambiente: frontmatter = Open (só a URL trocada)
+OK   sdd-checar-ambiente: linha de identificação v1.5.1 → sdd-starter: `sdd-checar-ambiente v1.5.1 · nov/2026 · versão atual: https://github.com/robertodiasduarte/sdd-starter/releas
+OK   sdd-checar-ambiente: GENERATED logo depois do frontmatter
+OK   sdd-checar-ambiente: cabeçalho com 'edite no sdd-open e gere de novo'
+OK   sdd-checar-ambiente: sem tag/commit no SKILL.md
+OK   sdd-checar-ambiente: bloco 'Quando migrar' no fim
+OK   sdd-checar-ambiente: agents/openai.yaml = linha do openai.tsv
+OK   sdd-checar-ambiente: molde sdd/templates/fragments/PERGUNTA_DECISAO.md → references/PERGUNTA_DECISAO.md
+OK   sdd-checar-ambiente: nenhum 'sdd/templates/' sobra nos .md (fora CHANGELOG)
+OK   sdd-checar-ambiente: GERADO.txt lista os 5 arquivos com sha256 certo
+OK   sdd-iniciar-repo: frontmatter = Open (só a URL trocada)
+OK   sdd-iniciar-repo: linha de identificação v1.2.0 → sdd-starter: `sdd-iniciar-repo v1.2.0 · nov/2026 · versão atual: https://github.com/robertodiasduarte/sdd-starter/releases/
+OK   sdd-iniciar-repo: GENERATED logo depois do frontmatter
+OK   sdd-iniciar-repo: cabeçalho com 'edite no sdd-open e gere de novo'
+OK   sdd-iniciar-repo: sem tag/commit no SKILL.md
+OK   sdd-iniciar-repo: bloco 'Quando migrar' no fim
+OK   sdd-iniciar-repo: agents/openai.yaml = linha do openai.tsv
+OK   sdd-iniciar-repo: nenhum 'sdd/templates/' sobra nos .md (fora CHANGELOG)
+OK   sdd-iniciar-repo: GERADO.txt lista os 3 arquivos com sha256 certo
+OK   sdd-higiene-dado: frontmatter = Open (só a URL trocada)
+OK   sdd-higiene-dado: linha de identificação v1.2.0 → sdd-starter: `sdd-higiene-dado v1.2.0 · out/2026 · versão atual: https://github.com/robertodiasduarte/sdd-starter/releases/
+OK   sdd-higiene-dado: GENERATED logo depois do frontmatter
+OK   sdd-higiene-dado: cabeçalho com 'edite no sdd-open e gere de novo'
+OK   sdd-higiene-dado: sem tag/commit no SKILL.md
+OK   sdd-higiene-dado: bloco 'Quando migrar' no fim
+OK   sdd-higiene-dado: agents/openai.yaml = linha do openai.tsv
+OK   sdd-higiene-dado: nenhum 'sdd/templates/' sobra nos .md (fora CHANGELOG)
+OK   sdd-higiene-dado: GERADO.txt lista os 10 arquivos com sha256 certo
+OK   sdd-new-session: frontmatter = Open (só a URL trocada)
+OK   sdd-new-session: linha de identificação v1.6.0 → sdd-starter: `sdd-new-session v1.6.0 · nov/2026 · versão atual: https://github.com/robertodiasduarte/sdd-starter/releases/l
+OK   sdd-new-session: GENERATED logo depois do frontmatter
+OK   sdd-new-session: cabeçalho com 'edite no sdd-open e gere de novo'
+OK   sdd-new-session: sem tag/commit no SKILL.md
+OK   sdd-new-session: bloco 'Quando migrar' no fim
+OK   sdd-new-session: agents/openai.yaml = linha do openai.tsv
+FAIL sdd-new-session: molde sdd/templates/fragments/FLUXO_ENCADEADO.md → references/FLUXO_ENCADEADO.md
+OK   sdd-new-session: molde sdd/templates/fragments/PERGUNTA_DECISAO.md → references/PERGUNTA_DECISAO.md
+OK   sdd-new-session: molde sdd/templates/fragments/RESUMO_ETAPA.md → references/RESUMO_ETAPA.md
+OK   sdd-new-session: nenhum 'sdd/templates/' sobra nos .md (fora CHANGELOG)
+OK   sdd-new-session: GERADO.txt lista os 6 arquivos com sha256 certo
+OK   sdd-kb: frontmatter = Open (só a URL trocada)
+OK   sdd-kb: linha de identificação v2.2.1 → sdd-starter: `sdd-kb v2.2.1 · out/2026 · versão atual: https://github.com/robertodiasduarte/sdd-starter/releases/latest`
+OK   sdd-kb: GENERATED logo depois do frontmatter
+OK   sdd-kb: cabeçalho com 'edite no sdd-open e gere de novo'
+OK   sdd-kb: sem tag/commit no SKILL.md
+OK   sdd-kb: bloco 'Quando migrar' no fim
+OK   sdd-kb: agents/openai.yaml = linha do openai.tsv
+OK   sdd-kb: molde sdd/templates/fragments/PERGUNTA_DECISAO.md → references/PERGUNTA_DECISAO.md
+OK   sdd-kb: nenhum 'sdd/templates/' sobra nos .md (fora CHANGELOG)
+FAIL sdd-kb: GERADO.txt lista os 39 arquivos com sha256 certo
+FAIL sdd-seguranca: frontmatter = Open (só a URL trocada) [URL no frontmatter trocada]
+OK   sdd-seguranca: linha de identificação v1.0.1 → sdd-starter: `sdd-seguranca v1.0.1 · nov/2026 · versão atual: https://github.com/robertodiasduarte/sdd-starter/releases/lat
+OK   sdd-seguranca: GENERATED logo depois do frontmatter
+OK   sdd-seguranca: cabeçalho com 'edite no sdd-open e gere de novo'
+OK   sdd-seguranca: sem tag/commit no SKILL.md
+OK   sdd-seguranca: bloco 'Quando migrar' no fim
+OK   sdd-seguranca: agents/openai.yaml = linha do openai.tsv
+FAIL sdd-seguranca: molde sdd/templates/fragments/FLUXO_ENCADEADO.md → references/FLUXO_ENCADEADO.md
+OK   sdd-seguranca: molde sdd/templates/fragments/PERGUNTA_DECISAO.md → references/PERGUNTA_DECISAO.md
+OK   sdd-seguranca: molde sdd/templates/fragments/RESUMO_ETAPA.md → references/RESUMO_ETAPA.md
+OK   sdd-seguranca: nenhum 'sdd/templates/' sobra nos .md (fora CHANGELOG)
+OK   sdd-seguranca: GERADO.txt lista os 9 arquivos com sha256 certo
+OK   sdd-auditoria-harness: frontmatter = Open (só a URL trocada)
+OK   sdd-auditoria-harness: linha de identificação v1.2.1 → sdd-starter: `sdd-auditoria-harness v1.2.1 · nov/2026 · versão atual: https://github.com/robertodiasduarte/sdd-starter/rele
+OK   sdd-auditoria-harness: GENERATED logo depois do frontmatter
+OK   sdd-auditoria-harness: cabeçalho com 'edite no sdd-open e gere de novo'
+OK   sdd-auditoria-harness: sem tag/commit no SKILL.md
+OK   sdd-auditoria-harness: bloco 'Quando migrar' no fim
+OK   sdd-auditoria-harness: agents/openai.yaml = linha do openai.tsv
+OK   sdd-auditoria-harness: molde sdd/templates/fragments/PERGUNTA_DECISAO.md → references/PERGUNTA_DECISAO.md
+OK   sdd-auditoria-harness: nenhum 'sdd/templates/' sobra nos .md (fora CHANGELOG)
+OK   sdd-auditoria-harness: GERADO.txt lista os 7 arquivos com sha256 certo
+OK   sdd-prompt-builder: frontmatter = Open (só a URL trocada)
+OK   sdd-prompt-builder: linha de identificação v2.2.0 → sdd-starter: `sdd-prompt-builder v2.2.0 · nov/2026 · versão atual: https://github.com/robertodiasduarte/sdd-starter/release
+OK   sdd-prompt-builder: GENERATED logo depois do frontmatter
+OK   sdd-prompt-builder: cabeçalho com 'edite no sdd-open e gere de novo'
+OK   sdd-prompt-builder: sem tag/commit no SKILL.md
+OK   sdd-prompt-builder: bloco 'Quando migrar' no fim
+OK   sdd-prompt-builder: agents/openai.yaml = linha do openai.tsv
+OK   sdd-prompt-builder: molde sdd/templates/fragments/LLM_PROMPTS_DESIGN.md → references/LLM_PROMPTS_DESIGN.md
+OK   sdd-prompt-builder: molde sdd/templates/fragments/PERGUNTA_DECISAO.md → references/PERGUNTA_DECISAO.md
+OK   sdd-prompt-builder: nenhum 'sdd/templates/' sobra nos .md (fora CHANGELOG)
+OK   sdd-prompt-builder: GERADO.txt lista os 9 arquivos com sha256 certo
+OK   sdd-engenharia-reversa-saas: frontmatter = Open (só a URL trocada)
+OK   sdd-engenharia-reversa-saas: linha de identificação v1.1.1 → sdd-starter: `sdd-engenharia-reversa-saas v1.1.1 · nov/2026 · versão atual: https://github.com/robertodiasduarte/sdd-starte
+OK   sdd-engenharia-reversa-saas: GENERATED logo depois do frontmatter
+OK   sdd-engenharia-reversa-saas: cabeçalho com 'edite no sdd-open e gere de novo'
+OK   sdd-engenharia-reversa-saas: sem tag/commit no SKILL.md
+OK   sdd-engenharia-reversa-saas: bloco 'Quando migrar' no fim
+OK   sdd-engenharia-reversa-saas: agents/openai.yaml = linha do openai.tsv
+FAIL sdd-engenharia-reversa-saas: molde sdd/templates/BRAINSTORM_TEMPLATE.md → references/BRAINSTORM_TEMPLATE.md
+OK   sdd-engenharia-reversa-saas: molde sdd/templates/fragments/PERGUNTA_DECISAO.md → references/PERGUNTA_DECISAO.md
+OK   sdd-engenharia-reversa-saas: nenhum 'sdd/templates/' sobra nos .md (fora CHANGELOG)
+OK   sdd-engenharia-reversa-saas: GERADO.txt lista os 15 arquivos com sha256 certo
+OK   sdd-loop-builder: frontmatter = Open (só a URL trocada)
+OK   sdd-loop-builder: linha de identificação v1.0.0 → sdd-starter: `sdd-loop-builder v1.0.0 · nov/2026 · versão atual: https://github.com/robertodiasduarte/sdd-starter/releases/
+OK   sdd-loop-builder: GENERATED logo depois do frontmatter
+OK   sdd-loop-builder: cabeçalho com 'edite no sdd-open e gere de novo'
+OK   sdd-loop-builder: sem tag/commit no SKILL.md
+OK   sdd-loop-builder: bloco 'Quando migrar' no fim
+OK   sdd-loop-builder: agents/openai.yaml = linha do openai.tsv
+OK   sdd-loop-builder: molde sdd/templates/fragments/PERGUNTA_DECISAO.md → references/PERGUNTA_DECISAO.md
+OK   sdd-loop-builder: nenhum 'sdd/templates/' sobra nos .md (fora CHANGELOG)
+OK   sdd-loop-builder: GERADO.txt lista os 6 arquivos com sha256 certo
+FALHAS=5
+rc=1
+$ # triagem dos 5 FAIL da sonda: (a) FLUXO_ENCADEADO só é citado dentro da seção "### Fluxo encadeado", que o gerador remove por desenho; (b) __pycache__ criado pelo py_compile do CI local; (c) BRAINSTORM_TEMPLATE trocado por citação ao assets/ da sdd-brainstorm congelada; (d) frontmatter da seguranca: troca no campo compatibility
+$ grep -n FLUXO_ENCADEADO starter/skills/sdd-new-session/SKILL.md starter/skills/sdd-seguranca/SKILL.md
+rc=1
+$ find starter/skills/sdd-kb -name __pycache__; git -C starter check-ignore -v skills/sdd-kb/scripts/__pycache__/x.pyc
+starter/skills/sdd-kb/scripts/__pycache__
+.gitignore:3:__pycache__/	skills/sdd-kb/scripts/__pycache__/x.pyc
+$ grep -n BRAINSTORM_TEMPLATE starter/skills/sdd-engenharia-reversa-saas/SKILL.md; ls starter/skills/sdd-brainstorm/assets/BRAINSTORM_TEMPLATE.md
+138:Gerar `BRAINSTORM_{NOVA_SOLUCAO}.md` somente após seu gate, com o molde que a `sdd-brainstorm` instalada indicar (no starter, `assets/BRAINSTORM_TEMPLATE.md` da skill `sdd-brainstorm`). Guardar a rastreabilidade nas seções existentes, sem mudar sua estrutura ou seu encerramento canônico.
+starter/skills/sdd-brainstorm/assets/BRAINSTORM_TEMPLATE.md
+$ diff frontmatter seguranca Open × gerada
+4c4
+< compatibility: "Funciona em qualquer agente, inclusive na web sem terminal: cada item tem a conferência à mão. Com bash e Python 3.9, sdd/bin/seguranca-varredura.sh lê o mesmo catálogo e varre o repositório (só leitura, sem rede)."
+---
+> compatibility: "Funciona em qualquer agente, inclusive na web sem terminal: cada item tem a conferência à mão. No SDD Open, um script lê o mesmo catálogo e varre o repositório a cada publicação."

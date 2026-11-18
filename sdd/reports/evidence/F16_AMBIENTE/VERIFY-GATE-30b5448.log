@@ -1,0 +1,14 @@
+$ bash sdd/bin/verify-gate.sh --strict sdd/features/DEFINE_F16_AMBIENTE.md   # HEAD 30b5448
+   │ AssertionError: 2 != 0 : 🛑 /private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.4WLn1voeZD/.agents/skills/sdd-iniciar-repo/SKILL.md:112 — sem marca de classe (escreva [<código> · <rótulo>] antes da pergunta)
+   │ RESULTADO: VERMELHO
+   │ → corrija as perguntas acima (formato e marcas: sdd/templates/fragments/PERGUNTA_DECISAO.md, item 9).
+   │ 
+   │ 
+   │ ----------------------------------------------------------------------
+   │ Ran 1925 tests in 1509.634s
+   │ 
+   │ FAILED (failures=1, skipped=1)
+🔴 o comando declarou VERMELHO — ruído de ambiente não mascara veredito.
+RESULTADO: VERMELHO
+→ corrija o que o comando acima apontou e rode de novo.
+exit=2 segundos=1512

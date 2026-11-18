@@ -1,0 +1,39 @@
+$ bash /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f10-revisao/bd420f6e-558d-4962-a0c9-40cdfc2cbd27/scratchpad/p/a2.sh AT008
+--- ordem em context-sdd.md:
+### BRAINSTORM_FX.md
+### DEFINE_FX.md
+### DESIGN_FX.md
+### BUILD_REPORT_FX.md
+contexto                : 0KB (4 doc SDD)
+docs_sdd                : BRAINSTORM_FX.md, DEFINE_FX.md, DESIGN_FX.md, BUILD_REPORT_FX.md
+contexto_cortado        : -
+--- prompt do revisor contém o contexto antes do diff:
+71:## CONTEXTO SDD
+73:### BRAINSTORM_FX.md
+78:### DEFINE_FX.md
+83:### DESIGN_FX.md
+88:### BUILD_REPORT_FX.md
+95:## DIFF
+--- contexto > context_max_kb=2: BRAINSTORM sai primeiro
+### DEFINE_FX.md
+### DESIGN_FX.md
+### BUILD_REPORT_FX.md
+contexto                : 0KB (4 doc SDD)
+docs_sdd                : BRAINSTORM_FX.md, DEFINE_FX.md, DESIGN_FX.md, BUILD_REPORT_FX.md
+contexto_cortado        : BRAINSTORM
+--- e depois corta o resto com marcador
+### DEFINE_FX.md
+### DESIGN_FX.md
+ddddddddddddddddddddddddddddddddddddddddddddddd
+[… cortado: teto de 2 KB do contexto SDD (review.context_max_kb) …]
+
+bytes=    2048
+contexto                : 2KB (4 doc SDD)
+docs_sdd                : BRAINSTORM_FX.md, DEFINE_FX.md, DESIGN_FX.md, BUILD_REPORT_FX.md
+contexto_cortado        : BRAINSTORM + corte em 2 KB
+--- sem --feature
+⚠️ sem --feature: a revisão não leu BRAINSTORM, DEFINE nem DESIGN, e decisões já documentadas podem voltar como achado
+contexto                : 0KB (0 doc SDD)
+docs_sdd                : -
+contexto_cortado        : -
+[exit=0]

@@ -1,0 +1,15 @@
+$ bash /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f10-revisao/bd420f6e-558d-4962-a0c9-40cdfc2cbd27/scratchpad/p/a5.sh AT024
++ adversarial-review.sh --base main --reviewer stub-a --auditor stub-b --dry-run --feature NADA
+Plano (nada foi enviado a nenhuma engine):
+  revisor : stub-a (revisor-ok)
+  auditor : stub-b (auditor-agree)
+  diversidade: modelo
+  2º revisor: sem gatilho no diff (o revisor raso ainda pode acionar)
+  diff: 3 arquivo(s), 0 KB, base main, merge-base 7484f6299678
+  diff_sha256: b7fb048c0c3864cb429ecb37b9358aae3b23ae86e922bb0199c98a7e4773e6ff
+  contexto: 0 documento(s) SDD, 0 KB
+RESULTADO: PLANO
+→ rode sem --dry-run para revisar.
+[rc=0]
+chamadas=0 pasta=nao
+[exit=0]

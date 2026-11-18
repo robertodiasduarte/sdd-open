@@ -1,0 +1,9 @@
+$ bash sabotagem.sh 1d8fc65   # 6 mutantes, cada um numa cópia de git archive
+✅ morto  compor sem exigir compatibility (test_gerar_starter.SkillDeModo.test_at003_modo_quebrado_sai_65_sem_gravar)
+✅ morto  gerador sem tests/ em DONO_INTEIRO (test_gerar_starter.Gera.test_at001_gera_as_15_e_nao_toca_no_resto)
+✅ morto  trava sem tests/ inteira (test_gerar_starter.Trava.test_at006_cada_mudanca_a_mao_sai_1)
+✅ morto  release copiada inteira (sem a regra de modo) (test_gerar_starter.SkillDeModo.test_at002_release_gerada_so_do_modo)
+✅ morto  init sem a ux-review-builder (test_sdd_open.Projeto.test_init_instala_a_ux_review_builder)
+✅ morto  lint sem pasta do init sem barra (test_f17b_passo0.LintSemBarra.test_pasta_do_init_sem_a_barra_reprova)
+vivos=0
+rc=0

@@ -1,0 +1,58 @@
+$ /bin/bash /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.Gg087dIi9J/ev/05.sh
+# F2 caso A: chamada nova de shell, $T não existe mais (variável de shell não persiste entre chamadas)
+novo f2a; cp sdd/features/DEFINE_F.md "$T/DEFINE.antes"; antes
+cd "$d/w" && pwd -P
+--- cenário f2a (W=/private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.Gg087dIi9J/e.f2a/w) ---
+[--snapshot antes exit=0]
+printf 'define adulterado pelo revisor\n' > "$DEF"
+( unset T; rm -f sdd/features/DEFINE_F.md && cp "$T/DEFINE.antes" sdd/features/DEFINE_F.md; echo "[restauração exit=$?]" )
+cp: /DEFINE.antes: No such file or directory
+[restauração exit=1]
+ls -la sdd/features
+total 0
+drwxr-xr-x@ 2 robertoduarte  staff   64 Nov  5 09:46 .
+drwxr-xr-x@ 4 robertoduarte  staff  128 Nov  5 09:46 ..
+# F2 caso B: a cópia sumiu da pasta temporária
+novo f2b; cp sdd/features/DEFINE_F.md "$T/DEFINE.antes"; antes
+cd "$d/w" && pwd -P
+--- cenário f2b (W=/private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.Gg087dIi9J/e.f2b/w) ---
+[--snapshot antes exit=0]
+printf 'define adulterado pelo revisor\n' > "$DEF"; rm "$T/DEFINE.antes"
+rm -f sdd/features/DEFINE_F.md && cp "$T/DEFINE.antes" sdd/features/DEFINE_F.md; echo "[restauração exit=$?]"
+cp: /private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.Gg087dIi9J/e.f2b/T/DEFINE.antes: No such file or directory
+[restauração exit=1]
+ls -la sdd/features
+total 0
+drwxr-xr-x@ 2 robertoduarte  staff   64 Nov  5 09:46 .
+drwxr-xr-x@ 4 robertoduarte  staff  128 Nov  5 09:46 ..
+# F2 caso C: o revisor trocou o DEFINE por uma pasta: nada é restaurado
+novo f2c; cp sdd/features/DEFINE_F.md "$T/DEFINE.antes"; antes
+cd "$d/w" && pwd -P
+--- cenário f2c (W=/private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.Gg087dIi9J/e.f2c/w) ---
+[--snapshot antes exit=0]
+rm "$DEF"; mkdir "$DEF"; printf 'x\n' > "$DEF/x"
+rm -f sdd/features/DEFINE_F.md && cp "$T/DEFINE.antes" sdd/features/DEFINE_F.md; echo "[restauração exit=$?]"
+rm: sdd/features/DEFINE_F.md: is a directory
+[restauração exit=1]
+ls -la sdd/features
+total 0
+drwxr-xr-x@ 3 robertoduarte  staff   96 Nov  5 09:46 .
+drwxr-xr-x@ 4 robertoduarte  staff  128 Nov  5 09:46 ..
+drwxr-xr-x@ 3 robertoduarte  staff   96 Nov  5 09:46 DEFINE_F.md
+# CORREÇÃO sugerida (copia primeiro, só então troca): cópia inalcançável e link para pasta no lugar do DEFINE
+restaura() { cp "$T/DEFINE.antes" sdd/features/DEFINE_F.md.restaurando && rm -f sdd/features/DEFINE_F.md && mv sdd/features/DEFINE_F.md.restaurando sdd/features/DEFINE_F.md && cmp "$T/DEFINE.antes" sdd/features/DEFINE_F.md; }
+novo f2d; printf 'define adulterado\n' > "$DEF"
+cd "$d/w" && pwd -P
+--- cenário f2d (W=/private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.Gg087dIi9J/e.f2d/w) ---
+( T=""; restaura; echo "[correção, cópia inalcançável: exit=$?]" ); cat sdd/features/DEFINE_F.md
+cp: /DEFINE.antes: No such file or directory
+[correção, cópia inalcançável: exit=1]
+define adulterado
+novo f2e; cp sdd/features/DEFINE_F.md "$T/DEFINE.antes"; rm "$DEF"; ln -s "$W/src" "$DEF"
+cd "$d/w" && pwd -P
+--- cenário f2e (W=/private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.Gg087dIi9J/e.f2e/w) ---
+restaura; echo "[correção, link para pasta no lugar do DEFINE: exit=$?]"; ls src; cat sdd/features/DEFINE_F.md
+[correção, link para pasta no lugar do DEFINE: exit=0]
+app.py
+define v1
+[exit=0]

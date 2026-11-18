@@ -1,0 +1,2 @@
+{"achado": "R1", "veredito": "AGREE", "justificativa": "git -C sobe a árvore e acha tags do repositório pai, violando a guarda -ef da Decision 1 e o AT-007 (sai 1 em vez de 64)"}
+{"achado": "R2", "veredito": "AGREE", "justificativa": "doctor_versao roda antes de verificar se sdd/ existe, sugerindo upgrade --de em projeto não instalado em vez de init"}

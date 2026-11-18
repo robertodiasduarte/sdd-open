@@ -1,0 +1,15 @@
+$ /bin/bash sdd/reports/evidence/F14_PLAYBOOK/real1-repro.sh
+## 1. playbook sem permissão (R1@claude, R2@codex): esperado exit 2, nunca 1
+exit=1
+1
+## 2. sugestão em 2 arquivos (R3): a 2ª release não pode trazer sugestão nova
+1
+## 3. restauração com link no intermediário (R1@codex): alvo tem de ficar intacto
+exit=0
+vitima agora: antes
+lrwxr-xr-x
+## 4. fronteira com git traduzido (R4@claude): LC_ALL=C fixado no script
+exit=64
+## 5. check por link que sai da raiz (R4@codex): esperado exit 2
+exit=0
+[exit=0]

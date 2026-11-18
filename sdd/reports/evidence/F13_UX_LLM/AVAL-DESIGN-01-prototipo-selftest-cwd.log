@@ -1,0 +1,18 @@
+$ T=$(mktemp -d); mkdir -p $T/p/sdd/bin; cd $T/p; cat > sdd/bin/s.sh <<"S"
+#!/bin/bash
+if [ "${1:-}" = "--self-test" ]; then
+  d="$(mktemp -d)"; trap "rm -rf \"$d\"" EXIT; cd "$d"
+  "$BASH" "$0" caso; echo "caso rc=$?"; exit 0
+fi
+echo "rodou dentro de $(pwd -P)"; exit 0
+S
+echo "--- caminho absoluto (como no Pattern 5 dos testes):"; /bin/bash $T/p/sdd/bin/s.sh --self-test; echo "--- caminho relativo (como o aluno e a skill chamam):"; /bin/bash sdd/bin/s.sh --self-test; echo "--- raiz do self-test quando TMPDIR esta dentro de outro git:"; mkdir -p $T/outro/tmp; (cd $T/outro; git init -q); D=$(TMPDIR=$T/outro/tmp mktemp -d); (cd $D; git rev-parse --show-toplevel); cd /; rm -rf "$T"
+--- caminho absoluto (como no Pattern 5 dos testes):
+rodou dentro de /private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.5PTvdOx30a
+caso rc=0
+--- caminho relativo (como o aluno e a skill chamam):
+/bin/bash: sdd/bin/s.sh: No such file or directory
+caso rc=127
+--- raiz do self-test quando TMPDIR esta dentro de outro git:
+fatal: not a git repository (or any of the parent directories): .git
+[exit=0]

@@ -1,0 +1,21 @@
+$ cd /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f16w-windows/b56e801b-0f18-49ee-b51c-5b9188b29c23/scratchpad/head && grep -nE '^def (path_restrito|falso)|^(SEM_|WINDOWS|NO_WINDOWS)[A-Z_]* *=' tests/apoio.py | head -20; echo '--- skip de plataforma fora de apoio.py:'; grep -rnE 'skip(If|Unless)\(.*(platform|os\.name|sys\.platform)' tests/*.py | grep -v 'tests/apoio.py' | head; echo '--- test_windows.py:'; SDD_TEST_BASH=/bin/bash /usr/bin/python3 -B -m unittest discover -s tests -p 'test_windows.py' 2>&1 | tail -3; echo "[rc=$?]"
+45:WINDOWS = os.name == "nt"
+47:SEM_SYMLINK = (not _symlink_ok(), "link simbólico: este sistema não deixa criar (no Windows, exige o modo de desenvolvedor)")
+48:SEM_FCNTL = (WINDOWS, "fcntl: o Windows não tem a trava POSIX")
+49:SEM_CHMOD = (WINDOWS, "chmod: no Windows o bit de execução e a permissão de leitura não valem")
+50:SEM_SINAL = (WINDOWS, "sinal POSIX: o Windows não entrega SIGTERM nem SIGKILL a um grupo de processos")
+51:SEM_NOME_ESPECIAL = (WINDOWS, "nome de arquivo com aspas, dois-pontos, barra vertical, quebra de linha ou terminado em espaço: "
+53:SEM_POSIX_UID = (not hasattr(os, "geteuid"), "os.geteuid: só existe em sistema POSIX")
+54:SEM_PATH_SEM_FERRAMENTA = (WINDOWS, "PATH sem uma ferramenta: no Windows o PATH restrito é feito das pastas de verdade (o "
+56:SEM_ARGV_COM_QUEBRA = (WINDOWS, "argumento com quebra de linha: no Windows a linha de comando o parte em dois")
+57:SEM_PTY = (WINDOWS, "pty: o Windows não tem terminal POSIX (termios)")
+61:def path_restrito(pasta: Path, ferramentas, python: bool = True, ausentes=(), extra=None) -> str:
+--- skip de plataforma fora de apoio.py:
+tests/test_windows.py:59:        for linha in ('@unittest.skipIf(os.name == "nt", "fcntl")\n', "if os.geteuid() == 0:\n    pass\n",
+tests/test_windows.py:60:                      '@unittest.skipUnless(sys.platform == "darwin", "x")\n', "x = platform.system() == 'Windows'\n"):
+tests/test_windows.py:63:        for limpo in ("@unittest.skipIf(*SEM_FCNTL)\n", 'x = "sys.exit(os.name != 1)"  # os.name num texto\n'):
+--- test_windows.py:
+Ran 10 tests in 0.551s
+
+OK
+[rc=0]

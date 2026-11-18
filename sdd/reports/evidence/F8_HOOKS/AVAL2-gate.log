@@ -1,0 +1,27 @@
+$ cd /Users/robertoduarte/rdd-worktrees/sdd-open-f8-aval && bash sdd/bin/verify-gate.sh --strict sdd/features/DEFINE_F8_HOOKS.md
+▶ Verify Gate [test]: T=$(mktemp -d) && git archive HEAD | tar -x -C $T && PUBLISH_GATE_MODE=ci bash scripts/publish-gate.sh $T && cd $T && SDD_TEST_BASH=/bin/bash /usr/bin/python3 -B -m unittest discover -s tests -p 'test_*.py'
+   │ publish-gate — tree: /private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.MtYMpWDlMG — mode: ci
+   │ ──────────────────────────────────────────────────────────────────
+   │ G1 secrets (gitleaks)
+   │   ✅ no secrets detected
+   │ G2 forbidden patterns
+   │   ✅ no forbidden pattern matched
+   │ G3 allowlist (MANIFEST.txt)
+   │   ✅ tree and manifest match in both directions
+   │ G4 verify-gate exit contract
+   │   ✅ DEFINE_FIXTURE_NEEDS_CLARIFICATION.md → exit 5
+   │   ✅ DEFINE_FIXTURE_CONTROLE.md → exit 0
+   │   ✅ DEFINE_FIXTURE_SEM_BLOCO.md → exit 64
+   │ G5 documentation
+   │   ✅ docs present, cross-linked, attribution in place
+   │ ──────────────────────────────────────────────────────────────────
+   │ ✅ publish-gate GREEN — tree is publishable (human review of the file list still required)
+   │ ........................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................
+   │ ----------------------------------------------------------------------
+   │ Ran 680 tests in 552.805s
+   │ 
+   │ OK
+✅ GATE VERDE (test) — pass_when: 'exit 0' satisfeito (rc=0).
+RESULTADO: VERDE
+→ siga para o próximo passo.
+[exit=0]

@@ -1,0 +1,33 @@
+$ (em projetos pós-init de base=ad32fe1 e head=3ba89de, core.hooksPath=sdd/hooks, sdd.higieneDado=on) para cada caso: <cria arquivo>; git add; git commit  # rc≠0 = recusado
+=== base (2 commits)
+  cpf-valido                 rc=1  sdd-open: commit recusado pelo alarme da sdd-higiene-dado:
+  cnpj-valido                rc=1  sdd-open: commit recusado pelo alarme da sdd-higiene-dado:
+  controle-cpf-invalido      rc=0  
+  pfx                        rc=1  sdd-open: commit recusado. Encontrei o que não pode entrar nesta versão:
+  p12                        rc=1  sdd-open: commit recusado. Encontrei o que não pode entrar nesta versão:
+  pem-com-chave              rc=1  sdd-open: commit recusado pelo alarme da sdd-higiene-dado:
+  controle-pem-sem-chave     rc=0  
+  env                        rc=1  sdd-open: commit recusado pelo alarme da sdd-higiene-dado:
+  controle-env.example       rc=0  
+  planilha-xlsx              rc=1  sdd-open: commit recusado pelo alarme da sdd-higiene-dado:
+  planilha-csv               rc=1  sdd-open: commit recusado pelo alarme da sdd-higiene-dado:
+  credencial-json            rc=1  sdd-open: commit recusado. Encontrei o que não pode entrar nesta versão:
+  credencial-yml             rc=1  sdd-open: commit recusado. Encontrei o que não pode entrar nesta versão:
+  controle-placeholder       rc=0  
+  controle-limpo             rc=0  
+=== head (2 commits)
+  cpf-valido                 rc=1  sdd-open: commit recusado pelo alarme da sdd-higiene-dado:
+  cnpj-valido                rc=1  sdd-open: commit recusado pelo alarme da sdd-higiene-dado:
+  controle-cpf-invalido      rc=0  
+  pfx                        rc=1  sdd-open: commit recusado. Encontrei o que não pode entrar nesta versão:
+  p12                        rc=1  sdd-open: commit recusado. Encontrei o que não pode entrar nesta versão:
+  pem-com-chave              rc=1  sdd-open: commit recusado pelo alarme da sdd-higiene-dado:
+  controle-pem-sem-chave     rc=0  
+  env                        rc=1  sdd-open: commit recusado pelo alarme da sdd-higiene-dado:
+  controle-env.example       rc=0  
+  planilha-xlsx              rc=1  sdd-open: commit recusado pelo alarme da sdd-higiene-dado:
+  planilha-csv               rc=1  sdd-open: commit recusado pelo alarme da sdd-higiene-dado:
+  credencial-json            rc=1  sdd-open: commit recusado. Encontrei o que não pode entrar nesta versão:
+  credencial-yml             rc=1  sdd-open: commit recusado. Encontrei o que não pode entrar nesta versão:
+  controle-placeholder       rc=0  
+  controle-limpo             rc=0  

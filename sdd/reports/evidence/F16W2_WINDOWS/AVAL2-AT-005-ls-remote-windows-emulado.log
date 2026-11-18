@@ -1,0 +1,6 @@
+$ /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f16w-windows/b56e801b-0f18-49ee-b51c-5b9188b29c23/scratchpad/at005g.sh; echo "[rc=$?]"
+head  normal     11281 ms rc=0 taskkill=2 | - Não consegui falar com exemplo.invalid agora (sem internet ou rede bloqueada). ✅ Repo tmp.1BnnFdsQeQ, branch main, nenhuma frente aberta, Claude Code 2.1.314, Codex 0.1
+head  --frente   10269 ms rc=1 taskkill=2 | - Não consegui falar com exemplo.invalid agora (sem internet ou rede bloqueada). 
+base  normal     10702 ms rc=0 taskkill=2 | - O repositório remoto ainda não tem nenhum commit — as frentes nascem dele. ✅ Repo tmp.pWxF0ESSOM, branch main, nenhuma frente aberta, Claude Code 2.1.314, Codex 0.163.0
+base  --frente   10289 ms rc=1 taskkill=2 | - O repositório remoto ainda não tem nenhum commit — as frentes nascem dele. 
+[rc=0]

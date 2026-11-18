@@ -1,0 +1,16 @@
+feature_id: F15_SLOTS
+slice_id: s1
+versao: 2.8.0
+data: 2026-11-10
+estado: shipado
+veredito: CONCERNS
+waived: null
+dod: "slot.sh com o contrato 0/2/3/10/11/64; 3 slots de smoke chamados nos itens 6b, 7b e 10 da sdd-release; schema.check_cmd antes da prévia no 4b, fail-closed; test-baseline --touched conta o teste ao lado da fonte e roda na 0a da release; Verify Gate verde sem .git; 1 sabotagem por entrega"
+descricao: "L0 + L3 + L4 do inventário de saída da F15: slots smoke.before_ok_cmd/before_push_cmd/after_deploy_cmd e schema.check_cmd (reabertos por decisão do Roberto; caíram na F13 e na F12), sdd/bin/slot.sh, teste ao lado da fonte no --touched; sdd-release 2.9.0, sdd-build 2.7.0"
+deploy: real
+review_externo: sdd/reports/reviews/EXTERNAL_REVIEW_20261110-070608 sha256=1fbc689e5bb84319e8206c0f277bbd521b7088f64ac1e11765cc80b71435c367 diversidade=vendor revisor2=dispensado — 2º revisor (z-ai/glm-5.3) revisou a rodada 3 sobre 2c9b6ad; na rodada 4 falhou por cota; entre as duas só entraram 3 consertos com teste e sabotagem; revisor e auditor da rodada 4 completaram (decisão D3 do Roberto, 2026-11-10)
+avisos:
+  - "2º revisor da rodada final dispensado (D3 do Roberto); codex sem cota nas 4 rodadas, auditor na reserva qwen"
+  - "testes do diff (0a item 9) e smoke antes do OK (6b) pulados: o próprio Open não tem sdd/config.yaml; a suíte inteira roda no Verify Gate"
+  - "tabela de etapas da sdd-release diz 'FASE 1, itens 1 a 6' sem o 6b (raio de impacto; melhoria para a próxima)"
+  - "o N1 do auditor nas rodadas 2 e 4 foi rebatido por medição no bash 3.2; a confirmação no bash 5 é o CI ubuntu do PR"

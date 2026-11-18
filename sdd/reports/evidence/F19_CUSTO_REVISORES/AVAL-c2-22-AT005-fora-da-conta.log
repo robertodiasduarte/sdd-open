@@ -1,0 +1,40 @@
+$ cat -n /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f21-f19/8ca3f42f-d684-434d-9f0b-19bdcf0aef88/scratchpad/aval2-f19/casos/at/fora-led/LEDGER_REVISAO_FORA.md; /bin/bash sdd/bin/eval-revisores.sh /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f21-f19/8ca3f42f-d684-434d-9f0b-19bdcf0aef88/scratchpad/aval2-f19/casos/at/fora --ledgers /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f21-f19/8ca3f42f-d684-434d-9f0b-19bdcf0aef88/scratchpad/aval2-f19/casos/at/fora-led --registry sdd/fixtures/revisao/custo/registry.tsv | sed -n '3,$p' | tr ';' '\n'; echo "[exit ${PIPESTATUS[0]}]"
+     1	| achado | sev | veredito | rodada | evidência | dano | revisão |
+     2	|---|---|---|---|---|---|---|
+     3	| R1 | LOW | APLICADA | rodada=1 | ok | nao | EXTERNAL_REVIEW_20260401-000001 |
+     4	| R2 | LOW | APLICADA | rodada=1 | ok | EXTERNAL_REVIEW_20260401-000001 |
+     5	| R2 | LOW | APLICADA | rodada=1 | a | b | nao | EXTERNAL_REVIEW_20260401-000001 |
+     6	| R3 | LOW | ACEITA | rodada=1 | ok | nao | EXTERNAL_REVIEW_20260401-000001 |
+     7	| R3 | LOW | APLICADA | rodada=1 | ok | nao | rodada-1 |
+     8	| R77 | LOW | APLICADA | rodada=1 | ok | nao | EXTERNAL_REVIEW_20260401-000001 |
+     9	| R1 | LOW | REBATIDA_ESCOPO | rodada=1 | de novo | nao | EXTERNAL_REVIEW_20260401-000001 |
+    10	| N1@codex | LOW | REBATIDA_EVIDENCIA | rodada=1 | ok | nao | EXTERNAL_REVIEW_20260401-000001 |
+    11	| R4 | LOW | APLICADA | rodada=1 | ok | talvez | EXTERNAL_REVIEW_20260401-000001 |
+    12	| R5 | LOW | APLICADA | rodada=1 | ok | nao | EXTERNAL_REVIEW_20990101-000000 |
+    13	
+    14	sem achados: rodada=2 EXTERNAL_REVIEW_20260401-000003
+| Papel | Engine (modelo) | Cobrança | Rodadas | Falhas | Pago US$ | Nominal US$ | Achados | Aplicados | Com dano | Falsos positivos | Fora de escopo | Sem classificar | Pago por dano | Nominal por dano | AGREE |
+|---|---|---|---:|---|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|
+| revisor | claude (m-x) | assinatura | 4 | 0 | 0.0000 | 4.0000 | 7 | 1 de 7 | 0 de 7 | 0 de 7 | 0 de 7 | 6 de 7 | — | — | — |
+| auditor | openrouter (q/p via A) | pay-per-token | 1 | 0 | 0.1000 | 0.1000 | 1 | 0 de 1 | 0 de 1 | 0 de 1 | 0 de 1 | 1 de 1 | — | — | 100.0% (1 de 1) |
+
+fora da conta: 14 (LEDGER_REVISAO_FORA.md:4: linha com 6 célula(s), o ledger tem 7 (rode o ledger-revisao-lint.sh)
+ LEDGER_REVISAO_FORA.md:5: linha com 8 célula(s), o ledger tem 7 (rode o ledger-revisao-lint.sh)
+ LEDGER_REVISAO_FORA.md:6: veredito `ACEITA` fora da lista
+ LEDGER_REVISAO_FORA.md:7: revisão `rodada-1` não é uma pasta EXTERNAL_REVIEW_*
+ LEDGER_REVISAO_FORA.md:11: dano `talvez` fora de sim, nao, ?
+ LEDGER_REVISAO_FORA.md:9: achado R1 repetido (1ª vez em LEDGER_REVISAO_FORA.md:3)
+ LEDGER_REVISAO_FORA.md:14: o ledger diz `sem achados` para EXTERNAL_REVIEW_20260401-000003, mas a revisão tem 1 achado(s): eles ficam em sem classificar
+ EXTERNAL_REVIEW_20260401-000004: revisor respondeu (exit 0) e a pasta não tem reviewer.verdicts.jsonl: contado com 0 achados
+ EXTERNAL_REVIEW_20260401-000004: auditor (openrouter:q/p): exit `zero` ilegível no META.txt
+ a chamada e o custo dela não foram contados
+ LEDGER_REVISAO_FORA.md:8: achado R77 não está em EXTERNAL_REVIEW_20260401-000001
+ LEDGER_REVISAO_FORA.md:10: achado N1@codex: o rótulo @codex não é o da engine que respondeu como auditor (openrouter:q/p)
+ LEDGER_REVISAO_FORA.md:12: achado R5 não está em EXTERNAL_REVIEW_20990101-000000
+ EXTERNAL_REVIEW_20260401-000002: sem linha em nenhum ledger: os achados dela ficam em sem classificar
+ EXTERNAL_REVIEW_20260401-000004: sem linha em nenhum ledger: os achados dela ficam em sem classificar)
+RESULTADO: MEDIDO
+→ leia cada taxa com a amostra ao lado: poucas rodadas dão número instável. O script conta o que está registrado
+ trocar a cadeia de revisão é decisão de quem lê.
+[exit 0]
+[exit 0]

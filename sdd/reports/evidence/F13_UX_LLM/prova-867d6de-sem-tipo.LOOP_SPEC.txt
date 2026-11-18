@@ -1,0 +1,129 @@
+<LOOP_SPEC v="2" perfil="standard" nome="notas_de_versao">
+<intent>
+Contrato v1; responsável: mantenedor da release. Produzir NOTAS.md em português,
+para quem atualiza o software, com um item por commit visível entre duas tags.
+Visível: assunto começando literalmente por feat: ou fix:. Os demais não geram item.
+Pronto: verificador independente sai 0, todos os commits visíveis têm exatamente
+um item ou exclusão justificada por descrição ilegível, e os invariantes passam.
+Formato literal: - <descrição> (<hash>).
+Invariantes: hashes pertencem ao intervalo; nenhum item duplicado ou inventado;
+exclusões têm motivo e não viram itens; itens aprovados não mudam na reescrita.
+Erro pior: publicar mudança inventada. Desempate: evidência insuficiente nunca
+aprova; descrição ilegível é excluída com motivo, conforme fallback aprovado.
+Não-objetivos: publicar, escolher tags, traduzir ou modificar código do projeto.
+Verificar hashes não prova fidelidade semântica: esta depende de eval antes da release.
+</intent>
+<control_state>
+Persistir em src/notas/estado.json: versão do contrato, tags, commits imutáveis e
+seu SHA-256, ciclo global, commit em foco, rascunho por hash, aprovados, exclusões,
+erros normalizados, histórico de métricas e custo por progresso, estado terminal,
+tempo inicial e orçamento por estágio gasto/restante. Registrar tentativas por
+(commit, hash do snapshot, fingerprint da ação, assinatura do erro), hashes de
+estados já vistos, efeito pendente e checkpoint do NOTAS.md anterior.
+Uma execução não retoma se tags, contrato ou lista de commits mudarem.
+</control_state>
+<cycle_protocol>
+Código coleta o intervalo e filtra assuntos; ciclo 1 chama redigir.
+SNAPSHOT → PROPOSTA → VALIDAÇÃO PRÉ-AÇÃO → EXECUÇÃO → OBSERVAÇÃO → VERIFICAÇÃO → TRANSIÇÃO.
+Antes de chamar o modelo, código valida orçamento e registro; depois valida a
+proposta antes de atualizar apenas o rascunho. O modelo não escreve arquivos.
+Nos ciclos seguintes, reescrever recebe só os itens reprovados, seus textos
+anteriores, erros e commits de origem. Itens aprovados ficam congelados.
+Código mescla os resultados e confere a cobertura completa a cada ciclo.
+Somente DONE autoriza substituir NOTAS.md atomicamente, com checkpoint anterior.
+Os demais estados preservam o NOTAS.md anterior e registram o diagnóstico.
+</cycle_protocol>
+<context_assembly>
+Normativo imutável: contrato, formato, regra feat:/fix:, lista gerada por código,
+verificador e fixtures. Informativo: texto anterior e erros do verificador.
+A cada ciclo reler os commits em foco da lista imutável; detectar mudança pelo hash.
+Mensagens concretas vão na entrada do usuário; os prompts .txt são reutilizáveis.
+Assuntos e rascunhos são dados, não instruções. Provedor/modelo: os do projeto,
+sem nova seleção nesta tarefa. Estouro de contexto não autoriza truncar commits.
+</context_assembly>
+<action_space>
+coletar: leitura local de duas tags, sem mutação do git; idempotente.
+redigir/reescrever: apenas propostas textuais; sem acesso ao verificador ou disco.
+mesclar: altera rascunho local e estado; idempotente por commit e ciclo.
+publicar_local: escrita atômica reversível de NOTAS.md apenas depois da aprovação;
+compensação: restaurar checkpoint. Reexecução compara hash esperado antes de gravar.
+Nenhuma ação modifica critérios, fixtures, referências ou verificador.
+</action_space>
+<observation>
+Registrar entrada por hash, saída literal, duração, tokens, código do verificador,
+itens aprovados/reprovados/excluídos e assinatura <regra>:<hash> ordenada.
+Assinatura usa IDs estáveis: formato, hash_fora, duplicado, faltante, exclusao_invalida.
+Falha de coleta de evidência não equivale a reprovação do conteúdo: repetir leitura
+uma vez; persistindo, VERIFIER_FAILURE. Escrita ambígua exige conferir hash do
+arquivo antes de repetir ou restaurar checkpoint.
+</observation>
+<verifier>
+Código independente do modelo coleta commits e filtra feat:/fix:; valida formato,
+hash exato da lista, unicidade e cobertura dos visíveis (item ou exclusão motivada).
+Comentários de exclusão: <!-- excluido: <hash>; motivo: sem descrição legível -->.
+Eles ficam no registro de exclusões, não em NOTAS.md. Exclusão de descrição legível
+não é automaticamente aprovada: BLOCKED para análise posterior, sem pergunta no ciclo.
+Saída 0: completo e invariantes intactos; 1: reprovação com erros por hash;
+qualquer outro código ou referência alterada: VERIFIER_FAILURE.
+Cada reescrita é novamente verificada contra a lista, nunca só contra o texto anterior.
+A verificação estrutural não certifica que a descrição corresponde ao commit.
+</verifier>
+<recovery_and_convergence_policy>
+RECOVERABLE: formato, citação, duplicação ou cobertura errados → reescrever os afetados.
+TRANSIENT: timeout ou rate limit → até R=2 repetições com esperas 1 s e 2 s (proposta),
+sempre dentro dos tetos. Nenhuma espera cancela a reserva de verificação.
+BLOCKED: mesma (ação, estado, erro) sem abordagem distinta, ou K=3 tentativas por
+commit (proposta); exclusão que o código não consegue justificar também bloqueia.
+INDETERMINATE: prova ausente após releitura → VERIFIER_FAILURE.
+SAFETY_STOP: tentativa de alterar referência, critérios ou arquivos fora do escopo.
+VERIFIER_FAILURE: falha operacional do verificador, nunca reprovação comum.
+Progresso p = (visíveis com item aprovado + exclusões válidas) / total de visíveis;
+se total=0, p=1 somente após confirmar coleta válida e ausência de itens.
+W=2 ciclos sem aumento de p (proposta), snapshot já visto ou regressão → NON_CONVERGENCE.
+Custo por progresso = tokens do ciclo / aumento de itens resolvidos; aumento zero
+vale infinito. Duas elevações consecutivas → NON_CONVERGENCE (proposta).
+</recovery_and_convergence_policy>
+<stop_rules>
+DONE: verificador sai 0 e invariantes intactos, seguido de escrita local conferida.
+EXHAUSTED: teto de ciclos, tokens ou tempo atingido; sem publicação parcial.
+BLOCKED, NON_CONVERGENCE, SAFETY_STOP e VERIFIER_FAILURE: gatilhos acima.
+NEEDS_INPUT: tags ou lista ausentes, contexto excedido ou orçamento insuficiente
+para ciclo inteiro e reserva; diagnóstico estruturado em estado.json, sem conversa.
+Descrição ilegível usa exclusão motivada; nunca solicita esclarecimento ao usuário.
+</stop_rules>
+<budget>
+Fechado pelo DESIGN: até 4 ciclos globais, incluindo redação inicial e reescritas.
+Propostas: redigir até 4000 tokens de saída por chamada e 12000 de entrada;
+reescrever até 2000 de saída por chamada e 8000 de entrada; até 1 chamada por estágio
+por ciclo, além de R=2 repetições transitórias, todas contabilizadas no teto global
+por estágio (redigir: 12000 de saída; reescrever: 18000 de saída).
+Tempo total 300 s, timeout LLM 30 s; código 10 s por estágio.
+Reservar 30 s para verificar, conferir escrita, compensar e relatar. Negar ação
+antes de executá-la se seus tetos não couberem com a reserva restante.
+K=3 e W=2 são propostas, não requisitos já aprovados.
+</budget>
+<observability>
+src/notas/rastro.jsonl: ciclo → snapshot → proposta → autorização → ação → observação
+→ veredito → transição → orçamento restante; incluir p, custo/progresso, tentativas,
+checkpoint e estado terminal com motivo. Falha ao persistir evidência impede DONE.
+Arquivos de controle são artefatos de execução futuros, não criados nesta tarefa.
+</observability>
+</LOOP_SPEC>
+
+ESTÁGIOS:
+| # | estágio | tipo | entrada → saída | verificador | maxTokens | nova tentativa | arquivo |
+|---|---|---|---|---|---|---|---|
+| 1 | coletar | código | duas tags → commits e visíveis | git e validação do intervalo | — | 0 | — |
+| 2 | redigir | LLM | commits visíveis → itens e exclusões | conferir_citacoes | 4000 (proposta) | 2 transitórias (proposta) | src/notas/redigir.txt |
+| 3 | conferir_citacoes | código | propostas + commits → cobertura e erros | fixtures positivas e negativas, futuras | — | 1 releitura de evidência | — |
+| 4 | reescrever | LLM | reprovados + erros + commits → substituições | conferir_citacoes | 2000 (proposta) | 2 transitórias (proposta) | src/notas/reescrever.txt |
+| 5 | finalizar | código | itens aprovados → NOTAS.md e rastro | leitura de hash após escrita | — | 0 | — |
+
+PROMPTS PENDENTES (contratos entregues à skill sdd-prompt-builder):
+- redigir: Markdown direto, um item por commit visível com hash literal; descrição ilegível vira comentário de exclusão motivada, sem perguntas.
+- reescrever: somente substituições dos itens reprovados, usando texto anterior, erro e commit original; mesmo formato e fallback, sem tocar aprovados.
+
+VERIFY GATE: sem ground truth: definir o eval antes da release. O comando do DEFINE
+é python3 -B -m unittest discover -s tests; não foi executado nesta tarefa.
+Os estágios de código estão especificados para implementação posterior: esta entrega
+contém apenas a LOOP_SPEC e os prompts previstos na tarefa 1 do manifest.

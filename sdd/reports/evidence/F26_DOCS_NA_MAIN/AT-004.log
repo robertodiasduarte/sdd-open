@@ -1,0 +1,16 @@
+$ SDD_TEST_BASH=/bin/bash /usr/bin/python3 -B -m unittest -v -k at004 test_f26_docs_na_main
+# AT-004 · HEAD e99136d · cópia de git archive HEAD · piso (/usr/bin/python3, /bin/bash)
+test_at004_aceite_so_com_motivo_e_so_na_linha_e_na_de_baixo (test_f26_docs_na_main.Varredura) ... ok
+test_at004_bruto_grande_passa_no_modo_pasta (test_f26_docs_na_main.Varredura) ... ok
+test_at004_cada_regra_reprova_e_o_vizinho_passa (test_f26_docs_na_main.Varredura) ... ok
+test_at004_documento_nao_commitado_entra_na_varredura (test_f26_docs_na_main.Varredura) ... ok
+test_at004_nome_de_arquivo_com_quebra_nao_forja_linha (test_f26_docs_na_main.Varredura) ... ok
+test_at004_repositorio_sem_documentos_marcados_sai_64 (test_f26_docs_na_main.Varredura) ... ok
+test_at004_saida_sem_o_trecho_e_sem_linha_forjada (test_f26_docs_na_main.Varredura) ... ok
+test_at004_sem_gitleaks_nunca_verde (test_f26_docs_na_main.Varredura) ... ok
+
+----------------------------------------------------------------------
+Ran 8 tests in 3.121s
+
+OK
+[exit=0]

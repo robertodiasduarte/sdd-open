@@ -1,0 +1,106 @@
+$ /bin/bash /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f14-playbook/712319f2-9f99-446d-ba48-ead3df6c700d/scratchpad/aval.iYqyIE/p6.sh
+
+=== CD1 AT-026 identico, acento, reviews, destino criado
+COPIADO sdd/features/BRAINSTORM_relatorio-mensal.md
+COPIADO sdd/features/DEFINE_RELATÓRIO_MENSAL.md
+COPIADO sdd/features/DESIGN_Relatorio_Mensal.md
+COPIADO sdd/reviews/GOVERNANCA_REVIEW_RELATORIO_MENSAL.md
+COPIADO sdd/reviews/UX_REVIEW_RELATORIO_MENSAL.md
+RESULTADO: 5 COPIADO(S)
+→ os documentos da feature já estão na frente; os originais continuam no checkout principal.
+[rc=0]
+f/sdd/features/BRAINSTORM_relatorio-mensal.md
+f/sdd/features/DEFINE_RELATÓRIO_MENSAL.md
+f/sdd/features/DESIGN_Relatorio_Mensal.md
+f/sdd/reviews/GOVERNANCA_REVIEW_RELATORIO_MENSAL.md
+f/sdd/reviews/UX_REVIEW_RELATORIO_MENSAL.md
+
+=== CD2 AT-027 destino existe mantem; parecido dos 2 lados
+PARECIDO sdd/features/DEFINE_REL.md (feature 'rel' ≈ frente 'rel-x'): não copiei, porque o nome não é idêntico.
+JA_EXISTE sdd/features/DEFINE_REL_X.md (a frente já tem este arquivo: mantive o dela)
+PARECIDO sdd/features/DEFINE_REL_X_V2.md (feature 'rel-x-v2' ≈ frente 'rel-x'): não copiei, porque o nome não é idêntico.
+RESULTADO: NADA A COPIAR
+→ se algum PARECIDO for desta frente, copie à mão para f/sdd/features/ (ou sdd/reviews/); os demais ficam onde estão.
+[rc=0]
+meu
+DEFINE_REL_X.md
+
+=== CD3 AT-027 links: arquivo-fonte link, pasta-fonte link, destino link, sdd link dos 2 lados
+IGNORADO sdd/features/DEFINE_A.md (é um link ou não é arquivo: não copio)
+RESULTADO: NADA A COPIAR
+→ nenhum documento com o nome desta frente estava fora do git; siga normalmente.
+[arquivo link rc=0]
+IGNORADO sdd/features (a pasta é um link no checkout principal)
+RESULTADO: NADA A COPIAR
+→ nenhum documento com o nome desta frente estava fora do git; siga normalmente.
+[pasta-fonte link rc=0]
+IGNORADO sdd/features/DEFINE_A.md (a pasta de destino é um link: não copio)
+RESULTADO: NADA A COPIAR
+→ nenhum documento com o nome desta frente estava fora do git; siga normalmente.
+[destino link rc=0]
+RESULTADO: NADA A COPIAR
+→ nenhum documento com o nome desta frente estava fora do git; siga normalmente.
+[principal/sdd e link rc=0]
+IGNORADO sdd/features/DEFINE_A.md (a pasta de destino é um link: não copio)
+RESULTADO: NADA A COPIAR
+→ nenhum documento com o nome desta frente estava fora do git; siga normalmente.
+[frente/sdd e link rc=0]
+
+=== CD4 AT-027 salvo no git e ausente na frente; salvo no git e presente
+NAO_COPIADO sdd/features/DEFINE_A.md (está salvo no git do checkout principal, mas não na branch de onde a frente nasceu)
+RESULTADO: NADA A COPIAR
+→ 1 documento(s) desta frente estão em um commit do checkout principal que ainda não foi enviado: envie esse commit e atualize a frente, ou copie à mão para f/.
+[rc=0]
+RESULTADO: NADA A COPIAR
+→ nenhum documento com o nome desta frente estava fora do git; siga normalmente.
+[presente rc=0]
+
+=== CD5 ignorado pelo git tambem copia (Decisao do Define)
+COPIADO sdd/features/DEFINE_A.md
+RESULTADO: 1 COPIADO(S)
+→ os documentos da feature já estão na frente; os originais continuam no checkout principal.
+[rc=0]
+
+=== CD6 usos
+[sem arg rc=64]
+[sem frente rc=64]
+[sem principal rc=64]
+[fora de git rc=64]
+[slug rc=64]
+[slug traversal rc=64]
+[slug vazio rc=64]
+
+=== CD7 nome NFD (macOS), espaco, sem pasta sdd no principal
+COPIADO sdd/features/DEFINE_RELATÓRIO.md
+RESULTADO: 1 COPIADO(S)
+→ os documentos da feature já estão na frente; os originais continuam no checkout principal.
+[NFD rc=0]
+f/sdd/features/DEFINE_RELATÓRIO.md
+COPIADO sdd/features/DEFINE_REL X.md
+RESULTADO: 1 COPIADO(S)
+→ os documentos da feature já estão na frente; os originais continuam no checkout principal.
+[espaco rc=0]
+f/sdd/features/DEFINE_REL X.md
+RESULTADO: NADA A COPIAR
+→ nenhum documento com o nome desta frente estava fora do git; siga normalmente.
+[sem sdd rc=0]
+
+=== CD8 principal apontando subpasta do repo
+RESULTADO: NADA A COPIAR
+→ nenhum documento com o nome desta frente estava fora do git; siga normalmente.
+[subpasta rc=0]
+
+=== CD9 frente sem permissao de escrita
+mkdir: f/sdd: Permission denied
+🛑 copiar-docs: a cópia de sdd/features/DEFINE_A.md falhou
+RESULTADO: FALHA (0 copiado(s), 1 falha(s))
+→ confira a permissão das pastas e rode de novo; o que já foi copiado fica.
+[rc=2]
+
+=== CD10 parecido + nao copiado + copiado juntos: a seta diz os 2?
+PARECIDO sdd/features/DESIGN_A_V2.md (feature 'a-v2' ≈ frente 'a'): não copiei, porque o nome não é idêntico.
+NAO_COPIADO sdd/features/DEFINE_A.md (está salvo no git do checkout principal, mas não na branch de onde a frente nasceu)
+RESULTADO: NADA A COPIAR
+→ 1 documento(s) desta frente estão em um commit do checkout principal que ainda não foi enviado: envie esse commit e atualize a frente, ou copie à mão para f/.
+[rc=0]
+[exit=0]

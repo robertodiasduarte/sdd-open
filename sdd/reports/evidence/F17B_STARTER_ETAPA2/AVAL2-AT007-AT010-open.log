@@ -1,0 +1,62 @@
+$ bash at007.sh
+== AT-007 ux-review-builder no Open
+  version: "1.5.0"
+57:## Como falar com o aluno
+-rw-r--r--@ 1 robertoduarte  staff  3614 Nov 13 13:38 .agents/skills/ux-review-builder/references/como-falar.md
+15:`ux-review-builder v1.5.0 · nov/2026 · versão atual: https://github.com/robertodiasduarte/sdd-open/releases/latest`
+== skill-lint --conversa nas 22 skills do Open
+      22
+✅ .agents/skills/sdd-auditoria-harness/SKILL.md: frontmatter válido · camada de conversa ok
+✅ .agents/skills/sdd-brainstorm/SKILL.md: frontmatter válido · camada de conversa ok
+✅ .agents/skills/sdd-build/SKILL.md: frontmatter válido · camada de conversa ok
+✅ .agents/skills/sdd-checar-ambiente/SKILL.md: frontmatter válido · camada de conversa ok
+✅ .agents/skills/sdd-define/SKILL.md: frontmatter válido · camada de conversa ok
+✅ .agents/skills/sdd-design/SKILL.md: frontmatter válido · camada de conversa ok
+✅ .agents/skills/sdd-drive/SKILL.md: frontmatter válido · camada de conversa ok
+✅ .agents/skills/sdd-engenharia-reversa-saas/SKILL.md: frontmatter válido · camada de conversa ok
+✅ .agents/skills/sdd-governanca/SKILL.md: frontmatter válido · camada de conversa ok
+✅ .agents/skills/sdd-handoff/SKILL.md: frontmatter válido · camada de conversa ok
+✅ .agents/skills/sdd-higiene-dado/SKILL.md: frontmatter válido · camada de conversa ok
+✅ .agents/skills/sdd-iniciar-repo/SKILL.md: frontmatter válido · camada de conversa ok
+✅ .agents/skills/sdd-iterate/SKILL.md: frontmatter válido · camada de conversa ok
+✅ .agents/skills/sdd-kb/SKILL.md: frontmatter válido · camada de conversa ok
+✅ .agents/skills/sdd-loop-builder/SKILL.md: frontmatter válido · camada de conversa ok
+✅ .agents/skills/sdd-new-session/SKILL.md: frontmatter válido · camada de conversa ok
+✅ .agents/skills/sdd-playbook/SKILL.md: frontmatter válido · camada de conversa ok
+✅ .agents/skills/sdd-prompt-builder/SKILL.md: frontmatter válido · camada de conversa ok
+✅ .agents/skills/sdd-release/SKILL.md: frontmatter válido · camada de conversa ok
+✅ .agents/skills/sdd-seguranca/SKILL.md: frontmatter válido · camada de conversa ok
+✅ .agents/skills/sdd-ux-review/SKILL.md: frontmatter válido · camada de conversa ok
+✅ .agents/skills/ux-review-builder/SKILL.md: frontmatter válido · camada de conversa ok
+skill-lint rc=0
+== check-versions --base v2.13.0
+PASS: check-versions — 22 skills com versão coerente, comparadas a v2.13.0.
+RESULTADO: VERDE
+→ siga para o próximo passo.
+check-versions rc=0
+== sdd-ux-review lê o UX_STANDARD.md
+89:   Se existir `sdd/UX_STANDARD.md` (o padrão de UX do projeto, feito pela skill `ux-review-builder`), ele é
+5	2	.agents/skills/sdd-ux-review/SKILL.md
+  version: "2.6.0"
+  version: "2.5.0"
+== contagem 22 nos testes
+tests/test_docs.py:233:        self.assertEqual(len(SKILLS), 22)  # F18/F20: sdd-seguranca · F17b: ux-review-builder
+tests/test_f21_textos.py:212:        casos = {"README.md": ("## The 22 skills", "(optional) · `sdd-brainstorm`", "20 skills"),   # F18/F20: +1
+tests/test_f21_textos.py:213:                 "README.pt-BR.md": ("## As 22 skills", "(opcional) · `sdd-brainstorm`", "20 skills")}
+tests/test_skill_lint.py:44:        self.assertEqual(len(skills), 22, [s.parent.name for s in skills])  # F17b: ux-review-builder
+tests/test_skill_lint.py:75:        self.assertEqual(len(skills), 22)
+== AT-010: test_agnostico
+----------------------------------------------------------------------
+Ran 7 tests in 0.129s
+
+OK
+== AT-010: init num projeto temporário não copia scripts/ e instala a ux-review-builder
+init rc=0
+      22
+/private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f17b-starter-etapa2/4bd671df-4c34-431c-bf11-929368bfac1c/scratchpad/aval2/proj/.agents/skills/ux-review-builder
+/private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f17b-starter-etapa2/4bd671df-4c34-431c-bf11-929368bfac1c/scratchpad/aval2/proj/.claude/skills/ux-review-builder
+(nada de scripts/starter nem gerar-starter.py acima = ok)
+AGENTS.md
+CLAUDE.md
+sdd
+rc=0

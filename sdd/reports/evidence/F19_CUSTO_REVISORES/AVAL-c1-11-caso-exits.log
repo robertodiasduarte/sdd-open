@@ -1,0 +1,13 @@
+$ PATH=/usr/bin:/bin /bin/bash sdd/bin/eval-revisores.sh /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f21-f19/8ca3f42f-d684-434d-9f0b-19bdcf0aef88/scratchpad/aval-f19/casos/exits --ledgers /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f21-f19/8ca3f42f-d684-434d-9f0b-19bdcf0aef88/scratchpad/aval-f19/casos/exits --registry /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f21-f19/8ca3f42f-d684-434d-9f0b-19bdcf0aef88/scratchpad/aval-f19/casos/exits/registry.tsv
+eval-revisores — custo e resultado por papel, engine e modelo (7 pasta(s) lida(s) em /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f21-f19/8ca3f42f-d684-434d-9f0b-19bdcf0aef88/scratchpad/aval-f19/casos/exits; 0 ledger(s))
+
+| Papel | Engine (modelo) | Cobrança | Rodadas | Falhas | Pago US$ | Nominal US$ | Achados | Aplicados | Com dano | Falsos positivos | Fora de escopo | Sem classificar | Pago por dano | Nominal por dano | AGREE |
+|---|---|---|---:|---|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|
+| revisor | claude (c) | assinatura | 7 | 0 | 0.0000 | 7.0000 | 0 | 0 | 0 | 0 | 0 | 0 | — | — | — |
+| 2º revisor | openrouter (d/s via Z) | pay-per-token | 1 | 0 | 2.0000 | 2.0000 | 1 | 0 de 1 | 0 de 1 | 0 de 1 | 0 de 1 | 1 de 1 | — | — | — |
+| 2º revisor | openrouter (d/s) | pay-per-token | 0 | 6 (1 cota ou tempo, 1 credencial, 3 outro, 1 resposta inválida) | 1.8750 (n/d em 2 de 6) | 1.8750 (n/d em 2 de 6) | 0 | 0 | 0 | 0 | 0 | 0 | — | — | — |
+
+fora da conta: 1 (ledgers: nenhum ledger lido: os achados das 7 pasta(s) ficam em sem classificar)
+RESULTADO: MEDIDO
+→ leia cada taxa com a amostra ao lado: poucas rodadas dão número instável. O script conta o que está registrado; trocar a cadeia de revisão é decisão de quem lê.
+[exit=0]

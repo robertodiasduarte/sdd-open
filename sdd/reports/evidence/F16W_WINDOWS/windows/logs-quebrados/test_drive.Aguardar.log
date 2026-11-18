@@ -1,0 +1,32 @@
+test_bloqueio (test_drive.Aguardar.test_bloqueio) ... ok
+
+test_despachar_com_erro_e_repetido_sem_gravar_o_motivo (test_drive.Aguardar.test_despachar_com_erro_e_repetido_sem_gravar_o_motivo) ... ok
+
+test_parada_com_a_tarefa_e_o_aviso_das_paradas (test_drive.Aguardar.test_parada_com_a_tarefa_e_o_aviso_das_paradas) ... FAIL
+
+
+
+======================================================================
+
+FAIL: test_parada_com_a_tarefa_e_o_aviso_das_paradas (test_drive.Aguardar.test_parada_com_a_tarefa_e_o_aviso_das_paradas)
+
+----------------------------------------------------------------------
+
+Traceback (most recent call last):
+
+  File "D:\a\sdd-open\sdd-open\tests\test_drive.py", line 1327, in test_parada_com_a_tarefa_e_o_aviso_das_paradas
+
+    self.assertIn("tarefa: a", res[1])
+
+AssertionError: 'tarefa: a' not found in '\u23f8\ufe0f sdd-open: esta etapa precisa de uma sess�o nova do agente (papel: executor-drive).\n\n**Por que parei:** a confer�ncia precisa de algu�m que n�o viu esta conversa, e este agente n�o abre essa sess�o sozinho.\n**Onde:** numa janela nova do seu agente, na pasta C:/Users/runneradmin/AppData/Local/Temp/sdd-open-xd8isvrb/repo.\n**Passos:**\n1. Abra uma sess�o nova do agente nesta pasta \u2192 voc� v� o agente pronto, sem hist�rico.\n2. Cole o conte�do de sdd/reports/briefs/BRIEF_executor-drive_F.md \u2192 o agente come�a a ler a pr�xima tarefa de sdd/reports/progress/PROGRESS_F.md.\n3. Quando ele terminar, copie o bloco que come�a com `<<<RODADA` at� `>>>` e cole aqui \u2192 � o que eu preciso para continuar.\n**O que n�o foi feito:** a tarefa ainda n�o foi feita e nada foi publicado.\n**Brief:** sdd/reports/briefs/BRIEF_executor-drive_F.md\n**Sess�o nova:** abra o agente nesta pasta e cole o conte�do do brief.\n\nQuando terminar, me pe�a de novo, eu continuo daqui.\nRESULTADO: AGUARDANDO_HUMANO\n\u2192 quando a pessoa colar o retorno, continue do passo que parou.\nEsta execu��o tem 0 tarefa(s): sem subagente, s�o at� 0 parada(s), uma por tarefa; voc� pode parar e voltar quando quiser.\nmotivo: aguardando-sessao\nEsta etapa precisa de uma sess�o nova do agente. Nada foi publicado.\nRESULTADO: AGUARDANDO_HUMANO\n\u2192 siga os passos acima; na volta, use --resume.\n'
+
+
+
+----------------------------------------------------------------------
+
+Ran 3 tests in 8.426s
+
+
+
+FAILED (failures=1)
+

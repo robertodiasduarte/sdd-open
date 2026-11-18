@@ -1,0 +1,5 @@
+$ python3 -B -c '<Decision 6, classe Comparison: a linha de deltas contém em avaliação/under evaluation e ❌, e não contém ✅>' (árvore 7e19462, comparison.md intocado)
+FALHA docs/comparison.md: | Specs as deltas against a canonical set | ❌ | ✅ | ❌ | ❌ | ⚠️ | ❌ *(under evaluation)* |
+       só a coluna SDD Open: '❌ *(under evaluation)*' → PASSA
+FALHA docs/pt-BR/comparison.md: | Specs como deltas contra um conjunto canônico | ❌ | ✅ | ❌ | ❌ | ⚠️ | ❌ *(em avaliação)* |
+       só a coluna SDD Open: '❌ *(em avaliação)*' → PASSA

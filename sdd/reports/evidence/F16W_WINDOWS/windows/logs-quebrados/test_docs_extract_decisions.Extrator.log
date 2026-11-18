@@ -1,0 +1,52 @@
+test_indice_com_ids_sufixo_orfaos_e_conservacao (test_docs_extract_decisions.Extrator.test_indice_com_ids_sufixo_orfaos_e_conservacao) ... FAIL
+
+test_links_relativos_a_pasta_do_out (test_docs_extract_decisions.Extrator.test_links_relativos_a_pasta_do_out) ... FAIL
+
+test_out_e_projeto_sem_design (test_docs_extract_decisions.Extrator.test_out_e_projeto_sem_design) ... ok
+
+test_sabotagem_que_perde_um_orfao_viola_a_conservacao (test_docs_extract_decisions.Extrator.test_sabotagem_que_perde_um_orfao_viola_a_conservacao) ... ok
+
+test_uso_sai_64 (test_docs_extract_decisions.Extrator.test_uso_sai_64) ... ok
+
+
+
+======================================================================
+
+FAIL: test_indice_com_ids_sufixo_orfaos_e_conservacao (test_docs_extract_decisions.Extrator.test_indice_com_ids_sufixo_orfaos_e_conservacao)
+
+----------------------------------------------------------------------
+
+Traceback (most recent call last):
+
+  File "D:\a\sdd-open\sdd-open\tests\test_docs_extract_decisions.py", line 67, in test_indice_com_ids_sufixo_orfaos_e_conservacao
+
+    self.assertIn("[DESIGN_SEM_BLOCO.md](../../sdd/features/DESIGN_SEM_BLOCO.md) | bloco sem n�mero", idx)
+
+AssertionError: '[DESIGN_SEM_BLOCO.md](../../sdd/features/DESIGN_SEM_BLOCO.md) | bloco sem n�mero' not found in '# �ndice de decis�es (ADR)\n\n<!-- markdownlint-disable MD038 -->\n\n> **Gerado** por `sdd/bin/docs-extract-decisions.sh` a partir dos blocos de decis�o dos `DESIGN_*.md` em\n> `sdd/features/`. **N�o editar � m�o**: a fonte da verdade � o DESIGN; este arquivo � s� o �ndice.\n>\n> **Como citar:** `STEM#DN` (ex.: `PEDIDOS#D3`). STEM � o nome do DESIGN sem `DESIGN_` e `.md`; um n�mero\n> repetido no mesmo arquivo recebe sufixo `b`, `c`�\n> **\u26a0\ufe0f revisar** = o bloco menciona `CORRE��O`/`falsa`: pode ser uma decis�o corrigida. Leia o bloco antes de reusar.\n\n**3 decis�es** em **1 DESIGNs** � 1 marcadas \u26a0\ufe0f revisar � 1 DESIGNs �rf�os (ver [�rf�os](#�rf�os)).\n\n| ID | Decis�o | Feature | Data | Status | Consequences | Fonte |\n|----|---------|---------|------|--------|--------------|-------|\n| `PEDIDOS#D1` | Fila por pedido | PEDIDOS | 2026-11-02 | Accepted | \u2713 | [DESIGN_PEDIDOS.md:10](..../sdd/features/DESIGN_PEDIDOS.md) |\n| `PEDIDOS#D2` | Corre��o da decis�o anterior | PEDIDOS | 2026-11-01 | \u26a0\ufe0f revisar | � | [DESIGN_PEDIDOS.md:16](..../sdd/features/DESIGN_PEDIDOS.md) |\n| `PEDIDOS#D2b` | Repetida | PEDIDOS | 2026-11-01 | � | � | [DESIGN_PEDIDOS.md:20](..../sdd/features/DESIGN_PEDIDOS.md) |\n\n## �rf�os\n\nDESIGNs lidos em que **nenhum** bloco da lista fechada casou. N�o somem em sil�ncio: cada um est�\naqui com o motivo. Um DESIGN novo deve usar `### Decision N: <nome>` sob `## Key Decisions`.\n\n| DESIGN | Motivo |\n|--------|--------|\n| [DESIGN_SEM_BLOCO.md](..../sdd/features/DESIGN_SEM_BLOCO.md) | bloco sem n�mero (`### Decision: �`) |\n\n## Avisos de Metadata\n\nDESIGNs **extra�dos** cuja tabela Metadata n�o tem `**Feature**` ou `**Date**`; a coluna Feature usa o STEM.\n\n_Nenhum._\n\n## Conserva��o\n\nextra�dos (1) + �rf�os (1) = lidos (2) \u2713 � decis�es = 3 � avisos de Metadata = 0\n'
+
+
+
+======================================================================
+
+FAIL: test_links_relativos_a_pasta_do_out (test_docs_extract_decisions.Extrator.test_links_relativos_a_pasta_do_out)
+
+----------------------------------------------------------------------
+
+Traceback (most recent call last):
+
+  File "D:\a\sdd-open\sdd-open\tests\test_docs_extract_decisions.py", line 85, in test_links_relativos_a_pasta_do_out
+
+    self.assertIn("](../../../sdd/features/DESIGN_PEDIDOS.md)", (self.p / "a/b/c/i.md").read_text(encoding="utf-8"))
+
+AssertionError: '](../../../sdd/features/DESIGN_PEDIDOS.md)' not found in '# �ndice de decis�es (ADR)\n\n<!-- markdownlint-disable MD038 -->\n\n> **Gerado** por `sdd/bin/docs-extract-decisions.sh` a partir dos blocos de decis�o dos `DESIGN_*.md` em\n> `sdd/features/`. **N�o editar � m�o**: a fonte da verdade � o DESIGN; este arquivo � s� o �ndice.\n>\n> **Como citar:** `STEM#DN` (ex.: `PEDIDOS#D3`). STEM � o nome do DESIGN sem `DESIGN_` e `.md`; um n�mero\n> repetido no mesmo arquivo recebe sufixo `b`, `c`�\n> **\u26a0\ufe0f revisar** = o bloco menciona `CORRE��O`/`falsa`: pode ser uma decis�o corrigida. Leia o bloco antes de reusar.\n\n**3 decis�es** em **1 DESIGNs** � 1 marcadas \u26a0\ufe0f revisar � 1 DESIGNs �rf�os (ver [�rf�os](#�rf�os)).\n\n| ID | Decis�o | Feature | Data | Status | Consequences | Fonte |\n|----|---------|---------|------|--------|--------------|-------|\n| `PEDIDOS#D1` | Fila por pedido | PEDIDOS | 2026-11-02 | Accepted | \u2713 | [DESIGN_PEDIDOS.md:10](....../sdd/features/DESIGN_PEDIDOS.md) |\n| `PEDIDOS#D2` | Corre��o da decis�o anterior | PEDIDOS | 2026-11-01 | \u26a0\ufe0f revisar | � | [DESIGN_PEDIDOS.md:16](....../sdd/features/DESIGN_PEDIDOS.md) |\n| `PEDIDOS#D2b` | Repetida | PEDIDOS | 2026-11-01 | � | � | [DESIGN_PEDIDOS.md:20](....../sdd/features/DESIGN_PEDIDOS.md) |\n\n## �rf�os\n\nDESIGNs lidos em que **nenhum** bloco da lista fechada casou. N�o somem em sil�ncio: cada um est�\naqui com o motivo. Um DESIGN novo deve usar `### Decision N: <nome>` sob `## Key Decisions`.\n\n| DESIGN | Motivo |\n|--------|--------|\n| [DESIGN_SEM_BLOCO.md](....../sdd/features/DESIGN_SEM_BLOCO.md) | bloco sem n�mero (`### Decision: �`) |\n\n## Avisos de Metadata\n\nDESIGNs **extra�dos** cuja tabela Metadata n�o tem `**Feature**` ou `**Date**`; a coluna Feature usa o STEM.\n\n_Nenhum._\n\n## Conserva��o\n\nextra�dos (1) + �rf�os (1) = lidos (2) \u2713 � decis�es = 3 � avisos de Metadata = 0\n'
+
+
+
+----------------------------------------------------------------------
+
+Ran 5 tests in 2.260s
+
+
+
+FAILED (failures=2)
+

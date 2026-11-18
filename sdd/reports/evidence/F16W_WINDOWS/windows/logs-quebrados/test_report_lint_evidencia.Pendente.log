@@ -1,0 +1,146 @@
+test_modo_pendente_ignora_bloco_cercado (test_report_lint_evidencia.Pendente.test_modo_pendente_ignora_bloco_cercado) ... FAIL
+
+test_modo_pendente_lista_e_sai_1 (test_report_lint_evidencia.Pendente.test_modo_pendente_lista_e_sai_1) ... ok
+
+test_modo_pendente_sem_pendente_sai_0 (test_report_lint_evidencia.Pendente.test_modo_pendente_sem_pendente_sai_0) ... FAIL
+
+test_modo_pendente_uso (test_report_lint_evidencia.Pendente.test_modo_pendente_uso) ... ok
+
+test_pendente_passa_no_modo_comum_com_aviso (test_report_lint_evidencia.Pendente.test_pendente_passa_no_modo_comum_com_aviso) ... FAIL
+
+
+
+======================================================================
+
+FAIL: test_modo_pendente_ignora_bloco_cercado (test_report_lint_evidencia.Pendente.test_modo_pendente_ignora_bloco_cercado)
+
+----------------------------------------------------------------------
+
+Traceback (most recent call last):
+
+  File "D:\a\sdd-open\sdd-open\tests\test_report_lint_evidencia.py", line 187, in test_modo_pendente_ignora_bloco_cercado
+
+    self.assertEqual(rc, 0, out + err)
+
+AssertionError: 1 != 0 : Traceback (most recent call last):
+
+  File "C:\Users\runneradmin\AppData\Local\Temp\sdd-open-5ibd1q7k\repo\sdd\bin\report-lint.py", line 625, in <module>
+
+    sys.exit(main(sys.argv))
+
+             ^^^^^^^^^^^^^^
+
+  File "C:\Users\runneradmin\AppData\Local\Temp\sdd-open-5ibd1q7k\repo\sdd\bin\report-lint.py", line 585, in main
+
+    return cli_pendente(argv[2:])
+
+           ^^^^^^^^^^^^^^^^^^^^^^
+
+  File "C:\Users\runneradmin\AppData\Local\Temp\sdd-open-5ibd1q7k\repo\sdd\bin\report-lint.py", line 577, in cli_pendente
+
+    print(f"\u2705 nenhuma avalia\ufffd\ufffdo PENDENTE em {len(paths)} relat\ufffdrio(s)")
+
+  File "C:\hostedtoolcache\windows\Python\3.12.10\x64\Lib\encodings\cp1252.py", line 19, in encode
+
+    return codecs.charmap_encode(input,self.errors,encoding_table)[0]
+
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+UnicodeEncodeError: 'charmap' codec can't encode character '\u2705' in position 0: character maps to <undefined>
+
+
+
+
+
+======================================================================
+
+FAIL: test_modo_pendente_sem_pendente_sai_0 (test_report_lint_evidencia.Pendente.test_modo_pendente_sem_pendente_sai_0)
+
+----------------------------------------------------------------------
+
+Traceback (most recent call last):
+
+  File "D:\a\sdd-open\sdd-open\tests\test_report_lint_evidencia.py", line 181, in test_modo_pendente_sem_pendente_sai_0
+
+    self.assertEqual(rc, 0, out + err)
+
+AssertionError: 1 != 0 : Traceback (most recent call last):
+
+  File "C:\Users\runneradmin\AppData\Local\Temp\sdd-open-gdwzxbzm\repo\sdd\bin\report-lint.py", line 625, in <module>
+
+    sys.exit(main(sys.argv))
+
+             ^^^^^^^^^^^^^^
+
+  File "C:\Users\runneradmin\AppData\Local\Temp\sdd-open-gdwzxbzm\repo\sdd\bin\report-lint.py", line 585, in main
+
+    return cli_pendente(argv[2:])
+
+           ^^^^^^^^^^^^^^^^^^^^^^
+
+  File "C:\Users\runneradmin\AppData\Local\Temp\sdd-open-gdwzxbzm\repo\sdd\bin\report-lint.py", line 577, in cli_pendente
+
+    print(f"\u2705 nenhuma avalia\ufffd\ufffdo PENDENTE em {len(paths)} relat\ufffdrio(s)")
+
+  File "C:\hostedtoolcache\windows\Python\3.12.10\x64\Lib\encodings\cp1252.py", line 19, in encode
+
+    return codecs.charmap_encode(input,self.errors,encoding_table)[0]
+
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+UnicodeEncodeError: 'charmap' codec can't encode character '\u2705' in position 0: character maps to <undefined>
+
+
+
+
+
+======================================================================
+
+FAIL: test_pendente_passa_no_modo_comum_com_aviso (test_report_lint_evidencia.Pendente.test_pendente_passa_no_modo_comum_com_aviso)
+
+----------------------------------------------------------------------
+
+Traceback (most recent call last):
+
+  File "D:\a\sdd-open\sdd-open\tests\test_report_lint_evidencia.py", line 165, in test_pendente_passa_no_modo_comum_com_aviso
+
+    self.assertEqual(rc, 0, out)
+
+AssertionError: 1 != 0 : The system cannot find the path specified.
+
+Traceback (most recent call last):
+
+  File "C:\Users\runneradmin\AppData\Local\Temp\sdd-open-gs6pgc97\repo\sdd\bin\report-lint.py", line 625, in <module>
+
+    sys.exit(main(sys.argv))
+
+             ^^^^^^^^^^^^^^
+
+  File "C:\Users\runneradmin\AppData\Local\Temp\sdd-open-gs6pgc97\repo\sdd\bin\report-lint.py", line 604, in main
+
+    imprimir_avisos(warnings)
+
+  File "C:\Users\runneradmin\AppData\Local\Temp\sdd-open-gs6pgc97\repo\sdd\bin\report-lint.py", line 548, in imprimir_avisos
+
+    print(f"\u26a0\ufe0f  {w[len('PENDENTE: '):]}")
+
+  File "C:\hostedtoolcache\windows\Python\3.12.10\x64\Lib\encodings\cp1252.py", line 19, in encode
+
+    return codecs.charmap_encode(input,self.errors,encoding_table)[0]
+
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+UnicodeEncodeError: 'charmap' codec can't encode characters in position 0-1: character maps to <undefined>
+
+
+
+
+
+----------------------------------------------------------------------
+
+Ran 5 tests in 0.594s
+
+
+
+FAILED (failures=3)
+

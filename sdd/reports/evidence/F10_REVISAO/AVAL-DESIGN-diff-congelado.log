@@ -1,0 +1,22 @@
+$ /bin/bash /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f10-revisao/bd420f6e-558d-4962-a0c9-40cdfc2cbd27/scratchpad/sonda-diff.sh
+arquivos no diff:
+diff --git a/a.txt b/a.txt
+diff --git a/bin.dat b/bin.dat
+diff --git a/novo.txt b/novo.txt
+status real depois (índice do usuário):
+ M a.txt
+?? bin.dat
+?? novo.txt
+?? sdd/
+h1=3aa23ed3617d0e8d8c4e9d51149be05cbf7c1a466403738843c91f5576474265
+h2=3aa23ed3617d0e8d8c4e9d51149be05cbf7c1a466403738843c91f5576474265
+ESTAVEL=sim
+INDICE_REAL_INTACTO=sim
+MUDA_COM_1_BYTE=sim
+worktree: .git é arquivo? sim
+worktree: index em /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f10-revisao/bd420f6e-558d-4962-a0c9-40cdfc2cbd27/scratchpad/diff.Hy36/repo/.git/worktrees/wt/index
+cp: .git/index: Not a directory
+cp .git/index FALHA (literal .git/index em worktree)
+worktree diff (com --git-path index):
+diff --git a/c.txt b/c.txt
+[exit=0]

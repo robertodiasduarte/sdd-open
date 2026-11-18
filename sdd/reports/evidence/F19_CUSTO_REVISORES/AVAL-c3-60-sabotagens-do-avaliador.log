@@ -1,0 +1,20 @@
+$ /usr/bin/python3 -I casos/sab.py <copia 0d4a730> <sab>   (cada sabotagem numa cópia; roda só tests/test_ledger_revisao_lint.py e tests/test_eval_revisores.py, com -B, py3.9 + bash 3.2)
+s1 — lint: linha fora da tabela deixa de ser acusada (linha_solta devolve False)
+   → derruba 6 teste(s): FAIL: test_linha_do_ledger_fora_da_tabela_e_acusada; FAIL: test_linha_do_ledger_fora_da_tabela_e_acusada; FAIL: test_linha_do_ledger_fora_da_tabela_e_acusada; FAIL: test_linha_do_ledger_fora_da_tabela_e_acusada
+s2 — medidor: linha fora da tabela deixa de ser avisada
+   → derruba 2 teste(s): FAIL: test_linha_do_ledger_fora_da_tabela_e_avisada; FAIL: test_os_dois_scripts_leem_o_ledger_com_a_mesma_funcao
+s3 — lint: bloco cercado aberto sem fechar deixa de ser acusado
+   → derruba 2 teste(s): FAIL: test_cerca_e_so_a_linha_inteira_e_bloco_aberto_e_acusado; FAIL: test_os_dois_scripts_leem_o_ledger_com_a_mesma_funcao
+s4 — medidor: sem a guarda contra traceback
+   → derruba 1 teste(s): FAIL: test_dado_corrompido_e_64_com_a_causa_nunca_traceback
+s5 — medidor: exit ausente com custo deixa de ser avisado
+   → derruba 1 teste(s): FAIL: test_exit_ausente_com_custo_e_avisado
+s6 — medidor: rebatida marcada `sim` volta a contar como dano
+   → derruba 1 teste(s): FAIL: test_rebatida_marcada_sim_nao_conta_como_dano_e_e_avisada
+s7 — lint: qualquer linha que começa por ``` volta a ser cerca
+   → derruba 2 teste(s): FAIL: test_cerca_e_so_a_linha_inteira_e_bloco_aberto_e_acusado; FAIL: test_cerca_e_so_a_linha_inteira_e_bloco_aberto_e_acusado
+s8 — medidor: 1ª célula `achado …` volta a ser pulada sem aviso
+   → derruba 1 teste(s): FAIL: test_linha_cuja_primeira_celula_comeca_por_achado_e_avisada
+s9 — lint: 4 barras viram 40 (só a barra atrás de prefixo é acusada)
+   → derruba 2 teste(s): FAIL: test_linha_do_ledger_fora_da_tabela_e_acusada; FAIL: test_os_dois_scripts_leem_o_ledger_com_a_mesma_funcao
+exit=0

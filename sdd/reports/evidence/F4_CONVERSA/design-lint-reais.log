@@ -1,0 +1,6 @@
+$ for f in sdd/features/DESIGN_F1_MANUTENCAO.md sdd/features/DESIGN_F2_TERRENO.md sdd/features/DESIGN_F3_BUILD_RELEASE.md sdd/features/DESIGN_F4_CONVERSA.md; do python3 -B sdd/bin/design-lint.py "$f" || exit 1; done
+✅ sdd/features/DESIGN_F1_MANUTENCAO.md: DESIGN válido
+✅ sdd/features/DESIGN_F2_TERRENO.md: DESIGN válido
+✅ sdd/features/DESIGN_F3_BUILD_RELEASE.md: DESIGN válido
+✅ sdd/features/DESIGN_F4_CONVERSA.md: DESIGN válido
+exit=0

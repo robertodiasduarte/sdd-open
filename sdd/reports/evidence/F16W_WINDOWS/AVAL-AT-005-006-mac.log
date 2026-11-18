@@ -1,0 +1,30 @@
+$ cd tests && export SDD_TEST_BASH=/bin/bash && /usr/bin/python3 -B -m unittest -v test_windows 2>&1 | tail -22; for t in test_drive.Drive.test_trava_de_processo_morto_se_libera test_drive.Drive.test_trava_que_e_link_nao_cria_arquivo_fora; do :; done; echo '--- os 4 achados (classe achada pelo nome)'; for par in test_drive:test_trava_de_processo_morto_se_libera test_report_lint:test_log_capturado_da_feature_passa test_sdd_archive:test_lista_por_lote_e_nao_muda_nada test_drive:test_trava_que_e_link_nao_cria_arquivo_fora; do m=${par%%:*}; t=${par#*:}; c=$(grep -n "^class \|def $t(" $m.py | grep -B1 "def $t(" | head -1 | sed 's/.*class \([A-Za-z_0-9]*\).*/\1/'); echo "$m.$c.$t"; /usr/bin/python3 -B -m unittest $m.$c.$t 2>&1 | tail -1; done; echo '--- skipIf/skipUnless de plataforma fora de apoio.py'; grep -nE 'skip(If|Unless)\(' test_*.py | grep -vE 'skip(If|Unless)\(\*[A-Z_]+\)' | grep -iE 'os\.name|platform|sys\.platform|nt|win|darwin' || echo nenhum
+test_cada_achado_tem_teste_que_roda_no_job (test_windows.AchadosGuardados) ... ok
+test_a_varredura_acusa_e_respeita_o_encoding (test_windows.Decodificacao) ... ok
+test_os_aceitos_ainda_existem_e_ainda_precisam (test_windows.Decodificacao) ... ok
+test_subprocess_em_modo_texto_sempre_com_encoding (test_windows.Decodificacao) ... ok
+test_gitattributes_poe_lf_em_todo_checkout (test_windows.FimDeLinha) ... ok
+test_stdout_do_curator_sem_crlf (test_windows.FimDeLinha) ... ok
+test_a_varredura_acusa_a_pergunta_escrita_a_mao (test_windows.Pulos) ... ok
+test_cada_constante_tem_motivo_que_nomeia_o_recurso (test_windows.Pulos) ... ok
+test_pulo_de_plataforma_so_por_constante_do_apoio (test_windows.Pulos) ... ok
+
+----------------------------------------------------------------------
+Ran 9 tests in 0.582s
+
+OK
+--- os 4 achados (classe achada pelo nome)
+test_drive.SegundoPlano.test_trava_de_processo_morto_se_libera
+OK
+test_report_lint.ReportLint.test_log_capturado_da_feature_passa
+OK
+test_sdd_archive.Simulacao.test_lista_por_lote_e_nao_muda_nada
+OK
+test_drive.EstadoSoUmPorVez.test_trava_que_e_link_nao_cria_arquivo_fora
+OK
+--- skipIf/skipUnless de plataforma fora de apoio.py
+test_checar.py:271:    @unittest.skipUnless(shutil.which("npm"), "npm ausente")
+test_publish_gate_patterns.py:70:@unittest.skipUnless(shutil.which("gitleaks"), "gitleaks ausente: o G1 do publish-gate sai antes do G2 (no CI ele está instalado)")
+test_windows.py:59:        for linha in ('@unittest.skipIf(os.name == "nt", "fcntl")\n', "if os.geteuid() == 0:\n    pass\n",
+test_windows.py:60:                      '@unittest.skipUnless(sys.platform == "darwin", "x")\n', "x = platform.system() == 'Windows'\n"):
+[exit=0]

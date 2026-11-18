@@ -1,0 +1,124 @@
+test_rename_entre_pastas_de_documento_nao_trava (test_drive.Verificar.test_rename_entre_pastas_de_documento_nao_trava) ... FAIL
+
+test_rename_na_2a_coluna_acusa_o_nome_inteiro (test_drive.Verificar.test_rename_na_2a_coluna_acusa_o_nome_inteiro) ... ok
+
+test_script_em_pasta_de_documento_conta_como_codigo (test_drive.Verificar.test_script_em_pasta_de_documento_conta_como_codigo) ... FAIL
+
+test_sem_mudanca_de_codigo_nao_roda_de_novo_nem_gasta (test_drive.Verificar.test_sem_mudanca_de_codigo_nao_roda_de_novo_nem_gasta) ... FAIL
+
+test_sujo_fora_dos_documentos_vira_commitar (test_drive.Verificar.test_sujo_fora_dos_documentos_vira_commitar) ... ok
+
+test_tarefa_pendente_nao_roda_o_gate (test_drive.Verificar.test_tarefa_pendente_nao_roda_o_gate) ... FAIL
+
+test_verde_vai_para_avaliar_e_gate_rodou_pelo_script (test_drive.Verificar.test_verde_vai_para_avaliar_e_gate_rodou_pelo_script) ... FAIL
+
+
+
+======================================================================
+
+FAIL: test_rename_entre_pastas_de_documento_nao_trava (test_drive.Verificar.test_rename_entre_pastas_de_documento_nao_trava)
+
+----------------------------------------------------------------------
+
+Traceback (most recent call last):
+
+  File "D:\a\sdd-open\sdd-open\tests\test_drive.py", line 602, in test_rename_entre_pastas_de_documento_nao_trava
+
+    self.assertAcao(self.drive("verificar", D), "CORRIGIR")
+
+  File "D:\a\sdd-open\sdd-open\tests\test_drive.py", line 77, in assertAcao
+
+    self.assertRegex(out, r"(?m)^ACAO: %s$" % acao)
+
+AssertionError: Regex didn't match: '(?m)^ACAO: CORRIGIR$' not found in 'ACAO: DESIGN\nrodada: 1/3\no DESIGN n\ufffdo passa no design-lint (saiu 1)\nRESULTADO: CONTINUAR\n\u2192 rode a fase Design sobre este DEFINE e chame proximo de novo.\n'
+
+
+
+======================================================================
+
+FAIL: test_script_em_pasta_de_documento_conta_como_codigo (test_drive.Verificar.test_script_em_pasta_de_documento_conta_como_codigo)
+
+----------------------------------------------------------------------
+
+Traceback (most recent call last):
+
+  File "D:\a\sdd-open\sdd-open\tests\test_drive.py", line 571, in test_script_em_pasta_de_documento_conta_como_codigo
+
+    self.assertAcao(self.drive("proximo", D), "VERIFICAR")
+
+  File "D:\a\sdd-open\sdd-open\tests\test_drive.py", line 77, in assertAcao
+
+    self.assertRegex(out, r"(?m)^ACAO: %s$" % acao)
+
+AssertionError: Regex didn't match: '(?m)^ACAO: VERIFICAR$' not found in 'ACAO: DESIGN\nrodada: 1/3\no DESIGN n\ufffdo passa no design-lint (saiu 1)\nRESULTADO: CONTINUAR\n\u2192 rode a fase Design sobre este DEFINE e chame proximo de novo.\n'
+
+
+
+======================================================================
+
+FAIL: test_sem_mudanca_de_codigo_nao_roda_de_novo_nem_gasta (test_drive.Verificar.test_sem_mudanca_de_codigo_nao_roda_de_novo_nem_gasta)
+
+----------------------------------------------------------------------
+
+Traceback (most recent call last):
+
+  File "D:\a\sdd-open\sdd-open\tests\test_drive.py", line 470, in test_sem_mudanca_de_codigo_nao_roda_de_novo_nem_gasta
+
+    self.assertAcao(self.drive("verificar", D), "CORRIGIR")
+
+  File "D:\a\sdd-open\sdd-open\tests\test_drive.py", line 77, in assertAcao
+
+    self.assertRegex(out, r"(?m)^ACAO: %s$" % acao)
+
+AssertionError: Regex didn't match: '(?m)^ACAO: CORRIGIR$' not found in 'ACAO: DESIGN\nrodada: 1/3\no DESIGN n\ufffdo passa no design-lint (saiu 1)\nRESULTADO: CONTINUAR\n\u2192 rode a fase Design sobre este DEFINE e chame proximo de novo.\n'
+
+
+
+======================================================================
+
+FAIL: test_tarefa_pendente_nao_roda_o_gate (test_drive.Verificar.test_tarefa_pendente_nao_roda_o_gate)
+
+----------------------------------------------------------------------
+
+Traceback (most recent call last):
+
+  File "D:\a\sdd-open\sdd-open\tests\test_drive.py", line 464, in test_tarefa_pendente_nao_roda_o_gate
+
+    self.assertAcao(self.drive("verificar", D), "RODADA")
+
+  File "D:\a\sdd-open\sdd-open\tests\test_drive.py", line 77, in assertAcao
+
+    self.assertRegex(out, r"(?m)^ACAO: %s$" % acao)
+
+AssertionError: Regex didn't match: '(?m)^ACAO: RODADA$' not found in 'ACAO: DESIGN\nrodada: 1/3\no DESIGN n\ufffdo passa no design-lint (saiu 1)\nRESULTADO: CONTINUAR\n\u2192 rode a fase Design sobre este DEFINE e chame proximo de novo.\n'
+
+
+
+======================================================================
+
+FAIL: test_verde_vai_para_avaliar_e_gate_rodou_pelo_script (test_drive.Verificar.test_verde_vai_para_avaliar_e_gate_rodou_pelo_script)
+
+----------------------------------------------------------------------
+
+Traceback (most recent call last):
+
+  File "D:\a\sdd-open\sdd-open\tests\test_drive.py", line 459, in test_verde_vai_para_avaliar_e_gate_rodou_pelo_script
+
+    self.assertAcao(self.drive("verificar", D), "AVALIAR_E_RELATAR")
+
+  File "D:\a\sdd-open\sdd-open\tests\test_drive.py", line 77, in assertAcao
+
+    self.assertRegex(out, r"(?m)^ACAO: %s$" % acao)
+
+AssertionError: Regex didn't match: '(?m)^ACAO: AVALIAR_E_RELATAR$' not found in 'ACAO: DESIGN\nrodada: 1/3\no DESIGN n\ufffdo passa no design-lint (saiu 1)\nRESULTADO: CONTINUAR\n\u2192 rode a fase Design sobre este DEFINE e chame proximo de novo.\n'
+
+
+
+----------------------------------------------------------------------
+
+Ran 7 tests in 39.857s
+
+
+
+FAILED (failures=5)
+

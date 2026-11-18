@@ -1,0 +1,15 @@
+$ P=/Users/robertoduarte/rdd-worktrees/sdd-open-f11-gate; T=$(mktemp -d) && O=$(mktemp -d) && cd $T && GIT_CONFIG_GLOBAL=/dev/null git init -q && /bin/bash $P/bin/sdd-open.sh init --vendors codex --yes > $O/init.out 2>&1; echo "[init_rc=$?]"; git status --short --untracked-files=all > $O/antes.txt; find . -path ./.git -prune -o -type f -print | LC_ALL=C sort > $O/arq-antes.txt; /bin/bash sdd/bin/adversarial-review-gate.sh > $O/gate.out 2>&1; echo "[gate_rc=$?]"; git status --short --untracked-files=all > $O/depois.txt; find . -path ./.git -prune -o -type f -print | LC_ALL=C sort > $O/arq-depois.txt; echo '### arquivos novos no projeto depois do gate'; diff $O/arq-antes.txt $O/arq-depois.txt; echo "[diff_rc=$?]"; echo '### linhas com reviews/EXTERNAL antes do gate'; grep 'reviews\|EXTERNAL' $O/antes.txt
+[init_rc=0]
+[gate_rc=0]
+### arquivos novos no projeto depois do gate
+[diff_rc=0]
+### linhas com reviews/EXTERNAL antes do gate
+?? sdd/fixtures/revisao/eval/EXTERNAL_REVIEW_20260101-000001/META.txt
+?? sdd/fixtures/revisao/eval/EXTERNAL_REVIEW_20260101-000001/auditor.verdicts.jsonl
+?? sdd/fixtures/revisao/eval/EXTERNAL_REVIEW_20260101-000002/META.txt
+?? sdd/fixtures/revisao/eval/EXTERNAL_REVIEW_20260101-000002/auditor.verdicts.jsonl
+?? sdd/fixtures/revisao/eval/EXTERNAL_REVIEW_20260101-000003/META.txt
+?? sdd/fixtures/revisao/eval/EXTERNAL_REVIEW_20260101-000004/META.txt
+?? sdd/fixtures/revisao/eval/EXTERNAL_REVIEW_20260101-000005/META.txt
+?? sdd/fixtures/revisao/eval/EXTERNAL_REVIEW_20260101-000005/auditor.verdicts.jsonl
+[exit=0]

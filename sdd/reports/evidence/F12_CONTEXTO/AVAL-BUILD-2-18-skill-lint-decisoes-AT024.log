@@ -1,0 +1,34 @@
+$ ls -d .agents/skills/sdd-*/ | wc -l; /usr/bin/python3 -B sdd/bin/skill-lint.py --conversa .agents/skills/sdd-*/SKILL.md; echo skill-lint=$?; bash sdd/bin/sdd-decisoes-lint.sh --sites .agents/skills sdd/templates/fragments; echo decisoes-sites=$?; grep -nE 'SITES|sites.*=|[0-9]+ sites' tests/test_decisoes_lint.py | head -5; for s in sdd-define sdd-design sdd-governanca sdd-build sdd-iterate; do printf '%s ' $s; grep -m1 -E '^version:|^  version:' .agents/skills/$s/SKILL.md; git show v2.3.1:.agents/skills/$s/SKILL.md 2>/dev/null | grep -m1 -E '^version:|^  version:'; done
+      17
+✅ .agents/skills/sdd-auditoria-harness/SKILL.md: frontmatter válido · camada de conversa ok
+✅ .agents/skills/sdd-brainstorm/SKILL.md: frontmatter válido · camada de conversa ok
+✅ .agents/skills/sdd-build/SKILL.md: frontmatter válido · camada de conversa ok
+✅ .agents/skills/sdd-checar-ambiente/SKILL.md: frontmatter válido · camada de conversa ok
+✅ .agents/skills/sdd-define/SKILL.md: frontmatter válido · camada de conversa ok
+✅ .agents/skills/sdd-design/SKILL.md: frontmatter válido · camada de conversa ok
+✅ .agents/skills/sdd-governanca/SKILL.md: frontmatter válido · camada de conversa ok
+✅ .agents/skills/sdd-handoff/SKILL.md: frontmatter válido · camada de conversa ok
+✅ .agents/skills/sdd-higiene-dado/SKILL.md: frontmatter válido · camada de conversa ok
+✅ .agents/skills/sdd-iniciar-repo/SKILL.md: frontmatter válido · camada de conversa ok
+✅ .agents/skills/sdd-iterate/SKILL.md: frontmatter válido · camada de conversa ok
+✅ .agents/skills/sdd-kb/SKILL.md: frontmatter válido · camada de conversa ok
+✅ .agents/skills/sdd-new-session/SKILL.md: frontmatter válido · camada de conversa ok
+✅ .agents/skills/sdd-playbook/SKILL.md: frontmatter válido · camada de conversa ok
+✅ .agents/skills/sdd-prompt-builder/SKILL.md: frontmatter válido · camada de conversa ok
+✅ .agents/skills/sdd-release/SKILL.md: frontmatter válido · camada de conversa ok
+✅ .agents/skills/sdd-ux-review/SKILL.md: frontmatter válido · camada de conversa ok
+skill-lint=0
+🟢 sdd-decisoes-lint --sites: 20 pergunta(s) em 20 arquivo(s), cada uma com a marca de classe e no formato.
+decisoes-sites=0
+138:        rc, out = self.lint("--sites", RAIZ / ".agents/skills", env=dict(self.env, PATH=str(bin_)))
+sdd-define   version: "2.5.0"
+  version: "2.4.0"
+sdd-design   version: "2.4.0"
+  version: "2.3.0"
+sdd-governanca   version: "2.4.0"
+  version: "2.3.0"
+sdd-build   version: "2.5.1"
+  version: "2.5.0"
+sdd-iterate   version: "2.2.1"
+  version: "2.2.0"
+[exit=0]

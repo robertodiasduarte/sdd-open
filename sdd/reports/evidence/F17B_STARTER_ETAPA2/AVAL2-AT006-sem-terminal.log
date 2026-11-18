@@ -1,0 +1,66 @@
+$ bash at006.sh
+=== sdd-brainstorm (gerada) — arquivos: ['GERADO.txt', 'SKILL.md', 'agents/openai.yaml', 'references/BRAINSTORM_TEMPLATE.md', 'references/PERGUNTA_DECISAO.md', 'references/RESUMO_ETAPA.md', 'references/como-falar.md']
+  SKILL.md:222: e outros): o Open traz o Verify Gate executável, a revisão por outra IA, a varredura de segurança em toda publicação
+  references/PERGUNTA_DECISAO.md:20: - **sim** (recomendado) — gravo o arquivo e sigo para o Verify Gate: os 6 testes cobrem os 4 objetivos.
+  references/PERGUNTA_DECISAO.md:79: **Status** — `Build: ✅ 1 Plano · ✅ 2 Modo · ✅ 3 Tarefas 5/5 · ⏸️ 4 Verify Gate · ⬜ 5 Relatório`
+  references/RESUMO_ETAPA.md:44: | setup | worktree + branch (`git rev-parse --abbrev-ref HEAD`) |
+  achados: 4
+=== sdd-handoff (gerada) — arquivos: ['GERADO.txt', 'SKILL.md', 'agents/openai.yaml', 'references/HANDOFF_TEMPLATE.md', 'references/PERGUNTA_DECISAO.md', 'references/como-falar.md']
+  SKILL.md:120: - setup antes de código (branch, pasta, `git fetch`/rebase se atrasada);
+  SKILL.md:123: - estado do Verify Gate, se o projeto tiver um gate por comando (o comando e o que ele saiu em <data>);
+  SKILL.md:155: - **Sem comando para conferir:** projeto sem gate por comando não tem linha Verify Gate na ficha nem estado do gate
+  SKILL.md:188: e outros): o Open traz o Verify Gate executável, a revisão por outra IA, a varredura de segurança em toda publicação
+  references/PERGUNTA_DECISAO.md:20: - **sim** (recomendado) — gravo o arquivo e sigo para o Verify Gate: os 6 testes cobrem os 4 objetivos.
+  references/PERGUNTA_DECISAO.md:79: **Status** — `Build: ✅ 1 Plano · ✅ 2 Modo · ✅ 3 Tarefas 5/5 · ⏸️ 4 Verify Gate · ⬜ 5 Relatório`
+  achados: 6
+=== sdd-governanca (gerada): comando de prova / script fora de trecho condicionado
+  SKILL.md:38: | 6 | Aplicar no DEFINE | Passo 6 e a prova por script |
+  SKILL.md:79: **Com Verify Gate por comando no DEFINE, a prova de cada lacuna aplicada é um script.** Para cada lacuna
+  SKILL.md:80: que o profissional mandar aplicar e que tenha `prova_script` no catálogo:
+  SKILL.md:82: 1. adapte só os nomes de tabela e coluna aos do DEFINE e grave em `sdd/tests/governanca/{FEATURE}_<Gnn>.sql`
+  SKILL.md:84: 2. acrescente `psql -v ON_ERROR_STOP=1 -f sdd/tests/governanca/{FEATURE}_<Gnn>.sql` ao `cmd` do bloco
+  SKILL.md:86: 3. **não mexa na inversão nem na guarda de schema**: o script já sai `0` só quando o banco **recusa** a ação
+  SKILL.md:93: O `prova_manual` vai para o AT como roteiro **sempre** — com ou sem script. O script prova a metade que o
+  SKILL.md:103: - **Prova sem script:** se o DEFINE não tem Verify Gate por comando (na web, ou num projeto sem testes
+  SKILL.md:105: resultado esperado, no AT. Nenhum script é pedido ao aluno.
+  SKILL.md:128: [ ] Aplicados viram AT no DEFINE com o `prova_manual`; com Verify Gate por comando, também o script em
+  SKILL.md:129: sdd/tests/governanca/ chamado pelo cmd do gate
+  SKILL.md:141: - **O script de prova só sai 0 quando o banco recusa** — sem `!` nem `|| true` na frente: inverter o
+  assets/GOVERNANCA_REVIEW_TEMPLATE.md:21: **Como provar:** {prova_manual adaptada | prova_script adaptada, sem mexer na inversão}
+  evals/cases.json:83: "input": "A mesma lacuna G01 do caso lacuna-ledger, aplicada uma vez num projeto em que o Verify Gate do DEFINE é executado por script e outra vez num projeto em que o pr
+  evals/cases.json:85: "Gate executado por script: entrega o prova_script adaptado, sem mexer na inversão, e acrescenta a chamada ao cmd do bloco verify_gate existente — nunca cria um 2º bloco"
+  evals/cases.json:86: "O script adaptado mantém a guarda de schema (nome de tabela ou coluna errado reprova, nunca passa como recusa) e o cmd roda contra banco de teste, nunca produção",
+  manifest.json:4: "script SQL chamado pelo Verify Gate do DEFINE, quando o aceite é executado",
+  manifest.json:21: "Prova negativa por roteiro e, para 8 itens, por script SQL que já vem invertido"
+  references/CATALOGO_GOVERNANCA.md:80: > `prova_manual` é o roteiro que o profissional executa e marca. `prova_script`, quando existe, vem em uma
+  references/CATALOGO_GOVERNANCA.md:85: >   termina bem. Não ponha `!` nem `|| true` na frente: a inversão já está dentro do script.
+  references/CATALOGO_GOVERNANCA.md:88: > Com Verify Gate por comando no DEFINE, rodar com: `psql -v ON_ERROR_STOP=1 -f <arquivo>.sql` **contra um banco de
+  references/CATALOGO_GOVERNANCA.md:91: > automatizados), e no item sem `prova_script`, a prova é só o roteiro (`prova_manual`).
+  references/CATALOGO_GOVERNANCA.md:92: > Tabela vazia nunca passa: sem linha não há o que provar, e o script diz isso em vez de ficar verde.
+  references/CATALOGO_GOVERNANCA.md:93: > **Só conta como recusa o código que o mecanismo do item produz** — a lista branca de cada script:
+  references/CATALOGO_GOVERNANCA.md:96: > sintaxe — **não prova a regra**: o script sai `REPROVADA: a tentativa falhou por outro motivo`. Se o seu
+  references/CATALOGO_GOVERNANCA.md:101: Se o seu mecanismo for privilégio **por coluna** (e não trigger de linha), repita o UPDATE do script para
+  references/CATALOGO_GOVERNANCA.md:102: cada coluna do lançamento — o script de referência testa uma coluna porque o trigger recusa a linha inteira.
+  references/CATALOGO_GOVERNANCA.md:108: **prova_script** (`forma: negativa`):
+  references/CATALOGO_GOVERNANCA.md:157: **prova_script** (`forma: negativa`):
+  references/CATALOGO_GOVERNANCA.md:162: -- Preparação com CONTROLE: um lançamento BALANCEADO tem de gravar. Se nem ele grava, o script não confere
+  references/CATALOGO_GOVERNANCA.md:206: **prova_script** (`forma: negativa`):
+  references/CATALOGO_GOVERNANCA.md:276: O script prova a metade **negativa** (o cliente não insere, não altera, não apaga). A metade **positiva** —
+  references/CATALOGO_GOVERNANCA.md:278: `prova_manual` ficam no AT mesmo quando o script existe.
+  references/CATALOGO_GOVERNANCA.md:280: **prova_script** (`forma: negativa` — troque `papel_da_aplicacao` pelo papel que o app usa):
+  references/CATALOGO_GOVERNANCA.md:356: **prova_script** (`forma: negativa`):
+  references/CATALOGO_GOVERNANCA.md:427: **prova_script** (`forma: negativa`):
+  references/CATALOGO_GOVERNANCA.md:469: **prova_script** (`forma: catalogo`):
+  references/CATALOGO_GOVERNANCA.md:510: **prova_script** (`forma: negativa` — troque `chave_natural` pela coluna que identifica a transação):
+  references/PROCEDIMENTO.md:92: script, o `prova_script` adaptado, **sem mexer na inversão**.
+  references/como-falar.md:16: - prova por script — "um teste que tenta a ação proibida num banco de teste e só passa se o banco recusar";
+  references/revisor.md:37: também o `prova_script` adaptado aos nomes do DEFINE, **no relatório**, sem mexer na inversão nem na guarda de
+  references/revisor.md:39: `sdd/tests/governanca/` e o liga ao `cmd` do Verify Gate é o passo 11 do Define**, na hora em que a
+  references/revisor.md:40: lacuna é aplicada; o Design só lista o arquivo no File Manifest. Você não grava script nenhum.
+  references/revisor.md:75: - Mexer na inversão ou na guarda de schema dos `prova_script`.
+== molde da ficha gerada sem linha Verify Gate
+(vazio = ok)
+== caminho que só existe no Open, citado na brainstorm gerada
+184:[ ] Resposta fechada com o resumo de etapa (fragments/RESUMO_ETAPA.md)
+ls: /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f17b-starter-etapa2/4bd671df-4c34-431c-bf11-929368bfac1c/scratchpad/aval2/st/skills/sdd-brainstorm/fragments: No such file or directory
+rc=1

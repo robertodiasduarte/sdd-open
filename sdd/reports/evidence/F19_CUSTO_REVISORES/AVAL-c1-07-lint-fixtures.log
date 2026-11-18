@@ -1,0 +1,96 @@
+$ PATH=/usr/bin:/bin /bin/bash /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f21-f19/8ca3f42f-d684-434d-9f0b-19bdcf0aef88/scratchpad/aval-f19/tools/lintfix.sh /bin/bash
+=== sdd/fixtures/revisao/ledger/achado-repetido.md
+🛑 sdd/fixtures/revisao/ledger/achado-repetido.md:6 — achado R1@claude repetido na revisão EXTERNAL_REVIEW_20260201-000001 (1ª vez em sdd/fixtures/revisao/ledger/achado-repetido.md:5)
+RESULTADO: VERMELHO
+→ corrija as linhas acima (molde: sdd/templates/LEDGER_REVISAO_TEMPLATE.md; critério: sdd/review/CRITERIO_DANO.md) e rode de novo.
+[exit=2]
+=== sdd/fixtures/revisao/ledger/controle.md
+✅ ledger da revisão: 4 linha(s) e 1 rodada(s) sem achados em 1 arquivo(s), cada linha com veredito, dano e a pasta da revisão.
+RESULTADO: VERDE
+→ passe o arquivo ao `sdd-fluxo.sh loop --ledger` e ao `eval-revisores.sh`.
+[exit=0]
+=== sdd/fixtures/revisao/ledger/interrogacao-fora-de-retroativo.md
+🛑 sdd/fixtures/revisao/ledger/interrogacao-fora-de-retroativo.md:5 — dano = ? num ledger que não é retroativo: marque sim ou nao (ou declare `retroativo: sim`)
+RESULTADO: VERMELHO
+→ corrija as linhas acima (molde: sdd/templates/LEDGER_REVISAO_TEMPLATE.md; critério: sdd/review/CRITERIO_DANO.md) e rode de novo.
+[exit=2]
+=== sdd/fixtures/revisao/ledger/retroativo-mal-escrito.md
+🛑 sdd/fixtures/revisao/ledger/retroativo-mal-escrito.md:3 — a marca de retroativo é a linha `retroativo: sim`, sozinha, sem negrito, citação ou maiúscula
+🛑 sdd/fixtures/revisao/ledger/retroativo-mal-escrito.md:7 — dano = ? num ledger que não é retroativo: marque sim ou nao (ou declare `retroativo: sim`)
+RESULTADO: VERMELHO
+→ corrija as linhas acima (molde: sdd/templates/LEDGER_REVISAO_TEMPLATE.md; critério: sdd/review/CRITERIO_DANO.md) e rode de novo.
+[exit=2]
+=== sdd/fixtures/revisao/ledger/retroativo.md
+✅ ledger da revisão: 1 linha(s) e 0 rodada(s) sem achados em 1 arquivo(s), cada linha com veredito, dano e a pasta da revisão.
+RESULTADO: VERDE
+→ passe o arquivo ao `sdd-fluxo.sh loop --ledger` e ao `eval-revisores.sh`.
+[exit=0]
+=== sdd/fixtures/revisao/ledger/sem-dano.md
+🛑 sdd/fixtures/revisao/ledger/sem-dano.md:5 — a linha tem 5 célula(s), o ledger da revisão tem 7: falta a célula `dano` (e a pasta da revisão)
+RESULTADO: VERMELHO
+→ corrija as linhas acima (molde: sdd/templates/LEDGER_REVISAO_TEMPLATE.md; critério: sdd/review/CRITERIO_DANO.md) e rode de novo.
+[exit=2]
+=== sdd/fixtures/revisao/ledger/sem-linhas.md
+🛑 sdd/fixtures/revisao/ledger/sem-linhas.md — nenhuma linha de dados nem linha `sem achados:`: nada conferido nunca é verde
+RESULTADO: ERRO DE USO
+→ grave as linhas do ledger pelo molde (sdd/templates/LEDGER_REVISAO_TEMPLATE.md) e rode de novo.
+[exit=64]
+=== sdd/fixtures/revisao/ledger/sim-rebatida.md
+🛑 sdd/fixtures/revisao/ledger/sim-rebatida.md:5 — dano = sim com veredito REBATIDA_EVIDENCIA: só achado APLICADA pode ser falha com dano
+RESULTADO: VERMELHO
+→ corrija as linhas acima (molde: sdd/templates/LEDGER_REVISAO_TEMPLATE.md; critério: sdd/review/CRITERIO_DANO.md) e rode de novo.
+[exit=2]
+=== sdd/fixtures/revisao/ledger/sim-sem-teste.md
+🛑 sdd/fixtures/revisao/ledger/sim-sem-teste.md:5 — dano = sim sem `teste: <nome>` na evidência: cite o teste que falha no código antigo (test_…, arquivo::teste ou tests/…)
+RESULTADO: VERMELHO
+→ corrija as linhas acima (molde: sdd/templates/LEDGER_REVISAO_TEMPLATE.md; critério: sdd/review/CRITERIO_DANO.md) e rode de novo.
+[exit=2]
+=== sdd/fixtures/revisao/ledger/so-sem-achados.md
+✅ ledger da revisão: 0 linha(s) e 2 rodada(s) sem achados em 1 arquivo(s), cada linha com veredito, dano e a pasta da revisão.
+RESULTADO: VERDE
+→ passe o arquivo ao `sdd-fluxo.sh loop --ledger` e ao `eval-revisores.sh`.
+[exit=0]
+=== sdd/fixtures/revisao/ledger/veredito-invalido.md
+🛑 sdd/fixtures/revisao/ledger/veredito-invalido.md:5 — veredito `APLICADA em parte` fora de APLICADA, REBATIDA_EVIDENCIA, REBATIDA_ESCOPO
+RESULTADO: VERMELHO
+→ corrija as linhas acima (molde: sdd/templates/LEDGER_REVISAO_TEMPLATE.md; critério: sdd/review/CRITERIO_DANO.md) e rode de novo.
+[exit=2]
+=== sdd/fixtures/revisao/custo/LEDGER_REVISAO_EXEMPLO.md
+✅ ledger da revisão: 13 linha(s) e 1 rodada(s) sem achados em 1 arquivo(s), cada linha com veredito, dano e a pasta da revisão.
+RESULTADO: VERDE
+→ passe o arquivo ao `sdd-fluxo.sh loop --ledger` e ao `eval-revisores.sh`.
+[exit=0]
+=== sdd/templates/LEDGER_REVISAO_TEMPLATE.md
+🛑 sdd/templates/LEDGER_REVISAO_TEMPLATE.md — nenhuma linha de dados nem linha `sem achados:`: nada conferido nunca é verde
+RESULTADO: ERRO DE USO
+→ grave as linhas do ledger pelo molde (sdd/templates/LEDGER_REVISAO_TEMPLATE.md) e rode de novo.
+[exit=64]
+=== sdd/fixtures/fluxo/ledger-7-colunas.md
+✅ ledger da revisão: 1 linha(s) e 0 rodada(s) sem achados em 1 arquivo(s), cada linha com veredito, dano e a pasta da revisão.
+RESULTADO: VERDE
+→ passe o arquivo ao `sdd-fluxo.sh loop --ledger` e ao `eval-revisores.sh`.
+[exit=0]
+=== sem argumento
+🛑 ledger-revisao-lint: faltou o arquivo do ledger
+RESULTADO: ERRO DE USO
+→ rode `ledger-revisao-lint.sh --help` para ver o uso.
+[exit=64]
+=== opção desconhecida
+🛑 ledger-revisao-lint: opção desconhecida: --x
+RESULTADO: ERRO DE USO
+→ rode `ledger-revisao-lint.sh --help` para ver o uso.
+[exit=64]
+=== arquivo inexistente depois de um com violação
+🛑 ledger-revisao-lint: não consegui ler /nao/existe.md
+RESULTADO: ERRO DE USO
+→ rode `ledger-revisao-lint.sh --help` para ver o uso.
+[exit=64]
+=== controle duas vezes (repetição entre arquivos)
+🛑 /tmp/aval-f19-copia-controle.md:5 — achado R1@claude repetido na revisão EXTERNAL_REVIEW_20260201-000001 (1ª vez em sdd/fixtures/revisao/ledger/controle.md:5)
+🛑 /tmp/aval-f19-copia-controle.md:6 — achado R3 repetido na revisão EXTERNAL_REVIEW_20260201-000001 (1ª vez em sdd/fixtures/revisao/ledger/controle.md:6)
+🛑 /tmp/aval-f19-copia-controle.md:7 — achado R2@claude repetido na revisão EXTERNAL_REVIEW_20260201-000001 (1ª vez em sdd/fixtures/revisao/ledger/controle.md:7)
+🛑 /tmp/aval-f19-copia-controle.md:8 — achado N1@openrouter:qwen/q-plus repetido na revisão EXTERNAL_REVIEW_20260201-000002 (1ª vez em sdd/fixtures/revisao/ledger/controle.md:8)
+RESULTADO: VERMELHO
+→ corrija as linhas acima (molde: sdd/templates/LEDGER_REVISAO_TEMPLATE.md; critério: sdd/review/CRITERIO_DANO.md) e rode de novo.
+[exit=2]
+[exit=0]

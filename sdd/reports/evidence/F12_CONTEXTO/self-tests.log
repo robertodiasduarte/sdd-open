@@ -1,0 +1,73 @@
+$ git rev-parse --short HEAD && T=$(mktemp -d) && git archive HEAD | tar -x -C $T && cd $T && git init -q && git add -A && git -c user.name=t -c user.email=t@example.com commit -qm x && bash sdd/bin/contexto-lint.sh --self-test && bash sdd/bin/patterns-lint.sh --self-test && bash sdd/bin/patterns-lint.sh sdd/patterns
+96a97ec
+self-test (bash) — fixtures em sdd/fixtures/contexto/
+  ✅ nenhuma fixture casada pelo .gitignore
+── VERMELHOS (cada fixture falha pela SUA classe) ──
+  ✅ sem-cabecalho ⇒ exit 2 [cabecalho-ausente]
+  ✅ sem-secao ⇒ exit 2 [secao-ausente]
+  ✅ secao-fora-de-ordem ⇒ exit 2 [secao-fora-de-ordem]
+  ✅ path-morto ⇒ exit 2 [path-morto]
+  ✅ linha-alem-do-fim ⇒ exit 2 [path-morto]
+  ✅ sup-ausente ⇒ exit 2 [sup-ausente]
+  ✅ ctx-desconhecido ⇒ exit 2 [ctx-desconhecido]
+  ✅ lm-morto ⇒ exit 2 [lm-morto]
+  ✅ cabecalho-fora-de-ordem ⇒ exit 2 [cabecalho-ausente]
+  ✅ superficies-com-crase ⇒ exit 2 [cabecalho-ausente]
+  ✅ superficies-sem-arquivo ⇒ exit 2 [path-morto]
+── VALIDADE (repositório temporário: c1 cria a.md · c2 altera a.md e cria b.md) ──
+  ✅ sha=c1 ⇒ exit 1 CONTEXTO VENCIDO nomeando a.md
+  ✅ sha=0000000 ⇒ exit 2 [sha-inexistente]
+  ✅ sha=c2 ⇒ exit 0 CONTEXTO VALIDO
+  ✅ ref inexistente ⇒ exit 2 [sha-inexistente]
+── SUGERIR (entrada × estado do CONTEXTO) ──
+  ✅ entrada de pedidos, pasta vazia ⇒ ctx:pedidos ausente ⇒ gerar
+  ✅ no máximo 2 domínios
+  ✅ entrada de pedidos, CONTEXTO válido (sha=HEAD, ref=HEAD) ⇒ reusar
+  ✅ entrada sem domínio ⇒ 0 domínios ⇒ pular
+  ✅ sem mapa de domínios ⇒ pular, exit 0
+── USO ──
+  ✅ sem argumento ⇒ exit 64 com texto de uso
+  ✅ flag desconhecida ⇒ exit 64
+  ✅ arquivo inexistente ⇒ exit 64
+  ✅ --validade inexistente ⇒ exit 64
+  ✅ flag sem valor ('--ref') ⇒ exit 64, sem laço
+  ✅ flag sem valor ('--dir') ⇒ exit 64, sem laço
+  ✅ flag sem valor ('--dominio') ⇒ exit 64, sem laço
+── VERDES ──
+  ✅ fixture válida ⇒ exit 0
+  ✅ código citado fora de superficies: ⇒ aviso [superficie-nao-cobre], exit 0
+  ✅ glob em superficies: ⇒ exit 0 (pathspec, não âncora)
+  ✅ pasta com README ⇒ exit 0, README ignorado
+✅ self-test: cada classe vermelha acusa a classe certa; validade nos 3 ramos; sugerir na matriz; verdes verdes.
+RESULTADO: VERDE
+→ o lint prova o que promete.
+self-test (bash) — fixtures em sdd/fixtures/patterns/
+  ✅ nenhuma fixture casada pelo .gitignore
+── VERMELHOS (cada fixture falha pela SUA classe) ──
+  ✅ sem-secao ⇒ exit 2 [secao-ausente]
+  ✅ secao-fora-de-ordem ⇒ exit 2 [secao-fora-de-ordem]
+  ✅ path-morto ⇒ exit 2 [path-morto]
+  ✅ lm-morto ⇒ exit 2 [lm-morto]
+  ✅ linha-alem-do-fim ⇒ exit 2 [path-morto]
+  ✅ linha-alem-do-fim-basename ⇒ exit 2 [path-morto]
+  ✅ vencido CITADO ⇒ exit 2 [validado-vencido], com a data e o limite
+  ✅ caminho morto CITADO ⇒ exit 2 [path-morto]
+  ✅ DESIGN cita pattern inexistente ⇒ exit 2 [path-morto]
+── USO ──
+  ✅ sem argumento ⇒ exit 64
+  ✅ flag desconhecida ⇒ exit 64
+  ✅ pasta inexistente ⇒ exit 64
+  ✅ --design inexistente ⇒ exit 64
+  ✅ --playbook sem valor ⇒ exit 64
+── VERDES ──
+  ✅ fixture válida (data de hoje) ⇒ exit 0
+  ✅ vencido NÃO citado ⇒ exit 0 + aviso
+  ✅ caminho morto NÃO citado ⇒ exit 0 + aviso
+  ✅ DESIGN sem citação ⇒ exit 0 + aviso
+✅ self-test: cada classe vermelha acusa a classe certa; citado × não citado; verdes verdes.
+RESULTADO: VERDE
+→ o lint prova o que promete.
+✅ patterns-lint: 0 pattern(s) OK, 0 aviso(s)
+RESULTADO: VERDE
+→ os patterns podem ser citados.
+[exit=0]

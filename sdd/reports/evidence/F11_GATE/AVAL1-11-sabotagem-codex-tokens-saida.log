@@ -1,0 +1,11 @@
+$ /tmp/aval1-f11.wvW4zp/sabota.sh codex-tokens-saida sdd/bin/adapters/codex.sh 'sai = u.get("output_tokens") if isinstance(u.get("output_tokens"), int) else None' 'sai = None'
+### sabotagem codex-tokens-saida em sdd/bin/adapters/codex.sh
+  ❌ 9. codex (auditor): tokens de turn.completed
+        → lido ('18000', 'n/d'), esperado ('18000', '300')
+  ❌ 18. codex (revisor): tokens de turn.completed
+        → lido ('24000', 'n/d'), esperado ('24000', '900')
+90 asserções, 2 falha(s) em 9 s
+RESULTADO: GATE VERMELHO
+→ cada ❌ acima diz o campo e o valor lido; o adapter da engine citada não extrai mais o que a CLI devolve (ou o script mudou de comportamento). Corrija e rode o gate de novo.
+[gate_rc=2]
+[exit=2]

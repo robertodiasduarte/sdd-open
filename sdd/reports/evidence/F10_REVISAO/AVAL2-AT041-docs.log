@@ -1,0 +1,22 @@
+$ /usr/bin/python3 -B /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f10-revisao/bd420f6e-558d-4962-a0c9-40cdfc2cbd27/scratchpad/p/at041.py && grep -n "print(\"▶" sdd/bin/adversarial-review.sh && SDD_TEST_BASH=/bin/bash /usr/bin/python3 -B -m unittest discover -s tests -p test_docs.py
+== docs/adversarial-review.md existe: True
+   revisor1 e auditor (2 slots): True · custo: True · privacidade (data_collection/ignorad): True · --um-engine: True · dispensa da release: True
+   tabela de exits: ['0', '64', '65', '66', '67', '68']
+== docs/pt-BR/adversarial-review.md existe: True
+   revisor1 e auditor (2 slots): True · custo: True · privacidade (data_collection/ignorad): True · --um-engine: True · dispensa da release: True
+   tabela de exits: ['0', '64', '65', '66', '67', '68']
+== README.md linka adversarial-review.md: True
+== README.pt-BR.md linka adversarial-review.md: True
+== docs/adaptation-guide.md: registry.tsv=True precos.tsv=True
+== docs/pt-BR/adaptation-guide.md: registry.tsv=True precos.tsv=True
+== docs/roadmap.md: | **Adversarial review** | review by a second vendor over a frozen diff, with an editable registry of engines and an offline gate that checks the review really 
+== docs/pt-BR/roadmap.md: | **Revisão adversarial** | revisão por um segundo vendor sobre um diff congelado, com um registro editável de engines e um gate offline que confere que a revis
+== docs/roadmap.md: | **Adversarial review** | review by a second vendor over a frozen diff, with an editable registry of engines and an offline gate that checks the review really 
+== docs/pt-BR/roadmap.md: | **Revisão adversarial** | revisão por um segundo vendor sobre um diff congelado, com um registro editável de engines e um gate offline que confere que a revis
+603:        print("▶ %s: %s (%s) — até %d min" % (NOME_PAPEL[nome], d["id"], d["modelo"], max(1, d["timeout_s"] // 60)),
+..................
+----------------------------------------------------------------------
+Ran 18 tests in 0.028s
+
+OK
+[exit=0]

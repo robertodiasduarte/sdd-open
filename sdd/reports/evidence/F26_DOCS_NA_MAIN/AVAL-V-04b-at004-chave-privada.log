@@ -1,0 +1,22 @@
+$ bash /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f26-docs-na-main/e1164d6c-42f0-4737-8064-2ce0f93f4e1b/scratchpad/v/at004b.sh
+[k.pem: RSA PRIVATE KEY] bytes=71
+🔴 sdd/reports/k.pem:1 · chave privada (PRIVATE KEY)
+RESULTADO: VERMELHO
+→ 1 achado(s) em documentos do repositório; tire o dado ou o arquivo (o trecho não é mostrado de propósito).
+rc=1
+[k2.pem: PRIVATE KEY] bytes=63
+🔴 sdd/reports/k2.pem:1 · chave privada (PRIVATE KEY)
+RESULTADO: VERMELHO
+→ 1 achado(s) em documentos do repositório; tire o dado ou o arquivo (o trecho não é mostrado de propósito).
+rc=1
+[k3.key: EC PRIVATE KEY] bytes=69
+🔴 sdd/reports/k3.key:1 · chave privada (PRIVATE KEY)
+RESULTADO: VERMELHO
+→ 1 achado(s) em documentos do repositório; tire o dado ou o arquivo (o trecho não é mostrado de propósito).
+rc=1
+[c.pem: CERTIFICATE] bytes=63
+✅ documentos do repositório: 1 arquivo(s), nada achado.
+RESULTADO: VERDE
+→ siga.
+rc=0
+[rc=0]

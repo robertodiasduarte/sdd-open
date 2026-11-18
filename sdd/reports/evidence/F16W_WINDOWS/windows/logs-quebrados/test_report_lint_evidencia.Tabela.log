@@ -1,0 +1,46 @@
+test_cabecalho_em_ingles_e_conferido (test_report_lint_evidencia.Tabela.test_cabecalho_em_ingles_e_conferido) ... FAIL
+
+test_sem_tabela_reprova (test_report_lint_evidencia.Tabela.test_sem_tabela_reprova) ... FAIL
+
+
+
+======================================================================
+
+FAIL: test_cabecalho_em_ingles_e_conferido (test_report_lint_evidencia.Tabela.test_cabecalho_em_ingles_e_conferido)
+
+----------------------------------------------------------------------
+
+Traceback (most recent call last):
+
+  File "D:\a\sdd-open\sdd-open\tests\test_report_lint_evidencia.py", line 62, in test_cabecalho_em_ingles_e_conferido
+
+    self.assertIn("AT-001", out)
+
+AssertionError: 'AT-001' not found in 'The system cannot find the path specified.\nTraceback (most recent call last):\n  File "C:\\Users\\runneradmin\\AppData\\Local\\Temp\\sdd-open-qeqb1gom\\repo\\sdd\\bin\\report-lint.py", line 625, in <module>\n    sys.exit(main(sys.argv))\n             ^^^^^^^^^^^^^^\n  File "C:\\Users\\runneradmin\\AppData\\Local\\Temp\\sdd-open-qeqb1gom\\repo\\sdd\\bin\\report-lint.py", line 604, in main\n    imprimir_avisos(warnings)\n  File "C:\\Users\\runneradmin\\AppData\\Local\\Temp\\sdd-open-qeqb1gom\\repo\\sdd\\bin\\report-lint.py", line 552, in imprimir_avisos\n    print(f"\\u26a0\\ufe0f  {w}")\n  File "C:\\hostedtoolcache\\windows\\Python\\3.12.10\\x64\\Lib\\encodings\\cp1252.py", line 19, in encode\n    return codecs.charmap_encode(input,self.errors,encoding_table)[0]\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nUnicodeEncodeError: \'charmap\' codec can\'t encode characters in position 0-1: character maps to <undefined>\n'
+
+
+
+======================================================================
+
+FAIL: test_sem_tabela_reprova (test_report_lint_evidencia.Tabela.test_sem_tabela_reprova)
+
+----------------------------------------------------------------------
+
+Traceback (most recent call last):
+
+  File "D:\a\sdd-open\sdd-open\tests\test_report_lint_evidencia.py", line 54, in test_sem_tabela_reprova
+
+    self.assertIn("[tabela]", out)
+
+AssertionError: '[tabela]' not found in 'The system cannot find the path specified.\nTraceback (most recent call last):\n  File "C:\\Users\\runneradmin\\AppData\\Local\\Temp\\sdd-open-ludp48v3\\repo\\sdd\\bin\\report-lint.py", line 625, in <module>\n    sys.exit(main(sys.argv))\n             ^^^^^^^^^^^^^^\n  File "C:\\Users\\runneradmin\\AppData\\Local\\Temp\\sdd-open-ludp48v3\\repo\\sdd\\bin\\report-lint.py", line 604, in main\n    imprimir_avisos(warnings)\n  File "C:\\Users\\runneradmin\\AppData\\Local\\Temp\\sdd-open-ludp48v3\\repo\\sdd\\bin\\report-lint.py", line 552, in imprimir_avisos\n    print(f"\\u26a0\\ufe0f  {w}")\n  File "C:\\hostedtoolcache\\windows\\Python\\3.12.10\\x64\\Lib\\encodings\\cp1252.py", line 19, in encode\n    return codecs.charmap_encode(input,self.errors,encoding_table)[0]\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nUnicodeEncodeError: \'charmap\' codec can\'t encode characters in position 0-1: character maps to <undefined>\n'
+
+
+
+----------------------------------------------------------------------
+
+Ran 2 tests in 0.226s
+
+
+
+FAILED (failures=2)
+

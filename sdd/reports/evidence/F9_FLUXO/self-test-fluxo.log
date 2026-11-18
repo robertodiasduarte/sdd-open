@@ -1,0 +1,38 @@
+$ /bin/bash sdd/bin/sdd-fluxo.sh --self-test
+sdd-fluxo --self-test
+  ✅ review-design EXIGIDO (3 novos) → exit 0
+  ✅ review-design EXIGIDO (segurança) → exit 0
+  ✅ review-design DISPENSAVEL → exit 1
+  ✅ review-design manifest ilegível → exit 64
+  ✅ loop PRONTO → exit 0
+  ✅ loop CONTINUAR (aplicada) → exit 10
+  ✅ loop CONTINUAR (review inválida) → exit 10
+  ✅ loop BLOQUEADO (D4 teto) → exit 20
+  ✅ loop BLOQUEADO (D5 impasse) → exit 20
+  ✅ loop AGUARDANDO_RECIBO → exit 30
+  ✅ loop avaliação ambígua → exit 64
+  ✅ loop sem META → exit 64
+  ✅ | tee: exit do pipeline (0) ≠ exit do loop (20) → exit 0
+  ✅ | tee: log acusado pelo gate-shell-evidencia → exit 2
+  ✅ --log: exit real gravado → exit 0
+  ✅ --log: aceito pelo gate-shell-evidencia → exit 0
+  ✅ despachar AGUARDANDO_HUMANO → exit 40
+  ✅ despachar: brief gravado idêntico
+  ✅ despachar com o brief já no destino → exit 40
+  ✅ despachar sem brief → exit 64
+  ✅ estado desligado (sem config) → exit 1
+  ✅ seguir PARAR (desligado) → exit 1
+  ✅ estado ligado → exit 0
+  ✅ seguir SEGUIR (define) → exit 0
+  ✅ seguir SEGUIR (design, revisão registrada) → exit 0
+  ✅ seguir PARAR (DEFINE em rascunho) → exit 1
+  ✅ seguir PARAR (gate sem kind) → exit 1
+  ✅ seguir PARAR (marcador) → exit 1
+  ✅ seguir PARAR (revisão do DESIGN não registrada) → exit 1
+  ✅ seguir PARAR (release é D1) → exit 1
+  ✅ seguir par inválido → exit 64
+  ✅ estado inválido → exit 64
+  ✅ seguir slot inválido → exit 64
+RESULTADO: VERDE
+→ todos os cenários bateram.
+[exit=0]

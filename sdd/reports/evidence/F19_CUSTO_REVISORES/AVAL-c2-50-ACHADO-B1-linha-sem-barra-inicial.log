@@ -1,0 +1,31 @@
+$ cat -n LEDGER_REVISAO_MIN.md; for PY in /usr/bin /opt/homebrew/bin; do echo "== python de $PY"; PATH=$PY:/usr/bin:/bin /bin/bash /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f21-f19/8ca3f42f-d684-434d-9f0b-19bdcf0aef88/scratchpad/aval2-f19/copia/sdd/bin/ledger-revisao-lint.sh LEDGER_REVISAO_MIN.md; echo "[lint exit $?]"; PATH=$PY:/usr/bin:/bin /bin/bash /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f21-f19/8ca3f42f-d684-434d-9f0b-19bdcf0aef88/scratchpad/aval2-f19/copia/sdd/bin/eval-revisores.sh rev --ledgers LEDGER_REVISAO_MIN.md | grep -E '^\| revisor|fora da conta|RESULTADO'; done; echo '== controle: a mesma linha com a barra inicial'; /bin/bash /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f21-f19/8ca3f42f-d684-434d-9f0b-19bdcf0aef88/scratchpad/aval2-f19/copia/sdd/bin/ledger-revisao-lint.sh LEDGER_REVISAO_CONTROLE.md 2>&1 | cut -c1-260; echo "[lint exit ${PIPESTATUS[0]}]"; /bin/bash /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f21-f19/8ca3f42f-d684-434d-9f0b-19bdcf0aef88/scratchpad/aval2-f19/copia/sdd/bin/eval-revisores.sh rev --ledgers LEDGER_REVISAO_CONTROLE.md | grep -E '^\| revisor|fora da conta|RESULTADO'
+     1	| achado | sev | veredito | rodada | evidência | dano | revisão |
+     2	|---|---|---|---|---|---|---|
+     3	| R1 | LOW | APLICADA | rodada=1 | texto | nao | EXTERNAL_REVIEW_20260301-000001 |
+     4	| R2 | LOW | APLICADA | rodada=2 | x | nao | EXTERNAL_REVIEW_20260301-000001 |
+     5	R3 | HIGH | REBATIDA_EVIDENCIA | rodada=2 | sem teste | sim | EXTERNAL_REVIEW_20260301-000001 |
+== python de /usr/bin
+✅ ledger da revisão: 2 linha(s) e 0 rodada(s) sem achados em 1 arquivo(s), cada linha com veredito, dano e a pasta da revisão.
+RESULTADO: VERDE
+→ passe o arquivo ao `sdd-fluxo.sh loop --ledger` e ao `eval-revisores.sh`.
+[lint exit 0]
+| revisor | claude (m) | assinatura | 1 | 0 | 0.0000 | 1.0000 | 3 | 2 de 3 | 0 de 3 | 0 de 3 | 0 de 3 | 1 de 3 | — | — | — |
+fora da conta: 0
+RESULTADO: MEDIDO
+== python de /opt/homebrew/bin
+✅ ledger da revisão: 2 linha(s) e 0 rodada(s) sem achados em 1 arquivo(s), cada linha com veredito, dano e a pasta da revisão.
+RESULTADO: VERDE
+→ passe o arquivo ao `sdd-fluxo.sh loop --ledger` e ao `eval-revisores.sh`.
+[lint exit 0]
+| revisor | claude (m) | assinatura | 1 | 0 | 0.0000 | 1.0000 | 3 | 2 de 3 | 0 de 3 | 0 de 3 | 0 de 3 | 1 de 3 | — | — | — |
+fora da conta: 0
+RESULTADO: MEDIDO
+== controle: a mesma linha com a barra inicial
+🛑 LEDGER_REVISAO_CONTROLE.md:5 — dano = sim com veredito REBATIDA_EVIDENCIA: só achado APLICADA pode ser falha com dano
+RESULTADO: VERMELHO
+→ corrija as linhas acima (molde: sdd/templates/LEDGER_REVISAO_TEMPLATE.md; critério: sdd/review/CRITERIO_DANO.md) e rode de novo.
+[lint exit 2]
+| revisor | claude (m) | assinatura | 1 | 0 | 0.0000 | 1.0000 | 3 | 2 de 3 | 1 de 3 | 1 de 3 | 0 de 3 | 0 de 3 | 0.0000 | 1.0000 | — |
+fora da conta: 0
+RESULTADO: MEDIDO
+[exit 0]

@@ -1,0 +1,102 @@
+$ /bin/bash /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.lyAZcjfTsM/scripts/d.sh
+=== d1: curador cria sdd/notas.txt e roda --colher (trace)
+RESULTADO: SNAPSHOT GRAVADO
+[snapshot exit=0]
+[comparar exit=1]
+FORA: /private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.lyAZcjfTsM/toy/d/proj/sdd/notas.txt
+FORA: /private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.lyAZcjfTsM/toy/d/proj/sdd/traces/DEMO.jsonl
+RESULTADO: ESCRITA FORA DO PERMITIDO
+→ não apague nada: liste os caminhos FORA para a pessoa conferir, regrave o DEFINE se ele mudou e conte como falha (1 redespacho).
+🔴 bloco: a fronteira acusou escrita fora do permitido — FORA: /private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.lyAZcjfTsM/toy/d/proj/sdd/notas.txt
+🔴 bloco: a fronteira acusou escrita fora do permitido — FORA: /private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.lyAZcjfTsM/toy/d/proj/sdd/traces/DEMO.jsonl
+🔴 bloco: a saída do --comparar não tem a linha 'RESULTADO: SÓ O PERMITIDO MUDOU': fronteira não verificada nunca vale como 'nada mudou'
+[conferir rc=2]
+RESULTADO: BLOCO INVÁLIDO
+=== d1: redespacho, à letra: refaça os itens 1 e 2, o selo e o snapshot de antes
+RESULTADO: STAGING PRONTO (3 arquivo(s))
+[exit=0]
+[rc=0]
+RESULTADO: HÁ O QUE JULGAR
+RESULTADO: SELO IMPRESSO (5 arquivo(s))
+[selar exit=0]
+RESULTADO: SNAPSHOT GRAVADO
+[snapshot exit=0]
+?? sdd/notas.txt
+?? sdd/reports/briefs/
+?? sdd/traces/
+RESULTADO: SNAPSHOT GRAVADO
+[snapshot exit=0]
+[comparar exit=0]
+RESULTADO: SÓ O PERMITIDO MUDOU
+[conferir rc=0]
+RESULTADO: BLOCO VÁLIDO
+=== d2: curador mexe no staging (acrescenta achado) e também planta delta.txt e pasta
+RESULTADO: SNAPSHOT GRAVADO
+[snapshot exit=0]
+[comparar exit=0]
+RESULTADO: SÓ O PERMITIDO MUDOU
+🔴 bloco: o staging mudou depois do selo: AVAL-01-teste.log mudou
+🔴 bloco: o staging mudou depois do selo: delta.txt apareceu
+🔴 bloco: o staging mudou depois do selo: sub/y apareceu
+[conferir rc=2]
+RESULTADO: BLOCO INVÁLIDO
+=== d2: redespacho
+copiado: sdd/features/DESIGN_DEMO.md
+copiado: sdd/reports/BUILD_REPORT_DEMO.md
+copiado: sdd/reports/evidence/DEMO/AVAL-01-teste.log
+RESULTADO: STAGING PRONTO (3 arquivo(s))
+[exit=0]
+[rc=0]
+[selar exit=0]
+[snapshot exit=0]
+AVAL-01-teste.log
+BUILD_REPORT_DEMO.md
+DESIGN_DEMO.md
+colheita.rc
+colheita.txt
+RESULTADO: SNAPSHOT GRAVADO
+[snapshot exit=0]
+[comparar exit=0]
+RESULTADO: SÓ O PERMITIDO MUDOU
+[conferir rc=0]
+RESULTADO: BLOCO VÁLIDO
+=== d3: curador edita sdd/playbook.md
+RESULTADO: SNAPSHOT GRAVADO
+[snapshot exit=0]
+[comparar exit=1]
+FORA: /private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.lyAZcjfTsM/toy/d/proj/sdd/playbook.md
+RESULTADO: ESCRITA FORA DO PERMITIDO
+→ não apague nada: liste os caminhos FORA para a pessoa conferir, regrave o DEFINE se ele mudou e conte como falha (1 redespacho).
+🔴 bloco: a fronteira acusou escrita fora do permitido — FORA: /private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.lyAZcjfTsM/toy/d/proj/sdd/playbook.md
+🔴 bloco: a saída do --comparar não tem a linha 'RESULTADO: SÓ O PERMITIDO MUDOU': fronteira não verificada nunca vale como 'nada mudou'
+[conferir rc=2]
+RESULTADO: BLOCO INVÁLIDO
+ M sdd/playbook.md
+=== d4: bloco ruim (AUTO inventado) + redespacho com o mesmo selo e snapshot
+RESULTADO: SNAPSHOT GRAVADO
+[snapshot exit=0]
+[comparar exit=0]
+RESULTADO: SÓ O PERMITIDO MUDOU
+🔴 bloco: linha 1: AUTO pede um delta de contador com +1 (LM-nnn ajudou+1 ou LM-nnn mordeu+1)
+[conferir rc=2]
+RESULTADO: BLOCO INVÁLIDO
+RESULTADO: SNAPSHOT GRAVADO
+[snapshot exit=0]
+[comparar exit=0]
+RESULTADO: SÓ O PERMITIDO MUDOU
+[conferir rc=0]
+RESULTADO: BLOCO VÁLIDO
+=== d5: curador faz git add e commit
+RESULTADO: SNAPSHOT GRAVADO
+[snapshot exit=0]
+[comparar exit=1]
+FORA: o índice do git mudou durante o despacho (git add, reset ou arquivo marcado para o git não olhar)
+FORA: /private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.lyAZcjfTsM/toy/d/proj/app.txt
+RESULTADO: ESCRITA FORA DO PERMITIDO
+→ não apague nada: liste os caminhos FORA para a pessoa conferir, regrave o DEFINE se ele mudou e conte como falha (1 redespacho).
+🔴 bloco: a fronteira acusou escrita fora do permitido — FORA: o índice do git mudou durante o despacho (git add, reset ou arquivo marcado para o git não olhar)
+🔴 bloco: a fronteira acusou escrita fora do permitido — FORA: /private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.lyAZcjfTsM/toy/d/proj/app.txt
+🔴 bloco: a saída do --comparar não tem a linha 'RESULTADO: SÓ O PERMITIDO MUDOU': fronteira não verificada nunca vale como 'nada mudou'
+[conferir rc=2]
+RESULTADO: BLOCO INVÁLIDO
+[exit=0]

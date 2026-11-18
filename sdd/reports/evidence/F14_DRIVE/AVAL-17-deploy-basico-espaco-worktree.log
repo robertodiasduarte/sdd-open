@@ -1,0 +1,54 @@
+$ . /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.RRzJHrBpTz/lab.sh; V=$(novo); mkdep "$V/pasta com espaço e ação"; python3 --version
+echo == AT-022 proprio; cen "dict(passos=[dict(runs=[R(1,X)])])"; limpa; d1; cut -c1-150 "$GH_DIR/gh.log"
+echo == so tag/outra branch/schedule/PR verdes; cen "dict(passos=[dict(runs=[R(1,X,b=\"v1\"),R(2,X,b=\"dev\"),R(3,X,e=\"schedule\"),R(4,X,e=\"pull_request\"),R(5,X,e=\"release\")])])"; limpa; d1
+echo == redisparo na ponta, 1 vez, com worktree: marca na pasta comum; cen "dict(passo=\"SSH\",passos=[dict(runs=[R(1,X,c=\"failure\")]),dict(runs=[R(1,X,c=\"failure\"),R(2,X,e=\"workflow_dispatch\",t=\"2026-01-02T00:00:00Z\")])])"; limpa; dep --commit $X --workflow deploy.yml --intervalo 0 --teto 5 --sem-run 1 --transitorios "a, SSH"; grep -E "workflow run|rerun" "$GH_DIR/gh.log"; ls .git/deploy-do-sha | cut -c1-30
+git worktree add -q ../wt -b wt; cd ../wt; cen "dict(passo=\"SSH\",passos=[dict(runs=[R(1,X,c=\"failure\")])])"; limpa; echo == outra worktree, mesma marca; dep --commit $X --workflow deploy.yml --intervalo 0 --teto 2 --sem-run 1 --transitorios SSH --branch main; grep -cE "workflow run" "$GH_DIR/gh.log"; cd ../clone
+echo == slots com aspas e comentario; mkdir -p sdd; printf "project:\n  default_branch: \"main\" # c\ndeploy:\n  workflow: \"deploy.yml\" # c\n  transient_steps: \"SSH, Upload x\" # c\n" > sdd/config.yaml; X=$(novoc); cen "dict(passo=\"Upload x\",passos=[dict(runs=[R(1,X,c=\"failure\")]),dict(runs=[R(1,X,c=\"failure\"),R(2,X,e=\"workflow_dispatch\",t=\"2026-01-02T00:00:00Z\")])])"; limpa; dep --commit $X --intervalo 0 --teto 5 --sem-run 1; grep -E "workflow run" "$GH_DIR/gh.log"
+echo == --transitorios vazio vence o slot; X=$(novoc); cen "dict(passo=\"SSH\",passos=[dict(runs=[R(1,X,c=\"failure\")])])"; limpa; dep --commit $X --intervalo 0 --teto 1 --sem-run 0 --transitorios ""; grep -c "workflow run" "$GH_DIR/gh.log"
+Python 3.9.6
+== AT-022 proprio
+--- deploy-do-sha --commit 845887e7f0ee77b0166145351b7b8f548c6198e0 --workflow deploy.yml --intervalo 0 --teto 1 --sem-run 0
+✅ no ar — run 1 (SHA 845887e)
+RESULTADO: NO AR
+→ siga para o próximo passo da publicação.
+[rc=0]
+run list --workflow deploy.yml --branch main --limit 50 --json databaseId,headSha,headBranch,status,conclusion,createdAt,workflowName,event --commit 8
+== so tag/outra branch/schedule/PR verdes
+--- deploy-do-sha --commit 845887e7f0ee77b0166145351b7b8f548c6198e0 --workflow deploy.yml --intervalo 0 --teto 1 --sem-run 0
+⏳ ainda não sei — não achei nenhum run de 845887e no workflow deploy.yml em 0 s; isso não diz que não há o que verificar.
+RESULTADO: AINDA NAO SEI
+→ confira se este push aciona o workflow (paths, branch) e repita; não concluí nada sobre o deploy.
+[rc=4]
+== redisparo na ponta, 1 vez, com worktree: marca na pasta comum
+--- deploy-do-sha --commit 845887e7f0ee77b0166145351b7b8f548c6198e0 --workflow deploy.yml --intervalo 0 --teto 5 --sem-run 1 --transitorios a, SSH
+🔁 o passo "SSH" é passageiro e 845887e é a ponta: repetindo o deploy na ponta de main (1 vez).
+✅ no ar — run 2 (SHA 845887e)
+RESULTADO: NO AR
+→ siga para o próximo passo da publicação.
+[rc=0]
+workflow run deploy.yml --ref main
+redisparado-845887e7f0ee77b016
+== outra worktree, mesma marca
+--- deploy-do-sha --commit 845887e7f0ee77b0166145351b7b8f548c6198e0 --workflow deploy.yml --intervalo 0 --teto 2 --sem-run 1 --transitorios SSH --branch main
+⏳ repetido, aguardando o run novo aparecer · 0/0 min · run 1
+⏳ ainda não sei — repeti o deploy, e o run novo não apareceu em 1 s; isso não é falha.
+RESULTADO: AINDA NAO SEI
+→ rode de novo para continuar esperando; não repito de novo.
+[rc=4]
+0
+== slots com aspas e comentario
+--- deploy-do-sha --commit 6ac9d597936b05c5174f0574c6f925aeb320c670 --intervalo 0 --teto 5 --sem-run 1
+🔁 o passo "Upload x" é passageiro e 6ac9d59 é a ponta: repetindo o deploy na ponta de main (1 vez).
+✅ no ar — run 2 (SHA 6ac9d59)
+RESULTADO: NO AR
+→ siga para o próximo passo da publicação.
+[rc=0]
+workflow run deploy.yml --ref main
+== --transitorios vazio vence o slot
+--- deploy-do-sha --commit 3aa5c3ac287fa1d774196d3b838a77664560449a --intervalo 0 --teto 1 --sem-run 0 --transitorios 
+🔴 falhou — run 1 ("SSH"); não repeti: deploy.transient_steps está vazio, e aí eu nunca repito sozinho.
+RESULTADO: FALHOU
+→ abra o run citado; para repetir, um push novo ou gh workflow run na ponta, nunca gh run rerun.
+[rc=2]
+0
+[exit=1]

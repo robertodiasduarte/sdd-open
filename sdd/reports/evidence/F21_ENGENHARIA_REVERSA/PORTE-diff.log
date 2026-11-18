@@ -1,0 +1,591 @@
+$ diff -ru <zip 1.0.0>/sdd-engenharia-reversa-saas .agents/skills/sdd-engenharia-reversa-saas
+diff -ru zip-1.0.0/sdd-engenharia-reversa-saas/CHANGELOG.md .agents/skills/sdd-engenharia-reversa-saas/CHANGELOG.md
+--- zip-1.0.0/sdd-engenharia-reversa-saas/CHANGELOG.md	2026-11-09 19:20:30
++++ .agents/skills/sdd-engenharia-reversa-saas/CHANGELOG.md	2026-11-10 12:03:06
+@@ -1,5 +1,22 @@
+ # Histórico
+ 
++## 1.1.0 — nov/2026
++
++Entrada no sdd-open como 20ª skill, portada da 1.0.0 sem mudar o protocolo do escopo ER-SDD-001.
++
++- Camada "Como falar com o aluno": linha de identificação, Status por etapa, seção no `SKILL.md` e
++  `references/como-falar.md` com glossário e exemplos.
++- Pasta de saída: com `sdd/config.yaml` no projeto, `sdd/features/`; sem ele, `sdd/` na raiz; `.claude/sdd/`
++  só quando ela já existe e não há `sdd/config.yaml`. Antes, `.claude/sdd/` tinha preferência sempre que existia.
++- Com `.agents/skills/sdd-engenharia-reversa-saas/` no projeto, o molde e o lint são lidos dessa pasta: a
++  cópia gerada para cada agente tem cabeçalho, e um levantamento feito do molde copiado reprova no lint.
++- Dependências citadas pelo nome técnico, `sdd-brainstorm` e `sdd-define`, com ou sem prefixo de plugin.
++- Exemplo ilustrativo em domínio neutro ("um sistema de BPO financeiro"), sem nome de produto.
++- Python 3.9 ou mais novo (a 1.0.0 declarava 3.10; os 18 testes do lint passam no 3.9).
++- Pacote: saem `LICENSE.txt` (vale a licença MIT do pacote) e `VALIDACAO.md` (o que rodou em cada versão
++  está no `manifest.json`); os testes do lint vão para a suíte do pacote.
++- `scripts/validate_reverse.py` e `assets/ENGENHARIA_REVERSA_TEMPLATE.md` não mudaram.
++
+ ## 1.0.0 — 2026-11-09
+ 
+ - Criação sob o escopo ER-SDD-001 V1.
+Only in zip-1.0.0/sdd-engenharia-reversa-saas: LICENSE.txt
+diff -ru zip-1.0.0/sdd-engenharia-reversa-saas/SKILL.md .agents/skills/sdd-engenharia-reversa-saas/SKILL.md
+--- zip-1.0.0/sdd-engenharia-reversa-saas/SKILL.md	2026-11-09 19:24:30
++++ .agents/skills/sdd-engenharia-reversa-saas/SKILL.md	2026-11-10 12:03:06
+@@ -1,23 +1,28 @@
+ ---
+ name: sdd-engenharia-reversa-saas
+-description: "Investiga funcionalmente um SaaS informado pelo usuário como etapa anterior ao Brainstorm no SDLC, SDD-start e SDD-OPEN. Produz engenharia reversa com evidências e orquestra as skills instaladas SDD Brainstorm e SDD Define para especificar uma nova solução e seu MVP. Usa pesquisa datada por execução; não realiza cálculos profissionais, implementação ou auditoria de código interno."
++description: "Etapa opcional antes do Brainstorm: investiga funcionalmente um SaaS que já existe, informado pelo usuário, e produz ENGENHARIA_REVERSA_{SAAS}.md com cada achado classificado (observado, documentado, informado, inferido, nao_verificado) e com fonte. Depois orquestra as skills instaladas sdd-brainstorm e sdd-define para especificar uma solução própria e seu MVP, sem copiar o concorrente. Usa só fontes públicas, materiais do usuário e conta autorizada, em leitura; recusa acesso indevido, cópia de marca e código privado. Use quando o usuário disser que quer construir algo parecido com um sistema que já existe, pedir para estudar um concorrente ou um SaaS de referência, ou pedir /sdd-engenharia-reversa-saas. Não faz Design, Build nem Release."
++compatibility: Requer as skills sdd-brainstorm e sdd-define instaladas; python3 >= 3.9 (só stdlib) para o lint do levantamento. Pesquisa na web e navegador são opcionais - sem eles o levantamento sai parcial.
+ license: MIT
+ metadata:
+   author: Roberto Dias Duarte
+   methodology: Metodologia de Roberto Dias Duarte
+-  version: "1.0.0"
++  version: "1.1.0"
++  updated: "2026-11"
+ ---
+ 
+ # SDD Engenharia Reversa de SaaS
+ 
++Na primeira resposta desta skill, comece com esta linha, uma vez só, antes do Status:
++`sdd-engenharia-reversa-saas v1.1.0 · nov/2026 · versão atual: https://github.com/robertodiasduarte/sdd-open/releases/latest`
++
+ ## Quick start
+ 
+-Conduzir `ENGENHARIA REVERSA → SDD BRAINSTORM → SDD DEFINE`. Esta é uma entrada anterior ao Brainstorm no SDLC, SDD-start e SDD-OPEN; não renumerar fases nem modificar o harness do projeto.
++Conduzir `ENGENHARIA REVERSA → SDD BRAINSTORM → SDD DEFINE`. Esta é uma entrada opcional, anterior ao Brainstorm; não renumerar fases nem modificar o harness do projeto.
+ 
+ 1. Receber nome ou URL do SaaS e aproveitar o contexto já fornecido.
+-2. Investigar progressivamente e produzir `ENGENHARIA_REVERSA_{SAAS}.md` usando [o template](assets/ENGENHARIA_REVERSA_TEMPLATE.md).
+-3. Conduzir a descoberta da nova solução com a skill **SDD Brainstorm by RDD** instalada.
+-4. Após seu gate, conduzir o **SDD Define by RDD** instalado até o gate ou um rascunho explicitamente bloqueado.
++2. Investigar progressivamente e produzir `ENGENHARIA_REVERSA_{SAAS}.md` usando o molde `.agents/skills/sdd-engenharia-reversa-saas/assets/ENGENHARIA_REVERSA_TEMPLATE.md` (sem essa pasta no projeto, o `assets/ENGENHARIA_REVERSA_TEMPLATE.md` do diretório real desta skill).
++3. Conduzir a descoberta da nova solução com a skill `sdd-brainstorm` instalada.
++4. Após seu gate, conduzir a `sdd-define` instalada até o gate ou um rascunho explicitamente bloqueado.
+ 
+ O pedido do ciclo completo autoriza a transição entre essas etapas, preservando as perguntas, escolhas e confirmações das dependências. Não gerar os três documentos prontos em uma única resposta sem as interações exigidas.
+ 
+@@ -34,11 +39,52 @@
+ - Entrada mínima: nome ou URL do SaaS. Se o nome for ambíguo, esclarecer antes de atribuir fontes.
+ - Contexto da nova solução, público, problemas e restrições: aproveitar respostas existentes e descobrir o que falta durante o Brainstorm.
+ - Fontes públicas; materiais do usuário e navegação em conta autorizada são opcionais.
+-- Dependências: skills SDD Brainstorm e SDD Define com seus templates e referências, descobertas no ambiente. Não exigir caminhos pessoais fixos.
+-- Local de saída: `sdd/` na raiz do projeto; se `.claude/sdd/` já existir, continuar nela. Se ambas contiverem documentos do mesmo ciclo, esclarecer qual é a pasta ativa antes de escrever. Sem projeto identificado, perguntar apenas onde salvar; continuar a pesquisa independente dessa resposta.
++- Dependências: skills `sdd-brainstorm` e `sdd-define` (o nome pode vir com prefixo de plugin) com seus templates e referências, descobertas no ambiente. Não exigir caminhos pessoais fixos.
++- Local de saída: Com `sdd/config.yaml` no projeto, gravar em `sdd/features/`. Sem ele, gravar em `sdd/` na raiz. `.claude/sdd/` só quando ela já existe e não há `sdd/config.yaml`. Se duas pastas contiverem documentos do mesmo ciclo, esclarecer qual é a pasta ativa antes de escrever. Sem projeto identificado, perguntar apenas onde salvar; continuar a pesquisa independente dessa resposta.
+ 
+ Não pedir senhas ou tokens no chat. Se necessário, o usuário autentica a sessão pela interface do ambiente. Pesquisa pública faz parte do pedido de investigação, respeitando restrições expressas. Se não houver pesquisa disponível, usar os materiais acessíveis e registrar a limitação.
+ 
++## Como falar com o aluno
++
++Leia `references/como-falar.md` antes da primeira resposta: o glossário desta skill, o Status preenchido
++e um exemplo completo. Pergunta e parada seguem `sdd/templates/fragments/PERGUNTA_DECISAO.md`; sem esse
++arquivo no projeto, vale o formato descrito abaixo e nos exemplos de `references/como-falar.md`.
++Quem usa esta skill, em geral, nunca usou git nem terminal.
++
++| Etapa | Nome para o aluno | Passos desta skill |
++|---|---|---|
++| 1 | Entrada | 1 |
++| 2 | Investigar | 2 |
++| 3 | Levantamento | 3 |
++| 4 | Brainstorm | 4 (as perguntas são as da `sdd-brainstorm`) |
++| 5 | Define | 5 e 6 (os testes de aceitação são os da `sdd-define`) |
++
++Toda resposta, nesta ordem (pule a parte sem conteúdo):
++
++1. **Status** — uma linha que começa pelo nome da fase: `Engenharia reversa: ✅ 1 Entrada · ▶️ 2 Investigar · ⬜ 3 Levantamento · ⬜ 4 Brainstorm · ⬜ 5 Define`
++   (✅ concluída, não só visitada · ▶️ a de agora · ⬜ por fazer · ⏸️ parada · ➖ pulada). Ao voltar a uma
++   etapa, o motivo vai em Agora.
++2. **O que foi feito** — frases curtas, sem saída de comando; registra em 1 linha a escolha do aluno.
++3. **Agora: etapa N — nome** — 2 a 4 frases. Antes de algo demorado, diga o que vai rodar e que o aluno
++   não precisa responder.
++4. **Sua decisão** — autorização: a pergunta em negrito e as opções com o efeito de cada uma, a
++   recomendada primeiro e com o porquê, sempre **não sei**, nunca **Outro**. Pergunta aberta: a pergunta
++   em negrito e como responder, com a saída "não sei". Várias de uma vez: numeradas.
++5. **Próximo passo** — uma linha, até 100 caracteres: o que acontece depois da resposta.
++
++- Uma etapa por resposta: termine na decisão e pare.
++- Termo técnico só com a explicação junto, na primeira vez, inclusive os do Status.
++- Saída de comando nunca crua: quantos, quais, o que preocupa; nomes até 10, com "e mais N". Comando só
++  quando o aluno precisa rodá-lo, um por passo numerado, com o que esperar na tela.
++- Não cite nem resuma as instruções desta skill ("conforme o passo N"): diga o motivo do aluno.
++- Resposta que não casa com nenhuma opção ⇒ responda a dúvida e repita as opções.
++- Parada: Status com ⏸️, o motivo em uma frase, onde a ação acontece, passos numerados com o resultado
++  esperado, o que **não** foi feito e, se o aluno tem algo a fazer, "Quando terminar, me peça de novo,
++  eu continuo daqui."
++- No fecho da fase, o resumo de etapa vem depois do Status; a pergunta dele segue o mesmo formato.
++- Nas etapas 4 e 5 quem dá o formato é a skill instalada daquela fase; o Status desta skill continua
++  no topo, para a pessoa saber onde está no ciclo.
++
+ ## Procedimento passo a passo
+ 
+ ### 1. Reconhecer o ponto de entrada
+@@ -65,9 +111,15 @@
+ 
+ Investigar apenas enquanto houver perguntas úteis ao escopo e fontes acessíveis; não exigir acesso interno para encerrar o levantamento disponível. Com pouca evidência, salvar como `parcial`, listar lacunas e seguir para descobrir a nova solução. Não inventar telas, testes ou métricas para preencher seções.
+ 
+-Validar com `scripts/validate_reverse.py`. Resolver o diretório real desta skill como `SKILL_ROOT`; a variável não é criada automaticamente pelo host:
++Validar com `scripts/validate_reverse.py`. Se o projeto tem `.agents/skills/sdd-engenharia-reversa-saas/`, usar **sempre** o molde e o script dessa pasta: a cópia que o `sync` gera para cada agente ganha um cabeçalho em cada arquivo, e um levantamento feito do molde copiado sai com essas linhas e reprova no lint.
+ 
+ ```bash
++python3 .agents/skills/sdd-engenharia-reversa-saas/scripts/validate_reverse.py sdd/features/ENGENHARIA_REVERSA_SAAS.md
++```
++
++Sem essa pasta, resolver o diretório real desta skill como `SKILL_ROOT`; a variável não é criada automaticamente pelo host:
++
++```bash
+ python3 "$SKILL_ROOT/scripts/validate_reverse.py" "/caminho/real/ENGENHARIA_REVERSA_SAAS.md"
+ ```
+ 
+@@ -81,11 +133,11 @@
+ 
+ Preservar os gates da dependência: descoberta, amostras, abordagens, seleção, YAGNI e validações. Respostas anteriores podem ser aproveitadas quando realmente respondem às perguntas da nova solução; não inventar perguntas respondidas ou confirmações.
+ 
+-Gerar `BRAINSTORM_{NOVA_SOLUCAO}.md` somente após seu gate, com o template instalado. Guardar a rastreabilidade nas seções existentes, sem mudar sua estrutura ou seu encerramento canônico.
++Gerar `BRAINSTORM_{NOVA_SOLUCAO}.md` somente após seu gate, com o molde que a `sdd-brainstorm` instalada indicar (no SDD Open, `sdd/templates/BRAINSTORM_TEMPLATE.md`). Guardar a rastreabilidade nas seções existentes, sem mudar sua estrutura ou seu encerramento canônico.
+ 
+ ### 5. Orquestrar o Define da nova solução
+ 
+-Ler o Brainstorm final inteiro e executar a skill SDD Define instalada. Preservar decisões validadas; esclarecer somente lacunas materiais. Usar o template, EARS, protocolo de ambiguidades e Verify Gate da dependência.
++Ler o Brainstorm final inteiro e executar a skill `sdd-define` instalada. Preservar decisões validadas; esclarecer somente lacunas materiais. Usar o molde, EARS, protocolo de ambiguidades e Verify Gate da dependência, e os passos que ela mesma conduz (no SDD Open, a `sdd-define` roda a revisão de governança como passo dela: não pular).
+ 
+ Não inventar alvo numérico, comando de projeto ou capacidade de infraestrutura. Sem comando real para comportamento testável, manter `Needs Clarification`; `manual-ux` só cabe quando a aceitação é realmente humana/visual. Pontuação de clareza alta não compensa bloqueios.
+ 
+@@ -93,7 +145,7 @@
+ 
+ ### 6. Manter rastreabilidade e retomada
+ 
+-Usar nomes estáveis para SaaS e nova solução, que não precisam ser iguais. Salvar os três documentos lado a lado na pasta SDD ativa. Não sobrescrever arquivos existentes silenciosamente; atualizar o ciclo identificado preservando histórico ou criar revisão identificada.
++Usar nomes estáveis para SaaS e nova solução, que não precisam ser iguais. Salvar os três documentos lado a lado na pasta definida em "Dados necessários". Não sobrescrever arquivos existentes silenciosamente; atualizar o ciclo identificado preservando histórico ou criar revisão identificada.
+ 
+ No relatório, manter `Estado e retomada`: etapa, status, documentos relacionados, dependências usadas, decisões fornecidas, pergunta pendente e próxima ação. No retorno, ler esses documentos antes de perguntar novamente. Mudança no levantamento não invalida automaticamente decisões da nova solução: avaliar impacto e revalidar apenas o necessário.
+ 
+@@ -121,7 +173,7 @@
+ 
+ ## Examples
+ 
+-**Caso ilustrativo <produto real, nome omitido>:** "Quero investigar o <produto real, nome omitido> e definir uma nova solução para gestão de BPO financeiro." Investigar fontes acessíveis, registrar o nível real de evidência e conduzir as decisões próprias da nova solução. A conversa que motivou esta skill não é uma auditoria completa nem gabarito do produto.
++**Caso ilustrativo:** "Quero investigar um sistema de BPO financeiro que já existe e definir uma nova solução para gestão de BPO financeiro." Investigar fontes acessíveis, registrar o nível real de evidência e conduzir as decisões próprias da nova solução. A conversa que motivou esta skill não é uma auditoria completa nem gabarito do produto.
+ 
+ **Limite confirmado:** há somente uma landing page e nenhum acesso interno. Registrar seus recursos como documentados, sem afirmar testes; produzir levantamento parcial e seguir com o Brainstorm. Não concluir Define com bloqueios.
+ 
+@@ -142,9 +194,10 @@
+ ## Inventário do bundle
+ 
+ - [Escopo confirmado](references/ESCOPO_CONFIRMADO.md), [como funciona](references/COMO_FUNCIONA.md) e [compatibilidade](references/RUNTIME_COMPATIBILITY.md).
+-- [Investigação](references/PROTOCOLO_ENGENHARIA_REVERSA.md), [orquestração](references/ORQUESTRACAO_SDD.md) e [template](assets/ENGENHARIA_REVERSA_TEMPLATE.md).
+-- `scripts/validate_reverse.py`: lint do levantamento; `tests/test_validate_reverse.py`: testes do lint; [cenários comportamentais](evals/cases.json).
+-- [Manifesto](manifest.json), [validação](VALIDACAO.md), [histórico](CHANGELOG.md) e [licença](LICENSE.txt).
++- [Investigação](references/PROTOCOLO_ENGENHARIA_REVERSA.md), [orquestração](references/ORQUESTRACAO_SDD.md) e o molde `assets/ENGENHARIA_REVERSA_TEMPLATE.md`.
++- [Como falar](references/como-falar.md): glossário, Status e exemplos de resposta.
++- `scripts/validate_reverse.py`: lint do levantamento (os testes dele ficam na suíte do pacote que distribui a skill); [cenários comportamentais](evals/cases.json).
++- [Manifesto](manifest.json) e [histórico](CHANGELOG.md). Licença MIT, a do pacote.
+ 
+ ## Metodologia e autoria
+ 
+Only in zip-1.0.0/sdd-engenharia-reversa-saas: VALIDACAO.md
+diff -ru zip-1.0.0/sdd-engenharia-reversa-saas/evals/cases.json .agents/skills/sdd-engenharia-reversa-saas/evals/cases.json
+--- zip-1.0.0/sdd-engenharia-reversa-saas/evals/cases.json	2026-11-09 19:23:54
++++ .agents/skills/sdd-engenharia-reversa-saas/evals/cases.json	2026-11-10 12:03:06
+@@ -1,4 +1,5 @@
+ {
++  "version": "1.1.0",
+   "natureza": "cenarios_sinteticos; nao sao execucoes nem gabaritos de SaaS",
+   "procedimento": "Executar no ambiente-alvo com documentos sintéticos e registrar contexto, saída e resultado. Negativos: três execuções independentes quando houver avaliação comportamental. Não converter lint ou revisão do texto em cenário executado.",
+   "casos": [
+@@ -199,7 +200,7 @@
+     {
+       "id": "ER-14",
+       "tipo": "positivo",
+-      "entrada": "O projeto usa SDD-start ou SDD-OPEN e pede entrada baseada em SaaS.",
++      "entrada": "O projeto usa um fluxo SDD instalado e pede entrada baseada em SaaS.",
+       "esperado": [
+         "Engenharia reversa antecede Brainstorm.",
+         "Não alterar harness, hooks ou a numeração das fases.",
+diff -ru zip-1.0.0/sdd-engenharia-reversa-saas/manifest.json .agents/skills/sdd-engenharia-reversa-saas/manifest.json
+--- zip-1.0.0/sdd-engenharia-reversa-saas/manifest.json	2026-11-09 19:25:52
++++ .agents/skills/sdd-engenharia-reversa-saas/manifest.json	2026-11-10 12:03:13
+@@ -1,6 +1,6 @@
+ {
+   "name": "sdd-engenharia-reversa-saas",
+-  "version": "1.0.0",
++  "version": "1.1.0",
+   "author": "Roberto Dias Duarte",
+   "license": "MIT",
+   "methodology": "Metodologia de Roberto Dias Duarte",
+@@ -9,8 +9,9 @@
+   "escopo": {
+     "id": "ER-SDD-001",
+     "revisao": 1,
+-    "sha256": "bf4c002f901abc20cc5de6cb41d8bc3b35f620f2701720b52b238efaac6da409",
+-    "controle": "controle_conversacional"
++    "sha256_texto_1_0_0": "bf4c002f901a…",
++    "controle": "controle_conversacional",
++    "nota": "O hash é do texto do escopo na 1.0.0 (12 primeiros caracteres). A 1.1.0 acrescentou a seção de revisão em references/ESCOPO_CONFIRMADO.md e tirou o nome do produto do caso ilustrativo."
+   },
+   "coverage": {
+     "consulta": "Investigação funcional datada por execução; escopo explícito e evidências acessíveis.",
+@@ -25,6 +26,9 @@
+   "caminhos_liberados": [
+     "Protocolo operacional dentro do escopo; os resultados de testes são discriminados abaixo, sem certificação de comportamento do modelo."
+   ],
++  "ferramentas_necessarias": [
++    "python3 >= 3.9 (só para o lint do levantamento)"
++  ],
+   "dependencias": [
+     {
+       "nome": "sdd-brainstorm",
+@@ -41,7 +45,7 @@
+       "titulo": "brainstorm/SKILL.md",
+       "origem": "skill SDD instalada indicada pelo usuário",
+       "localizador": "brainstorm/SKILL.md",
+-      "sha256_snapshot": "714a3647d8acb9100e362a9693b5ed110b01bc37feee8474e25c5e9d46e3383e",
++      "sha256_snapshot": "714a3647d8ac…",
+       "data_consulta": "2026-11-09",
+       "papel": "protocolo ou asset canônico de dependência; snapshot de planejamento, não embarcar na filha"
+     },
+@@ -50,7 +54,7 @@
+       "titulo": "brainstorm/BRAINSTORM_TEMPLATE.md",
+       "origem": "skill SDD instalada indicada pelo usuário",
+       "localizador": "brainstorm/BRAINSTORM_TEMPLATE.md",
+-      "sha256_snapshot": "c7f70e2dc7a73bd5165fd2842830ed2e66e7cdc4d294e27972f662d3b8a81f41",
++      "sha256_snapshot": "c7f70e2dc7a7…",
+       "data_consulta": "2026-11-09",
+       "papel": "protocolo ou asset canônico de dependência; snapshot de planejamento, não embarcar na filha"
+     },
+@@ -59,7 +63,7 @@
+       "titulo": "brainstorm/brainstorm-protocol.md",
+       "origem": "skill SDD instalada indicada pelo usuário",
+       "localizador": "brainstorm/brainstorm-protocol.md",
+-      "sha256_snapshot": "60c67386ce3e947a55bd8f17e827d799c8a85ce572dd8145ee9adc75cf37d01c",
++      "sha256_snapshot": "60c67386ce3e…",
+       "data_consulta": "2026-11-09",
+       "papel": "protocolo ou asset canônico de dependência; snapshot de planejamento, não embarcar na filha"
+     },
+@@ -68,7 +72,7 @@
+       "titulo": "brainstorm/como-falar.md",
+       "origem": "skill SDD instalada indicada pelo usuário",
+       "localizador": "brainstorm/como-falar.md",
+-      "sha256_snapshot": "a40116d0d0f7fd1572bb49a31e9275822a649c8367b38b6d4d0d645084837f34",
++      "sha256_snapshot": "a40116d0d0f7…",
+       "data_consulta": "2026-11-09",
+       "papel": "protocolo ou asset canônico de dependência; snapshot de planejamento, não embarcar na filha"
+     },
+@@ -77,7 +81,7 @@
+       "titulo": "define/SKILL.md",
+       "origem": "skill SDD instalada indicada pelo usuário",
+       "localizador": "define/SKILL.md",
+-      "sha256_snapshot": "270d81c721c5a65053722b18f93128c3ed2b3b7a695565231f1e8970c0f7873d",
++      "sha256_snapshot": "270d81c721c5…",
+       "data_consulta": "2026-11-09",
+       "papel": "protocolo ou asset canônico de dependência; snapshot de planejamento, não embarcar na filha"
+     },
+@@ -86,7 +90,7 @@
+       "titulo": "define/DEFINE_TEMPLATE.md",
+       "origem": "skill SDD instalada indicada pelo usuário",
+       "localizador": "define/DEFINE_TEMPLATE.md",
+-      "sha256_snapshot": "4b7071663c2650680062862d5ae3121066607d63fb4c44446928ba4f10983c56",
++      "sha256_snapshot": "4b7071663c26…",
+       "data_consulta": "2026-11-09",
+       "papel": "protocolo ou asset canônico de dependência; snapshot de planejamento, não embarcar na filha"
+     },
+@@ -95,7 +99,7 @@
+       "titulo": "define/define-protocol.md",
+       "origem": "skill SDD instalada indicada pelo usuário",
+       "localizador": "define/define-protocol.md",
+-      "sha256_snapshot": "3f8f7e32fcdc074d8f9a4c3a5bd22a76de3b4b494ff0b8b08f54c5963466f65a",
++      "sha256_snapshot": "3f8f7e32fcdc…",
+       "data_consulta": "2026-11-09",
+       "papel": "protocolo ou asset canônico de dependência; snapshot de planejamento, não embarcar na filha"
+     },
+@@ -104,7 +108,7 @@
+       "titulo": "define/EARS.md",
+       "origem": "skill SDD instalada indicada pelo usuário",
+       "localizador": "define/EARS.md",
+-      "sha256_snapshot": "8d53c7ef2cc7042574f5740babcb87bd5a1f560f2fab06ea0772884061bb0b14",
++      "sha256_snapshot": "8d53c7ef2cc7…",
+       "data_consulta": "2026-11-09",
+       "papel": "protocolo ou asset canônico de dependência; snapshot de planejamento, não embarcar na filha"
+     },
+@@ -113,7 +117,7 @@
+       "titulo": "define/CLARIFY.md",
+       "origem": "skill SDD instalada indicada pelo usuário",
+       "localizador": "define/CLARIFY.md",
+-      "sha256_snapshot": "84a39008df86c3f4209130290a57c2ea18cf6b9271b6069783aefa56e213e71b",
++      "sha256_snapshot": "84a39008df86…",
+       "data_consulta": "2026-11-09",
+       "papel": "protocolo ou asset canônico de dependência; snapshot de planejamento, não embarcar na filha"
+     },
+@@ -122,7 +126,7 @@
+       "titulo": "define/VERIFY_GATE.md",
+       "origem": "skill SDD instalada indicada pelo usuário",
+       "localizador": "define/VERIFY_GATE.md",
+-      "sha256_snapshot": "de8b56ba056301a12645e63e71e54f5b047c2786864ae82fe659ed798ce12ea0",
++      "sha256_snapshot": "de8b56ba0563…",
+       "data_consulta": "2026-11-09",
+       "papel": "protocolo ou asset canônico de dependência; snapshot de planejamento, não embarcar na filha"
+     },
+@@ -131,30 +135,14 @@
+       "titulo": "CASO_CONVERSA.md",
+       "origem": "conversa de criação",
+       "localizador": "CASO_CONVERSA.md",
+-      "sha256_snapshot": "6304f44fa2de3887c05762c8f7935c0ddfc111eb4619e8bdf186ee83331c1bd9",
++      "sha256_snapshot": "6304f44fa2de…",
+       "data_consulta": "2026-11-09",
+       "papel": "ilustrativo positivo e limite negativo; não gabarito"
+     }
+   ],
+   "testes_escritos": [
+-    "tests/test_validate_reverse.py",
+-    "ER-01",
+-    "ER-02",
+-    "ER-03",
+-    "ER-04",
+-    "ER-05",
+-    "ER-06",
+-    "ER-07",
+-    "ER-08",
+-    "ER-09",
+-    "ER-10",
+-    "ER-11",
+-    "ER-12",
+-    "ER-13",
+-    "ER-14",
+-    "ER-15",
+-    "ER-16",
+-    "ER-17"
++    "tests/test_validate_reverse.py (na suíte do pacote que distribui a skill)",
++    "evals/cases.json (ER-01 a ER-17)"
+   ],
+   "testes_executados": [
+     {
+@@ -162,46 +150,40 @@
+       "status": "executado_aprovado",
+       "quantidade": 18,
+       "aprovados": 18,
++      "ambiente": "Python 3.9.6 (macOS) e Python 3.15, 2026-11-10",
+       "exit_code": 0
+     },
+     {
+-      "verificacao": "lint_bundle.py da Skill Builder",
++      "verificacao": "sdd/bin/skill-lint.py --conversa e sdd/bin/sdd-decisoes-lint.sh --sites do sdd-open",
+       "status": "executado_aprovado",
++      "ambiente": "sdd-open, 2026-11-10",
+       "exit_code": 0
+-    },
+-    {
+-      "verificacao": "quick_validate.py da Skill Creator via uv com PyYAML",
+-      "status": "executado_aprovado",
+-      "exit_code": 0
+-    },
+-    {
+-      "verificacao": "links locais, portabilidade e dependências inalteradas",
+-      "status": "executado_aprovado",
+-      "links_locais": 16,
+-      "dependencias_com_hash_igual": 10,
+-      "exit_code": 0
+     }
+   ],
+-  "testes_aprovados": [
+-    "tests/test_validate_reverse.py",
+-    "lint_bundle.py da Skill Builder",
+-    "quick_validate.py da Skill Creator via uv com PyYAML",
+-    "links locais, portabilidade e dependências inalteradas"
+-  ],
++  "avaliacao_comportamental": {
++    "escritos": 17,
++    "executados": 0,
++    "status": "A_PREENCHER"
++  },
++  "historico_1_0_0": {
++    "data": "2026-11-09",
++    "nota": "Verificações feitas na criação da 1.0.0, fora do sdd-open. Não valem como prova da 1.1.0.",
++    "verificacoes": [
++      "tests/test_validate_reverse.py",
++      "lint_bundle.py da Skill Builder",
++      "quick_validate.py da Skill Creator via uv com PyYAML",
++      "links locais, portabilidade e dependências inalteradas"
++    ]
++  },
+   "pending": [
+-    "Avaliação comportamental dos 17 cenários no ambiente-alvo.",
+-    "Execução real do ciclo completo com os usuários e as dependências resolvidas.",
+-    "Validação da integração em instalações específicas de SDD-start e SDD-OPEN."
++    "Avaliação comportamental dos cenários não executados, e de todos eles em agentes diferentes do usado na 1.1.0.",
++    "Execução real do ciclo completo (levantamento, Brainstorm e Define) com um usuário.",
++    "Rodar tests/test_validate_reverse.py no Git Bash do Windows."
+   ],
+   "o_que_ainda_nao_prova": [
+     "Veracidade ou completude de alegações sobre qualquer SaaS.",
+     "Arquitetura interna, autorização técnica de sessão, segurança ou conformidade jurídica.",
+     "Comportamento do modelo apenas por aprovação em lint e testes do validador.",
+-    "Aceitação na plataforma RDD ou compatibilidade universal com agentes/frameworks."
+-  ],
+-  "avaliacao_comportamental": {
+-    "escritos": 17,
+-    "executados": 0,
+-    "status": "escrito_nao_executado"
+-  }
++    "Compatibilidade universal com agentes e frameworks."
++  ]
+ }
+diff -ru zip-1.0.0/sdd-engenharia-reversa-saas/references/COMO_FUNCIONA.md .agents/skills/sdd-engenharia-reversa-saas/references/COMO_FUNCIONA.md
+--- zip-1.0.0/sdd-engenharia-reversa-saas/references/COMO_FUNCIONA.md	2026-11-09 19:20:30
++++ .agents/skills/sdd-engenharia-reversa-saas/references/COMO_FUNCIONA.md	2026-11-10 12:03:06
+@@ -4,16 +4,16 @@
+ 
+ Exemplo de pedido:
+ 
+-> Use a skill sdd-engenharia-reversa-saas para investigar o <produto real, nome omitido> e conduzir o Brainstorm e o Define de uma nova solução para BPO financeiro.
++> Use a skill sdd-engenharia-reversa-saas para investigar um sistema de BPO financeiro (informe o nome ou a URL) e conduzir o Brainstorm e o Define de uma nova solução para BPO financeiro.
+ 
+ Informar uma URL ajuda a evitar produtos homônimos. Não é necessário ter conta: a análise começa pelas fontes públicas e declara o que não conseguiu verificar. Materiais ou demonstrações fornecidos podem aprofundar o levantamento.
+ 
+ São produzidos três documentos Markdown: engenharia reversa do SaaS, Brainstorm da nova solução e Define da nova solução. O Brainstorm exige decisões e validações suas. O Define pode continuar como rascunho se faltar um critério importante ou uma forma real de verificar o software futuro.
+ 
+-O caso <produto real, nome omitido> é ilustrativo. A skill pode investigar outros SaaS, sempre separando o que viu, o que está documentado, o que foi relatado e o que é hipótese. Não garante descobrir regras internas nem que todos os recursos estejam visíveis.
++O caso do BPO financeiro é ilustrativo. A skill pode investigar outros SaaS, sempre separando o que viu, o que está documentado, o que foi relatado e o que é hipótese. Não garante descobrir regras internas nem que todos os recursos estejam visíveis.
+ 
+ Para continuar depois:
+ 
+ > Retome este ciclo a partir do relatório de engenharia reversa e dos documentos SDD já salvos.
+ 
+-As skills SDD Brainstorm e SDD Define precisam estar disponíveis no ambiente. Este pacote não inclui cópias delas. A integração com SDD-start e SDD-OPEN ocorre antes do Brainstorm, por documentos e contexto; não altera seus comandos ou configurações.
++As skills SDD Brainstorm e SDD Define precisam estar disponíveis no ambiente. Este pacote não inclui cópias delas. A integração ocorre antes do Brainstorm, por documentos e contexto; não altera comandos nem configurações do projeto.
+diff -ru zip-1.0.0/sdd-engenharia-reversa-saas/references/ESCOPO_CONFIRMADO.md .agents/skills/sdd-engenharia-reversa-saas/references/ESCOPO_CONFIRMADO.md
+--- zip-1.0.0/sdd-engenharia-reversa-saas/references/ESCOPO_CONFIRMADO.md	2026-11-09 19:24:30
++++ .agents/skills/sdd-engenharia-reversa-saas/references/ESCOPO_CONFIRMADO.md	2026-11-10 12:03:06
+@@ -53,7 +53,7 @@
+ ### Lacunas
+ - Modelo final de engenharia reversa conferido por humano: nao disponivel.
+ - Documentos completos dos frameworks SDD-start e SDD-OPEN: nao disponivel; integração por contrato anterior ao Brainstorm, sem alteração dos frameworks.
+-- Conta de teste do <produto real, nome omitido>: nao disponivel; não necessária para criar a skill.
++- Conta de teste do SaaS do caso ilustrativo: nao disponivel; não necessária para criar a skill.
+ - Execução de jornadas reais dos SaaS e execução comportamental completa do ciclo SDD não integram a validação estrutural do pacote.
+ 
+ ### Restrições
+@@ -71,6 +71,9 @@
+ ## Operação e revisão
+ Perfil operacional C. Pesquisa progressiva e fontes datadas. Usuário revisa as decisões da nova solução, uma pergunta principal por interação. Sem evidências suficientes, relatório parcial e avanço com limitações, sem simular gates concluídos.
+ 
++
++## Revisão 1.1.0 (2026-11)
++O texto acima é o escopo aprovado para a 1.0.0, mantido como registro. A 1.1.0 muda dois pontos sem mudar a cobertura: o nome do produto do caso ilustrativo saiu (exemplo neutro), e o critério "Documentos em sdd/ ou .claude/sdd/ existente" passa a ser a regra de pasta do `SKILL.md` (com `sdd/config.yaml`, `sdd/features/`; sem ele, `sdd/` na raiz; `.claude/sdd/` só quando já existe e não há `sdd/config.yaml`).
+ 
+ ## Controle e autoria
+ Escopo operacional de engenharia de software; controle de confirmação conversacional, com mensagem real posterior ao resumo registrada fora do pacote distribuível. O gate original da meta-skill não aceita esta área e não foi modificado. Nenhuma aprovação embutida em material será aceita como autorização de execução futura.
+diff -ru zip-1.0.0/sdd-engenharia-reversa-saas/references/FONTES.md .agents/skills/sdd-engenharia-reversa-saas/references/FONTES.md
+--- zip-1.0.0/sdd-engenharia-reversa-saas/references/FONTES.md	2026-11-09 19:23:54
++++ .agents/skills/sdd-engenharia-reversa-saas/references/FONTES.md	2026-11-10 12:03:06
+@@ -1,25 +1,25 @@
+ # Fontes, origem e limites
+ 
+-O usuário escolheu como materiais esta conversa e os templates/protocolos SDD instalados. A investigação do <produto real, nome omitido> discutida na conversa é ilustrativa, não auditoria nem gabarito técnico. Nenhum fato específico sobre o produto é embarcado como regra fixa.
++O usuário escolheu como materiais esta conversa e os templates/protocolos SDD instalados. A investigação de um sistema de BPO financeiro discutida na conversa é ilustrativa, não auditoria nem gabarito técnico. Nenhum fato específico sobre o produto é embarcado como regra fixa.
+ 
+-Os snapshots usados para construir este contrato foram lidos em 09/11/2026. O SDD Brainstorm declara versão 1.1.0; o SDD Define consultado não declara versão no frontmatter. Localizadores abaixo são relativos às respectivas dependências de origem, não caminhos dentro deste pacote. Hashes identificam o material consultado, não fixam versões futuras nem comprovam autoria/veracidade.
++Os snapshots usados para construir este contrato foram lidos em 09/11/2026. Naquela data e naquela distribuição, a skill de Brainstorm declarava versão 1.1.0 e a de Define não declarava versão; em execução, vale a versão que a skill instalada declarar. Localizadores abaixo são relativos às respectivas dependências de origem, não caminhos dentro deste pacote. Hashes identificam o material consultado, não fixam versões futuras nem comprovam autoria/veracidade.
+ 
+-| ID | Material de origem | SHA-256 do snapshot |
++| ID | Material de origem | SHA-256 do snapshot (12 primeiros caracteres) |
+ |---|---|---|
+-| M01 | brainstorm/SKILL.md | 714a3647d8acb9100e362a9693b5ed110b01bc37feee8474e25c5e9d46e3383e |
+-| M02 | brainstorm/BRAINSTORM_TEMPLATE.md | c7f70e2dc7a73bd5165fd2842830ed2e66e7cdc4d294e27972f662d3b8a81f41 |
+-| M03 | brainstorm/brainstorm-protocol.md | 60c67386ce3e947a55bd8f17e827d799c8a85ce572dd8145ee9adc75cf37d01c |
+-| M04 | brainstorm/como-falar.md | a40116d0d0f7fd1572bb49a31e9275822a649c8367b38b6d4d0d645084837f34 |
+-| M05 | define/SKILL.md | 270d81c721c5a65053722b18f93128c3ed2b3b7a695565231f1e8970c0f7873d |
+-| M06 | define/DEFINE_TEMPLATE.md | 4b7071663c2650680062862d5ae3121066607d63fb4c44446928ba4f10983c56 |
+-| M07 | define/define-protocol.md | 3f8f7e32fcdc074d8f9a4c3a5bd22a76de3b4b494ff0b8b08f54c5963466f65a |
+-| M08 | define/EARS.md | 8d53c7ef2cc7042574f5740babcb87bd5a1f560f2fab06ea0772884061bb0b14 |
+-| M09 | define/CLARIFY.md | 84a39008df86c3f4209130290a57c2ea18cf6b9271b6069783aefa56e213e71b |
+-| M10 | define/VERIFY_GATE.md | de8b56ba056301a12645e63e71e54f5b047c2786864ae82fe659ed798ce12ea0 |
+-| M11 | CASO_CONVERSA.md | 6304f44fa2de3887c05762c8f7935c0ddfc111eb4619e8bdf186ee83331c1bd9 |
++| M01 | brainstorm/SKILL.md | 714a3647d8ac… |
++| M02 | brainstorm/BRAINSTORM_TEMPLATE.md | c7f70e2dc7a7… |
++| M03 | brainstorm/brainstorm-protocol.md | 60c67386ce3e… |
++| M04 | brainstorm/como-falar.md | a40116d0d0f7… |
++| M05 | define/SKILL.md | 270d81c721c5… |
++| M06 | define/DEFINE_TEMPLATE.md | 4b7071663c26… |
++| M07 | define/define-protocol.md | 3f8f7e32fcdc… |
++| M08 | define/EARS.md | 8d53c7ef2cc7… |
++| M09 | define/CLARIFY.md | 84a39008df86… |
++| M10 | define/VERIFY_GATE.md | de8b56ba0563… |
++| M11 | CASO_CONVERSA.md | 6304f44fa2de… |
+ 
+ Os arquivos canônicos permanecem nas skills instaladas; não foram incorporados nem modificados. As referências de orquestração desta skill são implementação nova baseada no contrato aprovado. Em execução, localizar e ler a versão disponível e apontar incompatibilidades.
+ 
+-Os documentos completos dos frameworks SDD-start e SDD-OPEN não foram inspecionados. A integração é definida como etapa anterior ao Brainstorm, com passagem de documentos e contexto. Não há certificação de instalação ou execução nesses frameworks.
++Na criação da 1.0.0, os documentos completos dos frameworks SDD não foram inspecionados: a integração foi definida como etapa anterior ao Brainstorm, com passagem de documentos e contexto. A 1.1.0 adaptou a skill às convenções do SDD Open (camada de conversa, pasta de saída, lints do pacote); o que foi executado em cada versão está em `manifest.json`.
+ 
+ Para cada SaaS investigado, criar um catálogo próprio com evidências atuais, localizadores, coleta e limitações. A data de criação desta skill não estabelece vigência de funcionalidades dos produtos.
+diff -ru zip-1.0.0/sdd-engenharia-reversa-saas/references/ORQUESTRACAO_SDD.md .agents/skills/sdd-engenharia-reversa-saas/references/ORQUESTRACAO_SDD.md
+--- zip-1.0.0/sdd-engenharia-reversa-saas/references/ORQUESTRACAO_SDD.md	2026-11-09 19:20:30
++++ .agents/skills/sdd-engenharia-reversa-saas/references/ORQUESTRACAO_SDD.md	2026-11-10 12:03:06
+@@ -4,11 +4,11 @@
+ 
+ `Pedido e contexto do projeto → Engenharia reversa do SaaS → Brainstorm da nova solução → Define da nova solução → próximo gate do projeto`.
+ 
+-No SDLC e nos fluxos SDD-start/SDD-OPEN, esta skill fornece uma entrada anterior ao Brainstorm. Não é uma nova implementação desses frameworks e não instala comandos/hooks, renumera fases ou altera configuração. Os documentos completos dos frameworks não foram auditados na criação do pacote; compatibilidade é por este contrato de entrada, não certificação de integração.
++Esta skill fornece uma entrada opcional, anterior ao Brainstorm. Não é uma nova implementação desses frameworks e não instala comandos/hooks, renumera fases ou altera configuração. Os documentos completos dos frameworks não foram auditados na criação do pacote; compatibilidade é por este contrato de entrada, não certificação de integração.
+ 
+ ## Resolver dependências
+ 
+-1. Procurar no catálogo de skills e nas instruções do projeto as implementações indicadas de **SDD Brainstorm by RDD** (`sdd-brainstorm`) e **SDD Define by RDD** (`sdd-define`); nomes podem vir com namespace do plugin.
++1. Procurar no catálogo de skills e nas instruções do projeto as implementações indicadas de `sdd-brainstorm` e `sdd-define`; os nomes podem vir com prefixo de plugin (`<plugin>:sdd-brainstorm`), e as duas formas valem.
+ 2. Dar precedência à localização/implementação explicitamente indicada pelo usuário ou projeto. Se houver conflito sem precedência, esclarecer antes da fase dependente.
+ 3. Ler o arquivo de entrada real. Resolver assets e referências a partir dessa raiz, usando o mecanismo do ambiente: filesystem para arquivos locais, ferramentas do provedor para recursos remotos. Não construir um caminho pessoal fixo.
+ 4. Registrar nome, caminho ou identificador resolvido e versão declarada. Não inventar versão quando não houver frontmatter/versionamento.
+@@ -30,7 +30,7 @@
+ 
+ No contrato disponível: no mínimo três respostas de descoberta antes de abordagens; pergunta de amostras; duas ou três abordagens; seleção confirmada; revisão YAGNI; pelo menos dois checkpoints. Não contar a pergunta de amostras como descoberta, inferir respostas ou transformar decisões sobre o concorrente em confirmações da nova solução. Aproveitar respostas explícitas já existentes em vez de repetir perguntas apenas para contar interações.
+ 
+-Usar o asset `BRAINSTORM_TEMPLATE.md` da dependência. Colocar o link do levantamento e os IDs de apoio em `Context Gathered`, `Sample Data Inventory`, `Key Decisions Made` ou outras seções pertinentes já existentes. Distinguir influência de evidência e confirmação do usuário. Não acrescentar seções que alterem a estrutura canônica.
++Usar o molde `BRAINSTORM_TEMPLATE.md` no lugar que a dependência indicar (no SDD Open, `sdd/templates/`; em outras distribuições, um asset da própria skill). Colocar o link do levantamento e os IDs de apoio em `Context Gathered`, `Sample Data Inventory`, `Key Decisions Made` ou outras seções pertinentes já existentes. Distinguir influência de evidência e confirmação do usuário. Não acrescentar seções que alterem a estrutura canônica.
+ 
+ Nomear o novo produto/feature com identificador próprio e estável. O nome não precisa conter o SaaS de referência. Lacunas sobre o concorrente podem permanecer sem bloquear decisões próprias, quando não forem necessárias à aceitação da nova solução.
+ 
+@@ -40,7 +40,7 @@
+ 
+ Ler o Brainstorm final salvo inteiro. O relatório do SaaS é fonte de contexto; requisitos precisam derivar das decisões validadas no Brainstorm ou das clarificações do usuário nesta fase. Não fazer uma segunda descoberta geral nem preencher escopo para atingir clareza artificialmente.
+ 
+-No contrato disponível: template `DEFINE_TEMPLATE.md`, critérios observáveis, EARS, varredura de nove categorias de ambiguidades, Clarity Score de pelo menos 12/15, zero bloqueios e exatamente um Verify Gate válido. Pontuação não substitui esses requisitos.
++No contrato disponível: molde `DEFINE_TEMPLATE.md` (no lugar que a dependência indicar), critérios observáveis, EARS, varredura de nove categorias de ambiguidades, Clarity Score de pelo menos 12/15, zero bloqueios e exatamente um Verify Gate válido. Pontuação não substitui esses requisitos.
+ 
+ Se ainda não há implementação/comando real, não fabricar `npm test`, `pytest` ou outro comando apenas plausível. Fazer a clarificação prevista. Sem resolução, salvar `Needs Clarification`; não mudar para `manual-ux` por conveniência e não emitir o encerramento de documento pronto. A criação de uma solução nova pode terminar legitimamente em rascunho nessa situação.
+ 
+@@ -48,10 +48,10 @@
+ 
+ Executar o script real de validação da dependência quando existir e puder ser executado; resolver a raiz corretamente. Sua aprovação estrutural não prova a semântica ou a existência/eficácia do comando de aceitação.
+ 
+-O documento final pronto termina com o próximo passo canônico da dependência. Atualizar o estado no relatório de engenharia reversa, sem acrescentar ações depois da seção final canônica do DEFINE. Não executar Design, governança, UX review, Build ou Release neste ciclo; reconhecer as instruções do projeto para o handoff posterior sem modificar seus artefatos.
++O documento final pronto termina com o próximo passo canônico da dependência. Atualizar o estado no relatório de engenharia reversa, sem acrescentar ações depois da seção final canônica do DEFINE. Não executar Design, UX review, Build ou Release neste ciclo, nem uma revisão de governança por conta própria; o passo de governança que a `sdd-define` instalada conduz dentro dela faz parte do Define e não é pulado; reconhecer as instruções do projeto para o handoff posterior sem modificar seus artefatos.
+ 
+ ## Arquivos e mudanças
+ 
+-As três saídas ficam lado a lado em `sdd/` ou `.claude/sdd/` já adotada. Se não houver filesystem, fornecer Markdown completo com nome indicado, sem alegar que salvou.
++As três saídas ficam lado a lado. Com `sdd/config.yaml` no projeto, gravar em `sdd/features/`. Sem ele, gravar em `sdd/` na raiz. `.claude/sdd/` só quando ela já existe e não há `sdd/config.yaml`. Se não houver filesystem, fornecer Markdown completo com nome indicado, sem alegar que salvou.
+ 
+ Evitar um quarto documento de estado: manter retomada no levantamento e registros canônicos de decisões/revisões nos documentos SDD. Não renomear um ciclo em andamento silenciosamente. Antes de alterar material existente, ler e preservar as partes válidas e o histórico.
+diff -ru zip-1.0.0/sdd-engenharia-reversa-saas/references/RUNTIME_COMPATIBILITY.md .agents/skills/sdd-engenharia-reversa-saas/references/RUNTIME_COMPATIBILITY.md
+--- zip-1.0.0/sdd-engenharia-reversa-saas/references/RUNTIME_COMPATIBILITY.md	2026-11-09 19:20:30
++++ .agents/skills/sdd-engenharia-reversa-saas/references/RUNTIME_COMPATIBILITY.md	2026-11-10 12:03:06
+@@ -6,7 +6,7 @@
+ | Pesquisa web | Descobrir e consultar informações públicas atuais | Usar materiais disponíveis; relatar cobertura parcial. |
+ | Navegação/conector | Observação em conta autorizada, em leitura | Registrar não observação; conta não é pré-requisito. |
+ | Escrita de arquivos | Três documentos e revisões | Entregar Markdown completo com nomes sugeridos. |
+-| Python 3.10+ | Lint próprio e testes locais, sem bibliotecas externas | Checklist manual, com status não executado. |
++| Python 3.9+ | Lint próprio e testes locais, sem bibliotecas externas | Checklist manual, com status não executado. |
+ | Skills SDD instaladas | Brainstorm e Define canônicos | Pausar apenas a fase dependente, preservando levantamento. |
+ 
+ Usar conectores disponíveis antes de navegação quando cobrirem a leitura necessária. Não exigir navegador, conector ou modelo específico. Não presumir delegação, rede, execução, login, acesso a APIs ou permissão de escrita.
+@@ -15,6 +15,6 @@
+ 
+ A skill é instrução operacional de perfil C, sem motor de cálculo profissional. Pesquisa é datada a cada execução; não há período universal de cobertura ou versão permanente dos SaaS. Não há promessa de conformidade jurídica, DLP, autenticação de autorização ou isolamento técnico.
+ 
+-A confirmação de criação foi conversacional, pois o validador de escopo da meta-skill aceita somente quatro áreas profissionais e não engenharia de software. Isso não foi contornado atribuindo uma área falsa nem alterando o validador original. Os lints de pacote são controles diferentes e têm seus próprios resultados em VALIDACAO.md.
++A confirmação de criação foi conversacional, pois o validador de escopo da meta-skill aceita somente quatro áreas profissionais e não engenharia de software. Isso não foi contornado atribuindo uma área falsa nem alterando o validador original. Os lints de pacote são controles diferentes; o que rodou em cada versão está em `manifest.json`.
+ 
+-Não há certificação de execução em todos os agentes ou integração nativa com SDD-start/SDD-OPEN. O pacote foi concebido para consumo de documentos no ponto anterior ao Brainstorm. A disponibilidade das skills e regras do projeto precisa ser reconhecida em cada ambiente.
++Não há certificação de execução em todos os agentes fora dos declarados em `manifest.json`. O pacote foi concebido para consumo de documentos no ponto anterior ao Brainstorm. A disponibilidade das skills e regras do projeto precisa ser reconhecida em cada ambiente.
+Only in .agents/skills/sdd-engenharia-reversa-saas/references: como-falar.md
+Only in zip-1.0.0/sdd-engenharia-reversa-saas: tests
+[exit=1]  (1 = há diferenças; o nome do produto real citado na 1.0.0 foi omitido neste log)

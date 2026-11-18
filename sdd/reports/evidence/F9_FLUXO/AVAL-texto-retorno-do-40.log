@@ -1,0 +1,15 @@
+$ grep -n "VEREDITO: …\|Persista o bloco\|os achados são o brief\|NEEDS_WORK" .agents/skills/sdd-build/SKILL.md .agents/skills/sdd-build/references/contexto-fresco.md sdd/bin/sdd-fluxo.sh
+.agents/skills/sdd-build/SKILL.md:180:DESIGN, pasta do projeto, URL base e se há credenciais autorizadas. Persista o bloco
+.agents/skills/sdd-build/SKILL.md:182:`NEEDS_WORK` → os achados são o brief do ciclo seguinte (fresco); máximo 2 ciclos, depois
+.agents/skills/sdd-build/SKILL.md:187:exit 40, repassando a parada; continue quando a pessoa colar a linha `VEREDITO: …`.
+.agents/skills/sdd-build/references/contexto-fresco.md:26:   imprime: a pessoa abre uma sessão nova que só lê esse arquivo e cola de volta a linha `VEREDITO: …`.
+.agents/skills/sdd-build/references/contexto-fresco.md:59:nada que grave ou envie. Devolva <<<AVALIACAO … >>> com: veredito PASS | NEEDS_WORK |
+.agents/skills/sdd-build/references/contexto-fresco.md:71:| `NEEDS_WORK` | os ACHADOS são o brief de correção do ciclo seguinte (redispatch fresco); corrigir, rodar o gate, re-despachar com `ciclo: 2`. Máximo 2 ciclos → `Status: Blocked` com os achados abertos. Nunca contornar o critério |
+.agents/skills/sdd-build/references/contexto-fresco.md:72:| `PASS_PENDENTE_RECIBO` | só em gate manual-ux: mostrar o roteiro ao humano e colher `recibo: nome YYYY-MM-DD`; sem recibo, tratar como NEEDS_WORK |
+.agents/skills/sdd-build/references/contexto-fresco.md:74:Persista o bloco verbatim em `sdd/reviews/AVALIACAO_{F}_{YYYYMMDD-HHMM}.md` — é a evidência
+sdd/bin/sdd-fluxo.sh:74:    retorno='a última linha da resposta (`VEREDITO: …`)'
+sdd/bin/sdd-fluxo.sh:382:        vals = set(re.findall(r"^\s*VEREDITO:\s*(PASS_PENDENTE_RECIBO|NEEDS_WORK|PASS)\s*$", aval_txt, re.M))
+sdd/bin/sdd-fluxo.sh:386:        if vered == "NEEDS_WORK":
+sdd/bin/sdd-fluxo.sh:388:            motivos.append("avaliador: NEEDS_WORK (ciclo %d)" % ciclo)
+sdd/bin/sdd-fluxo.sh:410:        motivos.append("D4 ciclos: 2 ciclos NEEDS_WORK do avaliador")
+[exit=0]

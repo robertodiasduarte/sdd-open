@@ -1,0 +1,55 @@
+$ /bin/bash /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.lyAZcjfTsM/scripts/variantes.sh
+=== v1: projeto que ignora sdd/reports (item 8)
+[rc=0]
+[snapshot exit=0]
+[conferir rc=0]
+[check-ignore exit=0] (sai 0 ⇒ não adicione os CURATOR-*)
+=== v2: feature sem pasta de evidência: item 7, à letra
+[rc=0]
+/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.lyAZcjfTsM/scripts/variantes.sh: line 14: sdd/reports/evidence/DEMO/CURATOR-colhidos.txt: No such file or directory
+[registro exit=1]
+=== v3: NAO_JULGADO entra no registro e some da próxima release
+[rc=0]
+[conferir rc=0]
+resumo-bloco: auto=1 pergunta=3 descartar=0 nao_julgado=1 contaminacao=nao
+0 deltas colhidos em /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.lyAZcjfTsM/tmp/sdd-curadoria-aeadfc2f05c4/DEMO (3 arquivo(s) elegíveis) — ausência é informação, não verde
+JA_JULGADO 4 linha(s) já julgada(s) numa curadoria anterior desta feature (CURATOR-colhidos.txt): não contam de novo
+RESULTADO: NADA A COLHER
+=== v4: frente nova da mesma feature, em projeto que não versiona a evidência: a contagem dobra?
+DELTA LM-001 ajudou+1 · conf=2026-11-05 · evidencia=DESIGN_DEMO.md:11 · fp=d4dfefbc70
+DELTA LM-003 ajudou+1 · conf=2026-11-05 · evidencia=BUILD_REPORT_DEMO.md:9 · fp=b77850323a
+DELTA LM-002 mordeu+1 · conf=2026-11-05 · evidencia=BUILD_REPORT_DEMO.md:10 · fp=40784e328
+[conferir rc=0]
+--- frente nova: git worktree add; os documentos ignorados chegam só por cópia
+ls: sdd/reports/evidence/DEMO: No such file or directory
+copiado: sdd/features/DESIGN_DEMO.md
+copiado: sdd/reports/BUILD_REPORT_DEMO.md
+RESULTADO: STAGING PRONTO (2 arquivo(s))
+DELTA LM-001 ajudou+1 · conf=2026-11-05 · evidencia=DESIGN_DEMO.md:11 · fp=d4dfefbc70
+DELTA LM-003 ajudou+1 · conf=2026-11-05 · evidencia=BUILD_REPORT_DEMO.md:9 · fp=b77850323a
+DELTA LM-002 mordeu+1 · conf=2026-11-05 · evidencia=BUILD_REPORT_DEMO.md:10 · fp=40784e328
+=== v5: mais de 1 candidato recusado: IDs
+=== v6: colheita sem --inv e invariantes presentes não existe no texto; sem o arquivo: pular
+[rc=0]
+DELTA LM-001 ajudou+1 · conf=2026-11-05 · evidencia=DESIGN_DEMO.md:11 · fp=d4dfefbc70
+DELTA LM-003 ajudou+1 · conf=2026-11-05 · evidencia=BUILD_REPORT_DEMO.md:9 · fp=b77850323a
+DELTA LM-002 mordeu+1 · conf=2026-11-05 · evidencia=BUILD_REPORT_DEMO.md:10 · fp=40784e328
+[conferir rc=0]
+AUTO LM-001 ajudou+1
+AUTO LM-003 ajudou+1
+AUTO LM-002 mordeu+1
+PERGUNTA 5 add ADD Backend :: sup: `fila_de_envio` `idempotencia` :: Fila sem chave de idempotência duplica o 
+[aplicar exit=0]
+[lint exit=0]
+[anti-collapse exit=0]
+?? sdd/reports/briefs/
+?? sdd/traces/
+[log1 exit=0]
+[log2 exit=0]
+[registro exit=0]
+[check-ignore exit=1]
+[add exit=0]
+[commit exit=0]
+?? sdd/reports/briefs/
+?? sdd/traces/
+[exit=0]

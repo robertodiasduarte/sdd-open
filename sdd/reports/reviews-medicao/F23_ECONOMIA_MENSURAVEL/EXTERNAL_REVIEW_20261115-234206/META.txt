@@ -1,0 +1,46 @@
+worktree                : /Users/robertoduarte/rdd-worktrees/sdd-open-f23-economia-mensuravel
+branch                  : feat/f23-economia-mensuravel
+protocolo               : cadeia REVISOR → AUDITOR; paralelo não existe
+base                    : origin/main
+merge_base              : 8f944fc417f8d558ded925b0f33605ee32d7ae75
+head                    : c32f48de3db76856869845490719f2b1afe3fc85
+paths                   : -
+diff_sha256             : 75d8af1e0a16b5074da1846f73039985c82ee404312583ec2df5bfb52a6a8659
+diff                    : 114KB (41 arquivo(s))
+contexto                : 60KB (3 doc SDD)
+docs_sdd                : BRAINSTORM_F23_ECONOMIA_MENSURAVEL.md, DEFINE_F23_ECONOMIA_MENSURAVEL.md, DESIGN_F23_ECONOMIA_MENSURAVEL.md
+contexto_cortado        : -
+diversidade             : -
+reviewer_engine_default : claude
+reviewer_engine_efetivo : claude
+reviewer_fallback_usado : nao
+reviewer_motivo         : -
+reviewer_exit           : 0
+reviewer_segundos       : 232
+reviewer_achados        : 5
+reviewer_tokens_entrada : 90276
+reviewer_tokens_saida   : 24820
+reviewer_tokens_total   : 115096
+reviewer_modelo         : claude-opus-5-5
+reviewer_custo          : US$ 1.2148
+revisor1_raso           : nao
+gatilho_2o_revisor      : 41 arquivos (limiar 8) — dispensado por --no-revisor2
+revisor2_engine         : -
+auditor_engine_default  : openrouter
+auditor_engine_efetivo  : openrouter
+auditor_fallback_usado  : nao
+auditor_motivo          : openrouter passou do teto de tempo
+auditor_exit            : 67
+auditor_segundos        : 1249
+auditor_vereditos       : 0
+auditor_tokens_entrada  : n/d
+auditor_tokens_saida    : n/d
+auditor_tokens_total    : n/d
+auditor_modelo          : n/d
+auditor_custo           : $?
+convergencia_1o_passe   : n/a (auditor falhou)
+desempate_alvo          : -
+desempate_engine        : -
+desempate_decisao       : -
+custo_total             : US$ 1.2148 (+ 1 papel(is) com custo $?)
+quando                  : 20261115-234206

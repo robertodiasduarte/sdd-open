@@ -1,0 +1,36 @@
+$ /usr/bin/python3 -B sdd/bin/skill-lint.py --conversa sdd/fixtures/conversa/conversa-com-outro/SKILL.md
+🛑 sdd/fixtures/conversa/conversa-com-outro/SKILL.md: references/como-falar.md:19 **Posso gravar o resultado?** — tem a opção **Outro**: resposta fora das opções é tratada como dúvida
+RESULTADO: VERMELHO
+→ corrija o apontado acima (frontmatter: agentskills.io/specification; conversa: sdd/templates/fragments/PERGUNTA_DECISAO.md)
+exit=1
+$ /usr/bin/python3 -B sdd/bin/skill-lint.py --conversa sdd/fixtures/conversa/conversa-controle/SKILL.md
+✅ sdd/fixtures/conversa/conversa-controle/SKILL.md: frontmatter válido · camada de conversa ok
+exit=0
+$ /usr/bin/python3 -B sdd/bin/skill-lint.py --conversa sdd/fixtures/conversa/conversa-dois-recomendados/SKILL.md
+🛑 sdd/fixtures/conversa/conversa-dois-recomendados/SKILL.md: references/como-falar.md:19 **Posso gravar o resultado?** — 2 opções (recomendado); deve haver exatamente 1
+RESULTADO: VERMELHO
+→ corrija o apontado acima (frontmatter: agentskills.io/specification; conversa: sdd/templates/fragments/PERGUNTA_DECISAO.md)
+exit=1
+$ /usr/bin/python3 -B sdd/bin/skill-lint.py --conversa sdd/fixtures/conversa/conversa-sem-como-falar/SKILL.md
+🛑 sdd/fixtures/conversa/conversa-sem-como-falar/SKILL.md: a seção manda ler references/como-falar.md, e o arquivo não existe
+RESULTADO: VERMELHO
+→ corrija o apontado acima (frontmatter: agentskills.io/specification; conversa: sdd/templates/fragments/PERGUNTA_DECISAO.md)
+exit=1
+$ /usr/bin/python3 -B sdd/bin/skill-lint.py --conversa sdd/fixtures/conversa/conversa-sem-nao-sei/SKILL.md
+🛑 sdd/fixtures/conversa/conversa-sem-nao-sei/SKILL.md: references/como-falar.md:19 **Posso gravar o resultado?** — sem a opção **não sei**
+RESULTADO: VERMELHO
+→ corrija o apontado acima (frontmatter: agentskills.io/specification; conversa: sdd/templates/fragments/PERGUNTA_DECISAO.md)
+exit=1
+$ /usr/bin/python3 -B sdd/bin/skill-lint.py --conversa sdd/fixtures/conversa/conversa-sem-recomendado/SKILL.md
+🛑 sdd/fixtures/conversa/conversa-sem-recomendado/SKILL.md: references/como-falar.md:19 **Posso gravar o resultado?** — nenhuma opção (recomendado)
+RESULTADO: VERMELHO
+→ corrija o apontado acima (frontmatter: agentskills.io/specification; conversa: sdd/templates/fragments/PERGUNTA_DECISAO.md)
+exit=1
+$ /usr/bin/python3 -B sdd/bin/skill-lint.py --conversa sdd/fixtures/conversa/conversa-sem-secao/SKILL.md
+🛑 sdd/fixtures/conversa/conversa-sem-secao/SKILL.md: seção '## Como falar com o aluno' ausente (a camada de conversa; ver sdd/templates/fragments/PERGUNTA_DECISAO.md)
+RESULTADO: VERMELHO
+→ corrija o apontado acima (frontmatter: agentskills.io/specification; conversa: sdd/templates/fragments/PERGUNTA_DECISAO.md)
+exit=1
+$ /usr/bin/python3 -B sdd/bin/skill-lint.py sdd/fixtures/conversa/conversa-sem-secao/SKILL.md
+✅ sdd/fixtures/conversa/conversa-sem-secao/SKILL.md: frontmatter válido
+exit=0

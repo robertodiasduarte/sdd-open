@@ -1,0 +1,14 @@
+$ /bin/bash /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.iNp6lMZaXH/sonda_or.sh /Users/robertoduarte/rdd-worktrees/sdd-open-f11-gate /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.iNp6lMZaXH 
+precos.tsv da cópia: qwen/qwen3.7-plus 0.40 1.60
+pacote (qwen 0.32/1.28)      exit=0 | auditor_engine_efetivo : openrouter;auditor_tokens_entrada : 16;auditor_tokens_saida : 136;auditor_modelo : qwen/qwen3.7-plus via Alibaba;auditor_custo : ≈US$ 0.0002;
+cópia (qwen 0.40/1.60)      exit=0 | auditor_engine_efetivo : openrouter;auditor_tokens_entrada : 16;auditor_tokens_saida : 136;auditor_modelo : qwen/qwen3.7-plus via Alibaba;auditor_custo : ≈US$ 0.0002;
+servidor recebeu: auth=Bearer <CHAVE> data_collection=deny 
+chave nas pastas EXTERNAL_REVIEW_*: 0 arquivo(s)
+[exit=0]
+$ /bin/bash /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.iNp6lMZaXH/sonda_or.sh /Users/robertoduarte/rdd-worktrees/sdd-open-f11-gate /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.iNp6lMZaXH grande
+precos.tsv da cópia: qwen/qwen3.7-plus 0.40 1.60
+pacote (qwen 0.32/1.28)      exit=0 | auditor_engine_efetivo : openrouter;auditor_tokens_entrada : 1234567;auditor_tokens_saida : 234567;auditor_modelo : qwen/qwen3.7-plus via Alibaba;auditor_custo : ≈US$ 0.6953;
+cópia (qwen 0.40/1.60)      exit=0 | auditor_engine_efetivo : openrouter;auditor_tokens_entrada : 1234567;auditor_tokens_saida : 234567;auditor_modelo : qwen/qwen3.7-plus via Alibaba;auditor_custo : ≈US$ 0.8691;
+servidor recebeu: auth=Bearer <CHAVE> data_collection=deny 
+chave nas pastas EXTERNAL_REVIEW_*: 0 arquivo(s)
+[exit=0]

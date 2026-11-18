@@ -1,0 +1,82 @@
+test_aceitar_depois_de_vermelho_roda_no_mesmo_head (test_drive.ImpressaoDigital.test_aceitar_depois_de_vermelho_roda_no_mesmo_head) ... FAIL
+
+test_aceitar_invalida_o_verde_antigo (test_drive.ImpressaoDigital.test_aceitar_invalida_o_verde_antigo) ... FAIL
+
+test_checklist_do_manual_tambem_conta (test_drive.ImpressaoDigital.test_checklist_do_manual_tambem_conta) ... ok
+
+test_cmd_alterado_para_em_todo_verbo_sem_rodar (test_drive.ImpressaoDigital.test_cmd_alterado_para_em_todo_verbo_sem_rodar) ... ok
+
+test_mudanca_fora_do_bloco_nao_para (test_drive.ImpressaoDigital.test_mudanca_fora_do_bloco_nao_para) ... FAIL
+
+test_outro_campo_do_bloco_diz_qual_mudou (test_drive.ImpressaoDigital.test_outro_campo_do_bloco_diz_qual_mudou) ... ok
+
+test_troca_aceita_de_outro_campo_diz_qual (test_drive.ImpressaoDigital.test_troca_aceita_de_outro_campo_diz_qual) ... ok
+
+test_troca_aceita_entra_no_relatorio_na_hora (test_drive.ImpressaoDigital.test_troca_aceita_entra_no_relatorio_na_hora) ... ok
+
+
+
+======================================================================
+
+FAIL: test_aceitar_depois_de_vermelho_roda_no_mesmo_head (test_drive.ImpressaoDigital.test_aceitar_depois_de_vermelho_roda_no_mesmo_head)
+
+----------------------------------------------------------------------
+
+Traceback (most recent call last):
+
+  File "D:\a\sdd-open\sdd-open\tests\test_drive.py", line 953, in test_aceitar_depois_de_vermelho_roda_no_mesmo_head
+
+    self.assertEqual(self.chamadas(), 1)
+
+AssertionError: 0 != 1
+
+
+
+======================================================================
+
+FAIL: test_aceitar_invalida_o_verde_antigo (test_drive.ImpressaoDigital.test_aceitar_invalida_o_verde_antigo)
+
+----------------------------------------------------------------------
+
+Traceback (most recent call last):
+
+  File "D:\a\sdd-open\sdd-open\tests\test_drive.py", line 941, in test_aceitar_invalida_o_verde_antigo
+
+    self.assertAcao(self.drive("--resume", D, "--aceitar-gate-novo"), "VERIFICAR")
+
+  File "D:\a\sdd-open\sdd-open\tests\test_drive.py", line 77, in assertAcao
+
+    self.assertRegex(out, r"(?m)^ACAO: %s$" % acao)
+
+AssertionError: Regex didn't match: '(?m)^ACAO: VERIFICAR$' not found in 'retomando: rodada 1/3 � 2 de 2 tarefas prontas � �ltimo teste final: nenhum � n�o gastei rodada\nACAO: DESIGN\nrodada: 1/3\no DESIGN n\ufffdo passa no design-lint (saiu 1)\nRESULTADO: CONTINUAR\n\u2192 rode a fase Design sobre este DEFINE e chame proximo de novo.\n'
+
+
+
+======================================================================
+
+FAIL: test_mudanca_fora_do_bloco_nao_para (test_drive.ImpressaoDigital.test_mudanca_fora_do_bloco_nao_para)
+
+----------------------------------------------------------------------
+
+Traceback (most recent call last):
+
+  File "D:\a\sdd-open\sdd-open\tests\test_drive.py", line 907, in test_mudanca_fora_do_bloco_nao_para
+
+    self.assertAcao(self.drive("proximo", D), "RODADA")
+
+  File "D:\a\sdd-open\sdd-open\tests\test_drive.py", line 77, in assertAcao
+
+    self.assertRegex(out, r"(?m)^ACAO: %s$" % acao)
+
+AssertionError: Regex didn't match: '(?m)^ACAO: RODADA$' not found in 'ACAO: DESIGN\nrodada: 1/3\no DESIGN n\ufffdo passa no design-lint (saiu 1)\nRESULTADO: CONTINUAR\n\u2192 rode a fase Design sobre este DEFINE e chame proximo de novo.\n'
+
+
+
+----------------------------------------------------------------------
+
+Ran 8 tests in 40.960s
+
+
+
+FAILED (failures=3)
+

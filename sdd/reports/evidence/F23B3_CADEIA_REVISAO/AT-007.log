@@ -1,0 +1,8 @@
+$ python3 -B -m unittest -v test_f23b3_revisao.AT007SemLedger   # HEAD 5e110b2
+test_pasta_sem_ledger_continua_fora_da_conta (test_f23b3_revisao.AT007SemLedger.test_pasta_sem_ledger_continua_fora_da_conta) ... ok
+
+----------------------------------------------------------------------
+Ran 1 test in 0.071s
+
+OK
+[exit=0]

@@ -1,0 +1,19 @@
+$ /usr/bin/python3 -B -m unittest discover -s tests -p test_next_version.py -v
+test_fora_de_git_e_64 (test_next_version.NextVersion) ... ok
+test_head_com_duas_tags_usa_a_maior (test_next_version.NextVersion) ... ok
+test_head_ja_com_tag_publica_essa_tag (test_next_version.NextVersion) ... ok
+test_head_que_nao_descende_da_ultima_tag_e_1 (test_next_version.NextVersion) ... ok
+test_ignora_tag_fora_do_padrao (test_next_version.NextVersion) ... ok
+test_ordena_por_versao_e_nao_por_texto (test_next_version.NextVersion) ... ok
+test_sem_tag_e_1 (test_next_version.NextVersion) ... ok
+test_soma_um_patch_na_ultima_tag (test_next_version.NextVersion) ... ok
+test_stdout_so_tem_as_tres_linhas (test_next_version.NextVersion) ... ok
+test_tag_pedida_e_publicada_mesmo_com_outra_maior_no_commit (test_next_version.NextVersion) ... ok
+test_tag_pedida_fora_do_head_e_1 (test_next_version.NextVersion) ... ok
+test_tag_pedida_fora_do_padrao_e_64 (test_next_version.NextVersion) ... ok
+
+----------------------------------------------------------------------
+Ran 12 tests in 1.825s
+
+OK
+exit=0

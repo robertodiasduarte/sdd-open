@@ -1,0 +1,322 @@
+$ bash -c cd tests && python3 -B -m unittest test_f16w2_saida
+FFFFFFFFFFFFFFFFFFFFFFFFFFFF.
+======================================================================
+FAIL: test_todo_script_com_main_troca_a_saida_antes_de_tudo (test_f16w2_saida.Guarda.test_todo_script_com_main_troca_a_saida_antes_de_tudo) (script='.agents/skills/sdd-auditoria-harness/scripts/collect_evidence.py')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/robertoduarte/rdd-worktrees/sdd-open-f16w-windows/tests/test_f16w2_saida.py", line 41, in test_todo_script_com_main_troca_a_saida_antes_de_tudo
+    self.assertEqual(linhas[0], "for _canal in (sys.stdout, sys.stderr):", rel)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 'raise SystemExit(main())' != 'for _canal in (sys.stdout, sys.stderr):'
+- raise SystemExit(main())
++ for _canal in (sys.stdout, sys.stderr):
+ : .agents/skills/sdd-auditoria-harness/scripts/collect_evidence.py
+
+======================================================================
+FAIL: test_todo_script_com_main_troca_a_saida_antes_de_tudo (test_f16w2_saida.Guarda.test_todo_script_com_main_troca_a_saida_antes_de_tudo) (script='.agents/skills/sdd-engenharia-reversa-saas/scripts/validate_reverse.py')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/robertoduarte/rdd-worktrees/sdd-open-f16w-windows/tests/test_f16w2_saida.py", line 41, in test_todo_script_com_main_troca_a_saida_antes_de_tudo
+    self.assertEqual(linhas[0], "for _canal in (sys.stdout, sys.stderr):", rel)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 'raise SystemExit(main())' != 'for _canal in (sys.stdout, sys.stderr):'
+- raise SystemExit(main())
++ for _canal in (sys.stdout, sys.stderr):
+ : .agents/skills/sdd-engenharia-reversa-saas/scripts/validate_reverse.py
+
+======================================================================
+FAIL: test_todo_script_com_main_troca_a_saida_antes_de_tudo (test_f16w2_saida.Guarda.test_todo_script_com_main_troca_a_saida_antes_de_tudo) (script='.agents/skills/sdd-kb/scripts/kb_normativo.py')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/robertoduarte/rdd-worktrees/sdd-open-f16w-windows/tests/test_f16w2_saida.py", line 41, in test_todo_script_com_main_troca_a_saida_antes_de_tudo
+    self.assertEqual(linhas[0], "for _canal in (sys.stdout, sys.stderr):", rel)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 'raise SystemExit(main(sys.argv[1:]))' != 'for _canal in (sys.stdout, sys.stderr):'
+- raise SystemExit(main(sys.argv[1:]))
++ for _canal in (sys.stdout, sys.stderr):
+ : .agents/skills/sdd-kb/scripts/kb_normativo.py
+
+======================================================================
+FAIL: test_todo_script_com_main_troca_a_saida_antes_de_tudo (test_f16w2_saida.Guarda.test_todo_script_com_main_troca_a_saida_antes_de_tudo) (script='.agents/skills/sdd-kb/scripts/validate_kb.py')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/robertoduarte/rdd-worktrees/sdd-open-f16w-windows/tests/test_f16w2_saida.py", line 41, in test_todo_script_com_main_troca_a_saida_antes_de_tudo
+    self.assertEqual(linhas[0], "for _canal in (sys.stdout, sys.stderr):", rel)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 'raise SystemExit(main())' != 'for _canal in (sys.stdout, sys.stderr):'
+- raise SystemExit(main())
++ for _canal in (sys.stdout, sys.stderr):
+ : .agents/skills/sdd-kb/scripts/validate_kb.py
+
+======================================================================
+FAIL: test_todo_script_com_main_troca_a_saida_antes_de_tudo (test_f16w2_saida.Guarda.test_todo_script_com_main_troca_a_saida_antes_de_tudo) (script='.agents/skills/sdd-release/scripts/deploy-espera-testes.py')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/robertoduarte/rdd-worktrees/sdd-open-f16w-windows/tests/test_f16w2_saida.py", line 41, in test_todo_script_com_main_troca_a_saida_antes_de_tudo
+    self.assertEqual(linhas[0], "for _canal in (sys.stdout, sys.stderr):", rel)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 'sys.exit(main(sys.argv))' != 'for _canal in (sys.stdout, sys.stderr):'
+- sys.exit(main(sys.argv))
++ for _canal in (sys.stdout, sys.stderr):
+ : .agents/skills/sdd-release/scripts/deploy-espera-testes.py
+
+======================================================================
+FAIL: test_todo_script_com_main_troca_a_saida_antes_de_tudo (test_f16w2_saida.Guarda.test_todo_script_com_main_troca_a_saida_antes_de_tudo) (script='.agents/skills/ux-review-builder/scripts/validate_generated_bundle.py')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/robertoduarte/rdd-worktrees/sdd-open-f16w-windows/tests/test_f16w2_saida.py", line 41, in test_todo_script_com_main_troca_a_saida_antes_de_tudo
+    self.assertEqual(linhas[0], "for _canal in (sys.stdout, sys.stderr):", rel)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 'sys.exit(main())' != 'for _canal in (sys.stdout, sys.stderr):'
+- sys.exit(main())
++ for _canal in (sys.stdout, sys.stderr):
+ : .agents/skills/ux-review-builder/scripts/validate_generated_bundle.py
+
+======================================================================
+FAIL: test_todo_script_com_main_troca_a_saida_antes_de_tudo (test_f16w2_saida.Guarda.test_todo_script_com_main_troca_a_saida_antes_de_tudo) (script='bin/adapters/claude/sdd-avaliador-guard.py')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/robertoduarte/rdd-worktrees/sdd-open-f16w-windows/tests/test_f16w2_saida.py", line 41, in test_todo_script_com_main_troca_a_saida_antes_de_tudo
+    self.assertEqual(linhas[0], "for _canal in (sys.stdout, sys.stderr):", rel)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 'try:' != 'for _canal in (sys.stdout, sys.stderr):'
+- try:
++ for _canal in (sys.stdout, sys.stderr):
+ : bin/adapters/claude/sdd-avaliador-guard.py
+
+======================================================================
+FAIL: test_todo_script_com_main_troca_a_saida_antes_de_tudo (test_f16w2_saida.Guarda.test_todo_script_com_main_troca_a_saida_antes_de_tudo) (script='bin/adapters/claude/sdd-report-guard.py')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/robertoduarte/rdd-worktrees/sdd-open-f16w-windows/tests/test_f16w2_saida.py", line 41, in test_todo_script_com_main_troca_a_saida_antes_de_tudo
+    self.assertEqual(linhas[0], "for _canal in (sys.stdout, sys.stderr):", rel)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 'try:' != 'for _canal in (sys.stdout, sys.stderr):'
+- try:
++ for _canal in (sys.stdout, sys.stderr):
+ : bin/adapters/claude/sdd-report-guard.py
+
+======================================================================
+FAIL: test_todo_script_com_main_troca_a_saida_antes_de_tudo (test_f16w2_saida.Guarda.test_todo_script_com_main_troca_a_saida_antes_de_tudo) (script='scripts/check-versions.py')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/robertoduarte/rdd-worktrees/sdd-open-f16w-windows/tests/test_f16w2_saida.py", line 41, in test_todo_script_com_main_troca_a_saida_antes_de_tudo
+    self.assertEqual(linhas[0], "for _canal in (sys.stdout, sys.stderr):", rel)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 'sys.exit(main(sys.argv[1:]))' != 'for _canal in (sys.stdout, sys.stderr):'
+- sys.exit(main(sys.argv[1:]))
++ for _canal in (sys.stdout, sys.stderr):
+ : scripts/check-versions.py
+
+======================================================================
+FAIL: test_todo_script_com_main_troca_a_saida_antes_de_tudo (test_f16w2_saida.Guarda.test_todo_script_com_main_troca_a_saida_antes_de_tudo) (script='scripts/gerar-starter.py')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/robertoduarte/rdd-worktrees/sdd-open-f16w-windows/tests/test_f16w2_saida.py", line 41, in test_todo_script_com_main_troca_a_saida_antes_de_tudo
+    self.assertEqual(linhas[0], "for _canal in (sys.stdout, sys.stderr):", rel)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 'sys.exit(main(sys.argv[1:]))' != 'for _canal in (sys.stdout, sys.stderr):'
+- sys.exit(main(sys.argv[1:]))
++ for _canal in (sys.stdout, sys.stderr):
+ : scripts/gerar-starter.py
+
+======================================================================
+FAIL: test_todo_script_com_main_troca_a_saida_antes_de_tudo (test_f16w2_saida.Guarda.test_todo_script_com_main_troca_a_saida_antes_de_tudo) (script='scripts/starter/raiz/scripts/check-gerado.py')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/robertoduarte/rdd-worktrees/sdd-open-f16w-windows/tests/test_f16w2_saida.py", line 41, in test_todo_script_com_main_troca_a_saida_antes_de_tudo
+    self.assertEqual(linhas[0], "for _canal in (sys.stdout, sys.stderr):", rel)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 'sys.exit(main(sys.argv))' != 'for _canal in (sys.stdout, sys.stderr):'
+- sys.exit(main(sys.argv))
++ for _canal in (sys.stdout, sys.stderr):
+ : scripts/starter/raiz/scripts/check-gerado.py
+
+======================================================================
+FAIL: test_todo_script_com_main_troca_a_saida_antes_de_tudo (test_f16w2_saida.Guarda.test_todo_script_com_main_troca_a_saida_antes_de_tudo) (script='scripts/starter/raiz/scripts/check-versions.py')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/robertoduarte/rdd-worktrees/sdd-open-f16w-windows/tests/test_f16w2_saida.py", line 41, in test_todo_script_com_main_troca_a_saida_antes_de_tudo
+    self.assertEqual(linhas[0], "for _canal in (sys.stdout, sys.stderr):", rel)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 'sys.exit(main())' != 'for _canal in (sys.stdout, sys.stderr):'
+- sys.exit(main())
++ for _canal in (sys.stdout, sys.stderr):
+ : scripts/starter/raiz/scripts/check-versions.py
+
+======================================================================
+FAIL: test_todo_script_com_main_troca_a_saida_antes_de_tudo (test_f16w2_saida.Guarda.test_todo_script_com_main_troca_a_saida_antes_de_tudo) (script='scripts/testes-por-modulo.py')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/robertoduarte/rdd-worktrees/sdd-open-f16w-windows/tests/test_f16w2_saida.py", line 41, in test_todo_script_com_main_troca_a_saida_antes_de_tudo
+    self.assertEqual(linhas[0], "for _canal in (sys.stdout, sys.stderr):", rel)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 'sys.exit(main(sys.argv[1:]))' != 'for _canal in (sys.stdout, sys.stderr):'
+- sys.exit(main(sys.argv[1:]))
++ for _canal in (sys.stdout, sys.stderr):
+ : scripts/testes-por-modulo.py
+
+======================================================================
+FAIL: test_todo_script_com_main_troca_a_saida_antes_de_tudo (test_f16w2_saida.Guarda.test_todo_script_com_main_troca_a_saida_antes_de_tudo) (script='sdd/bin/design-lint.py')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/robertoduarte/rdd-worktrees/sdd-open-f16w-windows/tests/test_f16w2_saida.py", line 41, in test_todo_script_com_main_troca_a_saida_antes_de_tudo
+    self.assertEqual(linhas[0], "for _canal in (sys.stdout, sys.stderr):", rel)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 'sys.exit(main(sys.argv))' != 'for _canal in (sys.stdout, sys.stderr):'
+- sys.exit(main(sys.argv))
++ for _canal in (sys.stdout, sys.stderr):
+ : sdd/bin/design-lint.py
+
+======================================================================
+FAIL: test_todo_script_com_main_troca_a_saida_antes_de_tudo (test_f16w2_saida.Guarda.test_todo_script_com_main_troca_a_saida_antes_de_tudo) (script='sdd/bin/governanca-bloco.py')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/robertoduarte/rdd-worktrees/sdd-open-f16w-windows/tests/test_f16w2_saida.py", line 41, in test_todo_script_com_main_troca_a_saida_antes_de_tudo
+    self.assertEqual(linhas[0], "for _canal in (sys.stdout, sys.stderr):", rel)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 'sys.exit(main(sys.argv[1:]))' != 'for _canal in (sys.stdout, sys.stderr):'
+- sys.exit(main(sys.argv[1:]))
++ for _canal in (sys.stdout, sys.stderr):
+ : sdd/bin/governanca-bloco.py
+
+======================================================================
+FAIL: test_todo_script_com_main_troca_a_saida_antes_de_tudo (test_f16w2_saida.Guarda.test_todo_script_com_main_troca_a_saida_antes_de_tudo) (script='sdd/bin/handoff-lint.py')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/robertoduarte/rdd-worktrees/sdd-open-f16w-windows/tests/test_f16w2_saida.py", line 41, in test_todo_script_com_main_troca_a_saida_antes_de_tudo
+    self.assertEqual(linhas[0], "for _canal in (sys.stdout, sys.stderr):", rel)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 'sys.exit(main(sys.argv))' != 'for _canal in (sys.stdout, sys.stderr):'
+- sys.exit(main(sys.argv))
++ for _canal in (sys.stdout, sys.stderr):
+ : sdd/bin/handoff-lint.py
+
+======================================================================
+FAIL: test_todo_script_com_main_troca_a_saida_antes_de_tudo (test_f16w2_saida.Guarda.test_todo_script_com_main_troca_a_saida_antes_de_tudo) (script='sdd/bin/kb-dominios.py')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/robertoduarte/rdd-worktrees/sdd-open-f16w-windows/tests/test_f16w2_saida.py", line 41, in test_todo_script_com_main_troca_a_saida_antes_de_tudo
+    self.assertEqual(linhas[0], "for _canal in (sys.stdout, sys.stderr):", rel)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 'sys.exit(main(sys.argv))' != 'for _canal in (sys.stdout, sys.stderr):'
+- sys.exit(main(sys.argv))
++ for _canal in (sys.stdout, sys.stderr):
+ : sdd/bin/kb-dominios.py
+
+======================================================================
+FAIL: test_todo_script_com_main_troca_a_saida_antes_de_tudo (test_f16w2_saida.Guarda.test_todo_script_com_main_troca_a_saida_antes_de_tudo) (script='sdd/bin/report-lint.py')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/robertoduarte/rdd-worktrees/sdd-open-f16w-windows/tests/test_f16w2_saida.py", line 41, in test_todo_script_com_main_troca_a_saida_antes_de_tudo
+    self.assertEqual(linhas[0], "for _canal in (sys.stdout, sys.stderr):", rel)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 'sys.exit(main(sys.argv))' != 'for _canal in (sys.stdout, sys.stderr):'
+- sys.exit(main(sys.argv))
++ for _canal in (sys.stdout, sys.stderr):
+ : sdd/bin/report-lint.py
+
+======================================================================
+FAIL: test_todo_script_com_main_troca_a_saida_antes_de_tudo (test_f16w2_saida.Guarda.test_todo_script_com_main_troca_a_saida_antes_de_tudo) (script='sdd/bin/sdd-archive.py')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/robertoduarte/rdd-worktrees/sdd-open-f16w-windows/tests/test_f16w2_saida.py", line 41, in test_todo_script_com_main_troca_a_saida_antes_de_tudo
+    self.assertEqual(linhas[0], "for _canal in (sys.stdout, sys.stderr):", rel)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 'sys.exit(main())' != 'for _canal in (sys.stdout, sys.stderr):'
+- sys.exit(main())
++ for _canal in (sys.stdout, sys.stderr):
+ : sdd/bin/sdd-archive.py
+
+======================================================================
+FAIL: test_todo_script_com_main_troca_a_saida_antes_de_tudo (test_f16w2_saida.Guarda.test_todo_script_com_main_troca_a_saida_antes_de_tudo) (script='sdd/bin/skill-lint.py')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/robertoduarte/rdd-worktrees/sdd-open-f16w-windows/tests/test_f16w2_saida.py", line 41, in test_todo_script_com_main_troca_a_saida_antes_de_tudo
+    self.assertEqual(linhas[0], "for _canal in (sys.stdout, sys.stderr):", rel)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 'sys.exit(main(sys.argv))' != 'for _canal in (sys.stdout, sys.stderr):'
+- sys.exit(main(sys.argv))
++ for _canal in (sys.stdout, sys.stderr):
+ : sdd/bin/skill-lint.py
+
+======================================================================
+FAIL: test_todo_script_com_main_troca_a_saida_antes_de_tudo (test_f16w2_saida.Guarda.test_todo_script_com_main_troca_a_saida_antes_de_tudo) (script='sdd/review/stubs/openrouter.py')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/robertoduarte/rdd-worktrees/sdd-open-f16w-windows/tests/test_f16w2_saida.py", line 41, in test_todo_script_com_main_troca_a_saida_antes_de_tudo
+    self.assertEqual(linhas[0], "for _canal in (sys.stdout, sys.stderr):", rel)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 'main()' != 'for _canal in (sys.stdout, sys.stderr):'
+- main()
++ for _canal in (sys.stdout, sys.stderr):
+ : sdd/review/stubs/openrouter.py
+
+======================================================================
+FAIL: test_os_scripts_imprimem_o_caractere_e_saem_com_o_exit_de_sempre (test_f16w2_saida.SaidaCp1252.test_os_scripts_imprimem_o_caractere_e_saem_com_o_exit_de_sempre) (script='sdd/bin/design-lint.py')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/robertoduarte/rdd-worktrees/sdd-open-f16w-windows/tests/test_f16w2_saida.py", line 74, in test_os_scripts_imprimem_o_caractere_e_saem_com_o_exit_de_sempre
+    self.assertNotIn("UnicodeEncodeError", saida)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 'UnicodeEncodeError' unexpectedly found in 'Traceback (most recent call last):\n  File "/Users/robertoduarte/rdd-worktrees/sdd-open-f16w-windows/sdd/bin/design-lint.py", line 283, in <module>\n    sys.exit(main(sys.argv))\n             ~~~~^^^^^^^^^^\n  File "/Users/robertoduarte/rdd-worktrees/sdd-open-f16w-windows/sdd/bin/design-lint.py", line 278, in main\n    print(f"\\u2705 {argv[1]}: DESIGN v�lido")\n    ~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File "/opt/homebrew/Cellar/python@3.15/3.15.0_1/Frameworks/Python.framework/Versions/3.15/lib/python3.15/encodings/cp1252.py", line 19, in encode\n    return codecs.charmap_encode(input,self.errors,encoding_table)[0]\n           ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nUnicodeEncodeError: \'charmap\' codec can\'t encode character \'\\u2705\' in position 0: character maps to <undefined>\n'
+
+======================================================================
+FAIL: test_os_scripts_imprimem_o_caractere_e_saem_com_o_exit_de_sempre (test_f16w2_saida.SaidaCp1252.test_os_scripts_imprimem_o_caractere_e_saem_com_o_exit_de_sempre) (script='sdd/bin/handoff-lint.py')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/robertoduarte/rdd-worktrees/sdd-open-f16w-windows/tests/test_f16w2_saida.py", line 75, in test_os_scripts_imprimem_o_caractere_e_saem_com_o_exit_de_sempre
+    self.assertNotRegex(saida, r"\\U0001|\\u2")
+    ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: Regex matched: '\\U0001' matches '\\\\U0001|\\\\u2' in "\\U0001f6d1 DESIGN_X.md: o 1� t�tulo n�o � '# HANDOFF: <feature>'\n\\U0001f6d1 DESIGN_X.md: falta a se��o ## Ficha\n\\U0001f6d1 DESIGN_X.md: ## Prompt de retomada ausente ou sem o bloco de c�digo que se cola na sess�o nova (s� a ficha com Status \\u2705 dispensa o prompt)\n\\U0001f6d1 DESIGN_X.md: ## Hist�rico de slices sem nenhum '### <slice> � AAAA-MM-DD'\nRESULTADO: VERMELHO\n\\u2192 corrija a ficha nos pontos acima (molde: sdd/templates/HANDOFF_TEMPLATE.md) e rode de novo\n"
+
+======================================================================
+FAIL: test_os_scripts_imprimem_o_caractere_e_saem_com_o_exit_de_sempre (test_f16w2_saida.SaidaCp1252.test_os_scripts_imprimem_o_caractere_e_saem_com_o_exit_de_sempre) (script='sdd/bin/skill-lint.py')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/robertoduarte/rdd-worktrees/sdd-open-f16w-windows/tests/test_f16w2_saida.py", line 75, in test_os_scripts_imprimem_o_caractere_e_saem_com_o_exit_de_sempre
+    self.assertNotRegex(saida, r"\\U0001|\\u2")
+    ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: Regex matched: '\\U0001' matches '\\\\U0001|\\\\u2' in "\\U0001f6d1 vazia: n�o consegui ler: [Errno 21] Is a directory: 'vazia'\nRESULTADO: VERMELHO\n\\u2192 corrija o frontmatter apontado acima (spec: agentskills.io/specification)\n"
+
+======================================================================
+FAIL: test_os_scripts_imprimem_o_caractere_e_saem_com_o_exit_de_sempre (test_f16w2_saida.SaidaCp1252.test_os_scripts_imprimem_o_caractere_e_saem_com_o_exit_de_sempre) (script='sdd/bin/kb-dominios.py')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/robertoduarte/rdd-worktrees/sdd-open-f16w-windows/tests/test_f16w2_saida.py", line 75, in test_os_scripts_imprimem_o_caractere_e_saem_com_o_exit_de_sempre
+    self.assertNotRegex(saida, r"\\U0001|\\u2")
+    ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: Regex matched: '\\U0001' matches '\\\\U0001|\\\\u2' in "\\U0001f6d1 DESIGN_X.md: falta a linha **KB Domains** no Technical Context\nRESULTADO: VERMELHO\n\\u2192 corrija o KB Domains com nomes de 'ls sdd/kb/' ou escreva nenhum, e rode de novo\n"
+
+======================================================================
+FAIL: test_os_scripts_imprimem_o_caractere_e_saem_com_o_exit_de_sempre (test_f16w2_saida.SaidaCp1252.test_os_scripts_imprimem_o_caractere_e_saem_com_o_exit_de_sempre) (script='sdd/bin/governanca-bloco.py')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/robertoduarte/rdd-worktrees/sdd-open-f16w-windows/tests/test_f16w2_saida.py", line 74, in test_os_scripts_imprimem_o_caractere_e_saem_com_o_exit_de_sempre
+    self.assertNotIn("UnicodeEncodeError", saida)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 'UnicodeEncodeError' unexpectedly found in '\\U0001f6d1 informe a resposta do revisor\ngovernanca-bloco.py � confere o bloco <<<GOVERNANCA � >>> que o revisor fresco devolve ao passo 11 do\nsdd-define, contra o relat�rio gravado e a sa�da da fronteira. S� stdlib, Python >= 3.9.\n\nUso:\n    python3 sdd/bin/governanca-bloco.py <resposta.txt> --saida <caminho do relat�rio> [--comparar <sa�da.txt>]\n      <resposta.txt>   a resposta do revisor (o �ltimo bloco <<<GOVERNANCA � >>> � o que vale)\n      --saida          o `saida:` mandado ao revisor (caminho do relat�rio)\n      --comparar       a sa�da de `governanca-fronteira.sh --comparar` (linhas MUDOU:/FORA:); com ela, o bloco\n                       s� � v�lido se n�o houver FORA: e houver a linha RESULTADO: S� O PERMITIDO MUDOU\n\nTraceback (most recent call last):\n  File "/Users/robertoduarte/rdd-worktrees/sdd-open-f16w-windows/sdd/bin/governanca-bloco.py", line 176, in <module>\n    sys.exit(main(sys.argv[1:]))\n             ~~~~^^^^^^^^^^^^^^\n  File "/Users/robertoduarte/rdd-worktrees/sdd-open-f16w-windows/sdd/bin/governanca-bloco.py", line 71, in main\n    uso("informe a resposta do revisor")\n    ~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File "/Users/robertoduarte/rdd-worktrees/sdd-open-f16w-windows/sdd/bin/governanca-bloco.py", line 34, in uso\n    print("RESULTADO: ERRO DE USO\\n\\u2192 chame com <resposta.txt> --saida <relat�rio> [--comparar <sa�da>].")\n    ~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File "/opt/homebrew/Cellar/python@3.15/3.15.0_1/Frameworks/Python.framework/Versions/3.15/lib/python3.15/encodings/cp1252.py", line 19, in encode\n    return codecs.charmap_encode(input,self.errors,encoding_table)[0]\n           ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nUnicodeEncodeError: \'charmap\' codec can\'t encode character \'\\u2192\' in position 23: character maps to <undefined>\n'
+
+======================================================================
+FAIL: test_os_scripts_imprimem_o_caractere_e_saem_com_o_exit_de_sempre (test_f16w2_saida.SaidaCp1252.test_os_scripts_imprimem_o_caractere_e_saem_com_o_exit_de_sempre) (script='.agents/skills/sdd-release/scripts/deploy-espera-testes.py')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/robertoduarte/rdd-worktrees/sdd-open-f16w-windows/tests/test_f16w2_saida.py", line 74, in test_os_scripts_imprimem_o_caractere_e_saem_com_o_exit_de_sempre
+    self.assertNotIn("UnicodeEncodeError", saida)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 'UnicodeEncodeError' unexpectedly found in 'RESULTADO: NAO_SE_APLICA\nTraceback (most recent call last):\n  File "/Users/robertoduarte/rdd-worktrees/sdd-open-f16w-windows/.agents/skills/sdd-release/scripts/deploy-espera-testes.py", line 423, in <module>\n    sys.exit(main(sys.argv))\n             ~~~~^^^^^^^^^^\n  File "/Users/robertoduarte/rdd-worktrees/sdd-open-f16w-windows/.agents/skills/sdd-release/scripts/deploy-espera-testes.py", line 418, in main\n    print("\\u2192 O deploy espera os testes? " + resposta)\n    ~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File "/opt/homebrew/Cellar/python@3.15/3.15.0_1/Frameworks/Python.framework/Versions/3.15/lib/python3.15/encodings/cp1252.py", line 19, in encode\n    return codecs.charmap_encode(input,self.errors,encoding_table)[0]\n           ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nUnicodeEncodeError: \'charmap\' codec can\'t encode character \'\\u2192\' in position 0: character maps to <undefined>\n'
+
+======================================================================
+FAIL: test_os_scripts_imprimem_o_caractere_e_saem_com_o_exit_de_sempre (test_f16w2_saida.SaidaCp1252.test_os_scripts_imprimem_o_caractere_e_saem_com_o_exit_de_sempre) (script='scripts/check-versions.py')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/robertoduarte/rdd-worktrees/sdd-open-f16w-windows/tests/test_f16w2_saida.py", line 74, in test_os_scripts_imprimem_o_caractere_e_saem_com_o_exit_de_sempre
+    self.assertNotIn("UnicodeEncodeError", saida)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 'UnicodeEncodeError' unexpectedly found in 'check-versions: base \'nada\' indispon�vel; s� as checagens estruturais.\nPASS: check-versions � 22 skills com vers�o coerente.\nTraceback (most recent call last):\n  File "/Users/robertoduarte/rdd-worktrees/sdd-open-f16w-windows/scripts/check-versions.py", line 131, in <module>\n    sys.exit(main(sys.argv[1:]))\n             ~~~~^^^^^^^^^^^^^^\n  File "/Users/robertoduarte/rdd-worktrees/sdd-open-f16w-windows/scripts/check-versions.py", line 126, in main\n    print("RESULTADO: VERDE\\n\\u2192 siga para o pr�ximo passo.")\n    ~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File "/opt/homebrew/Cellar/python@3.15/3.15.0_1/Frameworks/Python.framework/Versions/3.15/lib/python3.15/encodings/cp1252.py", line 19, in encode\n    return codecs.charmap_encode(input,self.errors,encoding_table)[0]\n           ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nUnicodeEncodeError: \'charmap\' codec can\'t encode character \'\\u2192\' in position 17: character maps to <undefined>\n'
+
+----------------------------------------------------------------------
+Ran 3 tests in 0.368s
+
+FAILED (failures=28)
+[exit=1]

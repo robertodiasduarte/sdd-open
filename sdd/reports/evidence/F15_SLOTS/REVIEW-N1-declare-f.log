@@ -1,0 +1,11 @@
+$ for CMD in ...; do /bin/bash -c 'eval "__slot_cmd() { $1 \"\$@\"
+}" && declare -f __slot_cmd' _ "$CMD"; done   # bash $(/bin/bash -c 'echo $BASH_VERSION')
+# o auditor (qwen) disse que declare -f preserva comentários (N1, HIGH); medido no piso do projeto:
+[bash x.sh 0 # gate] => __slot_cmd () ~{ ~    bash x.sh 0~}~
+[bash x.sh a#b] => __slot_cmd () ~{ ~    bash x.sh a#b "$@"~}~
+[bash x.sh;] => __slot_cmd () ~{ ~    bash x.sh;~    "$@"~}~
+[bash x.sh &] => __slot_cmd () ~{ ~    bash x.sh & "$@"~}~
+[bash x.sh |] => __slot_cmd () ~{ ~    bash x.sh | "$@"~}~
+[bash x.sh] => __slot_cmd () ~{ ~    bash x.sh "$@"~}~
+[bash x.sh $'it\'s' # c] => __slot_cmd () ~{ ~    bash x.sh 'it'\''s'~}~
+[exit=0]

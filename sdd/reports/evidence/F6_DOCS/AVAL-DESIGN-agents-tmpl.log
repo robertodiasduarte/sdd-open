@@ -1,0 +1,4 @@
+$ (clone simulado + AGENTS.md.tmpl com as linhas Antes/KB, kb-dominios.py e 'um OK só' da Decision 4) SDD_TEST_BASH=/bin/bash /usr/bin/python3 -B -m unittest test_sdd_open test_agnostico test_release_workflow (de tests/)
+Ran 54 tests in 84.053s
+OK
+exit=0

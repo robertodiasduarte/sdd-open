@@ -1,0 +1,9 @@
+$ cd <git archive 97503a7>/tests && SDD_TEST_BASH=/bin/bash python3 -B -m unittest -v test_f17c_textos.MoldesDoOpen
+test_at006_moldes_sem_sobras_de_outro_projeto (test_f17c_textos.MoldesDoOpen.test_at006_moldes_sem_sobras_de_outro_projeto) ... ok
+test_at006_relatorio_com_as_secoes_que_a_skill_pede (test_f17c_textos.MoldesDoOpen.test_at006_relatorio_com_as_secoes_que_a_skill_pede) ... ok
+
+----------------------------------------------------------------------
+Ran 2 tests in 0.003s
+
+OK
+rc=0

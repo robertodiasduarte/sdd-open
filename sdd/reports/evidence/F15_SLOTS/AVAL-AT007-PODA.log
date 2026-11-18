@@ -1,0 +1,43 @@
+$ /bin/bash /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f15-slots/80a83c1b-4077-4625-ba69-e27f11f530a1/scratchpad/p6.sh
+################ NEW
+== --touched nao poda
+▶ testes: bash t.sh
+ℹ️  conhecida: m.T.test_a
+⚠️  baseline não podado (execução parcial)
+✅ nenhuma falha nova (1 conhecida(s)).
+RESULTADO: VERDE
+→ siga para o próximo passo.
+[exit=0]
+m.T.test_velho
+m.T.test_a
+== completo poda m.T.test_velho
+▶ testes: bash t.sh
+ℹ️  conhecida: m.T.test_a
+✅ sarou — removido do baseline (commite sdd/baselines/tests.txt): m.T.test_velho
+✅ nenhuma falha nova (1 conhecida(s)).
+RESULTADO: VERDE
+→ siga para o próximo passo.
+[exit=0]
+baseline:
+m.T.test_a
+################ OLD
+== --touched nao poda
+▶ testes: bash t.sh
+ℹ️  conhecida: m.T.test_a
+⚠️  baseline não podado (execução parcial)
+✅ nenhuma falha nova (1 conhecida(s)).
+RESULTADO: VERDE
+→ siga para o próximo passo.
+[exit=0]
+m.T.test_velho
+m.T.test_a
+== completo poda m.T.test_velho
+▶ testes: bash t.sh
+ℹ️  conhecida: m.T.test_a
+✅ sarou — removido do baseline (commite sdd/baselines/tests.txt): m.T.test_velho
+✅ nenhuma falha nova (1 conhecida(s)).
+RESULTADO: VERDE
+→ siga para o próximo passo.
+[exit=0]
+baseline:
+m.T.test_a

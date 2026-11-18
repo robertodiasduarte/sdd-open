@@ -1,0 +1,102 @@
+$ bash sdd/reports/evidence/M1/sabotagem.sh
+════ .github/workflows/release.yml — release deixa de esperar o piso no macOS
+-- diff da sabotagem:
+-    needs: [testes, testes-macos]
++    needs: testes
+-- suíte test_release_workflow.py com a sabotagem: rc=1
+FAIL: test_release_espera_o_piso (test_release_workflow.PisoNoMacos)
+FAIL: test_release_depende_dos_testes_e_e_o_unico_com_escrita (test_release_workflow.Release)
+Ran 27 tests in 1.519s
+FAILED (failures=2)
+-- depois de git checkout -- .github/workflows/release.yml: rc=0
+Ran 27 tests in 1.566s
+OK
+════ .github/workflows/publish-gate.yml — o job do piso deixa de rodar no macOS
+-- diff da sabotagem:
+-    runs-on: macos-latest
++    runs-on: ubuntu-latest
+-- suíte test_release_workflow.py com a sabotagem: rc=1
+FAIL: test_job_macos_nos_dois_workflows (test_release_workflow.PisoNoMacos) (workflow='publish-gate.yml')
+Ran 27 tests in 1.511s
+FAILED (failures=1)
+-- depois de git checkout -- .github/workflows/publish-gate.yml: rc=0
+Ran 27 tests in 1.488s
+OK
+════ .github/workflows/release.yml — um checkout volta ao v4.4.0 (Node 20)
+-- diff da sabotagem:
+-      - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5.1.0
++      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
+-      - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5.1.0
++      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
+-      - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5.1.0
++      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
+-- suíte test_release_workflow.py com a sabotagem: rc=1
+FAIL: test_checkout_e_o_v5_em_todo_job (test_release_workflow.Release) (workflow='release.yml')
+Ran 27 tests in 1.488s
+FAILED (failures=1)
+-- depois de git checkout -- .github/workflows/release.yml: rc=0
+Ran 27 tests in 1.484s
+OK
+════ .github/workflows/release.yml — a varredura deixa de ver o ALM (controle bidi U+061C)
+-- diff da sabotagem:
+-          invisivel = re.compile("[\u00ad\u034f\u061c\u115f-\u1160\u180e\u200b\u200c\u200e\u200f\u2028-\u202e\u2060-\u2064\u2066-\u2069\u3164\ufe00-\ufe0e\ufeff\uffa0\ufff9-\ufffb\U000e0000-\U000e007f\U000e0100-\U000e01ef]")
++          invisivel = re.compile("[\u00ad\u034f\u115f-\u1160\u180e\u200b\u200c\u200e\u200f\u2028-\u202e\u2060-\u2064\u2066-\u2069\u3164\ufe00-\ufe0e\ufeff\uffa0\ufff9-\ufffb\U000e0000-\U000e007f\U000e0100-\U000e01ef]")
+-- suíte test_release_workflow.py com a sabotagem: rc=1
+FAIL: test_cada_sinal_reprova (test_release_workflow.IntegridadeDasSkills) (sinal='ALM')
+FAIL: test_mesmo_programa_nos_dois_workflows (test_release_workflow.IntegridadeDasSkills)
+Ran 27 tests in 1.527s
+FAILED (failures=2)
+-- depois de git checkout -- .github/workflows/release.yml: rc=0
+Ran 27 tests in 1.513s
+OK
+════ .github/workflows/release.yml — revisão, nota 1: alvo vazio volta a passar sem varrer nada
+-- diff da sabotagem:
+-          if not lidos:
++          if False:
+-- suíte test_release_workflow.py com a sabotagem: rc=1
+FAIL: test_alvo_inexistente_ou_vazio_reprova (test_release_workflow.IntegridadeDasSkills) (alvo='skills-vazio')
+FAIL: test_mesmo_programa_nos_dois_workflows (test_release_workflow.IntegridadeDasSkills)
+Ran 27 tests in 1.559s
+FAILED (failures=2)
+-- depois de git checkout -- .github/workflows/release.yml: rc=0
+Ran 27 tests in 1.582s
+OK
+════ .github/workflows/publish-gate.yml — revisão, nota 2: o piso volta a ser só impresso
+-- diff da sabotagem:
+-          /usr/bin/python3 -c 'import sys; print(sys.version); sys.exit(sys.version_info[:2] != (3, 9))'
++          /usr/bin/python3 -c 'import sys; print(sys.version)'
+-          python3 -c 'import sys; print(sys.version); sys.exit(sys.version_info[:2] != (3, 9))'
++          python3 -c 'import sys; print(sys.version)'
+-- suíte test_release_workflow.py com a sabotagem: rc=1
+FAIL: test_piso_afirmado_e_python3_do_path_e_o_do_piso (test_release_workflow.PisoNoMacos) (workflow='publish-gate.yml')
+Ran 27 tests in 1.592s
+FAILED (failures=1)
+-- depois de git checkout -- .github/workflows/publish-gate.yml: rc=0
+Ran 27 tests in 1.522s
+OK
+════ .github/workflows/release.yml — revisão, nota 3: source <(curl …) deixa de reprovar
+-- diff da sabotagem:
+-                              + r"|(source|\.)\s+<\(\s*(curl|wget)")
++                              + r"|(sourcex)\s+<\(\s*(curl|wget)")
+-- suíte test_release_workflow.py com a sabotagem: rc=1
+FAIL: test_cada_sinal_reprova (test_release_workflow.IntegridadeDasSkills) (sinal='source <(curl)')
+FAIL: test_mesmo_programa_nos_dois_workflows (test_release_workflow.IntegridadeDasSkills)
+Ran 27 tests in 1.589s
+FAILED (failures=2)
+-- depois de git checkout -- .github/workflows/release.yml: rc=0
+Ran 27 tests in 1.605s
+OK
+════ .github/workflows/publish-gate.yml — a varredura do gate acha e não reprova
+-- diff da sabotagem:
+-          sys.exit(1 if achados else 0)
++          sys.exit(0)
+-- suíte test_release_workflow.py com a sabotagem: rc=1
+FAIL: test_mesmo_programa_nos_dois_workflows (test_release_workflow.IntegridadeDasSkills)
+Ran 27 tests in 1.512s
+FAILED (failures=1)
+-- depois de git checkout -- .github/workflows/publish-gate.yml: rc=0
+Ran 27 tests in 1.523s
+OK
+════
+sabotagens sem prova: 0
+exit=0

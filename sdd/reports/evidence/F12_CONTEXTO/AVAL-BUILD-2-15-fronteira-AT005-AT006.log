@@ -1,0 +1,77 @@
+$ cat /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f12-contexto/ba201848-0f5b-4f61-8434-538b155d5260/scratchpad/at5.sh; echo ======; /bin/bash /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f12-contexto/ba201848-0f5b-4f61-8434-538b155d5260/scratchpad/at5.sh /Users/robertoduarte/rdd-worktrees/sdd-open-f12-contexto
+# sonda AT-005/AT-006: os casos de FORA e os de 64, no a57fde6
+FR="$1/sdd/bin/governanca-fronteira.sh"; W=$(mktemp -d); R="$W/r"; mkdir "$R"; cd "$R"
+G='git -c user.email=a@b -c user.name=a -c commit.gpgsign=false'; git init -q
+mkdir -p sdd/contexto src; printf 'sdd/cache/\n' > .gitignore; echo a > src/a.txt; echo del > src/apagar.txt; $G add -A; $G commit -qm c1
+echo sujo > src/sujo.txt          # já sujo (??) antes do snapshot
+mkdir -p sdd/cache; echo c > sdd/cache/k.txt
+P="$R/sdd/contexto/x.md"
+cmp_() { bash "$FR" --snapshot "$R" "$W/d" "$P" >/dev/null; bash "$FR" --comparar "$W/a" "$W/d" "$P" | sed "s#$(cd "$R" && pwd -P)#<R>#"; echo "rc=${PIPESTATUS[0]}"; }
+reset_() { bash "$FR" --snapshot "$R" "$W/a" "$P" >/dev/null; }
+reset_; echo ok > "$P";                                   echo '>>> só o permitido';               cmp_
+reset_; echo outro > src/sujo.txt;                        echo '>>> sobrescrita de arquivo já sujo'; cmp_
+reset_; mkdir -p novo/dir; echo n > novo/dir/f.txt;       echo '>>> arquivo novo em pasta sem rastreado'; cmp_
+reset_; echo c2 > sdd/cache/k.txt;                        echo '>>> arquivo em pasta ignorada sob sdd/'; cmp_
+reset_; rm src/apagar.txt;                                echo '>>> arquivo apagado'; cmp_
+reset_; echo z > "src/ação.txt";                          echo '>>> nome com acento'; cmp_
+reset_; echo z2 > "src/ação.txt";                         echo '>>> sobrescrita de nome com acento já sujo'; cmp_
+echo '>>> permitido por caminho com link simbólico (/var vs /private/var)'
+reset_; echo ok2 > "$P"; bash "$FR" --snapshot "$R" "$W/d" "$P" >/dev/null; bash "$FR" --comparar "$W/a" "$W/d" "$R/sdd/contexto/x.md"; echo "rc=$?"
+echo '=== AT-006'
+bash "$FR" --snapshot "$R" "$R/snap" >/dev/null 2>&1; echo "snapshot dentro do worktree rc=$?"
+bash "$FR" --comparar "$W/a" "$W/nao-existe" "$P" >/dev/null 2>&1; echo "snapshot ausente rc=$?"
+cp "$W/a" "$W/ilegivel"; chmod 000 "$W/ilegivel"; bash "$FR" --comparar "$W/a" "$W/ilegivel" "$P" >/dev/null 2>&1; echo "snapshot ilegível rc=$?"; chmod 600 "$W/ilegivel"
+bash "$FR" --comparar "$W/a" "$W/d" >/dev/null 2>&1; echo "comparar sem permitido rc=$?"
+bash "$FR" >/dev/null 2>&1; echo "sem args rc=$?"
+bash "$FR" --snapshot "$R/src" "$W/s" >/dev/null 2>&1; echo "raiz = subpasta rc=$?"
+bash "$FR" --snapshot "$W" "$W/s2" >/dev/null 2>&1; echo "não é repositório rc=$?"
+======
+>>> só o permitido
+MUDOU: <R>/sdd/contexto/x.md
+RESULTADO: SÓ O PERMITIDO MUDOU
+→ siga com o arquivo que o agente gravou.
+rc=0
+>>> sobrescrita de arquivo já sujo
+FORA: <R>/src/sujo.txt
+RESULTADO: ESCRITA FORA DO PERMITIDO
+→ não apague nada: liste os caminhos FORA para a pessoa conferir, regrave o DEFINE se ele mudou e conte como falha (1 redespacho).
+rc=1
+>>> arquivo novo em pasta sem rastreado
+FORA: <R>/novo/dir/f.txt
+RESULTADO: ESCRITA FORA DO PERMITIDO
+→ não apague nada: liste os caminhos FORA para a pessoa conferir, regrave o DEFINE se ele mudou e conte como falha (1 redespacho).
+rc=1
+>>> arquivo em pasta ignorada sob sdd/
+FORA: <R>/sdd/cache/k.txt
+RESULTADO: ESCRITA FORA DO PERMITIDO
+→ não apague nada: liste os caminhos FORA para a pessoa conferir, regrave o DEFINE se ele mudou e conte como falha (1 redespacho).
+rc=1
+>>> arquivo apagado
+FORA: <R>/src/apagar.txt
+RESULTADO: ESCRITA FORA DO PERMITIDO
+→ não apague nada: liste os caminhos FORA para a pessoa conferir, regrave o DEFINE se ele mudou e conte como falha (1 redespacho).
+rc=1
+>>> nome com acento
+FORA: <R>/src/ação.txt
+RESULTADO: ESCRITA FORA DO PERMITIDO
+→ não apague nada: liste os caminhos FORA para a pessoa conferir, regrave o DEFINE se ele mudou e conte como falha (1 redespacho).
+rc=1
+>>> sobrescrita de nome com acento já sujo
+FORA: <R>/src/ação.txt
+RESULTADO: ESCRITA FORA DO PERMITIDO
+→ não apague nada: liste os caminhos FORA para a pessoa conferir, regrave o DEFINE se ele mudou e conte como falha (1 redespacho).
+rc=1
+>>> permitido por caminho com link simbólico (/var vs /private/var)
+MUDOU: /private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.XamSJVCSFT/r/sdd/contexto/x.md
+RESULTADO: SÓ O PERMITIDO MUDOU
+→ siga com o arquivo que o agente gravou.
+rc=0
+=== AT-006
+snapshot dentro do worktree rc=64
+snapshot ausente rc=64
+snapshot ilegível rc=64
+comparar sem permitido rc=64
+sem args rc=64
+raiz = subpasta rc=64
+não é repositório rc=64
+[exit=0]

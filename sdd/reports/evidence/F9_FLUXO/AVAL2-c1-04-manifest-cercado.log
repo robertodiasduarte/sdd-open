@@ -1,0 +1,8 @@
+$ T=$(mktemp -d); printf "# D\n\n\`\`\`markdown\n## File Manifest\n\n| 1 | \`a\` | Modify | exemplo |\n\`\`\`\n\n## File Manifest\n\n| # | File | Action |\n|---|---|---|\n| 1 | \`a\` | Create | x |\n| 2 | \`b\` | Create | x |\n| 3 | \`c\` | Create | x |\n" > "$T/DESIGN_T.md"; bash sdd/bin/sdd-fluxo.sh review-design "$T/DESIGN_T.md"; rc=$?; echo "rc=$rc (esperado 0)"; printf "# D\n\n~~~\n## File Manifest\n| 1 | \`a\` | Create | x |\n| 2 | \`b\` | Create | x |\n| 3 | \`c\` | Create | x |\n~~~\n\nsem manifest real\n" > "$T/DESIGN_S.md"; bash sdd/bin/sdd-fluxo.sh review-design "$T/DESIGN_S.md"; rc2=$?; echo "só manifest cercado com ~~~ rc=$rc2 (esperado 64)"; rm -rf "${T:?}"; test $rc -eq 0 -a $rc2 -eq 64
+EXIGIDO: 3 arquivo(s) novo(s) (limiar 3)
+rc=0 (esperado 0)
+🛑 sdd-fluxo: DESIGN sem ## File Manifest: /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.2srKxuBDvm/DESIGN_S.md
+RESULTADO: MANIFEST ILEGÍVEL
+→ rode a revisão do DESIGN mesmo assim (default seguro) e registre o motivo no Advisor Ledger.
+só manifest cercado com ~~~ rc=64 (esperado 64)
+[exit=0]

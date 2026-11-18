@@ -1,0 +1,101 @@
+$ E=/Users/robertoduarte/rdd-worktrees/sdd-open-f13-ux-llm/sdd/reports/evidence/F13_UX_LLM; T=$(mktemp -d); trap "rm -rf $T" EXIT; C="/usr/bin/python3 -B $E/confere_roteador.py"
+mk(){ d=$T/$1; mkdir -p $d/src/notas $d/sdd/reports $d/sdd/features; (cd $d; git init -q .; printf "design\n" > sdd/features/DESIGN_NOTAS.md; printf "x\n" > base; git add -A; git -c user.name=a -c user.email=a@b.c commit -q -m b); printf "<LOOP_SPEC v=\"2\" perfil=\"lite\" nome=\"x\">\n</LOOP_SPEC>\n| 1 | redigir | LLM | a -> b | v | 100 | 0 | src/notas/redigir.txt |\n" > $d/src/notas/LOOP_SPEC.md; printf " " > $d/src/notas/redigir.txt; }
+echo "=== 1. feliz: skill so listada, scan so ecoado, prompt de 1 espaco"
+mk a; cat > $T/a.log <<L
+exec
+/bin/zsh -lc "ls .agents/skills/sdd-loop-builder/SKILL.md; ls .agents/skills/sdd-prompt-builder/; echo prompt-drift-scan.sh --conteudo src/notas/LOOP_SPEC.md src/notas/redigir.txt"
+ succeeded in 1ms:
+L
+$C feliz $T/a $T/a.log; echo "[rc=$?] (esperado pelo AT-021: reprovar; nao houve leitura nem scan)"
+echo "=== 2. feliz: scan saiu 64 nos 2 arquivos"
+mk b; cat > $T/b.log <<L
+exec
+cat .agents/skills/sdd-loop-builder/SKILL.md
+ succeeded in 1ms:
+exec
+cat .agents/skills/sdd-prompt-builder/SKILL.md
+ succeeded in 1ms:
+exec
+bash sdd/bin/prompt-drift-scan.sh --conteudo src/notas/LOOP_SPEC.md </dev/null
+ exited 64 in 1ms:
+exec
+bash sdd/bin/prompt-drift-scan.sh --conteudo src/notas/redigir.txt </dev/null
+ exited 64 in 1ms:
+L
+$C feliz $T/b $T/b.log; echo "[rc=$?] (AT-019: 64 nunca ignorado)"
+echo "=== 3. feliz: scan DEPOIS de gravar"
+mk c; cat > $T/c.log <<L
+exec
+cat .agents/skills/sdd-loop-builder/SKILL.md
+ succeeded in 1ms:
+exec
+cat .agents/skills/sdd-prompt-builder/SKILL.md
+ succeeded in 1ms:
+exec
+printf x > src/notas/redigir.txt
+ succeeded in 1ms:
+exec
+cat src/notas/LOOP_SPEC.md | bash sdd/bin/prompt-drift-scan.sh --conteudo src/notas/LOOP_SPEC.md; cat src/notas/redigir.txt | bash sdd/bin/prompt-drift-scan.sh --conteudo src/notas/redigir.txt
+ succeeded in 1ms:
+L
+$C feliz $T/c $T/c.log; echo "[rc=$?] (AT-019: antes de gravar)"
+echo "=== 4. feliz: mudou o DESIGN e gravou outro arquivo em sdd/reports e sdd/features"
+mk d; cp $T/c.log $T/d.log; printf "editado\n" > $T/d/sdd/features/DESIGN_NOTAS.md; printf "y\n" > $T/d/sdd/reports/qualquer.sh; printf "y\n" > $T/d/sdd/features/DEFINE_NOVO.md
+$C feliz $T/d $T/d.log; echo "[rc=$?] (AT-021: git status sem outro caminho alem do relatorio)"; git -C $T/d status --porcelain -uall
+echo "=== 5. mesmo comando le prompt-builder antes do loop-builder"
+mk e; sed -e "s#^cat .agents/skills/sdd-loop-builder/SKILL.md#cat .agents/skills/sdd-prompt-builder/SKILL.md .agents/skills/sdd-loop-builder/SKILL.md#" $T/c.log > $T/e.log
+$C feliz $T/e $T/e.log; echo "[rc=$?] (AT-021: nesta ordem)"
+echo "=== 6. sem-skill: improvisou em outra pasta; D2 so na saida de um cat, nao na mensagem final"
+d=$T/f; mkdir -p $d/src/agente; (cd $d; git init -q .); printf "voce e um redator de notas\n" > $d/src/agente/redigir.txt
+{ printf "exec\ncat .agents/skills/sdd-build/SKILL.md\n succeeded in 1ms:\n**Sua decisao** - [D2 · muda o produto] **Como sigo?**\n\ncodex\nPronto: escrevi o prompt em src/agente/redigir.txt.\n[exit=0]\n"; } > $T/f.log
+$C sem-skill $d $T/f.log; echo "[rc=$?] (improviso e mensagem final sem pergunta)"
+echo "=== 7. sem-tipo: relatorio diz que NAO fez triagem; DESIGN reescrito com Tipo"
+mk g; cp $T/c.log $T/g.log; printf "Nenhuma triagem foi feita.\n" > $T/g/sdd/reports/BUILD_REPORT_NOTAS.md; printf "agora com Tipo\n" > $T/g/sdd/features/DESIGN_NOTAS.md
+$C sem-tipo $T/g $T/g.log; echo "[rc=$?]"
+echo "=== 8. falso negativo: forma real do agente com scan por variavel"
+mk h; cat > $T/h.log <<L
+exec
+cat .agents/skills/sdd-loop-builder/SKILL.md
+ succeeded in 1ms:
+exec
+cat .agents/skills/sdd-prompt-builder/SKILL.md
+ succeeded in 1ms:
+exec
+for f in LOOP_SPEC.md redigir.txt; do bash sdd/bin/prompt-drift-scan.sh --conteudo "src/notas/\$f" < "/tmp/\$f"; done
+ succeeded in 1ms:
+exec
+scan=sdd/bin/prompt-drift-scan.sh; bash \$scan --conteudo "\$D/\$n" < x
+ succeeded in 1ms:
+L
+$C feliz $T/h $T/h.log; echo "[rc=$?]"
+
+=== 1. feliz: skill so listada, scan so ecoado, prompt de 1 espaco
+RESULTADO: PASSA
+[rc=0] (esperado pelo AT-021: reprovar; nao houve leitura nem scan)
+=== 2. feliz: scan saiu 64 nos 2 arquivos
+RESULTADO: PASSA
+[rc=0] (AT-019: 64 nunca ignorado)
+=== 3. feliz: scan DEPOIS de gravar
+RESULTADO: PASSA
+[rc=0] (AT-019: antes de gravar)
+=== 4. feliz: mudou o DESIGN e gravou outro arquivo em sdd/reports e sdd/features
+RESULTADO: PASSA
+[rc=0] (AT-021: git status sem outro caminho alem do relatorio)
+ M sdd/features/DESIGN_NOTAS.md
+?? sdd/features/DEFINE_NOVO.md
+?? sdd/reports/qualquer.sh
+?? src/notas/LOOP_SPEC.md
+?? src/notas/redigir.txt
+=== 5. mesmo comando le prompt-builder antes do loop-builder
+RESULTADO: PASSA
+[rc=0] (AT-021: nesta ordem)
+=== 6. sem-skill: improvisou em outra pasta; D2 so na saida de um cat, nao na mensagem final
+RESULTADO: PASSA
+[rc=0] (improviso e mensagem final sem pergunta)
+=== 7. sem-tipo: relatorio diz que NAO fez triagem; DESIGN reescrito com Tipo
+RESULTADO: PASSA
+[rc=0]
+=== 8. falso negativo: forma real do agente com scan por variavel
+RESULTADO: PASSA
+[rc=0]
+[exit=0]

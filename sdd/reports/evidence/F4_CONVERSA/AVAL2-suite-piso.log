@@ -1,0 +1,10 @@
+$ cd /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f4-conversa/5e736f5b-fdb5-4cdd-a304-706fff11b1bb/scratchpad/revisao-fd94876/tests && SDD_TEST_BASH=/bin/bash /usr/bin/python3 -B -m unittest discover -s . -p 'test_*.py'   # precedido de /usr/bin/python3 --version; /bin/bash --version | head -1
+Python 3.9.6
+GNU bash, version 3.2.57(1)-release (arm64-apple-darwin25)
+..............................................................................................................................................................................................................................................................................................................................................................................................
+----------------------------------------------------------------------
+Ran 382 tests in 197.903s
+
+OK
+
+[exited with code 0]

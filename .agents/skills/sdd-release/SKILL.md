@@ -6,7 +6,7 @@ compatibility: Requer bash >= 3.2 e git >= 2.20. Deploy, lint e drift vêm dos s
 license: MIT
 metadata:
   author: Roberto Dias Duarte
-  version: "2.16.0"
+  version: "2.17.0"
   updated: "2026-11"
   fase: "4"
 ---
@@ -14,7 +14,7 @@ metadata:
 # sdd-release — Fase 4
 
 Na primeira resposta desta skill, comece com esta linha, uma vez só, antes do Status:
-`sdd-release v2.16.0 · nov/2026 · versão atual: https://github.com/robertodiasduarte/sdd-open/releases/latest`
+`sdd-release v2.17.0 · nov/2026 · versão atual: https://github.com/robertodiasduarte/sdd-open/releases/latest`
 
 Você comanda, o agente executa a sequência protegida, e há **exatamente um OK humano** antes do push e do
 deploy. Nenhum loop autônomo cruza esse ponto: publicar é decisão humana e irreversível na prática.
@@ -142,7 +142,8 @@ fora dos documentos do SDD) ou `completa` (exit 1); o resultado vai para o ledge
    lado de cada fonte alterada (`foo.ts` → `foo.test.ts`). `2` ⇒ **abortar**, citando cada `🛑 nova:`; `3` ⇒
    WAIVABLE (0d); `0` com `RESULTADO: PULADO` ⇒ declare "pulado — test_cmd vazio"; as `⚠️ nova, fora do diff` vão
    para o bloco do OK.
-10. **Segurança (varredura, em toda publicação):** `bash sdd/bin/seguranca-varredura.sh --saida sdd/reports/evidence/{F}/SEGURANCA.log`
+10. **Segurança (varredura, em toda publicação):** `bash sdd/bin/seguranca-varredura.sh --saida sdd/reports/evidence/{F}/SEGURANCA.log`;
+    com os documentos no repositório (trava `export-ignore` sob `sdd/`), também `bash sdd/bin/docs-varredura.sh .` (1 ⇒ FAIL; 64 ⇒ pulado e dito)
     — `2` ⇒ **abortar** (NON_WAIVABLE) com cada `🛑 Snn arquivo:linha` · `1` ⇒ CONCERNS · `64`/`127` ⇒ **abortar**; detalhe: `references/seguranca.md`.
 
 Se 0a abortou, **nem inicie** as passadas de modelo.
@@ -293,6 +294,9 @@ vai para o recibo **Decidi sozinho** do relatório final.
     `0` ok · `2` ⇒ pare e pergunte `[D1 · não se desfaz]` (formato em `references/como-falar.md`): **reverter** (`git revert`
     do commit, publicado por este mesmo fluxo), **corrigir** (volta ao build; pendência 🐛), **seguir com motivo** (falso
     positivo; o motivo vai para a ficha) ou **não sei** · `3` e `64` ⇒ pendência 🐛 na ficha, nunca ✅ · `10` e `11` declarados.
+
+    **Evidência bruta.** Com a Release desta publicação no ar, `bash .agents/skills/sdd-release/scripts/anexar-bruto.sh {F} <tag>`
+    anexa `sdd/reports/evidence/{F}/bruto/` (fora do git), varrido antes; sem parada: a frase e o 🐛 em `references/bruto.md`.
 
     Verde não prova teste: step de teste com `continue-on-error`, `|| true` ou `exit 0` fixo ⇒ "o deploy terminou, mas o
     workflow não roda testes antes de publicar" (o `deploy-espera-testes.py` do item 7 já disse isso no bloco do OK).

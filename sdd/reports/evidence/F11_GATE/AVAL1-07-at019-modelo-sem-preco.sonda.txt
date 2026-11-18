@@ -1,0 +1,33 @@
+# NOTA (build): este log do avaliador termina num formatador — o [exit] abaixo NÃO prova o comando (gate-shell-evidencia). Fica como registro da sonda; a prova do AT está em verde-adiados.log / gate-v.log / teste-gate.log.
+$ W=/tmp/aval1-f11.wvW4zp; for AR in /Users/robertoduarte/rdd-worktrees/sdd-open-f11-gate/sdd/bin/adversarial-review.sh $W/v230/sdd/bin/adversarial-review.sh; do echo "### $AR"; for cen in sem-custo modelo-sem-preco; do AR_PATH=$AR /usr/bin/python3 -B $W/h.py $W/r19 $W/e19-$cen-$(echo $AR | md5 | cut -c1-6) "openrouter=$cen;claude=auditor" -- --base main --reviewer openrouter --auditor claude --no-revisor2 | grep -E '^(revisor|\[ar_rc)'; grep -hE '^reviewer_(modelo|custo|tokens)' $(ls -d $W/r19/sdd/reports/reviews/*/ | tail -1)META.txt; done; done
+### /Users/robertoduarte/rdd-worktrees/sdd-open-f11-gate/sdd/bin/adversarial-review.sh
+revisor: openrouter (qwen/qwen3.7-plus via StubProvider) — ≈ US$ 0,6953 (estimado)
+[ar_rc=0]
+reviewer_tokens_entrada : 1234567
+reviewer_tokens_saida   : 234567
+reviewer_tokens_total   : 1469134
+reviewer_modelo         : qwen/qwen3.7-plus via StubProvider
+reviewer_custo          : ≈US$ 0.6953
+revisor: openrouter (qwen/qwen3.7-plus-preview via StubProvider) — custo desconhecido
+[ar_rc=0]
+reviewer_tokens_entrada : 1234567
+reviewer_tokens_saida   : 234567
+reviewer_tokens_total   : 1469134
+reviewer_modelo         : qwen/qwen3.7-plus via StubProvider
+reviewer_custo          : ≈US$ 0.6953
+### /tmp/aval1-f11.wvW4zp/v230/sdd/bin/adversarial-review.sh
+revisor: openrouter (qwen/qwen3.7-plus via StubProvider) — ≈ US$ 0,6953 (estimado)
+[ar_rc=0]
+reviewer_tokens_entrada : 1234567
+reviewer_tokens_saida   : 234567
+reviewer_tokens_total   : 1469134
+reviewer_modelo         : qwen/qwen3.7-plus via StubProvider
+reviewer_custo          : ≈US$ 0.6953
+revisor: openrouter (qwen/qwen3.7-plus-preview via StubProvider) — ≈ US$ 0,6953 (estimado)
+[ar_rc=0]
+reviewer_tokens_entrada : 1234567
+reviewer_tokens_saida   : 234567
+reviewer_tokens_total   : 1469134
+reviewer_modelo         : qwen/qwen3.7-plus via StubProvider
+reviewer_custo          : ≈US$ 0.6953
+[exit=0]

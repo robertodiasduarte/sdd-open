@@ -1,0 +1,5 @@
+{"achado": "R1", "veredito": "AGREE", "justificativa": "Itera só sobre pastas existentes; pasta citada no ledger e ausente do disco não recebe n/d, ferindo AT-004"}
+{"achado": "R2", "veredito": "DISAGREE_EVIDENCE", "justificativa": "O código já chama marca_nd(sem_fase) se falhou, ILEGIVEIS>0 ou se não há marcas e há sessões; sem sessões e sem falha, 0 é correto"}
+{"achado": "R3", "veredito": "AGREE", "justificativa": "ILEGIVEIS[0] é global para a raiz; qualquer linha ruim em qualquer sessão marca toda a feature como parcial"}
+{"achado": "R4", "veredito": "AGREE", "justificativa": "Papel com engine e custo ausente ou '-' é pulado sem marca_nd; se todos forem assim, revisão sai 0.0000 ferindo AT-004"}
+{"achado": "N1", "veredito": "NOVO", "severidade": "MED", "arquivo": "sdd/bin/custo-feature.sh", "linha": 456, "resumo": "custo_de crasha com InvalidOperation se o META.txt tiver custo com separador de milhar e decimal (ex: 1.000,00)"}

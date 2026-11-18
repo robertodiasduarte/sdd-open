@@ -1,0 +1,96 @@
+test_cada_escrita_fora_do_permitido_aparece (test_governanca_fronteira.Fronteira.test_cada_escrita_fora_do_permitido_aparece) ... FAIL
+
+test_permitido_por_link_simbolico_casa_com_a_raiz_canonica (test_governanca_fronteira.Fronteira.test_permitido_por_link_simbolico_casa_com_a_raiz_canonica) ... FAIL
+
+test_so_o_permitido_mudou (test_governanca_fronteira.Fronteira.test_so_o_permitido_mudou) ... FAIL
+
+
+
+======================================================================
+
+FAIL: test_cada_escrita_fora_do_permitido_aparece (test_governanca_fronteira.Fronteira.test_cada_escrita_fora_do_permitido_aparece)
+
+----------------------------------------------------------------------
+
+Traceback (most recent call last):
+
+  File "D:\a\sdd-open\sdd-open\tests\test_governanca_fronteira.py", line 58, in test_cada_escrita_fora_do_permitido_aparece
+
+    self.snap("antes")
+
+  File "D:\a\sdd-open\sdd-open\tests\test_governanca_fronteira.py", line 36, in snap
+
+    self.assertEqual(rc, 0, out)
+
+AssertionError: 64 != 0 : incluir fora do worktree: C:\Users\runneradmin\AppData\Local\Temp\sdd-open-1sy2dzx8\w\sdd\reviews\REL.md
+
+uso: D:\a\sdd-open\sdd-open\sdd\bin\governanca-fronteira.sh --snapshot <raiz-do-worktree> <arquivo-do-snapshot> [incluir�] | --comparar <antes> <depois> <permitido>�
+
+RESULTADO: ERRO DE USO
+
+\u2192 a fronteira N�O foi verificada; corrija a chamada e rode de novo.
+
+
+
+
+
+======================================================================
+
+FAIL: test_permitido_por_link_simbolico_casa_com_a_raiz_canonica (test_governanca_fronteira.Fronteira.test_permitido_por_link_simbolico_casa_com_a_raiz_canonica)
+
+----------------------------------------------------------------------
+
+Traceback (most recent call last):
+
+  File "D:\a\sdd-open\sdd-open\tests\test_governanca_fronteira.py", line 77, in test_permitido_por_link_simbolico_casa_com_a_raiz_canonica
+
+    self.assertEqual(rc, 0, out)
+
+AssertionError: 64 != 0 : incluir fora do worktree: C:\Users\runneradmin\AppData\Local\Temp\sdd-open-803iwtt9\w\sdd\reviews\REL.md
+
+uso: D:\a\sdd-open\sdd-open\sdd\bin\governanca-fronteira.sh --snapshot <raiz-do-worktree> <arquivo-do-snapshot> [incluir�] | --comparar <antes> <depois> <permitido>�
+
+RESULTADO: ERRO DE USO
+
+\u2192 a fronteira N�O foi verificada; corrija a chamada e rode de novo.
+
+
+
+
+
+======================================================================
+
+FAIL: test_so_o_permitido_mudou (test_governanca_fronteira.Fronteira.test_so_o_permitido_mudou)
+
+----------------------------------------------------------------------
+
+Traceback (most recent call last):
+
+  File "D:\a\sdd-open\sdd-open\tests\test_governanca_fronteira.py", line 45, in test_so_o_permitido_mudou
+
+    self.snap("antes")
+
+  File "D:\a\sdd-open\sdd-open\tests\test_governanca_fronteira.py", line 36, in snap
+
+    self.assertEqual(rc, 0, out)
+
+AssertionError: 64 != 0 : incluir fora do worktree: C:\Users\runneradmin\AppData\Local\Temp\sdd-open-0cr_j1oe\w\sdd\reviews\REL.md
+
+uso: D:\a\sdd-open\sdd-open\sdd\bin\governanca-fronteira.sh --snapshot <raiz-do-worktree> <arquivo-do-snapshot> [incluir�] | --comparar <antes> <depois> <permitido>�
+
+RESULTADO: ERRO DE USO
+
+\u2192 a fronteira N�O foi verificada; corrija a chamada e rode de novo.
+
+
+
+
+
+----------------------------------------------------------------------
+
+Ran 3 tests in 1.337s
+
+
+
+FAILED (failures=3)
+

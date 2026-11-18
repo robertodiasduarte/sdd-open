@@ -1,0 +1,272 @@
+test_prova_que_nao_prova_reprova (test_report_lint.Migrations.test_prova_que_nao_prova_reprova) ... 
+
+  test_prova_que_nao_prova_reprova (test_report_lint.Migrations.test_prova_que_nao_prova_reprova) (caso='vazia') ... FAIL
+
+  test_prova_que_nao_prova_reprova (test_report_lint.Migrations.test_prova_que_nao_prova_reprova) (caso='travess�o') ... FAIL
+
+  test_prova_que_nao_prova_reprova (test_report_lint.Migrations.test_prova_que_nao_prova_reprova) (caso='exit 0') ... FAIL
+
+  test_prova_que_nao_prova_reprova (test_report_lint.Migrations.test_prova_que_nao_prova_reprova) (caso='declara��o') ... FAIL
+
+  test_prova_que_nao_prova_reprova (test_report_lint.Migrations.test_prova_que_nao_prova_reprova) (caso='log inexistente') ... FAIL
+
+  test_prova_que_nao_prova_reprova (test_report_lint.Migrations.test_prova_que_nao_prova_reprova) (caso='log de outra feature') ... FAIL
+
+test_recibo_vale_mesmo_com_gate_test (test_report_lint.Migrations.test_recibo_vale_mesmo_com_gate_test) ... FAIL
+
+test_relatorio_sem_migration_nao_exige_a_secao (test_report_lint.Migrations.test_relatorio_sem_migration_nao_exige_a_secao) ... FAIL
+
+test_sem_data_reprova (test_report_lint.Migrations.test_sem_data_reprova) ... FAIL
+
+test_sql_citado_fora_da_secao_de_arquivos_nao_conta (test_report_lint.Migrations.test_sql_citado_fora_da_secao_de_arquivos_nao_conta) ... FAIL
+
+test_titulos_reais_numerados_ou_com_prefixo_contam (test_report_lint.Migrations.test_titulos_reais_numerados_ou_com_prefixo_contam) ... ok
+
+
+
+======================================================================
+
+FAIL: test_prova_que_nao_prova_reprova (test_report_lint.Migrations.test_prova_que_nao_prova_reprova) (caso='vazia')
+
+----------------------------------------------------------------------
+
+Traceback (most recent call last):
+
+  File "D:\a\sdd-open\sdd-open\tests\test_report_lint.py", line 195, in test_prova_que_nao_prova_reprova
+
+    self.assertIn("migration `" + MIG + "`", out)
+
+AssertionError: 'migration `supabase/migrations/20261029120000_cliente_doc.sql`' not found in 'The system cannot find the path specified.\nTraceback (most recent call last):\n  File "C:\\Users\\runneradmin\\AppData\\Local\\Temp\\sdd-open-o_xjpvyz\\repo\\sdd\\bin\\report-lint.py", line 625, in <module>\n    sys.exit(main(sys.argv))\n             ^^^^^^^^^^^^^^\n  File "C:\\Users\\runneradmin\\AppData\\Local\\Temp\\sdd-open-o_xjpvyz\\repo\\sdd\\bin\\report-lint.py", line 604, in main\n    imprimir_avisos(warnings)\n  File "C:\\Users\\runneradmin\\AppData\\Local\\Temp\\sdd-open-o_xjpvyz\\repo\\sdd\\bin\\report-lint.py", line 552, in imprimir_avisos\n    print(f"\\u26a0\\ufe0f  {w}")\n  File "C:\\hostedtoolcache\\windows\\Python\\3.12.10\\x64\\Lib\\encodings\\cp1252.py", line 19, in encode\n    return codecs.charmap_encode(input,self.errors,encoding_table)[0]\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nUnicodeEncodeError: \'charmap\' codec can\'t encode characters in position 0-1: character maps to <undefined>\n'
+
+
+
+======================================================================
+
+FAIL: test_prova_que_nao_prova_reprova (test_report_lint.Migrations.test_prova_que_nao_prova_reprova) (caso='travess�o')
+
+----------------------------------------------------------------------
+
+Traceback (most recent call last):
+
+  File "D:\a\sdd-open\sdd-open\tests\test_report_lint.py", line 195, in test_prova_que_nao_prova_reprova
+
+    self.assertIn("migration `" + MIG + "`", out)
+
+AssertionError: 'migration `supabase/migrations/20261029120000_cliente_doc.sql`' not found in 'The system cannot find the path specified.\nTraceback (most recent call last):\n  File "C:\\Users\\runneradmin\\AppData\\Local\\Temp\\sdd-open-o_xjpvyz\\repo\\sdd\\bin\\report-lint.py", line 625, in <module>\n    sys.exit(main(sys.argv))\n             ^^^^^^^^^^^^^^\n  File "C:\\Users\\runneradmin\\AppData\\Local\\Temp\\sdd-open-o_xjpvyz\\repo\\sdd\\bin\\report-lint.py", line 604, in main\n    imprimir_avisos(warnings)\n  File "C:\\Users\\runneradmin\\AppData\\Local\\Temp\\sdd-open-o_xjpvyz\\repo\\sdd\\bin\\report-lint.py", line 552, in imprimir_avisos\n    print(f"\\u26a0\\ufe0f  {w}")\n  File "C:\\hostedtoolcache\\windows\\Python\\3.12.10\\x64\\Lib\\encodings\\cp1252.py", line 19, in encode\n    return codecs.charmap_encode(input,self.errors,encoding_table)[0]\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nUnicodeEncodeError: \'charmap\' codec can\'t encode characters in position 0-1: character maps to <undefined>\n'
+
+
+
+======================================================================
+
+FAIL: test_prova_que_nao_prova_reprova (test_report_lint.Migrations.test_prova_que_nao_prova_reprova) (caso='exit 0')
+
+----------------------------------------------------------------------
+
+Traceback (most recent call last):
+
+  File "D:\a\sdd-open\sdd-open\tests\test_report_lint.py", line 195, in test_prova_que_nao_prova_reprova
+
+    self.assertIn("migration `" + MIG + "`", out)
+
+AssertionError: 'migration `supabase/migrations/20261029120000_cliente_doc.sql`' not found in 'The system cannot find the path specified.\nTraceback (most recent call last):\n  File "C:\\Users\\runneradmin\\AppData\\Local\\Temp\\sdd-open-o_xjpvyz\\repo\\sdd\\bin\\report-lint.py", line 625, in <module>\n    sys.exit(main(sys.argv))\n             ^^^^^^^^^^^^^^\n  File "C:\\Users\\runneradmin\\AppData\\Local\\Temp\\sdd-open-o_xjpvyz\\repo\\sdd\\bin\\report-lint.py", line 604, in main\n    imprimir_avisos(warnings)\n  File "C:\\Users\\runneradmin\\AppData\\Local\\Temp\\sdd-open-o_xjpvyz\\repo\\sdd\\bin\\report-lint.py", line 552, in imprimir_avisos\n    print(f"\\u26a0\\ufe0f  {w}")\n  File "C:\\hostedtoolcache\\windows\\Python\\3.12.10\\x64\\Lib\\encodings\\cp1252.py", line 19, in encode\n    return codecs.charmap_encode(input,self.errors,encoding_table)[0]\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nUnicodeEncodeError: \'charmap\' codec can\'t encode characters in position 0-1: character maps to <undefined>\n'
+
+
+
+======================================================================
+
+FAIL: test_prova_que_nao_prova_reprova (test_report_lint.Migrations.test_prova_que_nao_prova_reprova) (caso='declara��o')
+
+----------------------------------------------------------------------
+
+Traceback (most recent call last):
+
+  File "D:\a\sdd-open\sdd-open\tests\test_report_lint.py", line 195, in test_prova_que_nao_prova_reprova
+
+    self.assertIn("migration `" + MIG + "`", out)
+
+AssertionError: 'migration `supabase/migrations/20261029120000_cliente_doc.sql`' not found in 'The system cannot find the path specified.\nTraceback (most recent call last):\n  File "C:\\Users\\runneradmin\\AppData\\Local\\Temp\\sdd-open-o_xjpvyz\\repo\\sdd\\bin\\report-lint.py", line 625, in <module>\n    sys.exit(main(sys.argv))\n             ^^^^^^^^^^^^^^\n  File "C:\\Users\\runneradmin\\AppData\\Local\\Temp\\sdd-open-o_xjpvyz\\repo\\sdd\\bin\\report-lint.py", line 604, in main\n    imprimir_avisos(warnings)\n  File "C:\\Users\\runneradmin\\AppData\\Local\\Temp\\sdd-open-o_xjpvyz\\repo\\sdd\\bin\\report-lint.py", line 552, in imprimir_avisos\n    print(f"\\u26a0\\ufe0f  {w}")\n  File "C:\\hostedtoolcache\\windows\\Python\\3.12.10\\x64\\Lib\\encodings\\cp1252.py", line 19, in encode\n    return codecs.charmap_encode(input,self.errors,encoding_table)[0]\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nUnicodeEncodeError: \'charmap\' codec can\'t encode characters in position 0-1: character maps to <undefined>\n'
+
+
+
+======================================================================
+
+FAIL: test_prova_que_nao_prova_reprova (test_report_lint.Migrations.test_prova_que_nao_prova_reprova) (caso='log inexistente')
+
+----------------------------------------------------------------------
+
+Traceback (most recent call last):
+
+  File "D:\a\sdd-open\sdd-open\tests\test_report_lint.py", line 195, in test_prova_que_nao_prova_reprova
+
+    self.assertIn("migration `" + MIG + "`", out)
+
+AssertionError: 'migration `supabase/migrations/20261029120000_cliente_doc.sql`' not found in 'The system cannot find the path specified.\nTraceback (most recent call last):\n  File "C:\\Users\\runneradmin\\AppData\\Local\\Temp\\sdd-open-o_xjpvyz\\repo\\sdd\\bin\\report-lint.py", line 625, in <module>\n    sys.exit(main(sys.argv))\n             ^^^^^^^^^^^^^^\n  File "C:\\Users\\runneradmin\\AppData\\Local\\Temp\\sdd-open-o_xjpvyz\\repo\\sdd\\bin\\report-lint.py", line 604, in main\n    imprimir_avisos(warnings)\n  File "C:\\Users\\runneradmin\\AppData\\Local\\Temp\\sdd-open-o_xjpvyz\\repo\\sdd\\bin\\report-lint.py", line 552, in imprimir_avisos\n    print(f"\\u26a0\\ufe0f  {w}")\n  File "C:\\hostedtoolcache\\windows\\Python\\3.12.10\\x64\\Lib\\encodings\\cp1252.py", line 19, in encode\n    return codecs.charmap_encode(input,self.errors,encoding_table)[0]\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nUnicodeEncodeError: \'charmap\' codec can\'t encode characters in position 0-1: character maps to <undefined>\n'
+
+
+
+======================================================================
+
+FAIL: test_prova_que_nao_prova_reprova (test_report_lint.Migrations.test_prova_que_nao_prova_reprova) (caso='log de outra feature')
+
+----------------------------------------------------------------------
+
+Traceback (most recent call last):
+
+  File "D:\a\sdd-open\sdd-open\tests\test_report_lint.py", line 195, in test_prova_que_nao_prova_reprova
+
+    self.assertIn("migration `" + MIG + "`", out)
+
+AssertionError: 'migration `supabase/migrations/20261029120000_cliente_doc.sql`' not found in 'The system cannot find the path specified.\nTraceback (most recent call last):\n  File "C:\\Users\\runneradmin\\AppData\\Local\\Temp\\sdd-open-o_xjpvyz\\repo\\sdd\\bin\\report-lint.py", line 625, in <module>\n    sys.exit(main(sys.argv))\n             ^^^^^^^^^^^^^^\n  File "C:\\Users\\runneradmin\\AppData\\Local\\Temp\\sdd-open-o_xjpvyz\\repo\\sdd\\bin\\report-lint.py", line 604, in main\n    imprimir_avisos(warnings)\n  File "C:\\Users\\runneradmin\\AppData\\Local\\Temp\\sdd-open-o_xjpvyz\\repo\\sdd\\bin\\report-lint.py", line 552, in imprimir_avisos\n    print(f"\\u26a0\\ufe0f  {w}")\n  File "C:\\hostedtoolcache\\windows\\Python\\3.12.10\\x64\\Lib\\encodings\\cp1252.py", line 19, in encode\n    return codecs.charmap_encode(input,self.errors,encoding_table)[0]\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nUnicodeEncodeError: \'charmap\' codec can\'t encode characters in position 0-1: character maps to <undefined>\n'
+
+
+
+======================================================================
+
+FAIL: test_recibo_vale_mesmo_com_gate_test (test_report_lint.Migrations.test_recibo_vale_mesmo_com_gate_test)
+
+----------------------------------------------------------------------
+
+Traceback (most recent call last):
+
+  File "D:\a\sdd-open\sdd-open\tests\test_report_lint.py", line 153, in test_recibo_vale_mesmo_com_gate_test
+
+    self.assertEqual(rc, 0, out)
+
+AssertionError: 1 != 0 : The system cannot find the path specified.
+
+Traceback (most recent call last):
+
+  File "C:\Users\runneradmin\AppData\Local\Temp\sdd-open-kn4w3yx8\repo\sdd\bin\report-lint.py", line 625, in <module>
+
+    sys.exit(main(sys.argv))
+
+             ^^^^^^^^^^^^^^
+
+  File "C:\Users\runneradmin\AppData\Local\Temp\sdd-open-kn4w3yx8\repo\sdd\bin\report-lint.py", line 604, in main
+
+    imprimir_avisos(warnings)
+
+  File "C:\Users\runneradmin\AppData\Local\Temp\sdd-open-kn4w3yx8\repo\sdd\bin\report-lint.py", line 552, in imprimir_avisos
+
+    print(f"\u26a0\ufe0f  {w}")
+
+  File "C:\hostedtoolcache\windows\Python\3.12.10\x64\Lib\encodings\cp1252.py", line 19, in encode
+
+    return codecs.charmap_encode(input,self.errors,encoding_table)[0]
+
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+UnicodeEncodeError: 'charmap' codec can't encode characters in position 0-1: character maps to <undefined>
+
+
+
+
+
+======================================================================
+
+FAIL: test_relatorio_sem_migration_nao_exige_a_secao (test_report_lint.Migrations.test_relatorio_sem_migration_nao_exige_a_secao)
+
+----------------------------------------------------------------------
+
+Traceback (most recent call last):
+
+  File "D:\a\sdd-open\sdd-open\tests\test_report_lint.py", line 161, in test_relatorio_sem_migration_nao_exige_a_secao
+
+    self.assertEqual(rc, 0, out)
+
+AssertionError: 1 != 0 : The system cannot find the path specified.
+
+Traceback (most recent call last):
+
+  File "C:\Users\runneradmin\AppData\Local\Temp\sdd-open-g0v8hn_6\repo\sdd\bin\report-lint.py", line 625, in <module>
+
+    sys.exit(main(sys.argv))
+
+             ^^^^^^^^^^^^^^
+
+  File "C:\Users\runneradmin\AppData\Local\Temp\sdd-open-g0v8hn_6\repo\sdd\bin\report-lint.py", line 604, in main
+
+    imprimir_avisos(warnings)
+
+  File "C:\Users\runneradmin\AppData\Local\Temp\sdd-open-g0v8hn_6\repo\sdd\bin\report-lint.py", line 552, in imprimir_avisos
+
+    print(f"\u26a0\ufe0f  {w}")
+
+  File "C:\hostedtoolcache\windows\Python\3.12.10\x64\Lib\encodings\cp1252.py", line 19, in encode
+
+    return codecs.charmap_encode(input,self.errors,encoding_table)[0]
+
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+UnicodeEncodeError: 'charmap' codec can't encode characters in position 0-1: character maps to <undefined>
+
+
+
+
+
+======================================================================
+
+FAIL: test_sem_data_reprova (test_report_lint.Migrations.test_sem_data_reprova)
+
+----------------------------------------------------------------------
+
+Traceback (most recent call last):
+
+  File "D:\a\sdd-open\sdd-open\tests\test_report_lint.py", line 217, in test_sem_data_reprova
+
+    self.assertIn("AAAA-MM-DD", out)
+
+AssertionError: 'AAAA-MM-DD' not found in 'The system cannot find the path specified.\nTraceback (most recent call last):\n  File "C:\\Users\\runneradmin\\AppData\\Local\\Temp\\sdd-open-7k6pa94q\\repo\\sdd\\bin\\report-lint.py", line 625, in <module>\n    sys.exit(main(sys.argv))\n             ^^^^^^^^^^^^^^\n  File "C:\\Users\\runneradmin\\AppData\\Local\\Temp\\sdd-open-7k6pa94q\\repo\\sdd\\bin\\report-lint.py", line 604, in main\n    imprimir_avisos(warnings)\n  File "C:\\Users\\runneradmin\\AppData\\Local\\Temp\\sdd-open-7k6pa94q\\repo\\sdd\\bin\\report-lint.py", line 552, in imprimir_avisos\n    print(f"\\u26a0\\ufe0f  {w}")\n  File "C:\\hostedtoolcache\\windows\\Python\\3.12.10\\x64\\Lib\\encodings\\cp1252.py", line 19, in encode\n    return codecs.charmap_encode(input,self.errors,encoding_table)[0]\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nUnicodeEncodeError: \'charmap\' codec can\'t encode characters in position 0-1: character maps to <undefined>\n'
+
+
+
+======================================================================
+
+FAIL: test_sql_citado_fora_da_secao_de_arquivos_nao_conta (test_report_lint.Migrations.test_sql_citado_fora_da_secao_de_arquivos_nao_conta)
+
+----------------------------------------------------------------------
+
+Traceback (most recent call last):
+
+  File "D:\a\sdd-open\sdd-open\tests\test_report_lint.py", line 169, in test_sql_citado_fora_da_secao_de_arquivos_nao_conta
+
+    self.assertEqual(rc, 0, out)
+
+AssertionError: 1 != 0 : The system cannot find the path specified.
+
+Traceback (most recent call last):
+
+  File "C:\Users\runneradmin\AppData\Local\Temp\sdd-open-mvwzv05h\repo\sdd\bin\report-lint.py", line 625, in <module>
+
+    sys.exit(main(sys.argv))
+
+             ^^^^^^^^^^^^^^
+
+  File "C:\Users\runneradmin\AppData\Local\Temp\sdd-open-mvwzv05h\repo\sdd\bin\report-lint.py", line 604, in main
+
+    imprimir_avisos(warnings)
+
+  File "C:\Users\runneradmin\AppData\Local\Temp\sdd-open-mvwzv05h\repo\sdd\bin\report-lint.py", line 552, in imprimir_avisos
+
+    print(f"\u26a0\ufe0f  {w}")
+
+  File "C:\hostedtoolcache\windows\Python\3.12.10\x64\Lib\encodings\cp1252.py", line 19, in encode
+
+    return codecs.charmap_encode(input,self.errors,encoding_table)[0]
+
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+UnicodeEncodeError: 'charmap' codec can't encode characters in position 0-1: character maps to <undefined>
+
+
+
+
+
+----------------------------------------------------------------------
+
+Ran 6 tests in 1.006s
+
+
+
+FAILED (failures=10)
+

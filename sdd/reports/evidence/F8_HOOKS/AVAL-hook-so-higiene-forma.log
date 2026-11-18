@@ -1,0 +1,31 @@
+$ cd /tmp/sdd-aval/higiene-so && git config sdd.higieneDado on && printf 'X=1\n' > .env && git add .env && PATH=/bin:/usr/bin git commit -q -m so-higiene
+
+sdd-open: commit recusado. Encontrei o que não pode entrar nesta versão:
+
+
+sdd-higiene-dado: commit recusado. Encontrei o que não deveria ir para o git:
+
+  .env: arquivo de senhas (.env)
+
+Por que importa: o que entra no git fica no histórico e vai junto em todo push.
+Apagar depois não desfaz: quem já copiou o repositório continua com o dado.
+
+Como corrigir:
+  1. Tire o arquivo deste commit:      git restore --staged "<arquivo>"
+  2. Se ele nunca deve ir para o git:  echo "<arquivo>" >> .gitignore
+  3. Se o dado é necessário, use um fictício ou anonimizado.
+
+Se você conferiu e o dado é fictício ou autorizado, grave mesmo assim:
+  git commit --no-verify
+Isso pula o alarme só neste commit. Agente de IA: não use --no-verify sem o OK
+explícito da pessoa.
+
+Para desinstalar o alarme: bash .agents/skills/sdd-higiene-dado/scripts/alarme.sh desinstalar
+
+RESULTADO: COMMIT RECUSADO
+→ se você conferiu e quer gravar mesmo assim, só desta vez: git commit --no-verify
+  Agente de IA: não use --no-verify sem o OK explícito da pessoa.
+[exit=1]
+$ cd /tmp/sdd-aval/higiene-so && PATH=/bin:/usr/bin git commit -q -m so-higiene 2>&1 | grep -c '^→'
+1
+[exit=0]

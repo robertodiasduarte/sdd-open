@@ -1,0 +1,32 @@
+$ bash /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f17c-starter-etapa3/4be28bc9-cd19-4e52-baaf-378f21755723/scratchpad/aval3-scripts/gerar.sh
+open HEAD archive: de6a423
+starter-ref intocado: 0 arquivo(s) alterado(s); branch 
+✅ sdd-release: 2 arquivo(s), 0 troca(s), de modo (references/MODO_INICIANTE.md)
+✅ ux-review-builder: 20 arquivo(s), 0 troca(s)
+RESULTADO: GERADO
+→ no starter: python3 scripts/check-gerado.py, os testes dele e um commit numa branch.
+gerador_rc=0
+✅ 18 skill(s) gerada(s) e a infra conferidas: tudo igual ao que o sdd-open gerou
+RESULTADO: VERDE
+check_gerado_rc=0
+--- trecho da decisão no build gerado (SKILL.md):
+92:Se o projeto não estiver acessível (na web, ou sem ferramenta que grave arquivos), parar antes da primeira tarefa e
+93-**recomendar** abrir o projeto num agente que grave arquivos no computador do usuário (Claude Code, Codex, Cursor e
+94-outros), com os três documentos. Não fingir um Build completo somente a partir dos arquivos de especificação, nem dizer
+95-que há onde gravar sem ter. Escrever o código no chat para o usuário salvar só se ele pedir; aí nenhuma tarefa é marcada
+96-feita e nenhuma conferência é afirmada sem o relato dele, e o relatório diz que quem salvou e conferiu foi ele.
+--- igual ao MODO_WEB.md do open (corpo sem a 1ª linha de versão)?
+TRECHO IGUAL
+--- frase antiga ('pedir ao usuário para fornecê-lo/conectá-lo') no gerado:
+0 ocorrências
+--- busca de obrigação em contrário no build gerado inteiro (chat/colar/salvar/as mãos/eu escrevo/fornec/conect):
+/private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f17c-starter-etapa3/4be28bc9-cd19-4e52-baaf-378f21755723/scratchpad/aval3/g/starter/skills/sdd-build/SKILL.md:92:Se o projeto não estiver acessível (na web, ou sem ferramenta que grave arquivos), parar antes da primeira tarefa e
+/private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f17c-starter-etapa3/4be28bc9-cd19-4e52-baaf-378f21755723/scratchpad/aval3/g/starter/skills/sdd-build/SKILL.md:95:que há onde gravar sem ter. Escrever o código no chat para o usuário salvar só se ele pedir; aí nenhuma tarefa é marcada
+/private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f17c-starter-etapa3/4be28bc9-cd19-4e52-baaf-378f21755723/scratchpad/aval3/g/starter/skills/sdd-build/assets/WORKER_BRIEF_TEMPLATE.md:3:{one line: action + exact file, copied from File Manifest}
+--- stop condition no build-protocol gerado:
+82:- projeto não está acessível;
+--- linhas das 3 geradas:
+sdd-define      418
+sdd-design      479
+sdd-build      499
+rc=0

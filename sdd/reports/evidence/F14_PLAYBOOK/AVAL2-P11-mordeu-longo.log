@@ -1,0 +1,10 @@
+$ /bin/bash /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.lyAZcjfTsM/scripts/sonda10.sh
+a velho: DELTA LM-016 mordeu+1 · conf=2026-11-05 · evidencia=BUILD_REPORT_X.md:;RESULTADO: HÁ O QUE JULGAR;
+a bin: RESULTADO: NADA A COLHER;
+b velho: DELTA LM-016 mordeu+1 · conf=2026-11-05 · evidencia=BUILD_REPORT_X.md:;RESULTADO: HÁ O QUE JULGAR;
+b bin: DELTA LM-016 ajudou+1 · conf=2026-11-05 · evidencia=BUILD_REPORT_X.md:;RESULTADO: HÁ O QUE JULGAR;
+c velho: DELTA LM-016 mordeu+1 · conf=2026-11-05 · evidencia=BUILD_REPORT_X.md:;RESULTADO: HÁ O QUE JULGAR;
+c bin: DELTA LM-016 mordeu+1 · conf=2026-11-05 · evidencia=BUILD_REPORT_X.md:;RESULTADO: HÁ O QUE JULGAR;
+d velho: DELTA LM-016 ajudou+1 · conf=2026-11-05 · evidencia=BUILD_REPORT_X.md:;RESULTADO: HÁ O QUE JULGAR;
+d bin: RESULTADO: NADA A COLHER;
+[exit=0]

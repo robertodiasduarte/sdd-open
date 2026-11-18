@@ -1,0 +1,3 @@
+$ cd /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.8ThIJgJWOa/base && TMPDIR=/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.8ThIJgJWOa/tmp bash sdd/bin/playbook-lint.sh /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.8ThIJgJWOa/pb/sem-campo.md
+🟢 /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.8ThIJgJWOa/pb/sem-campo.md: formato OK — 1 ativos, 0 tombstones, Sempre=1 bullets/19 palavras, 0 aviso(s)
+[exit=0]

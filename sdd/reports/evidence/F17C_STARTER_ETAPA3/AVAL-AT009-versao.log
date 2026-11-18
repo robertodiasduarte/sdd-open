@@ -1,0 +1,63 @@
+$ /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f17c-starter-etapa3/4be28bc9-cd19-4e52-baaf-378f21755723/scratchpad/at009.sh
+8:  version: "1.2.0"
+--- mudança: sed -i "" "s/^  version: \"2.7.0\"/  version: \"1.2.0\"/" .agents/skills/sdd-define/SKILL.md && grep -n "version:" .agents/skills/sdd-define/SKILL.md
+ .agents/skills/sdd-define/SKILL.md | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+🛑 o version gate do starter reprovaria:
+  sdd-define: a cópia gerada mudou e a versão não subiu (1.2.0 no starter, 1.2.0 no Open): suba a versão da skill no Open
+RESULTADO: NADA FOI GRAVADO
+→ corrija a causa acima e rode de novo.
+--- rc=65 (esperado 65); arquivos mudados no starter: 0
+OK: define-igual
+
+8:  version: "1.0.9"
+--- mudança: sed -i "" "s/^  version: \"2.7.0\"/  version: \"1.0.9\"/" .agents/skills/sdd-design/SKILL.md && grep -n "version:" .agents/skills/sdd-design/SKILL.md
+ .agents/skills/sdd-design/SKILL.md | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+🛑 o version gate do starter reprovaria:
+  sdd-design: a cópia gerada mudou e a versão não subiu (1.1.0 no starter, 1.0.9 no Open): suba a versão da skill no Open
+RESULTADO: NADA FOI GRAVADO
+→ corrija a causa acima e rode de novo.
+--- rc=65 (esperado 65); arquivos mudados no starter: 0
+OK: design-menor
+
+8:  version: "1.2.0"
+--- mudança: sed -i "" "s/^  version: \"2.10.0\"/  version: \"1.2.0\"/" .agents/skills/sdd-build/SKILL.md && grep -n "version:" .agents/skills/sdd-build/SKILL.md
+ .agents/skills/sdd-build/SKILL.md | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+🛑 o version gate do starter reprovaria:
+  sdd-build: a cópia gerada mudou e a versão não subiu (1.2.0 no starter, 1.2.0 no Open): suba a versão da skill no Open
+RESULTADO: NADA FOI GRAVADO
+→ corrija a causa acima e rode de novo.
+--- rc=65 (esperado 65); arquivos mudados no starter: 0
+OK: build-igual
+
+8:  version: "1.2.1"
+--- mudança: sed -i "" "s/^  version: \"2.10.0\"/  version: \"1.2.1\"/" .agents/skills/sdd-build/SKILL.md && grep -n "version:" .agents/skills/sdd-build/SKILL.md
+ .agents/skills/sdd-build/SKILL.md | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+✅ sdd-checar-ambiente: 5 arquivo(s), 1 troca(s)
+✅ sdd-iniciar-repo: 3 arquivo(s), 1 troca(s)
+✅ sdd-higiene-dado: 10 arquivo(s), 0 troca(s)
+✅ sdd-new-session: 6 arquivo(s), 1 troca(s)
+✅ sdd-kb: 38 arquivo(s), 2 troca(s)
+✅ sdd-seguranca: 9 arquivo(s), 6 troca(s)
+✅ sdd-auditoria-harness: 7 arquivo(s), 0 troca(s)
+✅ sdd-prompt-builder: 9 arquivo(s), 2 troca(s)
+✅ sdd-engenharia-reversa-saas: 15 arquivo(s), 4 troca(s)
+✅ sdd-loop-builder: 6 arquivo(s), 0 troca(s)
+✅ sdd-brainstorm: 6 arquivo(s), 4 troca(s)
+✅ sdd-define: 9 arquivo(s), 0 troca(s), de modo (web/MODO_WEB.md)
+✅ sdd-design: 7 arquivo(s), 0 troca(s), de modo (web/MODO_WEB.md)
+✅ sdd-build: 12 arquivo(s), 0 troca(s), de modo (web/MODO_WEB.md)
+✅ sdd-handoff: 6 arquivo(s), 8 troca(s)
+✅ sdd-governanca: 12 arquivo(s), 5 troca(s)
+✅ sdd-release: 2 arquivo(s), 0 troca(s), de modo (references/MODO_INICIANTE.md)
+✅ ux-review-builder: 20 arquivo(s), 0 troca(s)
+RESULTADO: GERADO
+→ no starter: python3 scripts/check-gerado.py, os testes dele e um commit numa branch.
+--- rc=0 (esperado 0); arquivos mudados no starter: 48
+OK: build-maior-por-1
+
+falhas=0
+rc=0

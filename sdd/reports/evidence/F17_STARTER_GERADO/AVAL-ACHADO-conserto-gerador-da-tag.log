@@ -1,0 +1,11 @@
+$ # o conserto que a mensagem do caso h (exit 64) manda: "git show <tag>:scripts/gerar-starter.py > /tmp/g.py; python3 /tmp/g.py …" (aqui em fora/g.py em vez de /tmp)
+$ git -C open show v9.9.0:scripts/gerar-starter.py > fora/g.py; python3 -B fora/g.py --tag v9.9.0 s2
+🛑 a tag v9.9.0 não existe neste repositório (a geração parte sempre de uma tag publicada)
+RESULTADO: NADA FOI GRAVADO
+→ corrija a causa acima e rode de novo.
+rc=64
+$ (cd open && python3 -B ../fora/g.py --tag v9.9.0 ../s2)   # rodando de dentro do repositório do Open
+🛑 a tag v9.9.0 não existe neste repositório (a geração parte sempre de uma tag publicada)
+RESULTADO: NADA FOI GRAVADO
+→ corrija a causa acima e rode de novo.
+rc=64

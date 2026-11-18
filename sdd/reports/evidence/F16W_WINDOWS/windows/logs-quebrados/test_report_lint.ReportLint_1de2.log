@@ -1,0 +1,200 @@
+test_arquivo_inexistente (test_report_lint.ReportLint.test_arquivo_inexistente) ... ok
+
+test_avaliacao_em_contexto_fresco_passa (test_report_lint.ReportLint.test_avaliacao_em_contexto_fresco_passa) ... FAIL
+
+test_criterio_false_nao_exige_evidencia (test_report_lint.ReportLint.test_criterio_false_nao_exige_evidencia) ... FAIL
+
+test_declaracao_nao_e_prova (test_report_lint.ReportLint.test_declaracao_nao_e_prova) ... 
+
+  test_declaracao_nao_e_prova (test_report_lint.ReportLint.test_declaracao_nao_e_prova) (frase='deve funcionar') ... FAIL
+
+  test_declaracao_nao_e_prova (test_report_lint.ReportLint.test_declaracao_nao_e_prova) (frase='\u2705 por racioc�nio') ... FAIL
+
+  test_declaracao_nao_e_prova (test_report_lint.ReportLint.test_declaracao_nao_e_prova) (frase='provavelmente ok') ... FAIL
+
+test_declaracao_nega_mesmo_com_log_valido_na_celula (test_report_lint.ReportLint.test_declaracao_nega_mesmo_com_log_valido_na_celula) ... ok
+
+test_log_capturado_da_feature_passa (test_report_lint.ReportLint.test_log_capturado_da_feature_passa) ... FAIL
+
+test_log_de_outra_feature (test_report_lint.ReportLint.test_log_de_outra_feature) ... ok
+
+
+
+======================================================================
+
+FAIL: test_avaliacao_em_contexto_fresco_passa (test_report_lint.ReportLint.test_avaliacao_em_contexto_fresco_passa)
+
+----------------------------------------------------------------------
+
+Traceback (most recent call last):
+
+  File "D:\a\sdd-open\sdd-open\tests\test_report_lint.py", line 48, in test_avaliacao_em_contexto_fresco_passa
+
+    self.assertEqual(rc, 0, out)
+
+AssertionError: 1 != 0 : The system cannot find the path specified.
+
+Traceback (most recent call last):
+
+  File "C:\Users\runneradmin\AppData\Local\Temp\sdd-open-avsn661g\repo\sdd\bin\report-lint.py", line 625, in <module>
+
+    sys.exit(main(sys.argv))
+
+             ^^^^^^^^^^^^^^
+
+  File "C:\Users\runneradmin\AppData\Local\Temp\sdd-open-avsn661g\repo\sdd\bin\report-lint.py", line 615, in main
+
+    print(f"\u2705 {path}: todo `true` tem evid\ufffdncia abr\ufffdvel e a avalia\ufffd\ufffdo est\ufffd provada ou declarada")
+
+  File "C:\hostedtoolcache\windows\Python\3.12.10\x64\Lib\encodings\cp1252.py", line 19, in encode
+
+    return codecs.charmap_encode(input,self.errors,encoding_table)[0]
+
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+UnicodeEncodeError: 'charmap' codec can't encode character '\u2705' in position 0: character maps to <undefined>
+
+
+
+
+
+======================================================================
+
+FAIL: test_criterio_false_nao_exige_evidencia (test_report_lint.ReportLint.test_criterio_false_nao_exige_evidencia)
+
+----------------------------------------------------------------------
+
+Traceback (most recent call last):
+
+  File "D:\a\sdd-open\sdd-open\tests\test_report_lint.py", line 57, in test_criterio_false_nao_exige_evidencia
+
+    self.assertEqual(rc, 0, out)
+
+AssertionError: 1 != 0 : The system cannot find the path specified.
+
+Traceback (most recent call last):
+
+  File "C:\Users\runneradmin\AppData\Local\Temp\sdd-open-rw9af3lq\repo\sdd\bin\report-lint.py", line 625, in <module>
+
+    sys.exit(main(sys.argv))
+
+             ^^^^^^^^^^^^^^
+
+  File "C:\Users\runneradmin\AppData\Local\Temp\sdd-open-rw9af3lq\repo\sdd\bin\report-lint.py", line 604, in main
+
+    imprimir_avisos(warnings)
+
+  File "C:\Users\runneradmin\AppData\Local\Temp\sdd-open-rw9af3lq\repo\sdd\bin\report-lint.py", line 552, in imprimir_avisos
+
+    print(f"\u26a0\ufe0f  {w}")
+
+  File "C:\hostedtoolcache\windows\Python\3.12.10\x64\Lib\encodings\cp1252.py", line 19, in encode
+
+    return codecs.charmap_encode(input,self.errors,encoding_table)[0]
+
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+UnicodeEncodeError: 'charmap' codec can't encode characters in position 0-1: character maps to <undefined>
+
+
+
+
+
+======================================================================
+
+FAIL: test_declaracao_nao_e_prova (test_report_lint.ReportLint.test_declaracao_nao_e_prova) (frase='deve funcionar')
+
+----------------------------------------------------------------------
+
+Traceback (most recent call last):
+
+  File "D:\a\sdd-open\sdd-open\tests\test_report_lint.py", line 65, in test_declaracao_nao_e_prova
+
+    self.assertIn("RESULTADO: VERMELHO", out)
+
+AssertionError: 'RESULTADO: VERMELHO' not found in 'The system cannot find the path specified.\nTraceback (most recent call last):\n  File "C:\\Users\\runneradmin\\AppData\\Local\\Temp\\sdd-open-725cmrem\\repo\\sdd\\bin\\report-lint.py", line 625, in <module>\n    sys.exit(main(sys.argv))\n             ^^^^^^^^^^^^^^\n  File "C:\\Users\\runneradmin\\AppData\\Local\\Temp\\sdd-open-725cmrem\\repo\\sdd\\bin\\report-lint.py", line 604, in main\n    imprimir_avisos(warnings)\n  File "C:\\Users\\runneradmin\\AppData\\Local\\Temp\\sdd-open-725cmrem\\repo\\sdd\\bin\\report-lint.py", line 552, in imprimir_avisos\n    print(f"\\u26a0\\ufe0f  {w}")\n  File "C:\\hostedtoolcache\\windows\\Python\\3.12.10\\x64\\Lib\\encodings\\cp1252.py", line 19, in encode\n    return codecs.charmap_encode(input,self.errors,encoding_table)[0]\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nUnicodeEncodeError: \'charmap\' codec can\'t encode characters in position 0-1: character maps to <undefined>\n'
+
+
+
+======================================================================
+
+FAIL: test_declaracao_nao_e_prova (test_report_lint.ReportLint.test_declaracao_nao_e_prova) (frase='\u2705 por racioc�nio')
+
+----------------------------------------------------------------------
+
+Traceback (most recent call last):
+
+  File "D:\a\sdd-open\sdd-open\tests\test_report_lint.py", line 65, in test_declaracao_nao_e_prova
+
+    self.assertIn("RESULTADO: VERMELHO", out)
+
+AssertionError: 'RESULTADO: VERMELHO' not found in 'The system cannot find the path specified.\nTraceback (most recent call last):\n  File "C:\\Users\\runneradmin\\AppData\\Local\\Temp\\sdd-open-725cmrem\\repo\\sdd\\bin\\report-lint.py", line 625, in <module>\n    sys.exit(main(sys.argv))\n             ^^^^^^^^^^^^^^\n  File "C:\\Users\\runneradmin\\AppData\\Local\\Temp\\sdd-open-725cmrem\\repo\\sdd\\bin\\report-lint.py", line 604, in main\n    imprimir_avisos(warnings)\n  File "C:\\Users\\runneradmin\\AppData\\Local\\Temp\\sdd-open-725cmrem\\repo\\sdd\\bin\\report-lint.py", line 552, in imprimir_avisos\n    print(f"\\u26a0\\ufe0f  {w}")\n  File "C:\\hostedtoolcache\\windows\\Python\\3.12.10\\x64\\Lib\\encodings\\cp1252.py", line 19, in encode\n    return codecs.charmap_encode(input,self.errors,encoding_table)[0]\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nUnicodeEncodeError: \'charmap\' codec can\'t encode characters in position 0-1: character maps to <undefined>\n'
+
+
+
+======================================================================
+
+FAIL: test_declaracao_nao_e_prova (test_report_lint.ReportLint.test_declaracao_nao_e_prova) (frase='provavelmente ok')
+
+----------------------------------------------------------------------
+
+Traceback (most recent call last):
+
+  File "D:\a\sdd-open\sdd-open\tests\test_report_lint.py", line 65, in test_declaracao_nao_e_prova
+
+    self.assertIn("RESULTADO: VERMELHO", out)
+
+AssertionError: 'RESULTADO: VERMELHO' not found in 'The system cannot find the path specified.\nTraceback (most recent call last):\n  File "C:\\Users\\runneradmin\\AppData\\Local\\Temp\\sdd-open-725cmrem\\repo\\sdd\\bin\\report-lint.py", line 625, in <module>\n    sys.exit(main(sys.argv))\n             ^^^^^^^^^^^^^^\n  File "C:\\Users\\runneradmin\\AppData\\Local\\Temp\\sdd-open-725cmrem\\repo\\sdd\\bin\\report-lint.py", line 604, in main\n    imprimir_avisos(warnings)\n  File "C:\\Users\\runneradmin\\AppData\\Local\\Temp\\sdd-open-725cmrem\\repo\\sdd\\bin\\report-lint.py", line 552, in imprimir_avisos\n    print(f"\\u26a0\\ufe0f  {w}")\n  File "C:\\hostedtoolcache\\windows\\Python\\3.12.10\\x64\\Lib\\encodings\\cp1252.py", line 19, in encode\n    return codecs.charmap_encode(input,self.errors,encoding_table)[0]\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nUnicodeEncodeError: \'charmap\' codec can\'t encode characters in position 0-1: character maps to <undefined>\n'
+
+
+
+======================================================================
+
+FAIL: test_log_capturado_da_feature_passa (test_report_lint.ReportLint.test_log_capturado_da_feature_passa)
+
+----------------------------------------------------------------------
+
+Traceback (most recent call last):
+
+  File "D:\a\sdd-open\sdd-open\tests\test_report_lint.py", line 42, in test_log_capturado_da_feature_passa
+
+    self.assertEqual(rc, 0, out)
+
+AssertionError: 1 != 0 : The system cannot find the path specified.
+
+Traceback (most recent call last):
+
+  File "C:\Users\runneradmin\AppData\Local\Temp\sdd-open-8m9lyd0g\repo\sdd\bin\report-lint.py", line 625, in <module>
+
+    sys.exit(main(sys.argv))
+
+             ^^^^^^^^^^^^^^
+
+  File "C:\Users\runneradmin\AppData\Local\Temp\sdd-open-8m9lyd0g\repo\sdd\bin\report-lint.py", line 604, in main
+
+    imprimir_avisos(warnings)
+
+  File "C:\Users\runneradmin\AppData\Local\Temp\sdd-open-8m9lyd0g\repo\sdd\bin\report-lint.py", line 552, in imprimir_avisos
+
+    print(f"\u26a0\ufe0f  {w}")
+
+  File "C:\hostedtoolcache\windows\Python\3.12.10\x64\Lib\encodings\cp1252.py", line 19, in encode
+
+    return codecs.charmap_encode(input,self.errors,encoding_table)[0]
+
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+UnicodeEncodeError: 'charmap' codec can't encode characters in position 0-1: character maps to <undefined>
+
+
+
+
+
+----------------------------------------------------------------------
+
+Ran 7 tests in 1.023s
+
+
+
+FAILED (failures=6)
+

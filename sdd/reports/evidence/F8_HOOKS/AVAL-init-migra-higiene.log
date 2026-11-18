@@ -1,0 +1,62 @@
+$ cd /tmp/sdd-aval/init-migra-higiene && bash /Users/robertoduarte/rdd-worktrees/sdd-open-f8-aval/.agents/skills/sdd-higiene-dado/scripts/alarme.sh instalar
+Alarme instalado em /private/tmp/sdd-aval/init-migra-higiene/.git/hooks/pre-commit (versão 1.2.0).
+Vale para todas as frentes deste projeto. Para pular um commit, depois de conferir: git commit --no-verify
+Para desinstalar: bash "/Users/robertoduarte/rdd-worktrees/sdd-open-f8-aval/.agents/skills/sdd-higiene-dado/scripts/alarme.sh" desinstalar   (ou: rm "/private/tmp/sdd-aval/init-migra-higiene/.git/hooks/pre-commit")
+[exit=0]
+$ cd /tmp/sdd-aval/init-migra-higiene && head -3 .git/hooks/pre-commit
+#!/usr/bin/env bash
+# sdd-higiene-dado: alarme de commit (pre-commit)
+# versão: 1.2.0
+[exit=0]
+$ cd /tmp/sdd-aval/init-migra-higiene && bash /Users/robertoduarte/rdd-worktrees/sdd-open-f8-aval/bin/sdd-open.sh init --yes --vendors codex
+▶ init — plano
++ AGENTS.md (novo)
++ sdd/ (templates, fixtures, bin, hooks, playbook, config) (novo)
++ core.hooksPath = sdd/hooks — 5 regras + relatório + alarme passam a conferir cada commit (teto do arquivo de contexto, credencial, playbook, byte NUL, branch padrão); git commit --no-verify pula uma vez (novo)
++ .agents/skills/sdd-auditoria-harness (novo)
++ .agents/skills/sdd-brainstorm (novo)
++ .agents/skills/sdd-build (novo)
++ .agents/skills/sdd-checar-ambiente (novo)
++ .agents/skills/sdd-define (novo)
++ .agents/skills/sdd-design (novo)
++ .agents/skills/sdd-governanca (novo)
++ .agents/skills/sdd-handoff (novo)
++ .agents/skills/sdd-higiene-dado (novo)
++ .agents/skills/sdd-iniciar-repo (novo)
++ .agents/skills/sdd-iterate (novo)
++ .agents/skills/sdd-kb (novo)
++ .agents/skills/sdd-new-session (novo)
++ .agents/skills/sdd-playbook (novo)
++ .agents/skills/sdd-prompt-builder (novo)
++ .agents/skills/sdd-release (novo)
++ .agents/skills/sdd-ux-review (novo)
+20 a criar · 0 a atualizar · 0 já corretos
+⚠️  alarme da sdd-higiene-dado migrado: continua ligado, agora pelos hooks do projeto (sdd/hooks). Para desligar: bash .agents/skills/sdd-higiene-dado/scripts/alarme.sh desinstalar
+▶ sdd-open doctor — projeto: /private/tmp/sdd-aval/init-migra-higiene
+  bash 3.2 · git 2.54.0 (Apple Git-157) · python3 3.9
+✅ sdd/ presente (0 feature(s) em sdd/features/)
+✅ AGENTS.md com o bloco sdd-open
+✅ .agents/skills/ com 17 skill(s) sdd-*
+✅ hooks ligados (sdd/hooks: pre-commit com 5 regras + relatório + alarme da higiene on, pre-push)
+✅ codex: nativo — nada a gerar (lê .agents/skills/ e AGENTS.md nativamente) · CLI encontrado
+✅ skills e sdd/bin/ em dia com o pacote
+✅ nenhum segredo salvo no git (.env, .pfx, .p12, .pem com chave privada)
+RESULTADO: INSTALADO
+→ abra seu agente e peça a fase Define (ex.: /sdd-define ou /skill:sdd-define).
+[exit=0]
+$ cd /tmp/sdd-aval/init-migra-higiene && echo hooksPath="$(git config --get core.hooksPath)" higieneDado="$(git config --get sdd.higieneDado)"; test -f .git/hooks/pre-commit && echo legado-ainda-no-lugar
+hooksPath=sdd/hooks higieneDado=on
+legado-ainda-no-lugar
+[exit=0]
+$ cd /tmp/sdd-aval/init-migra-higiene && bash .agents/skills/sdd-higiene-dado/scripts/alarme.sh verificar
+Estado: o alarme desta skill está ligado pelos hooks do projeto (sdd/hooks), versão 1.2.0 da skill.
+Ligar de novo não muda nada. Para desligar: bash "/tmp/sdd-aval/init-migra-higiene/.agents/skills/sdd-higiene-dado/scripts/alarme.sh" desinstalar
+[exit=0]
+$ cd /tmp/sdd-aval/init-migra-higiene && bash .agents/skills/sdd-higiene-dado/scripts/alarme.sh desinstalar
+Alarme desligado dos hooks do projeto (sdd/hooks). Os hooks do sdd-open continuam no lugar.
+[exit=0]
+$ cd /tmp/sdd-aval/init-migra-higiene && echo higieneDado="$(git config --get sdd.higieneDado)"; test -f .git/hooks/pre-commit && echo legado-ainda-existe || echo legado-removido; test -f sdd/hooks/pre-commit && echo dispatcher-intacto
+higieneDado=
+legado-removido
+dispatcher-intacto
+[exit=0]

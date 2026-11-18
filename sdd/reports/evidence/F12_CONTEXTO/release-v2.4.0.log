@@ -1,0 +1,9 @@
+$ D=$(mktemp -d) && cd $D && GIT_TERMINAL_PROMPT=0 gh release download v2.4.0 -R robertodiasduarte/sdd-open && shasum -a 256 -c SHA256SUMS.txt && cat SHA256SUMS.txt && GIT_TERMINAL_PROMPT=0 gh release view v2.4.0 -R robertodiasduarte/sdd-open --json tagName,targetCommitish,url,assets --jq ".tagName, .targetCommitish, .url, (.assets[].name)"
+sdd-open-v2.4.0.tar.gz: OK
+9561e03c63a0013e1f89b2a9892ecdce16f71176bc0b396ac582548838264944  sdd-open-v2.4.0.tar.gz
+v2.4.0
+6b7633cd90c93ecb7892eb430a0091820ec2fff2
+https://github.com/robertodiasduarte/sdd-open/releases/tag/v2.4.0
+sdd-open-v2.4.0.tar.gz
+SHA256SUMS.txt
+[exit=0]

@@ -1,0 +1,29 @@
+$ /bin/bash sdd/bin/eval-revisores.sh /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f21-f19/8ca3f42f-d684-434d-9f0b-19bdcf0aef88/scratchpad/aval2-f19/../f19/reais --ledgers /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f21-f19/8ca3f42f-d684-434d-9f0b-19bdcf0aef88/scratchpad/aval2-f19/casos/ledgers-reais; echo "[exit $?]"; /bin/bash sdd/bin/ledger-revisao-lint.sh /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f21-f19/8ca3f42f-d684-434d-9f0b-19bdcf0aef88/scratchpad/aval2-f19/casos/ledgers-reais/LEDGER_REVISAO_*.md; echo "[exit lint $?]"
+eval-revisores — custo e resultado por papel, engine e modelo (25 pasta(s) lida(s) em /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f21-f19/8ca3f42f-d684-434d-9f0b-19bdcf0aef88/scratchpad/f19/reais; 6 ledger(s))
+
+| Papel | Engine (modelo) | Cobrança | Rodadas | Falhas | Pago US$ | Nominal US$ | Achados | Aplicados | Com dano | Falsos positivos | Fora de escopo | Sem classificar | Pago por dano | Nominal por dano | AGREE |
+|---|---|---|---:|---|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|
+| revisor | claude (claude-fable-5-2) | assinatura | 4 | 0 | 0.0000 | 5.1073 | 7 | 6 de 7 | 1 de 7 | 0 de 7 | 1 de 7 | 0 de 7 | 0.0000 | 5.1073 | — |
+| revisor | claude (claude-opus-5-5) | assinatura | 21 | 0 | 0.0000 | 50.3657 | 83 | 62 de 83 | 28 de 83 | 6 de 83 | 15 de 83 | 34 de 83 | 0.0000 | 1.7988 | — |
+| 2º revisor | codex (-) | assinatura | 9 | 5 (5 cota ou tempo) | 0.0000 | n/d | 18 | 16 de 18 | 9 de 18 | 0 de 18 | 2 de 18 | 7 de 18 | 0.0000 | — | — |
+| 2º revisor | gemini (-) | desconhecida | 0 | 1 (1 credencial) | n/d | n/d | 0 | 0 | 0 | 0 | 0 | 0 | — | — | — |
+| 2º revisor | openrouter (deepseek/deepseek-v4-pro via Novita) | pay-per-token | 1 | 0 | 0.3214 | 0.3214 | 1 | 0 de 1 | 0 de 1 | 0 de 1 | 1 de 1 | 0 de 1 | — | — | — |
+| 2º revisor | openrouter (deepseek/deepseek-v4-pro via Relace) | pay-per-token | 1 | 0 | 0.1827 | 0.1827 | 1 | 0 de 1 | 0 de 1 | 1 de 1 | 0 de 1 | 0 de 1 | — | — | — |
+| 2º revisor | openrouter (deepseek/deepseek-v4-pro) | pay-per-token | 0 | 3 (3 cota ou tempo) | n/d | n/d | 0 | 0 | 0 | 0 | 0 | 0 | — | — | — |
+| 2º revisor | openrouter (z-ai/glm-5.3 via Relace) | pay-per-token | 1 | 0 | 0.2194 | 0.2194 | 1 | 1 de 1 | 1 de 1 | 0 de 1 | 0 de 1 | 0 de 1 | 0.2194 | 0.2194 | — |
+| 2º revisor | openrouter (z-ai/glm-5.3) | pay-per-token | 0 | 1 (1 cota ou tempo) | n/d | n/d | 0 | 0 | 0 | 0 | 0 | 0 | — | — | — |
+| auditor | codex (-) | assinatura | 0 | 4 (1 cota ou tempo, 3 trocada por outra engine) | 0.0000 | n/d | 0 | 0 | 0 | 0 | 0 | 0 | — | — | n/a |
+| auditor | openrouter (qwen/qwen3.7-plus via Alibaba) | pay-per-token | 23 | 0 | 1.0933 | 1.0933 | 5 | 1 de 5 | 1 de 5 | 4 de 5 | 0 de 5 | 0 de 5 | 1.0933 | 1.0933 | 78.0% (78 de 100) |
+| auditor | openrouter (qwen/qwen3.7-plus) | pay-per-token | 0 | 1 (1 cota ou tempo) | n/d | n/d | 0 | 0 | 0 | 0 | 0 | 0 | — | — | n/a |
+| desempate | claude (claude-opus-5-5) | assinatura | 1 | 0 | 0.0000 | 1.8145 | 0 | 0 | 0 | 0 | 0 | 0 | — | — | — |
+| desempate | codex (-) | assinatura | 1 | 0 | 0.0000 | n/d | 0 | 0 | 0 | 0 | 0 | 0 | — | — | — |
+
+fora da conta: 9 (EXTERNAL_REVIEW_20261110-125836: META ilegível ou incompleto; LEDGER_REVISAO_F19_CUSTO_REVISORES.md:10: achado R1 não está em EXTERNAL_REVIEW_20261110-145510; LEDGER_REVISAO_F19_CUSTO_REVISORES.md:11: achado R2 não está em EXTERNAL_REVIEW_20261110-145510; LEDGER_REVISAO_F19_CUSTO_REVISORES.md:12: achado R3 não está em EXTERNAL_REVIEW_20261110-145510; LEDGER_REVISAO_F19_CUSTO_REVISORES.md:13: achado R4 não está em EXTERNAL_REVIEW_20261110-145510; LEDGER_REVISAO_F19_CUSTO_REVISORES.md:14: achado N1 não está em EXTERNAL_REVIEW_20261110-145510; LEDGER_REVISAO_F19_CUSTO_REVISORES.md:15: achado R1 não está em EXTERNAL_REVIEW_20261110-150330; LEDGER_REVISAO_F19_CUSTO_REVISORES.md:16: achado R2 não está em EXTERNAL_REVIEW_20261110-150330; LEDGER_REVISAO_F19_CUSTO_REVISORES.md:17: achado R3 não está em EXTERNAL_REVIEW_20261110-150330)
+RESULTADO: MEDIDO
+→ leia cada taxa com a amostra ao lado: poucas rodadas dão número instável. O script conta o que está registrado; trocar a cadeia de revisão é decisão de quem lê.
+[exit 0]
+✅ ledger da revisão: 124 linha(s) e 0 rodada(s) sem achados em 6 arquivo(s), cada linha com veredito, dano e a pasta da revisão.
+RESULTADO: VERDE
+→ passe o arquivo ao `sdd-fluxo.sh loop --ledger` e ao `eval-revisores.sh`.
+[exit lint 0]
+[exit 0]

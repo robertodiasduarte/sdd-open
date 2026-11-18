@@ -1,0 +1,46 @@
+$ C() { rm -rf c; cp -R starter c; }
+caso() { echo "== $1"; (cd c && python3 -B scripts/check-gerado.py 2>&1 | grep -v '^ *$'; echo rc=${PIPESTATUS[0]}); }
+C; rm -rf c/skills/sdd-kb; caso 'pasta inteira de uma skill gerada apagada'
+C; rm c/skills/sdd-kb/GERADO.txt; echo y >> c/skills/sdd-kb/SKILL.md; caso 'GERADO.txt da skill apagado + SKILL.md editado'
+C; rm c/GERADO.txt; echo x >> c/README.md; caso 'GERADO.txt da raiz apagado + README editado'
+C; rm c/GERADO.txt; echo x >> c/skills/sdd-kb/SKILL.md; caso 'GERADO.txt da raiz apagado + skill editada'
+C; rm c/GERADO.txt c/skills/*/GERADO.txt; echo x >> c/skills/sdd-kb/SKILL.md; echo x >> c/README.md; caso 'todos os GERADO.txt apagados + skill e README editados'
+C; sed -i '' '2s/^[0-9a-f]\{4\}/0000/' c/GERADO.txt; caso 'GERADO.txt da raiz com um hash adulterado'
+C; printf 'lixo sem formato\n' >> c/GERADO.txt; caso 'GERADO.txt da raiz ilegível (esperado 64 pelo DESIGN)'
+== pasta inteira de uma skill gerada apagada
+🛑 skills/sdd-kb/GERADO.txt: falta
+RESULTADO: ARQUIVO GERADO MUDOU AQUI
+→ desfaça a mudança aqui; para mudar de verdade, mude no sdd-open e gere de novo.
+rc=1
+== GERADO.txt da skill apagado + SKILL.md editado
+🛑 skills/sdd-kb/GERADO.txt: falta
+RESULTADO: ARQUIVO GERADO MUDOU AQUI
+→ desfaça a mudança aqui; para mudar de verdade, mude no sdd-open e gere de novo.
+rc=1
+== GERADO.txt da raiz apagado + README editado
+🛑 GERADO.txt: falta (a geração do sdd-open grava este arquivo na raiz)
+RESULTADO: ARQUIVO GERADO MUDOU AQUI
+→ desfaça a mudança aqui; para mudar de verdade, mude no sdd-open e gere de novo.
+rc=1
+== GERADO.txt da raiz apagado + skill editada
+🛑 GERADO.txt: falta (a geração do sdd-open grava este arquivo na raiz)
+🛑 skills/sdd-kb/SKILL.md: mudou
+RESULTADO: ARQUIVO GERADO MUDOU AQUI
+→ desfaça a mudança aqui; para mudar de verdade, mude no sdd-open e gere de novo.
+rc=1
+== todos os GERADO.txt apagados + skill e README editados
+🛑 GERADO.txt: falta (a geração do sdd-open grava este arquivo na raiz)
+RESULTADO: ARQUIVO GERADO MUDOU AQUI
+→ desfaça a mudança aqui; para mudar de verdade, mude no sdd-open e gere de novo.
+rc=1
+== GERADO.txt da raiz com um hash adulterado
+🛑 .gitattributes: mudou
+RESULTADO: ARQUIVO GERADO MUDOU AQUI
+→ desfaça a mudança aqui; para mudar de verdade, mude no sdd-open e gere de novo.
+rc=1
+== GERADO.txt da raiz ilegível (esperado 64 pelo DESIGN)
+🛑 /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f17-starter-gerado/ec173b46-ec5c-43da-887d-2b87a8b93fd4/scratchpad/aval2.XXgg/c/GERADO.txt:21: linha fora do formato '<sha256>  <caminho relativo>'
+RESULTADO: ERRO DE LEITURA
+→ gere de novo pelo sdd-open (python3 scripts/gerar-starter.py --tag <vX.Y.Z> <este repositório>).
+rc=64
+rc=0

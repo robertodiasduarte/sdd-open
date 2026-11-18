@@ -1,0 +1,75 @@
+$ P=$PWD; T=$(mktemp -d); cd "$T" && git init -q -b main r && cd r
+mkdir -p sdd/bin sdd/baselines fx && cp "$P"/sdd/bin/test-baseline.sh sdd/bin/
+cfg() { printf "project:\n  test_cmd: \"%s\"\n" "$1" > sdd/config.yaml; }
+echo "##### A) go: pacote que estourou o -timeout (sem linha --- FAIL) + 1 falha conhecida, execução completa"
+printf "TestConhecido\nTestLento\n" > sdd/baselines/tests.txt
+printf -- "--- FAIL: TestConhecido (0.00s)\n    conta_test.go:10: esperado 2\nFAIL\nFAIL\texemplo/conta\t0.005s\npanic: test timed out after 1s\nrunning tests:\n\tTestLento (1s)\n\ngoroutine 6 [running]:\ntesting.(*M).startAlarm.func1()\nFAIL\texemplo/lento\t1.012s\nFAIL\n" > fx/go-timeout.txt
+cat fx/go-timeout.txt; echo "-----"
+cfg "cat fx/go-timeout.txt; exit 1"; bash sdd/bin/test-baseline.sh; echo "exit=$?"; echo "baseline depois:"; cat sdd/baselines/tests.txt
+echo "##### B) deno real: 1 falha conhecida + erro não capturado noutro arquivo"
+printf "Deno.test(\"conhecido\", () => { throw new Error(\"x\"); });\n" > a_test.ts
+printf "Deno.test(\"ok\", () => {}); setTimeout(() => { throw new Error(\"solto\"); }, 0);\n" > b_test.ts
+printf "a_test.ts::conhecido\n" > sdd/baselines/tests.txt
+cfg "deno test --no-check a_test.ts b_test.ts"; bash sdd/bin/test-baseline.sh; echo "exit=$?"
+echo "--- saída crua do deno:"; deno test --no-check a_test.ts b_test.ts 2>&1 | sed -n "1,40p"
+cd /; rm -rf "${T:?}"
+##### A) go: pacote que estourou o -timeout (sem linha --- FAIL) + 1 falha conhecida, execução completa
+--- FAIL: TestConhecido (0.00s)
+    conta_test.go:10: esperado 2
+FAIL
+FAIL	exemplo/conta	0.005s
+panic: test timed out after 1s
+running tests:
+	TestLento (1s)
+
+goroutine 6 [running]:
+testing.(*M).startAlarm.func1()
+FAIL	exemplo/lento	1.012s
+FAIL
+-----
+▶ testes: cat fx/go-timeout.txt; exit 1
+ℹ️  conhecida: TestConhecido
+✅ sarou — removido do baseline (commite sdd/baselines/tests.txt): TestLento
+✅ nenhuma falha nova (1 conhecida(s)).
+RESULTADO: VERDE
+→ siga para o próximo passo.
+exit=0
+baseline depois:
+TestConhecido
+##### B) deno real: 1 falha conhecida + erro não capturado noutro arquivo
+▶ testes: deno test --no-check a_test.ts b_test.ts
+⚠️  o comando saiu 1 e nenhuma falha foi reconhecida (formatos: unittest, pytest, jest, vitest, go, deno).
+⚠️  baseline não podado (execução parcial)
+RESULTADO: INCONCLUSIVO
+→ rode onde a ferramenta exista, ou confira a saída do comando; isto não é verde.
+exit=3
+--- saída crua do deno:
+[0m[38;5;245mrunning 1 test from ./a_test.ts[0m
+conhecido ... [0m[31mFAILED[0m [0m[38;5;245m(0ms)[0m
+Uncaught error from ./b_test.ts [0m[31mFAILED[0m
+
+[0m[1m[37m[41m ERRORS [0m
+
+conhecido [0m[38;5;245m=> ./a_test.ts:1:6[0m
+[0m[1m[31merror[0m: Error: x
+Deno.test("conhecido", () => { throw new Error("x"); });
+[0m[31m                                     ^[0m
+    at [0m[2m[38;5;245mfile:///private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.Wq3XC8W7s4/r/[0m[0m[36ma_test.ts[0m:[0m[33m1[0m:[0m[33m38[0m
+
+./b_test.ts (uncaught error)
+[0m[1m[31merror[0m: Error: solto
+Deno.test("ok", () => {}); setTimeout(() => { throw new Error("solto"); }, 0);
+[0m[31m                                                    ^[0m
+    at [0m[1m[3mTimeout._onTimeout[0m ([0m[2m[38;5;245mfile:///private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.Wq3XC8W7s4/r/[0m[0m[36mb_test.ts[0m:[0m[33m1[0m:[0m[33m53[0m)
+This error was not caught from a test and caused the test runner to fail on the referenced module.
+It most likely originated from a dangling promise, event/timeout handler or top-level code.
+
+[0m[1m[37m[41m FAILURES [0m
+
+conhecido [0m[38;5;245m=> ./a_test.ts:1:6[0m
+./b_test.ts (uncaught error)
+
+[0m[31mFAILED[0m | 0 passed | 2 failed [0m[38;5;245m(25ms)[0m
+
+[0m[1m[31merror[0m: Test failed
+[exit=0]

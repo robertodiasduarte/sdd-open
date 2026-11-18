@@ -1,0 +1,64 @@
+$ bash /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f10-revisao/bd420f6e-558d-4962-a0c9-40cdfc2cbd27/scratchpad/p/a1.sh AT002
+--- slots do config (lista, 1º = padrão; slug troca o modelo)
++ adversarial-review.sh --base main --dry-run
+Plano (nada foi enviado a nenhuma engine):
+  revisor : stub-a:revisor-vazio (revisor-vazio), stub-c (revisor-ok)
+  auditor : stub-b (auditor-agree)
+  diversidade: modelo
+  2º revisor: sem gatilho no diff (o revisor raso ainda pode acionar)
+  diff: 3 arquivo(s), 0 KB, base main, merge-base 24b3d4d87bc6
+  diff_sha256: 7d359488681802c0ca5bbe3286c75c92f80f5efbdfca752b643c2d02e71797df
+  contexto: 0 documento(s) SDD, 0 KB
+⚠️ sem --feature: a revisão não leu BRAINSTORM, DEFINE nem DESIGN, e decisões já documentadas podem voltar como achado
+RESULTADO: PLANO
+→ rode sem --dry-run para revisar.
+[rc=0]
+--- flag sobrepõe o slot
++ adversarial-review.sh --base main --dry-run --reviewer stub-c --auditor stub-d
+Plano (nada foi enviado a nenhuma engine):
+  revisor : stub-c (revisor-ok)
+  auditor : stub-d (desempate-refutado)
+  diversidade: modelo
+  2º revisor: sem gatilho no diff (o revisor raso ainda pode acionar)
+  diff: 3 arquivo(s), 0 KB, base main, merge-base 24b3d4d87bc6
+  diff_sha256: 7d359488681802c0ca5bbe3286c75c92f80f5efbdfca752b643c2d02e71797df
+  contexto: 0 documento(s) SDD, 0 KB
+⚠️ sem --feature: a revisão não leu BRAINSTORM, DEFINE nem DESIGN, e decisões já documentadas podem voltar como achado
+RESULTADO: PLANO
+→ rode sem --dry-run para revisar.
+[rc=0]
+--- registry de fábrica: openrouter:<slug>
++ adversarial-review.sh --base main --dry-run --reviewer claude --auditor openrouter:vendor/modelo-x
+Plano (nada foi enviado a nenhuma engine):
+  revisor : claude (-)
+  auditor : openrouter:vendor/modelo-x (vendor/modelo-x)
+  diversidade: vendor
+  2º revisor: sem gatilho no diff (o revisor raso ainda pode acionar)
+  diff: 3 arquivo(s), 0 KB, base main, merge-base 24b3d4d87bc6
+  diff_sha256: 3779fff2e1d5b611c9943370ecfa52855536dc4cd7034e7e9a29278590057364
+  contexto: 0 documento(s) SDD, 0 KB
+⚠️ sem --feature: a revisão não leu BRAINSTORM, DEFINE nem DESIGN, e decisões já documentadas podem voltar como achado
+RESULTADO: PLANO
+→ rode sem --dry-run para revisar.
+[rc=0]
+--- lista com fallback: 1º id cai (quota) e o 2º revisa
++ adversarial-review.sh --base main --no-revisor2
+▶ revisor: stub-a:falha-quota (falha-quota) — até 1 min
+▶ revisor: stub-c (revisor-ok) — até 1 min
+▶ auditor: stub-b (auditor-agree) — até 1 min
+⚠️ sem --feature: a revisão não leu BRAINSTORM, DEFINE nem DESIGN, e decisões já documentadas podem voltar como achado
+⚠️ o revisor previsto (stub-a:falha-quota) falhou (stub-a:falha-quota falhou (cota, cobrança ou erro)); quem revisou foi stub-c
+RESULTADO: REVIEW COMPLETA
+pasta: sdd/reports/reviews/EXTERNAL_REVIEW_20261031-235111
+diff_sha256: 37719a593418dbc68184de1ecfdd6881876d8035bac80f3fd0114d59991682e3
+revisor: stub-c (stub-modelo) (troca de engine) — custo desconhecido
+auditor: stub-b (stub-modelo) — custo desconhecido
+diversidade: modelo
+achados: 1 grave, 1 médio, 0 leves
+custo total: US$ 0,0000 (+ 2 papel(is) com custo desconhecido)
+→ rode: bash sdd/bin/sdd-fluxo.sh loop --review sdd/reports/reviews/EXTERNAL_REVIEW_20261031-235111 --ledger <ledger da revisão> --rodada <N>
+[rc=0]
+reviewer_engine_default : stub-a:falha-quota
+reviewer_engine_efetivo : stub-c
+reviewer_modelo         : stub-modelo
+[exit=0]

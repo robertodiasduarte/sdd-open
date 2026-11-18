@@ -1,0 +1,8 @@
+$ cd tests && SDD_TEST_BASH=/bin/bash /usr/bin/python3 -B -m unittest test_f25_skills_duplicadas.RevisaoRodada2   # código de 27255b2, testes novos
+FAIL: test_n1_copia_compartilhada_com_escolha_em_aberto_nao_sai (test_f25_skills_duplicadas.RevisaoRodada2)
+FAIL: test_n2_limpeza_interrompida_depois_do_npx_desfaz_o_registro (test_f25_skills_duplicadas.RevisaoRodada2)
+FAIL: test_r1_nenhum_nome_embutido_do_gawk_como_variavel_nos_awk (test_f25_skills_duplicadas.RevisaoRodada2)
+FAIL: test_r3_sobra_do_projeto_no_git_nao_e_a_mais_velha (test_f25_skills_duplicadas.RevisaoRodada2)
+Ran 5 tests in 2.543s
+FAILED (failures=4)
+[exit=1]

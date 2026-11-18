@@ -1,0 +1,31 @@
+$ echo "$BASH_VERSION"; /bin/bash -c "set -u; a=(); for x in \"\${a[@]}\"; do :; done; echo chegou" ; echo "array vazio com set -u rc=$?"; /bin/bash -c "set -u; p=\$2; echo chegou" x; echo "--piso sem valor (\$2 ausente) com set -u rc=$?"; f=08; echo "piso 4.08 por aritmetica:"; /bin/bash -c "echo \$((4*100+08))"; echo "rc=$?"; /bin/bash -c "set -- #777 #fff
+echo argc=\$#"; for a in 0 1 .5 0.5 1.0 1.00 0.0 1. . 1.5 -0.5 00.5 ; do if [[ "$a" =~ ^(0|1|0?\.[0-9]+|1\.0*)$ ]]; then echo "alpha $a aceito"; else echo "alpha $a recusado"; fi; done; for p in 3 4.5 4.50 4.555 0 0.00 03 ; do if [[ "$p" =~ ^[0-9]+(\.[0-9]{1,2})?$ ]]; then echo "piso $p passa a expressao"; else echo "piso $p recusado"; fi; done
+3.2.57(1)-release
+/bin/bash: a[@]: unbound variable
+array vazio com set -u rc=127
+x: $2: unbound variable
+--piso sem valor ($2 ausente) com set -u rc=127
+piso 4.08 por aritmetica:
+/bin/bash: 4*100+08: value too great for base (error token is "08")
+rc=1
+argc=0
+alpha 0 aceito
+alpha 1 aceito
+alpha .5 aceito
+alpha 0.5 aceito
+alpha 1.0 aceito
+alpha 1.00 aceito
+alpha 0.0 aceito
+alpha 1. aceito
+alpha . recusado
+alpha 1.5 recusado
+alpha -0.5 recusado
+alpha 00.5 recusado
+piso 3 passa a expressao
+piso 4.5 passa a expressao
+piso 4.50 passa a expressao
+piso 4.555 recusado
+piso 0 passa a expressao
+piso 0.00 passa a expressao
+piso 03 passa a expressao
+[exit=0]

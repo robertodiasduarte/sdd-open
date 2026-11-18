@@ -1,0 +1,36 @@
+test_documento_sem_permissao_tambem (test_playbook_curator.FalhaNuncaENada.test_documento_sem_permissao_tambem) ... skipped 'chmod: no Windows o bit de execu��o e a permiss�o de leitura n�o valem'
+
+test_nada_a_colher_continua_saindo_1 (test_playbook_curator.FalhaNuncaENada.test_nada_a_colher_continua_saindo_1) ... ok
+
+test_nome_de_arquivo_em_bytes_nao_utf8_nao_derruba (test_playbook_curator.FalhaNuncaENada.test_nome_de_arquivo_em_bytes_nao_utf8_nao_derruba) ... ERROR
+
+test_playbook_sem_permissao_sai_2_sem_traceback (test_playbook_curator.FalhaNuncaENada.test_playbook_sem_permissao_sai_2_sem_traceback) ... skipped 'chmod: no Windows o bit de execu��o e a permiss�o de leitura n�o valem'
+
+
+
+======================================================================
+
+ERROR: test_nome_de_arquivo_em_bytes_nao_utf8_nao_derruba (test_playbook_curator.FalhaNuncaENada.test_nome_de_arquivo_em_bytes_nao_utf8_nao_derruba)
+
+----------------------------------------------------------------------
+
+Traceback (most recent call last):
+
+  File "D:\a\sdd-open\sdd-open\tests\test_playbook_curator.py", line 463, in test_nome_de_arquivo_em_bytes_nao_utf8_nao_derruba
+
+    with open(nome, "wb") as f:
+
+         ^^^^^^^^^^^^^^^^
+
+UnicodeDecodeError: 'utf-8' codec can't decode byte 0xff in position 67: invalid start byte
+
+
+
+----------------------------------------------------------------------
+
+Ran 4 tests in 0.269s
+
+
+
+FAILED (errors=1, skipped=2)
+

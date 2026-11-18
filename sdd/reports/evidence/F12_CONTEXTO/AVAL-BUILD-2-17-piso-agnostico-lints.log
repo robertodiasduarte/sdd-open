@@ -1,0 +1,32 @@
+$ echo '--- piso: mapfile/declare -A/${x^^} nos scripts novos'; grep -nE 'mapfile|declare -A|\$\{[a-zA-Z_]+\^\^' sdd/bin/contexto-lint.sh sdd/bin/patterns-lint.sh sdd/bin/governanca-fronteira.sh sdd/bin/docs-extract-decisions.sh; echo grep-rc=$? '(1 = sem achado)'; echo '--- sintaxe bash 3.2'; for f in sdd/bin/contexto-lint.sh sdd/bin/patterns-lint.sh sdd/bin/governanca-fronteira.sh sdd/bin/docs-extract-decisions.sh sdd/bin/verify-gate.sh sdd/bin/sdd-fluxo.sh; do /bin/bash -n $f; echo "$f bash-n=$?"; done; /bin/bash --version | head -1; echo '--- sintaxe python 3.9'; /usr/bin/python3 -B -c 'import ast,sys; ast.parse(open(sys.argv[1]).read()); print(sys.version.split()[0], "ok")' sdd/bin/governanca-bloco.py; echo '--- termos RDD (AT-023)'; grep -rniE 'supabase|deno|wordpress|wp-content|rdd-plataforma|hostinger|RDD/Wordpress|rdd-eval' sdd/bin/contexto-lint.sh sdd/bin/patterns-lint.sh sdd/bin/governanca-fronteira.sh sdd/bin/docs-extract-decisions.sh sdd/bin/governanca-bloco.py .agents/skills/sdd-define/references/cartografo.md .agents/skills/sdd-governanca/references/revisor.md sdd/fixtures/contexto sdd/fixtures/patterns sdd/patterns docs/context-and-governance.md docs/pt-BR/context-and-governance.md 2>&1; echo grep-rc=$?; echo '--- self-tests (bash 3.2)'; /bin/bash sdd/bin/contexto-lint.sh --self-test >/dev/null 2>&1; echo contexto-self-test=$?; /bin/bash sdd/bin/patterns-lint.sh --self-test >/dev/null 2>&1; echo patterns-self-test=$?; /bin/bash sdd/bin/sdd-fluxo.sh --self-test >/dev/null 2>&1; echo sdd-fluxo-self-test=$?; echo '--- skill-lint / decisoes / versions'; /usr/bin/python3 -B sdd/bin/skill-lint.py --conversa >/dev/null 2>&1; echo skill-lint=$?; bash sdd/bin/sdd-decisoes-lint.sh --sites > /dev/null 2>&1; echo decisoes-sites=$?; /usr/bin/python3 -B scripts/check-versions.py --base v2.3.1 --base-obrigatoria; echo check-versions=$?; echo '--- patterns-lint no pacote'; bash sdd/bin/patterns-lint.sh sdd/patterns; echo rc=$?
+--- piso: mapfile/declare -A/${x^^} nos scripts novos
+grep-rc=1 (1 = sem achado)
+--- sintaxe bash 3.2
+sdd/bin/contexto-lint.sh bash-n=0
+sdd/bin/patterns-lint.sh bash-n=0
+sdd/bin/governanca-fronteira.sh bash-n=0
+sdd/bin/docs-extract-decisions.sh bash-n=0
+sdd/bin/verify-gate.sh bash-n=0
+sdd/bin/sdd-fluxo.sh bash-n=0
+GNU bash, version 3.2.57(1)-release (arm64-apple-darwin25)
+--- sintaxe python 3.9
+3.9.6 ok
+--- termos RDD (AT-023)
+grep-rc=1
+--- self-tests (bash 3.2)
+contexto-self-test=0
+patterns-self-test=0
+sdd-fluxo-self-test=0
+--- skill-lint / decisoes / versions
+skill-lint=64
+decisoes-sites=64
+PASS: check-versions — 17 skills com versão coerente, comparadas a v2.3.1.
+RESULTADO: VERDE
+→ siga para o próximo passo.
+check-versions=0
+--- patterns-lint no pacote
+✅ patterns-lint: 0 pattern(s) OK, 0 aviso(s)
+RESULTADO: VERDE
+→ os patterns podem ser citados.
+rc=0
+[exit=0]

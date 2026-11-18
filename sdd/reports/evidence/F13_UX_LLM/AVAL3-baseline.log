@@ -1,0 +1,39 @@
+$ git rev-parse HEAD; git status --short; git diff --quiet v2.4.0 HEAD -- sdd/hooks sdd/bin/report-lint.py sdd/bin/verify-gate.sh .agents/skills/sdd-release; echo "diff_protegidos_rc=$?"; git diff --stat HEAD; /usr/bin/python3 -B scripts/check-versions.py --base v2.4.0 --base-obrigatoria; echo "check_versions_rc=$?"; /usr/bin/python3 -B sdd/bin/skill-lint.py .agents/skills/sdd-loop-builder/SKILL.md; echo "lint_rc=$?"; /usr/bin/python3 -B sdd/bin/skill-lint.py --conversa .agents/skills/sdd-*/SKILL.md; echo "conversa_rc=$?"; /bin/bash sdd/bin/sdd-decisoes-lint.sh --sites .agents/skills sdd/templates/fragments; echo "decisoes_rc=$?"; grep -nE "mapfile|declare -A|\$\{[a-zA-Z_]+\^\^" sdd/bin/contraste.sh sdd/bin/prompt-drift-scan.sh; echo "grep_bash4_rc=$?"; /usr/bin/python3 -B -c "import ast,sys; [ast.parse(open(f,encoding=\"utf-8\").read()) for f in [\"sdd/bin/design-lint.py\",\"sdd/reports/evidence/F13_UX_LLM/confere_roteador.py\"]]; print(\"ast ok\")"; ls -la sdd/bin/__pycache__ 2>&1
+5ddc4333ac4d543eb958c5de37a1a50c473d6536
+?? sdd/features/
+?? sdd/handoffs/
+?? sdd/reports/
+?? sdd/reviews/
+?? sdd/traces/
+diff_protegidos_rc=0
+PASS: check-versions — 18 skills com versão coerente, comparadas a v2.4.0.
+RESULTADO: VERDE
+→ siga para o próximo passo.
+check_versions_rc=0
+✅ .agents/skills/sdd-loop-builder/SKILL.md: frontmatter válido
+lint_rc=0
+✅ .agents/skills/sdd-auditoria-harness/SKILL.md: frontmatter válido · camada de conversa ok
+✅ .agents/skills/sdd-brainstorm/SKILL.md: frontmatter válido · camada de conversa ok
+✅ .agents/skills/sdd-build/SKILL.md: frontmatter válido · camada de conversa ok
+✅ .agents/skills/sdd-checar-ambiente/SKILL.md: frontmatter válido · camada de conversa ok
+✅ .agents/skills/sdd-define/SKILL.md: frontmatter válido · camada de conversa ok
+✅ .agents/skills/sdd-design/SKILL.md: frontmatter válido · camada de conversa ok
+✅ .agents/skills/sdd-governanca/SKILL.md: frontmatter válido · camada de conversa ok
+✅ .agents/skills/sdd-handoff/SKILL.md: frontmatter válido · camada de conversa ok
+✅ .agents/skills/sdd-higiene-dado/SKILL.md: frontmatter válido · camada de conversa ok
+✅ .agents/skills/sdd-iniciar-repo/SKILL.md: frontmatter válido · camada de conversa ok
+✅ .agents/skills/sdd-iterate/SKILL.md: frontmatter válido · camada de conversa ok
+✅ .agents/skills/sdd-kb/SKILL.md: frontmatter válido · camada de conversa ok
+✅ .agents/skills/sdd-loop-builder/SKILL.md: frontmatter válido · camada de conversa ok
+✅ .agents/skills/sdd-new-session/SKILL.md: frontmatter válido · camada de conversa ok
+✅ .agents/skills/sdd-playbook/SKILL.md: frontmatter válido · camada de conversa ok
+✅ .agents/skills/sdd-prompt-builder/SKILL.md: frontmatter válido · camada de conversa ok
+✅ .agents/skills/sdd-release/SKILL.md: frontmatter válido · camada de conversa ok
+✅ .agents/skills/sdd-ux-review/SKILL.md: frontmatter válido · camada de conversa ok
+conversa_rc=0
+🟢 sdd-decisoes-lint --sites: 22 pergunta(s) em 22 arquivo(s), cada uma com a marca de classe e no formato.
+decisoes_rc=0
+grep_bash4_rc=1
+ast ok
+ls: sdd/bin/__pycache__: No such file or directory
+[exit=1]

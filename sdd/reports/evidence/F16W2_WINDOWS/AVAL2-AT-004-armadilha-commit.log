@@ -1,0 +1,15 @@
+$ /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f16w-windows/b56e801b-0f18-49ee-b51c-5b9188b29c23/scratchpad/trap_commit.sh /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f16w-windows/b56e801b-0f18-49ee-b51c-5b9188b29c23/scratchpad/head off; /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f16w-windows/b56e801b-0f18-49ee-b51c-5b9188b29c23/scratchpad/trap_commit.sh /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f16w-windows/b56e801b-0f18-49ee-b51c-5b9188b29c23/scratchpad/head on; echo '=== hook de ad32fe1 (v2.16.0) ==='; /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f16w-windows/b56e801b-0f18-49ee-b51c-5b9188b29c23/scratchpad/trap_commit.sh /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f16w-windows/b56e801b-0f18-49ee-b51c-5b9188b29c23/scratchpad/base off; /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f16w-windows/b56e801b-0f18-49ee-b51c-5b9188b29c23/scratchpad/trap_commit.sh /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f16w-windows/b56e801b-0f18-49ee-b51c-5b9188b29c23/scratchpad/base on; echo "[rc=$?]"
+arvore=head higiene=off arquivos=671 rc_commit=0 programas_no_PATH=56 git_do_hook=48 total=104 por_arquivo=0.15
+  PATH: grep=43 tr=5 sed=5 rm=1 mktemp=1 bash=1 
+  git : show=41 diff=3 symbolic-ref=1 rev-parse=1 grep=1 config=1 
+arvore=head higiene=on arquivos=671 rc_commit=0 programas_no_PATH=58 git_do_hook=50 total=108 por_arquivo=0.16
+  PATH: grep=43 tr=5 sed=5 bash=2 rm=1 mktemp=1 awk=1 
+  git : show=41 diff=5 symbolic-ref=1 rev-parse=1 grep=1 config=1 
+=== hook de ad32fe1 (v2.16.0) ===
+arvore=base higiene=off arquivos=671 rc_commit=0 programas_no_PATH=7411 git_do_hook=718 total=8129 por_arquivo=12.11
+  PATH: tr=2635 grep=1426 wc=1306 basename=694 od=671 head=671 sed=5 rm=1 
+  git : cat-file=671 show=41 diff=3 symbolic-ref=1 rev-parse=1 config=1 
+arvore=base higiene=on arquivos=671 rc_commit=0 programas_no_PATH=8755 git_do_hook=720 total=9475 por_arquivo=14.12
+  PATH: tr=3306 grep=1426 basename=1365 wc=1306 od=671 head=671 sed=5 bash=2 
+  git : cat-file=671 show=41 diff=5 symbolic-ref=1 rev-parse=1 config=1 
+[rc=0]

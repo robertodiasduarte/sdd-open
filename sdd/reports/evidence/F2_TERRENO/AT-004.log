@@ -1,0 +1,8 @@
+$ /usr/bin/python3 -B -m unittest -v test_checar.TestSegredo.test_acusa_cada_tipo_e_sai_1
+test_acusa_cada_tipo_e_sai_1 (test_checar.TestSegredo) ... ok
+
+----------------------------------------------------------------------
+Ran 1 test in 1.008s
+
+OK
+exit=0

@@ -1,0 +1,53 @@
+$ cat /tmp/sdd-aval/payload.py
+import json, sys
+fix, cwd = sys.argv[1], sys.argv[2]
+t = open(fix, encoding="utf-8").read()
+for kv in sys.argv[3:]:
+    k, v = kv.split("=", 1)
+    if v.startswith("@"):
+        v = open(v[1:], encoding="utf-8").read()
+    t = t.replace("__%s__" % k, json.dumps(v)[1:-1])
+t = t.replace("__CWD__", cwd)
+json.loads(t); sys.stdout.write(t)
+[exit=0]
+$ cd /tmp/sdd-aval/guards2 && python3 /tmp/sdd-aval/payload.py /Users/robertoduarte/rdd-worktrees/sdd-open-f8-aval/sdd/fixtures/hooks/payload-write-build-report.json $PWD FILE=$PWD/sdd/reports/BUILD_REPORT_X.md CONTENT=@/Users/robertoduarte/rdd-worktrees/sdd-open-f8-aval/sdd/fixtures/evidencia/BUILD_REPORT_sem_avaliacao.md | CLAUDE_PROJECT_DIR=$PWD python3 -B .claude/hooks/sdd-report-guard.py
+{"hookSpecificOutput": {"hookEventName": "PreToolUse", "permissionDecision": "deny", "permissionDecisionReason": "🛑 sdd-open: gravação de BUILD_REPORT_X.md negada — o relatório não passa no report-lint:\n🛑 [evidência] AT-001: `true` sem evidência válida — `evidence/sem_avaliacao/AT-001.log` fora de evidence/X/*.log — só evidência da própria feature vale\n🛑 [avaliação ausente] não há `AVALIACAO_X_<AAAAMMDD-HHMM>.md` em sdd/reviews/ (não vazio e não ignorado pelo git) nem linha sobre o avaliador. Saídas, nesta ordem: (1) rode o avaliador de contexto fresco (passo 5d da `sdd-build`); (2) `avaliador: N.A. (<motivo>)`, só com menos de 2 camadas — contagem impossível: `layers:` do sdd/config.yaml sem nenhum glob preenchido; (3) `avaliador: PENDENTE (<motivo>)`, se o build travou antes do avaliador\nRESULTADO: VERMELHO\n→ produza `evidence/X/AT-nnn.log` (1ª linha `$ cmd`, output verbatim), cite `AVALIACAO_X_<ts>.md`, ou `recibo: nome YYYY-MM-DD` (só gate manual-ux) — ou mantenha `false`.\n→ rode o avaliador e grave `sdd/reviews/AVALIACAO_X_<AAAAMMDD-HHMM>.md`, ou escreva a linha `avaliador: N.A. (<motivo>)` / `avaliador: PENDENTE (<motivo>)` no relatório."}}
+[exit=0]
+$ cd /tmp/sdd-aval/guards2 && python3 /tmp/sdd-aval/payload.py /Users/robertoduarte/rdd-worktrees/sdd-open-f8-aval/sdd/fixtures/hooks/payload-write-build-report.json $PWD FILE=$PWD/sdd/reports/BUILD_REPORT_X.md CONTENT=@/Users/robertoduarte/rdd-worktrees/sdd-open-f8-aval/sdd/fixtures/evidencia/BUILD_REPORT_sem_avaliacao.md | CLAUDE_PROJECT_DIR=$PWD python3 -B .claude/hooks/sdd-report-guard.py | python3 -c "import json,sys;d=json.load(sys.stdin)['hookSpecificOutput'];print(d['hookEventName'], d['permissionDecision']); print('[avaliação ausente]' in d['permissionDecisionReason'])"
+PreToolUse deny
+True
+[exit=0]
+$ cd /tmp/sdd-aval/guards2 && python3 /tmp/sdd-aval/payload.py /Users/robertoduarte/rdd-worktrees/sdd-open-f8-aval/sdd/fixtures/hooks/payload-write-build-report.json $PWD FILE=$PWD/sdd/reports/BUILD_REPORT_X.md CONTENT=@/tmp/sdd-aval/RELATORIO_OK.md | CLAUDE_PROJECT_DIR=$PWD python3 -B .claude/hooks/sdd-report-guard.py; echo rc=$? saida-vazia=write-controle
+rc=0 saida-vazia=write-controle
+[exit=0]
+$ cd /tmp/sdd-aval/guards2 && python3 /tmp/sdd-aval/payload.py /Users/robertoduarte/rdd-worktrees/sdd-open-f8-aval/sdd/fixtures/hooks/payload-write-build-report.json $PWD FILE=$PWD/sdd/fixtures/evidencia/BUILD_REPORT_Z.md CONTENT=@/Users/robertoduarte/rdd-worktrees/sdd-open-f8-aval/sdd/fixtures/evidencia/BUILD_REPORT_sem_avaliacao.md | CLAUDE_PROJECT_DIR=$PWD python3 -B .claude/hooks/sdd-report-guard.py; echo rc=$? saida-vazia=fixture
+rc=0 saida-vazia=fixture
+[exit=0]
+$ cd /tmp/sdd-aval/guards2 && python3 /tmp/sdd-aval/payload.py /Users/robertoduarte/rdd-worktrees/sdd-open-f8-aval/sdd/fixtures/hooks/payload-write-build-report.json $PWD FILE=$PWD/sdd/templates/BUILD_REPORT_TEMPLATE.md CONTENT=@/Users/robertoduarte/rdd-worktrees/sdd-open-f8-aval/sdd/fixtures/evidencia/BUILD_REPORT_sem_avaliacao.md | CLAUDE_PROJECT_DIR=$PWD python3 -B .claude/hooks/sdd-report-guard.py; echo rc=$? saida-vazia=template
+rc=0 saida-vazia=template
+[exit=0]
+$ cd /tmp/sdd-aval/guards2 && python3 /tmp/sdd-aval/payload.py /Users/robertoduarte/rdd-worktrees/sdd-open-f8-aval/sdd/fixtures/hooks/payload-write-build-report.json $PWD FILE=$PWD/notas/RELATORIO.md CONTENT=@/Users/robertoduarte/rdd-worktrees/sdd-open-f8-aval/sdd/fixtures/evidencia/BUILD_REPORT_sem_avaliacao.md | CLAUDE_PROJECT_DIR=$PWD python3 -B .claude/hooks/sdd-report-guard.py; echo rc=$? saida-vazia=outro-arquivo
+rc=0 saida-vazia=outro-arquivo
+[exit=0]
+$ cd /tmp/sdd-aval/guards2 && python3 /tmp/sdd-aval/payload.py /Users/robertoduarte/rdd-worktrees/sdd-open-f8-aval/sdd/fixtures/hooks/payload-write-build-report.json $PWD FILE=sdd/reports/BUILD_REPORT_REL.md CONTENT=@/Users/robertoduarte/rdd-worktrees/sdd-open-f8-aval/sdd/fixtures/evidencia/BUILD_REPORT_sem_avaliacao.md | CLAUDE_PROJECT_DIR=$PWD python3 -B .claude/hooks/sdd-report-guard.py | cut -c1-120
+{"hookSpecificOutput": {"hookEventName": "PreToolUse", "permissionDecision": "deny", "permissionDecisionReason": "🛑 sdd-
+[exit=0]
+$ cd /tmp/sdd-aval/guards2 && mv sdd/bin/report-lint.py /tmp/sdd-aval/rl3.py && python3 /tmp/sdd-aval/payload.py /Users/robertoduarte/rdd-worktrees/sdd-open-f8-aval/sdd/fixtures/hooks/payload-write-build-report.json $PWD FILE=$PWD/sdd/reports/BUILD_REPORT_X.md CONTENT=@/Users/robertoduarte/rdd-worktrees/sdd-open-f8-aval/sdd/fixtures/evidencia/BUILD_REPORT_sem_avaliacao.md | CLAUDE_PROJECT_DIR=$PWD python3 -B .claude/hooks/sdd-report-guard.py; echo rc=$?; mv /tmp/sdd-aval/rl3.py sdd/bin/report-lint.py
+{"systemMessage": "⚠️ sdd-open: sdd/bin/report-lint.py não encontrado em /tmp/sdd-aval/guards2 — BUILD_REPORT não conferido (rode init)"}
+rc=0
+[exit=0]
+$ cd /tmp/sdd-aval/guards2 && printf '#!/usr/bin/env python3\nimport sys;sys.exit(64)\n' > sdd/bin/report-lint.py && python3 /tmp/sdd-aval/payload.py /Users/robertoduarte/rdd-worktrees/sdd-open-f8-aval/sdd/fixtures/hooks/payload-write-build-report.json $PWD FILE=$PWD/sdd/reports/BUILD_REPORT_X.md CONTENT=@/Users/robertoduarte/rdd-worktrees/sdd-open-f8-aval/sdd/fixtures/evidencia/BUILD_REPORT_sem_avaliacao.md | CLAUDE_PROJECT_DIR=$PWD python3 -B .claude/hooks/sdd-report-guard.py; echo rc=$?; git checkout -q -- sdd/bin/report-lint.py
+{"systemMessage": "⚠️ sdd-open: report-lint saiu 64 em BUILD_REPORT_X.md — BUILD_REPORT não conferido"}
+rc=0
+[exit=0]
+$ cd /tmp/sdd-aval/guards2 && python3 /tmp/sdd-aval/payload.py /Users/robertoduarte/rdd-worktrees/sdd-open-f8-aval/sdd/fixtures/hooks/payload-write-build-report.json $PWD FILE=$PWD/sdd/reports/BUILD_REPORT_X.md CONTENT=@/Users/robertoduarte/rdd-worktrees/sdd-open-f8-aval/sdd/fixtures/evidencia/BUILD_REPORT_sem_avaliacao.md | env -u CLAUDE_PROJECT_DIR python3 -B .claude/hooks/sdd-report-guard.py | cut -c1-100; echo rc=$? '(sem CLAUDE_PROJECT_DIR: usa cwd do payload)'
+{"hookSpecificOutput": {"hookEventName": "PreToolUse", "permissionDecision": "deny", "permissionDeci
+rc=0 (sem CLAUDE_PROJECT_DIR: usa cwd do payload)
+[exit=0]
+$ cd /tmp/sdd-aval/guards2 && python3 /tmp/sdd-aval/payload.py /Users/robertoduarte/rdd-worktrees/sdd-open-f8-aval/sdd/fixtures/hooks/payload-write-build-report.json $PWD FILE=$PWD/sdd/reports/BUILD_REPORT_X.md CONTENT=@/Users/robertoduarte/rdd-worktrees/sdd-open-f8-aval/sdd/fixtures/evidencia/BUILD_REPORT_sem_avaliacao.md | CLAUDE_PROJECT_DIR=$PWD /usr/bin/python3 -B .claude/hooks/sdd-report-guard.py | cut -c1-100; /usr/bin/python3 --version
+{"hookSpecificOutput": {"hookEventName": "PreToolUse", "permissionDecision": "deny", "permissionDeci
+Python 3.9.6
+[exit=0]
+$ cd /tmp/sdd-aval/guards2 && git status --short; echo '(guard não grava nada)'
+(guard não grava nada)
+[exit=0]

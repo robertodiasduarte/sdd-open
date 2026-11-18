@@ -1,0 +1,68 @@
+# ciclo 2 — achados novos: o texto (aaae1b4) e a fonte
+## N-L1 init 'copia de volta só o que você apagou'
+$ sed -n 95p docs/pt-BR/guia-do-aluno.md
+4. rode o `init` de novo com `--yes`: ele copia de volta só o que você apagou;
+exit=0
+$ sed -n 552p bin/sdd-open.sh
+  merge_agents_md "${ROOT}/AGENTS.md" "${CORPO_AGENTS}" || die "${falha_escrita} (AGENTS.md)" "verifique permissões; rode de novo" 1
+exit=0
+(medido: AVAL2-guia-fluxo.log, passo 4: plano '~ AGENTS.md (só o bloco entre os marcadores) (atualizar)' e git status ' M AGENTS.md')
+## N-L2 regra do doctor: skill só quando a versão é menor; sdd/bin em qualquer diferença
+$ sed -n 91,92p docs/pt-BR/guia-do-aluno.md
+2. `bash ~/sdd-open/bin/sdd-open.sh doctor` na pasta do projeto — ele aponta cada skill e cada
+   arquivo de `sdd/bin/` que diferem do pacote que você baixou (por isso o `git pull` vem antes);
+exit=0
+$ sed -n 584p docs/pt-BR/guia-do-aluno.md | cut -c1-120
+| **O `doctor` diz que uma skill ou um arquivo de `sdd/bin/` difere do pacote** | Apague a pasta da skill em `.agents/sk
+exit=0
+$ grep -n 'mais velhos que o pacote\|older than the package' docs/quickstart.md docs/pt-BR/quickstart.md
+docs/pt-BR/quickstart.md:180:aponta cada skill e cada arquivo de `sdd/bin/` mais velhos que o pacote. Para cada skill apontada:
+docs/quickstart.md:175:cd my-project && bash /tmp/sdd-open/bin/sdd-open.sh doctor   # what is older than the package?
+docs/quickstart.md:180:`sdd/bin/` file older than the package. For each skill it names:
+exit=0
+$ sed -n 627p docs/pt-BR/guia-do-aluno.md
+| **`doctor`** | O diagnóstico da instalação: o que está instalado, o que está mais velho que o pacote, o que falta. |
+exit=0
+$ sed -n 606,616p bin/sdd-open.sh
+  for s in $(skills_da_fonte "${pkg_skills}"); do
+    [ -f "${FONTE_SKILLS}/${s}/SKILL.md" ] || continue
+    vq="$(versao_skill "${pkg_skills}/${s}/SKILL.md")"; vp="$(versao_skill "${FONTE_SKILLS}/${s}/SKILL.md")"
+    [ -n "${vq}" ] && versao_menor "${vp}" "${vq}" || continue
+    warn "${s} ${vp:-sem versão} no projeto, ${vq} no pacote — para receber: apague .agents/skills/${s} e rode init (edições suas nela se perdem)"
+    atrasados=$((atrasados + 1))
+  done
+  for f in "${PKG}"/sdd/bin/*; do
+    [ -f "${f}" ] && [ -f "${ROOT}/sdd/bin/${f##*/}" ] || continue
+    cmp -s "${f}" "${ROOT}/sdd/bin/${f##*/}" && continue
+    warn "sdd/bin/${f##*/} difere do pacote — se você não editou, apague e rode init"
+exit=0
+## N-L3 python3 e o conferidor do Verify Gate
+$ sed -n 41,42p docs/pt-BR/guia-do-aluno.md
+  - **python3 3.9 ou mais novo** — as fases rodam pequenos conferidores escritos nele (o do Verify
+    Gate, o do relatório, o do design).
+exit=0
+(medido: AVAL2-verify-gate-5-e-python.log — verify-gate.sh é bash, 0 menções a python)
+## N-L4 FORA_DO_GIT 'em qualquer redação'
+$ sed -n 40,41p tests/test_docs.py
+# "sdd/ fica fora do git", em qualquer redação: procurado em cada parágrafo (ou linha de tabela) que cita sdd/.
+FORA_DO_GIT = re.compile(r"(não vai|não entra|não sobe|ficam? fora)[^.|]{0,40}\b(git|github)\b", re.I)
+exit=0
+(medido: AVAL2-sabotagens.log AT-002e2..e5 exit=0)
+## N-L5 alarme recusa planilha nova; a linha da seção 8 não diz
+$ sed -n 582p docs/pt-BR/guia-do-aluno.md | cut -c1-110
+| **Commit recusado pelo alarme** | O arquivo tem CPF/CNPJ, senha ou certificado. Escolha: **corrigir** (tirar
+exit=0
+$ sed -n 285p docs/pt-BR/guia-do-aluno.md | cut -c1-260
+| **Para que serve** | Instala um **alarme de commit**: toda vez que você for salvar uma versão, ele confere e recusa se encontrar CPF ou CNPJ válidos, arquivo de senhas (`.env`), certificado digital (`.pfx`, `.p12`, `.pem`) ou planilha nova. |
+exit=0
+$ sed -n 128,130p .agents/skills/sdd-higiene-dado/SKILL.md
+   - o que o alarme recusa: CPF ou CNPJ válidos nas linhas novas; `.env` (exceto `.env.example` e
+     `.env.sample`); `.pfx`, `.p12` e `.pem` com chave privada; planilha nova (`.xlsx`, `.xls`, `.ods`,
+     `.csv`) de qualquer tamanho;
+exit=0
+## N-L6 quickstarts: 'O doctor avisa se detectar os dois' x guia :684-689
+$ grep -n 'avisa se\|warns if' docs/quickstart.md docs/pt-BR/quickstart.md -A1
+docs/quickstart.md:222:names coincide on purpose: use **one or the other** per project. `doctor` warns if it finds both.
+docs/pt-BR/quickstart.md:223:das skills coincidem de propósito: use **um ou outro** por projeto. O `doctor` avisa se
+docs/pt-BR/quickstart.md-224-detectar os dois.
+exit=0

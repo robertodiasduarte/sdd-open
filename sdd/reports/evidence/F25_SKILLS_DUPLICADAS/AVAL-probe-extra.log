@@ -1,0 +1,25 @@
+$ /bin/bash <scratchpad>/probe/p_extra.sh
+## temporários: TMPDIR isolado, depois de diagnóstico, --duplicadas e --limpar
+sobras no TMPDIR: 0
+## atalho do npx: ~/.claude/skills/X -> ~/.agents/skills/X (npx, 2.6.0), projeto só .agents 2.7.0 (Claude ficaria sem a skill)
+1. sdd-define — o Codex lê 2 cópias e escolhe uma sem dizer qual:
+   global: <scratchpad>/probe/run.tyFx/home/.agents/skills/sdd-define — versão 2.6.0, do starter, instalada pelo npx
+   do projeto: <scratchpad>/probe/run.tyFx/proj/.agents/skills/sdd-define — versão 2.7.0, do SDD Open, salva no git do projeto
+   Não escolho: tirar deixaria o Claude Code sem a sdd-define neste projeto.
+
+Nada a tirar automaticamente: veja o que fazer em cada item acima.
+## mesmo, com o par do sync no projeto (.agents e .claude 2.7.0): tira a real pelo npx com -a claude-code -a codex; o desfazer refaz o atalho
+   global: <scratchpad>/probe/run.SUv7/home/.claude/skills/sdd-define — versão 2.6.0, do starter, instalada pelo npx
+   Recomendo: tirar a global <scratchpad>/probe/run.SUv7/home/.claude/skills/sdd-define (atalho para <scratchpad>/probe/run.SUv7/home/.agents/skills/sdd-define: os dois saem juntos) (2.6.0, a mais velha).
+   global: <scratchpad>/probe/run.SUv7/home/.agents/skills/sdd-define — versão 2.6.0, do starter, instalada pelo npx
+   Recomendo: tirar a global <scratchpad>/probe/run.SUv7/home/.agents/skills/sdd-define (2.6.0, a mais velha).
+A cópia <scratchpad>/probe/run.SUv7/home/.agents/skills/sdd-define veio pelo npx: sai pelo npx skills remove sdd-define -g -a claude-code -a codex -y.
+EXIT=0
+--yes skills remove sdd-define -g -a claude-code -a codex -y
+       2
+✅ voltou: <scratchpad>/probe/run.SUv7/home/.agents/skills/sdd-define
+✅ atalho de volta: <scratchpad>/probe/run.SUv7/home/.claude/skills/sdd-define
+✅ registro do npx de volta: <scratchpad>/probe/run.SUv7/home/.agents/.skill-lock.json
+Pronto: tudo voltou ao lugar.
+arvore igual=sim; atalho: ../../.agents/skills/sdd-define
+[exit=0]

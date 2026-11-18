@@ -1,0 +1,67 @@
+worktree                     : /Users/robertoduarte/rdd-worktrees/sdd-open-f24-release-enxuta
+branch                       : feat/f24-release-enxuta
+protocolo                    : cadeia REVISOR → AUDITOR; paralelo não existe
+base                         : origin/main
+merge_base                   : fb7ee82f7cb0a15b4fda798f1a9615bd2dbe253f
+head                         : 066bd781d02a66efdf40490b44611d680ea86f54
+paths                        : -
+diff_sha256                  : f933f07a338e79b20e85d3c8160605a8f7d50af879529ff05a204146dfe6bfc7
+diff                         : 225KB (47 arquivo(s))
+contexto                     : 75KB (3 doc SDD)
+docs_sdd                     : DEFINE_F24_RELEASE_ENXUTA.md, DESIGN_F24_RELEASE_ENXUTA.md, BUILD_REPORT_F24_RELEASE_ENXUTA.md
+contexto_cortado             : -
+diversidade                  : -
+reviewer_engine_default      : claude
+reviewer_engine_efetivo      : claude
+reviewer_fallback_usado      : nao
+reviewer_motivo              : -
+reviewer_exit                : 0
+reviewer_segundos            : 293
+reviewer_achados             : 5
+reviewer_tokens_entrada      : 150422
+reviewer_tokens_saida        : 30640
+reviewer_tokens_total        : 181062
+reviewer_tokens_cache_lido   : -
+reviewer_tokens_cache_criado : -
+reviewer_modelo              : claude-opus-5-5
+reviewer_custo               : US$ 1.8776
+revisor1_raso                : nao
+gatilho_2o_revisor           : segurança (.agents/skills/sdd-release/references/seguranca.md)
+gatilho_risco_motivo         : termo seguranca
+gatilho_regra_antiga         : 47 arquivos (limiar 8)
+dispensas_a_mao              : -
+revisor2_engine              : codex
+revisor2_engine_default      : codex
+revisor2_engine_efetivo      : codex
+revisor2_fallback_usado      : nao
+revisor2_motivo              : -
+revisor2_exit                : 0
+revisor2_segundos            : 253
+revisor2_achados             : 4
+revisor2_tokens_entrada      : 109595
+revisor2_tokens_saida        : 7545
+revisor2_tokens_total        : 124308
+revisor2_tokens_cache_lido   : 7168
+revisor2_tokens_cache_criado : 0
+revisor2_modelo              : gpt-6.1-sol
+revisor2_custo               : assinatura
+auditor_engine_default       : openrouter:qwen/qwen3.7-plus
+auditor_engine_efetivo       : openrouter:qwen/qwen3.7-plus
+auditor_fallback_usado       : nao
+auditor_motivo               : openrouter:qwen/qwen3.7-plus passou do teto de tempo
+auditor_exit                 : 67
+auditor_segundos             : 1848
+auditor_vereditos            : 0
+auditor_tokens_entrada       : n/d
+auditor_tokens_saida         : n/d
+auditor_tokens_total         : n/d
+auditor_tokens_cache_lido    : -
+auditor_tokens_cache_criado  : -
+auditor_modelo               : n/d
+auditor_custo                : $?
+convergencia_1o_passe        : n/a (auditor falhou)
+desempate_alvo               : -
+desempate_engine             : -
+desempate_decisao            : -
+custo_total                  : US$ 1.8776 (+ 1 papel(is) com custo $?)
+quando                       : 20261116-210442

@@ -1,0 +1,6 @@
+{"achado": "R1", "veredito": "AGREE", "justificativa": "O diff adiciona PROMPT_F22.md como new file, expondo caminhos locais, saldo de créditos e segredos, violando a instrução de não commitar."}
+{"achado": "R2", "veredito": "AGREE", "justificativa": "bin/sdd-open.sh:1130 não exige vk == vp para EM DIA, então bumps sem instaláveis não regravam o registro e o aviso de versão nova fica perpétuo."}
+{"achado": "R3", "veredito": "AGREE", "justificativa": "bin/sdd-open.sh:1085 com pipefail: o while retorna 1 se o último instalável for novo, abortando o upgrade com die falso."}
+{"achado": "R4", "veredito": "AGREE", "justificativa": "bin/sdd-open.sh:980 aponta sdd/upgrade/<vK>/ no doctor quando mesma=1, mas a pasta só existe se o upgrade já tiver rodado com editados."}
+{"achado": "R5", "veredito": "AGREE", "justificativa": "bin/sdd-open.sh:1150 o while com redireção de arquivo roda no shell corrente; exit 1 encerra o script sem RESULTADO: ERRO nem o die."}
+{"achado": "R6", "veredito": "AGREE", "justificativa": "bin/sdd-open.sh:1046 mktemp -d nunca é removido (sem trap ou rm -rf), acumulando pacotes antigos no TMPDIR."}
