@@ -1,0 +1,19 @@
+$ /bin/bash <scratchpad>/probe/p_at004b.sh
+# fixture A: 12 skills duplicadas (Claude, global x projeto) + package.json com npm sem ignore-scripts (item de dado)
+⚠️ Vale arrumar
+- O npm roda os scripts de instalação de qualquer pacote baixado — é por onde entram pacotes maliciosos.
+  npm config set ignore-scripts true   (se um pacote parar de funcionar: npm rebuild <pacote> --ignore-scripts=false)
+- 12 skills do SDD estão em mais de um lugar que o mesmo agente lê (sdd-x01, sdd-x02, sdd-x03, sdd-x04, sdd-x05, sdd-x06, sdd-x07, sdd-x08, sdd-x09, sdd-x10 e mais 2): o agente pode estar rodando uma versão diferente da que o projeto traz.
+  bash ~/rdd-worktrees/sdd-open-f25-skills-duplicadas/.agents/skills/sdd-checar-ambiente/scripts/checar.sh --duplicadas   (mostra cada uma, onde está e o que eu tiraria; nada muda sem o seu sim)
+- O repositório não tem remoto — nada que você fizer sai desta máquina, e as frentes nascem dele.
+  git remote add origin <url do repositório>   (projeto ainda sem repositório no GitHub? a skill sdd-iniciar-repo cria um privado e envia)
+- O programa do GitHub para o terminal (gh) não está instalado — sem ele, publicar o projeto e logar no GitHub ficam manuais.
+  brew install gh   (sem Homebrew: instalador em https://cli.github.com); depois feche e abra o terminal
+
+EXIT=0
+
+# fixture B: tempo — 3 pastas (~/.claude, ~/.agents, projeto .claude) com 18 skills cada, 18 duplicatas
+rodada 1: antes(main 017f09a)=0.59s  F25=0.53s  diferença=-0.05s
+rodada 2: antes(main 017f09a)=0.31s  F25=0.52s  diferença=0.20s
+rodada 3: antes(main 017f09a)=0.22s  F25=0.54s  diferença=0.31s
+[exit=0]
