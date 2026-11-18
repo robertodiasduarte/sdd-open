@@ -34,8 +34,8 @@
 ## Falta
 
 1. ~~Starter~~ — feito: 11ª geração pela tag `v2.23.0` num clone limpo (`bc2894e`); `check-gerado` VERDE, `publish-check` e `check-versions` PASS, testes, gate da KB e 18 zips OK; PR #20 de lá, CI verde, avanço direto da `main` (`4dbdea1..bc2894e`); Release **`v1.5.27`**, 18 zips OK. A branch `gen/v2.23.0` do starter ainda está no remoto (integrada).
-2. **Branch e worktree de documentos:** apagar `docs/incorporar-starter` (remoto e local) e a worktree `/Users/robertoduarte/rdd-worktrees/sdd-open-docs` depois de o Roberto conferir a `main`. A tag `arquivo/docs-incorporar-starter` fica. Antes de apagar: `python3 -B scripts/docs-migracao.py --pode-aposentar arquivo/docs-incorporar-starter` (PODE em 2026-11-18).
-3. **Branch da frente:** apagar `feat/f26-docs-na-main` do remoto (integrada: a `main` é o mesmo commit); a branch local, as branches `f26-historia` e `f26-reserva-antes-da-remigracao` e a worktree saem de fora dela, com o OK do Roberto.
+2. ~~Branch e worktree de documentos~~ — feito em 2026-11-18, com o OK do Roberto: `--pode-aposentar` PODE logo antes; `docs/incorporar-starter` apagada no remoto e local (era `511d6fa`; volta com `git push origin arquivo/docs-incorporar-starter:refs/heads/docs/incorporar-starter`) e a worktree `sdd-open-docs` removida. A tag `arquivo/docs-incorporar-starter` fica. Os 2 traces que só existiam nela estão em `~/rdd-worktrees/arquivo-sdd-open/docs-incorporar-starter-traces-2026-11-18.tar.gz`.
+3. Branch da frente: a remota `feat/f26-docs-na-main` e a `gen/v2.23.0` do starter apagadas em 2026-11-18 (integradas: `git cherry` sem `+`). Falta, de fora desta pasta e com o OK do Roberto: `git worktree remove /Users/robertoduarte/rdd-worktrees/sdd-open-f26-docs-na-main` e `git branch -D feat/f26-docs-na-main f26-historia f26-reserva-antes-da-remigracao`.
 4. Curadoria: na fila (`sdd/curadoria/fila/F26_DOCS_NA_MAIN/20261118T140442Z`, 24 contagens e 6 candidatos); o próximo lote da `sdd-playbook` julga.
 5. Smoke depois do deploy: pulado — slot vazio (o Open não tem `sdd/config.yaml`); a Release foi conferida à mão.
 
@@ -92,14 +92,13 @@
 ## Ship
 
 - **Publicar:** feito (`v2.23.0`, PR #39, `8d47908`; starter `v1.5.27`, PR #20).
-- **Limpar:** pendente (itens 2 e 3 de Falta).
+- **Limpar:** branch de documentos, worktree de documentos e branches remotas feitos; falta a worktree e as branches locais da frente (item 3 de Falta).
 
 ## Prompt de retomada
 
 ```text
 Retomar a F26 (documentos na main) do SDD Open. Leia sdd/handoffs/HANDOFF_F26_DOCS_NA_MAIN.md na main
 (git -C /Users/robertoduarte/rdd-public/sdd-open fetch origin; a ficha está na main desde a F26). A F26 está
-publicada (v2.23.0 e starter v1.5.27). Falta: apagar a branch
-docs/incorporar-starter e a worktree sdd-open-docs depois de o Roberto conferir a main (rode antes o --pode-aposentar),
-e limpar a branch e a worktree da frente. Responda em português; publicar ou apagar pede o OK do Roberto.
+publicada (v2.23.0 e starter v1.5.27). Falta só limpar a worktree e as branches locais
+da frente (comandos em Falta, item 3). Responda em português; publicar ou apagar pede o OK do Roberto.
 ```
