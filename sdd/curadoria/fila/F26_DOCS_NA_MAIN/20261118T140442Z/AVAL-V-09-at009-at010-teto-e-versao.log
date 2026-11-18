@@ -1,0 +1,21 @@
+$ bash /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f26-docs-na-main/e1164d6c-42f0-4737-8064-2ce0f93f4e1b/scratchpad/v/at009_010.sh
+[geração limpa v2.23.0] rc=0
+✅ 18 skill(s) gerada(s) e a infra conferidas: tudo igual ao que o sdd-open gerou
+RESULTADO: VERDE
+[check-gerado] rc=0
+== AT-009: descrição da sdd-checar-ambiente com +30 caracteres (1002 com a marca -> 1032), tag v2.23.1
+descrição no Open agora: 1018 caracteres (aprox.)
+🛑 sdd-checar-ambiente: a description com a marca tem 1032 caracteres; o limite é 1.024
+RESULTADO: NADA FOI GRAVADO
+→ corrija a causa acima e rode de novo.
+[gerar v2.23.1] rc=65
+  mudanças no starter antes/depois: 0/0
+== AT-010: texto de uma skill muda no Open sem subir a versão (tag v2.23.2), contra o starter já gerado da v2.23.0 e commitado
+🛑 o version gate do starter reprovaria:
+  sdd-kb: a cópia gerada mudou e a versão não subiu (2.2.4 no starter, 2.2.4 no Open): suba a versão da skill no Open
+RESULTADO: NADA FOI GRAVADO
+→ corrija a causa acima e rode de novo.
+[gerar v2.23.2 sem versão maior] rc=65
+  mudanças no starter: 0
+== AT-010: checar.sh da F25 classifica as origens (cópia gerada = starter, Open = open)
+[rc=0]

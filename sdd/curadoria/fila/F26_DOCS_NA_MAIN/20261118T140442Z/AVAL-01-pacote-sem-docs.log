@@ -1,0 +1,11 @@
+$ T=$(mktemp -d); git archive --format=tar HEAD | tar -x -C $T; echo "docs no pacote:"; (cd $T && find sdd -type f | grep -E "^sdd/(features|handoffs|reviews|releases|archive|curadoria|reports)/|^sdd/GOVERNANCA_PADRAO.md" | wc -l); echo "MANIFEST linhas:"; grep -cv "^\s*$\|^#" $T/MANIFEST.txt; echo "no MANIFEST e ausente do pacote:"; (cd $T && grep -v "^\s*$\|^#" MANIFEST.txt | while read p; do [ -e "$p" ] || echo "FALTA $p"; done | head); echo "no pacote fora do MANIFEST:"; (cd $T && find . -type f | sed "s|^\./||" | sort > /tmp/_p.txt; grep -v "^\s*$\|^#" MANIFEST.txt | sort > /tmp/_m.txt; comm -23 /tmp/_p.txt /tmp/_m.txt | head -20)
+docs no pacote:
+       0
+MANIFEST linhas:
+743
+no MANIFEST e ausente do pacote:
+no pacote fora do MANIFEST:
+scripts/docs-migracao.py
+sdd/bin/docs-varredura.py
+sdd/bin/docs-varredura.sh
+[exit 0]

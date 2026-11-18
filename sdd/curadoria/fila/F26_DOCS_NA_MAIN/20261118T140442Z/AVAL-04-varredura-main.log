@@ -1,0 +1,6 @@
+$ bash sdd/bin/docs-varredura.sh .; echo "rc=$?"
+✅ documentos do repositório: 5 arquivo(s), nada achado.
+RESULTADO: VERDE
+→ siga.
+rc=0
+[exit 0]

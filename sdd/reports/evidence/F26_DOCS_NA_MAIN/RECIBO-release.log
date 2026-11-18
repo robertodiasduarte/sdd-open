@@ -1,0 +1,10 @@
+$ gh release download v2.23.0 && shasum -a 256 -c SHA256SUMS.txt && tar -xzf sdd-open-v2.23.0.tar.gz && cat sdd-open-v2.23.0/VERSION   # a Release publicada
+sdd-open-v2.23.0.tar.gz: OK
+[exit=0]
+VERSION: v2.23.0
+arquivos no pacote: 751 · linhas do MANIFEST: 751
+documentos no pacote: 0
+$ bash .agents/skills/sdd-release/scripts/anexar-bruto.sh F26_DOCS_NA_MAIN v2.23.0
+➖ bruto: F26_DOCS_NA_MAIN não tem sdd/reports/evidence/F26_DOCS_NA_MAIN/bruto/ com arquivos; nada a anexar.
+RESULTADO: SEM BRUTO
+[exit=0]

@@ -1,0 +1,45 @@
+DELTA LM-001 ajudou+1 · conf=2026-11-18 · evidencia=DESIGN_F26_DOCS_NA_MAIN.md:335 · fp=0a0961904c,9166de43f3
+DELTA LM-002 ajudou+1 · conf=2026-11-18 · evidencia=DESIGN_F26_DOCS_NA_MAIN.md:336 · fp=bd342494b7,a2f7d316b3
+DELTA LM-006 ajudou+1 · conf=2026-11-18 · evidencia=DESIGN_F26_DOCS_NA_MAIN.md:337 · fp=f77955d503,37a17042f3
+DELTA LM-007 ajudou+1 · conf=2026-11-18 · evidencia=DESIGN_F26_DOCS_NA_MAIN.md:338 · fp=4171a690f8,cdec318354
+DELTA LM-012 ajudou+1 · conf=2026-11-18 · evidencia=DESIGN_F26_DOCS_NA_MAIN.md:339 · fp=3506efacc3
+DELTA LM-013 ajudou+1 · conf=2026-11-18 · evidencia=DESIGN_F26_DOCS_NA_MAIN.md:340 · fp=4d87c054f9,8030990676
+DELTA LM-014 ajudou+1 · conf=2026-11-18 · evidencia=DESIGN_F26_DOCS_NA_MAIN.md:341 · fp=d1ff443f2a,9acfda984b
+DELTA LM-015 ajudou+1 · conf=2026-11-18 · evidencia=DESIGN_F26_DOCS_NA_MAIN.md:341 · fp=4bca8b69f3,41421c9c8d
+DELTA LM-030 ajudou+1 · conf=2026-11-18 · evidencia=DESIGN_F26_DOCS_NA_MAIN.md:341 · fp=0ac3f556f5,9e9ba47b92
+DELTA LM-017 ajudou+1 · conf=2026-11-18 · evidencia=DESIGN_F26_DOCS_NA_MAIN.md:342 · fp=009c367ee1,bd5536d67b
+DELTA LM-018 ajudou+1 · conf=2026-11-18 · evidencia=DESIGN_F26_DOCS_NA_MAIN.md:343 · fp=39a05b8401,d70013d839
+DELTA LM-020 ajudou+1 · conf=2026-11-18 · evidencia=DESIGN_F26_DOCS_NA_MAIN.md:344 · fp=f8e3b5325b,15617ff76c
+DELTA LM-023 ajudou+1 · conf=2026-11-18 · evidencia=DESIGN_F26_DOCS_NA_MAIN.md:345 · fp=a5e7631183,4cf1daa259
+DELTA LM-026 ajudou+1 · conf=2026-11-18 · evidencia=DESIGN_F26_DOCS_NA_MAIN.md:346 · fp=a27eae5567
+DELTA LM-029 ajudou+1 · conf=2026-11-18 · evidencia=DESIGN_F26_DOCS_NA_MAIN.md:347 · fp=c785afc24f,65a7c48778
+DELTA LM-034 ajudou+1 · conf=2026-11-18 · evidencia=DESIGN_F26_DOCS_NA_MAIN.md:348 · fp=428cb5c068,9154476e45
+DELTA LM-035 ajudou+1 · conf=2026-11-18 · evidencia=DESIGN_F26_DOCS_NA_MAIN.md:349 · fp=34fa4ad2e0,6c49ff7ddd
+DELTA LM-037 ajudou+1 · conf=2026-11-18 · evidencia=DESIGN_F26_DOCS_NA_MAIN.md:350 · fp=cd62bd427f,ae78e9469e
+DELTA LM-038 ajudou+1 · conf=2026-11-18 · evidencia=DESIGN_F26_DOCS_NA_MAIN.md:351 · fp=5e5ed587bf,3a9c7a18f7
+DELTA LM-022 ajudou+1 · conf=2026-11-18 · evidencia=DESIGN_F26_DOCS_NA_MAIN.md:352 · fp=32aeda5d76,6e9d41c448
+DELTA LM-005 ajudou+1 · conf=2026-11-18 · evidencia=DESIGN_F26_DOCS_NA_MAIN.md:353 · fp=73f4a5afa4
+DELTA LM-003 ajudou+1 · conf=2026-11-18 · evidencia=BUILD_REPORT_F26_DOCS_NA_MAIN.md:51 · fp=13829350f6
+DELTA LM-012 mordeu+1 · conf=2026-11-18 · evidencia=BUILD_REPORT_F26_DOCS_NA_MAIN.md:54 · fp=3785334125,152783372a
+DELTA LM-042 ajudou+1 · conf=2026-11-18 · evidencia=BUILD_REPORT_F26_DOCS_NA_MAIN.md:66 · fp=e987f0e40b
+SUGESTAO mordeu? LM-003 — termo `review` em BUILD_REPORT_F26_DOCS_NA_MAIN.md:239 (achado sem LM explícito; confirmar a causa antes de virar delta) · fp=99aa5e8e23
+SUGESTAO mordeu? LM-040 — termo `avaliador` em BUILD_REPORT_F26_DOCS_NA_MAIN.md:239 (achado sem LM explícito; confirmar a causa antes de virar delta) · fp=f184c57db0
+CANDIDATO #1 → LM-045 · secao=Reviews / harness · sup=`export-ignore` `-export-ignore` `git archive` `.gitattributes` `sdd/bin/**` · evidencia=sdd/features/DESIGN_F26_DOCS_NA_MAIN.md (Landmines aplicáveis, a landmine nova medida) · fp=edd8351205
+   delta: ADD Reviews / harness :: sup: `export-ignore` `-export-ignore` `git archive` `.gitattributes` `sdd/bin/**` :: Numa lista de permissão do `.gitattributes`, `pasta/** -export-ignore` sem a linha `pasta -export-ignore` (a própria pasta) deixa a pasta inteira fora do `git archive`, calado: o atributo da pasta pai vence o do conteúdo. Na F26, `sdd/bin` sumiria do pacote sem nenhum aviso. **Do instead:** para cada pasta liberada, escreva as 2 linhas (`pasta -export-ignore` e `pasta/** -export-ignore`) e prove pelo tarball montado, nunca pelo `check-attr` de um arquivo só. → ficha: — · promovido_para: —
+CANDIDATO #2 → LM-046 · secao=Reviews / harness · sup=`regex` `e-mail` `quadrático` `linha longa` `re.finditer` · evidencia=sdd/reports/BUILD_REPORT_F26_DOCS_NA_MAIN.md (Issues Encountered) · fp=5bee89ec9d
+   delta: ADD Reviews / harness :: sup: `regex` `e-mail` `quadrático` `linha longa` `re.finditer` :: Regex de e-mail com quantificador sem teto (`[\w.+-]+@[\w-]+(\.[\w-]+)+`) tem custo quadrático numa linha longa sem `@` (log minificado, base64): na F26, a varredura dos documentos levou a suíte de 28 para 74 minutos e um teste estourou o tempo. **Do instead:** quantificadores com teto (`{1,64}`, `{1,253}`) e só avaliar a linha que tem `@`; meça com uma linha de 600 KB antes do gate. → ficha: — · promovido_para: —
+CANDIDATO #3 → LM-047 · secao=Reviews / harness · sup=`tar` `COPYFILE_DISABLE` `._` `macOS` `anexo` · evidencia=sdd/reports/BUILD_REPORT_F26_DOCS_NA_MAIN.md (Issues Encountered) · fp=c4551777cb
+   delta: ADD Reviews / harness :: sup: `tar` `COPYFILE_DISABLE` `._` `macOS` `anexo` :: O `tar` do macOS põe arquivos `._<nome>` (atributos estendidos) dentro do pacote: um anexo montado no Mac tem arquivos que a pasta não tem, e a conferência por lista reprova. **Do instead:** `COPYFILE_DISABLE=1 tar …` em todo pacote montado por script, e confira a lista do pacote contra a pasta. → ficha: — · promovido_para: —
+CANDIDATO #4 → LM-048 · secao=Reviews / harness · sup=`-text` `CRLF` `.gitattributes` `blob` `evidência do Windows` · evidencia=sdd/features/DESIGN_F26_DOCS_NA_MAIN.md (Revision History 1.1: CRLF medido) · fp=db46ce1cb0
+   delta: ADD Reviews / harness :: sup: `-text` `CRLF` `.gitattributes` `blob` `evidência do Windows` :: Log de evidência gravado no Windows tem CRLF; com a normalização de fim de linha, o mesmo arquivo copiado para outra branch vira outro blob, e toda conferência por blob (migração, selo) reprova. **Do instead:** `sdd/reports/evidence/** -text` no `.gitattributes`: evidência é guardada byte a byte. → ficha: — · promovido_para: —
+CANDIDATO #5 → LM-049 · secao=Reviews / harness · sup=`--conferir` `HEAD` `commit da migração` `migração de uma vez` · evidencia=sdd/features/DESIGN_F26_DOCS_NA_MAIN.md (Revision History 1.3) · fp=c7fd6774e6
+   delta: ADD Reviews / harness :: sup: `--conferir` `HEAD` `commit da migração` `migração de uma vez` :: A conferência de uma migração feita uma vez não pode ler a `HEAD`: os commits normais de depois (o papel da release, uma entrada nova na fila) a deixam vermelha e travam o passo seguinte (aposentar a origem) à toa. Na F26, o `--conferir` lia a `HEAD` e o `--pode-aposentar` nunca sairia 0 depois da release. **Do instead:** a conferência lê o commit que a migração criou (o que adicionou a lista, `git log --diff-filter=A`); teste com um commit de documento e uma entrada de fila depois da migração. → ficha: — · promovido_para: —
+CANDIDATO #6 → LM-050 · secao=Reviews / harness · sup=`git archive` `checkout` `os.walk` `documentos` `Verify Gate` · evidencia=sdd/reviews/AVALIACAO_F26_DOCS_NA_MAIN_20261118-0753.md (A2) · fp=003971cd4e
+   delta: ADD Reviews / harness :: sup: `git archive` `checkout` `os.walk` `documentos` `Verify Gate` :: O Verify Gate que roda a suíte numa cópia de `git archive` não vê o teste que percorre o checkout: com documentos na `main` (fora do pacote pela trava), o CI roda no checkout e acha o que a cópia não tem. Na F26, `test_seguranca_catalogo` reprovou um documento migrado só no clone. **Do instead:** quando a frente põe arquivos fora do pacote no repositório, rode a suíte também num clone (com o checkout inteiro) antes de declarar o gate verde. → ficha: — · promovido_para: —
+SUGESTAO mordeu? LM-022 — termo `check-versions` em AVAL-C2-08-at008-at010-starter-gerado-e-a1.log:36 (achado sem LM explícito; confirmar a causa antes de virar delta) · fp=65c51acda9,0ec43a6bb5,c8510dce9a,6c5d6ddff2
+SUGESTAO mordeu? LM-035 — termo `starter` em AVAL-C2-08-at008-at010-starter-gerado-e-a1.log:35 (achado sem LM explícito; confirmar a causa antes de virar delta) · fp=ce7a26c759,84c29ebbc7,60318f2e44,b46b4aa4ee,e75172b43d,e75172b43d,1b00c7c062,bf0a64a2d5,32d4890165
+SUGESTAO mordeu? LM-020 — termo `varredura` em AVAL-V-04c-at004-bordas.log:13 (achado sem LM explícito; confirmar a causa antes de virar delta) · fp=de6f90683e,7265534919
+SUGESTAO mordeu? LM-038 — termo `SKILL.md` em AVAL-V-04c-at004-bordas.log:13 (achado sem LM explícito; confirmar a causa antes de virar delta) · fp=34159ebafa,a8d7a2941c
+resumo: deltas=24 (ajudou=23 mordeu=1) candidatos=6 rejeitados=0 promocoes=0 sugestoes=6
+RESULTADO: HÁ O QUE JULGAR
+→ despache o curador com esta colheita; nada foi aplicado.

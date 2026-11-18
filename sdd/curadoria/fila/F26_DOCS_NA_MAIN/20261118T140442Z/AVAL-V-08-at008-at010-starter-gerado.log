@@ -1,0 +1,39 @@
+$ bash /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f26-docs-na-main/e1164d6c-42f0-4737-8064-2ce0f93f4e1b/scratchpad/v/at008.sh
+tag de teste: v2.23.0 -> d5a2770
+skills na lista: 18
+sdd-checar-ambiente          SKILL.md               pos=0   len=1002 desc_ok=True linha_ok=True `sdd-checar-ambiente v1.6.1 · SDD Starter · nov/2026 · versão atual: https://github.com/ro
+sdd-iniciar-repo             SKILL.md               pos=0   len=970  desc_ok=True linha_ok=True `sdd-iniciar-repo v1.2.3 · SDD Starter · nov/2026 · versão atual: https://github.com/rober
+sdd-higiene-dado             SKILL.md               pos=0   len=854  desc_ok=True linha_ok=True `sdd-higiene-dado v1.2.2 · SDD Starter · nov/2026 · versão atual: https://github.com/rober
+sdd-new-session              SKILL.md               pos=39  len=717  desc_ok=True linha_ok=True `sdd-new-session v1.7.1 · SDD Starter · nov/2026 · versão atual: https://github.com/robert
+sdd-kb                       SKILL.md               pos=0   len=919  desc_ok=True linha_ok=True `sdd-kb v2.2.4 · SDD Starter · nov/2026 · versão atual: https://github.com/robertodiasduar
+sdd-seguranca                SKILL.md               pos=34  len=879  desc_ok=True linha_ok=True `sdd-seguranca v1.0.3 · SDD Starter · nov/2026 · versão atual: https://github.com/robertod
+sdd-auditoria-harness        SKILL.md               pos=0   len=770  desc_ok=True linha_ok=True `sdd-auditoria-harness v1.2.4 · SDD Starter · nov/2026 · versão atual: https://github.com/
+sdd-prompt-builder           SKILL.md               pos=0   len=609  desc_ok=True linha_ok=True `sdd-prompt-builder v2.2.1 · SDD Starter · nov/2026 · versão atual: https://github.com/rob
+sdd-engenharia-reversa-saas  SKILL.md               pos=0   len=762  desc_ok=True linha_ok=True `sdd-engenharia-reversa-saas v1.2.1 · SDD Starter · nov/2026 · versão atual: https://githu
+sdd-loop-builder             SKILL.md               pos=0   len=752  desc_ok=True linha_ok=True `sdd-loop-builder v1.0.1 · SDD Starter · nov/2026 · versão atual: https://github.com/rober
+sdd-brainstorm               SKILL.md               pos=10  len=350  desc_ok=True linha_ok=True `sdd-brainstorm v2.5.1 · SDD Starter · nov/2026 · versão atual: https://github.com/roberto
+sdd-define                   SKILL.md               pos=0   len=474  desc_ok=True linha_ok=True `sdd-define v2.8.1 · SDD Starter · nov/2026 · versão atual: https://github.com/robertodias
+sdd-design                   SKILL.md               pos=0   len=566  desc_ok=True linha_ok=True `sdd-design v2.9.1 · SDD Starter · nov/2026 · versão atual: https://github.com/robertodias
+sdd-build                    SKILL.md               pos=0   len=738  desc_ok=True linha_ok=True `sdd-build v2.13.1 · SDD Starter · nov/2026 · versão atual: https://github.com/robertodias
+sdd-handoff                  SKILL.md               pos=0   len=513  desc_ok=True linha_ok=True `sdd-handoff v2.3.1 · SDD Starter · nov/2026 · versão atual: https://github.com/robertodia
+sdd-governanca               SKILL.md               pos=25  len=638  desc_ok=True linha_ok=True `sdd-governanca v2.5.1 · SDD Starter · nov/2026 · versão atual: https://github.com/roberto
+sdd-release                  SKILL.md               pos=0   len=545  desc_ok=True linha_ok=True `sdd-release v2.17.0 · SDD Starter · nov/2026 · versão atual: https://github.com/robertodi
+ux-review-builder            SKILL.md               pos=0   len=616  desc_ok=True linha_ok=True `ux-review-builder v1.6.2 · SDD Starter · nov/2026 · versão atual: https://github.com/robe
+== Open (AT-010): descrição e linha de identificação sem 'SDD Starter'
+Open sem marca nas 18: sim
+documentos de frente no starter gerado: 0
+FALHAS: 0
+[conferência das 18] rc=0
+== check-versions.py do starter (gerado), contra a base origin/main
+PASS: check-versions — 18 skills com versão coerente, comparadas a origin/main.
+[forma nova] rc=0
+  linha da sdd-kb na forma antiga: `sdd-kb v2.2.4 · nov/2026 · versão atual: https://github.com/robertodiasduarte/s
+FAIL: sdd-kb: linha de identificação ausente ou diferente do metadata; esperado `sdd-kb v2.2.4 · SDD Starter · nov/2026 · versão atual: https://github.com/robertodiasduarte/sdd-starter/releases/latest`
+check-versions: FAIL — corrija os itens acima (skill alterada sobe metadata.version e a linha de identificação; description cabe em 1024 caracteres).
+[forma antiga] rc=1
+== check-gerado.py do starter
+🛑 skills/sdd-kb/SKILL.md: mudou
+RESULTADO: ARQUIVO GERADO MUDOU AQUI
+→ desfaça a mudança aqui; para mudar de verdade, mude no sdd-open e gere de novo.
+rc=1
+[rc=0]

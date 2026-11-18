@@ -1,0 +1,63 @@
+$ bash /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f26-docs-na-main/e1164d6c-42f0-4737-8064-2ce0f93f4e1b/scratchpad/c2v/at005_006.sh
+igual escolhido: sdd/archive/F24_RELEASE_ENXUTA/BUILD_REPORT_F24_RELEASE_ENXUTA.md
+fora escolhido: sdd/reports/evidence/F23B2_MODELO_POR_PAPEL/gabarito-descartado/README.md
+[N0 HEAD da F26 (sem mudança)] rc=0
+    RESULTADO: VERDE
+[N0b no próprio commit da migração] rc=0
+    RESULTADO: VERDE
+[N1 'igual' com outro conteúdo] rc=1
+    🔴 sdd/archive/F24_RELEASE_ENXUTA/BUILD_REPORT_F24_RELEASE_ENXUTA.md · igual na lista, mas o commit da migração não tem o mesmo conteúdo da tag
+    RESULTADO: VERMELHO
+[N2 'igual' ausente] rc=1
+    🔴 sdd/archive/F24_RELEASE_ENXUTA/BUILD_REPORT_F24_RELEASE_ENXUTA.md · igual na lista, mas o commit da migração não tem o mesmo conteúdo da tag
+    RESULTADO: VERMELHO
+[N3 fila com entrada pendente] rc=1
+    🔴 sdd/curadoria/fila/F99_X/20261118T000000Z · entrada da fila da curadoria ainda pendente (rode o lote antes da migração)
+    RESULTADO: VERMELHO
+  (arquivo de código da tag: bin/lib/merge.sh)
+[N4 código velho da tag no commit da migração] rc=1
+    🔴 bin/lib/merge.sh · o commit da migração (2f992eb) trouxe da tag um arquivo que não é documento
+    RESULTADO: VERMELHO
+[N5 documento da tag fora da lista] rc=1
+    🔴 sdd/archive/F24_RELEASE_ENXUTA/BUILD_REPORT_F24_RELEASE_ENXUTA.md · documento da tag fora da lista
+    RESULTADO: VERMELHO
+[N6 'fora' trocado por 'igual' sem o arquivo] rc=1
+    🔴 sdd/reports/evidence/F23B2_MODELO_POR_PAPEL/gabarito-descartado/README.md · igual na lista, mas a tag pede fora
+    RESULTADO: VERMELHO
+[N7 'fora' (bruto) presente no commit da migração] rc=1
+    🔴 sdd/reports/evidence/F23B2_MODELO_POR_PAPEL/gabarito-descartado/README.md · fora na lista, mas está no commit da migração
+    RESULTADO: VERMELHO
+[N8 linha na lista que não é documento da tag] rc=1
+    🔴 sdd/features/NAO_EXISTE.md · está na lista e não é documento da tag
+    RESULTADO: VERMELHO
+[N9 'fora' sem motivo que se prove] rc=1
+    🔴 sdd/archive/F24_RELEASE_ENXUTA/BUILD_REPORT_F24_RELEASE_ENXUTA.md · fora na lista sem ser bruto, acima do teto ou reprovado pela varredura
+    RESULTADO: VERMELHO
+[N10 commit DEPOIS da migração muda um doc migrado (por desenho: não conta)] rc=0
+    RESULTADO: VERDE
+== AT-006 --pode-aposentar com remoto bare temporário
+[R0 remoto sem a branch] rc=1
+    🔴 não li a branch docs/incorporar-starter em origin
+    RESULTADO: NÃO PODE
+    → nada foi apagado; resolva e rode de novo.
+[R1 branch do remoto 1 commit atrás da tag] rc=1
+    🔴 a tag arquivo/docs-incorporar-starter (511d6fa) não é o último commit de docs/incorporar-starter em origin (6f15b7b)
+    RESULTADO: NÃO PODE
+    → nada foi apagado; resolva e rode de novo.
+[R2 tag == último commit da branch e conferência 0] rc=0
+    ✅ a tag guarda o último commit de docs/incorporar-starter e a main bate com ela.
+    RESULTADO: PODE
+    → apagar a branch e a worktree de documentos ainda pede o OK do Roberto.
+[R3 tag certa e conferência ≠ 0] rc=1
+    🔴 a conferência da migração não sai 0 (rode --conferir)
+    RESULTADO: NÃO PODE
+    → nada foi apagado; resolva e rode de novo.
+== repositório real (só leitura; ls-remote do origin)
+🔴 a tag arquivo/docs-incorporar-starter (511d6fa) não é o último commit de docs/incorporar-starter em origin (6f15b7b)
+RESULTADO: NÃO PODE
+→ nada foi apagado; resolva e rode de novo.
+rc=1
+tag -> 511d6fa · origin/docs/incorporar-starter -> 6f15b7b
+/Users/robertoduarte/rdd-worktrees/sdd-open-docs                511d6fa [docs/incorporar-starter]
+/Users/robertoduarte/rdd-worktrees/sdd-open-f26-docs-na-main    4ccb0ef [feat/f26-docs-na-main]
+[rc=0]

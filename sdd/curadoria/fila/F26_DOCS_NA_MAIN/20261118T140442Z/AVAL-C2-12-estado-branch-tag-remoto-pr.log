@@ -1,0 +1,34 @@
+$ bash /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f26-docs-na-main/e1164d6c-42f0-4737-8064-2ce0f93f4e1b/scratchpad/c2v/estado.sh
+HEAD 4ccb0ef
+tag local arquivo/docs-incorporar-starter -> 511d6fa
+branch local docs/incorporar-starter -> 511d6fa
+== remoto (ls-remote, só leitura)
+6f15b7b	refs/heads/docs/incorporar-starter
+304e60a	refs/heads/main
+== 6f15b7b e 511d6fa: o que o commit depois de 6f15b7b muda
+511d6fa docs(f26): a regra do plano e os prompts dizem que os documentos moram na main; branch de documentos congelada até a F26
+
+ sdd/features/ESCOPO_CHECAR_AMBIENTE_1_6_1.md      |  1 +
+ sdd/features/PLANO_F4_F15_CONSOLIDADO.md          | 24 ++++++++++++-----------
+ sdd/handoffs/HANDOFF_F25_SKILLS_DUPLICADAS.md     |  2 +-
+ sdd/handoffs/HANDOFF_INCORPORAR_STARTER.md        |  4 ++--
+ sdd/handoffs/SESSION_PROMPT_INCORPORAR_STARTER.md |  8 ++++----
+ 5 files changed, 21 insertions(+), 18 deletions(-)
+== o arquivo do A3 (ESCOPO_CHECAR_AMBIENTE_1_6_1.md) na HEAD e na lista da migração
+sdd/features/ESCOPO_CHECAR_AMBIENTE_1_6_1.md
+95:sdd/features/ESCOPO_CHECAR_AMBIENTE_1_6_1.md	igual	
+== worktrees
+/Users/robertoduarte/rdd-worktrees/sdd-open-docs                511d6fa [docs/incorporar-starter]
+/Users/robertoduarte/rdd-worktrees/sdd-open-f26-docs-na-main    4ccb0ef [feat/f26-docs-na-main]
+== worktree de documentos: mudanças não commitadas
+/Users/robertoduarte/rdd-worktrees/sdd-open-docs
+?? sdd/traces/
+linhas: 1
+== --pode-aposentar no repositório real
+🔴 a tag arquivo/docs-incorporar-starter (511d6fa) não é o último commit de docs/incorporar-starter em origin (6f15b7b)
+RESULTADO: NÃO PODE
+→ nada foi apagado; resolva e rode de novo.
+rc=1
+== PR da branch (gh, só leitura)
+[]
+[rc=0]

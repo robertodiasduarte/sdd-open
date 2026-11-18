@@ -1,0 +1,24 @@
+$ bash /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f26-docs-na-main/e1164d6c-42f0-4737-8064-2ce0f93f4e1b/scratchpad/v/at007.sh
+docs no clone de origem: 2904
+[init de clone] rc=0
+  arquivos instalados: 698 · documentos de frente instalados: 0
+  sdd/bin/docs-varredura.sh instalado: sim
+  sdd/ do projeto: WORKFLOW_CONTRACTS.yaml bin config.yaml contexto features fixtures handoffs hooks invariants.md open-instalado.txt patterns playbook.md releases reports review reviews templates 
+[init de tarball] rc=0
+  arquivos instalados: 698 · documentos de frente instalados: 0
+  sdd/bin/docs-varredura.sh instalado: sim
+  sdd/ do projeto: WORKFLOW_CONTRACTS.yaml bin config.yaml contexto features fixtures handoffs hooks invariants.md open-instalado.txt patterns playbook.md releases reports review reviews templates 
+== push-de-papel (raiz = HEAD da F26, branch main)
+✅ release.yml não roda com estes arquivos (os filtros do push os deixam de fora)
+RESULTADO: NAO_PUBLICA
+→ O commit de papel publica? não — release.yml não roda com estes arquivos (os filtros do push os deixam de fora)
+[só documentos] rc=1
+🚀 release.yml roda com o push na main e publica (job release)
+RESULTADO: PUBLICA
+→ O commit de papel publica? sim — release.yml roda com o push na main e publica (job release). Recomendo tirar os documentos do gatilho do deploy, no evento push do workflow: paths-ignore: ['sdd/**', '**/*.md']
+[sdd/playbook.md] rc=0
+🚀 release.yml roda com o push na main e publica (job release)
+RESULTADO: PUBLICA
+→ O commit de papel publica? sim — release.yml roda com o push na main e publica (job release). Recomendo tirar os documentos do gatilho do deploy, no evento push do workflow: paths-ignore: ['sdd/**', '**/*.md']
+[documento + playbook] rc=0
+[rc=0]

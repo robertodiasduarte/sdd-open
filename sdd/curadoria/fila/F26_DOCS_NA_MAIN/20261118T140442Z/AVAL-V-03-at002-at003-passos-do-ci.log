@@ -1,0 +1,91 @@
+$ bash /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f26-docs-na-main/e1164d6c-42f0-4737-8064-2ce0f93f4e1b/scratchpad/v/at002_003.sh
+== S0: checkout da HEAD da F26 com os 2783 docs + documento com número longo, /Users/<nome>/, e-mail de exemplo e .sh inválido em evidence
+  [gate-publish-gate.yml] rc=0
+    G1 secrets (gitleaks)
+    G2 forbidden patterns
+    G3 allowlist (MANIFEST.txt)
+    G4 verify-gate exit contract
+    G5 documentation
+  [shell-publish-gate.yml] rc=0
+  [gate-release.yml-testes] rc=0
+    G1 secrets (gitleaks)
+    G2 forbidden patterns
+    G3 allowlist (MANIFEST.txt)
+    G4 verify-gate exit contract
+    G5 documentation
+  [shell-release.yml-testes] rc=0
+  [gate-release.yml-testes-windows] rc=0
+    G1 secrets (gitleaks)
+    G2 forbidden patterns
+    G3 allowlist (MANIFEST.txt)
+    G4 verify-gate exit contract
+    G5 documentation
+== S1: .sh inválido em scripts/ (no pacote)
+  [shell-publish-gate.yml] rc=1
+    bash -n failed: ./scripts/quebrado.sh
+  [shell-release.yml-testes] rc=1
+    bash -n failed: ./scripts/quebrado.sh
+== S2: o mesmo número longo num arquivo do pacote (README.md)
+  [gate-publish-gate.yml] rc=1
+    G1 secrets (gitleaks)
+    G2 forbidden patterns
+      ⛔ pattern matched: /[0-9]{11,}/
+    G3 allowlist (MANIFEST.txt)
+    G4 verify-gate exit contract
+    G5 documentation
+    ⛔ publish-gate BLOCKED — fix the findings above. Never retry silently, never loosen a
+  [gate-release.yml-testes] rc=1
+    G1 secrets (gitleaks)
+    G2 forbidden patterns
+      ⛔ pattern matched: /[0-9]{11,}/
+    G3 allowlist (MANIFEST.txt)
+    G4 verify-gate exit contract
+    G5 documentation
+    ⛔ publish-gate BLOCKED — fix the findings above. Never retry silently, never loosen a
+== S3 (AT-002): linha da trava 1 removida
+  [gate-publish-gate.yml] rc=1
+    G1 secrets (gitleaks)
+    G2 forbidden patterns
+      ⛔ pattern matched: /[0-9]{11,}/
+      ⛔ pattern matched: /[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}/
+         /private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.e3xhlx3G4D/sdd/features/BRAINSTORM_F2_TERRENO.md:26:- Observed: literais nas pastas-fonte que o G2 do publish-gate reprova — 20 linhas de e-mail fora de `example.com/.org/.net` (inclusive `checar.sh:175`, `voce@exemplo.com` na sugestão de `git config`, e as SKILL.md de checar-ambiente, iniciar-repo e new-session) e o CPF `000.000.000-00` em `test_alarme.py:164`. Nos testes, `git@exemplo.invalid` é host que **não resolve** de propósito (teste sem rede); trocar por `example.com` faria o ssh tentar a rede.
+      ⛔ pattern matched: /\b[0-9]{3}\.[0-9]{3}\.[0-9]{3}-[0-9]{2}\b/
+  [gate-release.yml-testes] rc=1
+    G1 secrets (gitleaks)
+    G2 forbidden patterns
+      ⛔ pattern matched: /[0-9]{11,}/
+  [gate-release.yml-testes-windows] rc=1
+    G1 secrets (gitleaks)
+    G2 forbidden patterns
+      ⛔ pattern matched: /[0-9]{11,}/
+== S4 (AT-002): pasta de documento nova fora de sdd/ (não coberta pela trava 1)
+  [gate-publish-gate.yml] rc=1
+    G1 secrets (gitleaks)
+    G2 forbidden patterns
+    G3 allowlist (MANIFEST.txt)
+      ⛔ undeclared file: notas-frente/F99.md
+    G4 verify-gate exit contract
+    G5 documentation
+    ⛔ publish-gate BLOCKED — fix the findings above. Never retry silently, never loosen a
+  [gate-release.yml-testes-windows] rc=1
+    G1 secrets (gitleaks)
+    G2 forbidden patterns
+    G3 allowlist (MANIFEST.txt)
+      ⛔ undeclared file: notas-frente/F99.md
+    G4 verify-gate exit contract
+    G5 documentation
+    ⛔ publish-gate BLOCKED — fix the findings above. Never retry silently, never loosen a
+== S5: pasta de documento nova DENTRO de sdd/ (coberta pela lista de permissão)
+  [gate-publish-gate.yml] rc=0
+    G1 secrets (gitleaks)
+    G2 forbidden patterns
+    G3 allowlist (MANIFEST.txt)
+    G4 verify-gate exit contract
+    G5 documentation
+== S6: montador que falha derruba o passo (fora de repo git)
+  [gate fora de repo] rc=1 🛑 montar-pacote: rode dentro de um repositório git.
+== needs: do job release
+12:# Two jobs: `testes` holds a read-only token; `release` (needs: testes) is the only one with
+197:  # o job está no `needs:` do job `release` (release.yml): um vermelho aqui segura a Release.
+267:    needs: [testes, testes-macos, testes-windows]
+[rc=0]

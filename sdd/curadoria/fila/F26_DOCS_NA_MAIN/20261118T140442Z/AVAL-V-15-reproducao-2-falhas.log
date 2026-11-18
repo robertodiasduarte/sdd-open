@@ -1,0 +1,24 @@
+$ C=$(mktemp -d)/c && git clone -q -b feat/f26-docs-na-main . $C && cd $C/tests && echo '== no checkout (como o CI roda os testes)' && SDD_TEST_BASH=/bin/bash /usr/bin/python3 -B -m unittest test_matriz_new_session.Portadas.test_sem_referencia_ao_starter test_seguranca_catalogo.SemMaterialDeOrigem 2>&1 | grep -E '^(FAIL|OK|FAILED|Ran)|^'"'"'|First extra' ; T=$(mktemp -d) && git -C $C archive HEAD | tar -x -C $T && cd $T/tests && echo '== na cópia do git archive (como o Verify Gate)' && SDD_TEST_BASH=/bin/bash /usr/bin/python3 -B -m unittest test_matriz_new_session.Portadas.test_sem_referencia_ao_starter test_seguranca_catalogo.SemMaterialDeOrigem 2>&1 | grep -E '^(FAIL|OK|FAILED|Ran)|^'"'"'|First extra'; echo '== na e99136d (Verify Gate do BUILD_REPORT), checkout' && cd $C && git checkout -q e99136d && cd tests && /usr/bin/python3 -B -m unittest test_matriz_new_session.Portadas.test_sem_referencia_ao_starter test_seguranca_catalogo.SemMaterialDeOrigem 2>&1 | grep -E '^(FAIL|OK|FAILED|Ran)|First extra'; echo '== linha do checar.sh (bb8d2ab)'; grep -n 'sdd-starter' $C/../c/.agents/skills/sdd-checar-ambiente/scripts/checar.sh; cd $C && git checkout -q feat/f26-docs-na-main && grep -n 'sdd-starter' .agents/skills/sdd-checar-ambiente/scripts/checar.sh
+== no checkout (como o CI roda os testes)
+FAIL: test_sem_referencia_ao_starter (test_matriz_new_session.Portadas)
+First extra element 0:
+'.agents/skills/sdd-checar-ambiente/scripts/checar.sh: sdd-starter'
+FAIL: test_nenhum_arquivo_cita_o_material_de_origem (test_seguranca_catalogo.SemMaterialDeOrigem)
+First extra element 0:
+'sdd/handoffs/HANDOFF_INCORPORAR_STARTER.md'
+Ran 3 tests in 0.200s
+FAILED (failures=2)
+== na cópia do git archive (como o Verify Gate)
+FAIL: test_sem_referencia_ao_starter (test_matriz_new_session.Portadas)
+First extra element 0:
+'.agents/skills/sdd-checar-ambiente/scripts/checar.sh: sdd-starter'
+Ran 3 tests in 0.194s
+FAILED (failures=1)
+== na e99136d (Verify Gate do BUILD_REPORT), checkout
+FAIL: test_nenhum_arquivo_cita_o_material_de_origem (test_seguranca_catalogo.SemMaterialDeOrigem)
+First extra element 0:
+Ran 3 tests in 0.202s
+FAILED (failures=1)
+== linha do checar.sh (bb8d2ab)
+272:case "${URL_ATUAL}" in */sdd-starter/*) MARCA=" · SDD Starter" ;; *) MARCA="" ;; esac
+[rc=0]

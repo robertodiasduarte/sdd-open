@@ -1,0 +1,23 @@
+$ bash /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f26-docs-na-main/e1164d6c-42f0-4737-8064-2ce0f93f4e1b/scratchpad/c2v/at011.sh
+== .gitignore: .gitignore:9:sdd/reports/evidence/*/bruto/	sdd/reports/evidence/F99_TESTE/bruto/codex-x.log
+[A1 sem pasta bruto/] rc=0 · anexos enviados: 0
+    ➖ bruto: F99_TESTE não tem sdd/reports/evidence/F99_TESTE/bruto/ com arquivos; nada a anexar.
+    RESULTADO: SEM BRUTO
+[A2 Release da tag não existe] rc=1 · anexos enviados: 0
+    🔴 bruto: a Release v9.9.9 não existe (ou o gh não está logado); nada foi anexado, o bruto fica na pasta.
+    RESULTADO: NADA ANEXADO
+[A3 varredura reprova o bruto (e-mail real)] rc=1 · anexos enviados: 0
+    🔴 bruto: a varredura dos documentos não saiu limpa sobre o bruto; nada foi anexado. Veja: bash sdd/bin/docs-varredura.sh --pasta sdd/reports/evidence/F99_TESTE/bruto
+    RESULTADO: NADA ANEXADO
+[A4 caminho feliz] rc=0 · anexos enviados: 1
+    ✅ bruto: evidencia-bruta-F99_TESTE.tar.gz anexado à Release v9.9.9 (4 arquivo(s), conferido pelo anexo baixado: a lista e os bytes).
+    RESULTADO: ANEXADO
+    anexo enviado, extraído, contra a pasta: IGUAL (nomes em NFC e bytes) · nomes no tar: ./grande.log ./codex-x.log ./sub/gabarito.md ./sub/ação.txt 
+    chamadas ao gh: release view,release upload,release download,
+[A5 download com outro conteúdo (mesmos nomes)] rc=1 · anexos enviados: 1
+    🔴 bruto: o anexo da Release v9.9.9 não tem os mesmos arquivos da pasta; rode de novo.
+    RESULTADO: ANEXO DIFERENTE
+[A6 sem gitleaks (varredura NÃO CONFERIDO)] rc=1 · anexos enviados: 0
+    🔴 bruto: a varredura dos documentos não saiu limpa sobre o bruto; nada foi anexado. Veja: bash sdd/bin/docs-varredura.sh --pasta sdd/reports/evidence/F99_TESTE/bruto
+    RESULTADO: NADA ANEXADO
+[rc=0]

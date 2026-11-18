@@ -1,0 +1,28 @@
+$ C=$(mktemp -d)/clone && git clone -q -b feat/f26-docs-na-main . $C && cd $C && echo "docs no checkout: $(git ls-files sdd/features sdd/reports sdd/handoffs | wc -l)" && SDD_OPEN_CHECK_UPDATES=0 SDD_TEST_BASH=/bin/bash /usr/bin/python3 -B -m unittest discover -s tests -p 'test_*.py' 2>&1 | tail -25; exit ${PIPESTATUS[0]}
+docs no checkout:     2783
+First extra element 0:
+'.agents/skills/sdd-checar-ambiente/scripts/checar.sh: sdd-starter'
+
+- ['.agents/skills/sdd-checar-ambiente/scripts/checar.sh: sdd-starter']
++ []
+
+======================================================================
+FAIL: test_nenhum_arquivo_cita_o_material_de_origem (test_seguranca_catalogo.SemMaterialDeOrigem)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.iWVlM9WqAJ/clone/tests/test_seguranca_catalogo.py", line 110, in test_nenhum_arquivo_cita_o_material_de_origem
+    self.assertEqual(achados, [])
+AssertionError: Lists differ: ['sdd/handoffs/HANDOFF_INCORPORAR_STARTER.md'] != []
+
+First list contains 1 additional elements.
+First extra element 0:
+'sdd/handoffs/HANDOFF_INCORPORAR_STARTER.md'
+
+- ['sdd/handoffs/HANDOFF_INCORPORAR_STARTER.md']
++ []
+
+----------------------------------------------------------------------
+Ran 2584 tests in 1972.204s
+
+FAILED (failures=2, skipped=3)
+[rc=1]

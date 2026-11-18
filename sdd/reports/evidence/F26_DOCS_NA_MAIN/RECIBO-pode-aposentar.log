@@ -1,0 +1,5 @@
+$ python3 -B scripts/docs-migracao.py --pode-aposentar arquivo/docs-incorporar-starter   # depois do push da branch de documentos e da tag (OK do Roberto)
+✅ a tag guarda o último commit de docs/incorporar-starter e a main bate com ela.
+RESULTADO: PODE
+→ apagar a branch e a worktree de documentos ainda pede o OK do Roberto.
+[exit=0]
