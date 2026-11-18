@@ -33,7 +33,7 @@
 ## Falta
 
 1. ~~Starter~~ — feito em 2026-11-18, com o OK do Roberto: 12ª geração pela tag `v2.24.0` num clone limpo (`6b3ba9f`); `check-gerado` VERDE, `publish-check` e `check-versions` PASS (19 skills), testes, gate da KB e 19 zips OK; PR #21 de lá, CI verde, avanço direto da `main` (`bc2894e..6b3ba9f`); Release **`v1.5.28`**, 19 zips OK no `shasum -c`. A branch `gen/v2.24.0` do starter foi apagada (integrada).
-2. Branch da frente: a remota `feat/f27-db-performance` sai depois do commit de papel (integrada: `git cherry` sem `+`). Falta, de fora desta pasta e com o OK do Roberto: `git worktree remove /Users/robertoduarte/rdd-worktrees/sdd-open-f27-db-performance`, `git branch -D feat/f27-db-performance` e `git tag -d f27-antes-do-rebase f27-antes-do-squash`.
+2. ~~Limpeza~~ — feita em 2026-11-18, com o OK do Roberto: a branch remota `feat/f27-db-performance` (integrada: `git cherry` sem `+`) e a `gen/v2.24.0` do starter apagadas; logo depois deste commit, de fora da pasta, `git worktree remove /Users/robertoduarte/rdd-worktrees/sdd-open-f27-db-performance`, `git branch -D feat/f27-db-performance` e `git tag -d f27-antes-do-rebase f27-antes-do-squash`.
 3. Smoke depois do deploy: pulado — slot vazio (o Open não tem `sdd/config.yaml`); a Release foi conferida à mão.
 
 ## Definition of Done
@@ -67,6 +67,7 @@
 - 2026-11-18 — F25 (`v2.22.0`) e F26 (`v2.23.0`) publicadas; rebase sobre `456c69b` (conflitos só de versão e uma linha do `MANIFEST.txt`); `sdd-release` para 2.18.0.
 - 2026-11-18 — raio de impacto em 4 superfícies, sem quebra; 3 textos do starter corrigidos.
 - 2026-11-18 — revisão do código, rodadas 2 e 3: 12 achados, 0 graves, todos aplicados com teste vermelho antes; a máscara do SQL das consultas 3, 7 e 8 provada num Postgres 16 local. A revisão da versão final foi dispensada pelo Roberto (D3), com o motivo no ledger.
+- 2026-11-18 — frente encerrada: ficha final, branches remotas apagadas, worktree, branch local e tags locais removidas.
 - 2026-11-18 — starter: 12ª geração pela tag `v2.24.0`, PR #21 de lá, Release `v1.5.28` (19 zips).
 - 2026-11-18 — publicação: PR #40 (18 de 18), `main` = `c318aad`, tag `v2.24.0` por push atômico, Release às 20:28 UTC; sem evidência bruta para anexar.
 
@@ -85,18 +86,18 @@
 
 ## Tarefas
 
-1. O item 2 de Falta, com o OK do Roberto.
+1. Nenhuma: a frente está encerrada. As pendências ✨ de "Casos e testes em aberto" ficam para uma frente futura.
 
 ## Ship
 
 - **Publicar:** feito (`v2.24.0`, PR #40, `c318aad`; starter `v1.5.28`, PR #21).
-- **Limpar:** branch remota depois do commit de papel; falta a worktree, a branch local e as tags locais da frente (item 2 de Falta).
+- **Limpar:** feito (branches remotas no Open e no starter, worktree, branch local e tags locais).
 
 ## Prompt de retomada
 
 ```text
 Retomar a F27 (desempenho do banco) do SDD Open. Leia sdd/handoffs/HANDOFF_F27_DESEMPENHO_BANCO.md na main
 (git -C /Users/robertoduarte/rdd-public/sdd-open fetch origin). A F27 está publicada (v2.24.0, PR #40; starter
-v1.5.28). Falta só limpar a worktree, a branch local e as tags locais da frente (item 2 de Falta). Responda em
-português; apagar pede o OK do Roberto.
+v1.5.28) e encerrada, com a limpeza feita. O que sobra são as pendências ✨ de "Casos e testes em aberto", para
+uma frente futura. Responda em português; publicar ou apagar pede o OK do Roberto.
 ```
