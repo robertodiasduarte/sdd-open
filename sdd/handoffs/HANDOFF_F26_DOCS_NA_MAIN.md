@@ -10,7 +10,7 @@
 |-----------|-------|
 | **Feature** | F26_DOCS_NA_MAIN |
 | **Objetivo** | Os documentos das frentes saem da branch `docs/incorporar-starter` e passam a morar na `main`, no PR de cada frente, com duas travas que os seguram fora do pacote, varredura própria e a evidência bruta fora do git; as skills geradas para o starter ganham a marca "SDD Starter" (bloco separado, pedido do Roberto) |
-| **Status** | ✅ DoD fechado — publicado na `v2.23.0` (`main` = `8d47908`, PR #39, CI 18 de 18), 2026-11-18; Release conferida (`shasum -c` OK, `VERSION` = `v2.23.0`, 751 arquivos = 751 linhas do `MANIFEST`, 0 documentos no pacote); tag `arquivo/docs-incorporar-starter` = `511d6fa` no remoto e `--pode-aposentar` PODE |
+| **Status** | ✅ DoD fechado — publicado na `v2.23.0` (`main` = `8d47908`, PR #39, CI 18 de 18), 2026-11-18; Release conferida (`shasum -c` OK, `VERSION` = `v2.23.0`, 751 arquivos = 751 linhas do `MANIFEST`, 0 documentos no pacote); tag `arquivo/docs-incorporar-starter` = `511d6fa` no remoto e `--pode-aposentar` PODE; starter **`v1.5.27`** (11ª geração, PR #20 de lá, 18 zips OK no `shasum -c`, a marca dentro dos zips) |
 | **Última sessão** | 2026-11-18 |
 | **Branch / pasta** | `feat/f26-docs-na-main` · `/Users/robertoduarte/rdd-worktrees/sdd-open-f26-docs-na-main` (nascida de `origin/main` em `304e60a`; entrou na `main` num commit só); a história detalhada fica nas branches locais `f26-historia` e `f26-reserva-antes-da-remigracao` |
 | **Artefatos** | `sdd/archive/F26_DOCS_NA_MAIN/{DEFINE,DESIGN,BUILD_REPORT}_F26_DOCS_NA_MAIN.md` · `sdd/reviews/{GOVERNANCA_REVIEW,LEDGER_REVISAO}_F26_DOCS_NA_MAIN.md` · `sdd/reviews/AVALIACAO_F26_DOCS_NA_MAIN_20261118-{0753,0856}.md` · `sdd/reports/evidence/F26_DOCS_NA_MAIN/` · `sdd/reports/evidence/LOTE_20261118/` · `sdd/reports/MIGRACAO_DOCS_F26.tsv` · `sdd/releases/F26_DOCS_NA_MAIN/s1_v2.23.0.yaml` |
@@ -33,7 +33,7 @@
 
 ## Falta
 
-1. **Starter:** regerar pela tag `v2.23.0` num clone limpo do sdd-starter (as 18 skills com a marca). Push, PR e merge lá pedem o OK do Roberto.
+1. ~~Starter~~ — feito: 11ª geração pela tag `v2.23.0` num clone limpo (`bc2894e`); `check-gerado` VERDE, `publish-check` e `check-versions` PASS, testes, gate da KB e 18 zips OK; PR #20 de lá, CI verde, avanço direto da `main` (`4dbdea1..bc2894e`); Release **`v1.5.27`**, 18 zips OK. A branch `gen/v2.23.0` do starter ainda está no remoto (integrada).
 2. **Branch e worktree de documentos:** apagar `docs/incorporar-starter` (remoto e local) e a worktree `/Users/robertoduarte/rdd-worktrees/sdd-open-docs` depois de o Roberto conferir a `main`. A tag `arquivo/docs-incorporar-starter` fica. Antes de apagar: `python3 -B scripts/docs-migracao.py --pode-aposentar arquivo/docs-incorporar-starter` (PODE em 2026-11-18).
 3. **Branch da frente:** apagar `feat/f26-docs-na-main` do remoto (integrada: a `main` é o mesmo commit); a branch local, as branches `f26-historia` e `f26-reserva-antes-da-remigracao` e a worktree saem de fora dela, com o OK do Roberto.
 4. Curadoria: na fila (`sdd/curadoria/fila/F26_DOCS_NA_MAIN/20261118T140442Z`, 24 contagens e 6 candidatos); o próximo lote da `sdd-playbook` julga.
@@ -44,7 +44,7 @@
 - [x] AT-001 a AT-012 com log por AT (`sdd/reports/evidence/F26_DOCS_NA_MAIN/AT-*.log`) e avaliador fresco PASS_PENDENTE_RECIBO (ciclo 2), com os recibos fechados na publicação: CI do PR nos 3 sistemas, push da branch de documentos e da tag de arquivo (`--pode-aposentar` PODE), bruto (SEM BRUTO)
 - [x] Verify Gate verde em `4ccb0ef` e a suíte num clone com os documentos
 - [x] Release `v2.23.0` conferida
-- [ ] Starter regerado (item 1 de Falta)
+- [x] Starter `v1.5.27` publicado
 
 ## ⛔ Landmines desta feature
 
@@ -91,7 +91,7 @@
 
 ## Ship
 
-- **Publicar:** feito (`v2.23.0`, PR #39, `8d47908`).
+- **Publicar:** feito (`v2.23.0`, PR #39, `8d47908`; starter `v1.5.27`, PR #20).
 - **Limpar:** pendente (itens 2 e 3 de Falta).
 
 ## Prompt de retomada
@@ -99,7 +99,7 @@
 ```text
 Retomar a F26 (documentos na main) do SDD Open. Leia sdd/handoffs/HANDOFF_F26_DOCS_NA_MAIN.md na main
 (git -C /Users/robertoduarte/rdd-public/sdd-open fetch origin; a ficha está na main desde a F26). A F26 está
-publicada (v2.23.0). Falta: regerar o starter pela tag v2.23.0 (OK do Roberto no sdd-starter), apagar a branch
+publicada (v2.23.0 e starter v1.5.27). Falta: apagar a branch
 docs/incorporar-starter e a worktree sdd-open-docs depois de o Roberto conferir a main (rode antes o --pode-aposentar),
 e limpar a branch e a worktree da frente. Responda em português; publicar ou apagar pede o OK do Roberto.
 ```
