@@ -6,8 +6,8 @@ sessão de lá.
 
 ## Onde abrir esta sessão
 
-Na worktree de documentos (`/Users/robertoduarte/rdd-worktrees/sdd-open-docs`) para decidir a próxima frente; a frente
-nova nasce pela `sdd-new-session`.
+Num checkout da `main` atualizada (desde a F26, os documentos moram lá; a worktree de documentos foi aposentada) para
+decidir a próxima frente; a frente nova nasce pela `sdd-new-session`.
 
 ## Prompt
 
@@ -17,7 +17,7 @@ versão e upgrade, fechou em 2026-11-15: v2.17.0, curadoria v2.17.1, starter v1.
 Roberto qual é a próxima frente: o Cronograma recomendado do plano está vazio. Push, merge, tag e Release pedem a frase
 "sdd-open autorizado"; push, PR e merge no sdd-starter pedem o OK próprio dele. Nada no repositório privado daqui.
 
-Leia primeiro (branch docs/incorporar-starter, worktree /Users/robertoduarte/rdd-worktrees/sdd-open-docs):
+Leia primeiro (na `main` desde a F26; o de antes está na tag arquivo/docs-incorporar-starter):
 - PLANO_F4_F15_CONSOLIDADO.md → "Estado das frentes" e o "Cronograma recomendado"
 - HANDOFF_INCORPORAR_STARTER.md → a seção "2026-11-15 — F22" (Pendências e Alertas) e os Eventos de 15/11
 
@@ -25,7 +25,7 @@ Candidatas a frente (o Roberto escolhe; abra com a sdd-new-session):
 - pendências leves da F22: alarme.sh da higiene e worktree; proxy só no git; CRLF um a um; duas tags v no commit; pacote de
   versão desconhecida e projeto com registro; O1 a O4 do avaliador; o teste de curadoria que aceita conjunto vazio;
 - medição dos revisores entre frentes (as pastas EXTERNAL_REVIEW_* somem com a worktree; guardar META.txt e vereditos na
-  branch de documentos para o eval-revisores.sh somar o histórico);
+  `main`, junto dos outros documentos, para o eval-revisores.sh somar o histórico);
 - a ficha desta família reprova no handoff-lint (formato anterior ao molde).
 
 Fora daqui, na sessão do privado: a prova da F22 — git -C ~/sdd-open pull e bash ~/sdd-open/bin/sdd-open.sh upgrade --de v2.15.0.

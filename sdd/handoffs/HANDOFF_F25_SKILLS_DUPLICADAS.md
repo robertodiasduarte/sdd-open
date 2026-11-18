@@ -49,7 +49,7 @@
 - O gerador do starter troca a URL completa do Open pela do starter em todo arquivo: reconhecer a origem pelo trecho `<repositório>/releases/latest`, nunca pela URL inteira.
 - No gawk (o awk do Git Bash), `or`, `and`, `xor` etc. são funções: nunca nomes de variável.
 - No Git Bash, o git devolve `C:/…` e o bash `/c/…`: caminhos comparados ou mostrados lado a lado passam pelo bash (`cd … && pwd`).
-- Documento commitado na branch de código reprova no `publish-gate` (`undeclared file`): documentos só na branch de documentos.
+- Documento commitado na branch de código reprova no `publish-gate` (`undeclared file`): documentos só na branch de documentos (regra até a F26; desde ela, os documentos vão no PR e as travas os seguram fora do pacote).
 
 ## Casos e testes em aberto
 

@@ -3,6 +3,7 @@
 - **Data:** 2026-11-18
 - **Frente:** ainda não aberta. Quando abrir, nasce de `origin/main` atualizada pela `sdd-new-session`.
 - **O que é este arquivo:** os 5 ajustes pequenos que as revisões da F25 (skills duplicadas, `v2.22.0`) acharam e deixaram para depois, cada um com onde está no código, quando acontece, o conserto proposto e o teste que prova. É a entrada da `sdd-define`. Não é DEFINE: nada aqui tem teste de aceitação ainda.
+- **Versão:** a F26 (documentos na main e marca do SDD Starter) já publica a `sdd-checar-ambiente` como 1.6.1; esta frente, quando abrir, sobe para a **1.6.2** (o nome do arquivo fica como está).
 - **Estado:** registrado; nenhum é urgente. Nenhum quebra nada hoje em macOS, Linux ou Git Bash.
 - **Origem:** "Casos e testes em aberto" da ficha `sdd/handoffs/HANDOFF_F25_SKILLS_DUPLICADAS.md`; rodada 4 da revisão do código, avaliação fresca (A2) e A-001 do `sdd/archive/F25_SKILLS_DUPLICADAS/DEFINE_F25_SKILLS_DUPLICADAS.md`.
 - **Linhas citadas:** `origin/main` em `304e60a` (`v2.22.0`). Confira de novo ao abrir a frente: o código pode ter andado.
