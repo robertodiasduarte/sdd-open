@@ -13,7 +13,7 @@ from apoio import RAIZ
 
 
 # documentos SDD de uma frente ficam fora do git (não são pacote): a frente que cita o defeito não reprova
-DOCUMENTOS_DA_FRENTE = {"reports", "features", "reviews", "handoffs", "releases"}
+DOCUMENTOS_DA_FRENTE = {"reports", "features", "reviews", "handoffs", "releases", "archive", "curadoria"}   # F28: archive e curadoria são documentos desde a F26 (export-ignore)
 
 
 def ler(rel: str) -> str:
