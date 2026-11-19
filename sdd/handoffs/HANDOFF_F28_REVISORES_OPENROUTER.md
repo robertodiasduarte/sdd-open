@@ -32,7 +32,7 @@
 
 ## Falta
 
-1. 🧹 Limpeza local, de fora da pasta: `git worktree remove /Users/robertoduarte/rdd-worktrees/sdd-open-f28-revisores-openrouter` e `git branch -D feat/f28-revisores-openrouter backup/f28-historia` (as branches remotas da frente, no Open e no starter, saem no fim da release, integradas).
+1. 🧹 Limpeza, com o OK do Roberto (a exclusão automática foi barrada pela permissão do agente): as branches remotas da frente, já integradas (`git cherry` sem `+`): `git push origin --delete feat/f28-revisores-openrouter` no Open (desfaz com `git push origin f50f244:refs/heads/feat/f28-revisores-openrouter`) e `git push origin --delete gen/v2.25.0` no starter (desfaz com `git push origin 246f621:refs/heads/gen/v2.25.0`); depois, de fora da pasta, `git worktree remove /Users/robertoduarte/rdd-worktrees/sdd-open-f28-revisores-openrouter` e `git branch -D feat/f28-revisores-openrouter backup/f28-historia`.
 2. Smoke depois do deploy: pulado — slot vazio (o Open não tem `sdd/config.yaml`); a Release foi conferida à mão.
 3. 🐛 O run da tag `v2.25.0` (44500504242) caiu numa fatia de Windows: `test_alarme.TestCopiaGerada.test_copia_gerada_liga_o_alarme_nos_hooks_do_projeto` com erro em 230 s (cara de teto de subprocesso sob carga). A Release já tinha saído pelo run da `main`; o mesmo commit passou nas 16 fatias do CI do PR; a F28 não toca no alarme nem no `init`. Não foi reexecutado (o run publicaria de novo uma tag existente). Medir se repete no próximo PR.
 
