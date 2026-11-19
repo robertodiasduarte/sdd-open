@@ -26,8 +26,8 @@ def versao(skill: str) -> str:
 
 class Versoes(unittest.TestCase):
     def test_versoes(self):
-        for skill, v in (("sdd-desempenho-banco", "1.0.0"), ("sdd-define", "2.9.0"), ("sdd-design", "2.10.0"),
-                         ("sdd-release", "2.18.0")):
+        for skill, v in (("sdd-desempenho-banco", "1.0.0"), ("sdd-define", "2.9.0"), ("sdd-design", "2.11.0"),
+                         ("sdd-release", "2.19.0")):
             with self.subTest(skill=skill):
                 self.assertEqual(versao(skill), v)
                 self.assertIn("`%s v%s · nov/2026" % (skill, v), ler(".agents/skills/%s/SKILL.md" % skill))
@@ -123,8 +123,8 @@ class Pacote(unittest.TestCase):
         self.assertIn("sdd-desempenho-banco", ler("scripts/starter/lista.txt").splitlines())
 
     def test_readme_docs_e_guia(self):
-        for rel, frases in (("README.md", ("## The 23 skills", "`sdd-seguranca` · `sdd-desempenho-banco`", "docs/performance.md")),
-                            ("README.pt-BR.md", ("## As 23 skills", "`sdd-seguranca` · `sdd-desempenho-banco`", "docs/pt-BR/performance.md")),
+        for rel, frases in (("README.md", ("## The 24 skills", "`sdd-seguranca` · `sdd-desempenho-banco`", "docs/performance.md")),
+                            ("README.pt-BR.md", ("## As 24 skills", "`sdd-seguranca` · `sdd-desempenho-banco`", "docs/pt-BR/performance.md")),
                             ("docs/pt-BR/guia-do-aluno.md", ("#### sdd-desempenho-banco",)),
                             ("docs/cli-conventions.md", ("| `desempenho-varredura.sh` |", "| `desempenho-diagnostico.sh` |",
                                                          "**nunca `2`**"))):

@@ -51,11 +51,11 @@ seu é sobrescrito. [Quickstart completo →](docs/pt-BR/quickstart.md)
 | **Engenharia reversa de SaaS** | quem quer construir algo parecido com um sistema que já existe estuda esse produto **antes** do Brainstorm: `ENGENHARIA_REVERSA_{SAAS}.md` traz cada achado com fonte e classe (observado, documentado, informado, inferido, não verificado), conferido por um lint; depois a skill conduz o Brainstorm e o Define da **sua** solução. Só fontes públicas e conta própria, sem copiar marca nem código; sem pesquisa na web o levantamento sai parcial | skill `sdd-engenharia-reversa-saas` |
 | **Handoff por ficha** | um arquivo por feature no repositório, com prompt de retomada autossuficiente — sem depender da memória de nenhum agente | skill `sdd-handoff` · `sdd/handoffs/` |
 
-## As 23 skills
+## As 24 skills
 
 | Bloco | Skills | Quando |
 |---|---|---|
-| **Preparar** | `sdd-checar-ambiente` · `sdd-iniciar-repo` · `sdd-higiene-dado` · `sdd-new-session` | uma vez por computador e por projeto (está tudo pronto? pôr no git, alarme de commit contra dado de cliente); a new-session a cada frente de trabalho |
+| **Preparar** | `sdd-checar-ambiente` · `sdd-iniciar-repo` · `sdd-higiene-dado` · `sdd-new-session` · `sdd-configurar-revisores` | uma vez por computador e por projeto (está tudo pronto? pôr no git, alarme de commit contra dado de cliente, quem revisa e quem audita — as CLIs que você já tem ou o OpenRouter, passo a passo, a chave nunca na conversa); a new-session a cada frente de trabalho |
 | **Criar** | `sdd-kb` (opcional) · `sdd-engenharia-reversa-saas` (opcional) · `sdd-brainstorm` · `sdd-define` · `sdd-governanca` · `sdd-seguranca` · `sdd-desempenho-banco` · `sdd-ux-review` · `sdd-design` · `sdd-build` | uma vez por feature — o fluxo SDD |
 | **Fechar** | `sdd-handoff` · `sdd-release` | no fim de cada sessão e de cada frente |
 | **Transversais** | `sdd-iterate` · `sdd-playbook` · `sdd-prompt-builder` · `sdd-loop-builder` · `sdd-drive` · `sdd-auditoria-harness` · `ux-review-builder` | quando o caso pedir (`ux-review-builder`: uma vez por projeto, o padrão de UX que a `sdd-ux-review` lê) |
@@ -108,7 +108,7 @@ Funciona em macOS e Linux, testado no CI a cada release; no Windows (Git Bash/WS
 - [Pilotar uma feature](docs/pt-BR/sdd-drive.md) ([EN](docs/sdd-drive.md)) — a `sdd-drive` leva um DEFINE até "pronto para publicar" com limite de rodadas, retomada e 12 motivos de parada, e nunca publica; também o `deploy-do-sha.sh` e o `sdd-archive.py`.
 - [Segurança embutida no fluxo](docs/pt-BR/security.md) ([EN](docs/security.md)) — o catálogo da `sdd-seguranca`, fase a fase, a varredura da publicação (`seguranca-varredura.sh`), os dois bloqueios, a dispensa na linha e o modo incidente
 - [Desempenho do banco no fluxo](docs/pt-BR/performance.md) ([EN](docs/performance.md)) — o catálogo da `sdd-desempenho-banco`, fase a fase, a varredura da publicação (`desempenho-varredura.sh`), que nunca bloqueia, e o diagnóstico do banco no ar só de leitura (`desempenho-diagnostico.sh`)
-- [Revisão adversarial](docs/pt-BR/adversarial-review.md) ([EN](docs/adversarial-review.md)) — uma engine revisa o diff congelado, outra audita a revisão; custo por papel, privacidade, o review externo que a release exige, o gate offline e o `eval-agree`
+- [Revisão adversarial](docs/pt-BR/adversarial-review.md) ([EN](docs/adversarial-review.md)) — uma engine revisa o diff congelado, outra audita a revisão; revisores por computador (`git config`, configurados pela `sdd-configurar-revisores`); custo por papel, privacidade, o review externo que a release exige, o gate offline e o `eval-agree`
 - [Roadmap](docs/pt-BR/roadmap.md) ([EN](docs/roadmap.md)) — o que está planejado e o que está em avaliação
 - [Guia do aluno](docs/pt-BR/guia-do-aluno.md) — passo a passo para quem nunca usou git nem terminal
 

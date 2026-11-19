@@ -1,0 +1,18 @@
+$ (cd tests && python3 -B -m unittest -v test_f28_revisores.GuardarChave test_f28_revisores.Gravar)   # HEAD b987342
+test_avisa_chave_em_outro_perfil (test_f28_revisores.GuardarChave.test_avisa_chave_em_outro_perfil) ... ok
+test_bash_no_macos_usa_o_profile_que_ja_existe (test_f28_revisores.GuardarChave.test_bash_no_macos_usa_o_profile_que_ja_existe) ... ok
+test_grava_sem_eco_no_bashrc_do_linux_e_troca_a_linha_antiga (test_f28_revisores.GuardarChave.test_grava_sem_eco_no_bashrc_do_linux_e_troca_a_linha_antiga) ... ok
+test_linha_antiga_dentro_de_if_nao_quebra_o_perfil (test_f28_revisores.GuardarChave.test_linha_antiga_dentro_de_if_nao_quebra_o_perfil) ... ok
+test_perfil_por_sistema (test_f28_revisores.GuardarChave.test_perfil_por_sistema) ... ok
+test_recusa_perfil_que_e_atalho (test_f28_revisores.GuardarChave.test_recusa_perfil_que_e_atalho) ... ok
+test_recusa_vazia_e_caractere_estranho_sem_gravar (test_f28_revisores.GuardarChave.test_recusa_vazia_e_caractere_estranho_sem_gravar) ... ok
+test_sem_terminal_e_no_windows_recusa_sem_ler (test_f28_revisores.GuardarChave.test_sem_terminal_e_no_windows_recusa_sem_ler) ... ok
+test_avisa_quando_o_slot_do_time_vence (test_f28_revisores.Gravar.test_avisa_quando_o_slot_do_time_vence) ... ok
+test_grava_no_git_config_le_de_volta_e_tira_a_marca (test_f28_revisores.Gravar.test_grava_no_git_config_le_de_volta_e_tira_a_marca) ... ok
+test_recusa_id_desconhecido_e_a_mesma_engine (test_f28_revisores.Gravar.test_recusa_id_desconhecido_e_a_mesma_engine) ... ok
+
+----------------------------------------------------------------------
+Ran 11 tests in 1.126s
+
+OK
+[exit=0]

@@ -5,7 +5,7 @@ compatibility: Requer bash >= 3.2 e git >= 2.20; roda sdd/bin/playbook-lint.sh -
 license: MIT
 metadata:
   author: Roberto Dias Duarte
-  version: "2.10.0"
+  version: "2.11.0"
   updated: "2026-11"
   fase: "2"
 ---
@@ -13,7 +13,7 @@ metadata:
 # sdd-design — Fase 2
 
 Na primeira resposta desta skill, comece com esta linha, uma vez só, antes do Status:
-`sdd-design v2.10.0 · nov/2026 · versão atual: https://github.com/robertodiasduarte/sdd-open/releases/latest`
+`sdd-design v2.11.0 · nov/2026 · versão atual: https://github.com/robertodiasduarte/sdd-open/releases/latest`
 
 **Projeto sem `sdd/bin/` (sem o `init`) ou sem acesso aos arquivos (claude.ai, ChatGPT)?** Siga `web/MODO_WEB.md`
 desta skill; os caminhos que ele cita (`references/`, `assets/`) são os de dentro de `web/`.
@@ -225,8 +225,21 @@ bash sdd/bin/adversarial-review.sh --feature {FEATURE} \
   --paths "sdd/features/DEFINE_{FEATURE}.md sdd/features/DESIGN_{FEATURE}.md"
 ```
 
-As engines vêm de `review.revisor1` e `review.auditor` (`sdd/config.yaml`); vazios, pergunte à pessoa
-quais usar. Exit 0 ⇒ passe a pasta ao `bash sdd/bin/sdd-fluxo.sh loop --review <pasta> …`; 65 a 68 ⇒
+As engines vêm de `review.revisor1` e `review.auditor` (`sdd/config.yaml`) ou, com o slot vazio, do `git config`
+deste computador (`sdd.revisor1`, `sdd.auditor`). Vazios nos dois (exit 64 "nenhum revisor"), ou exit 65 por
+credencial de uma engine, não pergunte "quais engines": ofereça a skill `sdd-configurar-revisores`, que mede o
+computador e conduz o aluno:
+
+**Sua decisão** — [D2 · muda o produto] **Configuro agora quem revisa e quem audita?**
+- **configurar agora** (recomendado) — a skill `sdd-configurar-revisores` mostra o que este computador já tem e conduz
+  passo a passo (uns 10 minutos); depois a revisão roda daqui.
+- **uma engine só nesta revisão** — a mesma engine revisa e audita (`--reviewer <engine> --um-engine`: sem a
+  engine na flag, o script para em "nenhum revisor"); fica registrado
+  "diversidade: nenhuma".
+- **seguir sem revisão** — nada roda agora; na publicação, você escreve o motivo.
+- **não sei** — explico em 2 frases o que a revisão confere e quanto custa.
+
+ Exit 0 ⇒ passe a pasta ao `bash sdd/bin/sdd-fluxo.sh loop --review <pasta> …`; 65 a 68 ⇒
 repasse o `RESULTADO:` e o `→` (credencial, CLI ausente, auditor igual ao revisor, resposta fora do
 formato — que nunca é "zero achados"). O contrato de resposta segue
 `sdd/templates/fragments/ADVISOR_CONSULT.md`. Toda nota recebe **APLICADA ·

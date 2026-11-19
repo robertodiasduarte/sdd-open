@@ -78,8 +78,10 @@ review:
   registry: sdd/review/registry.tsv
   # Quem revisa e quem audita: ids do registry (claude, codex, gemini, openrouter ou openrouter:<modelo>).
   # Uma lista separada por vírgula é a cadeia: a 1ª é a padrão, as outras entram se a anterior ficar sem
-  # cota. Vazio = a skill pergunta. O auditor precisa ser outra engine (igual = exit 67; com uma engine
-  # só, rode com --um-engine e a revisão registra "diversidade: nenhuma").
+  # cota. Vazio = vale a escolha deste computador (git config sdd.revisor1 / sdd.auditor), que a skill
+  # sdd-configurar-revisores grava passo a passo; preencher aqui fixa as engines para o time todo. O auditor
+  # precisa ser outra engine (igual = exit 67; com uma engine só, rode com --um-engine e a revisão registra
+  # "diversidade: nenhuma").
   revisor1: ""
   auditor: ""
   # Pasta das revisões (diff, respostas, META.txt). Precisa estar ignorada pelo git (.gitignore ou

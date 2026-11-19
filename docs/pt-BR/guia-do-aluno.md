@@ -306,6 +306,17 @@ está começando não sabe o nome da skill, sabe em que momento está.
 | **O que produz** | Uma pasta nova, nascida da versão mais recente de produção, aberta no editor. O que ela descobre sozinha (a branch principal, o editor, o comando de testes) vai para o `sdd/config.yaml` da frente, só quando há evidência. |
 | **O que vai perguntar** | O nome da frente (ela sugere). Se a conferência antes de criar achar problema (sem acesso ao GitHub, programa faltando), para com ⏸️ e diz o que fazer. |
 
+#### sdd-configurar-revisores
+
+| | |
+|---|---|
+| **Para que serve** | Configura quem faz a **revisão adversarial**: uma outra IA lê o que foi construído e aponta problemas, e uma terceira confere essa leitura. Sem isso, a publicação pede para você seguir sem revisão. |
+| **Quando usar** | Quando uma fase (design, build ou publicação) disser que faltam os revisores; quando a `sdd-checar-ambiente` avisar; uma vez por computador. |
+| **Quando não usar** | Num projeto sem o SDD Open instalado (ela avisa e para). |
+| **Como pedir** | *"use a skill sdd-configurar-revisores"*; depois de reabrir o agente, *"continue a configuração dos revisores"* |
+| **O que produz** | A escolha gravada nas preferências **deste computador** (`git config`, nunca vai para o GitHub) e a prova de que funciona, sem gastar. A chave do OpenRouter fica no perfil do seu terminal, gravada por você. |
+| **O que vai perguntar** | Primeiro, o caminho: com dois agentes de IA instalados, usar os que você já tem (sem custo extra); com um só, o **OpenRouter** (pago por uso, centavos de dólar por revisão), uma engine só ou agora não. No OpenRouter, ela mostra o site passo a passo (conta, crédito, chave com limite de gasto), para enquanto você grava a chave e reabre o agente, e pede o OK antes de gravar os dois modelos, dizendo o custo e o que sai do computador. **Nunca cole a chave na conversa**: se colar, ela manda apagar aquela chave e criar outra. |
+
 ### Bloco 2 — Criar (o fluxo SDD)
 
 #### sdd-kb
@@ -571,6 +582,15 @@ privada no GitHub.
 Ela abre uma pasta nova, fora da pasta `Honorarios`, já no editor. **A partir daqui, trabalhe nessa
 pasta**, não na original: abra o agente de novo dentro dela.
 
+**5b. Configurar os revisores (uma vez por computador).**
+> use a skill sdd-configurar-revisores
+
+Ela olha o que o seu computador tem e recomenda um caminho. Com um agente só, o caminho é o OpenRouter: leva uns 10
+minutos, quase tudo no site, e custa por uso (centavos de dólar por revisão). No meio, ela **para**: você grava a
+chave com um comando no seu terminal (a chave não aparece) e fecha e abre o agente. Volte e peça *"continue a
+configuração dos revisores"*. No fim, ela mostra 3 linhas ✅ (a chave aceita, os revisores gravados, o plano da
+revisão). Se preferir não pagar agora, escolha **agora não**: na publicação, você escreve o motivo.
+
 ### Dia 1 — Criar
 
 **6. Brainstorm.**
@@ -660,6 +680,7 @@ As skills já tratam os casos abaixo. O que você precisa saber é só como reag
 | **Release não publicou** | Teste falhou, há segredo no que ia subir, ou a base está desatualizada. A skill diz qual. Corrija na frente e peça a release de novo. |
 | **O `doctor` diz que uma skill está mais velha que o pacote, ou que um arquivo de `sdd/bin/` difere dele** | Rode o `upgrade` do pacote (seção 2, "Quando sair versão nova"): ele copia o que é do pacote e deixa ao lado o que você editou. Se o `doctor` diz que é edição sua e você quer a do pacote, apague o arquivo e rode o `upgrade` de novo. |
 | **A skill respondeu sem Status nem opções** | A skill pode não ter carregado, ou a versão é antiga. Confira a linha de identificação e rode o `doctor`. |
+| **A fase diz que faltam os revisores, ou a revisão parou por credencial do OpenRouter** | Peça a `sdd-configurar-revisores`: ela diz o que falta (a chave, o crédito, reabrir o agente) e conduz. Nunca cole a chave na conversa. |
 | **"Não reconheço este erro"** | Peça a `sdd-checar-ambiente` e, se persistir, copie a resposta e peça ajuda a quem conhece git. |
 | **Perdi a conversa** | Abra o agente na pasta da frente e cole o último prompt de retomada. Se não tiver, peça: *"leia sdd/handoffs/HANDOFF_NOME.md e me diga onde paramos"*. |
 
@@ -688,6 +709,10 @@ As skills já tratam os casos abaixo. O que você precisa saber é só como reag
 | **push** | Enviar os commits para o GitHub. |
 | **PR** (pull request) | O pedido para integrar uma branch em produção, com revisão e testes automáticos. |
 | **CI** | Os testes automáticos que rodam no GitHub a cada envio. |
+| **revisão adversarial** | Uma outra IA (o **revisor**) lê o que foi construído e aponta problemas; uma terceira (o **auditor**) confere cada problema. |
+| **OpenRouter** | Um serviço pago por uso que dá acesso a vários modelos de IA com uma conta só. |
+| **chave de API** | Uma senha comprida que um serviço (como o OpenRouter) cria para um programa usar a sua conta. Nunca vai na conversa nem no projeto. |
+| **perfil do terminal** | O arquivo que o terminal lê toda vez que abre (`~/.zshrc` no Mac, `~/.bashrc` no Linux); é onde a chave fica. |
 | **release** | Publicar: integrar a frente em produção. |
 | **fluxo SDD** | As fases brainstorm → define → design → build, cada uma lendo o documento da anterior. |
 | **abordagem** | Um jeito de resolver o problema; a skill mostra dois ou três e recomenda um. |

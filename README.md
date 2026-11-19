@@ -51,11 +51,11 @@ of yours is overwritten. [Full quickstart →](docs/quickstart.md)
 | **SaaS reverse engineering** | if you want to build something similar to a system that already exists, you study that product **before** the Brainstorm: `ENGENHARIA_REVERSA_{SAAS}.md` carries each finding with its source and class (observed, documented, reported, inferred, unverified), checked by a lint; then the skill drives the Brainstorm and the Define of **your** solution. Public sources and your own account only, no copying of brand or code; without web search the survey comes out partial | skill `sdd-engenharia-reversa-saas` |
 | **Handoff by feature card** | one file per feature in the repository, with a self-contained resume prompt — no dependency on any agent's memory | skill `sdd-handoff` · `sdd/handoffs/` |
 
-## The 23 skills
+## The 24 skills
 
 | Block | Skills | When |
 |---|---|---|
-| **Prepare** | `sdd-checar-ambiente` · `sdd-iniciar-repo` · `sdd-higiene-dado` · `sdd-new-session` | once per computer and per project (is everything ready? put it in git, a commit alarm against client data); the new-session for every work front |
+| **Prepare** | `sdd-checar-ambiente` · `sdd-iniciar-repo` · `sdd-higiene-dado` · `sdd-new-session` · `sdd-configurar-revisores` | once per computer and per project (is everything ready? put it in git, a commit alarm against client data, who reviews and who audits — the CLIs you already have or OpenRouter, step by step, the key never in the chat); the new-session for every work front |
 | **Create** | `sdd-kb` (optional) · `sdd-engenharia-reversa-saas` (optional) · `sdd-brainstorm` · `sdd-define` · `sdd-governanca` · `sdd-seguranca` · `sdd-desempenho-banco` · `sdd-ux-review` · `sdd-design` · `sdd-build` | once per feature — the SDD flow |
 | **Close** | `sdd-handoff` · `sdd-release` | at the end of each session and of each front |
 | **Cross-cutting** | `sdd-iterate` · `sdd-playbook` · `sdd-prompt-builder` · `sdd-loop-builder` · `sdd-drive` · `sdd-auditoria-harness` · `ux-review-builder` | when the case calls for it (`ux-review-builder`: once per project, the UX standard that `sdd-ux-review` reads) |
@@ -107,7 +107,7 @@ Works on macOS and Linux, tested in CI on every release; on Windows (Git Bash/WS
 - [Driving a feature](docs/sdd-drive.md) ([PT](docs/pt-BR/sdd-drive.md)) — `sdd-drive` takes one DEFINE to "ready to publish" with a round limit, resume and 12 stop reasons, and never publishes; also `deploy-do-sha.sh` and `sdd-archive.py`.
 - [Security built into the flow](docs/security.md) ([PT](docs/pt-BR/security.md)) — the `sdd-seguranca` catalog, phase by phase, the release scan (`seguranca-varredura.sh`), its two blocks, the line waiver and incident mode
 - [Database performance in the flow](docs/performance.md) ([PT](docs/pt-BR/performance.md)) — the `sdd-desempenho-banco` catalog, phase by phase, the release scan (`desempenho-varredura.sh`) that never blocks, and the read-only live diagnosis (`desempenho-diagnostico.sh`)
-- [Adversarial review](docs/adversarial-review.md) ([PT](docs/pt-BR/adversarial-review.md)) — one engine reviews the frozen diff, another audits the review; cost per role, privacy, the external review the release requires, the offline gate and `eval-agree`
+- [Adversarial review](docs/adversarial-review.md) ([PT](docs/pt-BR/adversarial-review.md)) — one engine reviews the frozen diff, another audits the review; reviewers per computer (`git config`, set up by `sdd-configurar-revisores`); cost per role, privacy, the external review the release requires, the offline gate and `eval-agree`
 - [Roadmap](docs/roadmap.md) ([PT](docs/pt-BR/roadmap.md)) — what is planned and what is under evaluation
 - [Student guide](docs/pt-BR/guia-do-aluno.md) (PT) — step by step for someone who never used git or a terminal
 

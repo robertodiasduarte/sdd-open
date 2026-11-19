@@ -210,8 +210,8 @@ class Documentos(unittest.TestCase):
         self.assertIn("`sdd/features/ENGENHARIA_REVERSA_{SAAS}.md` (opcional)", linha)
 
     def test_readme_nos_dois_idiomas(self):
-        casos = {"README.md": ("## The 23 skills", "(optional) · `sdd-brainstorm`", "20 skills"),   # F18/F20: +1
-                 "README.pt-BR.md": ("## As 23 skills", "(opcional) · `sdd-brainstorm`", "20 skills")}
+        casos = {"README.md": ("## The 24 skills", "(optional) · `sdd-brainstorm`", "20 skills"),   # F18/F20: +1
+                 "README.pt-BR.md": ("## As 24 skills", "(opcional) · `sdd-brainstorm`", "20 skills")}
         for nome, (titulo, antes_do_brainstorm, velho) in casos.items():
             texto = ler(RAIZ / nome)
             with self.subTest(readme=nome):

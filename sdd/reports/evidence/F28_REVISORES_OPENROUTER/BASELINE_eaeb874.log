@@ -1,0 +1,13 @@
+# Linha de base: os testes novos da F28 sobre a árvore de eaeb874 (v2.24.0 + 3 commits de documento)
+$ (cd <git archive eaeb874> && python3 -B -m unittest discover -s tests -p 'test_f28_revisores.py')
+Ran 36 tests in 4.077s
+FAILED (failures=46, errors=2)
+[exit=1]
+$ (cd <git archive eaeb874> && python3 -B -m unittest discover -s tests -p 'test_f28_revisao_slots.py')
+Ran 9 tests in 2.654s
+FAILED (failures=12)
+[exit=1]
+$ (cd <git archive eaeb874> && python3 -B -m unittest test_f28_checar_base.TestRevisores)
+Ran 5 tests in 5.016s
+FAILED (failures=2)
+[exit=1]

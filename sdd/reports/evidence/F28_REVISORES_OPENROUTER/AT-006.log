@@ -1,0 +1,11 @@
+$ (cd tests && python3 -B -m unittest -v test_f28_revisao_slots.DryRun)   # HEAD b987342
+test_com_a_chave_e_uma_cli_os_papeis_extras_sao_dela_e_a_chave_nunca_aparece (test_f28_revisao_slots.DryRun.test_com_a_chave_e_uma_cli_os_papeis_extras_sao_dela_e_a_chave_nunca_aparece) ... ok
+test_disponibilidade_e_papeis_extras_sem_engine (test_f28_revisao_slots.DryRun.test_disponibilidade_e_papeis_extras_sem_engine) ... ok
+test_sem_base_e_aviso_com_a_consequencia_e_sai_0 (test_f28_revisao_slots.DryRun.test_sem_base_e_aviso_com_a_consequencia_e_sai_0) ... ok
+test_sem_diff_mostra_o_plano_e_sai_0_e_a_revisao_real_continua_64 (test_f28_revisao_slots.DryRun.test_sem_diff_mostra_o_plano_e_sai_0_e_a_revisao_real_continua_64) ... ok
+
+----------------------------------------------------------------------
+Ran 4 tests in 1.302s
+
+OK
+[exit=0]

@@ -1,0 +1,11 @@
+# Sabotagens numa cópia de git archive HEAD (LM-009): cada mutante tem de derrubar um teste nomeado
+$ python3 sabotagem.py <raiz>
+✅ imprime a chave              → Estados.test_R07_chave_presente_slots_vazios (caiu)
+✅ chama chat/completions       → Testar.test_R13_aceita_so_get_de_leitura_e_centavos (caiu)
+✅ grava no sdd/config.yaml     → Gravar.test_grava_no_git_config_le_de_volta_e_tira_a_marca (caiu)
+✅ dry-run sem diff volta a 64  → DryRun.test_sem_diff_mostra_o_plano_e_sai_0_e_a_revisao_real_continua_64 (caiu)
+✅ checar vira 🔴                → TestRevisores.test_vazios_viram_aviso_com_a_skill_e_nunca_impedimento (caiu)
+✅ ≤ 0 vira == 0                → Testar.test_R17_limite_esgotado_em_decimal (caiu)
+✅ read sem -s ecoa a chave     → GuardarChave.test_grava_sem_eco_no_bashrc_do_linux_e_troca_a_linha_antiga (caiu)
+RESULTADO: TODOS OS MUTANTES DERRUBADOS
+[exit=0]

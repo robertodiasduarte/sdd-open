@@ -5,7 +5,7 @@ compatibility: Requer bash >= 3.2, git >= 2.20 e python3 (report-lint.py). Roda 
 license: MIT
 metadata:
   author: Roberto Dias Duarte
-  version: "2.13.1"
+  version: "2.14.0"
   updated: "2026-11"
   fase: "3"
 ---
@@ -13,7 +13,7 @@ metadata:
 # sdd-build — Fase 3
 
 Na primeira resposta desta skill, comece com esta linha, uma vez só, antes do Status:
-`sdd-build v2.13.1 · nov/2026 · versão atual: https://github.com/robertodiasduarte/sdd-open/releases/latest`
+`sdd-build v2.14.0 · nov/2026 · versão atual: https://github.com/robertodiasduarte/sdd-open/releases/latest`
 
 **Projeto sem `sdd/bin/` (sem o `init`) ou sem acesso aos arquivos (claude.ai, ChatGPT)?** Siga `web/MODO_WEB.md`
 desta skill; os caminhos que ele cita (`references/`, `assets/`) são os de dentro de `web/`.
@@ -80,6 +80,10 @@ Antes da 1ª tarefa, rode `bash sdd/bin/sdd-fluxo.sh review-design sdd/features/
 | `0` exigida | se o Advisor Ledger do DESIGN não tem nenhuma linha de revisão, rode a revisão do DESIGN antes de codar — revisor e depois auditor, `bash sdd/bin/adversarial-review.sh --feature {F} --paths "sdd/features/DEFINE_{F}.md sdd/features/DESIGN_{F}.md"`, como na `sdd-design` — e registre cada nota no ledger |
 | `1` dispensável | registre no relatório `revisão do DESIGN: dispensável (<o motivo que o script imprimiu>)` |
 | `64` manifest ilegível | rode a revisão assim mesmo (o lado seguro) e registre por quê |
+
+Revisores vazios (o `adversarial-review.sh` sai 64 "nenhum revisor") ou credencial de uma engine fora do ambiente
+(exit 65): ofereça a skill `sdd-configurar-revisores` com a pergunta da `sdd-design` (configurar agora · uma engine só
+nesta revisão · seguir sem revisão · não sei), nunca "quais engines?".
 
 Mudar a abordagem depois do código custa uma reescrita; antes, uma edição no DESIGN.
 
@@ -218,7 +222,8 @@ aborta; aceitar uma falha como conhecida, com `--aceitar`, é decisão do usuár
 
 **5c. Review adversarial pós-build.** A `sdd-release` exige o review externo desta versão do código
 (ou uma dispensa com motivo): rodá-lo aqui, enquanto o contexto está fresco, sai mais barato do que na
-release. **Commite antes**, e rode `bash sdd/bin/adversarial-review.sh --feature {F}` — uma engine do
+release. **Commite antes**, e rode `bash sdd/bin/adversarial-review.sh --feature {F}` (revisores vazios ou credencial de
+uma engine fora do ambiente: a mesma oferta da `sdd-configurar-revisores` do passo 0) — uma engine do
 registry revisa o diff congelado e outra audita a revisão, em cadeia, nunca em paralelo; o 2º revisor
 entra sozinho só com superfície de risco (ou revisor raso), e o desempate, sozinho quando o auditor rebate um
 achado grave com evidência. Não os desligue com `--no-revisor2` ou `--no-desempate`: o uso fica contado como

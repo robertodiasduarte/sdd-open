@@ -1,0 +1,15 @@
+$ (cd tests && python3 -B -m unittest -v test_f28_revisao_slots.Origem test_f28_revisao_slots.Coerencia test_f28_revisores.Gravar)   # HEAD b987342
+test_dois_modelos_do_openrouter_sao_diversidade_modelo_e_o_mesmo_e_67 (test_f28_revisao_slots.Origem.test_dois_modelos_do_openrouter_sao_diversidade_modelo_e_o_mesmo_e_67) ... ok
+test_git_config_vale_com_o_slot_vazio_e_o_plano_diz_a_origem (test_f28_revisao_slots.Origem.test_git_config_vale_com_o_slot_vazio_e_o_plano_diz_a_origem) ... ok
+test_slot_vazio_sem_git_config_e_64_citando_a_skill (test_f28_revisao_slots.Origem.test_slot_vazio_sem_git_config_e_64_citando_a_skill) ... ok
+test_slot_vence_o_git_config_e_a_flag_vence_os_dois (test_f28_revisao_slots.Origem.test_slot_vence_o_git_config_e_a_flag_vence_os_dois) ... ok
+test_quatro_configuracoes (test_f28_revisao_slots.Coerencia.test_quatro_configuracoes) ... ok
+test_avisa_quando_o_slot_do_time_vence (test_f28_revisores.Gravar.test_avisa_quando_o_slot_do_time_vence) ... ok
+test_grava_no_git_config_le_de_volta_e_tira_a_marca (test_f28_revisores.Gravar.test_grava_no_git_config_le_de_volta_e_tira_a_marca) ... ok
+test_recusa_id_desconhecido_e_a_mesma_engine (test_f28_revisores.Gravar.test_recusa_id_desconhecido_e_a_mesma_engine) ... ok
+
+----------------------------------------------------------------------
+Ran 8 tests in 4.410s
+
+OK
+[exit=0]

@@ -1,0 +1,57 @@
+$ /usr/bin/python3 -B probe.py <git archive 8f03b9e> AT-002   # probe.py = sonda do avaliador, no scratchpad
+diag (sem): estado=R07 exit=10 chave=0
+diag --testar: estado=R13 exit=0 chave=0
+--gravar exit=0 chave=0
+GRAVADO: revisor openrouter · auditor openrouter:deepseek/deepseek-v4-flash (git config deste computador, lidos de volta)
+RESULTADO: GRAVADO
+→ siga para a prova: diagnosticar.sh --testar e adversarial-review.sh --dry-run.
+adversarial-review --dry-run exit=0 chave=0
+Plano (nada foi enviado a nenhuma engine):
+  revisor : openrouter (qwen/qwen3.7-plus) · disponível — origem: este computador (git config sdd.revisor1)
+  auditor : openrouter:deepseek/deepseek-v4-flash (deepseek/deepseek-v4-flash) · disponível — origem: este computador (git config sdd.auditor)
+  diversidade: modelo
+  2º revisor (se acionado): claude (-)
+  desempate (se acionado): claude (-)
+  2º revisor: sem gatilho no diff (o revisor raso ainda pode acionar)
+  regra antiga (só medida): -
+  diff: 1 arquivo(s), 0 KB, base main, merge-base f8863348d5da
+  diff_sha256: 783b966442247f32dcbba5f230e912efce6e8424347e00266cbe825877ea5203
+  contexto: 0 documento(s) SDD, 0 KB
+⚠️ sem --feature: a revisão não leu BRAINSTORM, DEFINE nem DESIGN, e decisões já documentadas podem voltar como achado
+RESULTADO: PLANO
+→ rode sem --dry-run para revisar.
+adversarial-review --dry-run sem diff exit=0 chave=0
+checar.sh exit=0 chave=0
+bytes da chave nos arquivos do projeto (inclui .git/config): 0
+.git/config [sdd]: sdd.revisor1 openrouter
+sdd.auditor openrouter:deepseek/deepseek-v4-flash
+perfil ~/.bashrc com a chave: estado=R04 exit=10 chave=0
+ESTADO: R04 VAZIO_SEM_CHAVE
+aluno: Ainda não há revisor nem auditor, e este computador tem 1 agente(s) de IA para isso (claude): o caminho é o OpenRouter, um serviço pago por uso que dá acesso a vários modelos de IA.
+passo: Escolha: OpenRouter (passo a passo, uns 10 minutos), uma engine só, ou agora não.
+revisor: — (origem: -)
+auditor: — (origem: -)
+chave do OpenRouter neste agente: ausente
+chave gravada no perfil: não achei
+⚠️ há uma linha da chave em ~/.bashrc, que o seu shell não lê: grave de novo pelo guardar-chave.sh
+agentes de IA disponíveis: claude
+par sugerido: revisor openrouter:qwen/qwen3.7-plus · auditor openrouter:deepseek/deepseek-v4-flash
+preço por milhão de tokens (entrada / saída): qwen/qwen3.7-plus: US$ 0,32 / 1,28; deepseek/deepseek-v4-flash: US$ 0,09 / 0,18 (sdd/review/precos.tsv, conferido em 2026-11-18)
+estimativa por revisão: até ≈ US$ 0,04 (no teto do contexto; a maioria custa menos)
+RESULTADO: ESCOLHA
+→ repasse ao aluno a frase e o passo acima; nunca o id do estado.
+checar.sh com perfil e slots OR, sem chave: exit=0 chave=0
+windows (reg falso que tenta imprimir a chave no stderr): estado=R05 exit=20 chave=0
+ocorrências de OPENROUTER_API_KEY em linha de comando montada ("$OPENROUTER_API_KEY" como argumento): 0
+   | padrao = re.compile(r"^[ \t]*(export[ \t]+)?OPENROUTER_API_KEY=")
+   | r = subprocess.run([reg, "query", "HKCU\\Environment", "/v", "OPENROUTER_API_KEY"], env=env,
+   | chave_ok = bool(os.environ.get("OPENROUTER_API_KEY"))
+   | h = {"Authorization": "Bearer " + os.environ["OPENROUTER_API_KEY"]} if com_chave else {}
+   | # treinam com o dado) e provider.require_parameters = true. A chave vem só de OPENROUTER_API_KEY, lida
+   | [ -n "${OPENROUTER_API_KEY:-}" ]
+   | echo "OPENROUTER_API_KEY no ambiente (export OPENROUTER_API_KEY=… antes de rodar; nunca num arquivo do repositório)"
+   | if [ -z "${OPENROUTER_API_KEY:-}" ]; then
+   | echo "OPENROUTER_API_KEY ausente" > "$err"
+   | "Authorization": "Bearer " + os.environ["OPENROUTER_API_KEY"],
+total chave em todas as saídas: 0
+[exit=0]

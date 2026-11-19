@@ -21,9 +21,26 @@ review:
 ```
 
 O registry vem com `claude`, `codex` (sempre `-s read-only`), `gemini` e `openrouter`, uma linha cada, e
-**sem cadeia padrão**: com os slots vazios, a skill pergunta. `openrouter:<modelo>` usa a linha `openrouter`
+**sem cadeia padrão**: com os slots vazios, as fases oferecem a skill `sdd-configurar-revisores` (abaixo). `openrouter:<modelo>` usa a linha `openrouter`
 com outro modelo. Engine nova é uma linha no registry (mais um adapter em `sdd/bin/adapters/`, se for uma
 CLI nova). Os nomes de modelo moram no registry e em `sdd/review/precos.tsv`.
+
+### Revisores por computador
+
+Com um slot vazio, o script lê a escolha deste computador no git config: `sdd.revisor1` e `sdd.auditor`
+(`git config --local`, nunca commitado, vale na hora para todas as frentes do repositório). Ordem: a flag
+(`--reviewer`, `--auditor`), depois o slot do `sdd/config.yaml` (a escolha do time), depois o git config. O
+`--dry-run` mostra de onde veio cada valor, se cada engine está disponível aqui (a CLI no `PATH`, a chave do
+OpenRouter no ambiente — só a existência), quem faria o 2º revisor e o desempate, e funciona numa frente ainda sem
+diff (`diff: vazio`, exit 0); a revisão real sem diff continua saindo 64.
+
+A skill `sdd-configurar-revisores` configura isso com o aluno: mede o computador (slots, git config, a chave no
+ambiente e no perfil do terminal, as CLIs instaladas), recomenda o caminho sem custo quando há duas CLIs instaladas
+ou o OpenRouter com dois modelos diferentes (o par e o preço vêm do registry e do `precos.tsv`), conduz a conta, o
+crédito, a chave com limite de gasto e a gravação da chave no perfil do terminal sem que ela apareça na tela ou na
+conversa, grava o git config depois do OK e termina com uma prova que não gasta (uma consulta de leitura da chave e
+da lista pública de modelos, mais o `--dry-run`). Com os dois papéis no OpenRouter, o 2º revisor e o desempate saem
+das outras engines do registry, se estiverem instaladas; sem nenhuma, o plano diz isso antes de começar.
 
 A pasta das revisões (`review.output_dir`, padrão `sdd/reports/reviews`) precisa estar ignorada pelo git —
 o diff e as respostas das engines não vão para o repositório:

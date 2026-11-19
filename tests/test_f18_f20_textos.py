@@ -17,7 +17,7 @@ def skill(nome: str) -> str:
 class Versoes(unittest.TestCase):
     def test_versoes_e_linha_de_identificacao(self):
         for nome, versao in (("sdd-seguranca", "1.0.3"), ("sdd-brainstorm", "2.5.1"), ("sdd-define", "2.9.0"),
-                             ("sdd-design", "2.10.0"), ("sdd-build", "2.13.1"), ("sdd-release", "2.18.0")):
+                             ("sdd-design", "2.11.0"), ("sdd-build", "2.14.0"), ("sdd-release", "2.19.0")):
             texto = skill(nome)
             with self.subTest(skill=nome):
                 self.assertIn('version: "%s"' % versao, texto)

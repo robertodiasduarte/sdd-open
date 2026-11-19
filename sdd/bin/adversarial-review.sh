@@ -325,9 +325,17 @@ def resolve(id_, papel):
 
 
 def lista(flag, chave, papel):
-    v = op[flag] if op[flag] is not None else (slot(cfg, "review", chave) or "")
+    """(engines, origem): a flag, senão o slot do sdd/config.yaml (escolha do time), senão o git config deste
+    computador, sdd.<chave> (F28: a skill sdd-configurar-revisores grava ali, como o sdd.editor da new-session)."""
+    if op[flag] is not None:
+        v, origem = op[flag], "flag " + flag
+    else:
+        v, origem = slot(cfg, "review", chave) or "", "sdd/config.yaml"
+        if not v.strip():
+            v = git(raiz, "config", "--get", "sdd." + chave)[1].strip()
+            origem = "este computador (git config sdd.%s)" % chave if v else "-"
     ids = [x.strip() for x in v.split(",") if x.strip()]
-    return [resolve(x, papel) for x in ids]
+    return [resolve(x, papel) for x in ids], origem
 
 
 def base_id(id_):
@@ -490,14 +498,18 @@ if modo == "conferir":
     sys.exit(0)
 
 # ── revisar: papéis ──────────────────────────────────────────────────────────────────────────────
-revisores = lista("--reviewer", "revisor1", "reviewer")
+SKILL_REVISORES = "a skill sdd-configurar-revisores configura passo a passo"
+revisores, origem_rev = lista("--reviewer", "revisor1", "reviewer")
 if not revisores:
-    uso("nenhum revisor: preencha review.revisor1 em sdd/config.yaml ou passe --reviewer (válidas: %s)" % ", ".join(ORDEM))
-auditores = lista("--auditor", "auditor", "auditor")
+    uso("nenhum revisor: preencha review.revisor1 em sdd/config.yaml, grave sdd.revisor1 no git config deste "
+        "computador ou passe --reviewer (válidas: %s); %s" % (", ".join(ORDEM), SKILL_REVISORES))
+auditores, origem_aud = lista("--auditor", "auditor", "auditor")
 if not auditores and flags["--um-engine"]:
     auditores = [resolve(r["id"], "auditor") for r in revisores]
+    origem_aud = "--um-engine (a mesma do revisor)"
 if not auditores:
-    uso("nenhum auditor: preencha review.auditor em sdd/config.yaml ou passe --auditor (válidas: %s)" % ", ".join(ORDEM))
+    uso("nenhum auditor: preencha review.auditor em sdd/config.yaml, grave sdd.auditor no git config deste "
+        "computador ou passe --auditor (válidas: %s); %s" % (", ".join(ORDEM), SKILL_REVISORES))
 if chave(auditores[0]) == chave(revisores[0]) and not flags["--um-engine"]:
     sai(67, "PAROU", "o auditor (%s) é a mesma engine do revisor: ninguém audita a própria revisão" % auditores[0]["id"],
         "escolha outra engine para auditar (review.auditor) ou rode com --um-engine")
@@ -513,9 +525,90 @@ try:
 except (ValueError, AssertionError):
     uso("review.context_max_kb precisa ser um inteiro positivo (KB)")
 
+
+
+def modelo_padrao(d):
+    """O modelo que a engine usa sem -m, pela função opcional adapter_modelo_padrao do adapter; None sem ela ou com
+    nome fora do formato (o nome vai para o META e para o relatório público)."""
+    r = subprocess.run([BASH, "-c", 'source "$1"; command -v adapter_modelo_padrao >/dev/null 2>&1 || exit 3; '
+                        'adapter_modelo_padrao', "_", os.path.join(ADAPTERS, d["adapter"] + ".sh")],
+                       stdout=subprocess.PIPE, stderr=subprocess.DEVNULL)
+    nome = r.stdout.decode("utf-8", "replace").strip() if r.returncode == 0 else ""
+    return nome if re.match(r"^[A-Za-z0-9._:/@-]{1,80}\Z", nome) else None
+
+
+def disponivel(d):
+    r = subprocess.run([BASH, "-c", 'source "$1"; adapter_disponivel "$2"', "_",
+                        os.path.join(ADAPTERS, d["adapter"] + ".sh"), d["modelo"]],
+                       stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+    return r.returncode == 0
+
+
+def adapter_cmd(d, funcao, *a):
+    return [BASH, "-c", 'f="$1"; shift; source "$f"; ' + funcao + ' "$@"', "_",
+            os.path.join(ADAPTERS, d["adapter"] + ".sh")] + list(a)
+
+
+def extra_disponivel(papel_extra, excl_bases, chaves):
+    """A 1ª engine disponível do registry fora das bases excluídas e das identidades já usadas; None sem nenhuma.
+    A revisão real (2º revisor, desempate) e o --dry-run chamam esta função: o plano não diverge da revisão (F28)."""
+    for e in ORDEM:
+        if e in excl_bases:
+            continue
+        d = candidato(e, papel_extra)
+        if d and chave(d) not in chaves and disponivel(d):
+            return d
+    return None
+
+
+if flags["--dry-run"]:
+    # F28: as engines vêm antes do diff, para o plano valer também numa frente recém-aberta (sem diff)
+    def com_estado(d):
+        if disponivel(d):
+            return "%s (%s) · disponível" % (d["id"], d["modelo"])
+        r = subprocess.run(adapter_cmd(d, "adapter_credencial"), capture_output=True, text=True, encoding="utf-8",
+                           errors="replace")
+        return "%s (%s) · indisponível (falta: %s)" % (d["id"], d["modelo"], r.stdout.strip() or "a engine")
+    print("Plano (nada foi enviado a nenhuma engine):")
+    print("  revisor : " + ", ".join(com_estado(d) for d in revisores) + " — origem: " + origem_rev)
+    print("  auditor : " + ", ".join(com_estado(d) for d in auditores) + " — origem: " + origem_aud)
+    print("  diversidade: " + diversidade(revisores[0], auditores[0]))
+    _excl = {base_id(revisores[0]["id"]), base_id(auditores[0]["id"])}
+    _chaves = {chave(revisores[0]), chave(auditores[0])}
+    if flags["--no-revisor2"]:
+        print("  2º revisor (se acionado): dispensado (--no-revisor2)")
+    else:
+        _x = r2_forcado or extra_disponivel("revisor2", _excl, _chaves)
+        print("  2º revisor (se acionado): " + ("%s (%s)" % (_x["id"], _x["modelo"]) if _x else
+              "nenhuma engine disponível fora do revisor e do auditor — a release pede o motivo "
+              "(--aceitar-sem-revisor2)"))
+    if flags["--no-desempate"]:
+        print("  desempate (se acionado): dispensado (--no-desempate)")
+    else:
+        _x = extra_disponivel("desempate", _excl, _chaves)
+        print("  desempate (se acionado): " + ("%s (%s)" % (_x["id"], _x["modelo"]) if _x else
+              "nenhuma engine disponível — o achado grave em disputa fica para uma pessoa decidir"))
+
+    def sem_diff(motivo, aviso=False):
+        print(("⚠️ " if aviso else "  ") + "diff: %s" % motivo)
+        print("RESULTADO: PLANO\n→ quando houver mudança na frente, rode sem --dry-run para revisar.")
+        sys.exit(0)
+    if op["--base"] and git(raiz, "rev-parse", "--verify", "--quiet", op["--base"] + "^{commit}")[0] != 0:
+        uso("--base %s não resolve para um commit" % op["--base"])
+    if not op["--base"]:
+        _db = slot(cfg, "project", "default_branch") or "main"
+        if all(git(raiz, "rev-parse", "--verify", "--quiet", c + "^{commit}")[0] != 0 for c in ("origin/" + _db, _db)):
+            sem_diff("sem base para comparar (nem origin/%s nem %s existem) — o plano das engines vale; a revisão real "
+                     "vai parar até a branch padrão existir (ou com --base <ref>)" % (_db, _db), True)
+    if git(raiz, "merge-base", resolve_base(op["--base"]), "HEAD")[0] != 0:
+        sem_diff("sem base comum com %s — o plano das engines vale; a revisão real vai parar até haver uma "
+                 "(ou com --base <ref>)" % resolve_base(op["--base"]), True)
+
 base = resolve_base(op["--base"])
 mb, patch, arqs = congelar(base, op["--paths"])
 if not patch.strip():
+    if flags["--dry-run"]:
+        sem_diff("vazio, nada a revisar ainda — o plano das engines vale")
     uso("o diff contra %s está vazio: a revisão não teria o que revisar" % base)
 if len(patch) > DIFF_MAX_MB * 1024 * 1024:
     uso("o diff tem %d KB, acima do teto de %d MB: use --paths para revisar por partes" % (len(patch) // 1024, DIFF_MAX_MB))
@@ -595,28 +688,7 @@ gat, gat_motivo = gatilho_risco()   # o texto de gatilho_2o_revisor não muda (o
 regra_antiga = gatilho_regra_antiga()
 
 
-def modelo_padrao(d):
-    """O modelo que a engine usa sem -m, pela função opcional adapter_modelo_padrao do adapter; None sem ela ou com
-    nome fora do formato (o nome vai para o META e para o relatório público)."""
-    r = subprocess.run([BASH, "-c", 'source "$1"; command -v adapter_modelo_padrao >/dev/null 2>&1 || exit 3; '
-                        'adapter_modelo_padrao', "_", os.path.join(ADAPTERS, d["adapter"] + ".sh")],
-                       stdout=subprocess.PIPE, stderr=subprocess.DEVNULL)
-    nome = r.stdout.decode("utf-8", "replace").strip() if r.returncode == 0 else ""
-    return nome if re.match(r"^[A-Za-z0-9._:/@-]{1,80}\Z", nome) else None
-
-
-def disponivel(d):
-    r = subprocess.run([BASH, "-c", 'source "$1"; adapter_disponivel "$2"', "_",
-                        os.path.join(ADAPTERS, d["adapter"] + ".sh"), d["modelo"]],
-                       stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
-    return r.returncode == 0
-
-
 if flags["--dry-run"]:
-    print("Plano (nada foi enviado a nenhuma engine):")
-    print("  revisor : " + ", ".join("%s (%s)" % (d["id"], d["modelo"]) for d in revisores))
-    print("  auditor : " + ", ".join("%s (%s)" % (d["id"], d["modelo"]) for d in auditores))
-    print("  diversidade: " + diversidade(revisores[0], auditores[0]))
     print("  2º revisor: " + ("dispensado (--no-revisor2)" if flags["--no-revisor2"] else
                               (gat or "sem gatilho no diff (o revisor raso ainda pode acionar)")))
     print("  regra antiga (só medida): " + regra_antiga)
@@ -678,11 +750,6 @@ def montar(nome, extra=()):
 
 
 # ── chamada de um papel ──────────────────────────────────────────────────────────────────────────
-def adapter_cmd(d, funcao, *a):
-    return [BASH, "-c", 'f="$1"; shift; source "$f"; ' + funcao + ' "$@"', "_",
-            os.path.join(ADAPTERS, d["adapter"] + ".sh")] + list(a)
-
-
 def invocar(d, prompt, saida):
     p = subprocess.Popen(adapter_cmd(d, "adapter_invocar", d["modelo"], prompt, saida, saida + ".err"),
                          cwd=VAZIA, stdin=subprocess.DEVNULL, start_new_session=True)
@@ -938,9 +1005,8 @@ elif gat2:
         # o revisor pode ter caído para a reserva: a mesma engine não revisa duas vezes
         cand = [r2_forcado] if chave(r2_forcado) != chave(rev["linha"]) else []
     else:
-        chaves = {chave(rev["linha"]), chave(auditores[0])}
-        cand = [candidato(e, "revisor2") for e in ORDEM if e not in excl]
-        cand = [d for d in cand if d and chave(d) not in chaves and disponivel(d)][:1]
+        x = extra_disponivel("revisor2", excl, {chave(rev["linha"]), chave(auditores[0])})
+        cand = [x] if x else []
     if not cand:
         r2 = {"engine_efetivo": "indisponível", "engine_default": "-", "exit": "67", "segundos": 0, "achados": 0,
               "motivo": "nenhuma engine disponível fora do revisor e do auditor", "linha": None,
@@ -1034,8 +1100,8 @@ if aud is not None and aud["exit"] == "0" and not flags["--no-desempate"]:
         excl = {base_id(origem.get(alvo["achado"])), base_id(aud["engine_efetivo"])}
         chaves = {chave(aud["linha"])} | {chave(x["linha"]) for x in (rev, r2) if x and x.get("linha")
                                             and x["engine_efetivo"] == origem.get(alvo["achado"])}
-        cand = [candidato(e, "desempate") for e in ORDEM if e not in excl]
-        cand = [d for d in cand if d and chave(d) not in chaves and disponivel(d)][:1]
+        x = extra_disponivel("desempate", excl, chaves)
+        cand = [x] if x else []
         if not cand:
             des["engine"] = "indisponível"
         else:

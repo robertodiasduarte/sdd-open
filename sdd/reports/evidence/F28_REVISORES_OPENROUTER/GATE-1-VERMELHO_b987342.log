@@ -1,0 +1,36 @@
+$ bash sdd/bin/verify-gate.sh sdd/features/DEFINE_F28_REVISORES_OPENROUTER.md   # HEAD b987342
+▶ Verify Gate [test]: T=$(mktemp -d) && git archive HEAD | tar -x -C $T && PUBLISH_GATE_MODE=ci bash scripts/publish-gate.sh $T && cd $T && SDD_TEST_BASH=/bin/bash /usr/bin/python3 -B -m unittest discover -s tests -p 'test_*.py'
+   │ publish-gate — tree: /private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.2CwPgXjEmq — mode: ci
+   │ ──────────────────────────────────────────────────────────────────
+   │ G1 secrets (gitleaks)
+   │   ✅ no secrets detected
+   │ G2 forbidden patterns
+   │   ✅ no forbidden pattern matched
+   │ G3 allowlist (MANIFEST.txt)
+   │   ✅ tree and manifest match in both directions
+   │ G4 verify-gate exit contract
+   │   ✅ DEFINE_FIXTURE_NEEDS_CLARIFICATION.md → exit 5
+   │   ✅ DEFINE_FIXTURE_CONTROLE.md → exit 0
+   │   ✅ DEFINE_FIXTURE_SEM_BLOCO.md → exit 64
+   │ G5 documentation
+   │   ✅ docs present, cross-linked, attribution in place
+   │ ──────────────────────────────────────────────────────────────────
+   │ ✅ publish-gate GREEN — tree is publishable (human review of the file list still required)
+   │ ......................................s.....................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................s...................................................................................................................................................................................................................................................................................s............................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................s...................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................
+   │ ======================================================================
+   │ FAIL: test_todo_python_embutido_num_script_troca_a_saida (test_f16w2_saida.GuardaEmbutidos) (script='.agents/skills/sdd-configurar-revisores/scripts/diagnosticar.sh', inicio='import sys as _s\nfor _c in (_s.stdout, _')
+   │ ----------------------------------------------------------------------
+   │ Traceback (most recent call last):
+   │   File "/private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.2CwPgXjEmq/tests/test_f16w2_saida.py", line 60, in test_todo_python_embutido_num_script_troca_a_saida
+   │     self.assertIn('_sdd_c.reconfigure(encoding="utf-8", errors="replace", newline="\\n")', m.group(1)[:1200])
+   │ AssertionError: '_sdd_c.reconfigure(encoding="utf-8", errors="replace", newline="\\n")' not found in 'import sys as _s\nfor _c in (_s.stdout, _s.stderr):\n    try:\n        _c.reconfigure(encoding="utf-8", errors="replace", newline="\\n")\n    except (AttributeError, ValueError):\n        pass\nimport datetime, json, os, re, subprocess, sys, threading, time, urllib.error, urllib.request\nfrom decimal import Decimal, ROUND_DOWN, ROUND_UP, InvalidOperation\n\nBASH = os.environ.get("SDD_REVISORES_BASH") or "bash"\nBASE_API = (os.environ.get("SDD_REVISORES_OPENROUTER_URL") or "https://openrouter.ai/api/v1").rstrip("/")\nTETO_S = 10\nCLASSE = {0: "PRONTO", 10: "ESCOLHA", 20: "PARADA", 30: "CONSERTO", 40: "TESTE FALHOU", 64: "PAROU"}\n\n# id: (nome, exit, frase do aluno, próximo passo). A tabela do SKILL.md tem uma linha por id (teste de paridade).\nESTADOS = {\n    "R01": ("SEM_REVISAO", 64,\n            "Esta pasta não é um projeto com a revisão adversarial do SDD Open (falta sdd/bin/adversarial-review.sh, "\n            "ou não é um repositório git): não há revisores para configurar aqui.",\n            "Abra o agente na pasta do projeto; se o SDD Open não está instalado, rode o init dele (guia do aluno, "\n            "seção 2)."),\n    "R02": ("PRONTO", 0,\n            "Os revisores estão configurados e a'
+   │ 
+   │ ----------------------------------------------------------------------
+   │ Ran 2754 tests in 1787.155s
+   │ 
+   │ FAILED (failures=1, skipped=4)
+🛑 GATE VERMELHO (test) — pass_when: 'exit 0' NÃO satisfeito (rc=1).
+RESULTADO: VERMELHO
+→ corrija o que o comando acima apontou e rode de novo.
+# duração: 1791 s
+[exit=2]

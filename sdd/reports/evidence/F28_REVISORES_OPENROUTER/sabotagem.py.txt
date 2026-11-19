@@ -1,0 +1,40 @@
+import os, subprocess, sys, tempfile, shutil
+RAIZ = sys.argv[1]
+D = ".agents/skills/sdd-configurar-revisores/scripts/diagnosticar.sh"
+G = ".agents/skills/sdd-configurar-revisores/scripts/guardar-chave.sh"
+A = "sdd/bin/adversarial-review.sh"
+C = ".agents/skills/sdd-checar-ambiente/scripts/checar.sh"
+MUT = [
+ ("imprime a chave", D, 'medidas.append("chave do OpenRouter neste agente: " + ("presente" if chave_ok else "ausente"))',
+  'medidas.append("chave do OpenRouter neste agente: " + os.environ.get("OPENROUTER_API_KEY", "ausente"))',
+  "test_f28_revisores.py", "Estados.test_R07_chave_presente_slots_vazios"),
+ ("chama chat/completions", D, 'st, j = consulta("/key", True)', 'consulta("/chat/completions", True)\nst, j = consulta("/key", True)',
+  "test_f28_revisores.py", "Testar.test_R13_aceita_so_get_de_leitura_e_centavos"),
+ ("grava no sdd/config.yaml", D, '    git("-C", raiz, "config", "--local", "--unset", "sdd.revisores.reabrir")',
+  '    open(cfg, "a").write("  revisor1: %s\\n" % r)\n    git("-C", raiz, "config", "--local", "--unset", "sdd.revisores.reabrir")',
+  "test_f28_revisores.py", "Gravar.test_grava_no_git_config_le_de_volta_e_tira_a_marca"),
+ ("dry-run sem diff volta a 64", A, 'sem_diff("vazio, nada a revisar ainda — o plano das engines vale")', 'uso("vazio")',
+  "test_f28_revisao_slots.py", "DryRun.test_sem_diff_mostra_o_plano_e_sai_0_e_a_revisao_real_continua_64"),
+ ("checar vira 🔴", C, '    add_arrumar "Os revisores da revisão adversarial', '    add_impede "Os revisores da revisão adversarial',
+  "test_checar.py", "TestRevisores.test_vazios_viram_aviso_com_a_skill_e_nunca_impedimento"),
+ ("≤ 0 vira == 0", D, "centavos(resta) <= 0", "centavos(resta) == 0",
+  "test_f28_revisores.py", "Testar.test_R17_limite_esgotado_em_decimal"),
+ ("read sem -s ecoa a chave", G, "IFS= read -rs K", "IFS= read -r K",
+  "test_f28_revisores.py", "GuardarChave.test_grava_sem_eco_no_bashrc_do_linux_e_troca_a_linha_antiga"),
+]
+ok = True
+for nome, arq, a, b, mod, teste in MUT:
+    t = tempfile.mkdtemp()
+    subprocess.run("git -C %s archive HEAD | tar -x -C %s" % (RAIZ, t), shell=True, check=True)
+    p = os.path.join(t, arq)
+    s = open(p, encoding="utf-8").read()
+    assert s.count(a) == 1, (nome, s.count(a))
+    open(p, "w", encoding="utf-8").write(s.replace(a, b))
+    r = subprocess.run([sys.executable, "-B", "-m", "unittest", mod[:-3] + "." + teste], cwd=os.path.join(t, "tests"),
+                       capture_output=True, text=True, encoding="utf-8", errors="replace")
+    caiu = r.returncode != 0
+    ok &= caiu
+    print("%s %-28s → %s %s" % ("✅" if caiu else "❌", nome, teste, "(caiu)" if caiu else "(PASSOU: o mutante sobreviveu)"))
+    shutil.rmtree(t, ignore_errors=True)
+print("RESULTADO:", "TODOS OS MUTANTES DERRUBADOS" if ok else "MUTANTE SOBREVIVEU")
+sys.exit(0 if ok else 1)

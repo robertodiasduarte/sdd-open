@@ -1082,6 +1082,57 @@ class TestEditor(Base):
         self.assertIn(", editor cursor", out)
 
 
+class TestRevisores(Base):
+    """F28, AT-009: os revisores da revisão adversarial viram ⚠️ (nunca 🔴), só no modo normal e só com a revisão."""
+
+    NAO_CONFIG = "Os revisores da revisão adversarial não estão configurados"
+    SEM_CHAVE = "A revisão adversarial usa o OpenRouter e a chave dele (OPENROUTER_API_KEY) não está no ambiente"
+    CHAVE = "fixture-nao-e-chave-" + "ef56"
+
+    def com_revisao(self, cfg: str = "") -> None:
+        self.escreve("sdd/bin/adversarial-review.sh", "#!/usr/bin/env bash\n")
+        self.escreve("sdd/config.yaml", "project:\n  default_branch: main\nreview:\n" + cfg)
+        self.commit("sdd/bin/adversarial-review.sh", "sdd/config.yaml")
+
+    def test_sem_a_revisao_nada_e_dito(self):
+        out = self.checar(OPENROUTER_API_KEY=None)
+        self.assertNotIn("revisores", out)
+
+    def test_vazios_viram_aviso_com_a_skill_e_nunca_impedimento(self):
+        self.com_revisao("  revisor1: \"\"\n  auditor: \"\"\n")
+        out = self.checar(OPENROUTER_API_KEY=None)
+        self.assertIn(self.NAO_CONFIG, out)
+        self.assertIn("sdd-configurar-revisores", out)
+        self.assertLess(out.index("⚠️ Vale arrumar"), out.index(self.NAO_CONFIG))
+        self.assertNotIn("🔴", out)
+
+    def test_aspas_vazias_com_espaco_no_fim_contam_como_vazio(self):
+        self.com_revisao('  revisor1: ""   \n  auditor: claude\n')
+        self.assertIn(self.NAO_CONFIG, self.checar(OPENROUTER_API_KEY=None))
+
+    def test_git_config_deste_computador_conta(self):
+        self.com_revisao("  revisor1: \"\"   # vazio\n")
+        self.git("config", "--local", "sdd.revisor1", "claude")
+        self.git("config", "--local", "sdd.auditor", "codex")
+        self.assertNotIn(self.NAO_CONFIG, self.checar(OPENROUTER_API_KEY=None))
+
+    def test_openrouter_sem_chave_avisa_com_chave_nao_e_a_chave_nunca_aparece(self):
+        self.com_revisao("  revisor1: claude\n  auditor: 'openrouter:prov/b'\n")
+        out = self.checar(OPENROUTER_API_KEY=None)
+        self.assertIn(self.SEM_CHAVE, out)
+        self.assertNotIn(self.NAO_CONFIG, out)
+        out = self.checar(OPENROUTER_API_KEY=self.CHAVE)
+        self.assertNotIn(self.SEM_CHAVE, out)
+        self.assertNotIn(self.CHAVE, out)
+
+    def test_outros_modos_nao_falam_dos_revisores(self):
+        self.com_revisao()
+        for modo in ("--frente", "--segredo", "--editor"):
+            with self.subTest(modo=modo):
+                _, out, _ = self.roda(modo, OPENROUTER_API_KEY=None, SDD_CHECAR_EDITOR_PATH=str(self.sem_editor))
+                self.assertNotIn("revisores", out)
+
+
 class TestVigiaNoWindows(unittest.TestCase):
     """F16W (AT-004, revisão R2): o ramo do Windows do vigia, provado também fora dele. O bloco do gh é carregado
     num bash com um /proc falso (SDD_CHECAR_PROC) e um taskkill falso que só anota; o Windows real é o CI."""

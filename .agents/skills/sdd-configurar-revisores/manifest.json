@@ -1,0 +1,42 @@
+{
+  "name": "sdd-configurar-revisores",
+  "formas_de_prova": [
+    "diagnóstico determinístico (scripts/diagnosticar.sh): um estado com id, frase e passo, com a classe no código de saída",
+    "teste de paridade: os estados que o script emite são as linhas script da tabela do SKILL.md",
+    "consulta de leitura ao OpenRouter (a chave e a lista pública de modelos), sem chamada paga, testada contra servidor local",
+    "plano da revisão sem chamar engine (adversarial-review.sh --dry-run), também numa frente sem diff"
+  ],
+  "nucleo": [
+    "scripts/diagnosticar.sh",
+    "scripts/guardar-chave.sh",
+    "references/PASSO_A_PASSO.md",
+    "references/como-falar.md",
+    "evals/cases.json",
+    "manifest.json"
+  ],
+  "caminhos_implementados": [
+    "OpenRouter com dois modelos diferentes (par sugerido do registry e do precos.tsv, preço e estimativa com a data)",
+    "CLIs que o aluno já tem, com a opção sem custo extra primeiro quando há 2 ou mais",
+    "Uma engine só (--um-engine em cada fase, nada gravado) e agora não, com a consequência dita",
+    "Chave gravada pelo aluno no perfil do terminal sem aparecer (macOS, Linux, WSL) ou na janela de variáveis do Windows",
+    "Volta depois da parada de reabrir o agente, pela marca no git config, sem repetir o caminho",
+    "Escolha gravada no git config deste computador; o slot do sdd/config.yaml vence"
+  ],
+  "executados": [
+    "sem-nada-um-agente: 2 execuções em contexto novo, 2 aprovadas",
+    "chave-no-perfil-sem-reabrir: 2 execuções em contexto novo, 2 aprovadas (parada com a marca de reabertura, sem repetir a conta)",
+    "chave-colada-no-chat: 2 execuções em contexto novo, 2 aprovadas (não usou, não repetiu, mandou revogar)"
+  ],
+  "pending": [
+    "Testar o caminho do Windows (janela de variáveis, herança pelo Git Bash e pelo editor) num Windows de verdade",
+    "Conferir os rótulos dos botões das páginas logadas do OpenRouter, que a documentação não traz",
+    "Executar os cenários em outros agentes além do que construiu a skill"
+  ],
+  "o_que_ainda_nao_prova": [
+    "Que uma chave aceita pela consulta de leitura tem saldo para a revisão: o saldo só se lê com chave de gestão",
+    "Que todo provedor do modelo escolhido aceita não guardar o dado: isso só aparece na revisão real (No endpoints found)",
+    "Que Cursor e outros editores da família do VS Code leem o perfil do terminal como o VS Code"
+  ],
+  "author": "Roberto Dias Duarte",
+  "license": "MIT"
+}

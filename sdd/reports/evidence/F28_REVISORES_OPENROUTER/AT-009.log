@@ -1,0 +1,13 @@
+$ (cd tests && python3 -B -m unittest -v test_checar.TestRevisores)   # HEAD b987342
+test_aspas_vazias_com_espaco_no_fim_contam_como_vazio (test_checar.TestRevisores.test_aspas_vazias_com_espaco_no_fim_contam_como_vazio) ... ok
+test_git_config_deste_computador_conta (test_checar.TestRevisores.test_git_config_deste_computador_conta) ... ok
+test_openrouter_sem_chave_avisa_com_chave_nao_e_a_chave_nunca_aparece (test_checar.TestRevisores.test_openrouter_sem_chave_avisa_com_chave_nao_e_a_chave_nunca_aparece) ... ok
+test_outros_modos_nao_falam_dos_revisores (test_checar.TestRevisores.test_outros_modos_nao_falam_dos_revisores) ... ok
+test_sem_a_revisao_nada_e_dito (test_checar.TestRevisores.test_sem_a_revisao_nada_e_dito) ... ok
+test_vazios_viram_aviso_com_a_skill_e_nunca_impedimento (test_checar.TestRevisores.test_vazios_viram_aviso_com_a_skill_e_nunca_impedimento) ... ok
+
+----------------------------------------------------------------------
+Ran 6 tests in 6.026s
+
+OK
+[exit=0]

@@ -25,6 +25,13 @@
 .agents/skills/sdd-checar-ambiente/references/como-falar.md
 .agents/skills/sdd-checar-ambiente/scripts/checar.sh
 .agents/skills/sdd-checar-ambiente/scripts/duplicadas.sh
+.agents/skills/sdd-configurar-revisores/SKILL.md
+.agents/skills/sdd-configurar-revisores/manifest.json
+.agents/skills/sdd-configurar-revisores/evals/cases.json
+.agents/skills/sdd-configurar-revisores/references/PASSO_A_PASSO.md
+.agents/skills/sdd-configurar-revisores/references/como-falar.md
+.agents/skills/sdd-configurar-revisores/scripts/diagnosticar.sh
+.agents/skills/sdd-configurar-revisores/scripts/guardar-chave.sh
 .agents/skills/sdd-define/SKILL.md
 .agents/skills/sdd-define/references/cartografo.md
 .agents/skills/sdd-define/references/como-falar.md
@@ -715,6 +722,8 @@ tests/test_f23b3_revisao.py
 tests/test_f24_release_enxuta.py
 tests/test_f25_skills_duplicadas.py
 tests/test_f27_textos.py
+tests/test_f28_revisores.py
+tests/test_f28_revisao_slots.py
 tests/test_fluxo.py
 tests/test_gate_baseline.py
 tests/test_gate_shell_evidencia.py

@@ -1,0 +1,25 @@
+$ (cd tests && python3 -B -m unittest -v test_f28_revisores.Testar)   # HEAD b987342
+test_R13_aceita_so_get_de_leitura_e_centavos (test_f28_revisores.Testar.test_R13_aceita_so_get_de_leitura_e_centavos) ... ok
+test_R14_sem_limite (test_f28_revisores.Testar.test_R14_sem_limite) ... ok
+test_R15_recusada_401_e_403_sem_o_corpo (test_f28_revisores.Testar.test_R15_recusada_401_e_403_sem_o_corpo) ... ok
+test_R16_sem_credito_pela_conta_gratis_e_pelo_402 (test_f28_revisores.Testar.test_R16_sem_credito_pela_conta_gratis_e_pelo_402) ... ok
+test_R17_limite_esgotado_em_decimal (test_f28_revisores.Testar.test_R17_limite_esgotado_em_decimal) ... ok
+test_R18_429 (test_f28_revisores.Testar.test_R18_429) ... ok
+test_R19_sem_servidor (test_f28_revisores.Testar.test_R19_sem_servidor) ... ok
+test_R19_teto_de_10_s_pela_chamada_inteira (test_f28_revisores.Testar.test_R19_teto_de_10_s_pela_chamada_inteira) ... ok
+test_R20_erro_do_servidor_json_ilegivel_e_forma_inesperada (test_f28_revisores.Testar.test_R20_erro_do_servidor_json_ilegivel_e_forma_inesperada) ... ok
+test_R20_resposta_que_nao_e_http_sem_traceback (test_f28_revisores.Testar.test_R20_resposta_que_nao_e_http_sem_traceback) ... ok
+test_R21_modelo_fora_da_lista (test_f28_revisores.Testar.test_R21_modelo_fora_da_lista) ... ok
+test_R21_slot_openrouter_sem_modelo_confere_o_modelo_do_registry (test_f28_revisores.Testar.test_R21_slot_openrouter_sem_modelo_confere_o_modelo_do_registry) ... ok
+test_redirect_nao_e_seguido_e_a_chave_nao_vai_a_outro_endereco (test_f28_revisores.Testar.test_redirect_nao_e_seguido_e_a_chave_nao_vai_a_outro_endereco) ... ok
+test_revisores_so_em_clis_o_testar_nao_consulta_o_openrouter (test_f28_revisores.Testar.test_revisores_so_em_clis_o_testar_nao_consulta_o_openrouter) ... ok
+test_sem_chave_o_testar_nao_chama_nada (test_f28_revisores.Testar.test_sem_chave_o_testar_nao_chama_nada) ... ok
+testa (test_f28_revisores.Testar.testa) ... /opt/homebrew/Cellar/python@3.15/3.15.0_1/Frameworks/Python.framework/Versions/3.15/lib/python3.15/unittest/case.py:747: DeprecationWarning: It is deprecated to return a value that is not None from a test case (<bound method Testar.testa of <test_f28_revisores.Testar testMethod=testa>> returned 'tuple')
+  return self.run(*args, **kwds)
+ok
+
+----------------------------------------------------------------------
+Ran 16 tests in 15.712s
+
+OK
+[exit=0]

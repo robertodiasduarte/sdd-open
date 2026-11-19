@@ -1,0 +1,8 @@
+# Rodada 3 da revisão do código: sobre o código de antes do conserto (3629287)
+$ python3 -B -m unittest test_f28_revisores.Textos.test_uma_engine_so_sempre_com_a_engine_na_flag
+FAILED (failures=1)
+[exit=1]
+$ python3 -B -m unittest discover -s tests -p test_gerar_starter.py
+FAILED (failures=26)
+AssertionError: 65 != 0 : 🛑 sdd-checar-ambiente.md, bloco 3: o trecho casou 0 vez(es) em scripts/checar.sh; esperado exatamente 1 (o texto do Open mudou? ajuste a troca)
+[exit=1]

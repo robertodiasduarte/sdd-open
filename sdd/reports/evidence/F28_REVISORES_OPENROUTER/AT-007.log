@@ -1,0 +1,14 @@
+$ (cd tests && python3 -B -m unittest -v test_f28_revisores.Textos)   # HEAD b987342
+test_a_chave_nunca_passa_pela_conversa (test_f28_revisores.Textos.test_a_chave_nunca_passa_pela_conversa) ... ok
+test_conversa_glossario_parada_e_aviso_de_custo (test_f28_revisores.Textos.test_conversa_glossario_parada_e_aviso_de_custo) ... ok
+test_docs_readme_manifest_e_fora_do_starter (test_f28_revisores.Textos.test_docs_readme_manifest_e_fora_do_starter) ... ok
+test_ganchos_nas_fases (test_f28_revisores.Textos.test_ganchos_nas_fases) ... ok
+test_nenhum_nome_de_modelo_nem_preco_por_milhao_na_skill (test_f28_revisores.Textos.test_nenhum_nome_de_modelo_nem_preco_por_milhao_na_skill) ... ok
+test_passo_a_passo_com_fonte_data_e_o_nao_testado (test_f28_revisores.Textos.test_passo_a_passo_com_fonte_data_e_o_nao_testado) ... ok
+test_uma_engine_so_sempre_com_a_engine_na_flag (test_f28_revisores.Textos.test_uma_engine_so_sempre_com_a_engine_na_flag) ... ok
+
+----------------------------------------------------------------------
+Ran 7 tests in 0.006s
+
+OK
+[exit=0]

@@ -1,0 +1,26 @@
+$ (cd tests && python3 -B -m unittest -v test_f28_revisores.Estados test_f28_revisores.Paridade)   # HEAD b987342
+test_R01_sem_a_revisao_ou_fora_do_git (test_f28_revisores.Estados.test_R01_sem_a_revisao_ou_fora_do_git) ... ok
+test_R02_pronto (test_f28_revisores.Estados.test_R02_pronto) ... ok
+test_R03_vazio_com_2_clis_mesmo_com_a_chave (test_f28_revisores.Estados.test_R03_vazio_com_2_clis_mesmo_com_a_chave) ... ok
+test_R04_vazio_com_1_cli_sem_chave_mostra_par_preco_e_estimativa (test_f28_revisores.Estados.test_R04_vazio_com_1_cli_sem_chave_mostra_par_preco_e_estimativa) ... ok
+test_R05_chave_no_perfil_e_R06_depois_da_marca (test_f28_revisores.Estados.test_R05_chave_no_perfil_e_R06_depois_da_marca) ... ok
+test_R05_nas_variaveis_do_windows_pelo_reg_sem_ler_o_valor (test_f28_revisores.Estados.test_R05_nas_variaveis_do_windows_pelo_reg_sem_ler_o_valor) ... ok
+test_R05_no_perfil_local_que_o_passo_a_passo_recomenda (test_f28_revisores.Estados.test_R05_no_perfil_local_que_o_passo_a_passo_recomenda) ... ok
+test_R07_chave_presente_slots_vazios (test_f28_revisores.Estados.test_R07_chave_presente_slots_vazios) ... ok
+test_R08_slots_no_openrouter_sem_chave (test_f28_revisores.Estados.test_R08_slots_no_openrouter_sem_chave) ... ok
+test_R09_cli_do_slot_ausente (test_f28_revisores.Estados.test_R09_cli_do_slot_ausente) ... ok
+test_R10_um_slot_so (test_f28_revisores.Estados.test_R10_um_slot_so) ... ok
+test_R11_mesma_engine (test_f28_revisores.Estados.test_R11_mesma_engine) ... ok
+test_R12_id_desconhecido (test_f28_revisores.Estados.test_R12_id_desconhecido) ... ok
+test_chave_num_perfil_que_o_shell_nao_le_nao_prende (test_f28_revisores.Estados.test_chave_num_perfil_que_o_shell_nao_le_nao_prende) ... ok
+test_marca_de_reabertura_antiga_nao_vale (test_f28_revisores.Estados.test_marca_de_reabertura_antiga_nao_vale) ... ok
+test_perfil_com_a_chave_nao_prende_quem_usa_so_clis (test_f28_revisores.Estados.test_perfil_com_a_chave_nao_prende_quem_usa_so_clis) ... ok
+test_slots_no_openrouter_medem_o_par_configurado (test_f28_revisores.Estados.test_slots_no_openrouter_medem_o_par_configurado) ... ok
+test_so_le_nada_muda_e_nenhuma_chamada_de_rede (test_f28_revisores.Estados.test_so_le_nada_muda_e_nenhuma_chamada_de_rede) ... ok
+test_estados_do_script_sao_as_linhas_script_da_tabela (test_f28_revisores.Paridade.test_estados_do_script_sao_as_linhas_script_da_tabela) ... ok
+
+----------------------------------------------------------------------
+Ran 19 tests in 4.604s
+
+OK
+[exit=0]

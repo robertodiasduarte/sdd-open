@@ -1,0 +1,16 @@
+# Rodada 2 da revisão do código: os testes novos sobre o código de antes do conserto (d850a75)
+$ python3 -B -m unittest test_f28_revisores.Testar.test_R20_resposta_que_nao_e_http_sem_traceback
+FAILED (failures=1)
+[exit=1]
+$ python3 -B -m unittest test_f28_revisores.Estados.test_marca_de_reabertura_antiga_nao_vale
+FAILED (failures=1)
+[exit=1]
+$ python3 -B -m unittest test_checar.TestRevisores.test_aspas_vazias_com_espaco_no_fim_contam_como_vazio
+FAILED (failures=1)
+[exit=1]
+$ python3 -B -m unittest test_f28_revisores.GuardarChave.test_linha_antiga_dentro_de_if_nao_quebra_o_perfil
+FAILED (failures=1)
+[exit=1]
+$ python3 -B -m unittest test_f28_revisores.Estados.test_chave_num_perfil_que_o_shell_nao_le_nao_prende
+FAILED (failures=1)
+[exit=1]

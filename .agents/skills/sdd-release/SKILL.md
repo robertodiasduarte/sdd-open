@@ -6,7 +6,7 @@ compatibility: Requer bash >= 3.2 e git >= 2.20. Deploy, lint e drift vêm dos s
 license: MIT
 metadata:
   author: Roberto Dias Duarte
-  version: "2.18.0"
+  version: "2.19.0"
   updated: "2026-11"
   fase: "4"
 ---
@@ -14,7 +14,7 @@ metadata:
 # sdd-release — Fase 4
 
 Na primeira resposta desta skill, comece com esta linha, uma vez só, antes do Status:
-`sdd-release v2.18.0 · nov/2026 · versão atual: https://github.com/robertodiasduarte/sdd-open/releases/latest`
+`sdd-release v2.19.0 · nov/2026 · versão atual: https://github.com/robertodiasduarte/sdd-open/releases/latest`
 
 Você comanda, o agente executa a sequência protegida, e há **exatamente um OK humano** antes do push e do
 deploy. Nenhum loop autônomo cruza esse ponto: publicar é decisão humana e irreversível na prática.
@@ -124,8 +124,11 @@ fora dos documentos do SDD) ou `completa` (exit 1); o resultado vai para o ledge
 8. **Review externo (obrigatório, com dispensa registrada):** `bash sdd/bin/adversarial-review.sh --conferir`
    — confere se a revisão mais nova de `review.output_dir` é **desta** versão do código (mesmo
    `diff_sha256`) e completou. Exit 0 ⇒ guarde a linha `review_externo: …` que ele imprimiu para o
-   ledger. Exit 2 ⇒ antes do bloco do OK, faça a pergunta própria `[D3 · muda a regra do método]` de
-   `references/como-falar.md`: **rodar agora** (o script sem `--conferir`, com `--feature {F}`, e o
+   ledger. Exit 2 ⇒ antes do bloco do OK; se os revisores não estão
+   configurados (`adversarial-review.sh --dry-run` sai 64 "nenhum revisor") ou a credencial de uma engine falta,
+   ofereça **antes** a skill `sdd-configurar-revisores` (a pergunta `[D2 · muda o produto]` de
+   `references/como-falar.md`); configurada, rode a revisão. Depois disso, ou se o aluno não quer configurar, faça a
+   pergunta própria `[D3 · muda a regra do método]` de `references/como-falar.md`: **rodar agora** (o script sem `--conferir`, com `--feature {F}`, e o
    `--conferir` de novo) ou **publicar sem revisão** (o motivo da pessoa vira
    `review_externo: dispensado — <motivo>`). 2º revisor acionado e sem resultado ⇒ rode de novo com
    outra engine ou registre a dispensa dele com `--aceitar-sem-revisor2 "<motivo>"`. O OK continua

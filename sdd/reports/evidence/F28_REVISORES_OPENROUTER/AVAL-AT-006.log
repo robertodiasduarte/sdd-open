@@ -1,0 +1,84 @@
+$ /usr/bin/python3 -B probe.py <git archive 8f03b9e> AT-006   # probe.py = sonda do avaliador, no scratchpad
+── dry-run sem diff — OR+OR, nenhuma CLI, sem chave · exit=0
+Plano (nada foi enviado a nenhuma engine):
+  revisor : openrouter (qwen/qwen3.7-plus) · indisponível (falta: OPENROUTER_API_KEY no ambiente (export OPENROUTER_API_KEY=… antes de rodar; nunca num arquivo do repositório)) — origem: sdd/config.yaml
+  auditor : openrouter:deepseek/deepseek-v4-flash (deepseek/deepseek-v4-flash) · indisponível (falta: OPENROUTER_API_KEY no ambiente (export OPENROUTER_API_KEY=… antes de rodar; nunca num arquivo do repositório)) — origem: sdd/config.yaml
+  diversidade: modelo
+  2º revisor (se acionado): nenhuma engine disponível fora do revisor e do auditor — a release pede o motivo (--aceitar-sem-revisor2)
+  desempate (se acionado): nenhuma engine disponível — o achado grave em disputa fica para uma pessoa decidir
+  diff: vazio, nada a revisar ainda — o plano das engines vale
+RESULTADO: PLANO
+→ quando houver mudança na frente, rode sem --dry-run para revisar.
+   [chave no texto: 0 · sonda da resposta no texto: 0]
+── dry-run sem diff — OR+OR, nenhuma CLI, com chave · exit=0
+Plano (nada foi enviado a nenhuma engine):
+  revisor : openrouter (qwen/qwen3.7-plus) · disponível — origem: sdd/config.yaml
+  auditor : openrouter:deepseek/deepseek-v4-flash (deepseek/deepseek-v4-flash) · disponível — origem: sdd/config.yaml
+  diversidade: modelo
+  2º revisor (se acionado): nenhuma engine disponível fora do revisor e do auditor — a release pede o motivo (--aceitar-sem-revisor2)
+  desempate (se acionado): nenhuma engine disponível — o achado grave em disputa fica para uma pessoa decidir
+  diff: vazio, nada a revisar ainda — o plano das engines vale
+RESULTADO: PLANO
+→ quando houver mudança na frente, rode sem --dry-run para revisar.
+   [chave no texto: 0 · sonda da resposta no texto: 0]
+── dry-run sem diff — OR+OR, claude e gemini no PATH, com chave · exit=0
+Plano (nada foi enviado a nenhuma engine):
+  revisor : openrouter (qwen/qwen3.7-plus) · disponível — origem: sdd/config.yaml
+  auditor : openrouter:deepseek/deepseek-v4-flash (deepseek/deepseek-v4-flash) · disponível — origem: sdd/config.yaml
+  diversidade: modelo
+  2º revisor (se acionado): claude (-)
+  desempate (se acionado): claude (-)
+  diff: vazio, nada a revisar ainda — o plano das engines vale
+RESULTADO: PLANO
+→ quando houver mudança na frente, rode sem --dry-run para revisar.
+   [chave no texto: 0 · sonda da resposta no texto: 0]
+── dry-run sem diff — claude+codex, codex ausente · exit=0
+Plano (nada foi enviado a nenhuma engine):
+  revisor : claude (-) · disponível — origem: sdd/config.yaml
+  auditor : codex (-) · indisponível (falta: login da CLI codex (rode codex login)) — origem: sdd/config.yaml
+  diversidade: vendor
+  2º revisor (se acionado): nenhuma engine disponível fora do revisor e do auditor — a release pede o motivo (--aceitar-sem-revisor2)
+  desempate (se acionado): nenhuma engine disponível — o achado grave em disputa fica para uma pessoa decidir
+  diff: vazio, nada a revisar ainda — o plano das engines vale
+RESULTADO: PLANO
+→ quando houver mudança na frente, rode sem --dry-run para revisar.
+   [chave no texto: 0 · sonda da resposta no texto: 0]
+── revisão REAL sem diff · exit=64
+🛑 adversarial-review: o diff contra main está vazio: a revisão não teria o que revisar
+RESULTADO: PAROU
+→ rode `adversarial-review.sh --help` para ver o uso.
+   [chave no texto: 0 · sonda da resposta no texto: 0]
+── dry-run sem base · exit=0
+Plano (nada foi enviado a nenhuma engine):
+  revisor : openrouter (qwen/qwen3.7-plus) · disponível — origem: sdd/config.yaml
+  auditor : openrouter:deepseek/deepseek-v4-flash (deepseek/deepseek-v4-flash) · disponível — origem: sdd/config.yaml
+  diversidade: modelo
+  2º revisor (se acionado): claude (-)
+  desempate (se acionado): claude (-)
+⚠️ diff: sem base para comparar (nem origin/main nem main existem) — o plano das engines vale; a revisão real vai parar até a branch padrão existir (ou com --base <ref>)
+RESULTADO: PLANO
+→ quando houver mudança na frente, rode sem --dry-run para revisar.
+   [chave no texto: 0 · sonda da resposta no texto: 0]
+── dry-run com --no-revisor2 --no-desempate · exit=0
+Plano (nada foi enviado a nenhuma engine):
+  revisor : openrouter (qwen/qwen3.7-plus) · disponível — origem: sdd/config.yaml
+  auditor : openrouter:deepseek/deepseek-v4-flash (deepseek/deepseek-v4-flash) · disponível — origem: sdd/config.yaml
+  diversidade: modelo
+  2º revisor (se acionado): dispensado (--no-revisor2)
+  desempate (se acionado): dispensado (--no-desempate)
+  diff: vazio, nada a revisar ainda — o plano das engines vale
+RESULTADO: PLANO
+→ quando houver mudança na frente, rode sem --dry-run para revisar.
+   [chave no texto: 0 · sonda da resposta no texto: 0]
+── dry-run --base inválida · exit=64
+Plano (nada foi enviado a nenhuma engine):
+  revisor : openrouter (qwen/qwen3.7-plus) · disponível — origem: sdd/config.yaml
+  auditor : openrouter:deepseek/deepseek-v4-flash (deepseek/deepseek-v4-flash) · disponível — origem: sdd/config.yaml
+  diversidade: modelo
+  2º revisor (se acionado): claude (-)
+  desempate (se acionado): claude (-)
+🛑 adversarial-review: --base naoexiste não resolve para um commit
+RESULTADO: PAROU
+→ rode `adversarial-review.sh --help` para ver o uso.
+   [chave no texto: 0 · sonda da resposta no texto: 0]
+[exit=0]

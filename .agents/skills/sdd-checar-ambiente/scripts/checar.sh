@@ -734,6 +734,33 @@ if [ -f "${DIR_SKILL}/scripts/duplicadas.sh" ]; then
   dup_diagnostico add_arrumar_dup "${CMD_CHECAR} --duplicadas"
 fi
 
+# ── 8. revisores da revisão adversarial (F28) ────────────────────────────────
+# Só em projeto com a revisão do SDD Open (o starter não tem). Nunca 🔴: a revisão se dispensa com motivo. A chave do
+# OpenRouter só tem a existência testada; o valor nunca é lido. O slot do time (sdd/config.yaml) vence o git config.
+revisor_de() {   # $1 = revisor1 | auditor
+  local v
+  v="$(awk -v k="$1" '
+    /^[^[:space:]#]/ { dentro = ($0 ~ /^review:[[:space:]]*(#.*)?$/); next }
+    dentro && $0 ~ "^[[:space:]]+" k ":" { sub("^[[:space:]]+" k ":[[:space:]]*", ""); sub(/[[:space:]]+#.*$/, ""); sub(/[[:space:]]+$/, "");
+                                          gsub(/^["'\'']|["'\'']$/, ""); print; exit }' "${RAIZ}/sdd/config.yaml" 2>/dev/null)"
+  [ -n "${v}" ] || v="$(git -C "${RAIZ}" config --get "sdd.$1" 2>/dev/null)"
+  printf '%s' "${v}"
+}
+if [ -f "${RAIZ}/sdd/bin/adversarial-review.sh" ]; then
+  REV1="$(revisor_de revisor1)"; AUD1="$(revisor_de auditor)"
+  if [ -z "${REV1}" ] || [ -z "${AUD1}" ]; then
+    add_arrumar "Os revisores da revisão adversarial não estão configurados — sem eles, a publicação pede para seguir sem revisão." \
+                "peça ao agente: use a skill sdd-configurar-revisores (ela conduz passo a passo)"
+  fi
+  case "${REV1},${AUD1}" in
+    *openrouter*)
+      if [ -z "${OPENROUTER_API_KEY:-}" ]; then
+        add_arrumar "A revisão adversarial usa o OpenRouter e a chave dele (OPENROUTER_API_KEY) não está no ambiente deste agente — a revisão vai parar por credencial." \
+                    "peça ao agente: use a skill sdd-configurar-revisores (ela confere se a chave está gravada e diz o que falta)"
+      fi ;;
+  esac
+fi
+
 # ── resumo ───────────────────────────────────────────────────────────────────
 case "${FRENTES}" in
   0) TXT_FRENTES="nenhuma frente aberta" ;;

@@ -1,0 +1,13 @@
+$ (cd tests && python3 -B -m unittest -v test_f28_revisores.Estados.test_R05_chave_no_perfil_e_R06_depois_da_marca test_f28_revisores.Estados.test_R08_slots_no_openrouter_sem_chave test_f28_revisores.Estados.test_R05_no_perfil_local_que_o_passo_a_passo_recomenda test_f28_revisores.Estados.test_perfil_com_a_chave_nao_prende_quem_usa_so_clis test_f28_revisores.Estados.test_chave_num_perfil_que_o_shell_nao_le_nao_prende test_f28_revisores.Estados.test_marca_de_reabertura_antiga_nao_vale)   # HEAD b987342
+test_R05_chave_no_perfil_e_R06_depois_da_marca (test_f28_revisores.Estados.test_R05_chave_no_perfil_e_R06_depois_da_marca) ... ok
+test_R08_slots_no_openrouter_sem_chave (test_f28_revisores.Estados.test_R08_slots_no_openrouter_sem_chave) ... ok
+test_R05_no_perfil_local_que_o_passo_a_passo_recomenda (test_f28_revisores.Estados.test_R05_no_perfil_local_que_o_passo_a_passo_recomenda) ... ok
+test_perfil_com_a_chave_nao_prende_quem_usa_so_clis (test_f28_revisores.Estados.test_perfil_com_a_chave_nao_prende_quem_usa_so_clis) ... ok
+test_chave_num_perfil_que_o_shell_nao_le_nao_prende (test_f28_revisores.Estados.test_chave_num_perfil_que_o_shell_nao_le_nao_prende) ... ok
+test_marca_de_reabertura_antiga_nao_vale (test_f28_revisores.Estados.test_marca_de_reabertura_antiga_nao_vale) ... ok
+
+----------------------------------------------------------------------
+Ran 6 tests in 2.014s
+
+OK
+[exit=0]

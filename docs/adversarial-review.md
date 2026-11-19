@@ -21,9 +21,27 @@ review:
 ```
 
 The registry ships with `claude`, `codex` (always `-s read-only`), `gemini` and `openrouter`, one line each,
-and **no default chain**: with the slots empty, the skill asks you. `openrouter:<model>` uses the
+and **no default chain**: with the slots empty, the phases offer the `sdd-configurar-revisores` skill (below). `openrouter:<model>` uses the
 `openrouter` line with another model. A new engine is one line in the registry (plus one adapter in
 `sdd/bin/adapters/` if it is a new CLI). Model names live in the registry and in `sdd/review/precos.tsv`.
+
+### Reviewers per computer
+
+With a slot empty, the script reads this computer's choice from git config: `sdd.revisor1` and `sdd.auditor`
+(`git config --local`, never committed, valid at once for every front of the repository). Order: the flag
+(`--reviewer`, `--auditor`), then the slot in `sdd/config.yaml` (the team's choice), then git config. The
+`--dry-run` shows where each value came from, whether each engine is available here (CLI on the `PATH`, the
+OpenRouter key in the environment — existence only), who would be the 2nd reviewer and the tiebreaker, and works
+on a front with no diff yet (`diff: vazio`, exit 0); the real review with no diff still exits 64.
+
+The `sdd-configurar-revisores` skill sets this up with the student: it measures the computer (slots, git config,
+the key in the environment and in the shell profile, the installed CLIs), recommends the free path when two CLIs
+are installed or OpenRouter with two different models (the pair and the price come from the registry and
+`precos.tsv`), walks through the account, the credit, a key with a spending limit and saving the key in the shell
+profile without it ever appearing on screen or in the chat, writes git config after the OK, and ends with a proof
+that spends nothing (a read-only query of the key and the public model list, plus `--dry-run`). With both roles on
+OpenRouter, the 2nd reviewer and the tiebreaker come from the other engines in the registry, if installed; with
+none, the plan says so before you start.
 
 The review folder (`review.output_dir`, default `sdd/reports/reviews`) must be ignored by git — the diff
 and the engines' answers must not go into the repository:

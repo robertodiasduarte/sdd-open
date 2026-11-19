@@ -72,6 +72,14 @@ testes do diff ok · smoke pulado — slot vazio
 Situação: o `adversarial-review.sh --conferir` saiu 2 — esta versão do código não tem revisão por outra
 engine. A pergunta vem **antes** do bloco do OK, como uma pergunta própria; o bloco continua com uma só.
 
+Quando a revisão não rodou porque ninguém configurou os revisores, a oferta vem antes da pergunta de dispensa:
+
+**Sua decisão** — [D2 · muda o produto] **Os revisores ainda não estão configurados neste computador. Configuro agora?**
+- **configurar agora** (recomendado) — a skill `sdd-configurar-revisores` conduz passo a passo (uns 10 minutos);
+  depois rodo a revisão desta versão e sigo para o bloco do OK.
+- **decidir sem configurar** — vou direto à pergunta de dispensa abaixo.
+- **não sei** — explico em 2 frases o que a revisão confere e quanto custa.
+
 **Sua decisão** — [D3 · muda a regra do método] **Esta versão não tem revisão por outra engine. Como seguimos?**
 - **rodar agora** (recomendado) — rodo o revisor e o auditor sobre o diff desta frente; leva em geral de 2 a
   15 minutos e mostro o custo no fim.

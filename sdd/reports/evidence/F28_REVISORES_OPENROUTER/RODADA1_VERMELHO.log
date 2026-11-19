@@ -1,0 +1,19 @@
+# Rodada 1 da revisão do código: os testes novos sobre o código de antes do conserto (7d61620)
+$ python3 -B -m unittest test_f28_revisores.Estados.test_R05_no_perfil_local_que_o_passo_a_passo_recomenda
+FAILED (failures=1)
+[exit=1]
+$ python3 -B -m unittest test_f28_revisores.Estados.test_R09_cli_do_slot_ausente
+FAILED (failures=1)
+[exit=1]
+$ python3 -B -m unittest test_f28_revisores.Testar.test_R21_slot_openrouter_sem_modelo_confere_o_modelo_do_registry
+FAILED (failures=1)
+[exit=1]
+$ python3 -B -m unittest test_f28_revisores.Testar.test_revisores_so_em_clis_o_testar_nao_consulta_o_openrouter
+FAILED (failures=1)
+[exit=1]
+$ python3 -B -m unittest test_f28_revisores.Testar.test_R19_teto_de_10_s_pela_chamada_inteira
+FAILED (failures=1)
+[exit=1]
+$ python3 -B -m unittest test_f28_revisores.GuardarChave.test_bash_no_macos_usa_o_profile_que_ja_existe
+FAILED (failures=1)
+[exit=1]
