@@ -32,7 +32,7 @@
 
 ## Falta
 
-1. 🧹 Limpeza, com o OK do Roberto (a exclusão automática foi barrada pela permissão do agente): as branches remotas da frente, já integradas (`git cherry` sem `+`): `git push origin --delete feat/f28-revisores-openrouter` no Open (desfaz com `git push origin f50f244:refs/heads/feat/f28-revisores-openrouter`) e `git push origin --delete gen/v2.25.0` no starter (desfaz com `git push origin 246f621:refs/heads/gen/v2.25.0`); depois, de fora da pasta, `git worktree remove /Users/robertoduarte/rdd-worktrees/sdd-open-f28-revisores-openrouter` e `git branch -D feat/f28-revisores-openrouter backup/f28-historia`.
+1. ~~Limpeza~~ — feita em 2026-11-19, com o OK do Roberto: as branches remotas `feat/f28-revisores-openrouter` (Open) e `gen/v2.25.0` (starter), integradas (`git cherry` sem `+`), apagadas; logo depois deste commit, de fora da pasta, `git worktree remove /Users/robertoduarte/rdd-worktrees/sdd-open-f28-revisores-openrouter` e `git branch -D feat/f28-revisores-openrouter backup/f28-historia`.
 2. Smoke depois do deploy: pulado — slot vazio (o Open não tem `sdd/config.yaml`); a Release foi conferida à mão.
 3. 🐛 O run da tag `v2.25.0` (44500504242) caiu numa fatia de Windows: `test_alarme.TestCopiaGerada.test_copia_gerada_liga_o_alarme_nos_hooks_do_projeto` com erro em 230 s (cara de teto de subprocesso sob carga). A Release já tinha saído pelo run da `main`; o mesmo commit passou nas 16 fatias do CI do PR; a F28 não toca no alarme nem no `init`. Não foi reexecutado (o run publicaria de novo uma tag existente). Medir se repete no próximo PR.
 
@@ -70,6 +70,7 @@
 - 2026-11-18 — Build: skill, scripts, ganchos, docs; linha de base vermelha e 7 sabotagens; cenários 6 de 6; revisão do código em 3 rodadas (6, 5 e 2 achados, 0 graves, cada um com teste vermelho antes); avaliador PASS_PENDENTE_RECIBO (2 achados corrigidos); 1º gate vermelho (`test_f16w2_saida`), 2º verde.
 - 2026-11-19 — release: D3 do Roberto (publicar com a dispensa da revisão da versão final); PR #41, 1º CI vermelho pelo `test_f17_textos` (arquivo de `sdd/archive/` da F27), conserto, 2º CI 18 de 18; `main` = `f50f244` e tag `v2.25.0` por push atômico.
 - 2026-11-19 — starter: 13ª geração pela tag `v2.25.0` num clone limpo (`246f621`; check-gerado VERDE, check-versions e publish-check PASS, testes, gate da KB e 19 zips), PR #22 de lá, avanço direto da `main`, Release `v1.5.29` (19 zips OK).
+- 2026-11-19 — frente encerrada: ficha final, branches remotas apagadas, worktree e branches locais removidas.
 - 2026-11-19 — Release `v2.25.0` conferida; o run da tag caiu numa fatia de Windows (`test_alarme`, pendência 3 de "Falta").
 
 ## Recomendações
@@ -87,19 +88,18 @@
 
 ## Tarefas
 
-1. A limpeza do item 1 de "Falta", com o OK do Roberto.
-2. As pendências ✨ de "Casos e testes em aberto" ficam para uma frente futura.
+1. Nenhuma: a frente está encerrada. As pendências ✨ de "Casos e testes em aberto" ficam para uma frente futura.
 
 ## Ship
 
 - **Publicar:** feito (`v2.25.0`, PR #41, `f50f244`; starter `v1.5.29`, PR #22).
-- **Limpar:** pendente (item 1 de "Falta").
+- **Limpar:** feito (branches remotas no Open e no starter, worktree e branches locais).
 
 ## Prompt de retomada
 
 ```text
 Retomar a F28 (revisores pelo OpenRouter) do SDD Open. Leia sdd/handoffs/HANDOFF_F28_REVISORES_OPENROUTER.md na
 main (git -C /Users/robertoduarte/rdd-public/sdd-open fetch origin). A F28 está publicada (v2.25.0, PR #41; starter
-v1.5.29). Falta a limpeza (branch remota e worktree), que pede o OK do Roberto, e as pendências ✨ de "Casos e testes
-em aberto", para uma frente futura. Responda em português; publicar ou apagar pede o OK do Roberto.
+v1.5.29). A frente está encerrada, com a limpeza feita. O que sobra são as pendências ✨ e 🐛 de "Falta" e de
+"Casos e testes em aberto", para uma frente futura. Responda em português; publicar ou apagar pede o OK do Roberto.
 ```
