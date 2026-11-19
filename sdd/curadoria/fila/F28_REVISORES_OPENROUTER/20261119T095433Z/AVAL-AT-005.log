@@ -1,0 +1,77 @@
+$ /usr/bin/python3 -B probe.py <git archive 8f03b9e> AT-005   # probe.py = sonda do avaliador, no scratchpad
+── dry-run, git config stub-a/stub-b, slots vazios · exit=0
+Plano (nada foi enviado a nenhuma engine):
+  revisor : stub-a (revisor-ok) · disponível — origem: este computador (git config sdd.revisor1)
+  auditor : stub-b (auditor-agree) · disponível — origem: este computador (git config sdd.auditor)
+  diversidade: modelo
+  2º revisor (se acionado): stub-c (revisor2-ok)
+  desempate (se acionado): stub-c (revisor2-ok)
+  2º revisor: sem gatilho no diff (o revisor raso ainda pode acionar)
+  regra antiga (só medida): -
+  diff: 1 arquivo(s), 0 KB, base main, merge-base 56321839f55e
+  diff_sha256: 783b966442247f32dcbba5f230e912efce6e8424347e00266cbe825877ea5203
+  contexto: 0 documento(s) SDD, 0 KB
+⚠️ sem --feature: a revisão não leu BRAINSTORM, DEFINE nem DESIGN, e decisões já documentadas podem voltar como achado
+RESULTADO: PLANO
+→ rode sem --dry-run para revisar.
+   [chave no texto: 0 · sonda da resposta no texto: 0]
+── revisão real (stubs) exit=0
+▶ revisor: stub-a (revisor-ok) — até 1 min
+▶ auditor: stub-b (auditor-agree) — até 1 min
+RESULTADO: REVIEW COMPLETA
+revisor: stub-a (stub-modelo) — incluído na assinatura
+auditor: stub-b (stub-modelo) — custo desconhecido
+→ no ledger desta rodada: revisor2: dispensado rodada=<N> — sem superfície de risco
+   META sdd/reports/reviews/EXTERNAL_REVIEW_20261118-220246/META.txt:
+      diversidade                  : modelo
+      revisor1_raso                : nao
+      revisor2_engine              : -
+      auditor_engine_default       : stub-b
+      auditor_engine_efetivo       : stub-b
+      auditor_fallback_usado       : nao
+      auditor_motivo               : -
+      auditor_exit                 : 0
+      auditor_segundos             : 0
+      auditor_vereditos            : 2
+      auditor_tokens_entrada       : 1000
+      auditor_tokens_saida         : 200
+      auditor_tokens_total         : 1200
+      auditor_tokens_cache_lido    : -
+      auditor_tokens_cache_criado  : -
+      auditor_modelo               : stub-modelo
+      auditor_custo                : $?
+slot vence: revisor : stub-c (revisor2-ok) · disponível — origem: sdd/config.yaml | auditor : stub-d (desempate-refutado) · disponível — origem: sdd/config.yaml
+flag vence: revisor : stub-a (revisor-ok) · disponível — origem: flag --reviewer | auditor : stub-b (auditor-agree) · disponível — origem: flag --auditor
+── --gravar via skill · exit=0
+GRAVADO: revisor openrouter · auditor openrouter:deepseek/deepseek-v4-flash (git config deste computador, lidos de volta)
+RESULTADO: GRAVADO
+→ siga para a prova: diagnosticar.sh --testar e adversarial-review.sh --dry-run.
+   [chave no texto: 0 · sonda da resposta no texto: 0]
+git config lido: revisor1=openrouter auditor=openrouter:deepseek/deepseek-v4-flash
+sdd/config.yaml depois: 'review:\n'
+git status --porcelain: ' M src.txt\n'
+── dry-run depois do --gravar (2 modelos do OpenRouter) · exit=0
+Plano (nada foi enviado a nenhuma engine):
+  revisor : openrouter (qwen/qwen3.7-plus) · disponível — origem: este computador (git config sdd.revisor1)
+  auditor : openrouter:deepseek/deepseek-v4-flash (deepseek/deepseek-v4-flash) · disponível — origem: este computador (git config sdd.auditor)
+  diversidade: modelo
+  2º revisor (se acionado): claude (-)
+  desempate (se acionado): claude (-)
+  2º revisor: sem gatilho no diff (o revisor raso ainda pode acionar)
+  regra antiga (só medida): -
+  diff: 1 arquivo(s), 0 KB, base main, merge-base 413e7ff35297
+  diff_sha256: 783b966442247f32dcbba5f230e912efce6e8424347e00266cbe825877ea5203
+  contexto: 0 documento(s) SDD, 0 KB
+⚠️ sem --feature: a revisão não leu BRAINSTORM, DEFINE nem DESIGN, e decisões já documentadas podem voltar como achado
+RESULTADO: PLANO
+→ rode sem --dry-run para revisar.
+   [chave no texto: 0 · sonda da resposta no texto: 0]
+── mesmo modelo (openrouter = openrouter:qwen/qwen3.7-plus) no dry-run · exit=67
+🛑 adversarial-review: o auditor (openrouter:qwen/qwen3.7-plus) é a mesma engine do revisor: ninguém audita a própria revisão
+RESULTADO: PAROU
+→ escolha outra engine para auditar (review.auditor) ou rode com --um-engine
+   [chave no texto: 0 · sonda da resposta no texto: 0]
+mesmo modelo na revisão real: exit=67, chamadas ao servidor=0
+--gravar com a mesma engine: estado=R11 exit=30
+--gravar id desconhecido: estado=R12 exit=30 ; git config ficou revisor1=openrouter auditor=openrouter:qwen/qwen3.7-plus
+[exit=0]

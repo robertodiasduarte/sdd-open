@@ -1,0 +1,115 @@
+$ /usr/bin/python3 -B probe.py <git archive 8f03b9e> AT-001   # probe.py = sonda do avaliador, no scratchpad
+── --estados · exit=0
+R01 SEM_REVISAO 64
+R02 PRONTO 0
+R03 VAZIO_COM_CLIS 10
+R04 VAZIO_SEM_CHAVE 10
+R05 CHAVE_NO_PERFIL 20
+R06 REABRIU_SEM_CHAVE 20
+R07 CHAVE_SEM_SLOTS 10
+R08 SLOTS_SEM_CHAVE 20
+R09 CLI_AUSENTE 20
+R10 UM_SLOT 10
+R11 MESMA_ENGINE 30
+R12 ID_DESCONHECIDO 30
+R13 CHAVE_ACEITA 0
+R14 SEM_LIMITE 0
+R15 CHAVE_RECUSADA 40
+R16 SEM_CREDITO 40
+R17 LIMITE_ESGOTADO 40
+R18 MUITAS_CHAMADAS 40
+R19 SEM_INTERNET 40
+R20 SERVICO_FORA 40
+R21 MODELO_INEXISTENTE 40
+   [chave no texto: 0 · sonda da resposta no texto: 0]
+linhas R da tabela do SKILL.md: 26 · marcadas script: 21 · conversa: 5
+emitidos pelo script: R01 R02 R03 R04 R05 R06 R07 R08 R09 R10 R11 R12 R13 R14 R15 R16 R17 R18 R19 R20 R21
+script - emitidos: [] · emitidos - script: []
+  conversa R22: colunas não vazias = 4/4
+  conversa R23: colunas não vazias = 4/4
+  conversa R24: colunas não vazias = 4/4
+  conversa R25: colunas não vazias = 4/4
+  conversa R26: colunas não vazias = 4/4
+caso                                                       estado exit chave/sonda
+R01 fora do git                                            R01    64   0/0
+R01 projeto sem adversarial-review.sh                      R01    64   0/0
+R02 claude+codex no PATH                                   R02    0    0/0
+R03 vazio + 2 CLIs + chave                                 R03    10   0/0
+R04 vazio + 1 CLI sem chave                                R04    10   0/0
+R05 chave no ~/.zshrc, fora do ambiente                    R05    20   0/0
+R06 idem depois da marca de reabertura                     R06    20   0/0
+R07 chave presente, slots vazios, 1 CLI                    R07    10   0/0
+R08 slots openrouter sem chave                             R08    20   0/0
+R09 slot do time com codex ausente                         R09    20   0/0
+R09 git config com gemini ausente                          R09    20   0/0
+R10 só revisor                                             R10    10   0/0
+R11 mesma engine                                           R11    30   0/0
+R12 id desconhecido                                        R12    30   0/0
+opção errada                                               -      64   0/0
+── R01 fora do git · exit=64
+ESTADO: R01 SEM_REVISAO
+aluno: Esta pasta não é um projeto com a revisão adversarial do SDD Open (falta sdd/bin/adversarial-review.sh, ou não é um repositório git): não há revisores para configurar aqui.
+passo: Abra o agente na pasta do projeto; se o SDD Open não está instalado, rode o init dele (guia do aluno, seção 2).
+RESULTADO: PAROU
+→ repasse ao aluno a frase e o passo acima; nunca o id do estado.
+   [chave no texto: 0 · sonda da resposta no texto: 0]
+── R05 chave no ~/.zshrc, fora do ambiente · exit=20
+ESTADO: R05 CHAVE_NO_PERFIL
+aluno: A chave do OpenRouter está gravada em ~/.zshrc, mas este agente foi aberto antes dela e ainda não a enxerga.
+passo: Feche e abra o agente (e o editor, se o agente roda dentro dele); depois peça de novo.
+revisor: — (origem: -)
+auditor: — (origem: -)
+chave do OpenRouter neste agente: ausente
+chave gravada no perfil: ~/.zshrc
+agentes de IA disponíveis: claude
+par sugerido: revisor openrouter:qwen/qwen3.7-plus · auditor openrouter:deepseek/deepseek-v4-flash
+preço por milhão de tokens (entrada / saída): qwen/qwen3.7-plus: US$ 0,32 / 1,28; deepseek/deepseek-v4-flash: US$ 0,09 / 0,18 (sdd/review/precos.tsv, conferido em 2026-11-18)
+estimativa por revisão: até ≈ US$ 0,04 (no teto do contexto; a maioria custa menos)
+RESULTADO: PARADA
+→ repasse ao aluno a frase e o passo acima; nunca o id do estado.
+   [chave no texto: 0 · sonda da resposta no texto: 0]
+── R06 idem depois da marca de reabertura · exit=20
+ESTADO: R06 REABRIU_SEM_CHAVE
+aluno: A chave está gravada em ~/.zshrc, mas continua fora deste agente mesmo depois da parada para reabrir.
+passo: Abra um terminal novo, entre na pasta do projeto e abra o agente por ali (não pelo ícone); no Windows, saia da sua conta e entre de novo. Depois peça de novo.
+revisor: — (origem: -)
+auditor: — (origem: -)
+chave do OpenRouter neste agente: ausente
+chave gravada no perfil: ~/.zshrc
+agentes de IA disponíveis: claude
+par sugerido: revisor openrouter:qwen/qwen3.7-plus · auditor openrouter:deepseek/deepseek-v4-flash
+preço por milhão de tokens (entrada / saída): qwen/qwen3.7-plus: US$ 0,32 / 1,28; deepseek/deepseek-v4-flash: US$ 0,09 / 0,18 (sdd/review/precos.tsv, conferido em 2026-11-18)
+estimativa por revisão: até ≈ US$ 0,04 (no teto do contexto; a maioria custa menos)
+RESULTADO: PARADA
+→ repasse ao aluno a frase e o passo acima; nunca o id do estado.
+   [chave no texto: 0 · sonda da resposta no texto: 0]
+── R09 slot do time com codex ausente · exit=20
+ESTADO: R09 CLI_AUSENTE
+aluno: A engine codex, escolhida para revisor, não está instalada neste computador.
+passo: Instale a CLI dela; a escolha é do projeto (sdd/config.yaml) e vence a deste computador: para trocar, fale com quem cuida do projeto.
+revisor: codex (origem: sdd/config.yaml)
+auditor: claude (origem: sdd/config.yaml)
+chave do OpenRouter neste agente: ausente
+chave gravada no perfil: não achei
+agentes de IA disponíveis: claude
+RESULTADO: PARADA
+→ repasse ao aluno a frase e o passo acima; nunca o id do estado.
+   [chave no texto: 0 · sonda da resposta no texto: 0]
+── R09 git config com gemini ausente · exit=20
+ESTADO: R09 CLI_AUSENTE
+aluno: A engine gemini, escolhida para revisor, não está instalada neste computador.
+passo: Instale a CLI dela, ou troque a engine pela pergunta da skill (a escolha é deste computador).
+revisor: gemini (origem: este computador (git config sdd.revisor1))
+auditor: claude (origem: este computador (git config sdd.auditor))
+chave do OpenRouter neste agente: ausente
+chave gravada no perfil: não achei
+agentes de IA disponíveis: claude
+RESULTADO: PARADA
+→ repasse ao aluno a frase e o passo acima; nunca o id do estado.
+   [chave no texto: 0 · sonda da resposta no texto: 0]
+
+── só leitura e 0 rede, sem --testar
+vazio + chave              estado=R07 exit=10 arquivos/config mudados=0 HOME mudado=False chamadas de rede=0
+slots OR + chave           estado=R02 exit=0 arquivos/config mudados=0 HOME mudado=False chamadas de rede=0
+vazio + 2 CLIs + chave     estado=R03 exit=10 arquivos/config mudados=0 HOME mudado=False chamadas de rede=0
+[exit=0]

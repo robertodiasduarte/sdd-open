@@ -1,0 +1,25 @@
+DELTA LM-001 ajudou+1 · conf=2026-11-19 · evidencia=DESIGN_F28_REVISORES_OPENROUTER.md:359 · fp=5d5e33f896,a9201c56e0
+DELTA LM-002 ajudou+1 · conf=2026-11-19 · evidencia=DESIGN_F28_REVISORES_OPENROUTER.md:359 · fp=90d7c9d1fa,3c573995d8
+DELTA LM-003 ajudou+1 · conf=2026-11-19 · evidencia=DESIGN_F28_REVISORES_OPENROUTER.md:360 · fp=531bc22f96,5af8983be5
+DELTA LM-009 ajudou+1 · conf=2026-11-19 · evidencia=DESIGN_F28_REVISORES_OPENROUTER.md:361 · fp=299b31848b,d004b6f61f
+DELTA LM-010 ajudou+1 · conf=2026-11-19 · evidencia=DESIGN_F28_REVISORES_OPENROUTER.md:362 · fp=9187e11b9b,05cf66851a
+DELTA LM-011 ajudou+1 · conf=2026-11-19 · evidencia=DESIGN_F28_REVISORES_OPENROUTER.md:363 · fp=5cab131472,44e7da35e1
+DELTA LM-012 ajudou+1 · conf=2026-11-19 · evidencia=DESIGN_F28_REVISORES_OPENROUTER.md:364 · fp=19daed01c5,23d8d24c20
+DELTA LM-014 ajudou+1 · conf=2026-11-19 · evidencia=DESIGN_F28_REVISORES_OPENROUTER.md:365 · fp=7dab85979d,0189b2c731
+DELTA LM-029 ajudou+1 · conf=2026-11-19 · evidencia=DESIGN_F28_REVISORES_OPENROUTER.md:366 · fp=527cc22cdb,6494495d15
+DELTA LM-034 ajudou+1 · conf=2026-11-19 · evidencia=DESIGN_F28_REVISORES_OPENROUTER.md:368 · fp=e8ffdcdd49,1a8bc55c19
+DELTA LM-035 ajudou+1 · conf=2026-11-19 · evidencia=DESIGN_F28_REVISORES_OPENROUTER.md:369 · fp=e0b4218ed4,9efaba2e8b
+DELTA LM-037 ajudou+1 · conf=2026-11-19 · evidencia=DESIGN_F28_REVISORES_OPENROUTER.md:370 · fp=8981c5a704,0cb7001543
+DELTA LM-042 ajudou+1 · conf=2026-11-19 · evidencia=DESIGN_F28_REVISORES_OPENROUTER.md:371 · fp=0634f7b8ad,a4ecf3a1ac
+DELTA LM-043 ajudou+1 · conf=2026-11-19 · evidencia=DESIGN_F28_REVISORES_OPENROUTER.md:372 · fp=4c54d0e0c9,084e6aa8ed
+CANDIDATO #1 → LM-045 · secao=Reviews / harness · sup=`S11` `sk-or-` `evals/cases.json` `fixture` · evidencia=commit 8150a62 (evals/cases.json da sdd-configurar-revisores) · fp=fdfd84401d
+   delta: ADD Reviews / harness :: sup: `S11` `sk-or-` `evals/cases.json` `fixture` :: Texto de cenário, fixture ou exemplo com a forma de uma chave (`sk-or-v1-…` com 32+ caracteres) bloqueia a varredura S11 da release como "chave secreta no código", mesmo sendo inventado. **Do instead:** descreva a chave em palavras ("um texto que começa por sk-or-") e monte o valor na hora da execução; rode `bash sdd/bin/seguranca-varredura.sh` antes do commit de arquivo de cenário. → ficha: — · promovido_para: —
+CANDIDATO #2 → LM-046 · secao=Reviews / harness · sup=`OpenRouter` `test_contrato_build_release` `nome de engine` `sdd-design` `sdd-build` `sdd-release` · evidencia=commit e2ec9c4 (6 falhas antes do conserto) · fp=faa63e7262
+   delta: ADD Reviews / harness :: sup: `OpenRouter` `test_contrato_build_release` `nome de engine` `sdd-design` `sdd-build` `sdd-release` :: As seções de revisão das skills de fase (design, build, release) não podem nomear engine nem provedor: o `test_contrato_build_release` e o `test_f19_textos` reprovam "OpenRouter" ali. **Do instead:** nas fases, diga "credencial de uma engine"; o nome do provedor mora na skill própria e nos docs. → ficha: — · promovido_para: —
+CANDIDATO #3 → LM-047 · secao=Reviews / harness · sup=`evidence` `> $E/` `run_in_background` `VERIFY_GATE` · evidencia=commit 3629287 · fp=bd9f7c0f4c
+   delta: ADD Reviews / harness :: sup: `evidence` `> $E/` `run_in_background` `VERIFY_GATE` :: Um log de evidência redirecionado com `{ …; } > arquivo` num comando em segundo plano fica com só a 1ª linha até o comando acabar; um `git add` da pasta no meio commita o log pela metade (o avaliador o achou com 95 bytes). **Do instead:** grave o log longo fora de `sdd/reports/evidence/` e copie para lá só depois do exit. → ficha: — · promovido_para: —
+CANDIDATO #4 → LM-048 · secao=Reviews / harness · sup=`urllib` `redirect` `Authorization` `Bearer` · evidencia=sdd/reviews/AVALIACAO_F28_REVISORES_OPENROUTER_20261118-2207.md, achado 1 · fp=9e99065794
+   delta: ADD Reviews / harness :: sup: `urllib` `redirect` `Authorization` `Bearer` :: `urllib.request.urlopen` segue 3xx e repassa o cabeçalho `Authorization` ao novo endereço, inclusive outro host: um redirect leva a chave para fora. **Do instead:** em chamada com chave, use um opener com `HTTPRedirectHandler` que devolve `None` (o 3xx vira erro) e teste com um servidor local que responde 302. → ficha: — · promovido_para: —
+resumo: deltas=14 (ajudou=14 mordeu=0) candidatos=4 rejeitados=0 promocoes=0 sugestoes=0
+RESULTADO: HÁ O QUE JULGAR
+→ despache o curador com esta colheita; nada foi aplicado.
