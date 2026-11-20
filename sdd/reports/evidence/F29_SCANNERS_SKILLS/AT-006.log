@@ -1,0 +1,9 @@
+$ cd tests && python3 -B -m unittest test_f29_textos.AT006Origem test_f25_skills_duplicadas test_matriz_new_session
+....................s.................................../Users/robertoduarte/rdd-worktrees/sdd-open-scanners-skills/tests/test_matriz_new_session.py:41: DeprecationWarning: 'maxsplit' is passed as positional argument
+  secao = re.split(r"\n#{2,3} ", secao, 1)[0]
+......
+----------------------------------------------------------------------
+Ran 62 tests in 40.893s
+
+OK (skipped=1)
+exit=0

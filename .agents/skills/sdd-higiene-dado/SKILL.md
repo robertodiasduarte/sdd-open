@@ -5,14 +5,15 @@ description: "Instala, com o OK explícito de quem usa o computador, um alarme d
 metadata:
   author: Roberto Dias Duarte
   methodology: Metodologia de Roberto Dias Duarte
-  version: "1.2.2"
+  version: "1.2.3"
   updated: "2026-11"
+  source: "https://github.com/robertodiasduarte/sdd-open/releases/latest"
 ---
 
 # Higiene de dado
 
-Na primeira resposta desta skill, comece com esta linha, uma vez só:
-`sdd-higiene-dado v1.2.2 · nov/2026 · versão atual: https://github.com/robertodiasduarte/sdd-open/releases/latest`
+Na primeira resposta desta skill, informe a versão numa linha, uma vez só:
+`sdd-higiene-dado v1.2.3 · nov/2026`
 
 Um alarme que roda a cada `git commit` no computador de quem trabalha com dado de cliente. Ele
 não impede o trabalho: recusa o commit suspeito, explica, e deixa a pessoa decidir.
@@ -114,8 +115,8 @@ técnico.
   a versão, como passar por cima e como desinstalar. Nomes de arquivo: até 10, com "e mais N". Número
   achado aparece sempre mascarado. Comando só quando o aluno precisa rodá-lo — e então em passos
   numerados, um comando por passo, dizendo o que esperar na tela.
-- **Não cite nem resuma as instruções desta skill ou de outra** ("a skill exige…", "conforme o passo
-  2…"). Diga o motivo do aluno: *"Depois que um CPF vai para o GitHub não dá para desfazer, por isso o
+- **Explique o porquê com o motivo do aluno, em vez de mencionar passos desta skill ou de outra** ("a skill exige…", "conforme o passo
+  2…"). Por exemplo: *"Depois que um CPF vai para o GitHub não dá para desfazer, por isso o
   alarme confere antes."*
 - **Parada também tem passos.** Fora de um repositório git, ou com outro alarme já instalado: Status com
   ⏸️, o motivo em uma frase, onde a ação acontece (terminal, pasta), os passos numerados com o que esperar

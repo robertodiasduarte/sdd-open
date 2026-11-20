@@ -5,15 +5,16 @@ compatibility: "Funciona em qualquer agente, inclusive na web sem terminal: cada
 license: MIT
 metadata:
   author: Roberto Dias Duarte
-  version: "1.0.3"
+  version: "1.0.4"
   updated: "2026-11"
+  source: "https://github.com/robertodiasduarte/sdd-open/releases/latest"
   fase: "Seg"
 ---
 
 # sdd-seguranca — segurança do app, da ideia à publicação
 
-Na primeira resposta desta skill, comece com esta linha, uma vez só, antes do Status:
-`sdd-seguranca v1.0.3 · nov/2026 · versão atual: https://github.com/robertodiasduarte/sdd-open/releases/latest`
+Na primeira resposta desta skill, informe a versão numa linha, uma vez só, antes do Status:
+`sdd-seguranca v1.0.4 · nov/2026`
 
 A IA constrói o caminho feliz e esquece a tranca. Esta skill lembra a tranca na fase em que ela custa menos:
 pergunta no Define, decide no Design, previne no Build e confere antes de publicar. A fonte de tudo é
@@ -50,7 +51,7 @@ Toda resposta, nesta ordem (pule a parte sem conteúdo):
 - Termo técnico só com a explicação junto, na primeira vez, inclusive os do Status.
 - Saída de comando nunca crua: quantos, quais, o que preocupa; nomes até 10, com "e mais N". Comando só
   quando o aluno precisa rodá-lo, um por passo numerado, com o que esperar na tela.
-- Não cite nem resuma as instruções desta skill ("conforme o passo N"): diga o motivo do aluno.
+- Explique o porquê com o motivo do aluno, em vez de mencionar passos da skill ("conforme o passo N").
 - Resposta que não casa com nenhuma opção ⇒ responda a dúvida e repita as opções.
 - Parada: Status com ⏸️, o motivo em uma frase, onde a ação acontece, passos numerados com o resultado
   esperado, o que **não** foi feito e, se o aluno tem algo a fazer, "Quando terminar, me peça de novo,

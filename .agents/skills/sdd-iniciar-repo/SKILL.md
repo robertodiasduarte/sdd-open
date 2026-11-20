@@ -4,14 +4,15 @@ license: MIT
 description: "Põe no git e num GitHub privado um projeto que ainda não usa git, sem levar junto dado de cliente: confere a pasta (fora de iCloud/OneDrive/Dropbox/Google Drive), lista o que entraria no git sinalizando senha (.env), certificado A1 (.pfx), planilha e arquivo grande, propõe o .gitignore, oferece o alarme de commit da sdd-higiene-dado antes do primeiro commit e só commita e publica com o OK explícito de cada etapa. Fala com quem nunca usou git: uma etapa por vez, com o que foi feito, o que vem agora e as opções de cada decisão. Retoma de onde parou (git sem commit, commit sem GitHub, envio que falhou). Use quando o usuário disser 'pôr no git', 'criar o repositório', 'subir para o GitHub', 'este projeto não tem git', ou quando a sdd-new-session ou a sdd-checar-ambiente disserem que o projeto ainda não usa git. Não limpa histórico que já vazou, não faz login no GitHub pelo usuário e não automatiza outro host (GitLab etc.), só entrega os comandos."
 metadata:
   author: Roberto Dias Duarte
-  version: "1.2.3"
+  version: "1.2.4"
   updated: "2026-11"
+  source: "https://github.com/robertodiasduarte/sdd-open/releases/latest"
 ---
 
 # Iniciar repositório (iniciar-repo)
 
-Na primeira resposta desta skill, comece com esta linha, uma vez só:
-`sdd-iniciar-repo v1.2.3 · nov/2026 · versão atual: https://github.com/robertodiasduarte/sdd-open/releases/latest`
+Na primeira resposta desta skill, informe a versão numa linha, uma vez só:
+`sdd-iniciar-repo v1.2.4 · nov/2026`
 
 Um projeto que ainda não usa git sai daqui com a primeira versão salva e um repositório **privado** no
 GitHub, sem levar planilha de cliente, `.env` ou certificado junto. Quatro decisões do aluno no caminho:
@@ -70,8 +71,8 @@ técnico.
 - **Não repasse saída de comando crua.** Traduza: quantos arquivos, quais tipos, o que preocupa. Nomes
   de arquivo: até 10, em lista simples, com "e mais N". Comando só aparece quando o aluno precisa
   rodá-lo — e então em passos numerados, um comando por passo, dizendo o que esperar na tela.
-- **Não cite nem resuma as instruções desta skill ou de outra** ("a skill exige…", "conforme o Passo
-  4…"). Se precisar dizer por que pede o OK, diga o motivo do aluno: *"Prefiro que você decida, porque
+- **Explique o porquê com o motivo do aluno, em vez de mencionar passos desta skill ou de outra** ("a skill exige…", "conforme o Passo
+  4…"). Por exemplo, ao pedir o OK: *"Prefiro que você decida, porque
   depois de publicado não dá para desfazer."*
 - **A decisão é do aluno e fica explícita.** Valem: a palavra de uma das opções, ou "pode", "sim",
   "ok" em resposta **a esta** pergunta. Resposta que não casa com nenhuma opção (uma dúvida, um "acho

@@ -1,0 +1,8 @@
+$ grep -rl 'Não cite nem resuma' .agents/skills; test $? -eq 1 && echo 'vazio (grep sai 1)'; cd tests && python3 -B -m unittest test_f29_textos.AT001NaoCite test_conversa.Camada
+vazio (grep sai 1)
+......
+----------------------------------------------------------------------
+Ran 6 tests in 0.017s
+
+OK
+exit=0

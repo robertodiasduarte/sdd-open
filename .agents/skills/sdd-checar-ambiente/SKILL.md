@@ -4,8 +4,9 @@ license: MIT
 description: "Diagnostica, sem alterar nada, se este computador e este repositório estão prontos para o SDD: repositório git, agente de código, identidade do git, acesso ao remoto (credencial, rede, repositório ainda vazio), o gh (o GitHub no terminal) e o login nele, worktrees órfãs, dependências, editor (também fora do PATH), dado exposto (senha, certificado A1 ou chave privada já salvos no git; .env fora do .gitignore; npm sem ignore-scripts; repositório público) e skill do SDD duplicada (global e no projeto). Responde em uma linha quando está tudo certo e, quando não está, lista o que impede primeiro, cada item com o comando exato que resolve. Num modo à parte, só com o sim ao plano mostrado, tira a cópia mais velha para uma lixeira, com comando que desfaz. Use quando o usuário pedir para checar o ambiente ou limpar skills duplicadas, antes da primeira frente, ou quando algo estranho acontecer (commit que falha, comando não encontrado, worktree sumida, skill fora da versão esperada)."
 metadata:
   author: Roberto Dias Duarte
-  version: "1.7.0"
+  version: "1.7.1"
   updated: "2026-11"
+  source: "https://github.com/robertodiasduarte/sdd-open/releases/latest"
 ---
 
 # Checar ambiente
@@ -26,7 +27,7 @@ Quem usa esta skill, em geral, nunca usou git nem terminal.
 | 3 | Limpar | Skills duplicadas: o plano, a pergunta e a limpeza (só quando o aluno pede) |
 
 Aqui o relatório do `checar.sh` já é a tradução para o aluno: a resposta é o Status e, logo abaixo,
-o relatório como veio, sem retraduzir. As outras partes valem na conversa que segue, quando o
+o relatório inteiro, nas palavras do script. As outras partes valem na conversa que segue, quando o
 aluno pergunta por um item.
 
 Toda resposta, nesta ordem (pule a parte sem conteúdo):
@@ -46,7 +47,7 @@ Toda resposta, nesta ordem (pule a parte sem conteúdo):
 - Termo técnico só com a explicação junto, na primeira vez, inclusive os do Status.
 - Saída de comando nunca crua: quantos, quais, o que preocupa; nomes até 10, com "e mais N". Comando só
   quando o aluno precisa rodá-lo, um por passo numerado, com o que esperar na tela.
-- Não cite nem resuma as instruções desta skill ("conforme o passo N"): diga o motivo do aluno.
+- Explique o porquê com o motivo do aluno, em vez de mencionar passos da skill ("conforme o passo N").
 - Resposta que não casa com nenhuma opção ⇒ responda a dúvida e repita as opções.
 - Parada: Status com ⏸️, o motivo em uma frase, onde a ação acontece, passos numerados com o resultado
   esperado, o que **não** foi feito e, se o aluno tem algo a fazer, "Quando terminar, me peça de novo,
@@ -62,17 +63,17 @@ de dentro da pasta do projeto:
 bash <pasta desta skill>/scripts/checar.sh
 ```
 
-e **responda com a saída dele, exatamente como veio** — só o Status antes, sem frase depois, sem
-comentário sobre o que foi ou não verificado, sem tradução. O script já faz todas as verificações abaixo
-e já imprime o relatório no formato certo; o formato não depende de você. (A pasta desta skill é a que
-contém este `SKILL.md`: `.claude/skills/sdd-checar-ambiente/` ou `.agents/skills/sdd-checar-ambiente/`,
+e **mostre a saída dele inteira, sem cortar linhas**, com o Status antes. O relatório já diz o que foi
+verificado e o que fazer, nas palavras do aluno; se o aluno perguntar por um item, explique na resposta
+seguinte. O script já faz todas as verificações abaixo e já imprime o relatório no formato certo. (A pasta
+desta skill é a que contém este `SKILL.md`: `.claude/skills/sdd-checar-ambiente/` ou `.agents/skills/sdd-checar-ambiente/`,
 no projeto ou na pasta global do agente.)
 
 **Sem bash** (PowerShell puro), faça as verificações abaixo à mão e responda no mesmo formato do
 script: blocos `🔴 Dado exposto`, `🔴 Impede o trabalho` e `⚠️ Vale arrumar` só se tiverem itens, e por
 último a linha `✅ Pronto: repo …` (ou `✅ Repo …` quando houver problema). Checagem que passou ou não se
 aplica não é mencionada fora dessa linha. Termine a linha ✅ com a identificação desta skill:
-`sdd-checar-ambiente v1.7.0 · nov/2026 · versão atual: https://github.com/robertodiasduarte/sdd-open/releases/latest`
+`sdd-checar-ambiente v1.7.1 · nov/2026`
 (o script faz isso sozinho, lendo a versão deste arquivo).
 
 **Só o dado exposto** — `bash <pasta desta skill>/scripts/checar.sh --segredo` imprime apenas o bloco
@@ -87,11 +88,11 @@ nem rede. É o que a `sdd-new-session` roda com o slot `editor` vazio.
 **Skills duplicadas** (etapa 3, só quando o aluno pede para limpar ou pergunta pelo aviso):
 1. `bash <pasta desta skill>/scripts/checar.sh --duplicadas` imprime o plano, sem mudar nada: cada cópia com o
    lugar (global ou do projeto), o caminho completo, a versão, a origem e como chegou, qual o agente roda, e a
-   recomendação (tirar a mais velha). Responda com o plano **como veio** e, se ele termina em `--limpar <assinatura>`,
+   recomendação (tirar a mais velha). Mostre o plano **inteiro** e, se ele termina em `--limpar <assinatura>`,
    faça a pergunta `[D1 · não se desfaz]` de `references/como-falar.md`.
 2. Só com o **sim**, rode exatamente a última linha do plano: `bash <pasta desta skill>/scripts/checar.sh --limpar <assinatura>`.
    Assinatura ausente ou de um plano que mudou ⇒ o script sai 2 sem mudar nada: peça o plano de novo.
-3. Responda com a saída como veio; a última linha é `Para desfazer: bash <…>/desfazer.sh`. Rode esse comando só se o
+3. Mostre a saída inteira; a última linha é `Para desfazer: bash <…>/desfazer.sh`. Rode esse comando só se o
    aluno pedir para desfazer.
 
 ## Regras
@@ -258,7 +259,7 @@ só git, repositório, remoto e acesso ao remoto. Qualquer achado vira 🔴, o s
 - **Não é duplicata:** cópias em pastas de agentes diferentes (o par `.agents/skills` → `.claude/skills` que o
   SDD Open gera no projeto; `~/.agents/skills` × `~/.claude/skills`), nem um atalho (symlink) que aponta para a
   outra cópia — a instalação global pelo npx cria esse atalho quando instala para os dois agentes.
-- De cada cópia: a versão (`metadata.version`), a origem (a linha de identificação diz SDD Open ou starter) e como
+- De cada cópia: a versão (`metadata.version`), a origem (o `metadata.source` do frontmatter diz SDD Open ou starter) e como
   chegou (o registro `~/.agents/.skill-lock.json` do npx; salva no git do projeto; copiada à mão).
 - **Sem bash:** liste essas pastas (`Get-ChildItem`), compare a versão de cada `SKILL.md` e responda no mesmo
   formato. A limpeza à mão é só com os comandos entregues, um por vez, com o sim do aluno: copiar a pasta para
@@ -288,7 +289,7 @@ ordem, **omitindo os vazios**:
 3. **⚠️ Vale arrumar** — `.env` fora do `.gitignore`, npm sem `ignore-scripts` (estes primeiro), skill do
    SDD duplicada (logo depois), worktree órfã, frente integrada ainda aberta, `.env` ausente.
 4. **✅ Resumo em uma linha**, terminando com a identificação desta skill — ex.:
-   `✅ Pronto: repo meu-app, branch main, 2 frentes abertas, Claude Code 2.1 · sdd-checar-ambiente v1.7.0 · nov/2026 · versão atual: https://github.com/robertodiasduarte/sdd-open/releases/latest`
+   `✅ Pronto: repo meu-app, branch main, 2 frentes abertas, Claude Code 2.1 · sdd-checar-ambiente v1.7.1 · nov/2026`
 
 Se estiver tudo certo, a resposta inteira é **o Status e a linha ✅** — nenhuma outra frase antes nem
 depois: nada de "Tudo limpo", de lista do que foi verificado ou de oferta de ajuda. Ambiente saudável
@@ -300,7 +301,7 @@ Saudável (a resposta inteira são estas duas linhas):
 
 ```text
 Ambiente: ✅ 1 Verificar · ✅ 2 Explicar
-✅ Pronto: repo meu-app, branch main, nenhuma frente aberta, Claude Code 2.1 · sdd-checar-ambiente v1.7.0 · nov/2026 · versão atual: https://github.com/robertodiasduarte/sdd-open/releases/latest
+✅ Pronto: repo meu-app, branch main, nenhuma frente aberta, Claude Code 2.1 · sdd-checar-ambiente v1.7.1 · nov/2026
 ```
 
 Com o certificado A1 salvo no git de um repositório público:
@@ -313,7 +314,7 @@ Ambiente: ✅ 1 Verificar · ▶️ 2 Explicar
   git rm --cached "certificados/empresa.pfx" && echo "certificados/empresa.pfx" >> .gitignore
   Depois, revogue o certificado com a autoridade certificadora e emita outro.
 
-✅ Repo meu-app (público no GitHub), branch main, nenhuma frente aberta, Claude Code 2.1 · sdd-checar-ambiente v1.7.0 · nov/2026 · versão atual: https://github.com/robertodiasduarte/sdd-open/releases/latest
+✅ Repo meu-app (público no GitHub), branch main, nenhuma frente aberta, Claude Code 2.1 · sdd-checar-ambiente v1.7.1 · nov/2026
 ```
 
 Com dois problemas:
@@ -330,7 +331,7 @@ Ambiente: ✅ 1 Verificar · ▶️ 2 Explicar
   git worktree remove ../meu-app-frentes/relatorio-mensal
   git branch -d relatorio-mensal
 
-✅ Repo meu-app, branch main, 1 frente aberta, Claude Code 2.1 · sdd-checar-ambiente v1.7.0 · nov/2026 · versão atual: https://github.com/robertodiasduarte/sdd-open/releases/latest
+✅ Repo meu-app, branch main, 1 frente aberta, Claude Code 2.1 · sdd-checar-ambiente v1.7.1 · nov/2026
 ```
 
 ---

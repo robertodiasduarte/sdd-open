@@ -129,11 +129,12 @@ As cópias de cada agente são **geradas**: quem manda é `.agents/skills/`.
 A primeira resposta de toda skill começa com uma **linha de identificação**, assim:
 
 ```text
-sdd-release v2.3.1 · out/2026 · versão atual: https://github.com/robertodiasduarte/sdd-open/releases/latest
+sdd-release v2.3.1 · out/2026
 ```
 
 Se essa linha não aparecer, a skill não foi carregada: confira a instalação e repita o pedido com o
-nome exato. A versão da linha é a da skill no seu projeto; o link mostra a mais nova publicada.
+nome exato. A versão da linha é a da skill no seu projeto; a mais nova publicada está na
+[página de releases do SDD Open](https://github.com/robertodiasduarte/sdd-open/releases/latest).
 
 ---
 

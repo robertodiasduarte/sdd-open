@@ -199,7 +199,8 @@ class TestDadoExposto(Base):
         out = self.checar()
         self.assertEqual(len(out.strip().splitlines()), 1, out)
         self.assertTrue(out.startswith("✅ Pronto: repo meu-app"), out)
-        self.assertRegex(out, r"· sdd-checar-ambiente v\d+\.\d+\.\d+ · [a-z]{3}/\d{4} · versão atual: https://github\.com/robertodiasduarte/sdd-open/releases/latest")
+        self.assertRegex(out, r"· sdd-checar-ambiente v\d+\.\d+\.\d+ · [a-z]{3}/\d{4}$")
+        self.assertNotIn("versão atual", out)  # F29: a identificação não leva link
 
     def test_f26_copia_do_starter_diz_sdd_starter(self):
         # o gerador do starter troca a URL do Open pela do starter em todo arquivo (gerar-starter.py, reescrever); a
@@ -213,7 +214,8 @@ class TestDadoExposto(Base):
             "https://github.com/robertodiasduarte/sdd-starter/releases/latest"), encoding="utf-8")
         self.script = s
         out = self.checar()
-        self.assertRegex(out, r"· sdd-checar-ambiente v\d+\.\d+\.\d+ · SDD Starter · [a-z]{3}/\d{4} · versão atual: https://github\.com/robertodiasduarte/sdd-starter/releases/latest")
+        self.assertRegex(out, r"· sdd-checar-ambiente v\d+\.\d+\.\d+ · SDD Starter · [a-z]{3}/\d{4}$")
+        self.assertNotIn("releases/latest", out)
         self.script = SCRIPT
         self.assertNotIn("SDD Starter", self.checar())
 

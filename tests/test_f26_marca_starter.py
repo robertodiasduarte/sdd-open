@@ -59,7 +59,7 @@ class Marca(Base):
                 self.assertIn("SDD Starter", d[:60])
                 self.assertNotIn("SDD Open", d)
                 self.assertLessEqual(len(d), 1024)
-                linha = "`%s v%s · SDD Starter · nov/2026 · versão atual: %s`" % (skill, versao(s), URL_STARTER)
+                linha = "\n`%s v%s · SDD Starter · nov/2026`\n" % (skill, versao(s))
                 self.assertEqual(s.count(linha), 1, linha)
                 self.assertEqual(len(re.findall(r"^`%s v" % re.escape(skill), s, re.M)), 1)
 
@@ -113,7 +113,7 @@ class Marca(Base):
                 ("aspas duplas", 'description: "Faz algo útil."', 'description: "SDD Starter — Faz algo útil."'),
                 ("sem aspas", "description: Faz algo útil.", "description: SDD Starter — Faz algo útil.")):
             with self.subTest(caso=nome):
-                novo = g.marcar("---\nname: x\n%s\n---\n`x v1.0.0 · nov/2026 · versão atual: %s`\n" % (linha, URL_STARTER), "x")
+                novo = g.marcar("---\nname: x\n%s\n---\n`x v1.0.0 · nov/2026`\n" % linha, "x")
                 self.assertIn("\n%s\n" % esperada, novo)
                 fm = novo.split("\n---\n", 1)[0][4:].split("\n")
                 self.assertTrue(g.descricao_do(fm)[2].startswith("SDD Starter — Faz algo útil"))
@@ -154,7 +154,8 @@ class OpenSemMarca(Base):
                 linha = [ln for ln in s.splitlines() if ln.startswith("`%s v" % skill)]
                 self.assertEqual(len(linha), 1)
                 self.assertNotIn("SDD Starter", linha[0])
-                self.assertIn(URL_OPEN, linha[0])
+                self.assertNotIn("releases/latest", linha[0])   # F29: a origem mora no metadata.source
+                self.assertIn('\n  source: "%s"\n' % URL_OPEN, s[:s.index("\n---\n", 4) + 1])
 
     def test_at010_checar_separa_as_duas_origens_com_a_linha_marcada(self):
         rc, out, err = self.gerar()

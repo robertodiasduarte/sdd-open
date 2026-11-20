@@ -104,11 +104,18 @@ class Base(unittest.TestCase):
         self.git("add", "-A")
         self.git("commit", "-q", "--no-verify", "--allow-empty", "-m", "t")
 
-    def skill(self, pasta: Path, nome: str, versao: str | None, origem: str, extra: str = "") -> Path:
+    def skill(self, pasta: Path, nome: str, versao: str | None, origem: str, extra: str = "", antiga: bool = False) -> Path:
+        """F29: a origem mora no metadata.source; antiga=True escreve a cópia de antes da F29 (o link no corpo)."""
         d = pasta / nome
         d.mkdir(parents=True, exist_ok=True)
         meta = '  version: "%s"\n' % versao if versao is not None else ""
-        ident = "`%s v%s · nov/2026 · versão atual: %s`\n" % (nome, versao, URL[origem]) if origem != "outra" else "Skill de outra origem.\n"
+        if origem == "outra":
+            ident = "Skill de outra origem.\n"
+        elif antiga:
+            ident = "`%s v%s · nov/2026 · versão atual: %s`\n" % (nome, versao, URL[origem])
+        else:
+            meta += '  source: "%s"\n' % URL[origem]
+            ident = "`%s v%s · nov/2026`\n" % (nome, versao)
         (d / "SKILL.md").write_text("---\nname: %s\ndescription: \"teste\"\nmetadata:\n%s---\n\n%s%s" % (nome, meta, ident, extra),
                                     encoding="utf-8")
         return d
@@ -884,7 +891,7 @@ class AT010Textos(Base):
 
     def test_skill_md_tem_a_excecao_unica_e_a_etapa_limpar(self):
         t = (SKILL / "SKILL.md").read_text(encoding="utf-8")
-        self.assertIn('version: "1.7.0"', t)
+        self.assertIn('version: "1.7.1"', t)
         regra = t.split("- **Somente leitura.**", 1)[1].split("\n- **", 1)[0]
         self.assertIn("`--limpar <assinatura>`", regra)
         self.assertEqual(t.count("Exceção única"), 1)

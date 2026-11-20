@@ -335,13 +335,13 @@ class Pacote(unittest.TestCase):
                 self.assertTrue((RAIZ / "tests" / ("test_%s.py" % nome)).is_file())
 
     def test_versoes_e_linha_de_identificacao(self):
-        for skill, versao in (("sdd-playbook", "2.3.0"), ("sdd-release", "2.19.0"), ("sdd-new-session", "1.7.1"),
-                              ("sdd-handoff", "2.3.1"), ("sdd-define", "2.9.0")):
+        for skill, versao in (("sdd-playbook", "2.3.1"), ("sdd-release", "2.19.1"), ("sdd-new-session", "1.7.2"),
+                              ("sdd-handoff", "2.3.2"), ("sdd-define", "2.9.1")):
             texto = ler(".agents/skills/%s/SKILL.md" % skill)
             with self.subTest(skill=skill):
                 self.assertIn('version: "%s"' % versao, texto)
                 self.assertIn('updated: "2026-11"', texto)
-                self.assertIn("`%s v%s · nov/2026 ·" % (skill, versao), texto)
+                self.assertIn("`%s v%s · nov/2026`" % (skill, versao), texto)
 
     def test_roadmap_e_doc_novo(self):
         for rel in ("README.md", "README.pt-BR.md"):

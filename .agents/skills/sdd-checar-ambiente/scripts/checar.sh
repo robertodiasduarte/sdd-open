@@ -271,7 +271,8 @@ IDENT=""
 # padrão nomeia o Open, para a skill portada não citar o starter)
 URL_ATUAL="https://github.com/robertodiasduarte/sdd-open/releases/latest"
 case "${URL_ATUAL}" in */sdd-open/*) MARCA="" ;; *) MARCA=" · SDD Starter" ;; esac
-[ -n "${VERSAO}" ] && [ -n "${MES}" ] && IDENT=" · sdd-checar-ambiente v${VERSAO}${MARCA} · ${MES}/${ATUAL%%-*} · versão atual: ${URL_ATUAL}"
+# F29: a identificação não leva o link (o endereço da origem fica no metadata.source do SKILL.md)
+[ -n "${VERSAO}" ] && [ -n "${MES}" ] && IDENT=" · sdd-checar-ambiente v${VERSAO}${MARCA} · ${MES}/${ATUAL%%-*}"
 
 relatorio() {   # $1 = linha de resumo (sem o ✅)
   ARRUMAR="${ARRUMAR_DADO}${ARRUMAR_DUP}${ARRUMAR}"
