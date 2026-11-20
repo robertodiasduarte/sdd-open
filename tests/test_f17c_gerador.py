@@ -51,8 +51,7 @@ class ModoWeb(Base):
                 self.assertIn('version: "%s"' % versao_do_open(skill), fm)
                 self.assertNotIn("SDD Open —", fm)                      # a description do Open nunca vai
                 self.assertIn("compatibility:", fm)
-                self.assertEqual(s.count("`%s v%s · SDD Starter · nov/2026 · versão atual: https://github.com/robertodiasduarte/"
-                                         "sdd-starter/releases/latest`" % (skill, versao_do_open(skill))), 1)
+                self.assertEqual(s.count("\n`%s v%s · SDD Starter · nov/2026`\n" % (skill, versao_do_open(skill))), 1)
                 self.assertIn("## Como falar com o aluno", s)
                 self.assertNotIn("web/MODO_WEB.md", s)
         # o aplicar-migration do build é o do modo (o do Open cita evidence/ e o report-lint)

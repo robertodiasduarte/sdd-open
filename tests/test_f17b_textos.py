@@ -137,9 +137,8 @@ class UxReviewBuilder(unittest.TestCase):
 
     def test_a_skill_mora_no_open(self):
         s = ler(".agents/skills/ux-review-builder/SKILL.md")
-        self.assertIn('version: "1.6.2"', s)
-        self.assertIn("`ux-review-builder v1.6.2 · nov/2026 · versão atual: "
-                      "https://github.com/robertodiasduarte/sdd-open/releases/latest`", s)
+        self.assertIn('version: "1.6.3"', s)
+        self.assertIn("\n`ux-review-builder v1.6.3 · nov/2026`\n", s)
         self.assertIn("## Como falar com o aluno", s)
         self.assertTrue((RAIZ / ".agents/skills/ux-review-builder/references/como-falar.md").is_file())
         self.assertFalse((RAIZ / ".agents/skills/ux-review-builder/agents").exists())

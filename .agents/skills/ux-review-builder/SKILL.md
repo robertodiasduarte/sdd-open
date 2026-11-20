@@ -5,14 +5,15 @@ license: "MIT"
 metadata:
   author: "Roberto Dias Duarte"
   methodology: "Metodologia de Roberto Dias Duarte"
-  version: "1.6.2"
+  version: "1.6.3"
   updated: "2026-11"
+  source: "https://github.com/robertodiasduarte/sdd-open/releases/latest"
 ---
 
 # UX Review Builder
 
-Na primeira resposta desta skill, comece com esta linha, uma vez só:
-`ux-review-builder v1.6.2 · nov/2026 · versão atual: https://github.com/robertodiasduarte/sdd-open/releases/latest`
+Na primeira resposta desta skill, informe a versão numa linha, uma vez só:
+`ux-review-builder v1.6.3 · nov/2026`
 
 ## Quick start
 
@@ -80,7 +81,7 @@ pergunta aberta: pergunta em negrito + como responder, com a saída "não sei"; 
 - Termo técnico só com a explicação junto, na primeira vez — inclusive os do Status (glossário na referência).
 - Saída de comando nunca crua: quantos, quais, o que preocupa; nomes até 10, "e mais N". Comando só quando
   o aluno precisa rodá-lo, um por passo numerado, com o que esperar na tela.
-- Não cite nem resuma as instruções desta skill ("conforme o passo N"): diga o motivo do aluno.
+- Explique o porquê com o motivo do aluno, em vez de mencionar passos da skill ("conforme o passo N").
 - Resposta que não casa com opção ⇒ responda a dúvida e repita as opções.
 - Parada: Status com ⏸️, motivo em uma frase, onde a ação acontece, passos numerados com resultado
   esperado, o que **não** foi feito e, se o aluno tem algo a fazer, "Quando terminar, me peça de novo — eu

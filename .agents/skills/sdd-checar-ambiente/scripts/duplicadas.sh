@@ -55,18 +55,22 @@ dup_registro() {
        s && n != "" && /^      "source": "/ { v = $0; sub(/^      "source": "/, "", v); sub(/".*/, "", v); print n "\t" v; n = "" }' "${f}"
 }
 
-# versão<TAB>origem de um SKILL.md. Versão = metadata.version do frontmatter ("" se ilegível). Origem pela linha de
-# identificação: o trecho <repositório>/releases/latest do Open ou do starter — nunca a URL inteira, que o gerador do
-# starter reescreve em todo arquivo de texto (o checar.sh do starter confundiria as duas).
+# versão<TAB>origem de um SKILL.md. Versão = metadata.version do frontmatter ("" se ilegível). Origem pelo
+# metadata.source do frontmatter (F29): o trecho <repositório>/releases/latest do Open ou do starter — nunca a URL
+# inteira, que o gerador do starter reescreve em todo arquivo de texto. Sem source (cópia anterior à F29), vale o
+# mesmo trecho no corpo, onde ficava a linha de identificação.
 dup_meta() {
   LC_ALL=C awk '
     NR == 1 && /^---[ \t\r]*$/ { fm = 1; next }
     fm == 1 && /^---[ \t\r]*$/ { fm = 2 }
     fm == 1 && v == "" && /^[ \t]+version:/ { s = $0; sub(/^[ \t]+version:[ \t]*/, "", s); gsub(/["\047 \r]/, "", s)
                                               v = (s ~ /^[0-9]+\.[0-9]+\.[0-9]+$/) ? s : "-" }
+    fm == 1 && f == "" && /^[ \t]+source:/ { f = "-"
+                                             if ($0 ~ /sdd-open\/releases\/latest/) f = "open"
+                                             if ($0 ~ /sdd-starter\/releases\/latest/) f = "starter" }
     o == "" && /sdd-open\/releases\/latest/ { o = "open" }
     o == "" && /sdd-starter\/releases\/latest/ { o = "starter" }
-    END { if (v == "-") v = ""; print v "\t" (o == "" ? "outra" : o) }' "$1" 2>/dev/null
+    END { if (v == "-") v = ""; if (f != "") o = (f == "-" ? "" : f); print v "\t" (o == "" ? "outra" : o) }' "$1" 2>/dev/null
 }
 
 # Varre as pastas e grava ${DUP_TMP}/copias.tsv, uma linha por (agente, caminho):

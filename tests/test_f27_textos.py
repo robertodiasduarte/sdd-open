@@ -26,8 +26,8 @@ def versao(skill: str) -> str:
 
 class Versoes(unittest.TestCase):
     def test_versoes(self):
-        for skill, v in (("sdd-desempenho-banco", "1.0.0"), ("sdd-define", "2.9.0"), ("sdd-design", "2.11.0"),
-                         ("sdd-release", "2.19.0")):
+        for skill, v in (("sdd-desempenho-banco", "1.0.1"), ("sdd-define", "2.9.1"), ("sdd-design", "2.11.1"),
+                         ("sdd-release", "2.19.1")):
             with self.subTest(skill=skill):
                 self.assertEqual(versao(skill), v)
                 self.assertIn("`%s v%s · nov/2026" % (skill, v), ler(".agents/skills/%s/SKILL.md" % skill))

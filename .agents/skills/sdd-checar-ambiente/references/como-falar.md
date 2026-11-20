@@ -2,7 +2,7 @@
 
 Quem roda esta skill quer ser desbloqueado, não ler. O relatório do `checar.sh` já sai no formato do
 aluno: blocos 🔴 e ⚠️ com o comando que resolve e uma linha ✅ no fim. A resposta é o Status e, logo
-abaixo, esse relatório como veio. O resto da moldura vale na conversa que segue, quando o aluno pergunta
+abaixo, esse relatório inteiro. O resto da moldura vale na conversa que segue, quando o aluno pergunta
 por um item. Este arquivo dá as palavras e três exemplos inteiros.
 
 ## Glossário (explique na primeira vez em que o termo aparecer, quando o aluno perguntar)
@@ -68,7 +68,7 @@ Quando terminar, me peça de novo, eu continuo daqui.
 ## Exemplo 3 — limpeza das skills duplicadas, com decisão (etapa 3 — Limpar)
 
 Situação: o relatório mostrou que o Claude Code roda a `sdd-define` global (2.6.1), não a 2.7.0 do projeto, e
-mais 2 skills no mesmo caso; o aluno pediu para limpar. O plano (`--duplicadas`) vem antes, como veio.
+mais 2 skills no mesmo caso; o aluno pediu para limpar. O plano (`--duplicadas`) vem antes, inteiro.
 
 **Status** — `Ambiente: ✅ 1 Verificar · ✅ 2 Explicar · ▶️ 3 Limpar`
 

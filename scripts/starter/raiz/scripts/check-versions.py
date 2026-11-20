@@ -6,8 +6,8 @@ pessoa saber que a cópia envelheceu. Este gate impede que essa informação min
 
 Checks, for each skills/<name>/SKILL.md:
   1. metadata.version is X.Y.Z and metadata.updated is YYYY-MM;
-  2. the body has the identification line
-     `<name> vX.Y.Z · SDD Starter · <mês>/<ano> · versão atual: <URL>` matching the metadata;
+  2. the body has the identification line `<name> vX.Y.Z · SDD Starter · <mês>/<ano>` matching the
+     metadata, and metadata.source is <URL> (where the copy came from; the line carries no link);
   3. manifest.json and evals/cases.json, when present, carry the same "version";
   4. description has at most 1024 characters (Agent Skills spec; the claude.ai and ChatGPT
      upload refuses the .zip above it);
@@ -93,9 +93,11 @@ def check_skill(d: Path, base: str | None) -> list[str]:
     elif "SDD Starter" not in desc[:60] or "SDD Open" in desc:
         erros.append(f"{name}: a description não diz SDD Starter nos 60 primeiros caracteres (ou ainda diz SDD Open)")
     ano, mes = u.split("-")
-    linha = f"`{name} v{v} · SDD Starter · {MESES[int(mes) - 1]}/{ano} · versão atual: {URL}`"
-    if linha not in text:
+    linha = f"`{name} v{v} · SDD Starter · {MESES[int(mes) - 1]}/{ano}`"
+    if linha not in text.split("\n"):
         erros.append(f"{name}: linha de identificação ausente ou diferente do metadata; esperado {linha}")
+    if meta(text, "source") != URL:
+        erros.append(f"{name}: metadata.source ausente ou diferente; esperado {URL}")
     for extra in ("manifest.json", "evals/cases.json"):
         p = d / extra
         if p.exists():

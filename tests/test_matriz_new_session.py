@@ -73,7 +73,7 @@ class ContratoDaNewSession(unittest.TestCase):
         self.texto = SESSAO.read_text(encoding="utf-8")
 
     def test_versao(self):
-        self.assertIn('version: "1.7.1"', self.texto)   # F22: aviso de versão; F16: modo terminal e --editor; F18/F20: lista conferida; F17: do starter
+        self.assertIn('version: "1.7.2"', self.texto)   # F22: aviso de versão; F16: modo terminal e --editor; F18/F20: lista conferida; F17: do starter
 
     def test_pre_voo_pelo_script_com_os_dois_exits_e_o_fallback(self):
         for frase in ("checar.sh --frente", "**exit 1**", "**exit 0** com a linha `✅ Pronto para abrir a frente",
@@ -121,13 +121,13 @@ class Portadas(unittest.TestCase):
                     texto = f.read_text(encoding="utf-8")
                     if f.name == "duplicadas.sh":
                         # F25: o reconhecedor de origem precisa casar a cópia do starter (é o objetivo dele); só as 2 linhas
-                        # de padrão do awk ficam de fora. Texto, comentário e mensagem continuam sem citar o starter.
+                        # de padrão do awk ficam de fora (F29: 3, com a do metadata.source). Texto, comentário e mensagem continuam sem citar o starter.
                         linhas = texto.splitlines()
                         texto = "\n".join(l for l in linhas if not RECONHECEDOR.search(l))
                         tirou += len(linhas) - len(texto.splitlines())
                     achados += [f"{f.relative_to(RAIZ)}: {p}" for p in proibidos if p in texto]
         self.assertEqual(achados, [])
-        self.assertEqual(tirou, 2, "a exceção do reconhecedor de origem deve tirar exatamente as 2 linhas de padrão")
+        self.assertEqual(tirou, 3, "a exceção do reconhecedor de origem deve tirar exatamente as 3 linhas de padrão")
 
     def test_sem_pasta_tests_na_skill(self):
         # Os testes ficam em tests/ na raiz: dentro da skill, o init e o sync os levariam ao usuário.

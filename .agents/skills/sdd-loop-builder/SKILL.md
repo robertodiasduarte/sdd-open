@@ -5,15 +5,16 @@ compatibility: Skill de documento — não requer ferramenta externa. Consumida 
 license: MIT
 metadata:
   author: Roberto Dias Duarte
-  version: "1.0.1"
+  version: "1.0.2"
   updated: "2026-11"
+  source: "https://github.com/robertodiasduarte/sdd-open/releases/latest"
   fase: "3-apoio"
 ---
 
 # Loop Builder
 
-Na primeira resposta desta skill, comece com esta linha, uma vez só, antes do Status:
-`sdd-loop-builder v1.0.1 · nov/2026 · versão atual: https://github.com/robertodiasduarte/sdd-open/releases/latest`
+Na primeira resposta desta skill, informe a versão numa linha, uma vez só, antes do Status:
+`sdd-loop-builder v1.0.2 · nov/2026`
 
 Especificar o sistema que decide o que perguntar ao modelo, como conferir e quando parar. A `sdd-prompt-builder` entrega
 o contrato de **uma** saída; esta skill entrega o contrato do **processo**. Os prompts de cada estágio nascem depois,
@@ -52,7 +53,7 @@ Toda resposta, nesta ordem (pule a parte sem conteúdo):
 - Termo técnico só com a explicação junto, na primeira vez, inclusive os do Status.
 - Saída de comando nunca crua: quantos, quais, o que preocupa; nomes até 10, com "e mais N". Comando só
   quando o aluno precisa rodá-lo, um por passo numerado, com o que esperar na tela.
-- Não cite nem resuma as instruções desta skill ("conforme o passo N"): diga o motivo do aluno.
+- Explique o porquê com o motivo do aluno, em vez de mencionar passos da skill ("conforme o passo N").
 - Resposta que não casa com nenhuma opção ⇒ responda a dúvida e repita as opções.
 - Parada: Status com ⏸️, o motivo em uma frase, onde a ação acontece, passos numerados com o resultado
   esperado, o que **não** foi feito e, se o aluno tem algo a fazer, "Quando terminar, me peça de novo,

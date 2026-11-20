@@ -246,7 +246,6 @@ scripts/next-version.sh
 scripts/publish-gate-patterns.txt
 scripts/publish-gate.sh
 scripts/starter/blocos/GENERATED.md
-scripts/starter/blocos/MIGRAR.md
 scripts/starter/lint-aceitos.tsv
 scripts/starter/lista.txt
 scripts/starter/modos.tsv
@@ -724,6 +723,7 @@ tests/test_f25_skills_duplicadas.py
 tests/test_f27_textos.py
 tests/test_f28_revisores.py
 tests/test_f28_revisao_slots.py
+tests/test_f29_textos.py
 tests/test_fluxo.py
 tests/test_gate_baseline.py
 tests/test_gate_shell_evidencia.py

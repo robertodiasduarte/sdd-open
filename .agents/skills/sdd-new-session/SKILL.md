@@ -12,15 +12,16 @@ compatibility: Requer git >= 2.20 e um agente com acesso ao terminal (bash, zsh 
 license: MIT
 metadata:
   author: Roberto Dias Duarte
-  version: "1.7.1"
+  version: "1.7.2"
   updated: "2026-11"
+  source: "https://github.com/robertodiasduarte/sdd-open/releases/latest"
   fase: "0"
 ---
 
 # sdd-new-session — abrir uma frente
 
-Na primeira resposta desta skill, comece com esta linha, uma vez só, antes do Status:
-`sdd-new-session v1.7.1 · nov/2026 · versão atual: https://github.com/robertodiasduarte/sdd-open/releases/latest`
+Na primeira resposta desta skill, informe a versão numa linha, uma vez só, antes do Status:
+`sdd-new-session v1.7.2 · nov/2026`
 
 Um comando, uma tarefa, um diretório: `git worktree` + branch nova nascida do estado **remoto atual**
 da branch padrão. A outra ponta é a `sdd-release`.
@@ -59,7 +60,7 @@ Toda resposta, nesta ordem (pule a parte sem conteúdo):
 - Termo técnico só com a explicação junto, na primeira vez, inclusive os do Status.
 - Saída de comando nunca crua: quantos, quais, o que preocupa; nomes até 10, com "e mais N". Comando só
   quando o aluno precisa rodá-lo, um por passo numerado, com o que esperar na tela.
-- Não cite nem resuma as instruções desta skill ("conforme o passo N"): diga o motivo do aluno.
+- Explique o porquê com o motivo do aluno, em vez de mencionar passos da skill ("conforme o passo N").
 - Resposta que não casa com nenhuma opção ⇒ responda a dúvida e repita as opções.
 - Parada: Status com ⏸️, o motivo em uma frase, onde a ação acontece, passos numerados com o resultado
   esperado, o que **não** foi feito e, se o aluno tem algo a fazer, "Quando terminar, me peça de novo,
@@ -180,7 +181,7 @@ Depois, o remoto, nesta ordem, parando na primeira que falhar:
    - Diagnóstico parado, parado sem prova de pedido de login, `Could not resolve host`, `timed out`,
      `Failed to connect` ⇒ *"Não consegui falar
      com `<host>` agora (sem internet ou rede bloqueada)."* — **não** fale em senha nem em login.
-   - Qualquer outra mensagem ⇒ *"Não consegui ler o remoto:"* com a 1ª linha do erro, como veio, e
+   - Qualquer outra mensagem ⇒ *"Não consegui ler o remoto:"* com a 1ª linha do erro, letra a letra, e
      `git remote -v` para conferir o endereço. Não chute a causa.
 3. Nenhuma branch listada ⇒ *"O repositório remoto ainda não tem nenhum commit — a frente nasce dele."*
    com o primeiro commit (`git add <arquivos>` e `git commit -m "primeiro commit"`) e

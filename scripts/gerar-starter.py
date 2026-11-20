@@ -15,7 +15,7 @@ O que entra no destino (o resto dele fica byte a byte igual):
 
 Passos, por skill: as trocas exatas de scripts/starter/trocas/<skill>.md (cada uma casa exatamente 1 vez) →
 regras mecânicas (moldes de sdd/templates/ para dentro da skill, caminhos de .agents/skills/, linha de
-identificação do starter, cabeçalho GENERATED, bloco "quando migrar", agents/openai.yaml) → lint do init.
+identificação do starter, cabeçalho GENERATED, agents/openai.yaml) → lint do init.
 
 Exit: 0 gerado · 64 uso (tag inexistente, destino sem a forma do starter, destino com mudança não commitada) ·
 65 troca que não casa 1 vez, skill sem linha no openai.tsv, molde em conflito ou lint do init · 1 erro de escrita.
@@ -228,14 +228,21 @@ def reescrever(texto: str, skill: str, lista: list[str], moldes_dir: Path, markd
     return re.sub(r"\x00(\d+)\x00", lambda m: guardados[int(m.group(1))], texto)
 
 
+def linha_ident(skill: str) -> re.Pattern:
+    """F29: a linha de identificação é `<skill> vX.Y.Z · <mês>/<ano>`, sem link; a origem fica no metadata.source."""
+    return re.compile(r"^`%s v\d+\.\d+\.\d+ · [a-z]{3}/\d{4}`$" % re.escape(skill))
+
+
 def identificacao(texto: str, skill: str) -> str:
-    linhas, trocadas = texto.split("\n"), 0
-    for i, ln in enumerate(linhas):
-        if ln.startswith("`%s v" % skill) and URL_STARTER in ln:
-            trocadas += 1
+    linhas = texto.split("\n")
+    trocadas = sum(1 for ln in linhas if linha_ident(skill).match(ln))
     if trocadas != 1:
         raise Falha(65, "%s: a linha de identificação apareceu %d vez(es); esperado 1" % (skill, trocadas))
-    return "\n".join(linhas)
+    fim = texto.find("\n---\n", 4)
+    fm = texto[:fim] if texto.startswith("---\n") and fim > 0 else ""
+    if fm.count('\n  source: "%s"' % URL_STARTER) != 1:
+        raise Falha(65, "%s: o metadata.source não aponta para o starter (esperado %s)" % (skill, URL_STARTER))
+    return texto
 
 
 MARCA = "SDD Starter"
@@ -294,7 +301,7 @@ def marcar(texto: str, skill: str) -> str:
         raise Falha(65, "%s: a description com a marca tem %d caracteres; o limite é 1.024" % (skill, len(nova)))
     linhas, trocadas = corpo.split("\n"), 0
     for k, ln in enumerate(linhas):
-        if ln.startswith("`%s v" % skill) and URL_STARTER in ln:
+        if linha_ident(skill).match(ln):
             linhas[k], n = re.subn(r"^(`%s v\d+\.\d+\.\d+)( · )" % re.escape(skill), r"\1 · %s\2" % MARCA, ln)
             trocadas += n
     if trocadas != 1:
@@ -416,11 +423,11 @@ def compor(origem: Path, destino: Path, modo_rel: str, base: str = ".") -> None:
             pendentes |= set(CITA.findall(ler(raiz / rel)))
 
 
-def com_cabecalho(texto: str, skill: str, cabecalho: str, migrar: str) -> str:
+def com_cabecalho(texto: str, skill: str, cabecalho: str) -> str:
     if not texto.startswith("---\n"):
         raise Falha(65, "%s/SKILL.md não começa pelo frontmatter" % skill)
     fim = texto.index("\n---\n", 4) + len("\n---\n")
-    return texto[:fim] + cabecalho + texto[fim:].rstrip("\n") + "\n" + migrar
+    return texto[:fim] + cabecalho + texto[fim:].rstrip("\n") + "\n"
 
 
 def ler_openai(arq: Path) -> dict[str, tuple[str, str, str]]:
@@ -513,7 +520,6 @@ def montar(arvore: Path, saida: Path, tag: str, commit: str) -> list[str]:
     # O cabeçalho e o GERADO.txt de cada skill NÃO levam a tag: com ela, toda geração mudaria as 10 skills e o
     # version gate do starter pediria versão nova em todas (revisão do DESIGN, item 2). A tag fica só na raiz.
     cabecalho = (dados / "blocos" / "GENERATED.md").read_text(encoding="utf-8")
-    migrar = (dados / "blocos" / "MIGRAR.md").read_text(encoding="utf-8")
     nota = "# GENERATED pelo sdd-open com scripts/gerar-starter.py — não edite aqui: edite no sdd-open e gere de novo."
     nota_raiz = "# GENERATED pelo sdd-open %s (commit %s) com scripts/gerar-starter.py — não edite aqui." % (tag, commit)
     fora = sorted(p.name for p in (arvore / ".agents" / "skills").iterdir() if p.is_dir() and p.name not in lista)
@@ -545,7 +551,7 @@ def montar(arvore: Path, saida: Path, tag: str, commit: str) -> list[str]:
                 gravar_se_mudou(p, reescrever(ler(p), skill, lista, moldes, p.suffix == ".md",
                                               p.name == "CHANGELOG.md"))
         s = destino / "SKILL.md"
-        gravar_se_mudou(s, com_cabecalho(marcar(identificacao(ler(s), skill), skill), skill, cabecalho, migrar))
+        gravar_se_mudou(s, com_cabecalho(marcar(identificacao(ler(s), skill), skill), skill, cabecalho))
         (destino / "agents").mkdir(exist_ok=True)
         (destino / "agents" / "openai.yaml").write_text(openai_yaml(tabela[skill]), encoding="utf-8")
         (destino / "GERADO.txt").write_bytes(lista_gerado(destino, nota))

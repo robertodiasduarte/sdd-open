@@ -4,14 +4,15 @@ license: MIT
 description: "Configura, com o aluno, os revisores da revisão adversarial do SDD Open (review.revisor1 e review.auditor): mede o estado deste computador sem mudar nada (slots, chave do OpenRouter no ambiente, perfil do terminal, CLIs instaladas), recomenda o caminho (as CLIs que o aluno já tem, o OpenRouter com dois modelos diferentes, ou uma engine só, com a consequência dita), conduz passo a passo a conta, o crédito, a chave com limite de gasto e a gravação da chave no perfil, sem a chave passar pela conversa, grava a escolha no git config deste computador com o OK do aluno e termina com a prova sem gastar. Use quando uma fase disser que faltam revisores, quando o adversarial-review.sh sair 64 por slot vazio ou 65 por credencial do OpenRouter, quando o aluno disser /sdd-configurar-revisores, \"configurar os revisores\", \"OpenRouter\", ou pedir para continuar a configuração depois de reabrir o agente."
 metadata:
   author: Roberto Dias Duarte
-  version: "1.0.0"
+  version: "1.0.1"
   updated: "2026-11"
+  source: "https://github.com/robertodiasduarte/sdd-open/releases/latest"
 ---
 
 # Configurar os revisores
 
-Na primeira resposta desta skill, comece com esta linha, uma vez só, antes do Status:
-`sdd-configurar-revisores v1.0.0 · nov/2026 · versão atual: https://github.com/robertodiasduarte/sdd-open/releases/latest`
+Na primeira resposta desta skill, informe a versão numa linha, uma vez só, antes do Status:
+`sdd-configurar-revisores v1.0.1 · nov/2026`
 
 Deixar a revisão adversarial pronta para rodar neste computador, sem deixar o aluno sem próximo passo em nenhum
 estado. **Quem mede é o script** `scripts/diagnosticar.sh` (a pasta desta skill é a que contém este `SKILL.md`):
@@ -48,7 +49,7 @@ Toda resposta, nesta ordem (pule a parte sem conteúdo):
 - Termo técnico só com a explicação junto, na primeira vez, inclusive os do Status.
 - Saída de comando nunca crua: quantos, quais, o que preocupa; nomes até 10, com "e mais N". Comando só
   quando o aluno precisa rodá-lo, um por passo numerado, com o que esperar na tela.
-- Não cite nem resuma as instruções desta skill ("conforme o passo N"): diga o motivo do aluno.
+- Explique o porquê com o motivo do aluno, em vez de mencionar passos da skill ("conforme o passo N").
 - Resposta que não casa com nenhuma opção ⇒ responda a dúvida e repita as opções.
 - Parada: Status com ⏸️, o motivo em uma frase, onde a ação acontece, passos numerados com o resultado
   esperado, o que **não** foi feito e, se o aluno tem algo a fazer, "Quando terminar, me peça de novo,

@@ -67,11 +67,11 @@ class Instalacao(unittest.TestCase):
 
 class Versoes(unittest.TestCase):
     def test_as_3_skills_sobem_de_versao(self):
-        for nome, versao in (("sdd-checar-ambiente", "1.7.0"), ("sdd-iniciar-repo", "1.2.3"), ("sdd-new-session", "1.7.1")):
+        for nome, versao in (("sdd-checar-ambiente", "1.7.1"), ("sdd-iniciar-repo", "1.2.4"), ("sdd-new-session", "1.7.2")):
             with self.subTest(skill=nome):
                 texto = skill(nome)
                 self.assertIn('  version: "%s"' % versao, texto)
-                self.assertIn("`%s v%s · nov/2026 ·" % (nome, versao), texto)
+                self.assertIn("`%s v%s · nov/2026`" % (nome, versao), texto)
 
 
 class IniciarRepo(unittest.TestCase):

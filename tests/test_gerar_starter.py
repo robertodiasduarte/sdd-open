@@ -35,9 +35,9 @@ MESES = ["jan", "fev", "mar", "abr", "mai", "jun", "jul", "ago", "set", "out", "
 
 def skill_minima(nome: str, versao: str, updated: str = "2026-10") -> str:
     ano, mes = updated.split("-")
-    return ("---\nname: %s\ndescription: Skill de teste.\nmetadata:\n  version: \"%s\"\n  updated: \"%s\"\n---\n\n"
-            "`%s v%s · %s/%s · versão atual: %s`\n\n## Como falar com o aluno\n\nTexto.\n"
-            % (nome, versao, updated, nome, versao, MESES[int(mes) - 1], ano, URL_STARTER))
+    return ("---\nname: %s\ndescription: Skill de teste.\nmetadata:\n  version: \"%s\"\n  updated: \"%s\"\n"
+            "  source: \"%s\"\n---\n\n`%s v%s · %s/%s`\n\n## Como falar com o aluno\n\nTexto.\n"
+            % (nome, versao, updated, URL_STARTER, nome, versao, MESES[int(mes) - 1], ano))
 
 
 def arvore(pasta: Path) -> dict[str, str]:
@@ -149,8 +149,10 @@ class Gera(Base):
             with self.subTest(skill=skill):
                 fim_fm = s.index("\n---\n", 4) + 5
                 self.assertTrue(s[fim_fm:].startswith("<!-- GENERATED pelo sdd-open"), s[fim_fm:fim_fm + 80])
-                self.assertIn("· versão atual: %s`" % URL_STARTER, s)
-                self.assertIn("## Quando migrar para o SDD Open", s[-1200:])
+                # F29: a origem no frontmatter; a linha sem link; sem o bloco de migração
+                self.assertIn('\n  source: "%s"\n' % URL_STARTER, s[:fim_fm])
+                self.assertNotIn("versão atual", s)
+                self.assertNotIn("Quando migrar para o SDD Open", s)
                 self.assertNotIn("### Fluxo encadeado", s)
                 self.assertNotIn("v9.9.9", s)   # a tag só no GERADO.txt da raiz (revisão do DESIGN, item 2)
                 y = (d / "agents/openai.yaml").read_text(encoding="utf-8")
