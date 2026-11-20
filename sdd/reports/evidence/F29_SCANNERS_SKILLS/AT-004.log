@@ -1,0 +1,7 @@
+$ cd tests && python3 -B -m unittest test_gerar_starter test_f17c_gerador test_f26_marca_starter
+...................................................
+----------------------------------------------------------------------
+Ran 51 tests in 161.110s
+
+OK
+exit=0

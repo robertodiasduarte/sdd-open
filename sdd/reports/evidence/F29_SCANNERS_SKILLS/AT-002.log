@@ -1,0 +1,8 @@
+$ grep -rlE 'comece com esta linha|versão atual: http' .agents/skills; test $? -eq 1 && echo 'vazio (grep sai 1)'; cd tests && python3 -B -m unittest test_f29_textos.AT002LinhaDeVersao test_conversa.Identificacao test_f21_textos test_f17b_textos
+vazio (grep sai 1)
+........................................................
+----------------------------------------------------------------------
+Ran 56 tests in 15.900s
+
+OK
+exit=0

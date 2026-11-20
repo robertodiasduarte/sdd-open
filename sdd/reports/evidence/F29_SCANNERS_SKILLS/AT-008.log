@@ -1,0 +1,8 @@
+$ cd tests && python3 -B -m unittest -v test_f29_textos.AT008DadoNaoConfiavel
+test_frases (test_f29_textos.AT008DadoNaoConfiavel.test_frases) ... ok
+
+----------------------------------------------------------------------
+Ran 1 test in 0.006s
+
+OK
+exit=0

@@ -1,0 +1,8 @@
+$ gerar o starter da tag local temporária e rodar o check-versions.py e o check-gerado.py dele
+PASS: check-versions — 19 skills com versão coerente.
+✅ 19 skill(s) gerada(s) e a infra conferidas: tudo igual ao que o sdd-open gerou
+RESULTADO: VERDE
+Ran 62 tests in 2.528s
+
+OK
+exit=0
