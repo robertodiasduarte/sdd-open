@@ -108,8 +108,8 @@ antigo e as fixtures de cerca de 14 módulos de teste.
   - existir e não estar ignorado pelo git (reusa `git_ignorado`);
   - ter a 1ª linha começando por `$ ` + o comando do slot (prefixo: o Build acrescenta os arquivos da tarefa);
   - ter a última linha não vazia no formato `[exit=<n>]` (LM-018), com `n = 0`. Exceção (revisão do DESIGN, N1):
-    `n ≠ 0` com `LINT.antes.log` (ou `TIPOS.antes.log`) gravado antes da 1ª tarefa, com a **mesma 1ª linha** e
-    também `[exit≠0]`, é dívida antiga. Nesse caso vira **aviso** ("o comando já falhava antes do build: confira
+    `n ≠ 0` com `LINT.antes.log` (ou `TIPOS.antes.log`) gravado antes da 1ª tarefa, com o **mesmo comando do slot**
+    (o de antes não tem os arquivos novos; revisão do código, N1) e também `[exit≠0]`, é dívida antiga. Nesse caso vira **aviso** ("o comando já falhava antes do build: confira
     que os erros são os de antes"). Verde antes e vermelho depois é violação.
 
   Cada falha é uma violação com o conserto em 1 linha.
@@ -136,7 +136,7 @@ dívida antiga (aviso). Bloqueia só o que é objetivo: verde antes e vermelho d
 - **Tipos** (revisão do DESIGN, N2): o `typecheck_cmd` roda **como está**, sem arquivos anexados. O `tsc --noEmit`
   com arquivos ignora o `tsconfig.json`, e o `mypy .` com arquivos confere o projeto inteiro do mesmo jeito.
 - **Antes da 1ª tarefa**, o Build roda cada slot cheio na forma em que vai rodar no fim e grava `LINT.antes.log` e
-  `TIPOS.antes.log`. No fim, grava `LINT.log` e `TIPOS.log` com a mesma 1ª linha. O lint roda sobre os arquivos do
+  `TIPOS.antes.log`. No fim, grava `LINT.log` (o lint sobre todos os arquivos de código do manifest) e `TIPOS.log`. O lint roda sobre os arquivos do
   manifest que já existiam antes; para os arquivos novos, a execução de antes é o comando sem eles.
 
 **Rationale:** cumpre "só bloqueia o objetivo" sem herdar a dívida antiga.
@@ -172,7 +172,7 @@ Stacks:
 - **js:** `package.json`. Config: `eslint.config.*`, `.eslintrc*`, `"eslintConfig"` ou script `"lint"` no
   `package.json`.
 - **ts:** `tsconfig.json` (soma-se à js).
-- **php:** `composer.json` ou `*.php`. Config: `phpcs.xml`, `phpcs.xml.dist`, `.php-cs-fixer*`.
+- **php:** `composer.json` ou `*.php`. Config: `phpcs.xml`, `phpcs.xml.dist`, `.php-cs-fixer*`. Sem comando de tipos: o `php -l` confere um arquivo por chamada e travaria no slot que roda sem arquivos (DEFINE 1.4).
 - **sql:** só no `--regras`/`--agents` (pasta `migrations/`, `supabase/migrations/` ou `*.sql`). Sem ferramenta
   sugerida.
 
@@ -442,6 +442,7 @@ Os logs `LINT.log`/`TIPOS.log` são a observabilidade: ficam em `sdd/reports/evi
 | Version | Date | Author | Changes |
 |---------|------|--------|---------|
 | 1.0 | 2026-11-23 | design-agent | S1: 7 decisões, 21 arquivos |
+| 1.2 | 2026-11-23 | build | Revisão do código (auditor claude, N1 e N2): a dívida antiga confere o comando do slot, não a 1ª linha inteira; o log final cobre todos os arquivos de código do manifest. Avaliador (ciclo 1): PHP sem `php -l` |
 | 1.1 | 2026-11-23 | design-agent | Revisão do DESIGN (openrouter qwen + codex, auditor claude): N1 e N2 aplicadas nas Decisions 3 e 4 (log de antes; tipos sem arquivos anexados) |
 
 ---

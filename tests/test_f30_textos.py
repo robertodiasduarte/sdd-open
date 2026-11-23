@@ -37,7 +37,7 @@ class AT003Build(unittest.TestCase):
         verificar = p[p.index("4. **Verificar:**"):p.index("5. **Marcar**")]
         for trecho in ("`project.lint_cmd` sobre os arquivos da tarefa", "`project.typecheck_cmd` como está",
                        "falha da tarefa e segue a escada", "`sdd/reports/evidence/{F}/LINT.log` e `TIPOS.log`",
-                       "[exit=<rc>]", "a mesma 1ª linha do log de antes", "`lint: slot vazio`", "sem bloquear"):
+                       "[exit=<rc>]", "todos os arquivos de código do manifest", "`lint: slot vazio`", "sem bloquear"):
             with self.subTest(trecho=trecho):
                 self.assertIn(trecho, verificar)
 

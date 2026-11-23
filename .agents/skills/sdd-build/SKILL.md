@@ -194,10 +194,10 @@ dívida antiga do erro que a tarefa trouxe.
 3. **Escrever** seguindo os Code Patterns e as regras de qualidade.
 4. **Verificar:** o teste do arquivo; `project.lint_cmd` sobre os arquivos da tarefa (o comando que não aceita lista
    de arquivos roda inteiro, e contam só os erros nos arquivos da tarefa); `project.typecheck_cmd` como está, sem
-   arquivos anexados. Erro de lint ou de tipos é falha da tarefa e segue a escada abaixo. No fim do Build, grave a
-   última execução de cada slot cheio em `sdd/reports/evidence/{F}/LINT.log` e `TIPOS.log`, por um script em `bash`
-   (1ª linha `$ <comando>`, a saída, `[exit=<rc>]` no fim), com a mesma 1ª linha do log de antes; o `report-lint.py`
-   os exige. Os dois slots vazios: a linha `lint: slot vazio` no BUILD_REPORT e um aviso ao aluno, sem bloquear.
+   arquivos anexados. Erro de lint ou de tipos é falha da tarefa e segue a escada abaixo. No fim do Build, rode cada
+   slot cheio mais uma vez, o lint sobre todos os arquivos de código do manifest e os tipos como estão, e grave em
+   `sdd/reports/evidence/{F}/LINT.log` e `TIPOS.log`, por um script em `bash` (1ª linha `$ <comando>`, a saída,
+   `[exit=<rc>]` no fim); o `report-lint.py` os exige. Os dois slots vazios: a linha `lint: slot vazio` no BUILD_REPORT e um aviso ao aluno, sem bloquear.
 5. **Marcar** concluído.
 
 **Escada de retry — correção é redispatch fresco, nunca reply:** 1ª falha → corrigir no

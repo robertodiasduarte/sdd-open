@@ -122,10 +122,19 @@ class AT001SlotCheio(Base):
 
     def test_log_de_antes_de_outro_comando_nao_vale(self):
         self.config(lint="ruff check")
-        self.escreve(self.r, EV + "LINT.antes.log", log("ruff check outro.py", 1))
+        self.escreve(self.r, EV + "LINT.antes.log", log("flake8 a.py", 1))
         self.escreve(self.r, EV + "LINT.log", log("ruff check a.py", 1))
         rc, out = self.lint()
         self.assertEqual(rc, 1, out)
+
+    def test_antes_sem_os_arquivos_novos_ainda_e_divida_antiga(self):
+        # revisão do código, N1: o log de antes não tem o arquivo que a tarefa criou; vale o mesmo comando do slot
+        self.config(lint="ruff check")
+        self.escreve(self.r, EV + "LINT.antes.log", log("ruff check velho.py", 1, "velho.py:1:1: F401\n"))
+        self.escreve(self.r, EV + "LINT.log", log("ruff check velho.py novo.py", 1, "velho.py:1:1: F401\n"))
+        rc, out = self.lint()
+        self.assertEqual(rc, 0, out)
+        self.assertIn("já falhava antes do build", out)
 
 
 class AT002SlotVazio(Base):

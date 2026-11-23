@@ -24,8 +24,8 @@ data AAAA-MM-DD e prova por leitura — log de evidence/{FEATURE}/ ou `recibo: n
 
 Lint e tipos (F30): com `project.lint_cmd` cheio no sdd/config.yaml, `evidence/{FEATURE}/LINT.log` é obrigatório; com
 `project.typecheck_cmd` cheio, `TIPOS.log`. Cada um com a 1ª linha `$ <comando do slot>[ arquivos]`, não ignorado
-pelo git e terminando em `[exit=0]` — ou em `[exit≠0]` com o `*.antes.log` do mesmo comando também falhando
-(dívida antiga: aviso). Os dois vazios: a linha `lint: slot vazio` no relatório; sem ela, só aviso.
+pelo git e terminando em `[exit=0]` — ou em `[exit≠0]` com o `*.antes.log` do mesmo comando do slot também falhando
+(dívida antiga: aviso; o de antes não tem os arquivos novos, então só o comando do slot precisa bater). Os dois vazios: a linha `lint: slot vazio` no relatório; sem ela, só aviso.
 
 Só stdlib. Uso:
     python3 sdd/bin/report-lint.py sdd/reports/BUILD_REPORT_{FEATURE}.md     # exit 0 ok · 1 violações · 64 uso
@@ -522,7 +522,8 @@ def problema_log_lint(root, feature, nome, cmd, warnings):
     antes = os.path.join(root, rel_antes)
     if os.path.isfile(antes) and not git_ignorado(root, antes, warnings):
         rodado_antes, rc_antes = ler_log_lint(antes)
-        if rodado_antes == rodado and rc_antes not in (None, "0"):
+        mesmo_slot = rodado_antes is not None and (rodado_antes == cmd or rodado_antes.startswith(cmd + " "))
+        if mesmo_slot and rc_antes not in (None, "0"):
             warnings.append(f"`{rel}` terminou em `[exit={rc}]`, e o mesmo comando já falhava antes do build "
                             f"(`{rel_antes}`, `[exit={rc_antes}]`): dívida antiga; confira que os erros são os de antes")
             return None
