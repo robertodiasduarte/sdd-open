@@ -12,7 +12,7 @@ compatibility: Requer git >= 2.20 e um agente com acesso ao terminal (bash, zsh 
 license: MIT
 metadata:
   author: Roberto Dias Duarte
-  version: "1.7.2"
+  version: "1.8.0"
   updated: "2026-11"
   source: "https://github.com/robertodiasduarte/sdd-open/releases/latest"
   fase: "0"
@@ -21,7 +21,7 @@ metadata:
 # sdd-new-session — abrir uma frente
 
 Na primeira resposta desta skill, informe a versão numa linha, uma vez só, antes do Status:
-`sdd-new-session v1.7.2 · nov/2026`
+`sdd-new-session v1.8.0 · nov/2026`
 
 Um comando, uma tarefa, um diretório: `git worktree` + branch nova nascida do estado **remoto atual**
 da branch padrão. A outra ponta é a `sdd-release`.
@@ -293,6 +293,19 @@ a evidência — ela vai para o Passo 2, item 6.
   Duas fontes diferentes no mesmo nível (dois workflows com comandos diferentes, por exemplo) ou nenhuma
   ⇒ o slot fica vazio e a resposta diz por quê. O `test_cmd` alimenta os gates `kind: test`: um chute
   roda a coisa errada.
+- **Lint e tipos sem evidência** — com `project.lint_cmd` e `project.typecheck_cmd` vazios depois da busca acima,
+  rode `bash <pasta da sdd-checar-ambiente>/scripts/checar.sh --linter`: uma linha `stack<TAB>lint<TAB>tipos<TAB>instalar`
+  por stack sem linter, ou saída 1 sem nada a sugerir. Linha sem os 3 TABs (a `sdd-checar-ambiente` anterior à 1.8.0
+  não conhece o modo e devolve o diagnóstico) vale como nada a sugerir. Com sugestão, diga em 1 frase o que o linter
+  confere ("lê o código e aponta erro de estilo e de tipos antes de rodar") e pergunte uma vez:
+
+  **Sua decisão** — [D2 · muda o produto] **Gravo os comandos de lint e de tipos da sua stack no `sdd/config.yaml` desta frente?**
+  - **gravar** (recomendado) — grava `lint_cmd` e, quando a linha traz, `typecheck_cmd`; o Build passa a conferir o
+    código a cada tarefa. Antes do 1º Build, você instala a ferramenta com o comando de instalar da linha.
+  - **agora não** — os slots ficam vazios; o Build segue sem lint e diz isso no relatório.
+  - **não sei** — explico com um exemplo o que o linter acharia e repito a pergunta.
+
+  Esta skill nunca instala a ferramenta: o comando de instalar é do aluno.
 - **Preparação** — `package.json` versionado com `node_modules` no `.gitignore` ⇒ `npm install` na pasta
   nova; mesma lógica para `requirements.txt` e `composer.json`. `.env` no `.gitignore` com `.env.example`
   versionado ⇒ copiar o `.env` do checkout principal.

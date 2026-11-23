@@ -22,6 +22,11 @@ sdd/config.yaml) exige a linha dela em `## Migrations aplicadas`: mesmo caminho,
 data AAAA-MM-DD e prova por leitura — log de evidence/{FEATURE}/ ou `recibo: nome AAAA-MM-DD`.
 "exit 0" não prova migration: só ler de volta do banco prova.
 
+Lint e tipos (F30): com `project.lint_cmd` cheio no sdd/config.yaml, `evidence/{FEATURE}/LINT.log` é obrigatório; com
+`project.typecheck_cmd` cheio, `TIPOS.log`. Cada um com a 1ª linha `$ <comando do slot>[ arquivos]`, não ignorado
+pelo git e terminando em `[exit=0]` — ou em `[exit≠0]` com o `*.antes.log` do mesmo comando também falhando
+(dívida antiga: aviso). Os dois vazios: a linha `lint: slot vazio` no relatório; sem ela, só aviso.
+
 Só stdlib. Uso:
     python3 sdd/bin/report-lint.py sdd/reports/BUILD_REPORT_{FEATURE}.md     # exit 0 ok · 1 violações · 64 uso
     python3 sdd/bin/report-lint.py --stdin sdd/reports/BUILD_REPORT_{FEATURE}.md < conteudo.md
@@ -89,6 +94,11 @@ EVIDENCIA = "evidência"
 AUSENTE = "avaliação ausente"
 DECLARACAO = "declaração"
 MIGRATION = "migration"
+LINT = "lint"
+# F30: com o slot cheio, o build guarda a última execução do comando sobre os arquivos da tarefa neste log.
+LOGS_LINT = (("lint_cmd", "LINT.log"), ("typecheck_cmd", "TIPOS.log"))
+SLOT_VAZIO_RE = re.compile(r"^[ \t>*_|-]*`?lint: slot vazio`?", re.MULTILINE)
+EXIT_FIM_RE = re.compile(r"^\[exit=(-?\d+)\]$")
 IGNORADO_MSG = ("existe, mas o git o IGNORA (`git check-ignore -v` mostra a regra): não vai para o commit — "
                 "remova a regra ou use `git add -f`")
 
@@ -479,6 +489,64 @@ def tabela_reconhecida(line):
     return None if r is None or e is None else {"result": n - r, "evid": n - e}
 
 
+def ler_log_lint(caminho):
+    """(1ª linha sem o `$ `, exit do fim) de um log de lint/tipos; None em cada parte que não está no formato."""
+    try:
+        cheias = [l.strip() for l in open(caminho, encoding="utf-8", errors="replace").read().split("\n") if l.strip()]
+    except OSError:
+        return None, None
+    rodado = cheias[0][2:].strip() if cheias and cheias[0].startswith("$ ") else None
+    fim = EXIT_FIM_RE.match(cheias[-1]) if len(cheias) > 1 else None
+    return rodado, (fim.group(1) if fim else None)
+
+
+def problema_log_lint(root, feature, nome, cmd, warnings):
+    """O que falta no log de lint/tipos (texto), ou None quando ele prova o comando do slot verde (ou a dívida antiga,
+    com aviso: o mesmo comando já falhava no log de antes do build)."""
+    rel = f"{REPORTS_DIR}/evidence/{feature}/{nome}"
+    caminho = os.path.join(root, rel)
+    if not os.path.isfile(caminho):
+        return f"`{rel}` não existe"
+    if git_ignorado(root, caminho, warnings):
+        return f"`{rel}` {IGNORADO_MSG}"
+    rodado, rc = ler_log_lint(caminho)
+    if rodado is None:
+        return f"`{rel}`: a 1ª linha não é `$ <comando>`"
+    if rodado != cmd and not rodado.startswith(cmd + " "):
+        return f"`{rel}`: a 1ª linha roda `{rodado}`, não o comando do slot (`{cmd}`)"
+    if rc is None:
+        return f"`{rel}`: a última linha não é `[exit=<n>]` (grave o log por um script em bash, com rc=$?)"
+    if rc == "0":
+        return None
+    rel_antes = rel[:-len(".log")] + ".antes.log"
+    antes = os.path.join(root, rel_antes)
+    if os.path.isfile(antes) and not git_ignorado(root, antes, warnings):
+        rodado_antes, rc_antes = ler_log_lint(antes)
+        if rodado_antes == rodado and rc_antes not in (None, "0"):
+            warnings.append(f"`{rel}` terminou em `[exit={rc}]`, e o mesmo comando já falhava antes do build "
+                            f"(`{rel_antes}`, `[exit={rc_antes}]`): dívida antiga; confira que os erros são os de antes")
+            return None
+    return (f"`{rel}` terminou em `[exit={rc}]`: o comando acusa erro, e não há `{rel_antes}` do mesmo comando "
+            "falhando antes do build")
+
+
+def check_lint(content, root, feature, warnings):
+    """F30: slot cheio exige o log verde do comando; os dois vazios pedem a linha `lint: slot vazio` (só aviso)."""
+    projeto = ler_mapa(root, "project")
+    cheios = [(slot, nome, projeto.get(slot, "").strip()) for slot, nome in LOGS_LINT if projeto.get(slot, "").strip()]
+    if not cheios:
+        if not SLOT_VAZIO_RE.search(strip_fences(content)):
+            warnings.append("lint e tipos com o slot vazio (project.lint_cmd e project.typecheck_cmd), e o relatório "
+                            "não diz isso: escreva a linha `lint: slot vazio`")
+        return []
+    violations = []
+    for slot, nome, cmd in cheios:
+        problema = problema_log_lint(root, feature, nome, cmd, warnings)
+        if problema:
+            violations.append((LINT, f"project.{slot} está cheio: {problema}"))
+    return violations
+
+
 def check(content, root, report_dir, feature):
     violations, warnings = [], []
     gate_kind = define_gate_kind(root, feature)
@@ -520,6 +588,7 @@ def check(content, root, report_dir, feature):
             violations.append((EVIDENCIA, f"Veredito do avaliador `{verdict}`: `{os.path.basename(found[0])}` {IGNORADO_MSG}"))
     violations += existencia_avaliacao(content, root, feature, warnings)
     violations += [(MIGRATION, v) for v in check_migrations(content, root, report_dir, feature)]
+    violations += check_lint(content, root, feature, warnings)
     return violations, warnings
 
 
@@ -534,6 +603,9 @@ def conserto(classe, feature):
     if classe == MIGRATION:
         return ("migration: aplique e leia de volta (.agents/skills/sdd-build/references/aplicar-migration.md) e registre "
                 "a linha em `## Migrations aplicadas`.")
+    if classe == LINT:
+        return (f"rode o comando do slot sobre os arquivos da tarefa até sair 0 e grave `evidence/{feature}/LINT.log` "
+                "(ou `TIPOS.log`): 1ª linha `$ <comando>`, a saída e, no fim, `[exit=0]`.")
     return (f"produza `evidence/{feature}/AT-nnn.log` (1ª linha `$ cmd`, output verbatim), cite "
             f"`AVALIACAO_{feature}_<ts>.md`, ou `recibo: nome YYYY-MM-DD` (só gate manual-ux) — ou mantenha `false`.")
 

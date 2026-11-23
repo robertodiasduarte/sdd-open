@@ -633,7 +633,7 @@ class SegurancaNoAgents(Sandbox):
     """F18/F20 (AT-007): o bloco do AGENTS.md traz as regras de maior risco da stack do projeto e o ponteiro."""
 
     INICIO = "### Segurança ao construir"
-    FIM = "Agentes preparados neste projeto:"
+    FIM = "### Qualidade ao construir"   # F30: o bloco de qualidade vem logo depois do de segurança
 
     def bloco(self, p) -> str:
         texto = (p / "AGENTS.md").read_text(encoding="utf-8")

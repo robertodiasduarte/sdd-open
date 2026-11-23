@@ -6,7 +6,7 @@ compatibility: "Requer um agente com acesso gravável ao projeto; não precisa d
 # SDD Build
 
 Na primeira resposta desta skill, informe a versão numa linha, uma vez só:
-`sdd-build v2.14.1 · nov/2026`
+`sdd-build v2.15.0 · nov/2026`
 
 Executar implementação real. Não tratar Build como geração de um documento isolado.
 
@@ -236,6 +236,9 @@ Seguir cinco invariantes:
 3. **Surgical change**: não refatorar código adjacente sem necessidade.
 4. **Criterion before code**: saber como verificar antes de escrever.
 5. **Evidence**: não declarar sucesso sem executar a verificação.
+6. **Quality**: seguir as regras de [references/CATALOGO_QUALIDADE.md](references/CATALOGO_QUALIDADE.md), as gerais
+   (erro tratado ou propagado; nome que diz o que é; só o código que roda; reusar a função que já existe antes de
+   criar outra; constante com nome no lugar de número mágico; uma coisa por função) e as da stack do projeto.
 
 Para cada item:
 1. reler o contexto mínimo necessário;
@@ -303,8 +306,9 @@ Se a plataforma não suporta reexecução fresca:
 
 Usar o comando real mais específico para a tarefa, por exemplo:
 - teste unitário correspondente;
-- typecheck do módulo;
-- lint do arquivo;
+- o lint do projeto sobre os arquivos da tarefa e a checagem de tipos do projeto como está (`project.lint_cmd` e
+  `project.typecheck_cmd` do `sdd/config.yaml`, ou os do projeto); erro é falha da tarefa; sem linter, dizer ao
+  usuário e sugerir o da stack ("Ferramentas por stack" do catálogo), sem instalar;
 - import/compile check;
 - smoke local.
 
@@ -402,7 +406,7 @@ Incluir:
 - migrations aplicadas (arquivo, projeto nome e ref, data/hora, prova por leitura) quando o manifest tem migration;
 - prompts gerados/refatorados quando aplicável;
 - drift;
-- Verification Results;
+- Verification Results, com lint e tipos (`$ <comando>` e o resultado) ou a linha `lint: slot vazio`;
 - Verify Gate receipt;
 - Acceptance Test Verification;
 - Advisor Ledger quando houve revisão;

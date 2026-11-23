@@ -136,8 +136,12 @@ Nenhum drift ⇒ escreva `nenhum`.
 
 ### Lint (`{{LINT_CMD}}`)
 
+Evidência: `evidence/{FEATURE}/LINT.log` e `TIPOS.log` (e os `.antes.log`), ou, com os dois slots vazios, a linha:
+
+lint: slot vazio
+
 ```text
-{Saída do lint do projeto, ou "N/A - não configurado"}
+{Saída do lint do projeto sobre os arquivos da tarefa, ou "N/A - não configurado"}
 ```
 
 **Status:** ✅ Pass / ❌ Fail

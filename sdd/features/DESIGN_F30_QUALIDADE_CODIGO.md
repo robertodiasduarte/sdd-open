@@ -107,7 +107,10 @@ antigo e as fixtures de cerca de 14 módulos de teste.
   `sdd/reports/evidence/{F}/` é obrigatório. Ele precisa:
   - existir e não estar ignorado pelo git (reusa `git_ignorado`);
   - ter a 1ª linha começando por `$ ` + o comando do slot (prefixo: o Build acrescenta os arquivos da tarefa);
-  - ter a última linha não vazia exatamente `[exit=0]` (LM-018).
+  - ter a última linha não vazia no formato `[exit=<n>]` (LM-018), com `n = 0`. Exceção (revisão do DESIGN, N1):
+    `n ≠ 0` com `LINT.antes.log` (ou `TIPOS.antes.log`) gravado antes da 1ª tarefa, com a **mesma 1ª linha** e
+    também `[exit≠0]`, é dívida antiga. Nesse caso vira **aviso** ("o comando já falhava antes do build: confira
+    que os erros são os de antes"). Verde antes e vermelho depois é violação.
 
   Cada falha é uma violação com o conserto em 1 linha.
 - os dois slots vazios (ou config ausente) ⇒ procura `lint: slot vazio` fora de cerca; achou ⇒ nada; não achou ⇒
@@ -119,27 +122,30 @@ O DEFINE AT-002 foi ajustado para "aviso" (Revision History do DEFINE 1.1).
 **Alternatives Rejected:** 1. Violação sem a linha: rejeitada pelo raio de impacto acima. · 2. Um log só com os
 dois comandos: rejeitada, porque não dá para conferir a 1ª linha de cada um.
 
-**Consequences:** um BUILD_REPORT com slot cheio e log com exit 1 é reprovado; quem tem erro de lint antigo fora
-dos arquivos da tarefa grava o log do comando sobre os arquivos da tarefa (Decision 4).
+**Consequences:** um BUILD_REPORT com slot cheio e log com exit 1 é reprovado, salvo quando o log de antes prova a
+dívida antiga (aviso). Bloqueia só o que é objetivo: verde antes e vermelho depois.
 
 ### Decision 4: Lint sobre os arquivos da tarefa, com queda declarada para o projeto inteiro
 | **Status** | Accepted | · | **Date** | 2026-11-23 |
 
 **Context:** ESCOPO §7: o aluno não pode travar por erro de lint de código antigo. A-004.
 
-**Choice:** o passo "Verificar" manda rodar `<slot> <arquivos da tarefa>`. Quando o comando do projeto não aceita
-lista de arquivos (`npm run lint` sem `--`, `make lint`), roda inteiro e conta só os erros que citam arquivos da
-tarefa; o BUILD_REPORT registra `lint: projeto inteiro (o comando não aceita arquivos)`. O `LINT.log` final é a
-execução sobre o conjunto de arquivos do manifest.
+**Choice:**
+- **Lint:** o passo "Verificar" roda `<lint_cmd> <arquivos da tarefa>`. Quando o comando não aceita lista de
+  arquivos (`npm run lint` sem `--`, `make lint`), roda inteiro e conta só os erros que citam arquivos da tarefa.
+- **Tipos** (revisão do DESIGN, N2): o `typecheck_cmd` roda **como está**, sem arquivos anexados. O `tsc --noEmit`
+  com arquivos ignora o `tsconfig.json`, e o `mypy .` com arquivos confere o projeto inteiro do mesmo jeito.
+- **Antes da 1ª tarefa**, o Build roda cada slot cheio na forma em que vai rodar no fim e grava `LINT.antes.log` e
+  `TIPOS.antes.log`. No fim, grava `LINT.log` e `TIPOS.log` com a mesma 1ª linha. O lint roda sobre os arquivos do
+  manifest que já existiam antes; para os arquivos novos, a execução de antes é o comando sem eles.
 
 **Rationale:** cumpre "só bloqueia o objetivo" sem herdar a dívida antiga.
 
 **Alternatives Rejected:** 1. Sempre o projeto inteiro: rejeitada, porque trava o aluno na dívida antiga. · 2.
 Detectar por script se o comando aceita arquivos: rejeitada como frágil (LM-005, heurística sobre texto livre).
 
-**Consequences:** na queda, o `[exit=0]` do log pode não valer (o projeto tem erro antigo). Nesse caso o log grava
-o comando com `--` e os arquivos, ou o BUILD_REPORT declara a queda e o log é o do comando nos arquivos. A regra do
-`report-lint` não muda.
+**Consequences:** com dívida antiga, o par antes/depois mostra se a tarefa acrescentou erro: verde→vermelho
+bloqueia, vermelho→vermelho avisa (Decision 3). São 2 execuções a mais por slot no Build inteiro, não por tarefa.
 
 ### Decision 5: Detecção de stack por arquivo, a mesma tabela em 2 leitores com teste de paridade
 | **Status** | Accepted | · | **Date** | 2026-11-23 |
@@ -425,7 +431,9 @@ Os logs `LINT.log`/`TIPOS.log` são a observabilidade: ficam em `sdd/reports/evi
 
 | # | Fonte | Nota | Decisão | Evidência |
 |---|---|---|---|---|
-| — | — | Revisão do DESIGN: ver a decisão `review-design` no fecho da fase | — | — |
+| N1 | auditor claude (`sdd/reports/reviews/EXTERNAL_REVIEW_20261123-201231/auditor.md`) | MED: a queda para o projeto inteiro reprova sempre com dívida antiga | APLICADA | Decision 3 (exceção com log de antes) e Decision 4 |
+| N2 | auditor claude (mesma pasta) | MED: `tsc`/`mypy` com arquivos anexados ignoram config ou conferem tudo | APLICADA | Decision 4 (tipos rodam como estão) |
+| — | revisor openrouter `qwen/qwen3.7-plus` e 2º revisor codex `gpt-6.1-sol` | 0 achados (o revisor terminou em 26 s) | — | diversidade: vendor · US$ 0,49 |
 
 ---
 
@@ -434,6 +442,7 @@ Os logs `LINT.log`/`TIPOS.log` são a observabilidade: ficam em `sdd/reports/evi
 | Version | Date | Author | Changes |
 |---------|------|--------|---------|
 | 1.0 | 2026-11-23 | design-agent | S1: 7 decisões, 21 arquivos |
+| 1.1 | 2026-11-23 | design-agent | Revisão do DESIGN (openrouter qwen + codex, auditor claude): N1 e N2 aplicadas nas Decisions 3 e 4 (log de antes; tipos sem arquivos anexados) |
 
 ---
 

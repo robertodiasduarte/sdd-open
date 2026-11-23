@@ -8,9 +8,11 @@ project:
   name: meu-projeto
   # Comando de teste, usado por gates `kind: test`.
   test_cmd: ""
-  # Checagem de tipos/compilação, usada por gates `kind: typecheck`.
+  # Checagem de tipos/compilação, usada por gates `kind: typecheck`. Roda também a cada tarefa do Build, como está.
   typecheck_cmd: ""
-  # Checagem de sintaxe por tipo de arquivo (fase Release, passo 0a).
+  # Lint (estilo e erros comuns): roda a cada tarefa do Build, sobre os arquivos da tarefa, e na Release (passo 0a).
+  # Com este slot ou o de cima cheio, o BUILD_REPORT exige evidence/{F}/LINT.log (TIPOS.log). Os dois vazios: o
+  # checar.sh da sdd-checar-ambiente sugere o padrão da stack, e a sdd-new-session pergunta se grava.
   lint_cmd: ""
   # Branch de onde nascem as features. Nunca se trabalha nela diretamente (o pre-commit de sdd/hooks
   # recusa commit direto nela quando ela já tem remoto).

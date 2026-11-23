@@ -5,7 +5,7 @@ compatibility: Requer bash >= 3.2, git >= 2.20 e python3 (report-lint.py). Roda 
 license: MIT
 metadata:
   author: Roberto Dias Duarte
-  version: "2.14.1"
+  version: "2.15.0"
   updated: "2026-11"
   source: "https://github.com/robertodiasduarte/sdd-open/releases/latest"
   fase: "3"
@@ -14,7 +14,7 @@ metadata:
 # sdd-build — Fase 3
 
 Na primeira resposta desta skill, informe a versão numa linha, uma vez só, antes do Status:
-`sdd-build v2.14.1 · nov/2026`
+`sdd-build v2.15.0 · nov/2026`
 
 **Projeto sem `sdd/bin/` (sem o `init`) ou sem acesso aos arquivos (claude.ai, ChatGPT)?** Siga `web/MODO_WEB.md`
 desta skill; os caminhos que ele cita (`references/`, `assets/`) são os de dentro de `web/`.
@@ -151,6 +151,12 @@ as frases do catálogo da `sdd-seguranca` que valem para a stack deste projeto (
 filtre pela stack). Todo código escrito segue essas frases; conflito entre uma frase e o DESIGN é pergunta, nunca
 escolha silenciosa. Os itens aplicados no Define já são ATs do Verify Gate.
 
+**Antes da 1ª tarefa, a qualidade:** `bash sdd/bin/qualidade-regras.sh --regras` imprime as regras de forma do
+catálogo de qualidade (`web/references/CATALOGO_QUALIDADE.md`) que valem para a stack, e os slots `project.lint_cmd`
+e `project.typecheck_cmd`. Todo código escrito segue essas regras. Com um slot cheio, rode-o agora, na forma em que
+vai rodar no fim, e grave `sdd/reports/evidence/{F}/LINT.antes.log` (ou `TIPOS.antes.log`): é ele que separa a
+dívida antiga do erro que a tarefa trouxe.
+
 1. **Prompt no inventário** (o arquivo está em `LLM Prompts` do DESIGN, ou é estágio de uma LOOP_SPEC gerada):
    vá direto ao roteador pelo `Tipo` da linha, sem varredura antes, porque o texto ainda não existe.
    - **`one-shot`:** compile o contrato do DESIGN (tom, saída, fallback, referências) e passe à skill
@@ -185,7 +191,13 @@ escolha silenciosa. Os itens aplicados no Define já são ATs do Verify Gate.
    grave. Saída 64: chamada errada; corrija, nunca ignore. Saída 2: **pare** e pergunte: iterar o DESIGN, ou confirmar
    falso positivo e registrar em "Drift detectado". O aviso de `prompts.wrapper_pattern` vazio vai ao aluno uma vez por
    Build: se o projeto chama a IA por uma função própria, a varredura não a vê até o slot ser preenchido.
-3. **Escrever** seguindo os Code Patterns. 4. **Verificar** (lint, tipos, teste do arquivo).
+3. **Escrever** seguindo os Code Patterns e as regras de qualidade.
+4. **Verificar:** o teste do arquivo; `project.lint_cmd` sobre os arquivos da tarefa (o comando que não aceita lista
+   de arquivos roda inteiro, e contam só os erros nos arquivos da tarefa); `project.typecheck_cmd` como está, sem
+   arquivos anexados. Erro de lint ou de tipos é falha da tarefa e segue a escada abaixo. No fim do Build, grave a
+   última execução de cada slot cheio em `sdd/reports/evidence/{F}/LINT.log` e `TIPOS.log`, por um script em `bash`
+   (1ª linha `$ <comando>`, a saída, `[exit=<rc>]` no fim), com a mesma 1ª linha do log de antes; o `report-lint.py`
+   os exige. Os dois slots vazios: a linha `lint: slot vazio` no BUILD_REPORT e um aviso ao aluno, sem bloquear.
 5. **Marcar** concluído.
 
 **Escada de retry — correção é redispatch fresco, nunca reply:** 1ª falha → corrigir no

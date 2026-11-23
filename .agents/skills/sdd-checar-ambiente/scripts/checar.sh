@@ -27,6 +27,9 @@
 #      bash checar.sh --limpar <assinatura> (F25: a ÚNICA escrita da skill, só depois do sim do aluno ao plano: tira as
 #                                            cópias do plano para ~/.sdd-lixeira e deixa lá o desfazer.sh; assinatura
 #                                            que não é a do plano recalculado na hora ⇒ sai 2 sem mudar nada)
+#      bash checar.sh --linter  (F30: sem rede, só lê; uma linha "stack<TAB>lint<TAB>tipos<TAB>instalar" por stack do projeto
+#                                 sem linter nem checagem de tipos, com project.lint_cmd e project.typecheck_cmd vazios;
+#                                 sai 1 sem nada a sugerir. A sdd-new-session usa para perguntar se grava o slot)
 # No modo normal, o `gh auth status` (10 s) roda junto com o ls-remote quando o origin é do GitHub, e sozinho
 # quando não há origin: gh ausente, deslogado ou sem resposta vira ⚠️, nunca 🔴.
 
@@ -40,6 +43,7 @@ case "${1:-}" in
   --editores) MODO=editores ;;
   --duplicadas) MODO=duplicadas ;;
   --limpar) MODO=limpar ;;
+  --linter) MODO=linter ;;
 esac
 ASSINATURA="${2:-}"
 
@@ -237,6 +241,83 @@ if [ "${MODO}" = editor ]; then
   editor_achado || exit 1
   printf '%s\n' "${EDITOR_CMD}"
   [ -n "${EDITOR_DICA}" ] && printf 'dica: %s\n' "${EDITOR_DICA}"
+  exit 0
+fi
+
+# ── qualidade: linter e tipos por stack (F30) ────────────────────────────────
+# Copiado do catálogo de qualidade da sdd-build (web/references/CATALOGO_QUALIDADE.md, seção "Ferramentas por stack"):
+# as skills são instaladas sozinhas, e esta não lê arquivo de outra. tests/test_f30_checar_linter.py compara as duas
+# cópias campo a campo. Uma linha por stack: stack, detecta, config, lint, tipos, instalar (TAB entre os campos).
+qualidade_tabela() {
+  printf '%s\t%s\t%s\t%s\t%s\t%s\n' \
+    python "pyproject.toml, setup.py, requirements.txt, *.py" \
+      "ruff.toml, .ruff.toml, .flake8, mypy.ini, pyproject.toml[tool.ruff], pyproject.toml[tool.mypy], pyproject.toml[tool.flake8]" \
+      "ruff check" "mypy ." "python3 -m pip install ruff mypy" \
+    js "package.json" \
+      "eslint.config.js, eslint.config.mjs, eslint.config.cjs, eslint.config.ts, .eslintrc, .eslintrc.js, .eslintrc.cjs, .eslintrc.json, .eslintrc.yml, .eslintrc.yaml, package.json[eslintConfig], package.json[\"lint\"]" \
+      "npx eslint ." "—" "npm init @eslint/config@latest" \
+    ts "tsconfig.json" \
+      "eslint.config.js, eslint.config.mjs, eslint.config.cjs, eslint.config.ts, .eslintrc, .eslintrc.js, .eslintrc.cjs, .eslintrc.json, .eslintrc.yml, .eslintrc.yaml, package.json[eslintConfig], package.json[\"lint\"]" \
+      "npx eslint ." "npx tsc --noEmit" "npm init @eslint/config@latest && npm install --save-dev typescript" \
+    php "composer.json, *.php" \
+      "phpcs.xml, phpcs.xml.dist, .phpcs.xml, .php-cs-fixer.php, .php-cs-fixer.dist.php" \
+      "vendor/bin/phpcs --standard=PSR12" "—" "composer require --dev squizlabs/php_codesniffer" \
+    sql "*.sql" "—" "—" "—" "—"
+}
+qualidade_nome() { case "$1" in python) echo Python ;; js) echo JavaScript ;; ts) echo TypeScript ;; php) echo PHP ;; *) echo "$1" ;; esac; }
+# Algum arquivo com a extensão (*.ext) no projeto, fora das pastas do SDD, dos agentes e de dependências.
+qualidade_tem_ext() {   # $1 = raiz, $2 = *.ext
+  local achou
+  if git -C "$1" rev-parse --is-inside-work-tree >/dev/null 2>&1; then
+    achou="$(git -C "$1" -c core.quotepath=off ls-files -co --exclude-standard -- "$2" "**/$2" 2>/dev/null \
+      | grep -vE '^(\.agents|\.claude|\.cursor|\.gemini|\.codex|\.kimi|sdd|node_modules|vendor|\.venv|venv)/' | head -1)"
+  else
+    achou="$(find "$1" -maxdepth 3 \( -name node_modules -o -name vendor -o -name .git -o -name .venv -o -name venv \
+      -o -name sdd -o -name '.agents' -o -name '.claude' \) -prune -o -type f -name "$2" -print 2>/dev/null | head -1)"
+  fi
+  [ -n "${achou}" ]
+}
+# Algum dos sinais da lista ("a, b, *.ext" ou "arquivo[chave]") existe na raiz.
+qualidade_algum() {   # $1 = raiz, $2 = lista
+  local resto="$2" s arq chave
+  [ "${resto}" = "—" ] && return 1
+  while [ -n "${resto}" ]; do
+    s="${resto%%, *}"; [ "${s}" = "${resto}" ] && resto="" || resto="${resto#*, }"
+    case "${s}" in
+      \*.*) qualidade_tem_ext "$1" "${s}" && return 0 ;;
+      *\[*\]) arq="${s%%\[*}"; chave="${s#*\[}"; chave="${chave%\]}"
+              [ -f "$1/${arq}" ] && grep -qF -- "${chave}" "$1/${arq}" 2>/dev/null && return 0 ;;
+      *) [ -f "$1/${s}" ] && return 0 ;;
+    esac
+  done
+  return 1
+}
+qualidade_slot() {   # $1 = raiz, $2 = chave de project: no sdd/config.yaml
+  [ -f "$1/sdd/config.yaml" ] || return 0
+  awk -v k="$2" '/^project:/{p=1;next} /^[^[:space:]#]/{p=0}
+    p && $0 ~ "^[[:space:]]+" k ":" { sub("^[[:space:]]+" k ":[[:space:]]*", ""); sub(/[[:space:]]+#.*$/, "");
+      gsub(/^["'\'']|["'\'']$/, ""); gsub(/^[[:space:]]+|[[:space:]]+$/, ""); print; exit }' "$1/sdd/config.yaml" 2>/dev/null
+}
+# Uma linha "stack<TAB>lint<TAB>tipos<TAB>instalar" por stack sem linter nem tipos configurados (só com os 2 slots vazios).
+qualidade_sugestao() {   # $1 = raiz
+  local stack detecta config lint tipos instalar tem_ts=0
+  [ -z "$(qualidade_slot "$1" lint_cmd)" ] && [ -z "$(qualidade_slot "$1" typecheck_cmd)" ] || return 0
+  [ -f "$1/tsconfig.json" ] && tem_ts=1
+  qualidade_tabela | while IFS="$(printf '\t')" read -r stack detecta config lint tipos instalar; do
+    [ "${lint}" = "—" ] && continue
+    [ "${stack}" = js ] && [ "${tem_ts}" = 1 ] && continue   # com ts, a sugestão de ts vale no lugar da de js
+    qualidade_algum "$1" "${detecta}" || continue
+    qualidade_algum "$1" "${config}" && continue
+    printf '%s\t%s\t%s\t%s\n' "${stack}" "${lint}" "${tipos}" "${instalar}"
+  done
+}
+
+# --linter (F30): sem rede, só lê a pasta. Sai 1 sem nada a sugerir.
+if [ "${MODO}" = linter ]; then
+  QRAIZ="$(git rev-parse --show-toplevel 2>/dev/null || pwd -P)"
+  L="$(qualidade_sugestao "${QRAIZ}")"
+  [ -n "${L}" ] || exit 1
+  printf '%s\n' "${L}"
   exit 0
 fi
 # ── skills duplicadas (F25) ──────────────────────────────────────────────────
@@ -708,6 +789,18 @@ if [ -f "${RAIZ}/requirements.txt" ] && [ ! -d "${RAIZ}/.venv" ] && [ ! -d "${RA
   add_arrumar "requirements.txt sem ambiente virtual nesta pasta (as dependências podem estar instaladas fora dele)." \
               "python3 -m venv .venv && .venv/bin/pip install -r requirements.txt   (Windows: .venv\\Scripts\\pip)"
 fi
+# F30: stack sem linter nem checagem de tipos (e os 2 slots vazios) ⇒ a sugestão da stack. Só propõe: instalar e gravar
+# o slot são do aluno, com o sim dele (a sdd-new-session pergunta).
+QSUG="$(qualidade_sugestao "${RAIZ}" 2>/dev/null)"
+while IFS="$(printf '\t')" read -r QSTACK QLINT QTIPOS QINST; do
+  [ -n "${QSTACK}" ] || continue
+  if [ "${QTIPOS}" = "—" ]; then QDEPOIS="${QLINT}; grave em project.lint_cmd"
+  else QDEPOIS="${QLINT} e ${QTIPOS}; grave em project.lint_cmd e project.typecheck_cmd"; fi
+  add_arrumar "Este projeto em $(qualidade_nome "${QSTACK}") não tem conferência de estilo (linter) nem de tipos configurada: o código que o agente escreve sai sem ela." \
+              "${QINST}   (depois: ${QDEPOIS} do sdd/config.yaml)"
+done <<QFIM
+${QSUG}
+QFIM
 if [ -f "${RAIZ}/.env.example" ] && [ ! -f "${RAIZ}/.env" ] \
    && [ -n "$(git -C "${RAIZ}" ls-files .env.example 2>/dev/null)" ]; then
   add_arrumar "O projeto espera um .env (há .env.example) e ele não existe nesta pasta." "cp .env.example .env   (e preencha)"

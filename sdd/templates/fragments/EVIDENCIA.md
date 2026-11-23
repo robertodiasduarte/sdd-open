@@ -104,6 +104,14 @@ Evidência de OUTRA feature, `README.md` com `$ ` na 1ª linha, recibo em featur
 `test` — tudo negado (buracos fechados no review adversarial de 28/08). Critério com `|` no
 texto: escape como `\|` (o lint respeita e conta as colunas a partir do fim da linha).
 
+### Lint e tipos (F30)
+
+Com `project.lint_cmd` cheio no `sdd/config.yaml`, `evidence/{FEATURE}/LINT.log` é obrigatório; com
+`project.typecheck_cmd` cheio, `TIPOS.log`. Cada um: 1ª linha `$ <comando do slot>[ arquivos da tarefa]`, a saída e
+`[exit=0]` no fim, fora do `.gitignore`. `[exit≠0]` só passa, com aviso, quando `LINT.antes.log` (ou
+`TIPOS.antes.log`), gravado antes da 1ª tarefa com a mesma 1ª linha, também falhava: é dívida antiga. Os dois slots
+vazios: a linha `lint: slot vazio` no relatório (sem ela, só aviso).
+
 ### Migration aplicada (seção `## Migrations aplicadas`)
 
 Migration listada nos arquivos do relatório exige a linha dela, com o mesmo caminho, projeto

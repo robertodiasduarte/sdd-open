@@ -4,7 +4,7 @@ license: MIT
 description: "Diagnostica, sem alterar nada, se este computador e este repositório estão prontos para o SDD: repositório git, agente de código, identidade do git, acesso ao remoto (credencial, rede, repositório ainda vazio), o gh (o GitHub no terminal) e o login nele, worktrees órfãs, dependências, editor (também fora do PATH), dado exposto (senha, certificado A1 ou chave privada já salvos no git; .env fora do .gitignore; npm sem ignore-scripts; repositório público) e skill do SDD duplicada (global e no projeto). Responde em uma linha quando está tudo certo e, quando não está, lista o que impede primeiro, cada item com o comando exato que resolve. Num modo à parte, só com o sim ao plano mostrado, tira a cópia mais velha para uma lixeira, com comando que desfaz. Use quando o usuário pedir para checar o ambiente ou limpar skills duplicadas, antes da primeira frente, ou quando algo estranho acontecer (commit que falha, comando não encontrado, worktree sumida, skill fora da versão esperada)."
 metadata:
   author: Roberto Dias Duarte
-  version: "1.7.1"
+  version: "1.8.0"
   updated: "2026-11"
   source: "https://github.com/robertodiasduarte/sdd-open/releases/latest"
 ---
@@ -73,7 +73,7 @@ no projeto ou na pasta global do agente.)
 script: blocos `🔴 Dado exposto`, `🔴 Impede o trabalho` e `⚠️ Vale arrumar` só se tiverem itens, e por
 último a linha `✅ Pronto: repo …` (ou `✅ Repo …` quando houver problema). Checagem que passou ou não se
 aplica não é mencionada fora dessa linha. Termine a linha ✅ com a identificação desta skill:
-`sdd-checar-ambiente v1.7.1 · nov/2026`
+`sdd-checar-ambiente v1.8.0 · nov/2026`
 (o script faz isso sozinho, lendo a versão deste arquivo).
 
 **Só o dado exposto** — `bash <pasta desta skill>/scripts/checar.sh --segredo` imprime apenas o bloco
@@ -197,6 +197,11 @@ nem rede. É o que a `sdd-new-session` roda com o slot `editor` vazio.
   instaladas fora dele.
 - `.env.example` versionado e nenhum `.env` ⇒ falta a configuração local (copiar o exemplo e
   preencher).
+- **Linter e tipos** — projeto em Python, JavaScript, TypeScript ou PHP sem a configuração de um linter, com
+  `project.lint_cmd` e `project.typecheck_cmd` vazios ⇒ ⚠️ com o comando que instala o padrão da stack e o par de
+  comandos para gravar nos slots. É sugestão: quem instala e grava é o aluno, com o sim dele. O modo `--linter`
+  imprime a mesma sugestão em linhas `stack<TAB>lint<TAB>tipos<TAB>instalar` (sai 1 sem nada a sugerir), para a
+  `sdd-new-session` perguntar.
 - **Programa do GitHub para o terminal (`gh`)**, só no modo normal e só com `origin` do GitHub ou sem
   `origin` (fora do GitHub, não fale dele; o `--frente` não fala dele): ausente ⇒ ⚠️ "O programa do GitHub
   para o terminal (gh) não está instalado — sem ele, publicar o projeto e logar no GitHub ficam manuais.", com
@@ -287,9 +292,9 @@ ordem, **omitindo os vazios**:
 2. **🔴 Impede o trabalho** — pasta sincronizada, não é repositório git (com o caso), git sem identidade, dependências faltando.
    Cada item com o **comando exato** que resolve, pronto para copiar.
 3. **⚠️ Vale arrumar** — `.env` fora do `.gitignore`, npm sem `ignore-scripts` (estes primeiro), skill do
-   SDD duplicada (logo depois), worktree órfã, frente integrada ainda aberta, `.env` ausente.
+   SDD duplicada (logo depois), worktree órfã, frente integrada ainda aberta, `.env` ausente, linter que falta.
 4. **✅ Resumo em uma linha**, terminando com a identificação desta skill — ex.:
-   `✅ Pronto: repo meu-app, branch main, 2 frentes abertas, Claude Code 2.1 · sdd-checar-ambiente v1.7.1 · nov/2026`
+   `✅ Pronto: repo meu-app, branch main, 2 frentes abertas, Claude Code 2.1 · sdd-checar-ambiente v1.8.0 · nov/2026`
 
 Se estiver tudo certo, a resposta inteira é **o Status e a linha ✅** — nenhuma outra frase antes nem
 depois: nada de "Tudo limpo", de lista do que foi verificado ou de oferta de ajuda. Ambiente saudável
@@ -301,7 +306,7 @@ Saudável (a resposta inteira são estas duas linhas):
 
 ```text
 Ambiente: ✅ 1 Verificar · ✅ 2 Explicar
-✅ Pronto: repo meu-app, branch main, nenhuma frente aberta, Claude Code 2.1 · sdd-checar-ambiente v1.7.1 · nov/2026
+✅ Pronto: repo meu-app, branch main, nenhuma frente aberta, Claude Code 2.1 · sdd-checar-ambiente v1.8.0 · nov/2026
 ```
 
 Com o certificado A1 salvo no git de um repositório público:
@@ -314,7 +319,7 @@ Ambiente: ✅ 1 Verificar · ▶️ 2 Explicar
   git rm --cached "certificados/empresa.pfx" && echo "certificados/empresa.pfx" >> .gitignore
   Depois, revogue o certificado com a autoridade certificadora e emita outro.
 
-✅ Repo meu-app (público no GitHub), branch main, nenhuma frente aberta, Claude Code 2.1 · sdd-checar-ambiente v1.7.1 · nov/2026
+✅ Repo meu-app (público no GitHub), branch main, nenhuma frente aberta, Claude Code 2.1 · sdd-checar-ambiente v1.8.0 · nov/2026
 ```
 
 Com dois problemas:
@@ -331,7 +336,7 @@ Ambiente: ✅ 1 Verificar · ▶️ 2 Explicar
   git worktree remove ../meu-app-frentes/relatorio-mensal
   git branch -d relatorio-mensal
 
-✅ Repo meu-app, branch main, 1 frente aberta, Claude Code 2.1 · sdd-checar-ambiente v1.7.1 · nov/2026
+✅ Repo meu-app, branch main, 1 frente aberta, Claude Code 2.1 · sdd-checar-ambiente v1.8.0 · nov/2026
 ```
 
 ---

@@ -464,9 +464,31 @@ gerar_corpo_agents() {
     printf '%s\n' "${SEG_PONTEIRO}" > "${regras}"
     warn "AGENTS.md: regras de segurança da stack fora (${motivo}) — o ponteiro para a sdd-seguranca ficou"
   fi
+  local qualidade; qualidade="$(mktemp)"
+  gerar_qualidade_agents "${qualidade}"
   sed -e "s|{{VENDORS}}|$(printf '%s' "${VENDORS}" | sed 's/^ *//; s/ /, /g')|g" \
-      -e '/^{{SEGURANCA}}$/{' -e "r ${regras}" -e 'd' -e '}' "${PKG}/AGENTS.md.tmpl" > "${CORPO_AGENTS}"
-  rm -f "${regras}"
+      -e '/^{{SEGURANCA}}$/{' -e "r ${regras}" -e 'd' -e '}' \
+      -e '/^{{QUALIDADE}}$/{' -e "r ${qualidade}" -e 'd' -e '}' "${PKG}/AGENTS.md.tmpl" > "${CORPO_AGENTS}"
+  rm -f "${regras}" "${qualidade}"
+}
+
+# F30: a linha {{QUALIDADE}} do template vira as regras de qualidade (as gerais e as da stack do projeto), lidas do
+# catálogo do PACOTE pelo único leitor dele (qualidade-regras.sh --agents), mais o ponteiro. No mesmo molde da
+# segurança: sem Python, sem o catálogo ou com o leitor falhando, fica só o ponteiro, e o ⚠️ diz por quê.
+QUA_PONTEIRO='- Antes de cada tarefa, rode `bash sdd/bin/qualidade-regras.sh --regras` e siga as regras de qualidade da stack deste projeto; o lint e a checagem de tipos do projeto (`project.lint_cmd` e `project.typecheck_cmd` em `sdd/config.yaml`) conferem o que dá para medir.'
+gerar_qualidade_agents() { # $1 = arquivo de saída com as linhas do bloco
+  local saida="${1}" motivo="" cat_pkg="${PKG}/.agents/skills/sdd-build/web/references/CATALOGO_QUALIDADE.md"
+  if [ ! -f "${cat_pkg}" ]; then motivo="o catálogo de qualidade da sdd-build não está no pacote"
+  elif ! sdd_python_pronto; then motivo="sem Python 3.9 para ler o catálogo"   # sem 2>/dev/null (LM-019)
+  elif ! bash "${PKG}/sdd/bin/qualidade-regras.sh" --agents --raiz "${ROOT}" --catalogo "${cat_pkg}" > "${saida}" 2>"${saida}.err" \
+       || ! grep -q . "${saida}"; then
+    motivo="o leitor do catálogo falhou: $(sed -n 's/^🛑 qualidade-regras: //p' "${saida}.err" | head -1)"
+  fi
+  rm -f "${saida}.err"
+  if [ -n "${motivo}" ]; then
+    printf '%s\n' "${QUA_PONTEIRO}" > "${saida}"
+    warn "AGENTS.md: regras de qualidade da stack fora (${motivo}) — o ponteiro para as regras de qualidade ficou"
+  fi
 }
 
 agents_md_checar() { # valida marcadores sem escrever (mesmas regras do merge: linha inteira, 1 par, ordem)

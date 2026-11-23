@@ -14,6 +14,7 @@
 .agents/skills/sdd-build/web/assets/BUILD_REPORT_TEMPLATE.md
 .agents/skills/sdd-build/web/assets/PROGRESS_TEMPLATE.md
 .agents/skills/sdd-build/web/assets/WORKER_BRIEF_TEMPLATE.md
+.agents/skills/sdd-build/web/references/CATALOGO_QUALIDADE.md
 .agents/skills/sdd-build/web/references/aplicar-migration.md
 .agents/skills/sdd-build/web/references/build-protocol.md
 .agents/skills/sdd-build/web/references/como-falar.md
@@ -361,6 +362,7 @@ sdd/bin/patterns-lint.sh
 sdd/bin/playbook-curator.sh
 sdd/bin/playbook-lint.sh
 sdd/bin/prompt-drift-scan.sh
+sdd/bin/qualidade-regras.sh
 sdd/bin/report-lint.py
 sdd/bin/sdd-archive.py
 sdd/bin/sdd-decisoes-lint.sh
@@ -724,6 +726,11 @@ tests/test_f27_textos.py
 tests/test_f28_revisores.py
 tests/test_f28_revisao_slots.py
 tests/test_f29_textos.py
+tests/test_f30_agents_qualidade.py
+tests/test_f30_checar_linter.py
+tests/test_f30_report_lint.py
+tests/test_f30_starter.py
+tests/test_f30_textos.py
 tests/test_fluxo.py
 tests/test_gate_baseline.py
 tests/test_gate_shell_evidencia.py

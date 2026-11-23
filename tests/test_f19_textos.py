@@ -76,8 +76,8 @@ class Molde(Sandbox):
 class Skills(unittest.TestCase):
     def test_build_5c_manda_gravar_conferir_e_passar_o_ledger(self):
         texto = ler(".agents/skills/sdd-build/SKILL.md")
-        self.assertIn('version: "2.14.1"', texto)
-        self.assertIn("`sdd-build v2.14.1 · nov/2026", texto)
+        self.assertIn('version: "2.15.0"', texto)
+        self.assertIn("`sdd-build v2.15.0 · nov/2026", texto)
         passo = trecho(texto, "**5c. Review adversarial pós-build.**", "**5d.")
         for termo in ("sdd/reviews/LEDGER_REVISAO_{F}.md", "sdd/templates/LEDGER_REVISAO_TEMPLATE.md",
                       "sdd/review/CRITERIO_DANO.md", "copiado do arquivo de vereditos", "`teste: <nome>`",
