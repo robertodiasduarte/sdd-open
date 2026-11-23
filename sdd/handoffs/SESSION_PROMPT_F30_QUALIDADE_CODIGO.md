@@ -1,7 +1,7 @@
 # Prompt de sessão — F30 Qualidade do código gerado
 
 Cole o bloco abaixo numa sessão nova do agente, aberta **dentro** de
-`/Users/robertoduarte/rdd-worktrees/sdd-open-f30-qualidade-codigo` (branch `qualidade-codigo`, nascida de
+`/Users/robertoduarte/rdd-worktrees/f30-sdd-open-uncle-bob` (branch `f30-sdd-open-uncle-bob`, nascida de
 `origin/main` `4aa0cce`).
 
 ---
@@ -18,6 +18,7 @@ Um ciclo por fatia: DEFINE → DESIGN → BUILD → RELEASE, sem brainstorm (o E
 - Segurança: só o item S2-b (a sabotagem nunca toca a árvore de trabalho).
 
 1. Leia, nesta ordem:
+   - `sdd/features/AVALIACAO_F30_UNCLE_BOB.md`: o porquê (práticas de Uncle Bob, o que o Open já cobre, as 15 propostas com benefício × custo, a nota estimada e as decisões de 23/11);
    - `sdd/features/ESCOPO_F30_QUALIDADE_CODIGO.md`: o que já existe, os achados com linha, os 8 itens, as decisões D1–D7 com a recomendação, o que fica fora e a proposta de Verify Gate;
    - a seção `## Sempre` de `sdd/playbook.md`;
    - `bash sdd/bin/playbook-lint.sh --grep <termo> sdd/playbook.md` para `report-lint`, `AGENTS.md.tmpl`, `seguranca-varredura`, `gerar-starter`, `checar.sh` e `SKILL.md`.

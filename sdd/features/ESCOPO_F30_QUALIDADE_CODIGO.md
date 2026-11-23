@@ -1,7 +1,7 @@
 # F30 — Qualidade do código gerado (achado e escopo)
 
-> Registrado em 23/11/2026, na abertura da frente `qualidade-codigo` (worktree
-> `~/rdd-worktrees/sdd-open-f30-qualidade-codigo`, nascida de `origin/main` `4aa0cce`). Origem: avaliação feita
+> Registrado em 23/11/2026, na abertura da frente `f30-sdd-open-uncle-bob` (worktree
+> `~/rdd-worktrees/f30-sdd-open-uncle-bob`, nascida de `origin/main` `4aa0cce`). Origem: avaliação feita
 > com o Roberto sobre o que o SDD Open já cobre das práticas consagradas por Robert C. Martin (Uncle Bob):
 > *Clean Code*, *Clean Architecture*, TDD e SOLID. O Roberto escolheu fazer os **itens 1 a 8**.
 
