@@ -1,17 +1,18 @@
-# BUILD REPORT: F30 — Qualidade do código gerado · fatia S1 (itens 1, 3, 4)
+# BUILD REPORT: F30 — Qualidade do código gerado · fatia S2 (itens 2, 6, 7)
 
-> Lint e tipos a cada tarefa do Build com evidência conferida pelo `report-lint.py`, regras de qualidade por stack no
-> AGENTS.md e no texto da build do starter, e sugestão do linter da stack quando o projeto não tem um, sem instalar nada.
+> Vermelho antes do verde conferido pelo `report-lint.py` (coluna `Antes`), sabotagem do gate numa cópia descartável
+> (`sdd/bin/sabotagem.sh`) e o passo Refatorar entre Verificar e Marcar, ligado por padrão (`build.refatorar`).
+> O relatório da S1 está na versão de `c4fa53c` (release v2.26.0).
 
 ## Metadata
 
 | Attribute | Value |
 |-----------|-------|
-| **Feature** | F30_QUALIDADE_CODIGO (fatia S1) |
-| **Date** | 2026-11-23 |
+| **Feature** | F30_QUALIDADE_CODIGO (fatia S2) |
+| **Date** | 2026-11-24 |
 | **Author** | build-agent |
-| **DEFINE** | [DEFINE_F30_QUALIDADE_CODIGO.md](../features/DEFINE_F30_QUALIDADE_CODIGO.md) (1.3) |
-| **DESIGN** | [DESIGN_F30_QUALIDADE_CODIGO.md](../features/DESIGN_F30_QUALIDADE_CODIGO.md) (1.1) |
+| **DEFINE** | [DEFINE_F30_QUALIDADE_CODIGO.md](../features/DEFINE_F30_QUALIDADE_CODIGO.md) (1.5) |
+| **DESIGN** | [DESIGN_F30_QUALIDADE_CODIGO.md](../features/DESIGN_F30_QUALIDADE_CODIGO.md) (2.1) |
 | **Status** | Complete |
 
 ---
@@ -20,12 +21,11 @@
 
 | Metric | Value |
 |--------|-------|
-| **Tasks Completed** | 21/21 do File Manifest (o item 21, `gerar-starter.py`, conferido sem mudança) |
-| **Files Created** | 7 (catálogo, `qualidade-regras.sh`, 5 módulos `tests/test_f30_*.py`) e este relatório |
-| **Lines of Code** | +1.485 / −48 em 34 arquivos em `07198f3`, mais 5 commits de correção da revisão e do raio de impacto até `76827bf` |
-| **Build Time** | uma sessão (23/11) |
-| **Tests Passing** | 52 testes novos (`test_f30_*`), todos vermelhos na árvore anterior (`git archive` de `cb3ac3c`) e verdes em `07198f3`; suíte inteira no Verify Gate (abaixo) |
-| **Agents Used** | revisores externos do DESIGN e do código (openrouter `qwen/qwen3.7-plus`, codex, auditor claude) e avaliador de contexto fresco |
+| **Tasks Completed** | 15/15 do File Manifest |
+| **Files Created** | 5 (`sabotagem.sh`, `disciplina-de-teste.md`, 3 módulos `tests/test_f30_*.py`) e este relatório |
+| **Build Time** | uma sessão (24/11) |
+| **Tests Passing** | 48 testes novos, todos escritos antes do código e gravados vermelhos (`AT-nnn.antes.log`); suíte inteira no Verify Gate |
+| **Agents Used** | revisores externos do DESIGN e do código (openrouter `qwen/qwen3.7-plus`, codex, auditor claude), 2 agentes da medição de custo e o avaliador de contexto fresco |
 
 ---
 
@@ -33,18 +33,18 @@
 
 | Superfície | LM-nnn | Veredito | Como / onde |
 |------------|--------|----------|-------------|
-| gate e testes novos | LM-001, LM-002 | ✔ tratado | os 5 módulos novos falham na árvore anterior (13+18+10+2+7 falhas/erros); o gate exige os 5 arquivos por `test -f`, porque o discover vazio do Python 3.9 sai 0 |
-| revisão sobre diff vazio | LM-003 | ✔ tratado | código commitado (`07198f3`) antes da revisão externa |
-| duas cópias do mesmo dado | LM-005 | ✔ tratado | um leitor do catálogo; tabela de ferramentas do `checar.sh` com teste de paridade; ponteiro do AGENTS.md e `ler_mapa` com teste que compara as cópias |
-| restauração de arquivo | LM-009 | ✔ tratado | baseline do `report-lint` com cópia de segurança e `cmp` depois; os outros baselines numa cópia de `git archive` |
-| `subprocess` e Windows | LM-014, LM-029, LM-042 | ✔ tratado | testes pelos ajudantes de `tests/apoio.py` (`Sandbox.roda`, `BASH`) e as bases de `test_checar`/`test_gerar_starter` |
-| saída do script novo | LM-015 | ✔ tratado | `qualidade-regras.sh` reconfigura stdout/stderr no início |
-| caminho de reserva | LM-017, LM-019 | ✔ tratado | ponteiro com 3 testes de causa (catálogo ausente, fora do formato, sem Python); `sdd_python_pronto` sem `2>/dev/null` |
-| `[exit=` do log | LM-018 | ✔ tratado | logs gravados por script `bash` com `rc=$?`; o `report-lint` recusa `[exit=]` vazio |
-| starter | LM-035 | ✔ tratado | catálogo e `MODO_WEB.md` sem `sdd/bin/`; `test_gerar_starter.py` 34/34 e `test_f17c_gerador.py` 7/7 antes do gate |
-| MANIFEST | LM-037 | ✔ tratado | 7 arquivos novos no `MANIFEST.txt` no mesmo commit |
-| teto de 500 linhas | LM-038 | ✔ tratado | `sdd-build` 369, `MODO_WEB.md` 488, `sdd-new-session` 444, `sdd-checar-ambiente` 344; `test_conversa.py` 19/19 |
-| contagem de perguntas | LM-044 | ✔ tratado | `test_decisoes_lint` 40 → 41 no mesmo commit |
+| gate e testes novos | LM-001, LM-002 | ✔ tratado | os 3 módulos novos rodados antes do código: vermelhos avaliando (`AT-010.antes.log` a `AT-015.antes.log`); um `TypeError` do próprio teste no AT-012 foi consertado e o antes regravado; `test -f` dos 3 no gate |
+| revisão sobre diff vazio | LM-003 | ✔ tratado | DEFINE e DESIGN commitados antes da revisão do DESIGN; código commitado antes da revisão do código |
+| cópia sem `.git` | LM-006 | ✔ tratado | a sabotagem roda numa cópia de `git archive`; os testes conferem 0, 2, 3 e 64 exatos |
+| sabotagem na árvore | LM-009 | ✔ tratado | nunca toca a árvore; hash (com `.git`) igual antes e depois em todos os 13 casos do `test_f30_sabotagem` |
+| `subprocess` e Windows | LM-014, LM-029, LM-042 | ✔ tratado | `Sandbox.roda`, `BASH`, `caminho_bash` e `SEM_SYMLINK` de `tests/apoio.py` |
+| saída UTF-8 do Python embutido | F16W2 | ✔ tratado | o `test_f16w2_saida` acusou o embutido do `sabotagem.sh` sem a troca de saída; corrigido em `5a5f361` |
+| `[exit=` do log | LM-018 | ✔ tratado | logs por script `bash` com `rc=$?` sem pipe; o `sabotagem.sh` grava o mesmo formato |
+| starter | LM-035 | ✔ tratado | `disciplina-de-teste.md` e `MODO_WEB.md` sem `sdd/bin/`; o `test_f30_textos_s2` gera o starter e confere |
+| custo em tokens | LM-036 | ✔ tratado | o número vem do uso que o executor de agente reporta, não do registro local |
+| MANIFEST | LM-037 | ✔ tratado | 5 arquivos novos no `MANIFEST.txt` no mesmo commit |
+| teto de 500 linhas | LM-038 | ✔ tratado | `sdd-build` 370 → 380, `MODO_WEB.md` 488 → 489, `sdd-design` 318 → 326; `test_conversa` verde |
+| contagem de perguntas | LM-044 | N.A. | nenhuma pergunta `[Dn]` nova |
 
 ---
 
@@ -54,8 +54,19 @@
 <<<CANDIDATO_PLAYBOOK
 secao: Reviews / harness
 sup: `unittest discover` `Ran 0 tests` `python 3.9` `verify-gate` `test -f`
-texto: No Python 3.9 (o /usr/bin/python3 do macOS), `unittest discover` sem nenhum teste que case o padrão sai 0 ("Ran 0 tests … OK"); um Verify Gate que só roda `discover -p 'test_fNN_*.py'` fica verde antes de o teste existir. **Do instead:** o gate confere a existência de cada módulo de teste da feature (`test -f`) antes do discover, e o baseline vermelho é conferido rodando o gate na árvore de antes.
-evidencia: sdd/features/DEFINE_F30_QUALIDADE_CODIGO.md (Verify Gate, nota de baseline)
+texto: No Python 3.9 (o /usr/bin/python3 do macOS), `unittest discover` sem nenhum teste que case o padrão sai 0 ("Ran 0 tests … OK"): um Verify Gate que só roda `discover -p 'test_fNN_*.py'` fica verde antes de o teste existir, e não prova nada (na F30 S1 isso foi medido antes do código).
+Do instead: ao criar um módulo de teste da feature, acrescente `test -f tests/<módulo>.py` ao gate, antes do discover, no mesmo commit; confira o vermelho do gate na árvore de antes.
+evidencia: sdd/features/DEFINE_F30_QUALIDADE_CODIGO.md (Verify Gate e nota de baseline); sdd/reports/evidence/F30_QUALIDADE_CODIGO/AT-010.antes.log
+>>>
+```
+
+```text
+<<<CANDIDATO_PLAYBOOK
+secao: Reviews / harness
+sup: `vermelho antes` `antes.log` `TypeError` `baseline` `teste novo`
+texto: O vermelho de um teste novo rodado antes do código pode vir de um defeito do próprio teste (na F30 S2, um `TypeError` de precedência entre `/` e `%` num `Path` no AT-012), e não da falta do comportamento: um antes assim prova só que o teste quebra.
+Do instead: antes de gravar o `AT-nnn.antes.log`, leia as falhas: `FAIL` de asserção ou `ImportError` do módulo novo valem; `ERROR` dentro do próprio teste se conserta e o antes se grava de novo.
+evidencia: sdd/reports/evidence/F30_QUALIDADE_CODIGO/AT-012.antes.log
 >>>
 ```
 
@@ -65,32 +76,34 @@ evidencia: sdd/features/DEFINE_F30_QUALIDADE_CODIGO.md (Verify Gate, nota de bas
 
 | # | Task | Agent | Status | Notes |
 |---|------|-------|--------|-------|
-| 1 | catálogo de qualidade (`web/references/`) | (general) | ✅ | 12 regras (6 gerais, 6 de stack) e 5 fichas de ferramenta |
-| 2 | `sdd/bin/qualidade-regras.sh` | (general) | ✅ | `--stack`, `--regras`, `--agents`; 64 com a causa |
-| 3–4 | `AGENTS.md.tmpl` e `bin/sdd-open.sh` | (general) | ✅ | `gerar_qualidade_agents`, no molde da segurança |
-| 5 | `report-lint.py` | (general) | ✅ | `check_lint` com o log de antes (revisão do DESIGN, N1) |
-| 6–7 | `sdd-build/SKILL.md` e `web/MODO_WEB.md` | (general) | ✅ | versão 2.15.0 |
-| 8–9 | `BUILD_REPORT_TEMPLATE.md`, `fragments/EVIDENCIA.md` | (general) | ✅ | |
-| 10–12 | `checar.sh`, `sdd-checar-ambiente` 1.8.0, `sdd-new-session` 1.8.0 | (general) | ✅ | aviso, `--linter`, pergunta `[D2]` |
-| 13 | `sdd/config.example.yaml` | (general) | ✅ | comentários dos 2 slots |
-| 14–18 | 5 módulos `tests/test_f30_*.py` | (general) | ✅ | 52 testes |
-| 19–20 | `test_decisoes_lint.py`, `MANIFEST.txt` | (general) | ✅ | |
-| 21 | `scripts/gerar-starter.py` | (general) | ✅ | sem mudança: o modo cita o catálogo e o gerador o copia (Decision 1) |
-| — | fora do manifest: versões fixas em 9 testes antigos e o recorte do bloco de segurança em `test_sdd_open.py` | (general) | ✅ | consequência das versões novas e do bloco novo logo depois do de segurança |
+| 1–3 | `tests/test_f30_vermelho_antes.py`, `test_f30_sabotagem.py`, `test_f30_textos_s2.py` | (general) | ✅ | escritos antes do código; 24 + 13 + 11 testes |
+| 4 | `sdd/bin/report-lint.py` | (general) | ✅ | coluna `Antes`, `ats_do_define`, classe `[vermelho antes]` |
+| 5 | `sdd/bin/sabotagem.sh` | (general) | ✅ | 0/2/3/64; contenção do caminho; `trap` |
+| 6 | `web/references/disciplina-de-teste.md` | (general) | ✅ | texto único, vai ao starter |
+| 7–8 | `sdd-build/SKILL.md` e `web/MODO_WEB.md` | (general) | ✅ | versão 2.16.0 |
+| 9–10 | `sdd-design/SKILL.md` (2.12.0) e `DESIGN_TEMPLATE.md` | (general) | ✅ | tabela de sabotagens |
+| 11–12 | `BUILD_REPORT_TEMPLATE.md`, `fragments/EVIDENCIA.md` | (general) | ✅ | coluna `Antes`; também no molde do starter (`web/assets/`) |
+| 13–15 | `config.example.yaml`, `docs/cli-conventions.md`, `MANIFEST.txt` | (general) | ✅ | |
+| — | fora do manifest: versões fixas em 7 testes antigos e o recorte do Verificar no `test_f30_textos` | (general) | ✅ | consequência das versões novas e do passo 5 novo |
 
 ---
 
 ## Seleção de modo
 
-Sinais: 21 itens, um mantenedor, ambiente com subagentes. Recomendação: `default` (sequencial). Decisão: `default`,
-pela autorização do Roberto em 23/11 de seguir o pipeline com as recomendações.
+Sinais: 15 itens, um mantenedor, ambiente com subagentes. Recomendação: `default` (sequencial). Decisão: `default`,
+pela autorização do Roberto em 24/11 de seguir o pipeline com as recomendações.
+
+| Item | Valor |
+|---|---|
+| Refatorar | ligado (padrão): nos arquivos das tarefas, depois do verde; nenhuma refatoração mudou comportamento |
 
 ---
 
 ## Drift detectado
 
-- O AT-007 dizia "a tabela de tradução tem a linha do aviso novo". A tabela é do `--frente`, e o `--frente` não fala de linter (Decision 6). A tradução ficou no passo dos slots; o DEFINE foi para a versão 1.3.
-- O `test_sdd_open.py` (`SegurancaNoAgents`) recortava o bloco de segurança até "Agentes preparados". O bloco de qualidade entra nesse meio, e o recorte passou a ir até `### Qualidade ao construir`.
+- O molde do BUILD_REPORT do starter (`sdd-build/web/assets/BUILD_REPORT_TEMPLATE.md`) não estava no manifest; ganhou
+  a coluna `Antes` para o texto da disciplina valer também no starter.
+- A versão da linha de identificação do `sdd-design/web/MODO_WEB.md` acompanhou a do `SKILL.md` (2.12.0), sem mudança de texto.
 
 ---
 
@@ -98,9 +111,9 @@ pela autorização do Roberto em 23/11 de seguir o pipeline com as recomendaçõ
 
 | File | Lines | Verified | Notes |
 |------|-------|----------|-------|
-| `.agents/skills/sdd-build/web/references/CATALOGO_QUALIDADE.md` | 120 | ✅ | |
-| `sdd/bin/qualidade-regras.sh` | 260 | ✅ | |
-| `tests/test_f30_report_lint.py` · `test_f30_textos.py` · `test_f30_agents_qualidade.py` · `test_f30_checar_linter.py` · `test_f30_starter.py` | — | ✅ | 15 + 8 + 15 + 11 + 3 testes |
+| `sdd/bin/sabotagem.sh` | ~190 | ✅ | |
+| `.agents/skills/sdd-build/web/references/disciplina-de-teste.md` | ~65 | ✅ | |
+| `tests/test_f30_vermelho_antes.py` · `test_f30_sabotagem.py` · `test_f30_textos_s2.py` | — | ✅ | |
 
 ---
 
@@ -118,10 +131,31 @@ Ver o Verify Gate em Acceptance Test Verification.
 
 ---
 
+## Custo dos passos novos (itens 2, 6 e 7)
+
+Medido em 24/11 com a mesma tarefa de exemplo (`saca(saldo, valor)` em Python, 2 AT, numa pasta temporária fora do
+repositório), feita por 2 agentes de contexto fresco do mesmo modelo (Claude Sonnet). Os tokens são os que o executor
+de agente reportou no fim de cada um (LM-036).
+
+| Execução | Passos | Tokens | Chamadas de ferramenta | Tempo |
+|---|---|---|---|---|
+| A | Escrever, Verificar, Marcar (os de antes) | 56.739 | 2 | 12,6 s |
+| B | teste primeiro, vermelho antes com log, Escrever, Verificar, Refatorar, sabotagem declarada, Marcar | 59.253 | 4 | 20,2 s |
+| **Diferença** | | **+2.514 (+4,4%)** | +2 | +7,6 s |
+
+Os dois terminaram verdes; o B gravou o antes vermelho (`[exit=1]`) e a sabotagem saiu 0 (o teste pegou o defeito);
+a refatoração não mudou nada (o código já estava limpo). Leitura: a maior parte dos tokens é o contexto fixo do agente;
+os passos novos acrescentam ~2,5 mil tokens numa tarefa de 2 AT. É n=1: o número é instável e cresce com o número de
+AT e de sabotagens declaradas; a sabotagem em si custa tempo (2 execuções do comando), não tokens.
+
+---
+
 ## Segurança
 
-N.A. na S1 (DEFINE: sem login, rota, dado de terceiros ou chamada paga). O `checar.sh` continua só lendo: o AT-006
-confere o hash da árvore antes e depois.
+O `sabotagem.sh` é a única superfície (DEFINE § Segurança, S2): troca só na cópia de `git archive HEAD` numa pasta de
+`mktemp -d`; recusa caminho absoluto, com `..`, link simbólico e caminho real fora da cópia (64); apaga a cópia por
+`trap`; a árvore recebe só o log. Conferido pelo `test_f30_sabotagem` (hash da árvore, inclusive `.git`, e o `TMPDIR`
+vazio em todos os casos) e pela sabotagem declarada do AT-013 (`AT-013.sabotagem.log`).
 
 ---
 
@@ -129,8 +163,9 @@ confere o hash da árvore antes e depois.
 
 | # | Issue | Resolution | Time Impact |
 |---|-------|------------|-------------|
-| 1 | O gemini não tinha credencial na revisão do DESIGN (exit 65) | o revisor foi o openrouter (`qwen/qwen3.7-plus`), com o saldo conferido antes em `/credits` (US$ 10,18; LM-008) | ~2 min |
-| 2 | A revisão do DESIGN achou 2 defeitos médios (N1, N2) | aplicados antes do código: log de antes e tipos sem arquivos anexados | — |
+| 1 | A revisão do DESIGN achou 1 MED (N1): `shall continue to` em qualquer lugar da linha classificaria o AT-011 como não-regressão | aplicado antes do código (Decision 9, DESIGN 2.1), com teste | — |
+| 2 | O antes do AT-012 tinha um `TypeError` do próprio teste | consertado e regravado; candidato ao playbook acima | ~2 min |
+| 3 | Os testes vizinhos acusaram 10 falhas: versões fixas, o recorte do Verificar e o Python embutido sem saída UTF-8 | corrigidas em `5a5f361`; os 127 testes desses módulos verdes | ~5 min |
 
 ---
 
@@ -138,26 +173,8 @@ confere o hash da árvore antes e depois.
 
 | Deviation | Reason | Impact |
 |-----------|--------|--------|
-| A sugestão do `checar.sh` é calculada numa variável, não num arquivo temporário | um nome fixo no `/tmp` poderia virar um link (o mesmo cuidado do `checar.sh:103`) | nenhum |
-| O catálogo ganhou a ficha `sql` em Ferramentas, com `lint: —` | a detecção de stack do script lê só as fichas; `sql` serve só para escolher regras | nenhum |
-
----
-
-## Raio de impacto (feito na release, 0b)
-
-3 agentes frescos, um por superfície, só leitura, com o brief `sdd-release/references/raio-de-impacto.md`. Nenhum
-consumidor quebrado e nenhuma invariante violada (INV-001 e INV-002 não tocam os módulos).
-
-| Superfície | Consumidores lidos | Resultado | Tratado |
-|---|---|---|---|
-| `report-lint.py` (`check_lint`) | pre-commit, `sdd-report-guard.py`, `sdd-drive.sh`, `sdd-release` 0a.5, `gate-shell-evidencia.sh`, docs de hooks, 8 módulos de teste (178 testes OK) | ok | `docs/hooks.md` e `docs/pt-BR/hooks.md` citam o log de lint no conserto da regra REPORT (`7eee8d7`) |
-| bloco `### Qualidade ao construir` do AGENTS.md | sed do template, merge entre marcadores, `sync --check`, doctor, teto do arquivo de contexto, CLAUDE.md/GEMINI.md, testes de texto do template | ok | a mensagem do `--regras` com só um slot vazio mandava escrever `lint: slot vazio`: corrigida, com teste |
-| `checar.sh` (`--linter`, ⚠️) e versões 1.8.0 / 1.8.0 / 2.15.0 | doctor (`--segredo`), new-session, iniciar-repo (`--frente`), gerador do starter e trocas, check-versions do starter, `test_checar` (137 testes OK com os vizinhos) | ok | a new-session confere a versão da checar antes do `--linter` (a anterior à 1.8.0 rodaria o diagnóstico com rede) |
-
-Pendências que ficam (não quebram nada): o doctor pula em silêncio um arquivo novo de `sdd/bin` ausente num projeto
-atualizado só com `sync` (anterior à F30; nesta release ele avisa pela versão da `sdd-build` e pelo `report-lint.py`
-mudado); a frase do item 5 da `sdd-release` não cita o log de lint (a tabela de abortar cobre; skill a 41 linhas do
-teto); o diagnóstico normal rodado no próprio repositório do Open mostra o ⚠️ de Python (sem `sdd/config.yaml`).
+| A cópia e a saída ficam numa pasta só de `mktemp -d` (`<pasta>/copia`, `<pasta>/saida.txt`), não a cópia direto no `mktemp` | a saída do comando não pode ficar dentro da cópia que ele lê; uma pasta e um `trap` apagam as duas | nenhum |
+| O `trap` de `INT`/`TERM`/`HUP` apaga e sai 130/143/129 | sair no sinal, em vez de seguir rodando depois da limpeza | nenhum |
 
 ---
 
@@ -171,54 +188,38 @@ Nenhum.
 
 **Camadas do manifest:** 1 (o pacote não declara `layers:`)
 **Contrato de aceite (passo 1.5 da `sdd-build`):** N.A. (1 camada)
-**Veredito do avaliador (C1):** PASS_PENDENTE_RECIBO · ciclos: 2 · achados: ciclo 1 NEEDS_WORK por 1 item (AT-006, PHP sem `php -l`: o AT foi emendado, DEFINE 1.4); ciclo 2 sem achado de código, só o recibo da suíte, que é o Verify Gate em `dac782a` · `AVALIACAO_F30_QUALIDADE_CODIGO_20261123-2050.md` (ciclo 1: `AVALIACAO_F30_QUALIDADE_CODIGO_20261123-2035.md`)
+avaliador: PENDENTE (o avaliador de contexto fresco está rodando)
 
 ---
 
 ## Acceptance Test Verification
 
-| ID | Critério (EARS, resumido do DEFINE) | Resultado | Evidência |
-|----|-------------------------------------|-----------|-----------|
-| AT-001 | When o `report-lint` confere um relatório com o slot cheio, shall exigir `LINT.log`/`TIPOS.log` com o comando do slot e `[exit=0]` (dívida antiga provada pelo log de antes: aviso) | true | `evidence/F30_QUALIDADE_CODIGO/AT-001.log` |
-| AT-002 | While os dois slots estão vazios, shall aprovar, com aviso se faltar a linha `lint: slot vazio` | true | `evidence/F30_QUALIDADE_CODIGO/AT-002.log` |
-| AT-003 | When a tarefa chega ao verificar, o texto da `sdd-build` shall nomear os 2 slots, os arquivos da tarefa, a escada, os logs e a linha do slot vazio | true | `evidence/F30_QUALIDADE_CODIGO/AT-003.log` |
-| AT-004 | When `init`/`sync` gera o AGENTS.md, shall escrever `### Qualidade ao construir` com as gerais e as da stack; 1 bloco depois de 2 `sync` | true | `evidence/F30_QUALIDADE_CODIGO/AT-004.log` |
-| AT-005 | If o catálogo falta, está fora do formato ou não há Python, then shall ficar o ponteiro e o aviso com a causa | true | `evidence/F30_QUALIDADE_CODIGO/AT-005.log` |
-| AT-006 | When o `checar.sh` roda numa stack sem linter, shall sugerir o padrão da stack sem gravar nada (hash igual) | true | `evidence/F30_QUALIDADE_CODIGO/AT-006.log` |
-| AT-007 | When a `sdd-new-session` acha os slots sem evidência, shall rodar `--linter` e perguntar `[D2]`, gravando só com o sim | true | `evidence/F30_QUALIDADE_CODIGO/AT-007.log` |
-| AT-008 | When o gerador monta o starter, a `sdd-build` dele shall trazer as regras e o catálogo, sem `sdd/bin/`, e passar nos grep da F29 | true | `evidence/F30_QUALIDADE_CODIGO/AT-008.log` |
-| AT-009 | The system shall continue to passar a suíte inteira, o `publish-gate` e o `check-versions`, com o bloco de segurança igual | true | `evidence/F30_QUALIDADE_CODIGO/GATE_S1_76827bf.log` |
+| ID | Critério (EARS, resumido do DEFINE) | Antes | Resultado | Evidência |
+|----|-------------------------------------|-------|-----------|-----------|
+| AT-010 | When o `report-lint` confere um relatório com a coluna `Antes`, shall exigir o `AT-nnn.antes.log` vermelho do mesmo comando em cada AT novo | `evidence/F30_QUALIDADE_CODIGO/AT-010.antes.log` | true | `evidence/F30_QUALIDADE_CODIGO/AT-010.log` · `evidence/F30_QUALIDADE_CODIGO/AT-010.sabotagem.log` |
+| AT-011 | If o AT é `shall continue to`, then shall exigir o antes verde; `manual-ux` e outros kinds aceitam `N.A.` | `evidence/F30_QUALIDADE_CODIGO/AT-011.antes.log` | true | `evidence/F30_QUALIDADE_CODIGO/AT-011.log` |
+| AT-012 | While a tabela não tem a coluna `Antes`, shall aprovar com 1 aviso; sem DEFINE, aviso com a causa | `evidence/F30_QUALIDADE_CODIGO/AT-012.antes.log` | true | `evidence/F30_QUALIDADE_CODIGO/AT-012.log` |
+| AT-013 | When o `sabotagem.sh` roda, shall dar 0 com o teste que pega e 2 com o que não pega, com a árvore idêntica fora o log | `evidence/F30_QUALIDADE_CODIGO/AT-013.antes.log` | true | `evidence/F30_QUALIDADE_CODIGO/AT-013.log` · `evidence/F30_QUALIDADE_CODIGO/AT-013.sabotagem.log` |
+| AT-014 | If o trecho não casa 1 vez, o caminho sai da cópia, o comando já falha ou não roda, then shall sair 3 ou 64 sem log | `evidence/F30_QUALIDADE_CODIGO/AT-014.antes.log` | true | `evidence/F30_QUALIDADE_CODIGO/AT-014.log` |
+| AT-015 | When a tarefa passa pelos passos, os textos shall ter o vermelho antes, a sabotagem, o Refatorar e `build.refatorar`, também no starter sem `sdd/bin/` | `evidence/F30_QUALIDADE_CODIGO/AT-015.antes.log` | true | `evidence/F30_QUALIDADE_CODIGO/AT-015.log` |
+| AT-016 | The system shall continue to aprovar os relatórios sem a coluna `Antes` (o da S1) e passar a suíte, o `publish-gate` e o `check-versions` | `evidence/F30_QUALIDADE_CODIGO/AT-016.antes.log` | true | `evidence/F30_QUALIDADE_CODIGO/AT-016.log` |
 
-**Verify Gate (`bash sdd/bin/verify-gate.sh sdd/features/DEFINE_F30_QUALIDADE_CODIGO.md`):** exit 0 em `76827bf` (o commit que sobe, registrado na 2ª linha do log): grep da F29 vazio, `check-versions` VERDE, `publish-gate` em modo CI verde sobre a cópia de `git archive`, os 5 `test_f30_*` (54 testes) e a suíte inteira, 2.819 testes, OK (4 pulados), com `/bin/bash` 3.2 e `/usr/bin/python3` 3.9. Um gate anterior, em `07198f3`, também saiu verde (2.817 testes, `GATE_S1.log`); os de `dac782a`, `7eee8d7`, `bb32004` e `d94bb8b` foram interrompidos de propósito, porque o código mudou antes de terminarem.
-
----
-
-## Performance Notes
-
-| Metric | Expected | Actual | Status |
-|--------|----------|--------|--------|
-| tempo do Verify Gate inteiro | — | 31 min (1.857 s) | ✅ |
+**Verify Gate (`bash sdd/bin/verify-gate.sh sdd/features/DEFINE_F30_QUALIDADE_CODIGO.md`):** PENDENTE.
 
 ---
 
 ## Advisor Ledger
 
-O ledger completo, uma linha por achado, está em `sdd/reviews/LEDGER_REVISAO_F30_QUALIDADE_CODIGO.md` (o
-`ledger-revisao-lint.sh` dá VERDE). Resumo:
+O ledger completo está em `sdd/reviews/LEDGER_REVISAO_F30_QUALIDADE_CODIGO.md` (seção S2; o `ledger-revisao-lint.sh`
+dá VERDE). Resumo da S2:
 
 | Rodada | Commit | Achados | Decisão |
 |---|---|---|---|
-| D1 (DESIGN) | `c539af3` | 2 MED do auditor (queda do lint para o projeto inteiro; tipos com arquivos anexados) | 2 APLICADA (DESIGN 1.1) |
-| 1 | `07198f3` | 2 MED (a 1ª linha idêntica impedia a dívida antiga; o log final era só da última tarefa) | 2 APLICADA (`dac782a`) |
-| 2 | `7eee8d7` | 1 MED (o lint de antes com arquivos que ainda não existem) | APLICADA (`bb32004`) |
-| 3 | `bb32004` | 1 MED (manifest só de arquivos novos ficava sem log de antes) e 1 LOW (o `find` sem as pastas dos agentes) | 2 APLICADA (`d94bb8b`) |
-| 4 | `d94bb8b` | 2 MED (exit 127 valia como dívida; `npx eslint .` com arquivos conferia o projeto inteiro) | 2 APLICADA (`76827bf`) |
-| 5 | `76827bf` | 1 MED (relatório feito antes da v2.26.0 num projeto com `lint_cmd` cheio) | REBATIDA_ESCOPO: o conserto é 1 comando que o próprio `report-lint` imprime; vai como nota de atualização |
+| D2 (DESIGN) | `f2d01d1` | 1 MED do auditor (classe `continua` por qualquer ocorrência na linha) | APLICADA (DESIGN 2.1) |
+| 1 (código) | `b4c9f55` | nenhum (o auditor conferiu os pontos de risco e descartou 3 LOW já decididos) | — |
 
-Revisores: openrouter `qwen/qwen3.7-plus` nas 6 rodadas (0 achados próprios, salvo o LOW da rodada 3), codex
-`gpt-6.1-sol` como 2º revisor no DESIGN, auditor claude em todas; `diversidade: vendor`. O gemini caiu por
-credencial antes da D1. Custo: US$ 0,49 (DESIGN) + 0,73 + 0,80 + 0,82 + 0,88 + 0,81 (código) = US$ 4,53.
-`review_externo`: `EXTERNAL_REVIEW_20261123-212910`, sha256 igual ao do código que sobe (`--conferir`: CONFERE).
+Revisores: openrouter `qwen/qwen3.7-plus` (0 achados próprios nas 2 rodadas), codex `gpt-6.1-sol` como 2º revisor no
+DESIGN, auditor claude; `diversidade: vendor`. Custo: US$ 0,67 (DESIGN) + 0,88 (código) = US$ 1,55.
 
 ---
 
@@ -229,11 +230,12 @@ credencial antes da D1. Custo: US$ 0,49 (DESIGN) + 0,73 + 0,80 + 0,82 + 0,88 + 0
 **Completion Checklist:**
 
 - [x] All tasks from manifest completed
-- [x] Testes novos vermelhos na árvore anterior e verdes na nova
-- [x] Verify Gate verde no commit que sobe (`76827bf`)
+- [x] Testes novos vermelhos antes do código (com log) e verdes depois
+- [x] 2 sabotagens declaradas no DESIGN pegas pelos testes
+- [ ] Verify Gate verde no commit que sobe
 - [x] No blocking issues
-- [x] Acceptance tests verified — 9 de 9 com log
-- [x] Avaliador de contexto fresco com `AVALIACAO_*.md` persistido
+- [x] Acceptance tests verified — 7 de 7 com log e antes
+- [ ] Avaliador de contexto fresco com `AVALIACAO_*.md` persistido
 
 ---
 
