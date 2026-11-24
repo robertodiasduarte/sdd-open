@@ -84,3 +84,13 @@ Revisão do código da S2, rodada 2 (`e65531f`, depois do conserto do ciclo 1 do
 
 revisor2: dispensado rodada=2 — sem superfície de risco (regra antiga: 24 arquivos (limiar 8))
 sem achados: rodada=2 EXTERNAL_REVIEW_20261124-092744
+
+Revisão do código da S2, rodada 3 (`d734b18`, depois dos consertos do raio de impacto): revisor `openrouter`
+(`qwen/qwen3.7-plus`), auditor `claude`; `diversidade: vendor`; US$ 0,88. 2 achados LOW do revisor, confirmados pelo auditor.
+
+revisor2: dispensado rodada=3 — sem superfície de risco (regra antiga: 26 arquivos (limiar 8))
+
+| achado | sev | veredito | rodada | evidência | dano | revisão |
+|---|---|---|---|---|---|---|
+| R1 | LOW | REBATIDA_ESCOPO | rodada=3 | sabotagem.sh:34: o molde de reserva sem `lib/python.sh` é o mesmo dos outros scripts de sdd/bin; sem Python sai 3 (inconclusivo), nunca um falso 0; pendência na ficha | nao | EXTERNAL_REVIEW_20261124-100402 |
+| R2 | LOW | REBATIDA_ESCOPO | rodada=3 | sabotagem.sh:95: sem `pipefail`, a falha do `git archive` (já precedido do `git cat-file -e HEAD:<arquivo>`) vira 64 em vez de 3; sem log nem toque na árvore; pendência na ficha | nao | EXTERNAL_REVIEW_20261124-100402 |

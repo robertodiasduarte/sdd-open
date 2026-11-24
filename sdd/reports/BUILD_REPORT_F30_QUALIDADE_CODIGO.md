@@ -179,6 +179,18 @@ vazio em todos os casos) e pela sabotagem declarada do AT-013 (`AT-013.sabotagem
 
 ---
 
+## Raio de impacto (adiantado da release, 0b)
+
+2 agentes frescos, só leitura, com o brief `sdd-release/references/raio-de-impacto.md`. Nenhum consumidor quebrado e
+nenhuma invariante violada (INV-001 e INV-002 não tocam os módulos).
+
+| Superfície | Consumidores lidos | Resultado | Tratado |
+|---|---|---|---|
+| `report-lint.py` (coluna `Antes`, classe nova, aviso) e a tabela de critérios | `sdd-report-guard.py`, pre-commit, `sdd-drive.sh`, `sdd-release` 0a.5, `gate-shell-evidencia.sh`, `playbook-curator.sh`, fixtures de evidência, 6 módulos de teste; relatórios reais antigos (VERDE com o aviso) | ok | risco latente: um AT repetido numa 2ª tabela do DEFINE reclassificava o AT — vale a 1ª (teste novo); o conserto `[tabela]` e o exemplo da `EVIDENCIA.md` ganharam a coluna (`a5c02ca`) |
+| `build.refatorar` no config, passos 5/6 da tarefa, versões 2.16.0/2.12.0, `disciplina-de-teste.md` no starter | `init`/`upgrade`/`sync` (não mesclam chaves: ausente = ligado), `ler_mapa`, `slot.sh`, hooks, `checar.sh`, check-versions do Open e do starter, gerador do starter (GERADO, check-gerado VERDE, lint VERDE) | ok | lacunas de texto: a linha `refatorar: desligado` sem seção no molde do starter (a disciplina diz "numa linha própria"); o `WORKER_BRIEF` ganhou o vermelho antes e o refatorar |
+
+---
+
 ## Blockers (if any)
 
 Nenhum.
@@ -219,9 +231,10 @@ dá VERDE). Resumo da S2:
 | D2 (DESIGN) | `f2d01d1` | 1 MED do auditor (classe `continua` por qualquer ocorrência na linha) | APLICADA (DESIGN 2.1) |
 | 1 (código) | `b4c9f55` | nenhum (o auditor conferiu os pontos de risco e descartou 3 LOW já decididos) | — |
 | 2 (código) | `e65531f` | nenhum (depois do conserto do ciclo 1 do avaliador) | — |
+| 3 (código) | `d734b18` | 2 LOW no `sabotagem.sh` (sem a biblioteca, falta de Python sai como inconclusivo; `git archive \| tar` sem `pipefail`) | 2 REBATIDA_ESCOPO: erram para o lado seguro; pendência na ficha |
 
 Revisores: openrouter `qwen/qwen3.7-plus` (0 achados próprios nas 2 rodadas), codex `gpt-6.1-sol` como 2º revisor no
-DESIGN, auditor claude; `diversidade: vendor`. Custo: US$ 0,67 (DESIGN) + 0,88 + 0,89 (código) = US$ 2,44.
+DESIGN, auditor claude; `diversidade: vendor`. Custo: US$ 0,67 (DESIGN) + 0,88 + 0,89 + 0,88 (código) = US$ 3,32.
 
 ---
 
