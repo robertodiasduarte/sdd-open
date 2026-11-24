@@ -94,3 +94,19 @@ revisor2: dispensado rodada=3 — sem superfície de risco (regra antiga: 26 arq
 |---|---|---|---|---|---|---|
 | R1 | LOW | REBATIDA_ESCOPO | rodada=3 | sabotagem.sh:34: o molde de reserva sem `lib/python.sh` é o mesmo dos outros scripts de sdd/bin; sem Python sai 3 (inconclusivo), nunca um falso 0; pendência na ficha | nao | EXTERNAL_REVIEW_20261124-100402 |
 | R2 | LOW | REBATIDA_ESCOPO | rodada=3 | sabotagem.sh:95: sem `pipefail`, a falha do `git archive` (já precedido do `git cat-file -e HEAD:<arquivo>`) vira 64 em vez de 3; sem log nem toque na árvore; pendência na ficha | nao | EXTERNAL_REVIEW_20261124-100402 |
+
+Revisão do código da S2, rodadas 4 e 5 (`ea3bc55` contra a `main`, 4 linhas de teste): recusadas como rasas pelo
+`--conferir`; US$ 0,42 cada.
+
+sem resultado: rodada=4 EXTERNAL_REVIEW_20261124-132408 — 2º revisor raso (0 achados em 14 s): não conta
+sem resultado: rodada=5 EXTERNAL_REVIEW_20261124-132501 — 2º revisor raso (0 achados em 28 s): não conta
+
+Revisão da S2 inteira, rodada 6 (`ea3bc55`, base `08f41a8`): revisor `codex` (`gpt-6.1-sol`), auditor `claude`;
+`diversidade: vendor`; US$ 1,89. O R2 da rodada 3 (pipefail), antes rebatido, foi aplicado junto em `79f64c5`.
+
+revisor2: dispensado rodada=6 — sem superfície de risco (regra antiga: 63 arquivos (limiar 8))
+
+| achado | sev | veredito | rodada | evidência | dano | revisão |
+|---|---|---|---|---|---|---|
+| R1 | HIGH | APLICADA | rodada=6 | `79f64c5`: o destino do log e as pastas dele não podem ser link, conferido no início e na gravação; teste: test_log_que_e_link_simbolico_nao_e_seguido | sim | EXTERNAL_REVIEW_20261124-132608 |
+| R2 | MED | APLICADA | rodada=6 | `79f64c5`: quebra de linha garantida antes do [exit=]; teste: test_saida_sem_quebra_de_linha_no_fim | nao | EXTERNAL_REVIEW_20261124-132608 |
