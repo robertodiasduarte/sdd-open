@@ -595,6 +595,8 @@ def ats_do_define(root, feature):
             continue
         kind = (_sem_marcacao(cells[col_kind]) if col_kind is not None and col_kind < len(cells) else padrao).lower()
         continua = any(CONTINUA_RE.match(_sem_marcacao(c)) for c in cells[1:])
+        if cells[0] in ats:   # vale a 1ª tabela (a dos critérios); uma 2ª, de rastreio, não reclassifica (raio, 0b)
+            continue
         if not kind.startswith(("test", "cmd")):
             ats[cells[0]] = FORA
         else:
@@ -718,7 +720,7 @@ def check(content, root, report_dir, feature):
 
 def conserto(classe, feature):
     if classe == TABELA:
-        return "use a tabela do template: `| ID | Critério | Resultado | Evidência |`."
+        return "use a tabela do template: `| ID | Critério | Antes | Resultado | Evidência |`."
     if classe == AUSENTE:
         return (f"rode o avaliador e grave `{REVIEWS_DIR}/AVALIACAO_{feature}_<AAAAMMDD-HHMM>.md`, ou escreva a linha "
                 "`avaliador: N.A. (<motivo>)` / `avaliador: PENDENTE (<motivo>)` no relatório.")

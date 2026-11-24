@@ -55,4 +55,4 @@ de novo o teste do arquivo, o lint e os tipos: a refatoração só fica se tudo 
 O código vizinho que a tarefa não tocou fica como está: a mudança continua cirúrgica.
 
 O passo vem ligado. Para economizar tokens, `build.refatorar: false` no `sdd/config.yaml` o pula, e o BUILD_REPORT diz
-`refatorar: desligado` na seleção de modo.
+isso numa linha própria: `refatorar: desligado`.

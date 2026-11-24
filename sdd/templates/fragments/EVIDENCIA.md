@@ -61,11 +61,11 @@ evidência verde. No zsh, `${PIPESTATUS[0]}` sai vazio e o log fica `[exit=]`. O
 ## A tabela do BUILD_REPORT (formato que o lint parseia)
 
 ```markdown
-| ID | Critério (EARS) | Resultado | Evidência |
-|----|-----------------|-----------|-----------|
-| AT-001 | When X, the system shall Y | false | — |
-| AT-002 | If Z, then the system shall W | true | `evidence/{FEATURE}/AT-002.log` |
-| AT-003 | manual-ux: fluxo no celular | true | recibo: nome 2026-08-28 · `AVALIACAO_{FEATURE}_20260828-1530.md` |
+| ID | Critério (EARS) | Antes | Resultado | Evidência |
+|----|-----------------|-------|-----------|-----------|
+| AT-001 | When X, the system shall Y | — | false | — |
+| AT-002 | If Z, then the system shall W | `evidence/{FEATURE}/AT-002.antes.log` | true | `evidence/{FEATURE}/AT-002.log` |
+| AT-003 | manual-ux: fluxo no celular | N.A. (assinatura humana) | true | recibo: nome 2026-08-28 · `AVALIACAO_{FEATURE}_20260828-1530.md` |
 ```
 
 **`Resultado` aceita `true` \| `false`** (também ✅/❌, mas prefira o booleano). O lint só

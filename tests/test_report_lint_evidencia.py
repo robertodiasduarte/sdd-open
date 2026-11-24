@@ -52,7 +52,7 @@ class Tabela(Base):
         rc, out = self.lint("# BUILD REPORT\n\navaliador: N.A. (1 camada)\n")
         self.assertEqual(rc, 1, out)
         self.assertIn("[tabela]", out)
-        self.assertIn("| ID | Critério | Resultado | Evidência |", out)
+        self.assertIn("| ID | Critério | Antes | Resultado | Evidência |", out)
         self.assertResultado(out)
 
     def test_cabecalho_em_ingles_e_conferido(self):

@@ -34,6 +34,8 @@
 
 ## GUIDELINES (não-negociáveis)
 - Cirúrgico: só as linhas do SUBTASK; não refatorar nem "melhorar" código adjacente.
+- Teste: quando o SUBTASK traz o comando do AT, rode-o antes de escrever e cole a saída vermelha; depois do verde,
+  melhore só as linhas do SUBTASK e rode de novo (vermelho antes, Refatorar, da disciplina de teste da `sdd-build`).
 - Simples: nada não pedido (sem abstração/configurabilidade especulativa).
 - Evidência: rode o comando de verificação e cole o output — nunca declare sem rodar.
 ```

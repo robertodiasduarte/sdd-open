@@ -142,6 +142,14 @@ class AT010ComportamentoNovo(Base):
         self.assertEqual(rc, 1, out)
         self.assertIn("[vermelho antes]", out)
 
+    def test_at_repetido_numa_tabela_de_rastreio_nao_reclassifica(self):
+        # raio de impacto (0b): a 2ª tabela do DEFINE, sem kind nem padrão, não troca a classe do AT-002 (continua)
+        self.escreve(self.r, "sdd/features/DEFINE_%s.md" % F,
+                     DEFINE + "\n## Rastreio\n\n| ID | Teste |\n|---|---|\n| AT-002 | test_conta |\n")
+        self.escreve(self.r, EV + "AT-002.antes.log", log(rc=0))
+        rc, out = self.lint(linha("AT-002", antes("AT-002")))
+        self.assertEqual(rc, 0, out)
+
     def test_at_false_nao_e_conferido(self):
         rc, out = self.lint(linha("AT-001", "—", resultado="false"))
         self.assertEqual(rc, 0, out)
