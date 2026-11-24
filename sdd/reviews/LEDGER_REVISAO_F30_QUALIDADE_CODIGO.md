@@ -78,3 +78,9 @@ antigo, a contenção do caminho e a limpeza da cópia, e descartou 3 pontos LOW
 
 revisor2: dispensado rodada=1 — sem superfície de risco (regra antiga: 24 arquivos (limiar 8))
 sem achados: rodada=1 EXTERNAL_REVIEW_20261124-091418
+
+Revisão do código da S2, rodada 2 (`e65531f`, depois do conserto do ciclo 1 do avaliador): revisor `openrouter`
+(`qwen/qwen3.7-plus`), auditor `claude`; `diversidade: vendor`; US$ 0,89. Nenhum achado.
+
+revisor2: dispensado rodada=2 — sem superfície de risco (regra antiga: 24 arquivos (limiar 8))
+sem achados: rodada=2 EXTERNAL_REVIEW_20261124-092744

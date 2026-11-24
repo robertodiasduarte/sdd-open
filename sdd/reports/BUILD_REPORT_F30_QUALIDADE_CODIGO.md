@@ -24,7 +24,7 @@
 | **Tasks Completed** | 15/15 do File Manifest |
 | **Files Created** | 5 (`sabotagem.sh`, `disciplina-de-teste.md`, 3 módulos `tests/test_f30_*.py`) e este relatório |
 | **Build Time** | uma sessão (24/11) |
-| **Tests Passing** | 48 testes novos, todos escritos antes do código e gravados vermelhos (`AT-nnn.antes.log`); suíte inteira no Verify Gate |
+| **Tests Passing** | 51 testes novos, todos escritos antes do código e gravados vermelhos (`AT-nnn.antes.log`); suíte inteira no Verify Gate |
 | **Agents Used** | revisores externos do DESIGN e do código (openrouter `qwen/qwen3.7-plus`, codex, auditor claude), 2 agentes da medição de custo e o avaliador de contexto fresco |
 
 ---
@@ -165,6 +165,7 @@ vazio em todos os casos) e pela sabotagem declarada do AT-013 (`AT-013.sabotagem
 |---|-------|------------|-------------|
 | 1 | A revisão do DESIGN achou 1 MED (N1): `shall continue to` em qualquer lugar da linha classificaria o AT-011 como não-regressão | aplicado antes do código (Decision 9, DESIGN 2.1), com teste | — |
 | 2 | O antes do AT-012 tinha um `TypeError` do próprio teste | consertado e regravado; candidato ao playbook acima | ~2 min |
+| 4 | O avaliador (ciclo 1) achou o N1 do `sabotagem.sh` | cópia nova para a execução sabotada (`monta_copia`), com teste; ciclo 2 conferiu | ~15 min |
 | 3 | Os testes vizinhos acusaram 10 falhas: versões fixas, o recorte do Verificar e o Python embutido sem saída UTF-8 | corrigidas em `5a5f361`; os 127 testes desses módulos verdes | ~5 min |
 
 ---
@@ -188,7 +189,7 @@ Nenhum.
 
 **Camadas do manifest:** 1 (o pacote não declara `layers:`)
 **Contrato de aceite (passo 1.5 da `sdd-build`):** N.A. (1 camada)
-avaliador: PENDENTE (o avaliador de contexto fresco está rodando)
+**Veredito do avaliador (C1):** PASS_PENDENTE_RECIBO · ciclos: 2 · achados: ciclo 1 NEEDS_WORK por 1 MED (N1: a execução sabotada reusava a cópia da limpa, e o `__pycache__` escondia a sabotagem quando ela caía no mesmo segundo do commit; aplicado com teste determinístico) e 2 observações aplicadas (O1, O2); ciclo 2 com os 3 conferidos e 5 observações leves (O-A a O-E) que ficam como pendência na ficha; o recibo é o Verify Gate abaixo · `AVALIACAO_F30_QUALIDADE_CODIGO_20261124-1300.md` (ciclo 1: `AVALIACAO_F30_QUALIDADE_CODIGO_20261124-1225.md`)
 
 ---
 
@@ -217,9 +218,10 @@ dá VERDE). Resumo da S2:
 |---|---|---|---|
 | D2 (DESIGN) | `f2d01d1` | 1 MED do auditor (classe `continua` por qualquer ocorrência na linha) | APLICADA (DESIGN 2.1) |
 | 1 (código) | `b4c9f55` | nenhum (o auditor conferiu os pontos de risco e descartou 3 LOW já decididos) | — |
+| 2 (código) | `e65531f` | nenhum (depois do conserto do ciclo 1 do avaliador) | — |
 
 Revisores: openrouter `qwen/qwen3.7-plus` (0 achados próprios nas 2 rodadas), codex `gpt-6.1-sol` como 2º revisor no
-DESIGN, auditor claude; `diversidade: vendor`. Custo: US$ 0,67 (DESIGN) + 0,88 (código) = US$ 1,55.
+DESIGN, auditor claude; `diversidade: vendor`. Custo: US$ 0,67 (DESIGN) + 0,88 + 0,89 (código) = US$ 2,44.
 
 ---
 
@@ -235,7 +237,7 @@ DESIGN, auditor claude; `diversidade: vendor`. Custo: US$ 0,67 (DESIGN) + 0,88 (
 - [ ] Verify Gate verde no commit que sobe
 - [x] No blocking issues
 - [x] Acceptance tests verified — 7 de 7 com log e antes
-- [ ] Avaliador de contexto fresco com `AVALIACAO_*.md` persistido
+- [x] Avaliador de contexto fresco com `AVALIACAO_*.md` persistido
 
 ---
 
