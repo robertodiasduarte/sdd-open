@@ -62,3 +62,12 @@ revisor2: dispensado rodada=5 — sem superfície de risco (regra antiga: 32 arq
 | achado | sev | veredito | rodada | evidência | dano | revisão |
 |---|---|---|---|---|---|---|
 | N1 | MED | REBATIDA_ESCOPO | rodada=5 | compatibilidade de BUILD_REPORT feito antes da v2.26.0 num projeto com lint_cmd cheio: o conserto é 1 comando que o próprio report-lint imprime (rodar o slot e gravar LINT.log); afrouxar para aviso quando o relatório não fala de lint deixaria build novo escapar por omissão; vai como nota de atualização na ficha e no ledger da release | nao | EXTERNAL_REVIEW_20261123-212910 |
+
+## S2
+
+Revisão do DESIGN da S2, rodada D2: revisor `openrouter` (`qwen/qwen3.7-plus`, 28 s), 2º revisor `codex` (`gpt-6.1-sol`),
+auditor `claude`; `diversidade: vendor`; US$ 0,67. Os dois revisores não acharam nada; o achado é do auditor.
+
+| achado | sev | veredito | rodada | evidência | dano | revisão |
+|---|---|---|---|---|---|---|
+| N1 | MED | APLICADA | rodada=D2 | DESIGN Decision 9 (2.1): a classe `continua` vem do início da célula; teste `test_criterio_que_so_cita_shall_continue_to_e_novo` | nao | EXTERNAL_REVIEW_20261124-083851 |

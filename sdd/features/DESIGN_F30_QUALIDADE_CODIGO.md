@@ -287,7 +287,10 @@ release; a `sdd-release` não o trata como violação. Fica registrado em "Fora 
 achado do `define_gate_kind`) e, para cada linha `| AT-nnn |`, guarda:
 - `kind`: a célula da coluna cujo cabeçalho cita `kind` (ou `Gate`), sem crases, em minúsculas; sem essa coluna, o
   `kind` do `verify_gate`;
-- `continua`: a linha tem `shall continue to` (sem diferença de maiúsculas) ou o padrão `Non-regression`.
+- `continua`: o padrão do AT, não uma palavra solta na linha (revisão do DESIGN, N1). Vale quando uma célula,
+  sem `*` e crases, **começa** por `The system shall continue to` (o molde EARS de não-regressão, sem diferença de
+  maiúsculas) ou por `Non-regression`/`Não-regressão` (a coluna Padrão). Um critério que só cita a expressão no meio
+  (o AT-011 deste DEFINE) é de comportamento novo.
 
 Classes: `novo` (kind começa por `test` ou `cmd`, não `continua`) · `continua` (kind `test`/`cmd` e `continua`) ·
 `fora` (outro kind, inclusive `manual-ux`). Para cada AT `true` numa tabela com `Antes`:
@@ -713,6 +716,8 @@ S2: `AT-nnn.antes.log` e `AT-nnn.sabotagem.log`, ao lado dos `AT-nnn.log`. Os lo
 | N1 | auditor claude (`sdd/reports/reviews/EXTERNAL_REVIEW_20261123-201231/auditor.md`) | MED: a queda para o projeto inteiro reprova sempre com dívida antiga | APLICADA | Decision 3 (exceção com log de antes) e Decision 4 |
 | N2 | auditor claude (mesma pasta) | MED: `tsc`/`mypy` com arquivos anexados ignoram config ou conferem tudo | APLICADA | Decision 4 (tipos rodam como estão) |
 | — | revisor openrouter `qwen/qwen3.7-plus` e 2º revisor codex `gpt-6.1-sol` | 0 achados (o revisor terminou em 26 s) | — | diversidade: vendor · US$ 0,49 |
+| S2-N1 | auditor claude (`sdd/reports/reviews/EXTERNAL_REVIEW_20261124-083851/auditor.md`) | MED: `shall continue to` em qualquer lugar da linha classificaria o AT-011 (comportamento novo que cita a expressão) como não-regressão | APLICADA | Decision 9 (2.1): a classe vem do início da célula; fixture com a expressão citada no meio |
+| — | S2, rodada D1: revisor openrouter `qwen/qwen3.7-plus` (28 s, 0 achados) e 2º revisor codex `gpt-6.1-sol` (0 achados) | — | — | diversidade: vendor · US$ 0,67 |
 
 ---
 
@@ -720,6 +725,7 @@ S2: `AT-nnn.antes.log` e `AT-nnn.sabotagem.log`, ao lado dos `AT-nnn.log`. Os lo
 
 | Version | Date | Author | Changes |
 |---------|------|--------|---------|
+| 2.1 | 2026-11-24 | design-agent | Revisão do DESIGN, rodada D1 (auditor claude, N1): a classe `continua` vem do início da célula (molde EARS ou Padrão), não de qualquer ocorrência na linha |
 | 2.0 | 2026-11-24 | design-agent | S2: Decisions 8 a 14, manifest de 15 arquivos, landmines e sabotagens da S2; o manifest da S1 fica na 1.2 (`c4fa53c`) |
 | 1.0 | 2026-11-23 | design-agent | S1: 7 decisões, 21 arquivos |
 | 1.2 | 2026-11-23 | build | Revisão do código (auditor claude, N1 e N2): a dívida antiga confere o comando do slot, não a 1ª linha inteira; o log final cobre todos os arquivos de código do manifest. Avaliador (ciclo 1): PHP sem `php -l` |
