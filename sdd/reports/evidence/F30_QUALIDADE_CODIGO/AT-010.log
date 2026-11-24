@@ -8,6 +8,7 @@ test_antes_sem_exit_no_fim_reprova (test_f30_vermelho_antes.AT010ComportamentoNo
 test_antes_verde_reprova (test_f30_vermelho_antes.AT010ComportamentoNovo) ... ok
 test_antes_vermelho_do_mesmo_comando_aprova (test_f30_vermelho_antes.AT010ComportamentoNovo) ... ok
 test_at_false_nao_e_conferido (test_f30_vermelho_antes.AT010ComportamentoNovo) ... ok
+test_at_repetido_numa_tabela_de_rastreio_nao_reclassifica (test_f30_vermelho_antes.AT010ComportamentoNovo) ... ok
 test_cabecalho_antes_com_complemento_ainda_e_a_coluna (test_f30_vermelho_antes.AT010ComportamentoNovo) ... ok
 test_criterio_que_so_cita_shall_continue_to_e_novo (test_f30_vermelho_antes.AT010ComportamentoNovo) ... ok
 test_evidencia_so_pela_avaliacao_ainda_confere_o_comando (test_f30_vermelho_antes.AT010ComportamentoNovo) ... ok
@@ -15,7 +16,7 @@ test_na_em_at_novo_reprova (test_f30_vermelho_antes.AT010ComportamentoNovo) ... 
 test_sem_antes_reprova (test_f30_vermelho_antes.AT010ComportamentoNovo) ... ok
 
 ----------------------------------------------------------------------
-Ran 14 tests in 1.943s
+Ran 15 tests in 1.947s
 
 OK
 [exit=0]
