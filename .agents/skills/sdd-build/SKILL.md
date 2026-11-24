@@ -153,9 +153,10 @@ escolha silenciosa. Os itens aplicados no Define já são ATs do Verify Gate.
 
 **Antes da 1ª tarefa, a qualidade:** `bash sdd/bin/qualidade-regras.sh --regras` imprime as regras de forma do
 catálogo de qualidade (`web/references/CATALOGO_QUALIDADE.md`) que valem para a stack, e os slots `project.lint_cmd`
-e `project.typecheck_cmd`. Todo código escrito segue essas regras. Com um slot cheio, rode-o agora, na forma em que
-vai rodar no fim, e grave `sdd/reports/evidence/{F}/LINT.antes.log` (ou `TIPOS.antes.log`): é ele que separa a
-dívida antiga do erro que a tarefa trouxe.
+e `project.typecheck_cmd`. Todo código escrito segue essas regras. Com um slot cheio, rode-o agora, o lint só sobre
+os arquivos de código do manifest que já existem (sem nenhum, não há log de antes do lint) e os tipos como estão, e
+grave `sdd/reports/evidence/{F}/LINT.antes.log` (ou `TIPOS.antes.log`): é ele que separa a dívida antiga do erro que
+a tarefa trouxe, e arquivo que ainda não existe faria o comando falhar por outro motivo.
 
 1. **Prompt no inventário** (o arquivo está em `LLM Prompts` do DESIGN, ou é estágio de uma LOOP_SPEC gerada):
    vá direto ao roteador pelo `Tipo` da linha, sem varredura antes, porque o texto ainda não existe.

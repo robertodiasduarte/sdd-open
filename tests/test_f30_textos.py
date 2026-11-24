@@ -45,6 +45,7 @@ class AT003Build(unittest.TestCase):
         p = self.passo_4()
         self.assertIn("`bash sdd/bin/qualidade-regras.sh --regras`", p)
         self.assertIn("`sdd/reports/evidence/{F}/LINT.antes.log` (ou `TIPOS.antes.log`)", p)
+        self.assertIn("o lint só sobre os arquivos de código do manifest que já existem", p)   # revisão do código, rodada 2
         self.assertIn("3. **Escrever** seguindo os Code Patterns e as regras de qualidade.", p)
         self.assertLess(p.index("qualidade-regras.sh --regras"), p.index("4. **Verificar:**"))
 
