@@ -1,5 +1,5 @@
 $ cd tests && /usr/bin/python3 -B -m unittest -v test_f30_sabotagem.AT013Sabotagem
-# sabotagem: sdd/bin/sabotagem.sh: «SAIDA="${TRAB}/saida.txt"» → «SAIDA="${RAIZ}/saida.txt"» (cópia de HEAD 79f64c5)
+# sabotagem: sdd/bin/sabotagem.sh: «SAIDA="${TRAB}/saida.txt"» → «SAIDA="${RAIZ}/saida.txt"» (cópia de HEAD 26ea320)
 # sem a sabotagem: exit 0
 test_cache_da_execucao_limpa_nao_esconde_a_sabotagem (test_f30_sabotagem.AT013Sabotagem) ... FAIL
 test_mudanca_nao_commitada_fica_e_a_copia_e_do_commit (test_f30_sabotagem.AT013Sabotagem) ... ok
@@ -10,22 +10,22 @@ test_teste_fraco_nao_pega (test_f30_sabotagem.AT013Sabotagem) ... FAIL
 FAIL: test_cache_da_execucao_limpa_nao_esconde_a_sabotagem (test_f30_sabotagem.AT013Sabotagem)
 ----------------------------------------------------------------------
 Traceback (most recent call last):
-  File "/private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/sdd-sabotagem.yNcgte/copia/tests/test_f30_sabotagem.py", line 117, in test_cache_da_execucao_limpa_nao_esconde_a_sabotagem
+  File "/private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/sdd-sabotagem.S3uqf6/copia/tests/test_f30_sabotagem.py", line 117, in test_cache_da_execucao_limpa_nao_esconde_a_sabotagem
     rc, out = self.sabota(comando=comando)
-  File "/private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/sdd-sabotagem.yNcgte/copia/tests/test_f30_sabotagem.py", line 85, in sabota
+  File "/private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/sdd-sabotagem.S3uqf6/copia/tests/test_f30_sabotagem.py", line 85, in sabota
     self.assertEqual(self.arvore(), antes, "a árvore de trabalho mudou\n" + out + err)
-AssertionError: '250218dd1304171f005e3d7ee761129d029e0e38012ca9c6579c5bd0dda68890' != '280a644eb81ae3e4dbbdc640be89b0b10f9edfc2ccf03aec1a9a917d6cdcd5a1'
-- 250218dd1304171f005e3d7ee761129d029e0e38012ca9c6579c5bd0dda68890
-+ 280a644eb81ae3e4dbbdc640be89b0b10f9edfc2ccf03aec1a9a917d6cdcd5a1
+AssertionError: 'ef6e7be185b863bbd1707535e721f5fc811033de7d78bbd75fe56f0df75cbf27' != '88eea992142f4c0f88be19199ad2495b3e0b972a0341c5eb38469a276c7a3771'
+- ef6e7be185b863bbd1707535e721f5fc811033de7d78bbd75fe56f0df75cbf27
++ 88eea992142f4c0f88be19199ad2495b3e0b972a0341c5eb38469a276c7a3771
  : a árvore de trabalho mudou
-▶ cópia do último commit (1708f36) · comando sem a sabotagem
+▶ cópia do último commit (ea57111) · comando sem a sabotagem
 ▶ sabotagem: conta.py: «if valor > saldo:» → «if False:»
    │ F.
    │ ======================================================================
    │ FAIL: test_recusa (test_forte.T)
    │ ----------------------------------------------------------------------
    │ Traceback (most recent call last):
-   │   File "/private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/sdd-open-r_7xb6yb/tmpdir/sdd-sabotagem.wIMYT1/copia/test_forte.py", line 7, in test_recusa
+   │   File "/private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/sdd-open-6nn125ud/tmpdir/sdd-sabotagem.sDgAl4/copia/test_forte.py", line 7, in test_recusa
    │     saca(10, 20)
    │ AssertionError: ValueError not raised
    │ 
@@ -42,22 +42,22 @@ RESULTADO: VERDE
 FAIL: test_teste_forte_pega_a_sabotagem (test_f30_sabotagem.AT013Sabotagem)
 ----------------------------------------------------------------------
 Traceback (most recent call last):
-  File "/private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/sdd-sabotagem.yNcgte/copia/tests/test_f30_sabotagem.py", line 96, in test_teste_forte_pega_a_sabotagem
+  File "/private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/sdd-sabotagem.S3uqf6/copia/tests/test_f30_sabotagem.py", line 96, in test_teste_forte_pega_a_sabotagem
     rc, out = self.sabota()
-  File "/private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/sdd-sabotagem.yNcgte/copia/tests/test_f30_sabotagem.py", line 85, in sabota
+  File "/private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/sdd-sabotagem.S3uqf6/copia/tests/test_f30_sabotagem.py", line 85, in sabota
     self.assertEqual(self.arvore(), antes, "a árvore de trabalho mudou\n" + out + err)
-AssertionError: 'e5df2558cfa8729ead6e57086230855baf9004eb738da933db2477b4f7133859' != '5784489ab0095e93aecbd3c6decc0d0ca56062152e8f40e1293968aab6e8ce9a'
-- e5df2558cfa8729ead6e57086230855baf9004eb738da933db2477b4f7133859
-+ 5784489ab0095e93aecbd3c6decc0d0ca56062152e8f40e1293968aab6e8ce9a
+AssertionError: 'a641bd71ba4dbd4460523f742d5e16234cc7bc971ffcc252a41576f2a9821cee' != '48092d516954539c39e2d64c26f98a2f09210d46a6510739a0dfd5538eaf0f53'
+- a641bd71ba4dbd4460523f742d5e16234cc7bc971ffcc252a41576f2a9821cee
++ 48092d516954539c39e2d64c26f98a2f09210d46a6510739a0dfd5538eaf0f53
  : a árvore de trabalho mudou
-▶ cópia do último commit (4cb9b72) · comando sem a sabotagem
+▶ cópia do último commit (d8faad7) · comando sem a sabotagem
 ▶ sabotagem: conta.py: «if valor > saldo:» → «if False:»
    │ F.
    │ ======================================================================
    │ FAIL: test_recusa (test_forte.T)
    │ ----------------------------------------------------------------------
    │ Traceback (most recent call last):
-   │   File "/private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/sdd-open-lxtpdb_s/tmpdir/sdd-sabotagem.SAR6fa/copia/test_forte.py", line 7, in test_recusa
+   │   File "/private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/sdd-open-monu8jvw/tmpdir/sdd-sabotagem.e7u2sd/copia/test_forte.py", line 7, in test_recusa
    │     saca(10, 20)
    │ AssertionError: ValueError not raised
    │ 
@@ -74,15 +74,15 @@ RESULTADO: VERDE
 FAIL: test_teste_fraco_nao_pega (test_f30_sabotagem.AT013Sabotagem)
 ----------------------------------------------------------------------
 Traceback (most recent call last):
-  File "/private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/sdd-sabotagem.yNcgte/copia/tests/test_f30_sabotagem.py", line 107, in test_teste_fraco_nao_pega
+  File "/private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/sdd-sabotagem.S3uqf6/copia/tests/test_f30_sabotagem.py", line 107, in test_teste_fraco_nao_pega
     rc, out = self.sabota(comando=cmd("test_fraco"))
-  File "/private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/sdd-sabotagem.yNcgte/copia/tests/test_f30_sabotagem.py", line 85, in sabota
+  File "/private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/sdd-sabotagem.S3uqf6/copia/tests/test_f30_sabotagem.py", line 85, in sabota
     self.assertEqual(self.arvore(), antes, "a árvore de trabalho mudou\n" + out + err)
-AssertionError: '34f9834bbb8e2aafbf6df4e8fe2ab1733820920070386a8e2e6e6d1f29f0ad1d' != '4dea8a617e41304343f957f055a4e64740372470d0b52b6924f0662c40a0db2f'
-- 34f9834bbb8e2aafbf6df4e8fe2ab1733820920070386a8e2e6e6d1f29f0ad1d
-+ 4dea8a617e41304343f957f055a4e64740372470d0b52b6924f0662c40a0db2f
+AssertionError: '7b06946969e1782834d0bb9c5a7a19417e7704a64b980f7fb60ad4d76430f4a1' != '9e5dbbce003bb487b54f421ce705726e7ee314184753d6404d20d64f9f7c486f'
+- 7b06946969e1782834d0bb9c5a7a19417e7704a64b980f7fb60ad4d76430f4a1
++ 9e5dbbce003bb487b54f421ce705726e7ee314184753d6404d20d64f9f7c486f
  : a árvore de trabalho mudou
-▶ cópia do último commit (4cb9b72) · comando sem a sabotagem
+▶ cópia do último commit (d8faad7) · comando sem a sabotagem
 ▶ sabotagem: conta.py: «if valor > saldo:» → «if False:»
    │ .
    │ ----------------------------------------------------------------------
@@ -95,7 +95,7 @@ RESULTADO: VERMELHO
 
 
 ----------------------------------------------------------------------
-Ran 4 tests in 1.971s
+Ran 4 tests in 1.898s
 
 FAILED (failures=3)
 [exit=1]

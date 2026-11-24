@@ -110,3 +110,14 @@ revisor2: dispensado rodada=6 — sem superfície de risco (regra antiga: 63 arq
 |---|---|---|---|---|---|---|
 | R1 | HIGH | APLICADA | rodada=6 | `79f64c5`: o destino do log e as pastas dele não podem ser link, conferido no início e na gravação; teste: test_log_que_e_link_simbolico_nao_e_seguido | sim | EXTERNAL_REVIEW_20261124-132608 |
 | R2 | MED | APLICADA | rodada=6 | `79f64c5`: quebra de linha garantida antes do [exit=]; teste: test_saida_sem_quebra_de_linha_no_fim | nao | EXTERNAL_REVIEW_20261124-132608 |
+
+Revisão da S2 inteira, rodada 7 (`aee8d67`, base `08f41a8`): revisor `codex` (`gpt-6.1-sol`), auditor `claude`;
+`diversidade: vendor`; US$ 1,91.
+
+revisor2: dispensado rodada=7 — sem superfície de risco (regra antiga: 63 arquivos (limiar 8))
+
+| achado | sev | veredito | rodada | evidência | dano | revisão |
+|---|---|---|---|---|---|---|
+| R1 | HIGH | APLICADA | rodada=7 | `26ea320`: log gravado em arquivo novo e renomeado; teste: test_log_que_e_hard_link_nao_apaga_o_outro_nome | sim | EXTERNAL_REVIEW_20261124-133334 |
+| R2 | MED | APLICADA | rodada=7 | `26ea320`: o commit é resolvido uma vez; teste: test_commit_no_meio_nao_troca_a_versao_da_segunda_copia | nao | EXTERNAL_REVIEW_20261124-133334 |
+| R3 | MED | APLICADA | rodada=7 | `26ea320`: WORKER_BRIEF com o antes verde do shall continue to; teste: test_brief_do_worker_tem_a_excecao_da_nao_regressao | nao | EXTERNAL_REVIEW_20261124-133334 |

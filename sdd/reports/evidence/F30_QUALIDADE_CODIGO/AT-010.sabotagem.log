@@ -1,5 +1,5 @@
 $ cd tests && /usr/bin/python3 -B -m unittest -v test_f30_vermelho_antes.AT010ComportamentoNovo
-# sabotagem: sdd/bin/report-lint.py: «if classe == NOVO and rc in ("0", "126", "127"):» → «if classe == NOVO and rc in ("126", "127"):» (cópia de HEAD 79f64c5)
+# sabotagem: sdd/bin/report-lint.py: «if classe == NOVO and rc in ("0", "126", "127"):» → «if classe == NOVO and rc in ("126", "127"):» (cópia de HEAD 26ea320)
 # sem a sabotagem: exit 0
 test_antes_127_nao_e_vermelho (test_f30_vermelho_antes.AT010ComportamentoNovo) ... ok
 test_antes_de_outro_at_reprova (test_f30_vermelho_antes.AT010ComportamentoNovo) ... ok
@@ -21,9 +21,9 @@ test_sem_antes_reprova (test_f30_vermelho_antes.AT010ComportamentoNovo) ... ok
 FAIL: test_antes_verde_reprova (test_f30_vermelho_antes.AT010ComportamentoNovo)
 ----------------------------------------------------------------------
 Traceback (most recent call last):
-  File "/private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/sdd-sabotagem.tDnGGG/copia/tests/test_f30_vermelho_antes.py", line 91, in test_antes_verde_reprova
+  File "/private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/sdd-sabotagem.pgufn2/copia/tests/test_f30_vermelho_antes.py", line 91, in test_antes_verde_reprova
     self.reprova(linha("AT-001", antes("AT-001")), "o antes de um AT de comportamento novo tem de falhar")
-  File "/private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/sdd-sabotagem.tDnGGG/copia/tests/test_f30_vermelho_antes.py", line 70, in reprova
+  File "/private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/sdd-sabotagem.pgufn2/copia/tests/test_f30_vermelho_antes.py", line 70, in reprova
     self.assertEqual(rc, 1, out)
 AssertionError: 0 != 1 : ⚠️  N.A. aceito sem conferir camadas — `layers:` do sdd/config.yaml sem nenhum glob preenchido; preencha `layers:` em sdd/config.yaml para a contagem valer
 ⚠️  lint e tipos com o slot vazio (project.lint_cmd e project.typecheck_cmd), e o relatório não diz isso: escreva a linha `lint: slot vazio`
@@ -36,7 +36,7 @@ RESULTADO: VERDE
 FAIL: test_cabecalho_antes_com_complemento_ainda_e_a_coluna (test_f30_vermelho_antes.AT010ComportamentoNovo)
 ----------------------------------------------------------------------
 Traceback (most recent call last):
-  File "/private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/sdd-sabotagem.tDnGGG/copia/tests/test_f30_vermelho_antes.py", line 142, in test_cabecalho_antes_com_complemento_ainda_e_a_coluna
+  File "/private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/sdd-sabotagem.pgufn2/copia/tests/test_f30_vermelho_antes.py", line 142, in test_cabecalho_antes_com_complemento_ainda_e_a_coluna
     self.assertEqual(rc, 1, out)
 AssertionError: 0 != 1 : ⚠️  N.A. aceito sem conferir camadas — `layers:` do sdd/config.yaml sem nenhum glob preenchido; preencha `layers:` em sdd/config.yaml para a contagem valer
 ⚠️  lint e tipos com o slot vazio (project.lint_cmd e project.typecheck_cmd), e o relatório não diz isso: escreva a linha `lint: slot vazio`
@@ -49,9 +49,9 @@ RESULTADO: VERDE
 FAIL: test_criterio_que_so_cita_shall_continue_to_e_novo (test_f30_vermelho_antes.AT010ComportamentoNovo)
 ----------------------------------------------------------------------
 Traceback (most recent call last):
-  File "/private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/sdd-sabotagem.tDnGGG/copia/tests/test_f30_vermelho_antes.py", line 128, in test_criterio_que_so_cita_shall_continue_to_e_novo
+  File "/private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/sdd-sabotagem.pgufn2/copia/tests/test_f30_vermelho_antes.py", line 128, in test_criterio_que_so_cita_shall_continue_to_e_novo
     self.reprova(linha("AT-005", antes("AT-005")), "o antes de um AT de comportamento novo tem de falhar")
-  File "/private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/sdd-sabotagem.tDnGGG/copia/tests/test_f30_vermelho_antes.py", line 70, in reprova
+  File "/private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/sdd-sabotagem.pgufn2/copia/tests/test_f30_vermelho_antes.py", line 70, in reprova
     self.assertEqual(rc, 1, out)
 AssertionError: 0 != 1 : ⚠️  N.A. aceito sem conferir camadas — `layers:` do sdd/config.yaml sem nenhum glob preenchido; preencha `layers:` em sdd/config.yaml para a contagem valer
 ⚠️  lint e tipos com o slot vazio (project.lint_cmd e project.typecheck_cmd), e o relatório não diz isso: escreva a linha `lint: slot vazio`
@@ -61,7 +61,7 @@ RESULTADO: VERDE
 
 
 ----------------------------------------------------------------------
-Ran 15 tests in 2.248s
+Ran 15 tests in 1.964s
 
 FAILED (failures=3)
 [exit=1]

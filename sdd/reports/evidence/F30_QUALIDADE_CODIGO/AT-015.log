@@ -3,6 +3,7 @@ test_refatorar_entre_verificar_e_marcar (test_f30_textos_s2.AT015Build) ... ok
 test_sabotagem_no_5a (test_f30_textos_s2.AT015Build) ... ok
 test_skill_e_modo_web_no_teto (test_f30_textos_s2.AT015Build) ... ok
 test_vermelho_antes_do_verde (test_f30_textos_s2.AT015Build) ... ok
+test_brief_do_worker_tem_a_excecao_da_nao_regressao (test_f30_textos_s2.AT015DesignMoldesConfig) ... ok
 test_config_tem_build_refatorar (test_f30_textos_s2.AT015DesignMoldesConfig) ... ok
 test_contrato_de_evidencia_e_convencoes (test_f30_textos_s2.AT015DesignMoldesConfig) ... ok
 test_design_pede_a_tabela_de_sabotagens (test_f30_textos_s2.AT015DesignMoldesConfig) ... ok
@@ -12,7 +13,7 @@ test_texto_unico_sem_sdd_bin (test_f30_textos_s2.AT015Disciplina) ... ok
 test_starter_leva_a_disciplina_sem_sdd_bin (test_f30_textos_s2.AT015Starter) ... ok
 
 ----------------------------------------------------------------------
-Ran 11 tests in 2.830s
+Ran 12 tests in 2.786s
 
 OK
 [exit=0]
