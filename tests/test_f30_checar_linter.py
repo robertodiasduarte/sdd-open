@@ -66,7 +66,7 @@ class Linter(Base):
         antes = self.arvore()
         out = self.checar()
         self.assertIn("Este projeto em JavaScript " + AVISO, out)
-        self.assertIn("(depois: npx eslint .; grave em project.lint_cmd do sdd/config.yaml)", out)
+        self.assertIn("(depois: npx eslint; grave em project.lint_cmd do sdd/config.yaml)", out)
         self.assertEqual(self.arvore(), antes)
 
     def test_php(self):

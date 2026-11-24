@@ -112,6 +112,18 @@ class AT001SlotCheio(Base):
         self.assertEqual(rc, 0, out)
         self.assertIn("já falhava antes do build", out)
 
+    def test_ferramenta_ausente_antes_nao_e_divida_antiga(self):
+        # revisão do código, rodada 4: exit 127 no log de antes é "não rodou", não dívida
+        self.config(lint="ruff check")
+        self.escreve(self.r, EV + "LINT.antes.log", log("ruff check a.py", 127, "ruff: command not found\n"))
+        self.escreve(self.r, EV + "LINT.log", log("ruff check a.py", 1, "a.py:1:1: F401\n"))
+        rc, out = self.lint()
+        self.assertEqual(rc, 1, out)
+        self.escreve(self.r, EV + "LINT.antes.log", log("ruff check a.py", 1, "a.py:1:1: F401\n"))
+        self.escreve(self.r, EV + "LINT.log", log("ruff check a.py", 127, "ruff: command not found\n"))
+        rc, out = self.lint()
+        self.assertEqual(rc, 1, out)
+
     def test_verde_antes_e_vermelho_depois_reprova(self):
         self.config(tipos="mypy .")
         self.escreve(self.r, EV + "TIPOS.antes.log", log("mypy .", 0))

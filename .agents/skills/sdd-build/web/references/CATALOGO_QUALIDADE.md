@@ -21,7 +21,7 @@ Cada ferramenta é um título `### <stack>` em `## Ferramentas por stack`, segui
 |---|---|
 | `detecta` | arquivos que mostram que o projeto usa a stack (separados por vírgula; `*.ext` = algum arquivo com a extensão) |
 | `config` | arquivos que mostram um linter já configurado; `arquivo[chave]` = a chave aparece dentro do arquivo |
-| `lint` | comando de lint sugerido |
+| `lint` | comando de lint sugerido, sem caminho no fim: o Build acrescenta os arquivos da tarefa (sem arquivos, ele confere a pasta do projeto) |
 | `tipos` | comando de checagem de tipos sugerido, ou `—` |
 | `instalar` | comando que instala as ferramentas, para o aluno rodar depois do sim |
 
@@ -90,14 +90,14 @@ de `ts` vale no lugar da de `js`.
 ### js
 - detecta: package.json
 - config: eslint.config.js, eslint.config.mjs, eslint.config.cjs, eslint.config.ts, .eslintrc, .eslintrc.js, .eslintrc.cjs, .eslintrc.json, .eslintrc.yml, .eslintrc.yaml, package.json[eslintConfig], package.json["lint"]
-- lint: npx eslint .
+- lint: npx eslint
 - tipos: —
 - instalar: npm init @eslint/config@latest
 
 ### ts
 - detecta: tsconfig.json
 - config: eslint.config.js, eslint.config.mjs, eslint.config.cjs, eslint.config.ts, .eslintrc, .eslintrc.js, .eslintrc.cjs, .eslintrc.json, .eslintrc.yml, .eslintrc.yaml, package.json[eslintConfig], package.json["lint"]
-- lint: npx eslint .
+- lint: npx eslint
 - tipos: npx tsc --noEmit
 - instalar: npm init @eslint/config@latest && npm install --save-dev typescript
 

@@ -523,7 +523,8 @@ def problema_log_lint(root, feature, nome, cmd, warnings):
     if os.path.isfile(antes) and not git_ignorado(root, antes, warnings):
         rodado_antes, rc_antes = ler_log_lint(antes)
         mesmo_slot = rodado_antes is not None and (rodado_antes == cmd or rodado_antes.startswith(cmd + " "))
-        if mesmo_slot and rc_antes not in (None, "0"):
+        # 126/127: a ferramenta nem rodou (não instalada, sem permissão), o que não prova dívida nenhuma
+        if mesmo_slot and rc_antes not in (None, "0", "126", "127") and rc not in ("126", "127"):
             warnings.append(f"`{rel}` terminou em `[exit={rc}]`, e o mesmo comando já falhava antes do build "
                             f"(`{rel_antes}`, `[exit={rc_antes}]`): dívida antiga; confira que os erros são os de antes")
             return None

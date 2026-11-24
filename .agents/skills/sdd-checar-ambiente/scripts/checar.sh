@@ -255,10 +255,10 @@ qualidade_tabela() {
       "ruff check" "mypy ." "python3 -m pip install ruff mypy" \
     js "package.json" \
       "eslint.config.js, eslint.config.mjs, eslint.config.cjs, eslint.config.ts, .eslintrc, .eslintrc.js, .eslintrc.cjs, .eslintrc.json, .eslintrc.yml, .eslintrc.yaml, package.json[eslintConfig], package.json[\"lint\"]" \
-      "npx eslint ." "—" "npm init @eslint/config@latest" \
+      "npx eslint" "—" "npm init @eslint/config@latest" \
     ts "tsconfig.json" \
       "eslint.config.js, eslint.config.mjs, eslint.config.cjs, eslint.config.ts, .eslintrc, .eslintrc.js, .eslintrc.cjs, .eslintrc.json, .eslintrc.yml, .eslintrc.yaml, package.json[eslintConfig], package.json[\"lint\"]" \
-      "npx eslint ." "npx tsc --noEmit" "npm init @eslint/config@latest && npm install --save-dev typescript" \
+      "npx eslint" "npx tsc --noEmit" "npm init @eslint/config@latest && npm install --save-dev typescript" \
     php "composer.json, *.php" \
       "phpcs.xml, phpcs.xml.dist, .phpcs.xml, .php-cs-fixer.php, .php-cs-fixer.dist.php" \
       "vendor/bin/phpcs --standard=PSR12" "—" "composer require --dev squizlabs/php_codesniffer" \
