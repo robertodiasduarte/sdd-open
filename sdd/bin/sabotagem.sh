@@ -78,7 +78,10 @@ ARQUIVO="${ARQ_BARRA}"
 sdd_python_exigir
 RAIZ="$(git rev-parse --show-toplevel 2>/dev/null)" || uso "fora de um repositório git: rode na pasta do projeto"
 cd "${RAIZ}" || uso "não consegui entrar em ${RAIZ}"
-git cat-file -e "HEAD:${ARQUIVO}" 2>/dev/null \
+# o commit é resolvido uma vez só: as duas cópias e o log são dele, mesmo com um commit novo no meio (rodada 7, R2)
+COMMIT="$(git rev-parse --verify -q 'HEAD^{commit}')" || uso "o repositório ainda não tem commit: commite antes"
+SHA="$(git rev-parse --short "${COMMIT}")"
+git cat-file -e "${COMMIT}:${ARQUIVO}" 2>/dev/null \
   || uso "${ARQUIVO} não está no último commit: commite antes (a sabotagem roda numa cópia do último commit)"
 if [ -n "$(git status --porcelain --untracked-files=no 2>/dev/null)" ]; then
   echo "⚠️  há mudança não commitada: a cópia é do último commit (HEAD), e a árvore de trabalho não é tocada."
@@ -98,7 +101,8 @@ elo="$(link_no_destino)"
 
 # ---- a cópia descartável ----------------------------------------------------------------------------
 TRAB="$(mktemp -d "${TMPDIR:-/tmp}/sdd-sabotagem.XXXXXX" 2>/dev/null)" || inconclusivo "não consegui criar a pasta temporária"
-limpa() { rm -rf "${TRAB}"; }
+NOVO_LOG=""
+limpa() { rm -rf "${TRAB}"; if [ -n "${NOVO_LOG}" ]; then rm -f "${NOVO_LOG}"; fi; }
 trap limpa EXIT
 trap 'limpa; exit 130' INT
 trap 'limpa; exit 143' TERM
@@ -109,7 +113,7 @@ SAIDA="${TRAB}/saida.txt"
 # deixasse na cópia (o __pycache__ do Python com a troca no mesmo segundo do commit, um build) esconderia a sabotagem.
 monta_copia() {
   rm -rf "${COPIA}" && mkdir "${COPIA}" || inconclusivo "não consegui criar a cópia"
-  git archive --format=tar HEAD 2>/dev/null | (cd "${COPIA}" && tar -xf -) || inconclusivo "git archive HEAD falhou"
+  git archive --format=tar "${COMMIT}" 2>/dev/null | (cd "${COPIA}" && tar -xf -) || inconclusivo "git archive HEAD falhou"
 }
 monta_copia
 ALVO="${COPIA}/${ARQUIVO}"
@@ -160,7 +164,7 @@ esac
 
 roda_na_copia() { ( cd "${COPIA}" && SDD_TRACE=off bash -c "${CMD}" ) </dev/null >"${SAIDA}" 2>&1; }
 
-echo "▶ cópia do último commit ($(git rev-parse --short HEAD)) · comando sem a sabotagem"
+echo "▶ cópia do último commit (${SHA}) · comando sem a sabotagem"
 roda_na_copia; rc_limpo=$?
 case "${rc_limpo}" in
   0) ;;
@@ -184,15 +188,19 @@ elo="$(link_no_destino)"   # o comando do AT rodou no meio: confere de novo na h
 [ -z "${elo}" ] || inconclusivo "${elo} virou um link simbólico enquanto o comando rodava: o log não foi gravado" \
   "veja o que o comando do AT faz com essa pasta e rode de novo."
 mkdir -p "${EVID}" || inconclusivo "não consegui criar ${EVID}/"
+if [ -d "${LOG}" ]; then inconclusivo "${LOG} é uma pasta: o log não foi gravado" "tire a pasta do lugar do log e rode de novo."; fi
+# arquivo novo e renomeação: gravar por cima seguiria um hard link e apagaria o outro nome dele (rodada 7, R1)
+NOVO_LOG="$(mktemp "${EVID}/.sabotagem.XXXXXX")" || inconclusivo "não consegui criar o log em ${EVID}/"
 {
   printf '$ %s\n' "${CMD}"
-  printf '# sabotagem: %s: «%s» → «%s» (cópia de HEAD %s)\n' "${ARQUIVO}" "${TROCAR}" "${POR}" "$(git rev-parse --short HEAD)"
+  printf '# sabotagem: %s: «%s» → «%s» (cópia de HEAD %s)\n' "${ARQUIVO}" "${TROCAR}" "${POR}" "${SHA}"
   printf '# sem a sabotagem: exit 0\n'
   tail -n 200 "${SAIDA}"
   # saída sem quebra de linha no fim: o [exit=] tem de ficar sozinho na última linha
   if [ -n "$(tail -c 1 "${SAIDA}" | tr -d '\n')" ]; then printf '\n'; fi
   printf '[exit=%s]\n' "${rc_sab}"
-} > "${LOG}" || inconclusivo "não consegui gravar ${LOG}"
+} > "${NOVO_LOG}" && chmod 644 "${NOVO_LOG}" && mv -f "${NOVO_LOG}" "${LOG}" || inconclusivo "não consegui gravar ${LOG}"
+NOVO_LOG=""
 tail -n 15 "${SAIDA}" | sed 's/^/   │ /'
 
 if [ "${rc_sab}" != 0 ]; then

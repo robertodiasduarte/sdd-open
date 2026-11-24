@@ -252,6 +252,33 @@ class AT014Inconclusivo(Base):
         self.sem_log(rc, out, 3, "git archive")
 
 
+class CopiasELog(Base):
+    @unittest.skipIf(*SEM_SYMLINK)
+    def test_log_que_e_hard_link_nao_apaga_o_outro_nome(self):
+        # revisão da S2 inteira, rodada 7 (R1): o `>` truncava o arquivo que dividia o inode com o log
+        alvo = self.tmp / "meu.txt"
+        alvo.write_text("meu arquivo\n", encoding="utf-8")
+        self.log().parent.mkdir(parents=True, exist_ok=True)
+        os.link(str(alvo), str(self.log()))
+        rc, out = self.sabota()
+        self.assertEqual(rc, 0, out)
+        self.assertEqual(alvo.read_text(encoding="utf-8"), "meu arquivo\n")
+        self.assertTrue(self.log().read_text(encoding="utf-8").startswith("$ "))
+        self.assertEqual([p.name for p in self.log().parent.iterdir()], [self.log().name], "sobrou temporário")
+
+    def test_commit_no_meio_nao_troca_a_versao_da_segunda_copia(self):
+        # rodada 7 (R2): cada cópia resolvia o HEAD de novo, e um commit no meio dava um falso "o teste pega"
+        repo = caminho_bash(self.r)
+        comando = ('if [ ! -f "%s/../ja-foi" ]; then touch "%s/../ja-foi"; printf "raise SystemExit(1)\\n" > "%s/test_fraco.py"; '
+                   'git -C "%s" commit -q -a -m meio; fi; %s') % (repo, repo, repo, repo, cmd("test_fraco"))
+        sha = self.git(self.r, "rev-parse", "--short", "HEAD").strip()
+        rc, out, err = self.roda([BASH, SCRIPT, "--feature", F, "--at", "AT-001", "--arquivo", "conta.py", "--trocar", TROCAR,
+                                  "--por", POR, "--cmd", comando], self.r)
+        self.assertNotEqual(self.git(self.r, "rev-parse", "--short", "HEAD").strip(), sha, "o commit do meio não saiu")
+        self.assertEqual(rc, 2, out + err)   # o teste fraco do commit inicial não pega
+        self.assertIn("HEAD " + sha, self.log().read_text(encoding="utf-8"))
+
+
 class LogNoFormato(Base):
     def test_saida_sem_quebra_de_linha_no_fim(self):
         # revisão da S2 inteira, R2: o [exit=n] grudava na última linha da saída

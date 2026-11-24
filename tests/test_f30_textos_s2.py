@@ -93,6 +93,11 @@ class AT015DesignMoldesConfig(unittest.TestCase):
         config = (RAIZ / "sdd/config.example.yaml").read_text(encoding="utf-8")
         self.assertRegex(config, r"(?m)^build:\n(?:  #.*\n)*  refatorar: true$")
 
+    def test_brief_do_worker_tem_a_excecao_da_nao_regressao(self):
+        brief = ler("sdd/templates/fragments/WORKER_BRIEF.md")
+        self.assertIn("vermelha no comportamento novo", brief)
+        self.assertIn("verde no `shall continue to`", brief)
+
     def test_contrato_de_evidencia_e_convencoes(self):
         evid = ler("sdd/templates/fragments/EVIDENCIA.md")
         self.assertIn("AT-nnn.antes.log", evid)
