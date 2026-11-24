@@ -11,7 +11,7 @@
 | **Feature** | F30_QUALIDADE_CODIGO |
 | **Date** | 2026-11-23 |
 | **Author** | Roberto Dias Duarte (decisões) · define-agent (redação) |
-| **Status** | Ready for Design (S1) · S2 e S3 a definir por `sdd-iterate` |
+| **Status** | S1 publicada (v2.26.0) · S2 Ready for Design · S3 a definir por `sdd-iterate` |
 | **Clarity Score** | 14/15 |
 
 Entradas: `sdd/features/AVALIACAO_F30_UNCLE_BOB.md` (o porquê, as 15 propostas, a nota) e
@@ -60,6 +60,9 @@ O efeito é código que passa no gate com erro de estilo, de tipos e helper dupl
 - [ ] S1: `init` e `sync` em 3 fixtures (Python, JS/TS, sem stack) geram exatamente 1 bloco `### Qualidade ao construir`, com as 6 regras gerais e, nas 2 primeiras, as da stack.
 - [ ] S1: o `checar.sh` numa fixture sem linter imprime a sugestão da stack em ≤ 1 bloco e a árvore fica idêntica (hash antes = depois).
 - [ ] S1: o starter gerado traz as regras de qualidade no texto da `sdd-build` e passa nos `grep` da F29 (0 ocorrências).
+- [ ] S2: 100% dos AT de comportamento novo sem `AT-nnn.antes.log` vermelho do mesmo comando são reprovados (exit 1) num relatório com a coluna `Antes`; 0 reprovações nos relatórios sem a coluna.
+- [ ] S2: o `sabotagem.sh` sai 0 quando o teste pega a sabotagem e 2 quando não pega, com o hash da árvore de trabalho igual antes e depois nos 2 casos.
+- [ ] S2: o custo extra em tokens dos itens 2, 6 e 7 medido na mesma tarefa de exemplo, com e sem os passos novos, e registrado no BUILD_REPORT.
 - [ ] Todas as fatias: suíte inteira verde e CI 18 de 18.
 
 ---
@@ -100,9 +103,35 @@ O efeito é código que passa no gate com erro de estilo, de tipos e helper dupl
 
 ## Fatia S2 — Disciplina de teste (itens 2, 6, 7)
 
-> A definir por `sdd-iterate` depois da release da S1. Decisões já tomadas: D3, D4 e D7 (ver Clarifications).
-> Proposta de AT no ESCOPO §6 (S2-a, S2-b, S2-c). Segurança só no S2-b: a sabotagem nunca toca a árvore de
-> trabalho (hash conferido no teste). Medir o custo extra em tokens dos itens 2, 6 e 7 no BUILD_REPORT.
+### Acceptance Tests — S2
+
+> "Comportamento novo" = AT `true` no BUILD_REPORT cuja linha no DEFINE tem o gate `kind` `test` ou `cmd` e não é
+> `shall continue to` (D3). "Coluna `Antes`" = a coluna da tabela de critérios do BUILD_REPORT que cita o
+> `AT-nnn.antes.log` (ou `N.A. (<motivo>)`). Os logs seguem o contrato de evidência (1ª linha `$ <comando>`, saída
+> verbatim, última linha `[exit=<n>]`).
+
+| ID | Padrão | Critério (EARS) | Gate (`kind`) |
+|----|--------|-----------------|---------------|
+| AT-010 | Event-driven | **When** o `report-lint.py` confere um BUILD_REPORT cuja tabela de critérios tem a coluna `Antes`, the system **shall** exigir, para cada AT `true` de comportamento novo, `sdd/reports/evidence/{F}/AT-nnn.antes.log` citado na coluna, existente, não ignorado pelo git, com a 1ª linha igual à do `AT-nnn.log` e a última `[exit=<n>]` com `n` fora de 0, 126 e 127 (vermelho de verdade); ausente, verde, de outro comando, sem `[exit=` ou `N.A.` num AT de comportamento novo ⇒ exit 1 com o conserto em 1 linha | test |
+| AT-011 | Unwanted | **If** o AT `true` é `shall continue to` (não-regressão), **then** the system **shall** exigir o `AT-nnn.antes.log` do mesmo comando com `[exit=0]` (verde antes) e reprovar (exit 1) o antes vermelho; AT com gate `manual-ux` (exit 4) ou de `kind` fora de `test`/`cmd` aceita `N.A. (<motivo>)` na coluna | test |
+| AT-012 | State-driven | **While** a tabela de critérios do BUILD_REPORT não tem a coluna `Antes` (relatório anterior à S2), the system **shall** aprovar o relatório como antes, com 1 aviso que nomeia a coluna que falta, nunca com violação; sem o DEFINE da feature, o mesmo aviso com a causa | test |
+| AT-013 | Event-driven | **When** o `sdd/bin/sabotagem.sh` roda com o AT, o comando, o arquivo e o trecho a trocar declarados no DESIGN, the system **shall** extrair `git archive HEAD` numa pasta temporária, rodar o comando na cópia limpa (precisa sair 0), aplicar a troca na cópia, rodar de novo e: vermelho com a sabotagem ⇒ exit 0 e `sdd/reports/evidence/{F}/AT-nnn.sabotagem.log`; verde com a sabotagem ⇒ exit 2 com "o teste não pega o defeito"; nos dois casos a cópia é apagada e, fora o próprio log, a árvore de trabalho fica idêntica (hash antes = depois) | test |
+| AT-014 | Unwanted | **If** o trecho a trocar não aparece no arquivo, o caminho do arquivo sai da cópia (absoluto ou com `..`), o comando já falha na cópia limpa ou sai 126/127, **then** the system **shall** sair 3 (inconclusivo) ou 64 (uso) com a causa, sem gravar log de sucesso e com a árvore de trabalho idêntica | test |
+| AT-015 | Event-driven | **When** a tarefa do Build passa pelos seus passos, the system **shall** ter no texto da `sdd-build` (Open) o vermelho antes do verde (`AT-nnn.antes.log` e a coluna `Antes`), a sabotagem declarada no DESIGN rodada pelo `sabotagem.sh` e o passo **Refatorar** entre Verificar e Marcar, ligado por padrão e pulado (dito no relatório) com `build.refatorar: false`; o `config.example.yaml` tem `build.refatorar`; o `BUILD_REPORT_TEMPLATE.md` tem a coluna `Antes`; a `sdd-design` pede a tabela de sabotagens na estratégia de testes (uma por AT de superfície de risco do `CRITERIO_DANO.md`, ≥ 1 por feature); o `MODO_WEB.md` e o starter levam o vermelho antes do verde e o refatorar sem citar `sdd/bin/…` | test |
+| AT-016 | Non-regression | The system **shall continue to** passar a suíte inteira, o `publish-gate` em modo CI sobre uma cópia de `git archive` e o `check-versions.py --base origin/main`, e a aprovar os BUILD_REPORTs sem a coluna `Antes` (o da S1 e os das fixtures) | test |
+
+**Padrões considerados:**
+- **Where:** o `build.refatorar: false` é a flag nova, mas o efeito é texto de skill (o agente pula o passo); fica
+  dentro do AT-015, conferido por teste de texto.
+- **While:** AT-012 (relatório anterior à S2).
+- **If–Then:** AT-011 e AT-014.
+
+### Fora da S2
+
+- Exigir a sabotagem no `report-lint.py` (o `≥ 1 por feature` fica no texto da build e no DESIGN; conferir por
+  máquina é candidato depois da S3).
+- Mutação completa (Stryker, mutmut).
+- Coluna `Antes` obrigatória em relatório antigo (AT-012: só aviso).
 
 ---
 
@@ -119,15 +148,21 @@ O efeito é código que passa no gate com erro de estilo, de tipos e helper dupl
 
 - [x] (escopo) D1 — Erro de lint ou de tipos no Build bloqueia ou avisa, e onde fica o comando de tipos? → **Bloqueia** com o slot cheio, pela escada de retry; tipos no slot **`project.typecheck_cmd`, que já existe** (o ESCOPO supunha slot novo; o passo 5b da `sdd-build` já o lê no fim do Build). Integrado em AT-001, AT-003.
 - [x] (restrições) D2 — Projeto sem linter: instala ou propõe? → **Propõe** o comando exato; slot gravado só com o sim. Integrado em AT-006, AT-007.
-- [x] (escopo) D3 — Vermelho antes do verde vale para quais ATs? → ATs `test`/`cmd` de comportamento novo; `shall continue to` exige verde antes; exit 4 fora. Integrar na S2.
-- [x] (escopo) D4 — Sabotagem: quantas e quem escolhe? → Uma por AT de superfície de risco (critério do `CRITERIO_DANO.md`) e ≥ 1 por feature, **declaradas no DESIGN**. Integrar na S2.
+- [x] (escopo) D3 — Vermelho antes do verde vale para quais ATs? → ATs `test`/`cmd` de comportamento novo; `shall continue to` exige verde antes; exit 4 fora. Integrado em AT-010, AT-011 (e AT-012 para o relatório anterior à S2).
+- [x] (escopo) D4 — Sabotagem: quantas e quem escolhe? → Uma por AT de superfície de risco (critério do `CRITERIO_DANO.md`) e ≥ 1 por feature, **declaradas no DESIGN**. Integrado em AT-013, AT-014, AT-015.
 - [x] (NFRs) D5 — Limites das métricas → complexidade 10, 60 linhas, 5 parâmetros, `jscpd --min-tokens 50`, em `qualidade.*` do config. Integrar na S3.
 - [x] (integrações) D6 — Onde fica o catálogo? → Arquivo novo na skill da build (`web/references/CATALOGO_QUALIDADE.md`, para o starter receber; Decision 1 do DESIGN) e **script irmão novo** (não um modo do `seguranca-varredura.sh`: a taxonomia de stack é outra). Integrado em AT-004, AT-005.
-- [x] (sinal de conclusão) D7 — Refatorar depois do verde vem ligado? → Ligado, `build.refatorar: false` desliga. Sai o "desligado no modo `lite`": a `sdd-build` não tem esse modo (o `lite` é perfil dos laços da `sdd-loop-builder`). Integrar na S2.
+- [x] (sinal de conclusão) D7 — Refatorar depois do verde vem ligado? → Ligado, `build.refatorar: false` desliga. Sai o "desligado no modo `lite`": a `sdd-build` não tem esse modo (o `lite` é perfil dos laços da `sdd-loop-builder`). Integrado em AT-015.
+
+### Session 2026-11-24 (S2, iterate)
+
+- [x] (escopo) Como o `report-lint.py` cobra o vermelho antes sem reprovar todo relatório antigo? → Pela coluna `Antes` da tabela de critérios: com ela, a cobrança é estrita; sem ela, aviso (AT-012). Mesmo molde da linha `lint: slot vazio` da S1 (Decision 3). Decidido pelo agente com a recomendação, dentro de D3.
+- [x] (escopo) A sabotagem confere a cópia limpa antes? → Sim: vermelho com a sabotagem só prova algo se o comando passa sem ela (AT-013, AT-014). Decidido pelo agente.
 
 ### Segurança
 
 - S1: N.A. — scripts locais que só leem o projeto (o `checar.sh` não instala nem grava); sem login, rota, dado de terceiros ou chamada paga. A fatia S2 trata a única superfície (sabotagem em cópia descartável).
+- S2: a superfície é o `sabotagem.sh`, que roda um comando do projeto e troca texto num arquivo. Ele roda na cópia de `git archive HEAD` numa pasta temporária, recusa caminho absoluto ou com `..` (AT-014), apaga a cópia ao sair (também por sinal) e deixa a árvore de trabalho idêntica, fora o log (AT-013, hash conferido no teste). O comando vem do DESIGN do próprio projeto, como o do Verify Gate: nenhum dado de terceiros, rede ou chamada paga.
 
 ---
 
@@ -136,7 +171,7 @@ O efeito é código que passa no gate com erro de estilo, de tipos e helper dupl
 ```yaml
 verify_gate:
   kind: test
-  cmd: "! grep -rlE 'Não cite nem resuma|comece com esta linha|versão atual: http' .agents/skills && /usr/bin/python3 scripts/check-versions.py --base origin/main && T=$(mktemp -d) && git archive HEAD | tar -x -C $T && PUBLISH_GATE_MODE=ci bash scripts/publish-gate.sh $T && cd $T && test -f tests/test_f30_report_lint.py && test -f tests/test_f30_textos.py && test -f tests/test_f30_agents_qualidade.py && test -f tests/test_f30_checar_linter.py && test -f tests/test_f30_starter.py && SDD_TEST_BASH=/bin/bash /usr/bin/python3 -B -m unittest discover -s tests -p 'test_f30_*.py' && SDD_TEST_BASH=/bin/bash /usr/bin/python3 -B -m unittest discover -s tests -p 'test_*.py'"
+  cmd: "! grep -rlE 'Não cite nem resuma|comece com esta linha|versão atual: http' .agents/skills && /usr/bin/python3 scripts/check-versions.py --base origin/main && T=$(mktemp -d) && git archive HEAD | tar -x -C $T && PUBLISH_GATE_MODE=ci bash scripts/publish-gate.sh $T && cd $T && test -f tests/test_f30_report_lint.py && test -f tests/test_f30_textos.py && test -f tests/test_f30_agents_qualidade.py && test -f tests/test_f30_checar_linter.py && test -f tests/test_f30_starter.py && test -f tests/test_f30_vermelho_antes.py && test -f tests/test_f30_sabotagem.py && test -f tests/test_f30_textos_s2.py && SDD_TEST_BASH=/bin/bash /usr/bin/python3 -B -m unittest discover -s tests -p 'test_f30_*.py' && SDD_TEST_BASH=/bin/bash /usr/bin/python3 -B -m unittest discover -s tests -p 'test_*.py'"
   pass_when: "exit 0"
   threshold: "—"
   manual_fallback: "—"
@@ -146,8 +181,11 @@ Cobertura: AT-001 e AT-002 em `tests/test_f30_report_lint.py`; AT-003 em `tests/
 AT-005 em `tests/test_f30_agents_qualidade.py` (init/sync em fixtures Python, JS e sem stack; catálogo ausente);
 AT-006 em `tests/test_f30_checar_linter.py` (hash da árvore antes e depois); AT-007 em `tests/test_f30_textos.py`;
 AT-008 em `tests/test_f30_starter.py` (gera o starter numa pasta temporária) e no `grep` do gate; AT-009 na
-suíte inteira, no `publish-gate` e no `check-versions.py`. O gate roda sobre o que está commitado (`git archive
-HEAD`). Baseline vermelho: os 5 `test -f` saem 1 antes do código. Eles existem porque, no Python 3.9 do sistema, o `discover` sem nenhum teste sai 0 (medido em 2026-11-23: "Ran 0 tests … OK"), e assim não provaria nada (LM-002).
+suíte inteira, no `publish-gate` e no `check-versions.py`. S2: AT-010 a AT-012 em `tests/test_f30_vermelho_antes.py`;
+AT-013 e AT-014 em `tests/test_f30_sabotagem.py` (repositório git temporário; hash da árvore antes e depois); AT-015 em
+`tests/test_f30_textos_s2.py` (inclui o starter gerado numa pasta temporária); AT-016 na suíte inteira, no
+`publish-gate` e no `check-versions.py`. O gate roda sobre o que está commitado (`git archive
+HEAD`). Baseline vermelho: os 5 `test -f` da S1 (e os 3 da S2) saem 1 antes do código. Eles existem porque, no Python 3.9 do sistema, o `discover` sem nenhum teste sai 0 (medido em 2026-11-23: "Ran 0 tests … OK"), e assim não provaria nada (LM-002).
 
 ---
 
@@ -178,13 +216,13 @@ HEAD`). Baseline vermelho: os 5 `test -f` saem 1 antes do código. Eles existem 
 
 | Aspect | Value | Notes |
 |--------|-------|-------|
-| **Deployment Location** | `.agents/skills/sdd-build/` (SKILL.md, `references/`, `web/`), `.agents/skills/sdd-checar-ambiente/scripts/checar.sh`, `.agents/skills/sdd-new-session/`, `AGENTS.md.tmpl`, `bin/sdd-open.sh`, `sdd/bin/report-lint.py`, `sdd/bin/` (script irmão novo), `sdd/config.example.yaml`, `scripts/gerar-starter.py`, `tests/` | É o pacote do método; o aluno recebe pelo `init`/`sync` e pelo starter |
+| **Deployment Location** | `.agents/skills/sdd-build/` (SKILL.md, `references/`, `web/`), `.agents/skills/sdd-checar-ambiente/scripts/checar.sh`, `.agents/skills/sdd-new-session/`, `AGENTS.md.tmpl`, `bin/sdd-open.sh`, `sdd/bin/report-lint.py`, `sdd/bin/` (script irmão novo; na S2, `sabotagem.sh`), `.agents/skills/sdd-design/`, `sdd/config.example.yaml`, `scripts/gerar-starter.py`, `tests/` | É o pacote do método; o aluno recebe pelo `init`/`sync` e pelo starter |
 | **KB Domains** | nenhum | O repositório não tem `sdd/kb/`; a `sdd-kb` cria uma base quando houver domínio a catalogar |
 | **IaC Impact** | None | — |
 | **LLM Prompts** | false | Muda texto de skill (instrução ao agente de desenvolvimento), não prompt que roda em produção; nenhum sinal forte |
 | **CONTEXTO de domínio** | nenhum (pulado: sem mapa de domínios em `sdd/patterns/dominio.md`; os achados com linha do ESCOPO §2 fazem esse papel) | — |
 | **Governança** | N.A. — não trata dinheiro, saldo, tributo, folha nem dado pessoal (texto de skill e scripts do método); N.A. decidido pelo Roberto no escopo da frente | 2026-11-23 |
-| **Segurança** | N.A. — S1 sem login, rota, dado de terceiros ou chamada paga; o S2-b (sabotagem em cópia descartável) terá a sua | 2026-11-23 |
+| **Segurança** | S1: N.A. — sem login, rota, dado de terceiros ou chamada paga. S2: só o `sabotagem.sh` (cópia descartável, caminho contido, árvore intacta; Clarifications § Segurança) | 2026-11-24 |
 | **Desempenho** | N.A. — sem banco | 2026-11-23 |
 
 ---
@@ -208,14 +246,14 @@ HEAD`). Baseline vermelho: os 5 `test -f` saem 1 antes do código. Eles existem 
 | Users | 3 | 3 personas com dor própria |
 | Goals | 3 | MUST/SHOULD por fatia |
 | Success | 3 | Contagens e exit codes |
-| Scope | 2 | S2 e S3 decididas em D3–D7, mas os ATs delas vêm por `sdd-iterate` |
+| Scope | 2 | S2 com ATs (AT-010 a AT-016); S3 decidida em D5, ATs por `sdd-iterate` |
 | **Total** | **14/15** | |
 
 ---
 
 ## Open Questions
 
-None for S1 — ready for Design. S2 e S3: ATs por `sdd-iterate`, com as decisões já registradas.
+None for S2 — ready for Design. S3: ATs por `sdd-iterate`, com D5 já registrada.
 
 ---
 
@@ -224,6 +262,7 @@ None for S1 — ready for Design. S2 e S3: ATs por `sdd-iterate`, com as decisõ
 | Version | Date | Author | Changes |
 |---------|------|--------|---------|
 | 1.0 | 2026-11-23 | define-agent | S1 (itens 1, 3, 4) com D1–D7 decididas; S2 e S3 reservadas |
+| 1.5 | 2026-11-24 | iterate | S2 (itens 2, 6, 7): AT-010 a AT-016, Clarifications da S2, segurança do `sabotagem.sh`, `test -f` dos 3 testes novos no gate. Aditiva: a S1 não muda |
 | 1.4 | 2026-11-23 | build | AT-006: PHP sem `php -l` (achado 1 do avaliador, ciclo 1). O `php -l` confere um arquivo por chamada e não tem modo de projeto inteiro: no slot de tipos, que roda como está (Decision 4), ele leria a entrada padrão e travaria o Build. Fica o `phpcs` |
 | 1.3 | 2026-11-23 | build | AT-007: a tradução fica no passo dos slots da new-session, não na tabela do `--frente` (Decision 6: o `--frente` não fala de linter) |
 | 1.2 | 2026-11-23 | design-agent | AT-001: exceção da dívida antiga pelo log de antes (revisão do DESIGN, N1) |
@@ -233,5 +272,5 @@ None for S1 — ready for Design. S2 e S3: ATs por `sdd-iterate`, com as decisõ
 
 ## Next Step
 
-**Ready for:** `/sdd-design sdd/features/DEFINE_F30_QUALIDADE_CODIGO.md` (S1). UX Review pulado: sem tela; o
+**Ready for:** `/sdd-design sdd/features/DEFINE_F30_QUALIDADE_CODIGO.md` (S2). UX Review pulado: sem tela; o
 texto ao aluno segue as `references/como-falar.md` das skills tocadas.
