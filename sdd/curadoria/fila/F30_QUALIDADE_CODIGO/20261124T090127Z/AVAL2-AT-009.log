@@ -1,0 +1,61 @@
+$ bash /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-f30-sdd-open-uncle-bob/0cf4badb-88be-4ebf-a86a-fed6605c57e9/scratchpad/aval2/at009.sh
+== check-versions --base origin/main (4aa0cce)
+PASS: check-versions — 24 skills com versão coerente, comparadas a origin/main.
+RESULTADO: VERDE
+→ siga para o próximo passo.
+rc=0
+== publish-gate CI em cópia de git archive HEAD
+publish-gate — tree: /private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.sbukGV3yoB — mode: ci
+──────────────────────────────────────────────────────────────────
+G1 secrets (gitleaks)
+  ✅ no secrets detected
+G2 forbidden patterns
+  ✅ no forbidden pattern matched
+G3 allowlist (MANIFEST.txt)
+  ✅ tree and manifest match in both directions
+G4 verify-gate exit contract
+  ✅ DEFINE_FIXTURE_NEEDS_CLARIFICATION.md → exit 5
+  ✅ DEFINE_FIXTURE_CONTROLE.md → exit 0
+  ✅ DEFINE_FIXTURE_SEM_BLOCO.md → exit 64
+G5 documentation
+  ✅ docs present, cross-linked, attribution in place
+──────────────────────────────────────────────────────────────────
+✅ publish-gate GREEN — tree is publishable (human review of the file list still required)
+rc=0
+== bloco Segurança ao construir: pacote origin/main (antes da F30) × HEAD, mesmas fixtures
+  py init(A) rc=0
+  py init(T) rc=0
+py: segurança DIFERENTE
+9,11d8
+< Agentes preparados neste projeto: codex. Arquivos em `.claude/skills/`, `.cursor/skills/`,
+< `CLAUDE.md` e `GEMINI.md` são **gerados** — edite `.agents/skills/` e rode `sdd-open.sh sync`.
+< </sdd-open-instructions>
+  js init(A) rc=0
+  js init(T) rc=0
+js: segurança DIFERENTE
+12,14d11
+< Agentes preparados neste projeto: codex. Arquivos em `.claude/skills/`, `.cursor/skills/`,
+< `CLAUDE.md` e `GEMINI.md` são **gerados** — edite `.agents/skills/` e rode `sdd-open.sh sync`.
+< </sdd-open-instructions>
+  ts init(A) rc=0
+  ts init(T) rc=0
+ts: segurança DIFERENTE
+12,14d11
+< Agentes preparados neste projeto: codex. Arquivos em `.claude/skills/`, `.cursor/skills/`,
+< `CLAUDE.md` e `GEMINI.md` são **gerados** — edite `.agents/skills/` e rode `sdd-open.sh sync`.
+< </sdd-open-instructions>
+  php init(A) rc=0
+  php init(T) rc=0
+php: segurança DIFERENTE
+9,11d8
+< Agentes preparados neste projeto: codex. Arquivos em `.claude/skills/`, `.cursor/skills/`,
+< `CLAUDE.md` e `GEMINI.md` são **gerados** — edite `.agents/skills/` e rode `sdd-open.sh sync`.
+< </sdd-open-instructions>
+  nada init(A) rc=0
+  nada init(T) rc=0
+nada: segurança DIFERENTE
+9,11d8
+< Agentes preparados neste projeto: codex. Arquivos em `.claude/skills/`, `.cursor/skills/`,
+< `CLAUDE.md` e `GEMINI.md` são **gerados** — edite `.agents/skills/` e rode `sdd-open.sh sync`.
+< </sdd-open-instructions>
+[exit=1]
