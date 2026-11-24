@@ -1,10 +1,11 @@
 $ cd tests && /usr/bin/python3 -B -m unittest -v test_f30_sabotagem.AT013Sabotagem
+test_cache_da_execucao_limpa_nao_esconde_a_sabotagem (test_f30_sabotagem.AT013Sabotagem) ... ok
 test_mudanca_nao_commitada_fica_e_a_copia_e_do_commit (test_f30_sabotagem.AT013Sabotagem) ... ok
 test_teste_forte_pega_a_sabotagem (test_f30_sabotagem.AT013Sabotagem) ... ok
 test_teste_fraco_nao_pega (test_f30_sabotagem.AT013Sabotagem) ... ok
 
 ----------------------------------------------------------------------
-Ran 3 tests in 1.321s
+Ran 4 tests in 1.971s
 
 OK
 [exit=0]
