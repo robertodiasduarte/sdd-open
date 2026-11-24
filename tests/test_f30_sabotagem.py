@@ -13,7 +13,7 @@ import os
 import unittest
 from pathlib import Path
 
-from apoio import BASH, PYTHON, RAIZ, SEM_SYMLINK, Sandbox, caminho_bash
+from apoio import BASH, PYTHON, RAIZ, SEM_SYMLINK, WINDOWS, Sandbox, caminho_bash
 
 SCRIPT = RAIZ / "sdd" / "bin" / "sabotagem.sh"
 F = "FX"
@@ -178,8 +178,11 @@ class AT014Inconclusivo(Base):
         os.symlink(str(alvo), str(self.r / "link.py"))
         self.commit(self.r, "link")
         rc, out = self.sabota(arquivo="link.py")
-        self.sem_log(rc, out, 64, "link simbólico")
-        self.assertEqual(alvo.read_text(encoding="utf-8"), CONTA)
+        self.assertEqual(alvo.read_text(encoding="utf-8"), CONTA)   # nada sai da cópia, em nenhuma plataforma
+        # no Windows, o link chega à cópia como arquivo comum (o git com core.symlinks desligado, ou o tar do Git Bash,
+        # que não cria link): a troca fica dentro da cópia (CI da v2.27.0, fatia 15/16). O 64 é dos sistemas com link.
+        if not WINDOWS:
+            self.sem_log(rc, out, 64, "link simbólico")
 
 
 if __name__ == "__main__":
