@@ -217,7 +217,7 @@ Nenhum.
 | AT-015 | When a tarefa passa pelos passos, os textos shall ter o vermelho antes, a sabotagem, o Refatorar e `build.refatorar`, também no starter sem `sdd/bin/` | `evidence/F30_QUALIDADE_CODIGO/AT-015.antes.log` | true | `evidence/F30_QUALIDADE_CODIGO/AT-015.log` |
 | AT-016 | The system shall continue to aprovar os relatórios sem a coluna `Antes` (o da S1) e passar a suíte, o `publish-gate` e o `check-versions` | `evidence/F30_QUALIDADE_CODIGO/AT-016.antes.log` | true | `evidence/F30_QUALIDADE_CODIGO/AT-016.log` |
 
-**Verify Gate (`bash sdd/bin/verify-gate.sh sdd/features/DEFINE_F30_QUALIDADE_CODIGO.md`):** PENDENTE.
+**Verify Gate (`bash sdd/bin/verify-gate.sh sdd/features/DEFINE_F30_QUALIDADE_CODIGO.md`):** exit 0 em `d1b0c51` (o commit registrado na 2ª linha do log), `evidence/F30_QUALIDADE_CODIGO/GATE_S2_d1b0c51.log`: grep da F29 vazio, `check-versions` VERDE, `publish-gate` em modo CI verde sobre a cópia de `git archive`, os 8 `test -f`, os `test_f30_*` (105 testes) e a suíte inteira, 2.870 testes, OK (4 pulados), com `/bin/bash` 3.2 e `/usr/bin/python3` 3.9, em 35,5 min. Um gate em `491bd2d` foi interrompido de propósito: os consertos do raio de impacto mudaram o código antes de ele terminar.
 
 ---
 
@@ -247,7 +247,7 @@ DESIGN, auditor claude; `diversidade: vendor`. Custo: US$ 0,67 (DESIGN) + 0,88 +
 - [x] All tasks from manifest completed
 - [x] Testes novos vermelhos antes do código (com log) e verdes depois
 - [x] 2 sabotagens declaradas no DESIGN pegas pelos testes
-- [ ] Verify Gate verde no commit que sobe
+- [x] Verify Gate verde no commit que sobe (`d1b0c51`)
 - [x] No blocking issues
 - [x] Acceptance tests verified — 7 de 7 com log e antes
 - [x] Avaliador de contexto fresco com `AVALIACAO_*.md` persistido
