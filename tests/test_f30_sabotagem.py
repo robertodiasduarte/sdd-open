@@ -10,10 +10,11 @@ from __future__ import annotations
 
 import hashlib
 import os
+import shutil
 import unittest
 from pathlib import Path
 
-from apoio import BASH, PYTHON, RAIZ, SEM_SYMLINK, WINDOWS, Sandbox, caminho_bash
+from apoio import BASH, PYTHON, RAIZ, SEM_CHMOD, SEM_SYMLINK, WINDOWS, Sandbox, caminho_bash
 
 SCRIPT = RAIZ / "sdd" / "bin" / "sabotagem.sh"
 F = "FX"
@@ -187,6 +188,77 @@ class AT014Inconclusivo(Base):
         # que não cria link): a troca fica dentro da cópia (CI da v2.27.0, fatia 15/16). O 64 é dos sistemas com link.
         if not WINDOWS:
             self.sem_log(rc, out, 64, "link simbólico")
+
+
+    @unittest.skipIf(*SEM_SYMLINK)
+    def test_log_que_e_link_simbolico_nao_e_seguido(self):
+        # revisão da S2 inteira, R1: a gravação do log seguia o link e sobrescrevia o arquivo apontado
+        for pendurado in (False, True):
+            with self.subTest(pendurado=pendurado):
+                alvo = self.tmp / ("alvo-%s.txt" % pendurado)
+                if not pendurado:
+                    alvo.write_text("meu arquivo\n", encoding="utf-8")
+                self.log().parent.mkdir(parents=True, exist_ok=True)
+                os.symlink(str(alvo), str(self.log()))
+                rc, out = self.sabota()
+                self.assertEqual(rc, 64, out)
+                self.assertIn("link simbólico", out)
+                self.assertResultado(out)
+                if pendurado:
+                    self.assertFalse(alvo.exists())
+                else:
+                    self.assertEqual(alvo.read_text(encoding="utf-8"), "meu arquivo\n")
+                self.assertTrue(self.log().is_symlink())
+                self.log().unlink()
+
+    @unittest.skipIf(*SEM_SYMLINK)
+    def test_pasta_do_log_que_e_link_simbolico_nao_e_seguida(self):
+        for rel in ("sdd", "sdd/reports", "sdd/reports/evidence", "sdd/reports/evidence/" + F):
+            with self.subTest(pasta=rel):
+                fora = self.tmp / ("fora-" + rel.replace("/", "-"))
+                fora.mkdir()
+                link = self.r / rel
+                link.parent.mkdir(parents=True, exist_ok=True)
+                os.symlink(str(fora), str(link), target_is_directory=True)
+                rc, out = self.sabota()
+                self.assertEqual(rc, 64, out)
+                self.assertIn("link simbólico", out)
+                self.assertEqual(list(fora.iterdir()), [])
+                link.unlink()
+
+    @unittest.skipIf(*SEM_SYMLINK)
+    def test_link_criado_pelo_comando_no_lugar_do_log_nao_e_seguido(self):
+        # o comando do AT roda entre a conferência e a gravação: o log é conferido de novo na hora de gravar
+        alvo = self.tmp / "alvo-tardio.txt"
+        alvo.write_text("meu arquivo\n", encoding="utf-8")
+        destino = caminho_bash(self.log())
+        comando = 'mkdir -p "%s"; ln -sf "%s" "%s"; %s' % (
+            caminho_bash(self.log().parent), caminho_bash(alvo), destino, cmd("test_forte"))
+        rc, out = self.sabota(comando=comando)
+        self.assertNotEqual(rc, 0, out)
+        self.assertEqual(alvo.read_text(encoding="utf-8"), "meu arquivo\n")
+
+    @unittest.skipIf(*SEM_CHMOD)
+    def test_git_archive_que_falha_e_inconclusivo(self):
+        # revisão do código, rodada 3 (R2): sem pipefail, a falha do git archive virava erro de uso
+        pasta = self.tmp / "calco"
+        pasta.mkdir()
+        git = shutil.which("git")
+        calco = pasta / "git"
+        calco.write_bytes(('#!/bin/sh\n[ "$1" = archive ] && exit 1\nexec "%s" "$@"\n' % caminho_bash(git)).encode("utf-8"))
+        calco.chmod(0o755)
+        self.env = dict(self.env, PATH=str(pasta) + os.pathsep + self.env["PATH"])
+        rc, out = self.sabota()
+        self.sem_log(rc, out, 3, "git archive")
+
+
+class LogNoFormato(Base):
+    def test_saida_sem_quebra_de_linha_no_fim(self):
+        # revisão da S2 inteira, R2: o [exit=n] grudava na última linha da saída
+        rc, out = self.sabota(comando=cmd("test_forte") + " && exit 0; printf sem-quebra; exit 1")
+        self.assertEqual(rc, 0, out)
+        linhas = self.log().read_text(encoding="utf-8").splitlines()
+        self.assertEqual(linhas[-2:], ["sem-quebra", "[exit=1]"])
 
 
 if __name__ == "__main__":

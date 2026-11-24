@@ -25,7 +25,7 @@
 # e `# sem a sabotagem: exit 0`, a saída da execução sabotada (últimas 200 linhas) e `[exit=<n>]` dela.
 # ⚠️ bash 3.2 + python3 (stdlib) · a cópia não grava trace (SDD_TRACE=off).
 
-set -u
+set -uo pipefail
 # F16: o Python que roda vira python3 (no Windows, python ou py -3). Só builtins; sem a biblioteca, a guarda de antes.
 _sdd_0="${0//\\//}"   # caminho do Windows (C:\…\x.sh) vira C:/…/x.sh
 if [ "${_sdd_0%/*}" = "${_sdd_0}" ]; then _sdd_bin=.; else _sdd_bin="${_sdd_0%/*}"; fi
@@ -83,6 +83,18 @@ git cat-file -e "HEAD:${ARQUIVO}" 2>/dev/null \
 if [ -n "$(git status --porcelain --untracked-files=no 2>/dev/null)" ]; then
   echo "⚠️  há mudança não commitada: a cópia é do último commit (HEAD), e a árvore de trabalho não é tocada."
 fi
+
+# ---- o destino do log: nem ele nem as pastas dele podem ser link simbólico (a gravação sairia da árvore) ----------
+EVID="sdd/reports/evidence/${FEATURE}"
+LOG="${EVID}/${AT}.sabotagem.log"
+link_no_destino() {   # imprime o 1º link do caminho do log; vazio = nenhum
+  local p
+  for p in sdd sdd/reports sdd/reports/evidence "${EVID}" "${LOG}"; do
+    if [ -L "${p}" ]; then printf '%s' "${p}"; return 0; fi
+  done
+}
+elo="$(link_no_destino)"
+[ -z "${elo}" ] || uso "${elo} é um link simbólico: o log sairia da árvore; troque-o por uma pasta ou um arquivo comum"
 
 # ---- a cópia descartável ----------------------------------------------------------------------------
 TRAB="$(mktemp -d "${TMPDIR:-/tmp}/sdd-sabotagem.XXXXXX" 2>/dev/null)" || inconclusivo "não consegui criar a pasta temporária"
@@ -168,14 +180,17 @@ case "${rc_sab}" in
   126|127) inconclusivo "com a sabotagem, o comando nem rodou (exit ${rc_sab})" ;;
 esac
 
-EVID="sdd/reports/evidence/${FEATURE}"
-LOG="${EVID}/${AT}.sabotagem.log"
+elo="$(link_no_destino)"   # o comando do AT rodou no meio: confere de novo na hora de gravar
+[ -z "${elo}" ] || inconclusivo "${elo} virou um link simbólico enquanto o comando rodava: o log não foi gravado" \
+  "veja o que o comando do AT faz com essa pasta e rode de novo."
 mkdir -p "${EVID}" || inconclusivo "não consegui criar ${EVID}/"
 {
   printf '$ %s\n' "${CMD}"
   printf '# sabotagem: %s: «%s» → «%s» (cópia de HEAD %s)\n' "${ARQUIVO}" "${TROCAR}" "${POR}" "$(git rev-parse --short HEAD)"
   printf '# sem a sabotagem: exit 0\n'
   tail -n 200 "${SAIDA}"
+  # saída sem quebra de linha no fim: o [exit=] tem de ficar sozinho na última linha
+  if [ -n "$(tail -c 1 "${SAIDA}" | tr -d '\n')" ]; then printf '\n'; fi
   printf '[exit=%s]\n' "${rc_sab}"
 } > "${LOG}" || inconclusivo "não consegui gravar ${LOG}"
 tail -n 15 "${SAIDA}" | sed 's/^/   │ /'
