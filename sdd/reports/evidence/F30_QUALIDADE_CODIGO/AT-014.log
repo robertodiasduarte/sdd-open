@@ -1,0 +1,17 @@
+$ cd tests && /usr/bin/python3 -B -m unittest -v test_f30_sabotagem.AT014Inconclusivo
+test_argumento_faltando (test_f30_sabotagem.AT014Inconclusivo) ... ok
+test_arquivo_fora_do_commit (test_f30_sabotagem.AT014Inconclusivo) ... ok
+test_caminho_absoluto (test_f30_sabotagem.AT014Inconclusivo) ... ok
+test_caminho_com_ponto_ponto (test_f30_sabotagem.AT014Inconclusivo) ... ok
+test_comando_que_ja_falha_sem_a_sabotagem (test_f30_sabotagem.AT014Inconclusivo) ... ok
+test_comando_que_nem_roda (test_f30_sabotagem.AT014Inconclusivo) ... ok
+test_fora_de_git (test_f30_sabotagem.AT014Inconclusivo) ... ok
+test_link_simbolico_para_fora_da_copia (test_f30_sabotagem.AT014Inconclusivo) ... ok
+test_trecho_que_aparece_duas_vezes (test_f30_sabotagem.AT014Inconclusivo) ... ok
+test_trecho_que_nao_aparece (test_f30_sabotagem.AT014Inconclusivo) ... ok
+
+----------------------------------------------------------------------
+Ran 10 tests in 1.617s
+
+OK
+[exit=0]

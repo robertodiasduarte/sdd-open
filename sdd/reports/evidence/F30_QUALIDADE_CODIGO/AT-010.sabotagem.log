@@ -1,0 +1,51 @@
+$ cd tests && /usr/bin/python3 -B -m unittest -v test_f30_vermelho_antes.AT010ComportamentoNovo
+# sabotagem: sdd/bin/report-lint.py: «if classe == NOVO and rc in ("0", "126", "127"):» → «if classe == NOVO and rc in ("126", "127"):» (cópia de HEAD 5a5f361)
+# sem a sabotagem: exit 0
+test_antes_127_nao_e_vermelho (test_f30_vermelho_antes.AT010ComportamentoNovo) ... ok
+test_antes_de_outro_at_reprova (test_f30_vermelho_antes.AT010ComportamentoNovo) ... ok
+test_antes_de_outro_comando_reprova (test_f30_vermelho_antes.AT010ComportamentoNovo) ... ok
+test_antes_fora_da_evidencia_da_feature_reprova (test_f30_vermelho_antes.AT010ComportamentoNovo) ... ok
+test_antes_ignorado_pelo_git_reprova (test_f30_vermelho_antes.AT010ComportamentoNovo) ... ok
+test_antes_sem_exit_no_fim_reprova (test_f30_vermelho_antes.AT010ComportamentoNovo) ... ok
+test_antes_verde_reprova (test_f30_vermelho_antes.AT010ComportamentoNovo) ... FAIL
+test_antes_vermelho_do_mesmo_comando_aprova (test_f30_vermelho_antes.AT010ComportamentoNovo) ... ok
+test_at_false_nao_e_conferido (test_f30_vermelho_antes.AT010ComportamentoNovo) ... ok
+test_criterio_que_so_cita_shall_continue_to_e_novo (test_f30_vermelho_antes.AT010ComportamentoNovo) ... FAIL
+test_na_em_at_novo_reprova (test_f30_vermelho_antes.AT010ComportamentoNovo) ... ok
+test_sem_antes_reprova (test_f30_vermelho_antes.AT010ComportamentoNovo) ... ok
+
+======================================================================
+FAIL: test_antes_verde_reprova (test_f30_vermelho_antes.AT010ComportamentoNovo)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/sdd-sabotagem.PGBJwt/copia/tests/test_f30_vermelho_antes.py", line 91, in test_antes_verde_reprova
+    self.reprova(linha("AT-001", antes("AT-001")), "o antes de um AT de comportamento novo tem de falhar")
+  File "/private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/sdd-sabotagem.PGBJwt/copia/tests/test_f30_vermelho_antes.py", line 70, in reprova
+    self.assertEqual(rc, 1, out)
+AssertionError: 0 != 1 : ⚠️  N.A. aceito sem conferir camadas — `layers:` do sdd/config.yaml sem nenhum glob preenchido; preencha `layers:` em sdd/config.yaml para a contagem valer
+⚠️  lint e tipos com o slot vazio (project.lint_cmd e project.typecheck_cmd), e o relatório não diz isso: escreva a linha `lint: slot vazio`
+✅ sdd/reports/BUILD_REPORT_EXEMPLO.md: todo `true` tem evidência abrível e a avaliação está provada ou declarada
+RESULTADO: VERDE
+→ o relatório pode ser commitado.
+
+
+======================================================================
+FAIL: test_criterio_que_so_cita_shall_continue_to_e_novo (test_f30_vermelho_antes.AT010ComportamentoNovo)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/sdd-sabotagem.PGBJwt/copia/tests/test_f30_vermelho_antes.py", line 128, in test_criterio_que_so_cita_shall_continue_to_e_novo
+    self.reprova(linha("AT-005", antes("AT-005")), "o antes de um AT de comportamento novo tem de falhar")
+  File "/private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/sdd-sabotagem.PGBJwt/copia/tests/test_f30_vermelho_antes.py", line 70, in reprova
+    self.assertEqual(rc, 1, out)
+AssertionError: 0 != 1 : ⚠️  N.A. aceito sem conferir camadas — `layers:` do sdd/config.yaml sem nenhum glob preenchido; preencha `layers:` em sdd/config.yaml para a contagem valer
+⚠️  lint e tipos com o slot vazio (project.lint_cmd e project.typecheck_cmd), e o relatório não diz isso: escreva a linha `lint: slot vazio`
+✅ sdd/reports/BUILD_REPORT_EXEMPLO.md: todo `true` tem evidência abrível e a avaliação está provada ou declarada
+RESULTADO: VERDE
+→ o relatório pode ser commitado.
+
+
+----------------------------------------------------------------------
+Ran 12 tests in 1.545s
+
+FAILED (failures=2)
+[exit=1]

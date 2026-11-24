@@ -1,0 +1,49 @@
+$ cd tests && /usr/bin/python3 -B -m unittest -v test_f30_sabotagem.AT013Sabotagem
+# sabotagem: sdd/bin/sabotagem.sh: «ALVO="${COPIA}/${ARQUIVO}"» → «ALVO="${RAIZ}/${ARQUIVO}"» (cópia de HEAD 5a5f361)
+# sem a sabotagem: exit 0
+test_mudanca_nao_commitada_fica_e_a_copia_e_do_commit (test_f30_sabotagem.AT013Sabotagem) ... FAIL
+test_teste_forte_pega_a_sabotagem (test_f30_sabotagem.AT013Sabotagem) ... FAIL
+test_teste_fraco_nao_pega (test_f30_sabotagem.AT013Sabotagem) ... FAIL
+
+======================================================================
+FAIL: test_mudanca_nao_commitada_fica_e_a_copia_e_do_commit (test_f30_sabotagem.AT013Sabotagem)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/sdd-sabotagem.dFNsgX/copia/tests/test_f30_sabotagem.py", line 114, in test_mudanca_nao_commitada_fica_e_a_copia_e_do_commit
+    self.assertEqual(rc, 0, out + err)
+AssertionError: 64 != 0 : ⚠️  há mudança não commitada: a cópia é do último commit (HEAD), e a árvore de trabalho não é tocada.
+🛑 sabotagem: conta.py: o caminho sai da cópia (/private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/sdd-open-k0u8kk3a/repo/conta.py)
+   uso: bash sdd/bin/sabotagem.sh --feature <F> --at <AT-nnn> --arquivo <caminho> --trocar '<trecho>' --por '<trecho>' --cmd '<comando>'
+RESULTADO: ERRO DE USO
+→ corrija a chamada (os valores vêm da tabela de sabotagens do DESIGN) e rode de novo.
+
+
+======================================================================
+FAIL: test_teste_forte_pega_a_sabotagem (test_f30_sabotagem.AT013Sabotagem)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/sdd-sabotagem.dFNsgX/copia/tests/test_f30_sabotagem.py", line 92, in test_teste_forte_pega_a_sabotagem
+    self.assertEqual(rc, 0, out)
+AssertionError: 64 != 0 : 🛑 sabotagem: conta.py: o caminho sai da cópia (/private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/sdd-open-_uue8b4z/repo/conta.py)
+   uso: bash sdd/bin/sabotagem.sh --feature <F> --at <AT-nnn> --arquivo <caminho> --trocar '<trecho>' --por '<trecho>' --cmd '<comando>'
+RESULTADO: ERRO DE USO
+→ corrija a chamada (os valores vêm da tabela de sabotagens do DESIGN) e rode de novo.
+
+
+======================================================================
+FAIL: test_teste_fraco_nao_pega (test_f30_sabotagem.AT013Sabotagem)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/sdd-sabotagem.dFNsgX/copia/tests/test_f30_sabotagem.py", line 103, in test_teste_fraco_nao_pega
+    self.assertEqual(rc, 2, out)
+AssertionError: 64 != 2 : 🛑 sabotagem: conta.py: o caminho sai da cópia (/private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/sdd-open-q53zt3xn/repo/conta.py)
+   uso: bash sdd/bin/sabotagem.sh --feature <F> --at <AT-nnn> --arquivo <caminho> --trocar '<trecho>' --por '<trecho>' --cmd '<comando>'
+RESULTADO: ERRO DE USO
+→ corrija a chamada (os valores vêm da tabela de sabotagens do DESIGN) e rode de novo.
+
+
+----------------------------------------------------------------------
+Ran 3 tests in 0.492s
+
+FAILED (failures=3)
+[exit=1]

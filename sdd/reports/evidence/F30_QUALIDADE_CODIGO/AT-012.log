@@ -1,0 +1,12 @@
+$ cd tests && /usr/bin/python3 -B -m unittest -v test_f30_vermelho_antes.AT012RelatorioAnterior
+test_at_fora_do_define_avisa (test_f30_vermelho_antes.AT012RelatorioAnterior) ... ok
+test_define_sem_coluna_de_kind_usa_o_do_gate (test_f30_vermelho_antes.AT012RelatorioAnterior) ... ok
+test_sem_a_coluna_aprova_com_aviso (test_f30_vermelho_antes.AT012RelatorioAnterior) ... ok
+test_sem_a_coluna_e_sem_at_true_nao_avisa (test_f30_vermelho_antes.AT012RelatorioAnterior) ... ok
+test_sem_define_avisa_com_a_causa (test_f30_vermelho_antes.AT012RelatorioAnterior) ... ok
+
+----------------------------------------------------------------------
+Ran 5 tests in 0.582s
+
+OK
+[exit=0]
