@@ -273,7 +273,7 @@ qualidade_tem_ext() {   # $1 = raiz, $2 = *.ext
       | grep -vE '^(\.agents|\.claude|\.cursor|\.gemini|\.codex|\.kimi|sdd|node_modules|vendor|\.venv|venv)/' | head -1)"
   else
     achou="$(find "$1" -maxdepth 3 \( -name node_modules -o -name vendor -o -name .git -o -name .venv -o -name venv \
-      -o -name sdd -o -name '.agents' -o -name '.claude' \) -prune -o -type f -name "$2" -print 2>/dev/null | head -1)"
+      -o -name sdd -o -name .agents -o -name .claude -o -name .cursor -o -name .gemini -o -name .codex -o -name .kimi \) -prune -o -type f -name "$2" -print 2>/dev/null | head -1)"
   fi
   [ -n "${achou}" ]
 }
