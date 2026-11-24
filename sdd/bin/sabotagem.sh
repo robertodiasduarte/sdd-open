@@ -100,6 +100,12 @@ ALVO="${COPIA}/${ARQUIVO}"
 # conferir (contenção + o trecho exatamente 1 vez) e, depois, trocar: só na cópia
 troca() {   # $1 = conferir | trocar
   python3 - "${1}" "${COPIA}" "${ALVO}" "${TROCAR}" "${POR}" <<'PY'
+import sys as _sdd_sys  # F16W2: saída em UTF-8 e "\n" também no Windows (cp1252 e "\r\n" no pipe do Git Bash)
+for _sdd_c in (_sdd_sys.stdout, _sdd_sys.stderr):
+    try:
+        _sdd_c.reconfigure(encoding="utf-8", errors="replace", newline="\n")
+    except (AttributeError, ValueError):
+        pass
 import os, sys
 modo, copia, alvo, trocar, por = sys.argv[1:6]
 raiz = os.path.realpath(copia)

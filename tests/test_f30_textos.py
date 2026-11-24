@@ -34,7 +34,7 @@ class AT003Build(unittest.TestCase):
 
     def test_verificar_nomeia_slots_arquivos_logs_e_slot_vazio(self):
         p = self.passo_4()
-        verificar = p[p.index("4. **Verificar:**"):p.index("5. **Marcar**")]
+        verificar = p[p.index("4. **Verificar:**"):p.index("5. **Refatorar**")]
         for trecho in ("`project.lint_cmd` sobre os arquivos da tarefa", "`project.typecheck_cmd` como está",
                        "falha da tarefa e segue a escada", "`sdd/reports/evidence/{F}/LINT.log` e `TIPOS.log`",
                        "[exit=<rc>]", "todos os arquivos de código do manifest", "`lint: slot vazio`", "sem bloquear"):

@@ -26,7 +26,7 @@ def versao(skill: str) -> str:
 
 class Versoes(unittest.TestCase):
     def test_versoes(self):
-        for skill, v in (("sdd-desempenho-banco", "1.0.1"), ("sdd-define", "2.9.1"), ("sdd-design", "2.11.1"),
+        for skill, v in (("sdd-desempenho-banco", "1.0.1"), ("sdd-define", "2.9.1"), ("sdd-design", "2.12.0"),
                          ("sdd-release", "2.19.1")):
             with self.subTest(skill=skill):
                 self.assertEqual(versao(skill), v)

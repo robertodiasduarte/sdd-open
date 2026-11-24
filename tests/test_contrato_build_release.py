@@ -72,7 +72,7 @@ class SddRelease(unittest.TestCase):
 
 class SddBuild(unittest.TestCase):
     def test_versao(self):
-        self.assertEqual(versao(BUILD), "2.15.0")
+        self.assertEqual(versao(BUILD), "2.16.0")
 
     def test_passo_4b_manda_ler_a_referencia(self):
         passo = ler(BUILD).split("### 4b. Migration", 1)[1].split("### 5.", 1)[0]
@@ -267,7 +267,7 @@ class RevisaoAdversarial(unittest.TestCase):
         self.assertIn("nunca os dois em paralelo", s)
         self.assertIn("--um-engine", s)
         self.assertIn("diversidade: nenhuma", s)
-        self.assertEqual(versao(DESIGN), "2.11.1")   # F27: passo 5.8 Desempenho
+        self.assertEqual(versao(DESIGN), "2.12.0")   # F30 S2: tabela de sabotagens
 
     def test_templates_citam_o_script(self):
         for rel in ("sdd/templates/fragments/RESUMO_ETAPA.md", "sdd/templates/fragments/ADVISOR_CONSULT.md",
