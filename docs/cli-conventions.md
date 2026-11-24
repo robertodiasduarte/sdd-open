@@ -26,7 +26,7 @@ RESULTADO: <PALAVRA>
 Palavras usadas: `INSTALADO` · `SINCRONIZADO` · `ATUALIZADO` · `ATUALIZADO, N PARA MESCLAR` (sdd-open.sh upgrade; ver [upgrade.md](pt-BR/upgrade.md)) · `EM DIA` · `DIVERGENTE (n)` · `DRY-RUN` ·
 `CANCELADO` · `DIAGNÓSTICO CONCLUÍDO` · `ERRO` (sdd-open.sh) · `VERDE` · `VERMELHO` · `INCONCLUSIVO` ·
 `ASSINATURA HUMANA` · `CLARIFICAR` · `SPEC INVÁLIDA` (verify-gate.sh, report-lint.py) · `PULADO` ·
-`ERRO DE USO` (gate-baseline.sh, gate-shell-evidencia.sh, avaliador-guard.sh, test-baseline.sh) ·
+`ERRO DE USO` (gate-baseline.sh, gate-shell-evidencia.sh, avaliador-guard.sh, test-baseline.sh, sabotagem.sh) ·
 `COMMIT RECUSADO` (sdd/hooks/pre-commit; ver [hooks.md](hooks.md)) · `PRONTO` · `CONTINUAR` · `BLOQUEADO` ·
 `AGUARDANDO_RECIBO` · `AGUARDANDO_HUMANO` · `PARAR` · `MANIFEST ILEGÍVEL` · `ENTRADA ILEGÍVEL` · `SLOT INVÁLIDO`
 (sdd-fluxo.sh; ver [chained-flow.md](chained-flow.md)) · `PASSA` · `REPROVA` (contraste.sh) · `LIMPO` · `DRIFT`
@@ -66,6 +66,7 @@ RESULTADO: ERRO
 | `playbook-lint.sh` | `0` ok · `1` zero hits / colapso · `2` formato inválido · `64` uso |
 | `skill-lint.py` · `report-lint.py` · `design-lint.py` · `handoff-lint.py` · `kb-dominios.py` | `0` ok · `1` violações · `64` uso (no `skill-lint.py`, também opção desconhecida; `--conversa` liga a conferência da camada de conversa; no `report-lint.py`, `--pendente` sai `1` quando acha `avaliador: PENDENTE`) |
 | `gate-baseline.sh` | `0` a base reprovou avaliando · `2` a base passou (sem dentes) · `3` inconclusivo · `64` uso |
+| `sabotagem.sh` | `0` o teste pega a sabotagem (vermelho com ela, verde sem) · `2` não pega (verde com ela) · `3` inconclusivo (já falha sem ela, 126/127, trecho que não casa 1 vez) · `64` uso — a árvore de trabalho só recebe o log |
 | `gate-shell-evidencia.sh` | `0` nenhum exit de formatador · `2` ≥ 1 acusado · `64` uso ou git que falha |
 | `avaliador-guard.sh` | `0` árvore commitada · `1` suja (lista e comando de commit) · `2` não conferido · `64` uso |
 | `test-baseline.sh` | `0` só falhas conhecidas (ou `PULADO`) · `2` falha nova · `3` inconclusivo · `64` uso |

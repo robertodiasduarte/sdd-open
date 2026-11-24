@@ -206,6 +206,13 @@ Fallback aprovado · Autônomo? · Verification interna · Eval mínimo pré-shi
 | Integration | API calls | `{arquivo}` | `{{TEST_CMD}}` + mocks | Key paths |
 | E2E | Full flow | Manual | - | Happy path |
 
+**Sabotagens** (uma por AT de superfície de risco do `sdd/review/CRITERIO_DANO.md`, pelo menos uma por feature; o
+trecho a trocar aparece exatamente 1 vez no arquivo; a fase Build roda cada linha numa cópia descartável):
+
+| AT | Arquivo | Trocar | Por | O que o teste deve acusar |
+|---|---|---|---|---|
+| `AT-001` | `src/conta.py` | `if saldo < valor:` | `if False:` | o saque acima do saldo passa |
+
 ---
 
 ## Error Handling

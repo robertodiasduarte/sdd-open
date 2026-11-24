@@ -5,7 +5,7 @@ compatibility: Requer bash >= 3.2 e git >= 2.20; roda sdd/bin/playbook-lint.sh -
 license: MIT
 metadata:
   author: Roberto Dias Duarte
-  version: "2.11.1"
+  version: "2.12.0"
   updated: "2026-11"
   source: "https://github.com/robertodiasduarte/sdd-open/releases/latest"
   fase: "2"
@@ -14,7 +14,7 @@ metadata:
 # sdd-design — Fase 2
 
 Na primeira resposta desta skill, informe a versão numa linha, uma vez só, antes do Status:
-`sdd-design v2.11.1 · nov/2026`
+`sdd-design v2.12.0 · nov/2026`
 
 **Projeto sem `sdd/bin/` (sem o `init`) ou sem acesso aos arquivos (claude.ai, ChatGPT)?** Siga `web/MODO_WEB.md`
 desta skill; os caminhos que ele cita (`references/`, `assets/`) são os de dentro de `web/`.
@@ -202,6 +202,14 @@ não trava.
 |---|---|---|---|
 
 Cubra cada AT do DEFINE. O gate composto (se houver) é listado aqui com um bloco por AT.
+
+**Sabotagens:** declare aqui, antes do código, como estragar o trecho que cada AT de superfície de risco protege (dado,
+dinheiro, acesso, publicação, disponibilidade: o critério do `sdd/review/CRITERIO_DANO.md`), uma por AT desses e pelo
+menos uma por feature. O trecho a trocar aparece exatamente 1 vez no arquivo; a `sdd-build` roda cada linha numa cópia
+descartável e espera o teste do AT vermelho (`web/references/disciplina-de-teste.md` da `sdd-build`).
+
+| AT | Arquivo | Trocar | Por | O que o teste deve acusar |
+|---|---|---|---|---|
 
 ### 7. Gravar
 

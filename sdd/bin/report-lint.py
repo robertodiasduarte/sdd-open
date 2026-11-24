@@ -27,6 +27,11 @@ Lint e tipos (F30): com `project.lint_cmd` cheio no sdd/config.yaml, `evidence/{
 pelo git e terminando em `[exit=0]` — ou em `[exit≠0]` com o `*.antes.log` do mesmo comando do slot também falhando
 (dívida antiga: aviso; o de antes não tem os arquivos novos, então só o comando do slot precisa bater). Os dois vazios: a linha `lint: slot vazio` no relatório; sem ela, só aviso.
 
+Vermelho antes do verde (F30 S2): numa tabela de critérios com a coluna `Antes`, o DEFINE da feature classifica cada AT
+`true` — comportamento novo (gate `test`/`cmd`) exige `evidence/{FEATURE}/AT-nnn.antes.log` do mesmo comando do log da
+evidência terminando em `[exit=n]`, n fora de 0, 126 e 127; `The system shall continue to` exige o antes `[exit=0]`;
+gate de outro kind (inclusive `manual-ux`) aceita `N.A. (<motivo>)`. Tabela sem a coluna (relatório anterior): aviso.
+
 Só stdlib. Uso:
     python3 sdd/bin/report-lint.py sdd/reports/BUILD_REPORT_{FEATURE}.md     # exit 0 ok · 1 violações · 64 uso
     python3 sdd/bin/report-lint.py --stdin sdd/reports/BUILD_REPORT_{FEATURE}.md < conteudo.md
@@ -95,10 +100,16 @@ AUSENTE = "avaliação ausente"
 DECLARACAO = "declaração"
 MIGRATION = "migration"
 LINT = "lint"
+ANTES = "vermelho antes"
 # F30: com o slot cheio, o build guarda a última execução do comando sobre os arquivos da tarefa neste log.
 LOGS_LINT = (("lint_cmd", "LINT.log"), ("typecheck_cmd", "TIPOS.log"))
 SLOT_VAZIO_RE = re.compile(r"^[ \t>*_|-]*`?lint: slot vazio`?", re.MULTILINE)
 EXIT_FIM_RE = re.compile(r"^\[exit=(-?\d+)\]$")
+NOVO, CONTINUA, FORA = "novo", "continua", "fora"
+CONTINUA_RE = re.compile(r"^(?:the system shall continue to\b|non-regression\b|não-regressão\b)", re.IGNORECASE)
+NA_RE = re.compile(r"^\s*N\.?A\.?(?:\s|\(|$)", re.IGNORECASE)
+SEM_COLUNA_ANTES = ("a tabela de critérios não tem a coluna `Antes` (relatório anterior à v2.27.0): o vermelho antes do "
+                    "verde não foi conferido")
 IGNORADO_MSG = ("existe, mas o git o IGNORA (`git check-ignore -v` mostra a regra): não vai para o commit — "
                 "remova a regra ou use `git add -f`")
 
@@ -486,7 +497,10 @@ def tabela_reconhecida(line):
     n = len(cols)
     r = next((i for i, c in enumerate(cols) if c.startswith(("resultado", "status", "passou", "result"))), None)
     e = next((i for i, c in enumerate(cols) if c.startswith("evid")), None)
-    return None if r is None or e is None else {"result": n - r, "evid": n - e}
+    a = next((i for i, c in enumerate(cols) if c == "antes"), None)
+    if r is None or e is None:
+        return None
+    return {"result": n - r, "evid": n - e, "antes": None if a is None else n - a}
 
 
 def ler_log_lint(caminho):
@@ -549,10 +563,109 @@ def check_lint(content, root, feature, warnings):
     return violations
 
 
+def _sem_marcacao(celula):
+    return re.sub(r"[*`]", "", celula).strip()
+
+
+def ats_do_define(root, feature):
+    """{AT-nnn: classe} das tabelas do DEFINE da feature, ou None sem DEFINE. A classe vem do kind (coluna com `kind`
+    ou `Gate` no cabeçalho; sem ela, o kind do verify_gate) e do padrão do AT: uma célula que COMEÇA por
+    `The system shall continue to` ou `Non-regression` (revisão do DESIGN, N1: citar a expressão no meio não conta)."""
+    cands = glob.glob(os.path.join(root, FEATURES_DIR, f"DEFINE_{feature}.md"))
+    if not cands:
+        base = re.sub(r"_S\d+[A-Za-z]?$", "", feature)
+        cands = glob.glob(os.path.join(root, FEATURES_DIR, f"DEFINE_{base}*.md"))
+    if not cands:
+        return None
+    try:
+        linhas = open(cands[0], encoding="utf-8", errors="replace").read().splitlines()
+    except OSError:
+        return None
+    padrao = define_gate_kind(root, feature) or ""
+    ats, col_kind = {}, None
+    for raw in linhas:
+        line = raw.strip()
+        if not line.startswith("|"):
+            col_kind = None
+            continue
+        cells = split_row(line)
+        if not AT_ROW_RE.match(line):
+            if any(c.lower() == "id" for c in cells):
+                col_kind = next((i for i, c in enumerate(cells) if "kind" in c.lower() or c.lower().startswith("gate")), None)
+            continue
+        kind = (_sem_marcacao(cells[col_kind]) if col_kind is not None and col_kind < len(cells) else padrao).lower()
+        continua = any(CONTINUA_RE.match(_sem_marcacao(c)) for c in cells[1:])
+        if not kind.startswith(("test", "cmd")):
+            ats[cells[0]] = FORA
+        else:
+            ats[cells[0]] = CONTINUA if continua else NOVO
+    return ats
+
+
+def primeira_linha(caminho):
+    try:
+        with open(caminho, encoding="utf-8", errors="replace") as f:
+            return f.readline().rstrip("\n")
+    except OSError:
+        return None
+
+
+def problema_antes(at, classe, cell, evid, root, report_dir, feature, warnings):
+    """O que falta na coluna `Antes` de um AT `true` (texto), ou None."""
+    if classe == FORA:
+        return None
+    if NA_RE.match(cell):
+        return f"`N.A.` não vale para um AT de gate `test`/`cmd` ({'shall continue to' if classe == CONTINUA else 'comportamento novo'})"
+    nome = f"{at}.antes.log"
+    paths = [p for p in PATH_RE.findall(cell) if os.path.basename(p.replace("\\", "/")) == nome]
+    if not paths:
+        return f"a coluna `Antes` não cita `evidence/{feature}/{nome}`"
+    rel = paths[0]
+    problema = problema_do_log(rel, root, report_dir, feature)
+    if problema:
+        return problema
+    caminho = caminho_do_log(rel, root, report_dir)
+    if git_ignorado(root, caminho, warnings):
+        return f"`{rel}` {IGNORADO_MSG}"
+    rodado, rc = ler_log_lint(caminho)
+    if rc is None:
+        return f"`{rel}`: a última linha não é `[exit=<n>]` (grave o log por um script em bash, com rc=$?)"
+    if classe == NOVO and rc in ("0", "126", "127"):
+        return f"`{rel}` terminou em `[exit={rc}]`: o antes de um AT de comportamento novo tem de falhar"
+    if classe == CONTINUA and rc != "0":
+        return f"`{rel}` terminou em `[exit={rc}]`: `shall continue to` exige o antes verde"
+    logs = [p for p in PATH_RE.findall(evid) if p.endswith((".log", ".txt")) and caminho_do_log(p, root, report_dir)]
+    depois = next((p for p in logs if os.path.basename(p.replace("\\", "/")) == f"{at}.log"), logs[0] if logs else None)
+    if depois:
+        cmd_depois = (primeira_linha(caminho_do_log(depois, root, report_dir)) or "")[2:].strip()
+        if rodado != cmd_depois:
+            return f"`{rel}` roda `{rodado}`, não o mesmo comando de `{depois}` (`{cmd_depois}`)"
+    return None
+
+
+def check_antes(linhas_at, root, report_dir, feature, warnings):
+    """F30 S2: o vermelho antes do verde dos AT `true` de uma tabela com a coluna `Antes`."""
+    if not linhas_at:
+        return []
+    ats = ats_do_define(root, feature)
+    if ats is None:
+        warnings.append(f"sem `{FEATURES_DIR}/DEFINE_{feature}.md`: o vermelho antes do verde não foi conferido")
+        return []
+    violations = []
+    for at, cell, evid in linhas_at:
+        if at not in ats:
+            warnings.append(f"{at} não está no DEFINE_{feature}.md: o vermelho antes do verde dele não foi conferido")
+            continue
+        problema = problema_antes(at, ats[at], cell, evid, root, report_dir, feature, warnings)
+        if problema:
+            violations.append((ANTES, f"{at}: {problema}"))
+    return violations
+
+
 def check(content, root, report_dir, feature):
     violations, warnings = [], []
     gate_kind = define_gate_kind(root, feature)
-    header, achou_tabela = None, False
+    header, achou_tabela, com_antes, sem_antes = None, False, [], False
     for raw in content.splitlines():
         line = raw.strip()
         if line.startswith("|") and ("Evid" in line) and ("Result" in line or "Status" in line or "Passou" in line):
@@ -572,6 +685,10 @@ def check(content, root, report_dir, feature):
         ok, why = evidence_ok(evid, root, report_dir, feature, gate_kind, warnings)
         if not ok:
             violations.append((EVIDENCIA, f"{m.group(1)}: `{result}` sem evidência válida — {why}"))
+        if header["antes"] is None:
+            sem_antes = True
+        elif len(cells) >= header["antes"]:
+            com_antes.append((m.group(1), cells[len(cells) - header["antes"]], evid))
     if not achou_tabela:
         violations.append((TABELA, "nenhuma tabela de critérios reconhecida (uma coluna Resultado, Status, Passou ou "
                                    "Result e uma coluna Evidência): sem ela, nenhum critério é conferido"))
@@ -591,6 +708,9 @@ def check(content, root, report_dir, feature):
     violations += existencia_avaliacao(content, root, feature, warnings)
     violations += [(MIGRATION, v) for v in check_migrations(content, root, report_dir, feature)]
     violations += check_lint(content, root, feature, warnings)
+    violations += check_antes(com_antes, root, report_dir, feature, warnings)
+    if sem_antes:
+        warnings.append(SEM_COLUNA_ANTES)
     return violations, warnings
 
 
@@ -608,6 +728,9 @@ def conserto(classe, feature):
     if classe == LINT:
         return (f"rode o comando do slot sobre os arquivos da tarefa até sair 0 e grave `evidence/{feature}/LINT.log` "
                 "(ou `TIPOS.log`): 1ª linha `$ <comando>`, a saída e, no fim, `[exit=0]`.")
+    if classe == ANTES:
+        return (f"rode o comando do AT antes do código e grave `evidence/{feature}/AT-nnn.antes.log` (vermelho; `shall "
+                "continue to`: verde), citado na coluna `Antes`; gate fora de `test`/`cmd`: `N.A. (<motivo>)`.")
     return (f"produza `evidence/{feature}/AT-nnn.log` (1ª linha `$ cmd`, output verbatim), cite "
             f"`AVALIACAO_{feature}_<ts>.md`, ou `recibo: nome YYYY-MM-DD` (só gate manual-ux) — ou mantenha `false`.")
 

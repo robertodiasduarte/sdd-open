@@ -1,0 +1,51 @@
+$ cd tests && /usr/bin/python3 -B -m unittest -v test_f30_vermelho_antes.AT012RelatorioAnterior
+test_at_fora_do_define_avisa (test_f30_vermelho_antes.AT012RelatorioAnterior) ... FAIL
+test_define_sem_coluna_de_kind_usa_o_do_gate (test_f30_vermelho_antes.AT012RelatorioAnterior) ... FAIL
+test_sem_a_coluna_aprova_com_aviso (test_f30_vermelho_antes.AT012RelatorioAnterior) ... FAIL
+test_sem_a_coluna_e_sem_at_true_nao_avisa (test_f30_vermelho_antes.AT012RelatorioAnterior) ... ok
+test_sem_define_avisa_com_a_causa (test_f30_vermelho_antes.AT012RelatorioAnterior) ... FAIL
+
+======================================================================
+FAIL: test_at_fora_do_define_avisa (test_f30_vermelho_antes.AT012RelatorioAnterior)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/robertoduarte/rdd-worktrees/s2-sdd-open-uncle-bob/tests/test_f30_vermelho_antes.py", line 187, in test_at_fora_do_define_avisa
+    self.assertIn("AT-009", out)
+AssertionError: 'AT-009' not found in '⚠️  N.A. aceito sem conferir camadas — `layers:` do sdd/config.yaml sem nenhum glob preenchido; preencha `layers:` em sdd/config.yaml para a contagem valer\n⚠️  lint e tipos com o slot vazio (project.lint_cmd e project.typecheck_cmd), e o relatório não diz isso: escreva a linha `lint: slot vazio`\n✅ sdd/reports/BUILD_REPORT_EXEMPLO.md: todo `true` tem evidência abrível e a avaliação está provada ou declarada\nRESULTADO: VERDE\n→ o relatório pode ser commitado.\n'
+
+======================================================================
+FAIL: test_define_sem_coluna_de_kind_usa_o_do_gate (test_f30_vermelho_antes.AT012RelatorioAnterior)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/robertoduarte/rdd-worktrees/s2-sdd-open-uncle-bob/tests/test_f30_vermelho_antes.py", line 194, in test_define_sem_coluna_de_kind_usa_o_do_gate
+    self.reprova(linha("AT-001", "—"), "AT-001")
+  File "/Users/robertoduarte/rdd-worktrees/s2-sdd-open-uncle-bob/tests/test_f30_vermelho_antes.py", line 70, in reprova
+    self.assertEqual(rc, 1, out)
+AssertionError: 0 != 1 : ⚠️  N.A. aceito sem conferir camadas — `layers:` do sdd/config.yaml sem nenhum glob preenchido; preencha `layers:` em sdd/config.yaml para a contagem valer
+⚠️  lint e tipos com o slot vazio (project.lint_cmd e project.typecheck_cmd), e o relatório não diz isso: escreva a linha `lint: slot vazio`
+✅ sdd/reports/BUILD_REPORT_EXEMPLO.md: todo `true` tem evidência abrível e a avaliação está provada ou declarada
+RESULTADO: VERDE
+→ o relatório pode ser commitado.
+
+
+======================================================================
+FAIL: test_sem_a_coluna_aprova_com_aviso (test_f30_vermelho_antes.AT012RelatorioAnterior)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/robertoduarte/rdd-worktrees/s2-sdd-open-uncle-bob/tests/test_f30_vermelho_antes.py", line 168, in test_sem_a_coluna_aprova_com_aviso
+    self.assertIn(AVISO_COLUNA, out)
+AssertionError: 'não tem a coluna `Antes`' not found in '⚠️  N.A. aceito sem conferir camadas — `layers:` do sdd/config.yaml sem nenhum glob preenchido; preencha `layers:` em sdd/config.yaml para a contagem valer\n⚠️  lint e tipos com o slot vazio (project.lint_cmd e project.typecheck_cmd), e o relatório não diz isso: escreva a linha `lint: slot vazio`\n✅ sdd/reports/BUILD_REPORT_EXEMPLO.md: todo `true` tem evidência abrível e a avaliação está provada ou declarada\nRESULTADO: VERDE\n→ o relatório pode ser commitado.\n'
+
+======================================================================
+FAIL: test_sem_define_avisa_com_a_causa (test_f30_vermelho_antes.AT012RelatorioAnterior)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/robertoduarte/rdd-worktrees/s2-sdd-open-uncle-bob/tests/test_f30_vermelho_antes.py", line 180, in test_sem_define_avisa_com_a_causa
+    self.assertIn("DEFINE_%s.md" % F, out)
+AssertionError: 'DEFINE_EXEMPLO.md' not found in '⚠️  N.A. aceito sem conferir camadas — `layers:` do sdd/config.yaml sem nenhum glob preenchido; preencha `layers:` em sdd/config.yaml para a contagem valer\n⚠️  lint e tipos com o slot vazio (project.lint_cmd e project.typecheck_cmd), e o relatório não diz isso: escreva a linha `lint: slot vazio`\n✅ sdd/reports/BUILD_REPORT_EXEMPLO.md: todo `true` tem evidência abrível e a avaliação está provada ou declarada\nRESULTADO: VERDE\n→ o relatório pode ser commitado.\n'
+
+----------------------------------------------------------------------
+Ran 5 tests in 0.637s
+
+FAILED (failures=4)
+[exit=1]

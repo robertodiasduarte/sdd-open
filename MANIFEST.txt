@@ -18,6 +18,7 @@
 .agents/skills/sdd-build/web/references/aplicar-migration.md
 .agents/skills/sdd-build/web/references/build-protocol.md
 .agents/skills/sdd-build/web/references/como-falar.md
+.agents/skills/sdd-build/web/references/disciplina-de-teste.md
 .agents/skills/sdd-build/web/references/execution-modes.md
 .agents/skills/sdd-build/web/references/llm-prompt-gate.md
 .agents/skills/sdd-build/web/references/retry-and-advisor.md
@@ -364,6 +365,7 @@ sdd/bin/playbook-lint.sh
 sdd/bin/prompt-drift-scan.sh
 sdd/bin/qualidade-regras.sh
 sdd/bin/report-lint.py
+sdd/bin/sabotagem.sh
 sdd/bin/sdd-archive.py
 sdd/bin/sdd-decisoes-lint.sh
 sdd/bin/sdd-drive.sh
@@ -729,8 +731,11 @@ tests/test_f29_textos.py
 tests/test_f30_agents_qualidade.py
 tests/test_f30_checar_linter.py
 tests/test_f30_report_lint.py
+tests/test_f30_sabotagem.py
 tests/test_f30_starter.py
 tests/test_f30_textos.py
+tests/test_f30_textos_s2.py
+tests/test_f30_vermelho_antes.py
 tests/test_fluxo.py
 tests/test_gate_baseline.py
 tests/test_gate_shell_evidencia.py

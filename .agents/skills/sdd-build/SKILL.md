@@ -5,7 +5,7 @@ compatibility: Requer bash >= 3.2, git >= 2.20 e python3 (report-lint.py). Roda 
 license: MIT
 metadata:
   author: Roberto Dias Duarte
-  version: "2.15.0"
+  version: "2.16.0"
   updated: "2026-11"
   source: "https://github.com/robertodiasduarte/sdd-open/releases/latest"
   fase: "3"
@@ -14,7 +14,7 @@ metadata:
 # sdd-build — Fase 3
 
 Na primeira resposta desta skill, informe a versão numa linha, uma vez só, antes do Status:
-`sdd-build v2.15.0 · nov/2026`
+`sdd-build v2.16.0 · nov/2026`
 
 **Projeto sem `sdd/bin/` (sem o `init`) ou sem acesso aos arquivos (claude.ai, ChatGPT)?** Siga `web/MODO_WEB.md`
 desta skill; os caminhos que ele cita (`references/`, `assets/`) são os de dentro de `web/`.
@@ -192,14 +192,19 @@ a tarefa trouxe, e arquivo que ainda não existe faria o comando falhar por outr
    grave. Saída 64: chamada errada; corrija, nunca ignore. Saída 2: **pare** e pergunte: iterar o DESIGN, ou confirmar
    falso positivo e registrar em "Drift detectado". O aviso de `prompts.wrapper_pattern` vazio vai ao aluno uma vez por
    Build: se o projeto chama a IA por uma função própria, a varredura não a vê até o slot ser preenchido.
-3. **Escrever** seguindo os Code Patterns e as regras de qualidade.
+3. **Escrever** seguindo os Code Patterns e as regras de qualidade. Antes do código, o vermelho: rode o comando do AT e
+   grave `sdd/reports/evidence/{F}/AT-nnn.antes.log` (falhando; `shall continue to`: verde), citado na coluna `Antes`
+   do relatório; o passo a passo está em `web/references/disciplina-de-teste.md`.
 4. **Verificar:** o teste do arquivo; `project.lint_cmd` sobre os arquivos da tarefa (o comando que não aceita lista
    de arquivos roda inteiro, e contam só os erros nos arquivos da tarefa); `project.typecheck_cmd` como está, sem
    arquivos anexados. Erro de lint ou de tipos é falha da tarefa e segue a escada abaixo. No fim do Build, rode cada
    slot cheio mais uma vez, o lint sobre todos os arquivos de código do manifest e os tipos como estão, e grave em
    `sdd/reports/evidence/{F}/LINT.log` e `TIPOS.log`, por um script em `bash` (1ª linha `$ <comando>`, a saída,
    `[exit=<rc>]` no fim); o `report-lint.py` os exige. Os dois slots vazios: a linha `lint: slot vazio` no BUILD_REPORT e um aviso ao aluno, sem bloquear.
-5. **Marcar** concluído.
+5. **Refatorar** só os arquivos da tarefa, com teste, lint e tipos verdes, e rode os três de novo; vermelho desfaz a
+   refatoração (`web/references/disciplina-de-teste.md`). Com `build.refatorar: false` no `sdd/config.yaml`, pule o
+   passo e escreva `refatorar: desligado` na Seleção de modo do relatório.
+6. **Marcar** concluído.
 
 **Escada de retry — correção é redispatch fresco, nunca reply:** 1ª falha → corrigir no
 contexto (erro trivial). 2ª falha → **reexecutar do zero** a partir de um brief que leva SÓ o
@@ -233,6 +238,11 @@ Se o build corrigiu (ou escreveu) a asserção do gate, prove que ela tem dentes
 `bash sdd/bin/gate-baseline.sh sdd/features/DEFINE_{F}.md --sobrepor <script do gate>` roda o gate
 contra a branch de produção e exige vermelho **avaliando** (exit 0). Exit 2 ⇒ a asserção não
 distingue o antes do depois: reancore e rode de novo; exit 3 ⇒ registre no relatório.
+
+Sabotagens da estratégia de testes do DESIGN, uma chamada por linha, com o AT verde e commitado:
+`bash sdd/bin/sabotagem.sh --feature {F} --at AT-nnn --arquivo <arquivo> --trocar '<trecho>' --por '<trecho>' --cmd '<comando do AT>'`.
+Exit 0 ⇒ cite `AT-nnn.sabotagem.log` na evidência do AT; 2 ⇒ o teste não pega o defeito: reforce a asserção, pela
+escada; 3 ⇒ a declaração não casa (trecho que não aparece 1 vez, comando que já falha): itere o DESIGN.
 
 **5b. Checks do projeto:** `{{TEST_CMD}}` via `bash sdd/bin/test-baseline.sh` (só falha nova
 aborta; aceitar uma falha como conhecida, com `--aceitar`, é decisão do usuário), `{{TYPECHECK_CMD}}`,
@@ -283,7 +293,7 @@ Detalhes em `references/contexto-fresco.md`.
 `sdd/reports/BUILD_REPORT_{FEATURE}.md`, do template. **Default-FAIL:** a tabela de ATs nasce
 com todo AT `false`. `true` exige evidência abrível — `sdd/reports/evidence/{F}/AT-nnn.log`
 (1ª linha `$ comando`, saída verbatim), `AVALIACAO_{F}_*.md`, ou `recibo: nome YYYY-MM-DD`
-(só gate manual-ux). "Por raciocínio" e "deve funcionar" são negados. A linha do avaliador é
+(só gate manual-ux). A coluna `Antes` cita o `AT-nnn.antes.log` de cada AT de gate `test`/`cmd` (fora deles, `N.A. (<motivo>)`). "Por raciocínio" e "deve funcionar" são negados. A linha do avaliador é
 obrigatória, numa de 3 formas: o `AVALIACAO_{F}_*.md` em `sdd/reviews/`, `avaliador: N.A. (<motivo>)`
 (menos camadas que o limite) ou `avaliador: PENDENTE (<motivo>)` (build travado antes do 5d; a fase
 Release não sai com ela). Flag `LLM Prompts: true` ⇒ a seção do relatório segue o molde

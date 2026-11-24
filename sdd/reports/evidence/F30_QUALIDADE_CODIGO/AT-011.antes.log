@@ -1,0 +1,43 @@
+$ cd tests && /usr/bin/python3 -B -m unittest -v test_f30_vermelho_antes.AT011ContinuaEFora
+test_continua_com_antes_verde_aprova (test_f30_vermelho_antes.AT011ContinuaEFora) ... ok
+test_continua_com_antes_vermelho_reprova (test_f30_vermelho_antes.AT011ContinuaEFora) ... FAIL
+test_continua_sem_antes_reprova (test_f30_vermelho_antes.AT011ContinuaEFora) ... FAIL
+test_kind_fora_de_test_e_cmd_aceita_na (test_f30_vermelho_antes.AT011ContinuaEFora) ... ok
+test_manual_ux_aceita_na (test_f30_vermelho_antes.AT011ContinuaEFora) ... ok
+test_varios_ats_cada_um_pela_sua_classe (test_f30_vermelho_antes.AT011ContinuaEFora) ... ok
+
+======================================================================
+FAIL: test_continua_com_antes_vermelho_reprova (test_f30_vermelho_antes.AT011ContinuaEFora)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/robertoduarte/rdd-worktrees/s2-sdd-open-uncle-bob/tests/test_f30_vermelho_antes.py", line 143, in test_continua_com_antes_vermelho_reprova
+    self.reprova(linha("AT-002", antes("AT-002")), "`shall continue to` exige o antes verde")
+  File "/Users/robertoduarte/rdd-worktrees/s2-sdd-open-uncle-bob/tests/test_f30_vermelho_antes.py", line 70, in reprova
+    self.assertEqual(rc, 1, out)
+AssertionError: 0 != 1 : ⚠️  N.A. aceito sem conferir camadas — `layers:` do sdd/config.yaml sem nenhum glob preenchido; preencha `layers:` em sdd/config.yaml para a contagem valer
+⚠️  lint e tipos com o slot vazio (project.lint_cmd e project.typecheck_cmd), e o relatório não diz isso: escreva a linha `lint: slot vazio`
+✅ sdd/reports/BUILD_REPORT_EXEMPLO.md: todo `true` tem evidência abrível e a avaliação está provada ou declarada
+RESULTADO: VERDE
+→ o relatório pode ser commitado.
+
+
+======================================================================
+FAIL: test_continua_sem_antes_reprova (test_f30_vermelho_antes.AT011ContinuaEFora)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/robertoduarte/rdd-worktrees/s2-sdd-open-uncle-bob/tests/test_f30_vermelho_antes.py", line 146, in test_continua_sem_antes_reprova
+    self.reprova(linha("AT-002", "N.A. (regressão)"), "AT-002")
+  File "/Users/robertoduarte/rdd-worktrees/s2-sdd-open-uncle-bob/tests/test_f30_vermelho_antes.py", line 70, in reprova
+    self.assertEqual(rc, 1, out)
+AssertionError: 0 != 1 : ⚠️  N.A. aceito sem conferir camadas — `layers:` do sdd/config.yaml sem nenhum glob preenchido; preencha `layers:` em sdd/config.yaml para a contagem valer
+⚠️  lint e tipos com o slot vazio (project.lint_cmd e project.typecheck_cmd), e o relatório não diz isso: escreva a linha `lint: slot vazio`
+✅ sdd/reports/BUILD_REPORT_EXEMPLO.md: todo `true` tem evidência abrível e a avaliação está provada ou declarada
+RESULTADO: VERDE
+→ o relatório pode ser commitado.
+
+
+----------------------------------------------------------------------
+Ran 6 tests in 0.859s
+
+FAILED (failures=2)
+[exit=1]

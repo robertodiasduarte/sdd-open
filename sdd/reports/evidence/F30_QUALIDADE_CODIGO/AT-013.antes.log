@@ -1,0 +1,37 @@
+$ cd tests && /usr/bin/python3 -B -m unittest -v test_f30_sabotagem.AT013Sabotagem
+test_mudanca_nao_commitada_fica_e_a_copia_e_do_commit (test_f30_sabotagem.AT013Sabotagem) ... FAIL
+test_teste_forte_pega_a_sabotagem (test_f30_sabotagem.AT013Sabotagem) ... FAIL
+test_teste_fraco_nao_pega (test_f30_sabotagem.AT013Sabotagem) ... FAIL
+
+======================================================================
+FAIL: test_mudanca_nao_commitada_fica_e_a_copia_e_do_commit (test_f30_sabotagem.AT013Sabotagem)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/robertoduarte/rdd-worktrees/s2-sdd-open-uncle-bob/tests/test_f30_sabotagem.py", line 114, in test_mudanca_nao_commitada_fica_e_a_copia_e_do_commit
+    self.assertEqual(rc, 0, out + err)
+AssertionError: 127 != 0 : /bin/bash: /Users/robertoduarte/rdd-worktrees/s2-sdd-open-uncle-bob/sdd/bin/sabotagem.sh: No such file or directory
+
+
+======================================================================
+FAIL: test_teste_forte_pega_a_sabotagem (test_f30_sabotagem.AT013Sabotagem)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/robertoduarte/rdd-worktrees/s2-sdd-open-uncle-bob/tests/test_f30_sabotagem.py", line 92, in test_teste_forte_pega_a_sabotagem
+    self.assertEqual(rc, 0, out)
+AssertionError: 127 != 0 : /bin/bash: /Users/robertoduarte/rdd-worktrees/s2-sdd-open-uncle-bob/sdd/bin/sabotagem.sh: No such file or directory
+
+
+======================================================================
+FAIL: test_teste_fraco_nao_pega (test_f30_sabotagem.AT013Sabotagem)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/robertoduarte/rdd-worktrees/s2-sdd-open-uncle-bob/tests/test_f30_sabotagem.py", line 103, in test_teste_fraco_nao_pega
+    self.assertEqual(rc, 2, out)
+AssertionError: 127 != 2 : /bin/bash: /Users/robertoduarte/rdd-worktrees/s2-sdd-open-uncle-bob/sdd/bin/sabotagem.sh: No such file or directory
+
+
+----------------------------------------------------------------------
+Ran 3 tests in 0.269s
+
+FAILED (failures=3)
+[exit=1]

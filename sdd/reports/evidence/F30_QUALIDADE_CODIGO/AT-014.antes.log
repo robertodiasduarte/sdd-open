@@ -1,0 +1,127 @@
+$ cd tests && /usr/bin/python3 -B -m unittest -v test_f30_sabotagem.AT014Inconclusivo
+test_argumento_faltando (test_f30_sabotagem.AT014Inconclusivo) ... FAIL
+test_arquivo_fora_do_commit (test_f30_sabotagem.AT014Inconclusivo) ... FAIL
+test_caminho_absoluto (test_f30_sabotagem.AT014Inconclusivo) ... FAIL
+test_caminho_com_ponto_ponto (test_f30_sabotagem.AT014Inconclusivo) ... FAIL
+test_comando_que_ja_falha_sem_a_sabotagem (test_f30_sabotagem.AT014Inconclusivo) ... FAIL
+test_comando_que_nem_roda (test_f30_sabotagem.AT014Inconclusivo) ... FAIL
+test_fora_de_git (test_f30_sabotagem.AT014Inconclusivo) ... FAIL
+test_link_simbolico_para_fora_da_copia (test_f30_sabotagem.AT014Inconclusivo) ... FAIL
+test_trecho_que_aparece_duas_vezes (test_f30_sabotagem.AT014Inconclusivo) ... FAIL
+test_trecho_que_nao_aparece (test_f30_sabotagem.AT014Inconclusivo) ... FAIL
+
+======================================================================
+FAIL: test_argumento_faltando (test_f30_sabotagem.AT014Inconclusivo)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/robertoduarte/rdd-worktrees/s2-sdd-open-uncle-bob/tests/test_f30_sabotagem.py", line 158, in test_argumento_faltando
+    self.sem_log(rc, out, 64, "--cmd")
+  File "/Users/robertoduarte/rdd-worktrees/s2-sdd-open-uncle-bob/tests/test_f30_sabotagem.py", line 122, in sem_log
+    self.assertEqual(rc, esperado, out)
+AssertionError: 127 != 64 : /bin/bash: /Users/robertoduarte/rdd-worktrees/s2-sdd-open-uncle-bob/sdd/bin/sabotagem.sh: No such file or directory
+
+
+======================================================================
+FAIL: test_arquivo_fora_do_commit (test_f30_sabotagem.AT014Inconclusivo)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/robertoduarte/rdd-worktrees/s2-sdd-open-uncle-bob/tests/test_f30_sabotagem.py", line 154, in test_arquivo_fora_do_commit
+    self.sem_log(rc, out, 64, "commite")
+  File "/Users/robertoduarte/rdd-worktrees/s2-sdd-open-uncle-bob/tests/test_f30_sabotagem.py", line 122, in sem_log
+    self.assertEqual(rc, esperado, out)
+AssertionError: 127 != 64 : /bin/bash: /Users/robertoduarte/rdd-worktrees/s2-sdd-open-uncle-bob/sdd/bin/sabotagem.sh: No such file or directory
+
+
+======================================================================
+FAIL: test_caminho_absoluto (test_f30_sabotagem.AT014Inconclusivo)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/robertoduarte/rdd-worktrees/s2-sdd-open-uncle-bob/tests/test_f30_sabotagem.py", line 145, in test_caminho_absoluto
+    self.sem_log(rc, out, 64, "relativo")
+  File "/Users/robertoduarte/rdd-worktrees/s2-sdd-open-uncle-bob/tests/test_f30_sabotagem.py", line 122, in sem_log
+    self.assertEqual(rc, esperado, out)
+AssertionError: 127 != 64 : /bin/bash: /Users/robertoduarte/rdd-worktrees/s2-sdd-open-uncle-bob/sdd/bin/sabotagem.sh: No such file or directory
+
+
+======================================================================
+FAIL: test_caminho_com_ponto_ponto (test_f30_sabotagem.AT014Inconclusivo)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/robertoduarte/rdd-worktrees/s2-sdd-open-uncle-bob/tests/test_f30_sabotagem.py", line 149, in test_caminho_com_ponto_ponto
+    self.sem_log(rc, out, 64, "..")
+  File "/Users/robertoduarte/rdd-worktrees/s2-sdd-open-uncle-bob/tests/test_f30_sabotagem.py", line 122, in sem_log
+    self.assertEqual(rc, esperado, out)
+AssertionError: 127 != 64 : /bin/bash: /Users/robertoduarte/rdd-worktrees/s2-sdd-open-uncle-bob/sdd/bin/sabotagem.sh: No such file or directory
+
+
+======================================================================
+FAIL: test_comando_que_ja_falha_sem_a_sabotagem (test_f30_sabotagem.AT014Inconclusivo)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/robertoduarte/rdd-worktrees/s2-sdd-open-uncle-bob/tests/test_f30_sabotagem.py", line 137, in test_comando_que_ja_falha_sem_a_sabotagem
+    self.sem_log(rc, out, 3, "já falha sem a sabotagem")
+  File "/Users/robertoduarte/rdd-worktrees/s2-sdd-open-uncle-bob/tests/test_f30_sabotagem.py", line 122, in sem_log
+    self.assertEqual(rc, esperado, out)
+AssertionError: 127 != 3 : /bin/bash: /Users/robertoduarte/rdd-worktrees/s2-sdd-open-uncle-bob/sdd/bin/sabotagem.sh: No such file or directory
+
+
+======================================================================
+FAIL: test_comando_que_nem_roda (test_f30_sabotagem.AT014Inconclusivo)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/robertoduarte/rdd-worktrees/s2-sdd-open-uncle-bob/tests/test_f30_sabotagem.py", line 141, in test_comando_que_nem_roda
+    self.sem_log(rc, out, 3, "nem rodou")
+  File "/Users/robertoduarte/rdd-worktrees/s2-sdd-open-uncle-bob/tests/test_f30_sabotagem.py", line 122, in sem_log
+    self.assertEqual(rc, esperado, out)
+AssertionError: 127 != 3 : /bin/bash: /Users/robertoduarte/rdd-worktrees/s2-sdd-open-uncle-bob/sdd/bin/sabotagem.sh: No such file or directory
+
+
+======================================================================
+FAIL: test_fora_de_git (test_f30_sabotagem.AT014Inconclusivo)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/robertoduarte/rdd-worktrees/s2-sdd-open-uncle-bob/tests/test_f30_sabotagem.py", line 164, in test_fora_de_git
+    self.sem_log(rc, out, 64, "git")
+  File "/Users/robertoduarte/rdd-worktrees/s2-sdd-open-uncle-bob/tests/test_f30_sabotagem.py", line 122, in sem_log
+    self.assertEqual(rc, esperado, out)
+AssertionError: 127 != 64 : /bin/bash: /Users/robertoduarte/rdd-worktrees/s2-sdd-open-uncle-bob/sdd/bin/sabotagem.sh: No such file or directory
+
+
+======================================================================
+FAIL: test_link_simbolico_para_fora_da_copia (test_f30_sabotagem.AT014Inconclusivo)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/robertoduarte/rdd-worktrees/s2-sdd-open-uncle-bob/tests/test_f30_sabotagem.py", line 173, in test_link_simbolico_para_fora_da_copia
+    self.sem_log(rc, out, 64, "link simbólico")
+  File "/Users/robertoduarte/rdd-worktrees/s2-sdd-open-uncle-bob/tests/test_f30_sabotagem.py", line 122, in sem_log
+    self.assertEqual(rc, esperado, out)
+AssertionError: 127 != 64 : /bin/bash: /Users/robertoduarte/rdd-worktrees/s2-sdd-open-uncle-bob/sdd/bin/sabotagem.sh: No such file or directory
+
+
+======================================================================
+FAIL: test_trecho_que_aparece_duas_vezes (test_f30_sabotagem.AT014Inconclusivo)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/robertoduarte/rdd-worktrees/s2-sdd-open-uncle-bob/tests/test_f30_sabotagem.py", line 133, in test_trecho_que_aparece_duas_vezes
+    self.sem_log(rc, out, 3, "vez(es)")
+  File "/Users/robertoduarte/rdd-worktrees/s2-sdd-open-uncle-bob/tests/test_f30_sabotagem.py", line 122, in sem_log
+    self.assertEqual(rc, esperado, out)
+AssertionError: 127 != 3 : /bin/bash: /Users/robertoduarte/rdd-worktrees/s2-sdd-open-uncle-bob/sdd/bin/sabotagem.sh: No such file or directory
+
+
+======================================================================
+FAIL: test_trecho_que_nao_aparece (test_f30_sabotagem.AT014Inconclusivo)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/robertoduarte/rdd-worktrees/s2-sdd-open-uncle-bob/tests/test_f30_sabotagem.py", line 129, in test_trecho_que_nao_aparece
+    self.sem_log(rc, out, 3, "0 vez(es)")
+  File "/Users/robertoduarte/rdd-worktrees/s2-sdd-open-uncle-bob/tests/test_f30_sabotagem.py", line 122, in sem_log
+    self.assertEqual(rc, esperado, out)
+AssertionError: 127 != 3 : /bin/bash: /Users/robertoduarte/rdd-worktrees/s2-sdd-open-uncle-bob/sdd/bin/sabotagem.sh: No such file or directory
+
+
+----------------------------------------------------------------------
+Ran 10 tests in 0.877s
+
+FAILED (failures=10)
+[exit=1]

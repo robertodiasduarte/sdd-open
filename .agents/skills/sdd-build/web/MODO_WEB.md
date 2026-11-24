@@ -6,7 +6,7 @@ compatibility: "Requer um agente com acesso gravável ao projeto; não precisa d
 # SDD Build
 
 Na primeira resposta desta skill, informe a versão numa linha, uma vez só:
-`sdd-build v2.15.0 · nov/2026`
+`sdd-build v2.16.0 · nov/2026`
 
 Executar implementação real. Não tratar Build como geração de um documento isolado.
 
@@ -233,8 +233,9 @@ Se ocorrer revisão formal, aplicar [references/retry-and-advisor.md](references
 Seguir cinco invariantes:
 1. **Assumption becomes a question**: ambiguidade material → perguntar.
 2. **Simplicity**: nada além do que o manifest exige.
-3. **Surgical change**: não refatorar código adjacente sem necessidade.
-4. **Criterion before code**: saber como verificar antes de escrever.
+3. **Surgical change**: refatorar só o que a tarefa tocou, depois do verde; o código vizinho fica como está.
+4. **Criterion before code**: o teste do critério primeiro, rodado vermelho antes do código e verde depois, e o
+   refatorar com o verde mantido ([references/disciplina-de-teste.md](references/disciplina-de-teste.md)).
 5. **Evidence**: não declarar sucesso sem executar a verificação.
 6. **Quality**: seguir as regras de [references/CATALOGO_QUALIDADE.md](references/CATALOGO_QUALIDADE.md), as gerais
    (erro tratado ou propagado; nome que diz o que é; só o código que roda; reusar a função que já existe antes de

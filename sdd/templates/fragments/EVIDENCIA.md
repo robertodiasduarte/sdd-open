@@ -112,6 +112,24 @@ Com `project.lint_cmd` cheio no `sdd/config.yaml`, `evidence/{FEATURE}/LINT.log`
 `TIPOS.antes.log`), gravado antes da 1ª tarefa com o mesmo comando do slot, também falhava: é dívida antiga. Os dois slots
 vazios: a linha `lint: slot vazio` no relatório (sem ela, só aviso).
 
+### Vermelho antes do verde e sabotagem (F30 S2)
+
+A tabela de critérios tem a coluna `Antes` (`| ID | Critério | Antes | Resultado | Evidência |`). Para cada AT `true`,
+o lint lê o DEFINE da feature e confere:
+
+| Classe do AT no DEFINE | A coluna `Antes` | O lint confere |
+|---|---|---|
+| comportamento novo (gate `test`/`cmd`) | `` `evidence/{FEATURE}/AT-nnn.antes.log` `` | o log existe, não é ignorado, termina em `[exit=n]` com n fora de 0, 126 e 127, e a 1ª linha é a mesma do `AT-nnn.log` da evidência |
+| `The system shall continue to …` | o mesmo `AT-nnn.antes.log` | igual, com `[exit=0]`: o comportamento já existia |
+| gate de outro kind (`manual-ux`, `smoke`, `eval`) | `N.A. (<motivo>)` | nada |
+
+Tabela sem a coluna `Antes` (relatório anterior à v2.27.0): aprova com 1 aviso. AT fora do DEFINE, ou sem DEFINE:
+aviso. A violação sai na classe `[vermelho antes]`.
+
+A sabotagem declarada no DESIGN grava `evidence/{FEATURE}/AT-nnn.sabotagem.log`: 1ª linha `$ <comando do AT>`, as
+linhas `# sabotagem:` e `# sem a sabotagem: exit 0`, a saída e `[exit=<n≠0>]` da execução sabotada (o teste pegou o
+defeito). Cite-o na evidência do AT, ao lado do `AT-nnn.log`.
+
 ### Migration aplicada (seção `## Migrations aplicadas`)
 
 Migration listada nos arquivos do relatório exige a linha dela, com o mesmo caminho, projeto
@@ -134,7 +152,7 @@ no banco certo. Procedimento: `.agents/skills/sdd-build/references/aplicar-migra
 - `N.A.` com N camadas ou mais, e `N.A.`/`PENDENTE` sem motivo.
 
 Cada problema sai com a classe (`[tabela]`, `[evidência]`, `[avaliação ausente]`,
-`[declaração]`, `[migration]`), e cada classe ganha a sua linha `→` com o conserto.
+`[declaração]`, `[migration]`, `[lint]`, `[vermelho antes]`), e cada classe ganha a sua linha `→` com o conserto.
 
 ## Regras de ouro
 

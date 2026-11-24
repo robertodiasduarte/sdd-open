@@ -94,6 +94,7 @@ mordeu_antes: {LM-nnn se a causa já tinha bullet | —}
 | Sinais | {quantos arquivos, dependências entre tarefas, o que a plataforma executa} |
 | Recomendação | {default · ralph · briefs} — {motivo em 1 frase} |
 | Decisão do usuário | {modo escolhido, AAAA-MM-DD} |
+| Refatorar | ligado (padrão) · `refatorar: desligado` quando `build.refatorar: false` |
 
 ---
 
@@ -255,12 +256,14 @@ lint: slot vazio
 > [`fragments/EVIDENCIA.md`](fragments/EVIDENCIA.md). Formas aceitas: `` `evidence/{FEATURE}/AT-nnn.log` ``
 > (1ª linha `$ cmd`, output verbatim) · `` `AVALIACAO_{FEATURE}_{ts}.md` `` (provado pelo
 > avaliador) · `recibo: {nome} {YYYY-MM-DD}` (gate `manual-ux`). "Por raciocínio" é negado.
+> **Antes:** o `` `evidence/{FEATURE}/AT-nnn.antes.log` `` do mesmo comando, rodado antes do código — vermelho no
+> AT de comportamento novo, verde no `shall continue to`; `N.A. (<motivo>)` só em gate fora de `test`/`cmd`.
 
-| ID | Critério (EARS, verbatim do DEFINE) | Resultado | Evidência |
-|----|-------------------------------------|-----------|-----------|
-| AT-001 | {When …, the system shall …} | false | — |
-| AT-002 | {If …, then the system shall …} | false | — |
-| AT-003 | {While …, the system shall …} | false | — |
+| ID | Critério (EARS, verbatim do DEFINE) | Antes | Resultado | Evidência |
+|----|-------------------------------------|-------|-----------|-----------|
+| AT-001 | {When …, the system shall …} | — | false | — |
+| AT-002 | {If …, then the system shall …} | — | false | — |
+| AT-003 | {While …, the system shall …} | — | false | — |
 
 **Verify Gate (`sdd/bin/verify-gate.sh <DEFINE>`):** exit {n} · `evidence/{FEATURE}/GATE.log`
 

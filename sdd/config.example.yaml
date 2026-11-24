@@ -21,6 +21,12 @@ project:
   # commit: ele entra inteiro em toda sessão do agente. Acima disso o pre-commit recusa. Vazio = 100.
   context_file_max_kb: 100
 
+# Fase Build (sdd-build).
+build:
+  # Passo Refatorar de cada tarefa: depois do verde, só nos arquivos da tarefa, rodando de novo teste, lint e tipos.
+  # false pula o passo (economiza tokens) e o BUILD_REPORT diz `refatorar: desligado`.
+  refatorar: true
+
 # Camadas do seu projeto: nome → glob. É o que diz "esta feature toca 2 camadas" — o gatilho
 # do avaliador de contexto fresco. `sql` também diz o que conta como migration (report-lint.py).
 # Exemplos: sql: "db/migrations/**" · api: "src/api/**" · ui: "src/ui/**" · infra: "deploy/**"

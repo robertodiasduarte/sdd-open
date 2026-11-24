@@ -130,9 +130,9 @@
 
 ## Acceptance Test Verification
 
-| ID | Scenario | Status | Evidence |
-|---|---|---|---|
-| AT-001 | {from DEFINE} | {Pass / Fail / Blocked} | {command/test/result} |
+| ID | Scenario | Antes | Status | Evidence |
+|---|---|---|---|---|
+| AT-001 | {from DEFINE} | {AT-001.antes.log: vermelho antes do código · N.A. (motivo)} | {Pass / Fail / Blocked} | {command/test/result} |
 
 ---
 

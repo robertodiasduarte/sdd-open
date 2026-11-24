@@ -174,7 +174,7 @@ class AT012RelatorioAnterior(Base):
         self.assertNotIn(AVISO_COLUNA, out)
 
     def test_sem_define_avisa_com_a_causa(self):
-        (self.r / "sdd/features/DEFINE_%s.md" % F).unlink()
+        (self.r / ("sdd/features/DEFINE_%s.md" % F)).unlink()
         rc, out = self.lint(linha("AT-001", "—"))
         self.assertEqual(rc, 0, out)
         self.assertIn("DEFINE_%s.md" % F, out)

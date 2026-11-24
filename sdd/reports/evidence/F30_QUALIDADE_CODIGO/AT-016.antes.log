@@ -1,0 +1,10 @@
+$ git show c4fa53c:sdd/reports/BUILD_REPORT_F30_QUALIDADE_CODIGO.md | /usr/bin/python3 sdd/bin/report-lint.py --stdin sdd/reports/BUILD_REPORT_F30_QUALIDADE_CODIGO.md && cd tests && /usr/bin/python3 -B -m unittest test_f30_report_lint test_report_lint test_report_lint_evidencia
+✅ sdd/reports/BUILD_REPORT_F30_QUALIDADE_CODIGO.md: todo `true` tem evidência abrível e a avaliação está provada ou declarada
+RESULTADO: VERDE
+→ o relatório pode ser commitado.
+......................................................................................
+----------------------------------------------------------------------
+Ran 86 tests in 11.864s
+
+OK
+[exit=0]
