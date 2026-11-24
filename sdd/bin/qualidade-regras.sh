@@ -245,11 +245,14 @@ print("Regras de qualidade deste projeto — stack: %s" % TXT_STACK)
 for r in ATIVAS:
     print("- %s %s: %s" % (r["id"], r["nome"], r["c"]["frase"]))
 PROJ = ler_mapa(RAIZ, "project")
+COMO = {"lint_cmd": "rode sobre os arquivos da tarefa", "typecheck_cmd": "rode como está, sem arquivos anexados"}
 for slot, nome in (("lint_cmd", "lint"), ("typecheck_cmd", "tipos")):
     cmd = PROJ.get(slot, "").strip()
     if cmd:
-        print("%s: `%s` (project.%s) — rode sobre os arquivos da tarefa; erro é falha da tarefa" % (nome, cmd, slot))
+        print("%s: `%s` (project.%s) — %s; erro é falha da tarefa" % (nome, cmd, slot, COMO[slot]))
     else:
-        print("%s: slot vazio (project.%s) — escreva `lint: slot vazio` no BUILD_REPORT" % (nome, slot))
+        print("%s: slot vazio (project.%s) — sem conferência automática" % (nome, slot))
+if not PROJ.get("lint_cmd", "").strip() and not PROJ.get("typecheck_cmd", "").strip():
+    print("os dois slots vazios: escreva a linha `lint: slot vazio` no BUILD_REPORT")
 fim(0, "OK", "siga estas regras ao escrever o código; o lint e os tipos do projeto conferem o que dá para medir.")
 PY

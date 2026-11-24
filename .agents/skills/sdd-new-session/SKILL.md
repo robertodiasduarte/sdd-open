@@ -294,9 +294,10 @@ a evidência — ela vai para o Passo 2, item 6.
   ⇒ o slot fica vazio e a resposta diz por quê. O `test_cmd` alimenta os gates `kind: test`: um chute
   roda a coisa errada.
 - **Lint e tipos sem evidência** — com `project.lint_cmd` e `project.typecheck_cmd` vazios depois da busca acima,
-  rode `bash <pasta da sdd-checar-ambiente>/scripts/checar.sh --linter`: uma linha `stack<TAB>lint<TAB>tipos<TAB>instalar`
-  por stack sem linter, ou saída 1 sem nada a sugerir. Linha sem os 3 TABs (a `sdd-checar-ambiente` anterior à 1.8.0
-  não conhece o modo e devolve o diagnóstico) vale como nada a sugerir. Com sugestão, diga em 1 frase o que o linter
+  confira a `version:` do `SKILL.md` da `sdd-checar-ambiente` (anterior à 1.8.0, ela não conhece o modo e rodaria o
+  diagnóstico inteiro, com rede: pule este passo) e rode `bash <pasta da sdd-checar-ambiente>/scripts/checar.sh --linter`:
+  uma linha `stack<TAB>lint<TAB>tipos<TAB>instalar` por stack sem linter, ou saída 1 sem nada a sugerir. Linha sem os
+  3 TABs vale como nada a sugerir. Com sugestão, diga em 1 frase o que o linter
   confere ("lê o código e aponta erro de estilo e de tipos antes de rodar") e pergunte uma vez:
 
   **Sua decisão** — [D2 · muda o produto] **Gravo os comandos de lint e de tipos da sua stack no `sdd/config.yaml` desta frente?**

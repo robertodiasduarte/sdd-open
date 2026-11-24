@@ -171,7 +171,11 @@ class Leitor(Base):
         self.assertEqual(rc, 0, out)
         self.assertIn("stack: python", out)
         self.assertIn("lint: `ruff check` (project.lint_cmd)", out)
-        self.assertIn("tipos: slot vazio (project.typecheck_cmd)", out)
+        self.assertIn("tipos: slot vazio (project.typecheck_cmd) — sem conferência automática", out)
+        self.assertNotIn("escreva a linha `lint: slot vazio`", out)   # raio de impacto: só com os 2 slots vazios
+        self.escreve(p, "sdd/config.yaml", "project:\n  name: x\n")
+        rc, out = self.qualidade(p, "--regras")
+        self.assertIn("os dois slots vazios: escreva a linha `lint: slot vazio` no BUILD_REPORT", out)
         self.assertIn("Q07", out)
         self.assertNotIn("Q11", out)
         self.assertResultado(out)
