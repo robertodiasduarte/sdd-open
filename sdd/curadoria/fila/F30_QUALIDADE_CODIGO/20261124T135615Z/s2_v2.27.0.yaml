@@ -1,0 +1,19 @@
+feature_id: F30_QUALIDADE_CODIGO
+slice_id: s2
+versao: 2.27.0
+data: 2026-11-24
+estado: parcial
+veredito: CONCERNS
+waived: null
+dod: "S2 (itens 2, 6, 7): Verify Gate verde em d1b0c51 (2.870 testes, 4 pulados, 35,5 min, cópia de git archive com publish-gate, /bin/bash 3.2 e /usr/bin/python3 3.9); 7 de 7 ATs com log e com o AT-nnn.antes.log do mesmo comando (6 vermelhos, o AT-016 de não-regressão verde), conferidos pelo próprio report-lint novo; 2 sabotagens declaradas no DESIGN pegas pelos testes (AT-010, AT-013); avaliador fresco em 2 ciclos (ciclo 1 NEEDS_WORK pelo cache da execução limpa no sabotagem.sh, aplicado com teste; ciclo 2 PASS_PENDENTE_RECIBO, recibo = o gate); revisão adversarial do DESIGN (1 MED aplicado) e 3 rodadas do código (2 LOW rebatidos por escopo); raio de impacto em 2 superfícies sem consumidor quebrado; custo dos passos novos medido: +2.514 tokens (+4,4%) numa tarefa de 2 AT (n=1). S3 segue aberta"
+descricao: "Vermelho antes do verde: o BUILD_REPORT ganha a coluna Antes, e o report-lint.py exige, para cada AT true de gate test/cmd, o evidence/{F}/AT-nnn.antes.log do mesmo comando, vermelho (exit fora de 0/126/127) no comportamento novo e verde no 'The system shall continue to'; relatório sem a coluna só recebe aviso. Sabotagem: sdd/bin/sabotagem.sh aplica a troca declarada no DESIGN numa cópia de git archive HEAD (cópia limpa conferida antes, trecho único, caminho contido, cópia apagada por trap) e sai 0 quando o teste pega o defeito e 2 quando não pega; a sdd-design pede a tabela de sabotagens (uma por AT de superfície de risco, ≥ 1 por feature). Refatorar: passo 5 da tarefa do Build, depois do verde, só nos arquivos da tarefa; build.refatorar: false desliga. Texto único em sdd-build/web/references/disciplina-de-teste.md, que vai ao starter. sdd-build 2.16.0, sdd-design 2.12.0"
+deploy: release automática pelo workflow release.yml (tag v2.27.0 posta à mão no commit, como as minor anteriores)
+trilha: completa
+review_externo: sdd/reports/reviews/EXTERNAL_REVIEW_20261124-100402 sha256=b320952220eb1e3a74568f9107b1afcf99f8366fe089fd2265bbe511d9e64f3a diversidade=vendor
+avisos:
+  - "nota de atualização: BUILD_REPORT novo nasce do molde com a coluna Antes, e o report-lint passa a cobrar o AT-nnn.antes.log de cada AT de gate test/cmd; relatório anterior (sem a coluna) só recebe um aviso"
+  - "observações leves do avaliador (ciclo 2), pendentes: O-A citação com '..' passa no problema_do_log (anterior à S2, vale também para a coluna Evidência); O-B cabeçalho '**Antes**' ou 'Antes/vermelho' não é reconhecido; O-C sem AT-nnn.log no disco o comando do antes não é comparado; O-D 'N.A.' sem motivo aceito em manual-ux; O-E antes.log que é link simbólico para fora da feature é aceito"
+  - "revisão do código, rodada 3: 2 LOW no sabotagem.sh rebatidos por escopo (sem lib/python.sh a falta de Python sai 3; git archive | tar sem pipefail vira 64 em vez de 3)"
+  - "upgrade e sync não mesclam chaves do config: projeto já instalado fica sem a seção build: (ausente = refatorar ligado)"
+  - "lint, drift, landmines, smoke e test-baseline pulados: o Open não tem sdd/config.yaml (a suíte inteira rodou no Verify Gate); segurança: NADA ACHADO; desempenho: sem banco"
+  - "custo das revisões: US$ 3,32 (OpenRouter e conta do claude; 4 rodadas); saldo do OpenRouter conferido antes: US$ 9,97"

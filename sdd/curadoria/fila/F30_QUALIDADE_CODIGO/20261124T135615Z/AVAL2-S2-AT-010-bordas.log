@@ -1,0 +1,36 @@
+$ /bin/bash ./rl2.sh
+--- ls sdd/reports/evidence/FX (sem AT-001.antes.log):
+AT-001.log
+--- A: coluna Antes cita evidence/FX/../OUT/AT-001.antes.log (esperado rc=1: o antes da feature não existe)
+⚠️  N.A. aceito sem conferir camadas — `layers:` do sdd/config.yaml sem nenhum glob preenchido; preencha `layers:` em sdd/config.yaml para a contagem valer
+✅ sdd/reports/BUILD_REPORT_FX.md: todo `true` tem evidência abrível e a avaliação está provada ou declarada
+RESULTADO: VERDE
+→ o relatório pode ser commitado.
+[rc=0]
+--- B: controle, cita evidence/OUT/AT-001.antes.log (esperado rc=1)
+🛑 [vermelho antes] AT-001: `evidence/OUT/AT-001.antes.log` fora de evidence/FX/*.log — só evidência da própria feature vale
+RESULTADO: VERMELHO
+→ rode o comando do AT antes do código e grave `evidence/FX/AT-nnn.antes.log` (vermelho; `shall continue to`: verde), citado na coluna `Antes`; gate fora de `test`/`cmd`: `N.A. (<motivo>)`.
+⚠️  N.A. aceito sem conferir camadas — `layers:` do sdd/config.yaml sem nenhum glob preenchido; preencha `layers:` em sdd/config.yaml para a contagem valer
+[rc=1]
+--- C: cabeçalho **Antes** com antes verde (esperado rc=1)
+⚠️  N.A. aceito sem conferir camadas — `layers:` do sdd/config.yaml sem nenhum glob preenchido; preencha `layers:` em sdd/config.yaml para a contagem valer
+⚠️  a tabela de critérios não tem a coluna `Antes` (relatório anterior à v2.27.0): o vermelho antes do verde não foi conferido
+✅ sdd/reports/BUILD_REPORT_FX.md: todo `true` tem evidência abrível e a avaliação está provada ou declarada
+RESULTADO: VERDE
+→ o relatório pode ser commitado.
+[rc=0]
+--- D: cabeçalho Antes/vermelho com antes verde (esperado rc=1)
+⚠️  N.A. aceito sem conferir camadas — `layers:` do sdd/config.yaml sem nenhum glob preenchido; preencha `layers:` em sdd/config.yaml para a contagem valer
+⚠️  a tabela de critérios não tem a coluna `Antes` (relatório anterior à v2.27.0): o vermelho antes do verde não foi conferido
+✅ sdd/reports/BUILD_REPORT_FX.md: todo `true` tem evidência abrível e a avaliação está provada ou declarada
+RESULTADO: VERDE
+→ o relatório pode ser commitado.
+[rc=0]
+--- E: cabeçalho Antes (vermelho) com antes verde (esperado rc=1)
+🛑 [vermelho antes] AT-001: `evidence/FX/AT-001.antes.log` terminou em `[exit=0]`: o antes de um AT de comportamento novo tem de falhar
+RESULTADO: VERMELHO
+→ rode o comando do AT antes do código e grave `evidence/FX/AT-nnn.antes.log` (vermelho; `shall continue to`: verde), citado na coluna `Antes`; gate fora de `test`/`cmd`: `N.A. (<motivo>)`.
+⚠️  N.A. aceito sem conferir camadas — `layers:` do sdd/config.yaml sem nenhum glob preenchido; preencha `layers:` em sdd/config.yaml para a contagem valer
+[rc=1]
+[exit=0]

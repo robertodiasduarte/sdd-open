@@ -1,0 +1,33 @@
+TABELA_SEM_CABECALHO DESIGN_F30_QUALIDADE_CODIGO.md:469 (a tabela precisa das colunas fonte ou lm-nnn ou id e veredito ou tratamento: não contei nada dela)
+TABELA_SEM_CABECALHO DESIGN_F30_QUALIDADE_CODIGO.md:494 (a tabela precisa das colunas fonte ou lm-nnn ou id e veredito ou tratamento: não contei nada dela)
+DELTA LM-001 ajudou+1 · conf=2026-11-24 · evidencia=BUILD_REPORT_F30_QUALIDADE_CODIGO.md:36 · fp=088e46e02a
+DELTA LM-002 ajudou+1 · conf=2026-11-24 · evidencia=BUILD_REPORT_F30_QUALIDADE_CODIGO.md:36 · fp=4e7d98e400
+DELTA LM-003 ajudou+1 · conf=2026-11-24 · evidencia=BUILD_REPORT_F30_QUALIDADE_CODIGO.md:37 · fp=79c5f5a6a2
+DELTA LM-006 ajudou+1 · conf=2026-11-24 · evidencia=BUILD_REPORT_F30_QUALIDADE_CODIGO.md:38 · fp=5464b803fd
+DELTA LM-009 ajudou+1 · conf=2026-11-24 · evidencia=BUILD_REPORT_F30_QUALIDADE_CODIGO.md:39 · fp=e2d4e6b490
+DELTA LM-014 ajudou+1 · conf=2026-11-24 · evidencia=BUILD_REPORT_F30_QUALIDADE_CODIGO.md:40 · fp=8a7e3e5d19
+DELTA LM-029 ajudou+1 · conf=2026-11-24 · evidencia=BUILD_REPORT_F30_QUALIDADE_CODIGO.md:40 · fp=d016583a97
+DELTA LM-042 ajudou+1 · conf=2026-11-24 · evidencia=BUILD_REPORT_F30_QUALIDADE_CODIGO.md:40 · fp=a3adf2cc39
+DELTA LM-018 ajudou+1 · conf=2026-11-24 · evidencia=BUILD_REPORT_F30_QUALIDADE_CODIGO.md:42 · fp=6cff5f7dd0
+DELTA LM-035 ajudou+1 · conf=2026-11-24 · evidencia=BUILD_REPORT_F30_QUALIDADE_CODIGO.md:43 · fp=c51723ae8b
+DELTA LM-036 ajudou+1 · conf=2026-11-24 · evidencia=BUILD_REPORT_F30_QUALIDADE_CODIGO.md:44 · fp=e00a3d56cf
+DELTA LM-037 ajudou+1 · conf=2026-11-24 · evidencia=BUILD_REPORT_F30_QUALIDADE_CODIGO.md:45 · fp=c4abffc13a
+DELTA LM-038 ajudou+1 · conf=2026-11-24 · evidencia=BUILD_REPORT_F30_QUALIDADE_CODIGO.md:46 · fp=ad69b19da6
+SUGESTAO mordeu? LM-001 — termo `asserção` em BUILD_REPORT_F30_QUALIDADE_CODIGO.md:68 (achado sem LM explícito; confirmar a causa antes de virar delta) · fp=a6f407fc66
+SUGESTAO mordeu? LM-009 — termo `sabotagem` em BUILD_REPORT_F30_QUALIDADE_CODIGO.md:204 (achado sem LM explícito; confirmar a causa antes de virar delta) · fp=88affa7884,adb0d0b12b,09eda6de4d
+SUGESTAO mordeu? LM-040 — termo `avaliador` em BUILD_REPORT_F30_QUALIDADE_CODIGO.md:204 (achado sem LM explícito; confirmar a causa antes de virar delta) · fp=36c4bae6c9,ae8c6c7230
+CANDIDATO #1 → LM-045 · secao=Reviews / harness · sup=`unittest discover` `Ran 0 tests` `python 3.9` `verify-gate` `test -f` · evidencia=sdd/features/DEFINE_F30_QUALIDADE_CODIGO.md (Verify Gate e nota de baseline); sdd/reports/evidence/F30_QUALIDADE_CODIGO/AT-010.antes.log · fp=aee064eaaa
+   delta: ADD Reviews / harness :: sup: `unittest discover` `Ran 0 tests` `python 3.9` `verify-gate` `test -f` :: **Do instead:** ao criar um módulo de teste da feature, acrescente `test -f tests/<módulo>.py` ao gate, antes do discover, no mesmo commit; confira o vermelho do gate na árvore de antes. → ficha: — · promovido_para: —
+CANDIDATO #2 → LM-046 · secao=Reviews / harness · sup=`vermelho antes` `antes.log` `TypeError` `baseline` `teste novo` · evidencia=sdd/reports/evidence/F30_QUALIDADE_CODIGO/AT-012.antes.log · fp=8f41076224
+   delta: ADD Reviews / harness :: sup: `vermelho antes` `antes.log` `TypeError` `baseline` `teste novo` :: **Do instead:** antes de gravar o `AT-nnn.antes.log`, leia as falhas: `FAIL` de asserção ou `ImportError` do módulo novo valem; `ERROR` dentro do próprio teste se conserta e o antes se grava de novo. → ficha: — · promovido_para: —
+SUGESTAO mordeu? LM-035 — termo `starter` em AVALIACAO_F30_QUALIDADE_CODIGO_20261124-1225.md:10 (achado sem LM explícito; confirmar a causa antes de virar delta) · fp=dde4b7671a
+SUGESTAO mordeu? LM-005 — termo `regressão` em s2_v2.27.0.yaml:8 (achado sem LM explícito; confirmar a causa antes de virar delta) · fp=9450431a03
+SUGESTAO mordeu? LM-006 — termo `git archive` em s2_v2.27.0.yaml:8 (achado sem LM explícito; confirmar a causa antes de virar delta) · fp=9a0e9b445e
+SUGESTAO mordeu? LM-012 — termo `publish-gate` em s2_v2.27.0.yaml:8 (achado sem LM explícito; confirmar a causa antes de virar delta) · fp=0538192442
+SUGESTAO mordeu? LM-024 — termo `raio de impacto` em s2_v2.27.0.yaml:8 (achado sem LM explícito; confirmar a causa antes de virar delta) · fp=8eac420f3a
+SUGESTAO mordeu? LM-026 — termo `comando` em s2_v2.27.0.yaml:8 (achado sem LM explícito; confirmar a causa antes de virar delta) · fp=e6f108c9fc
+SUGESTAO mordeu? LM-037 — termo `publish-gate` em s2_v2.27.0.yaml:8 (achado sem LM explícito; confirmar a causa antes de virar delta) · fp=2b735e74cd
+JA_JULGADO 7 linha(s) já julgada(s) numa curadoria anterior desta feature ou já na fila da curadoria (CURATOR-colhidos.txt): não contam de novo
+resumo: deltas=13 (ajudou=13 mordeu=0) candidatos=2 rejeitados=0 promocoes=0 sugestoes=10
+RESULTADO: HÁ O QUE JULGAR
+→ despache o curador com esta colheita; nada foi aplicado.

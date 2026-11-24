@@ -1,0 +1,50 @@
+$ /bin/bash ./n1.sh
+iter 1 rc=0 arvore_igual=sim
+iter 2 rc=0 arvore_igual=sim
+iter 3 rc=0 arvore_igual=sim
+iter 4 rc=0 arvore_igual=sim
+iter 5 rc=0 arvore_igual=sim
+iter 6 rc=0 arvore_igual=sim
+iter 7 rc=0 arvore_igual=sim
+iter 8 rc=0 arvore_igual=sim
+iter 9 rc=0 arvore_igual=sim
+iter 10 rc=0 arvore_igual=sim
+iter 11 rc=0 arvore_igual=sim
+iter 12 rc=0 arvore_igual=sim
+iter 13 rc=0 arvore_igual=sim
+iter 14 rc=0 arvore_igual=sim
+iter 15 rc=0 arvore_igual=sim
+iter 16 rc=0 arvore_igual=sim
+iter 17 rc=0 arvore_igual=sim
+iter 18 rc=0 arvore_igual=sim
+iter 19 rc=0 arvore_igual=sim
+iter 20 rc=0 arvore_igual=sim
+rc0=20 outros=0
+▶ cópia do último commit (c7ff5dd) · comando sem a sabotagem
+▶ sabotagem: m.py: «return 1» → «return 2»
+   │ Traceback (most recent call last):
+   │   File "/private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/sdd-sabotagem.s8KF6e/copia/t.py", line 2, in <module>
+   │     assert m.f() == 1
+   │            ^^^^^^^^^^
+   │ AssertionError
+✅ o teste pega o defeito: com a sabotagem, o comando saiu 1.
+RESULTADO: VERDE
+→ cite sdd/reports/evidence/FX/AT-001.sabotagem.log na evidência do AT-001.
+rc=0
+$ python3 t.py
+# sabotagem: m.py: «return 1» → «return 2» (cópia de HEAD c7ff5dd)
+# sem a sabotagem: exit 0
+Traceback (most recent call last):
+  File "/private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/sdd-sabotagem.s8KF6e/copia/t.py", line 2, in <module>
+    assert m.f() == 1
+           ^^^^^^^^^^
+AssertionError
+[exit=1]
+▶ cópia do último commit (ede9515) · comando sem a sabotagem
+▶ sabotagem: m.py: «return 1» → «return 2»
+🛑 o teste não pega o defeito: com a sabotagem declarada, o comando continuou verde.
+RESULTADO: VERMELHO
+→ reforce a asserção do AT-002 até ela acusar a sabotagem e rode de novo (a prova está em sdd/reports/evidence/FX/AT-002.sabotagem.log).
+rc=2
+       0
+[exit=0]
