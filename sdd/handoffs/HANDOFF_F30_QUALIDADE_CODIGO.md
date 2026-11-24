@@ -8,7 +8,7 @@
 |-----------|-------|
 | **Feature** | F30_QUALIDADE_CODIGO |
 | **Objetivo** | O código que o método gera segue Clean Code e TDD: lint e tipos a cada tarefa, regras de qualidade por stack, vermelho antes do verde, sabotagem do gate, refatorar depois do verde e métricas de forma no diff (só aviso) |
-| **Status** | 🚢 S1 publicada na `v2.26.0` (2026-11-24, `main` = `c4fa53c`); S2 e S3 abertas |
+| **Status** | 🚢 S1 publicada na `v2.26.0` (2026-11-24, `main` = `c4fa53c`; Release conferida) e starter **`v1.5.31`**; S2 e S3 abertas |
 | **Última sessão** | 2026-11-24 |
 | **Branch / pasta** | `f30-sdd-open-uncle-bob` · `/Users/robertoduarte/rdd-worktrees/f30-sdd-open-uncle-bob` (a `main` avançou direto para o HEAD da frente; a branch não existe no remoto) |
 | **Artefatos** | `sdd/features/{AVALIACAO_F30_UNCLE_BOB,ESCOPO_F30_QUALIDADE_CODIGO,DEFINE_F30_QUALIDADE_CODIGO,DESIGN_F30_QUALIDADE_CODIGO}.md` · `sdd/reports/BUILD_REPORT_F30_QUALIDADE_CODIGO.md` · `sdd/reviews/{AVALIACAO_F30_QUALIDADE_CODIGO_20261123-2035,AVALIACAO_F30_QUALIDADE_CODIGO_20261123-2050,LEDGER_REVISAO_F30_QUALIDADE_CODIGO}.md` · `sdd/releases/F30_QUALIDADE_CODIGO/s1_v2.26.0.yaml` · `sdd/reports/evidence/F30_QUALIDADE_CODIGO/` |
@@ -25,7 +25,7 @@
 
 1. ✨ **S2 — disciplina de teste (itens 2, 6, 7):** `sdd-iterate` no mesmo DEFINE (seção "Fatia S2"; proposta de AT no ESCOPO §6: S2-a vermelho antes do verde, S2-b sabotagem do gate numa cópia descartável com hash da árvore conferido, S2-c refatorar depois do verde). Medir no BUILD_REPORT o custo extra em tokens dos itens 2, 6 e 7. Segurança só no S2-b.
 2. ✨ **S3 — métricas no diff, só aviso (itens 5, 8):** depois da S2. Ferramenta ausente = "não medido", nunca "0 achados".
-3. ✨ **Starter:** a geração seguinte em `~/rdd-public/sdd-starter`, a partir da tag `v2.26.0` (ver Eventos para o estado).
+3. ✨ O clone local `~/rdd-public/sdd-starter` está atrasado (11ª geração) e tem `docs/guia-do-aluno.pt-BR.md` fora do git; a 15ª geração foi feita num clone limpo. Atualize-o com `git -C ~/rdd-public/sdd-starter pull` quando decidir o que fazer com esse arquivo.
 4. ⚠️ Avisos da release S1 (não abortaram):
    - nota de atualização: projeto com `lint_cmd`/`typecheck_cmd` cheio e BUILD_REPORT anterior à v2.26.0 passa a ser cobrado pelo `LINT.log`/`TIPOS.log` (o `report-lint` imprime o conserto);
    - 🐛 o `doctor` não avisa de arquivo novo de `sdd/bin/` ausente num projeto atualizado só com `sync` (anterior à F30);
@@ -36,7 +36,7 @@
 ## Definition of Done
 
 - [x] S1 publicada: o Verify Gate sai 0 e a release foi feita com 1 OK
-- [ ] Starter regenerado depois da S1
+- [x] Starter regenerado depois da S1 (`v1.5.31`)
 - [ ] S2 publicada: S2-b com o hash da árvore igual antes e depois; custo extra em tokens dos itens 2, 6 e 7 no BUILD_REPORT
 - [ ] S3 publicada: ferramenta ausente dá "não medido", nunca "0 achados"; métrica só avisa
 - [ ] CI verde em cada release
@@ -52,7 +52,8 @@
 
 - 2026-11-23 — DEFINE 1.0 a 1.4 e DESIGN 1.0 a 1.2 (revisão do DESIGN com openrouter/qwen revisor e claude auditor; gemini sem login).
 - 2026-11-23 — Build da S1: 5 rodadas de revisão do código (9 achados, 8 corrigidos, 1 rebatido por escopo), avaliador fresco em 2 ciclos (o 1º pediu a emenda do AT-006, PHP sem `php -l`), raio de impacto em 3 superfícies.
-- 2026-11-24 — Release da S1 com o OK do Roberto ("pode finalizar"): push atômico `main` + tag `v2.26.0` em `c4fa53c` (avanço direto, sem PR; a `main` não tinha andado desde `4aa0cce`).
+- 2026-11-24 — Release da S1 com o OK do Roberto ("pode finalizar"): push atômico `main` + tag `v2.26.0` em `c4fa53c` (avanço direto, sem PR; a `main` não tinha andado desde `4aa0cce`). Release conferida: runs 45361178679 (tag) e 45361178619 (`main`) verdes, publicada às 09:52 UTC; `shasum -c` OK, `VERSION` = `v2.26.0`, 782 arquivos = 782 linhas do `MANIFEST`, 0 documentos no pacote.
+- 2026-11-24 — starter: 15ª geração pela tag `v2.26.0` num clone limpo (`41abba7`; check-gerado VERDE, check-versions e publish-check PASS, testes, gate da KB e 19 zips), PR #24 de lá com CI verde, avanço direto da `main`, Release `v1.5.31` (19 zips OK no `shasum -c`); branch `gen/v2.26.0` apagada.
 
 ## Recomendações
 
@@ -79,8 +80,8 @@ Leia primeiro: sdd/handoffs/HANDOFF_F30_QUALIDADE_CODIGO.md, depois sdd/features
 Leia "## Sempre" de sdd/playbook.md.
 
 Próxima ação: sdd-iterate no DEFINE para escrever os ATs da S2 em EARS e estender o Verify Gate (test -f de cada
-tests/test_f30_*.py novo); depois sdd-design (S2), sdd-build, sdd-release com 1 OK, geração do starter em
-~/rdd-public/sdd-starter, a linha da F30 em sdd/features/PLANO_F4_F15_CONSOLIDADO.md e esta ficha.
+tests/test_f30_*.py novo); depois sdd-design (S2), sdd-build, sdd-release com 1 OK, geração do starter num clone
+limpo do sdd-starter (scripts/gerar-starter.py --tag <tag>; starter atual v1.5.31), a linha da F30 em sdd/features/PLANO_F4_F15_CONSOLIDADO.md e esta ficha.
 
 Restrições: só bloqueia o objetivo (teste e erro de lint/tipos com slot cheio); métrica só avisa; nada instala no
 projeto do aluno sem o sim (D2); texto novo de skill em frase positiva, sem banner e sem "não cite" (F29); a
