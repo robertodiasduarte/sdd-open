@@ -654,7 +654,7 @@ Na S2, esse antes vira `evidence/F30_QUALIDADE_CODIGO/AT-nnn.antes.log`, citado 
 | AT | Arquivo | Trocar | Por | O que o teste deve acusar |
 |---|---|---|---|---|
 | AT-010 | `sdd/bin/report-lint.py` | `if classe == NOVO and rc in ("0", "126", "127"):` | `if classe == NOVO and rc in ("126", "127"):` | o antes verde de um AT novo passa |
-| AT-013 | `sdd/bin/sabotagem.sh` | `ALVO="${COPIA}/${ARQUIVO}"` | `ALVO="${RAIZ}/${ARQUIVO}"` | a troca sai da cópia e mexe na árvore de trabalho |
+| AT-013 | `sdd/bin/sabotagem.sh` | `SAIDA="${TRAB}/saida.txt"` | `SAIDA="${RAIZ}/saida.txt"` | a saída do comando cai na árvore de trabalho: o hash muda |
 
 ---
 
@@ -726,6 +726,7 @@ S2: `AT-nnn.antes.log` e `AT-nnn.sabotagem.log`, ao lado dos `AT-nnn.log`. Os lo
 | Version | Date | Author | Changes |
 |---------|------|--------|---------|
 | 2.1 | 2026-11-24 | design-agent | Revisão do DESIGN, rodada D1 (auditor claude, N1): a classe `continua` vem do início da célula (molde EARS ou Padrão), não de qualquer ocorrência na linha |
+| 2.2 | 2026-11-24 | build | Sabotagem do AT-013 trocada depois do código: a declarada (`ALVO` apontado para a raiz) era barrada pela checagem de caminho (exit 64) e não punha o hash da árvore à prova |
 | 2.0 | 2026-11-24 | design-agent | S2: Decisions 8 a 14, manifest de 15 arquivos, landmines e sabotagens da S2; o manifest da S1 fica na 1.2 (`c4fa53c`) |
 | 1.0 | 2026-11-23 | design-agent | S1: 7 decisões, 21 arquivos |
 | 1.2 | 2026-11-23 | build | Revisão do código (auditor claude, N1 e N2): a dívida antiga confere o comando do slot, não a 1ª linha inteira; o log final cobre todos os arquivos de código do manifest. Avaliador (ciclo 1): PHP sem `php -l` |

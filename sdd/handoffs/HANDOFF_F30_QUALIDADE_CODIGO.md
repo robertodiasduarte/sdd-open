@@ -8,7 +8,7 @@
 |-----------|-------|
 | **Feature** | F30_QUALIDADE_CODIGO |
 | **Objetivo** | O código que o método gera segue Clean Code e TDD: lint e tipos a cada tarefa, regras de qualidade por stack, vermelho antes do verde, sabotagem do gate, refatorar depois do verde e métricas de forma no diff (só aviso) |
-| **Status** | 🚢 S2 publicada na `v2.27.1` (2026-11-24, tag em `a6f1f5e`; a `v2.27.0` ficou sem Release) e starter **`v1.5.32`**; S1 na `v2.26.0`; S3 aberta |
+| **Status** | ⏳ S2 no código da `main`, ainda sem Release (tags `v2.27.0` e `v2.27.1` sem Release: CI vermelho; `v2.27.2` em preparo) e starter **`v1.5.32`**; S1 na `v2.26.0`; S3 aberta |
 | **Última sessão** | 2026-11-24 |
 | **Branch / pasta** | S2: `s2-sdd-open-uncle-bob` · `/Users/robertoduarte/rdd-worktrees/s2-sdd-open-uncle-bob` (a `main` avançou direto para o HEAD da frente; a branch não existe no remoto). S1: `f30-sdd-open-uncle-bob` |
 | **Artefatos** | `sdd/features/{AVALIACAO_F30_UNCLE_BOB,ESCOPO_F30_QUALIDADE_CODIGO,DEFINE_F30_QUALIDADE_CODIGO,DESIGN_F30_QUALIDADE_CODIGO}.md` · `sdd/reports/BUILD_REPORT_F30_QUALIDADE_CODIGO.md` · `sdd/reviews/{AVALIACAO_F30_QUALIDADE_CODIGO_20261123-2035,AVALIACAO_F30_QUALIDADE_CODIGO_20261123-2050,LEDGER_REVISAO_F30_QUALIDADE_CODIGO}.md` · `sdd/releases/F30_QUALIDADE_CODIGO/{s1_v2.26.0,s2_v2.27.0}.yaml` · `sdd/reviews/AVALIACAO_F30_QUALIDADE_CODIGO_20261124-{1225,1300}.md` · `sdd/reports/evidence/F30_QUALIDADE_CODIGO/` |
@@ -41,7 +41,7 @@
 
 - [x] S1 publicada: o Verify Gate sai 0 e a release foi feita com 1 OK
 - [x] Starter regenerado depois da S1 (`v1.5.31`)
-- [x] S2 publicada (`v2.27.1`): S2-b com o hash da árvore igual antes e depois; custo extra em tokens dos itens 2, 6 e 7 no BUILD_REPORT (+4,4%, n=1)
+- [ ] S2 publicada: S2-b com o hash da árvore igual antes e depois; custo extra em tokens dos itens 2, 6 e 7 no BUILD_REPORT (+4,4%, n=1)
 - [x] Starter regenerado depois da S2 (`v1.5.32`)
 - [ ] S3 publicada: ferramenta ausente dá "não medido", nunca "0 achados"; métrica só avisa
 - [ ] CI verde em cada release
@@ -59,6 +59,7 @@
 - 2026-11-24 — Build da S2: testes antes do código com `AT-nnn.antes.log`; 2 sabotagens declaradas pegas; 3 rodadas de revisão do código (2 LOW rebatidos por escopo); avaliador fresco em 2 ciclos (ciclo 1 NEEDS_WORK pelo cache da execução limpa no `sabotagem.sh`, aplicado); raio de impacto em 2 superfícies (1 risco latente consertado); custo dos passos novos medido (+2.514 tokens, +4,4%).
 - 2026-11-24 — Release da S2 com o OK do Roberto ("pode finalizar"): push atômico `main` + tag `v2.27.0` em `5e89137` (avanço direto, sem PR).
 - 2026-11-24 — O CI da `v2.27.0` caiu na fatia 15/16 do Windows: o teste do link simbólico do `sabotagem.sh` esperava 64, e no Windows o link chega à cópia como arquivo comum (a proteção vale). Teste corrigido (`a6f1f5e`) e, com o OK do Roberto, publicada a `v2.27.1`; a tag `v2.27.0` fica no remoto sem Release.
+- 2026-11-24 — A `v2.27.1` também ficou sem Release: no macOS, o hash da árvore do teste leu o `maintenance.lock` do git, que sumiu (`a242a71` desliga a manutenção na fixture). Ela subiu sem repetir o `--conferir` (NÃO CONFERE), e a ficha a deu por publicada antes da Release.
 - 2026-11-24 — starter: 16ª geração pela tag `v2.27.0` num clone limpo (`c56580d`; check-gerado VERDE, check-versions e publish-check PASS, testes, gate da KB e 19 zips), PR #25 com CI verde, avanço direto da `main`, Release `v1.5.32` (19 zips OK no `shasum -c`).
 - 2026-11-23 — DEFINE 1.0 a 1.4 e DESIGN 1.0 a 1.2 (revisão do DESIGN com openrouter/qwen revisor e claude auditor; gemini sem login).
 - 2026-11-23 — Build da S1: 5 rodadas de revisão do código (9 achados, 8 corrigidos, 1 rebatido por escopo), avaliador fresco em 2 ciclos (o 1º pediu a emenda do AT-006, PHP sem `php -l`), raio de impacto em 3 superfícies.

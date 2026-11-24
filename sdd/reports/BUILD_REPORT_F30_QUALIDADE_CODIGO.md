@@ -174,6 +174,7 @@ vazio em todos os casos) e pela sabotagem declarada do AT-013 (`AT-013.sabotagem
 
 | Deviation | Reason | Impact |
 |-----------|--------|--------|
+| A sabotagem do AT-013 foi trocada depois do código (DESIGN 2.2) | a declarada era pega pelo exit 64 da checagem de caminho, sem chegar ao hash da árvore; a nova é pega pela asserção do hash | a declaração deixou de ser anterior ao código neste AT |
 | A cópia e a saída ficam numa pasta só de `mktemp -d` (`<pasta>/copia`, `<pasta>/saida.txt`), não a cópia direto no `mktemp` | a saída do comando não pode ficar dentro da cópia que ele lê; uma pasta e um `trap` apagam as duas | nenhum |
 | O `trap` de `INT`/`TERM`/`HUP` apaga e sai 130/143/129 | sair no sinal, em vez de seguir rodando depois da limpeza | nenhum |
 
@@ -193,7 +194,7 @@ nenhuma invariante violada (INV-001 e INV-002 não tocam os módulos).
 
 ## Blockers (if any)
 
-Nenhum.
+A `v2.27.0` e a `v2.27.1` ficaram como tag sem Release: o CI caiu por 2 defeitos de teste do `test_f30_sabotagem` (link simbólico no Windows; `maintenance.lock` do git no macOS). A `v2.27.1` subiu sem a revisão repetida depois da mudança do teste (`--conferir`: NÃO CONFERE). Corrigidos para a `v2.27.2`.
 
 ---
 
@@ -201,7 +202,7 @@ Nenhum.
 
 **Camadas do manifest:** 1 (o pacote não declara `layers:`)
 **Contrato de aceite (passo 1.5 da `sdd-build`):** N.A. (1 camada)
-**Veredito do avaliador (C1):** PASS_PENDENTE_RECIBO · ciclos: 2 · achados: ciclo 1 NEEDS_WORK por 1 MED (N1: a execução sabotada reusava a cópia da limpa, e o `__pycache__` escondia a sabotagem quando ela caía no mesmo segundo do commit; aplicado com teste determinístico) e 2 observações aplicadas (O1, O2); ciclo 2 com os 3 conferidos e 5 observações leves (O-A a O-E) que ficam como pendência na ficha; o recibo é o Verify Gate abaixo · `AVALIACAO_F30_QUALIDADE_CODIGO_20261124-1300.md` (ciclo 1: `AVALIACAO_F30_QUALIDADE_CODIGO_20261124-1225.md`)
+**Veredito do avaliador (C1):** PASS_PENDENTE_RECIBO (sobre `e65531f`; depois dele mudaram o `report-lint.py` no raio de impacto e 2 testes) · ciclos: 2 · achados: ciclo 1 NEEDS_WORK por 1 MED (N1: a execução sabotada reusava a cópia da limpa, e o `__pycache__` escondia a sabotagem quando ela caía no mesmo segundo do commit; aplicado com teste determinístico) e 2 observações aplicadas (O1, O2); ciclo 2 com os 3 conferidos e 5 observações leves (O-A a O-E) que ficam como pendência na ficha; o recibo é o Verify Gate abaixo · `AVALIACAO_F30_QUALIDADE_CODIGO_20261124-1300.md` (ciclo 1: `AVALIACAO_F30_QUALIDADE_CODIGO_20261124-1225.md`)
 
 ---
 

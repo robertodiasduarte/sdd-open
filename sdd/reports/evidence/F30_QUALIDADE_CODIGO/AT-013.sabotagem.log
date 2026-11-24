@@ -1,8 +1,8 @@
 $ cd tests && /usr/bin/python3 -B -m unittest -v test_f30_sabotagem.AT013Sabotagem
-# sabotagem: sdd/bin/sabotagem.sh: «ALVO="${COPIA}/${ARQUIVO}"» → «ALVO="${RAIZ}/${ARQUIVO}"» (cópia de HEAD f583124)
+# sabotagem: sdd/bin/sabotagem.sh: «SAIDA="${TRAB}/saida.txt"» → «SAIDA="${RAIZ}/saida.txt"» (cópia de HEAD a242a71)
 # sem a sabotagem: exit 0
 test_cache_da_execucao_limpa_nao_esconde_a_sabotagem (test_f30_sabotagem.AT013Sabotagem) ... FAIL
-test_mudanca_nao_commitada_fica_e_a_copia_e_do_commit (test_f30_sabotagem.AT013Sabotagem) ... FAIL
+test_mudanca_nao_commitada_fica_e_a_copia_e_do_commit (test_f30_sabotagem.AT013Sabotagem) ... ok
 test_teste_forte_pega_a_sabotagem (test_f30_sabotagem.AT013Sabotagem) ... FAIL
 test_teste_fraco_nao_pega (test_f30_sabotagem.AT013Sabotagem) ... FAIL
 
@@ -10,53 +10,92 @@ test_teste_fraco_nao_pega (test_f30_sabotagem.AT013Sabotagem) ... FAIL
 FAIL: test_cache_da_execucao_limpa_nao_esconde_a_sabotagem (test_f30_sabotagem.AT013Sabotagem)
 ----------------------------------------------------------------------
 Traceback (most recent call last):
-  File "/private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/sdd-sabotagem.SatrJv/copia/tests/test_f30_sabotagem.py", line 113, in test_cache_da_execucao_limpa_nao_esconde_a_sabotagem
-    self.assertEqual(rc, 0, out)
-AssertionError: 64 != 0 : 🛑 sabotagem: conta.py: o caminho sai da cópia (/private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/sdd-open-3cd1169f/repo/conta.py)
-   uso: bash sdd/bin/sabotagem.sh --feature <F> --at <AT-nnn> --arquivo <caminho> --trocar '<trecho>' --por '<trecho>' --cmd '<comando>'
-RESULTADO: ERRO DE USO
-→ corrija a chamada (os valores vêm da tabela de sabotagens do DESIGN) e rode de novo.
-
-
-======================================================================
-FAIL: test_mudanca_nao_commitada_fica_e_a_copia_e_do_commit (test_f30_sabotagem.AT013Sabotagem)
-----------------------------------------------------------------------
-Traceback (most recent call last):
-  File "/private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/sdd-sabotagem.SatrJv/copia/tests/test_f30_sabotagem.py", line 122, in test_mudanca_nao_commitada_fica_e_a_copia_e_do_commit
-    self.assertEqual(rc, 0, out + err)
-AssertionError: 64 != 0 : ⚠️  há mudança não commitada: a cópia é do último commit (HEAD), e a árvore de trabalho não é tocada.
-🛑 sabotagem: conta.py: o caminho sai da cópia (/private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/sdd-open-3to90v__/repo/conta.py)
-   uso: bash sdd/bin/sabotagem.sh --feature <F> --at <AT-nnn> --arquivo <caminho> --trocar '<trecho>' --por '<trecho>' --cmd '<comando>'
-RESULTADO: ERRO DE USO
-→ corrija a chamada (os valores vêm da tabela de sabotagens do DESIGN) e rode de novo.
+  File "/private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/sdd-sabotagem.y87SS9/copia/tests/test_f30_sabotagem.py", line 116, in test_cache_da_execucao_limpa_nao_esconde_a_sabotagem
+    rc, out = self.sabota(comando=comando)
+  File "/private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/sdd-sabotagem.y87SS9/copia/tests/test_f30_sabotagem.py", line 84, in sabota
+    self.assertEqual(self.arvore(), antes, "a árvore de trabalho mudou\n" + out + err)
+AssertionError: 'b548d1f1bbb69cb03092b46c1ee77a23b793427bfa3f9409708bc068eb93c6c6' != 'c6ca577fe8367593770ac6ea3f26c69c5ec652c17b600195abd74e8c99a77ad5'
+- b548d1f1bbb69cb03092b46c1ee77a23b793427bfa3f9409708bc068eb93c6c6
++ c6ca577fe8367593770ac6ea3f26c69c5ec652c17b600195abd74e8c99a77ad5
+ : a árvore de trabalho mudou
+▶ cópia do último commit (ccf705d) · comando sem a sabotagem
+▶ sabotagem: conta.py: «if valor > saldo:» → «if False:»
+   │ F.
+   │ ======================================================================
+   │ FAIL: test_recusa (test_forte.T)
+   │ ----------------------------------------------------------------------
+   │ Traceback (most recent call last):
+   │   File "/private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/sdd-open-g14c825y/tmpdir/sdd-sabotagem.zpsmA6/copia/test_forte.py", line 7, in test_recusa
+   │     saca(10, 20)
+   │ AssertionError: ValueError not raised
+   │ 
+   │ ----------------------------------------------------------------------
+   │ Ran 2 tests in 0.000s
+   │ 
+   │ FAILED (failures=1)
+✅ o teste pega o defeito: com a sabotagem, o comando saiu 1.
+RESULTADO: VERDE
+→ cite sdd/reports/evidence/FX/AT-001.sabotagem.log na evidência do AT-001.
 
 
 ======================================================================
 FAIL: test_teste_forte_pega_a_sabotagem (test_f30_sabotagem.AT013Sabotagem)
 ----------------------------------------------------------------------
 Traceback (most recent call last):
-  File "/private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/sdd-sabotagem.SatrJv/copia/tests/test_f30_sabotagem.py", line 92, in test_teste_forte_pega_a_sabotagem
-    self.assertEqual(rc, 0, out)
-AssertionError: 64 != 0 : 🛑 sabotagem: conta.py: o caminho sai da cópia (/private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/sdd-open-w9axyqak/repo/conta.py)
-   uso: bash sdd/bin/sabotagem.sh --feature <F> --at <AT-nnn> --arquivo <caminho> --trocar '<trecho>' --por '<trecho>' --cmd '<comando>'
-RESULTADO: ERRO DE USO
-→ corrija a chamada (os valores vêm da tabela de sabotagens do DESIGN) e rode de novo.
+  File "/private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/sdd-sabotagem.y87SS9/copia/tests/test_f30_sabotagem.py", line 95, in test_teste_forte_pega_a_sabotagem
+    rc, out = self.sabota()
+  File "/private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/sdd-sabotagem.y87SS9/copia/tests/test_f30_sabotagem.py", line 84, in sabota
+    self.assertEqual(self.arvore(), antes, "a árvore de trabalho mudou\n" + out + err)
+AssertionError: '3ca4d341a426afce832e71d31d2e4e2eea2c553d1c06838b8875e84ac29d5a32' != 'ef162dc9abcabc377190f9991f1d21f01330df55d867bea306fcca45c16a6679'
+- 3ca4d341a426afce832e71d31d2e4e2eea2c553d1c06838b8875e84ac29d5a32
++ ef162dc9abcabc377190f9991f1d21f01330df55d867bea306fcca45c16a6679
+ : a árvore de trabalho mudou
+▶ cópia do último commit (c48ff8a) · comando sem a sabotagem
+▶ sabotagem: conta.py: «if valor > saldo:» → «if False:»
+   │ F.
+   │ ======================================================================
+   │ FAIL: test_recusa (test_forte.T)
+   │ ----------------------------------------------------------------------
+   │ Traceback (most recent call last):
+   │   File "/private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/sdd-open-njl0ratf/tmpdir/sdd-sabotagem.9OehkQ/copia/test_forte.py", line 7, in test_recusa
+   │     saca(10, 20)
+   │ AssertionError: ValueError not raised
+   │ 
+   │ ----------------------------------------------------------------------
+   │ Ran 2 tests in 0.000s
+   │ 
+   │ FAILED (failures=1)
+✅ o teste pega o defeito: com a sabotagem, o comando saiu 1.
+RESULTADO: VERDE
+→ cite sdd/reports/evidence/FX/AT-001.sabotagem.log na evidência do AT-001.
 
 
 ======================================================================
 FAIL: test_teste_fraco_nao_pega (test_f30_sabotagem.AT013Sabotagem)
 ----------------------------------------------------------------------
 Traceback (most recent call last):
-  File "/private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/sdd-sabotagem.SatrJv/copia/tests/test_f30_sabotagem.py", line 103, in test_teste_fraco_nao_pega
-    self.assertEqual(rc, 2, out)
-AssertionError: 64 != 2 : 🛑 sabotagem: conta.py: o caminho sai da cópia (/private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/sdd-open-kstwhk0x/repo/conta.py)
-   uso: bash sdd/bin/sabotagem.sh --feature <F> --at <AT-nnn> --arquivo <caminho> --trocar '<trecho>' --por '<trecho>' --cmd '<comando>'
-RESULTADO: ERRO DE USO
-→ corrija a chamada (os valores vêm da tabela de sabotagens do DESIGN) e rode de novo.
+  File "/private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/sdd-sabotagem.y87SS9/copia/tests/test_f30_sabotagem.py", line 106, in test_teste_fraco_nao_pega
+    rc, out = self.sabota(comando=cmd("test_fraco"))
+  File "/private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/sdd-sabotagem.y87SS9/copia/tests/test_f30_sabotagem.py", line 84, in sabota
+    self.assertEqual(self.arvore(), antes, "a árvore de trabalho mudou\n" + out + err)
+AssertionError: 'c29c6293b6bad7eaf2d9b8fe6f2d02dc19ae1d8c29280f5bcacf2d3851b14f99' != 'a9191b1708008899213ec870ca43a1e0d3326a19470b2857dbb240c068faffb3'
+- c29c6293b6bad7eaf2d9b8fe6f2d02dc19ae1d8c29280f5bcacf2d3851b14f99
++ a9191b1708008899213ec870ca43a1e0d3326a19470b2857dbb240c068faffb3
+ : a árvore de trabalho mudou
+▶ cópia do último commit (6278a77) · comando sem a sabotagem
+▶ sabotagem: conta.py: «if valor > saldo:» → «if False:»
+   │ .
+   │ ----------------------------------------------------------------------
+   │ Ran 1 test in 0.000s
+   │ 
+   │ OK
+🛑 o teste não pega o defeito: com a sabotagem declarada, o comando continuou verde.
+RESULTADO: VERMELHO
+→ reforce a asserção do AT-001 até ela acusar a sabotagem e rode de novo (a prova está em sdd/reports/evidence/FX/AT-001.sabotagem.log).
 
 
 ----------------------------------------------------------------------
-Ran 4 tests in 0.707s
+Ran 4 tests in 2.364s
 
-FAILED (failures=4)
+FAILED (failures=3)
 [exit=1]
