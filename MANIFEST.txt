@@ -671,6 +671,7 @@ tests/apoio.py
 tests/test_agnostico.py
 tests/test_alarme.py
 tests/test_apoio_ambiente.py
+tests/test_apoio_git.py
 tests/test_avaliador_guard.py
 tests/test_bash32.py
 tests/test_checar.py
