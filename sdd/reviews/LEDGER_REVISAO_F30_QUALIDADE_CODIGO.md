@@ -121,3 +121,9 @@ revisor2: dispensado rodada=7 — sem superfície de risco (regra antiga: 63 arq
 | R1 | HIGH | APLICADA | rodada=7 | `26ea320`: log gravado em arquivo novo e renomeado; teste: test_log_que_e_hard_link_nao_apaga_o_outro_nome | sim | EXTERNAL_REVIEW_20261124-133334 |
 | R2 | MED | APLICADA | rodada=7 | `26ea320`: o commit é resolvido uma vez; teste: test_commit_no_meio_nao_troca_a_versao_da_segunda_copia | nao | EXTERNAL_REVIEW_20261124-133334 |
 | R3 | MED | APLICADA | rodada=7 | `26ea320`: WORKER_BRIEF com o antes verde do shall continue to; teste: test_brief_do_worker_tem_a_excecao_da_nao_regressao | nao | EXTERNAL_REVIEW_20261124-133334 |
+
+Revisão da S2 inteira, rodada 8 (`cb35651`, base `08f41a8`): revisor `codex` (`gpt-6.1-sol`), auditor `claude`;
+`diversidade: vendor`; US$ 1,93. Nenhum achado.
+
+revisor2: dispensado rodada=8 — sem superfície de risco (regra antiga: 63 arquivos (limiar 8))
+sem achados: rodada=8 EXTERNAL_REVIEW_20261124-133818
