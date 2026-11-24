@@ -71,3 +71,10 @@ auditor `claude`; `diversidade: vendor`; US$ 0,67. Os dois revisores não achara
 | achado | sev | veredito | rodada | evidência | dano | revisão |
 |---|---|---|---|---|---|---|
 | N1 | MED | APLICADA | rodada=D2 | DESIGN Decision 9 (2.1): a classe `continua` vem do início da célula; teste `test_criterio_que_so_cita_shall_continue_to_e_novo` | nao | EXTERNAL_REVIEW_20261124-083851 |
+
+Revisão do código da S2, rodada 1 (`52bd4da`): revisor `openrouter` (`qwen/qwen3.7-plus`), auditor
+`claude`; `diversidade: vendor`; US$ 0,88. Nenhum achado; o auditor conferiu a classe do AT, os exits, o relatório
+antigo, a contenção do caminho e a limpeza da cópia, e descartou 3 pontos LOW já cobertos pelas Decisions 8 e 10.
+
+revisor2: dispensado rodada=1 — sem superfície de risco (regra antiga: 24 arquivos (limiar 8))
+sem achados: rodada=1 EXTERNAL_REVIEW_20261124-091418
