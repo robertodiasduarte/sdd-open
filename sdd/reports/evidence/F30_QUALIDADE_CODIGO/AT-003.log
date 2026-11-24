@@ -1,0 +1,11 @@
+$ cd tests && /usr/bin/python3 -B -m unittest -v test_f30_textos.AT003Build
+test_antes_da_1a_tarefa_le_as_regras_e_grava_o_log_de_antes (test_f30_textos.AT003Build) ... ok
+test_modo_web_traz_as_regras_e_o_lint_do_projeto (test_f30_textos.AT003Build) ... ok
+test_teto_de_linhas (test_f30_textos.AT003Build) ... ok
+test_verificar_nomeia_slots_arquivos_logs_e_slot_vazio (test_f30_textos.AT003Build) ... ok
+
+----------------------------------------------------------------------
+Ran 4 tests in 0.003s
+
+OK
+[exit=0]

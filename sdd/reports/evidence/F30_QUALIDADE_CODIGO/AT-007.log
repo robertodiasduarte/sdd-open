@@ -1,0 +1,11 @@
+$ cd tests && /usr/bin/python3 -B -m unittest -v test_f30_textos.AT007NovaSessao
+test_checar_ambiente_documenta_o_aviso_e_o_modo (test_f30_textos.AT007NovaSessao) ... ok
+test_frase_positiva_sem_os_padroes_da_f29 (test_f30_textos.AT007NovaSessao) ... ok
+test_grava_so_com_sim_e_nunca_instala (test_f30_textos.AT007NovaSessao) ... ok
+test_roda_o_modo_linter_e_pergunta_d2 (test_f30_textos.AT007NovaSessao) ... ok
+
+----------------------------------------------------------------------
+Ran 4 tests in 0.001s
+
+OK
+[exit=0]

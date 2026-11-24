@@ -1,0 +1,81 @@
+$ bash /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-f30-sdd-open-uncle-bob/0cf4badb-88be-4ebf-a86a-fed6605c57e9/scratchpad/aval2/at006.sh
+=== Python sem linter (esperado ruff check + mypy + instalar)
+--- checar.sh --linter
+python	ruff check	mypy .	python3 -m pip install ruff mypy
+rc=0
+--- checar.sh (diagnóstico), linhas do bloco de linter
+6:- Este projeto em Python não tem conferência de estilo (linter) nem de tipos configurada: o código que o agente escreve sai sem ela.
+7:  python3 -m pip install ruff mypy   (depois: ruff check e mypy .; grave em project.lint_cmd e project.typecheck_cmd do sdd/config.yaml)
+8-
+rc=0
+hash antes=5c6f802f54f6bc5a depois=5c6f802f54f6bc5a IGUAL
+untracked/criados:
+?? app.py
+?? requirements.txt
+=== JS sem linter (esperado eslint, tsc?)
+--- checar.sh --linter
+js	npx eslint .	—	npm init @eslint/config@latest
+rc=0
+--- checar.sh (diagnóstico), linhas do bloco de linter
+8:- Este projeto em JavaScript não tem conferência de estilo (linter) nem de tipos configurada: o código que o agente escreve sai sem ela.
+9:  npm init @eslint/config@latest   (depois: npx eslint .; grave em project.lint_cmd do sdd/config.yaml)
+10-
+rc=0
+hash antes=8592f1e356ff564c depois=8592f1e356ff564c IGUAL
+untracked/criados:
+?? a.js
+?? package.json
+=== TS sem linter (eslint + tsc --noEmit)
+--- checar.sh --linter
+ts	npx eslint .	npx tsc --noEmit	npm init @eslint/config@latest && npm install --save-dev typescript
+rc=0
+--- checar.sh (diagnóstico), linhas do bloco de linter
+8:- Este projeto em TypeScript não tem conferência de estilo (linter) nem de tipos configurada: o código que o agente escreve sai sem ela.
+9:  npm init @eslint/config@latest && npm install --save-dev typescript   (depois: npx eslint . e npx tsc --noEmit; grave em project.lint_cmd e project.typecheck_cmd do sdd/config.yaml)
+10-
+rc=0
+hash antes=8aee615a83b0c3a7 depois=8aee615a83b0c3a7 IGUAL
+untracked/criados:
+?? a.ts
+?? package.json
+?? tsconfig.json
+=== PHP sem linter (phpcs, sem comando de tipos)
+--- checar.sh --linter
+php	vendor/bin/phpcs --standard=PSR12	—	composer require --dev squizlabs/php_codesniffer
+rc=0
+--- checar.sh (diagnóstico), linhas do bloco de linter
+6:- Este projeto em PHP não tem conferência de estilo (linter) nem de tipos configurada: o código que o agente escreve sai sem ela.
+7:  composer require --dev squizlabs/php_codesniffer   (depois: vendor/bin/phpcs --standard=PSR12; grave em project.lint_cmd do sdd/config.yaml)
+8-
+rc=0
+hash antes=015c3a1aad09bf73 depois=015c3a1aad09bf73 IGUAL
+untracked/criados:
+?? composer.json
+?? index.php
+=== Python com config do ruff (esperado: nada)
+--- checar.sh --linter
+rc=1
+--- checar.sh (diagnóstico), linhas do bloco de linter
+rc=0
+hash antes=aaac351ebb63d1cc depois=aaac351ebb63d1cc IGUAL
+untracked/criados:
+?? app.py
+?? pyproject.toml
+=== Python com slot cheio (esperado: nada)
+--- checar.sh --linter
+rc=1
+--- checar.sh (diagnóstico), linhas do bloco de linter
+rc=0
+hash antes=1b2e21f3c4dd79d8 depois=1b2e21f3c4dd79d8 IGUAL
+untracked/criados:
+?? app.py
+?? sdd/
+=== Sem stack (esperado: nada, --linter rc1)
+--- checar.sh --linter
+rc=1
+--- checar.sh (diagnóstico), linhas do bloco de linter
+rc=0
+hash antes=6e8edaa8670e8cfd depois=6e8edaa8670e8cfd IGUAL
+untracked/criados:
+?? README.md
+[exit=0]

@@ -1,0 +1,10 @@
+$ cd tests && /usr/bin/python3 -B -m unittest -v test_f30_starter
+test_build_do_starter_traz_as_regras_e_o_catalogo (test_f30_starter.AT008Starter) ... ok
+test_checar_do_starter_tem_o_modo_linter (test_f30_starter.AT008Starter) ... ok
+test_starter_gerado_passa_nos_grep_da_f29 (test_f30_starter.AT008Starter) ... ok
+
+----------------------------------------------------------------------
+Ran 3 tests in 7.844s
+
+OK
+[exit=0]

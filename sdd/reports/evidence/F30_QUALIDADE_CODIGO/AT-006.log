@@ -1,0 +1,18 @@
+$ cd tests && /usr/bin/python3 -B -m unittest -v test_f30_checar_linter
+test_frente_nao_fala_de_linter (test_f30_checar_linter.Linter) ... ok
+test_js_sem_tipos_sugere_so_o_lint (test_f30_checar_linter.Linter) ... ok
+test_linter_configurado_nao_sugere (test_f30_checar_linter.Linter) ... ok
+test_php (test_f30_checar_linter.Linter) ... ok
+test_py_so_nas_pastas_do_sdd_nao_e_stack (test_f30_checar_linter.Linter) ... ok
+test_python_sem_linter_sugere_e_nao_grava (test_f30_checar_linter.Linter) ... ok
+test_script_lint_no_package_json_conta_como_configurado (test_f30_checar_linter.Linter) ... ok
+test_sem_stack_nao_sugere (test_f30_checar_linter.Linter) ... ok
+test_slot_cheio_nao_sugere (test_f30_checar_linter.Linter) ... ok
+test_ts_vale_no_lugar_de_js (test_f30_checar_linter.Linter) ... ok
+test_tabela_do_checar_e_a_do_catalogo (test_f30_checar_linter.Paridade) ... ok
+
+----------------------------------------------------------------------
+Ran 11 tests in 6.033s
+
+OK
+[exit=0]

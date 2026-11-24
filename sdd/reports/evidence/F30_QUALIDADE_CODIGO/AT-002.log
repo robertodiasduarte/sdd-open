@@ -1,0 +1,11 @@
+$ cd tests && /usr/bin/python3 -B -m unittest -v test_f30_report_lint.AT002SlotVazio
+test_a_linha_dentro_de_bloco_cercado_nao_conta (test_f30_report_lint.AT002SlotVazio) ... ok
+test_sem_config_vale_como_vazio (test_f30_report_lint.AT002SlotVazio) ... ok
+test_slots_vazios_com_a_linha_aprova_sem_aviso (test_f30_report_lint.AT002SlotVazio) ... ok
+test_slots_vazios_sem_a_linha_aprova_com_aviso (test_f30_report_lint.AT002SlotVazio) ... ok
+
+----------------------------------------------------------------------
+Ran 4 tests in 0.405s
+
+OK
+[exit=0]

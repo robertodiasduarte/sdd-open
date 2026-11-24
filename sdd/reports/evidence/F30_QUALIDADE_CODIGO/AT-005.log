@@ -1,0 +1,11 @@
+$ cd tests && /usr/bin/python3 -B -m unittest -v test_f30_agents_qualidade.AT005Reserva
+test_catalogo_fora_do_formato_diz_a_causa (test_f30_agents_qualidade.AT005Reserva) ... ok
+test_o_ponteiro_e_o_mesmo_nas_duas_copias (test_f30_agents_qualidade.AT005Reserva) ... ok
+test_sem_o_catalogo_fica_o_ponteiro_e_o_aviso (test_f30_agents_qualidade.AT005Reserva) ... ok
+test_sem_python_diz_a_causa (test_f30_agents_qualidade.AT005Reserva) ... ok
+
+----------------------------------------------------------------------
+Ran 4 tests in 7.152s
+
+OK
+[exit=0]

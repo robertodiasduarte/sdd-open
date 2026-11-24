@@ -1,0 +1,41 @@
+$ bash /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-f30-sdd-open-uncle-bob/0cf4badb-88be-4ebf-a86a-fed6605c57e9/scratchpad/aval2/at008.sh
+tmp=/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.AG4NOUNkkZ
+open clonado em HEAD dac782a, tag local v9.9.9
+starter clonado (local) bc2894e
+rc_gerar=0
+✅ ux-review-builder: 20 arquivo(s), 0 troca(s)
+RESULTADO: GERADO
+→ no starter: python3 scripts/check-gerado.py, os testes dele e um commit numa branch.
+--- arquivos da build no starter
+starter/skills/sdd-build:
+GERADO.txt
+SKILL.md
+agents
+assets
+references
+
+starter/skills/sdd-build/references:
+CATALOGO_QUALIDADE.md
+aplicar-migration.md
+build-protocol.md
+como-falar.md
+execution-modes.md
+llm-prompt-gate.md
+retry-and-advisor.md
+verify-gate.md
+--- CATALOGO_QUALIDADE no starter: presente
+--- SKILL.md da build: regras de qualidade, slots, logs, slot vazio
+249:6. **Quality**: seguir as regras de [references/CATALOGO_QUALIDADE.md](references/CATALOGO_QUALIDADE.md), as gerais
+319:- o lint do projeto sobre os arquivos da tarefa e a checagem de tipos do projeto como está (`project.lint_cmd` e
+320:  `project.typecheck_cmd` do `sdd/config.yaml`, ou os do projeto); erro é falha da tarefa; sem linter, dizer ao
+419:- Verification Results, com lint e tipos (`$ <comando>` e o resultado) ou a linha `lint: slot vazio`;
+--- 6 regras gerais no catálogo do starter:
+6
+--- 'sdd/bin/' citado na build do starter: 0 ocorrências
+--- grep F29 em todo o starter/skills:
+ocorrências F29 (rc grep=1 = zero): rc=1
+--- check-gerado do starter
+✅ 19 skill(s) gerada(s) e a infra conferidas: tudo igual ao que o sdd-open gerou
+RESULTADO: VERDE
+rc_check=0
+[exit=0]

@@ -1,0 +1,17 @@
+$ cd tests && /usr/bin/python3 -B -m unittest -v test_f30_agents_qualidade.AT004Bloco test_f30_agents_qualidade.Leitor
+test_catalogo_tem_6_gerais_e_regras_de_cada_stack (test_f30_agents_qualidade.AT004Bloco) ... ok
+test_js_com_ts_traz_as_duas (test_f30_agents_qualidade.AT004Bloco) ... ok
+test_pastas_do_sdd_nao_decidem_a_stack (test_f30_agents_qualidade.AT004Bloco) ... ok
+test_python_traz_as_gerais_as_de_python_e_o_ponteiro (test_f30_agents_qualidade.AT004Bloco) ... ok
+test_sem_stack_so_as_gerais (test_f30_agents_qualidade.AT004Bloco) ... ok
+test_stack_nova_deixa_o_bloco_divergente_e_o_sync_refaz (test_f30_agents_qualidade.AT004Bloco) ... ok
+test_sync_duas_vezes_deixa_um_bloco_e_fica_em_dia (test_f30_agents_qualidade.AT004Bloco) ... ok
+test_mesma_leitura_do_config_que_o_report_lint (test_f30_agents_qualidade.Leitor) ... ok
+test_regras_cita_os_slots_cheios_e_vazios (test_f30_agents_qualidade.Leitor) ... ok
+test_uso_errado_sai_64 (test_f30_agents_qualidade.Leitor) ... ok
+
+----------------------------------------------------------------------
+Ran 10 tests in 14.948s
+
+OK
+[exit=0]

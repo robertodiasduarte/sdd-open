@@ -1,0 +1,20 @@
+$ cd tests && /usr/bin/python3 -B -m unittest -v test_f30_report_lint.AT001SlotCheio
+test_antes_sem_os_arquivos_novos_ainda_e_divida_antiga (test_f30_report_lint.AT001SlotCheio) ... ok
+test_divida_antiga_com_log_de_antes_vira_aviso (test_f30_report_lint.AT001SlotCheio) ... ok
+test_ferramenta_ausente_antes_nao_e_divida_antiga (test_f30_report_lint.AT001SlotCheio) ... ok
+test_lint_cheio_sem_log_reprova_com_conserto (test_f30_report_lint.AT001SlotCheio) ... ok
+test_log_certo_com_os_arquivos_da_tarefa_aprova (test_f30_report_lint.AT001SlotCheio) ... ok
+test_log_de_antes_de_outro_comando_nao_vale (test_f30_report_lint.AT001SlotCheio) ... ok
+test_log_de_outro_comando_reprova (test_f30_report_lint.AT001SlotCheio) ... ok
+test_log_ignorado_pelo_git_reprova (test_f30_report_lint.AT001SlotCheio) ... ok
+test_log_sem_exit_no_fim_reprova (test_f30_report_lint.AT001SlotCheio) ... ok
+test_log_sem_primeira_linha_de_comando_reprova (test_f30_report_lint.AT001SlotCheio) ... ok
+test_log_vermelho_reprova (test_f30_report_lint.AT001SlotCheio) ... ok
+test_tipos_cheio_exige_tipos_log (test_f30_report_lint.AT001SlotCheio) ... ok
+test_verde_antes_e_vermelho_depois_reprova (test_f30_report_lint.AT001SlotCheio) ... ok
+
+----------------------------------------------------------------------
+Ran 13 tests in 1.728s
+
+OK
+[exit=0]
