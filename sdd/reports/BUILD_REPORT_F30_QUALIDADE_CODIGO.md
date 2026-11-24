@@ -194,7 +194,7 @@ nenhuma invariante violada (INV-001 e INV-002 não tocam os módulos).
 
 ## Blockers (if any)
 
-A `v2.27.0` e a `v2.27.1` ficaram como tag sem Release: o CI caiu por 2 defeitos de teste do `test_f30_sabotagem` (link simbólico no Windows; `maintenance.lock` do git no macOS). A `v2.27.1` subiu sem a revisão repetida depois da mudança do teste (`--conferir`: NÃO CONFERE). Corrigidos para a `v2.27.2`.
+A `v2.27.0` e a `v2.27.1` ficaram como tag sem Release: o CI caiu por 2 defeitos de teste do `test_f30_sabotagem` (link simbólico no Windows; `maintenance.lock` do git no macOS). A `v2.27.1` subiu sem a revisão repetida depois da mudança do teste (`--conferir`: NÃO CONFERE). Corrigidos para a `v2.27.2`, que também ficou sem Release: o `ln -s` do teste não criou link no Git Bash (fatia 2), a fatia 4 do Windows foi cancelada no teto de 30 min (4 unidades lentas juntas, todas verdes no outro run) e o `test_f25_skills_duplicadas` caiu no macOS de um dos 2 runs (causa inferida: a manutenção automática do git; mecanismo reproduzido). Na `v2.27.3`: link criado pelo Python, suíte sem a manutenção automática (`tests/apoio.py`, `tests/test_apoio_git.py`), teto de 45 min, e o CI inteiro no PR #43 antes da tag.
 
 ---
 
@@ -218,7 +218,7 @@ A `v2.27.0` e a `v2.27.1` ficaram como tag sem Release: o CI caiu por 2 defeitos
 | AT-015 | When a tarefa passa pelos passos, os textos shall ter o vermelho antes, a sabotagem, o Refatorar e `build.refatorar`, também no starter sem `sdd/bin/` | `evidence/F30_QUALIDADE_CODIGO/AT-015.antes.log` | true | `evidence/F30_QUALIDADE_CODIGO/AT-015.log` |
 | AT-016 | The system shall continue to aprovar os relatórios sem a coluna `Antes` (o da S1) e passar a suíte, o `publish-gate` e o `check-versions` | `evidence/F30_QUALIDADE_CODIGO/AT-016.antes.log` | true | `evidence/F30_QUALIDADE_CODIGO/AT-016.log` |
 
-**Verify Gate (`bash sdd/bin/verify-gate.sh sdd/features/DEFINE_F30_QUALIDADE_CODIGO.md`):** exit 0 em `cb35651`, o código da `v2.27.2` (`evidence/F30_QUALIDADE_CODIGO/GATE_S2_cb35651.log`: 113 testes `test_f30_*` e a suíte inteira, 2.878 testes, OK, 4 pulados). Antes, exit 0 em `d1b0c51` (código da `v2.27.0`; commit na 2ª linha do log), `evidence/F30_QUALIDADE_CODIGO/GATE_S2_d1b0c51.log`: grep da F29 vazio, `check-versions` VERDE, `publish-gate` em modo CI verde sobre a cópia de `git archive`, os 8 `test -f`, os `test_f30_*` (105 testes) e a suíte inteira, 2.870 testes, OK (4 pulados), com `/bin/bash` 3.2 e `/usr/bin/python3` 3.9, em 35,5 min. Um gate em `491bd2d` foi interrompido de propósito: os consertos do raio de impacto mudaram o código antes de ele terminar.
+**Verify Gate (`bash sdd/bin/verify-gate.sh sdd/features/DEFINE_F30_QUALIDADE_CODIGO.md`):** exit 0 em `2864d26`, o código da `v2.27.3` (`evidence/F30_QUALIDADE_CODIGO/GATE_S2_2864d26.log`: 113 testes `test_f30_*` e a suíte inteira, 2.880 testes, OK, 4 pulados). Uma execução em `b161357` saiu vermelha (arquivo de teste novo fora do `MANIFEST.txt`, LM-037), corrigida. Antes, exit 0 em `cb35651`, o código da `v2.27.2` (`evidence/F30_QUALIDADE_CODIGO/GATE_S2_cb35651.log`: 113 testes `test_f30_*` e a suíte inteira, 2.878 testes, OK, 4 pulados). Antes, exit 0 em `d1b0c51` (código da `v2.27.0`; commit na 2ª linha do log), `evidence/F30_QUALIDADE_CODIGO/GATE_S2_d1b0c51.log`: grep da F29 vazio, `check-versions` VERDE, `publish-gate` em modo CI verde sobre a cópia de `git archive`, os 8 `test -f`, os `test_f30_*` (105 testes) e a suíte inteira, 2.870 testes, OK (4 pulados), com `/bin/bash` 3.2 e `/usr/bin/python3` 3.9, em 35,5 min. Um gate em `491bd2d` foi interrompido de propósito: os consertos do raio de impacto mudaram o código antes de ele terminar.
 
 ---
 
@@ -237,9 +237,10 @@ dá VERDE). Resumo da S2:
 | 6 (S2 inteira, codex) | `ea3bc55` | 1 HIGH (log seguia link simbólico) e 1 MED (`[exit=]` grudado) | 2 APLICADA |
 | 7 (S2 inteira, codex) | `aee8d67` | 1 HIGH (hard link), 2 MED (HEAD resolvido 2 vezes; WORKER_BRIEF) | 3 APLICADA |
 | 8 (S2 inteira, codex) | `cb35651` | nenhum | CONFERE |
+| 9 (S2 inteira, codex) | `2864d26` | nenhum | CONFERE |
 
 Revisores: openrouter `qwen/qwen3.7-plus` (0 achados próprios nas 2 rodadas), codex `gpt-6.1-sol` como 2º revisor no
-DESIGN, auditor claude; `diversidade: vendor`. Custo: US$ 0,67 (DESIGN) + 0,88 + 0,89 + 0,88 + 0,42 + 0,42 + 1,89 + 1,91 + 1,93 (código) = US$ 9,89. Nas rodadas 6 a 8, codex `gpt-6.1-sol` revisou a S2 inteira.
+DESIGN, auditor claude; `diversidade: vendor`. Custo: US$ 0,67 (DESIGN) + 0,88 + 0,89 + 0,88 + 0,42 + 0,42 + 1,89 + 1,91 + 1,93 + 1,97 (código) = US$ 11,86, fora uma revisão interrompida sem custo medido. Nas rodadas 6 a 9, codex `gpt-6.1-sol` revisou a S2 inteira.
 
 ---
 
@@ -252,7 +253,7 @@ DESIGN, auditor claude; `diversidade: vendor`. Custo: US$ 0,67 (DESIGN) + 0,88 +
 - [x] All tasks from manifest completed
 - [x] Testes novos vermelhos antes do código (com log) e verdes depois
 - [x] 2 sabotagens declaradas no DESIGN pegas pelos testes
-- [x] Verify Gate verde no código que sobe (`cb35651`)
+- [x] Verify Gate verde no código que sobe (`2864d26`)
 - [x] No blocking issues
 - [x] Acceptance tests verified — 7 de 7 com log e antes
 - [x] Avaliador de contexto fresco com `AVALIACAO_*.md` persistido

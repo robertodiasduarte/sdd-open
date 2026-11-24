@@ -127,3 +127,10 @@ Revisão da S2 inteira, rodada 8 (`cb35651`, base `08f41a8`): revisor `codex` (`
 
 revisor2: dispensado rodada=8 — sem superfície de risco (regra antiga: 63 arquivos (limiar 8))
 sem achados: rodada=8 EXTERNAL_REVIEW_20261124-133818
+
+Revisão da S2 inteira, rodada 9 (`2864d26`, base `08f41a8`): revisor `codex` (`gpt-6.1-sol`), auditor `claude`;
+`diversidade: vendor`; US$ 1,97. Nenhum achado. A revisão `EXTERNAL_REVIEW_20261124-162027` foi interrompida de propósito
+(o commit mudou: `MANIFEST.txt`) e não conta; o custo dela não foi medido.
+
+revisor2: dispensado rodada=9 — sem superfície de risco (regra antiga: 68 arquivos (limiar 8))
+sem achados: rodada=9 EXTERNAL_REVIEW_20261124-162303
