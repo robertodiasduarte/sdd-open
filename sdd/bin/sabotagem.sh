@@ -93,8 +93,13 @@ trap 'limpa; exit 143' TERM
 trap 'limpa; exit 129' HUP
 COPIA="${TRAB}/copia"
 SAIDA="${TRAB}/saida.txt"
-mkdir "${COPIA}" || inconclusivo "não consegui criar a cópia"
-git archive --format=tar HEAD 2>/dev/null | (cd "${COPIA}" && tar -xf -) || inconclusivo "git archive HEAD falhou"
+# Cópia nova do último commit. A execução sabotada ganha a sua (avaliador, ciclo 1, N1): um cache que a execução limpa
+# deixasse na cópia (o __pycache__ do Python com a troca no mesmo segundo do commit, um build) esconderia a sabotagem.
+monta_copia() {
+  rm -rf "${COPIA}" && mkdir "${COPIA}" || inconclusivo "não consegui criar a cópia"
+  git archive --format=tar HEAD 2>/dev/null | (cd "${COPIA}" && tar -xf -) || inconclusivo "git archive HEAD falhou"
+}
+monta_copia
 ALVO="${COPIA}/${ARQUIVO}"
 
 # conferir (contenção + o trecho exatamente 1 vez) e, depois, trocar: só na cópia
@@ -154,6 +159,7 @@ case "${rc_limpo}" in
        "deixe o AT verde no último commit (commite o código) e rode de novo." ;;
 esac
 
+monta_copia
 msg="$(troca trocar)"; rc=$?
 [ "${rc}" = 0 ] || inconclusivo "a troca falhou na cópia (python saiu ${rc}): ${msg}"
 echo "▶ sabotagem: ${ARQUIVO}: «${TROCAR}» → «${POR}»"

@@ -497,7 +497,7 @@ def tabela_reconhecida(line):
     n = len(cols)
     r = next((i for i, c in enumerate(cols) if c.startswith(("resultado", "status", "passou", "result"))), None)
     e = next((i for i, c in enumerate(cols) if c.startswith("evid")), None)
-    a = next((i for i, c in enumerate(cols) if c == "antes"), None)
+    a = next((i for i, c in enumerate(cols) if c == "antes" or c.startswith("antes ")), None)
     if r is None or e is None:
         return None
     return {"result": n - r, "evid": n - e, "antes": None if a is None else n - a}
@@ -636,6 +636,8 @@ def problema_antes(at, classe, cell, evid, root, report_dir, feature, warnings):
         return f"`{rel}` terminou em `[exit={rc}]`: `shall continue to` exige o antes verde"
     logs = [p for p in PATH_RE.findall(evid) if p.endswith((".log", ".txt")) and caminho_do_log(p, root, report_dir)]
     depois = next((p for p in logs if os.path.basename(p.replace("\\", "/")) == f"{at}.log"), logs[0] if logs else None)
+    if depois is None:   # evidência só pela avaliação: o `AT-nnn.log` do disco, se existe (avaliador, ciclo 1, O1)
+        depois = f"{REPORTS_DIR}/evidence/{feature}/{at}.log" if caminho_do_log(f"{REPORTS_DIR}/evidence/{feature}/{at}.log", root, report_dir) else None
     if depois:
         cmd_depois = (primeira_linha(caminho_do_log(depois, root, report_dir)) or "")[2:].strip()
         if rodado != cmd_depois:

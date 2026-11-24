@@ -127,6 +127,21 @@ class AT010ComportamentoNovo(Base):
         self.escreve(self.r, EV + "AT-005.antes.log", log(rc=0))
         self.reprova(linha("AT-005", antes("AT-005")), "o antes de um AT de comportamento novo tem de falhar")
 
+    def test_evidencia_so_pela_avaliacao_ainda_confere_o_comando(self):
+        # avaliador, ciclo 1 (O1): sem log citado na evidência, o antes é comparado com o AT-nnn.log do disco
+        self.escreve(self.r, "sdd/reviews/AVALIACAO_%s_20261124-1200.md" % F, "VEREDITO: PASS\n")
+        self.escreve(self.r, EV + "AT-001.antes.log", log("outro-comando", rc=1))
+        self.reprova("| AT-001 | x | %s | true | `AVALIACAO_%s_20261124-1200.md` |\n" % (antes("AT-001"), F),
+                     "não o mesmo comando")
+
+    def test_cabecalho_antes_com_complemento_ainda_e_a_coluna(self):
+        # avaliador, ciclo 1 (O2)
+        self.escreve(self.r, EV + "AT-001.antes.log", log(rc=0))
+        rc, out = self.lint(linha("AT-001", antes("AT-001")),
+                            "| ID | Critério | Antes (vermelho) | Resultado | Evidência |\n|---|---|---|---|---|\n")
+        self.assertEqual(rc, 1, out)
+        self.assertIn("[vermelho antes]", out)
+
     def test_at_false_nao_e_conferido(self):
         rc, out = self.lint(linha("AT-001", "—", resultado="false"))
         self.assertEqual(rc, 0, out)

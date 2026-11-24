@@ -105,6 +105,14 @@ class AT013Sabotagem(Base):
         self.assertResultado(out)
         self.assertEqual(self.log().read_text(encoding="utf-8").splitlines()[-1], "[exit=0]")
 
+    def test_cache_da_execucao_limpa_nao_esconde_a_sabotagem(self):
+        # avaliador, ciclo 1 (N1): a execução sabotada reusava a cópia da limpa, e um cache gerado nela (o __pycache__
+        # do Python, com a troca no mesmo segundo do commit) fazia o teste forte parecer fraco. Aqui o cache é explícito.
+        comando = "test -f .cache-do-build || { %s && touch .cache-do-build; }" % cmd("test_forte")
+        rc, out = self.sabota(comando=comando)
+        self.assertEqual(rc, 0, out)
+        self.assertIn("o teste pega o defeito", out)
+
     def test_mudanca_nao_commitada_fica_e_a_copia_e_do_commit(self):
         self.escreve(self.r, "conta.py", CONTA + "# rascunho do aluno\n")
         antes = (self.r / "conta.py").read_bytes()
