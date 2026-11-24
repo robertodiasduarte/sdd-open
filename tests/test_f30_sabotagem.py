@@ -47,6 +47,10 @@ class Base(Sandbox):
     def setUp(self):
         super().setUp()
         self.r = self.repo()
+        # o commit dispara a manutenção do git em segundo plano: o maintenance.lock aparece e some no meio do hash da
+        # árvore (CI da v2.27.1, macOS)
+        self.git(self.r, "config", "maintenance.auto", "false")
+        self.git(self.r, "config", "gc.auto", "0")
         self.escreve(self.r, "conta.py", CONTA)
         self.escreve(self.r, "test_forte.py", FORTE)
         self.escreve(self.r, "test_fraco.py", FRACO)
