@@ -174,14 +174,26 @@ def git(raiz, *args):
 
 
 def gravar_atomico(caminho, texto):
-    pasta = os.path.dirname(caminho)
+    pasta, tmp = os.path.dirname(caminho), ""
     try:
         os.makedirs(pasta, exist_ok=True)
-        fd, tmp = tempfile.mkstemp(dir=pasta, prefix=".drive-")
+        # a extensão do destino: o temporário de um drive cortado conta como documento, nunca como código sem commit
+        fd, tmp = tempfile.mkstemp(dir=pasta, prefix=".drive-", suffix=os.path.splitext(caminho)[1])
         with os.fdopen(fd, "w", encoding="utf-8", newline="\n") as f:
             f.write(texto)
-        os.replace(tmp, caminho)
+        for resta in range(100, -1, -1):  # no Windows, o destino aberto por outro processo recusa a troca: até 5 s
+            try:
+                os.replace(tmp, caminho)
+                break
+            except PermissionError:
+                if os.name != "nt" or not resta:
+                    raise
+                time.sleep(0.05)
     except OSError as e:
+        try:
+            os.remove(tmp)
+        except OSError:
+            pass
         falha("não consegui gravar %s: %s" % (caminho, e))
 
 
@@ -676,7 +688,7 @@ def msg_rodando(p, pid):
 
 def pega_trava(p):
     # Atômica, já com o pid: entre criar vazia e preencher, outro processo a tomaria por trava morta e a apagaria.
-    tmp = "%s.%d" % (trava(p), os.getpid())
+    tmp = p.p("sdd/reports/progress/DRIVE_%s.%d.lock" % (p.feature, os.getpid()))   # .lock no fim: conta como documento
     try:
         os.makedirs(os.path.dirname(trava(p)), exist_ok=True)
         with open(tmp, "w", encoding="utf-8") as f:

@@ -7,10 +7,13 @@ import os
 import re
 import shutil
 import stat
+import tempfile
+import threading
 import time
+import types
 import unittest
 
-from apoio import BASH, RAIZ, SEM_FCNTL, SEM_SYMLINK, Sandbox
+from apoio import BASH, RAIZ, SEM_FCNTL, SEM_SYMLINK, SO_NO_WINDOWS, Sandbox
 
 D = "sdd/features/DEFINE_F.md"
 ESTADO = "sdd/reports/progress/DRIVE_F.json"
@@ -786,6 +789,111 @@ class CommitDuranteOGate(Base):
         self.assertEqual(self.estado()["gates"][-1]["exit"], 0, (self.r / "sdd/reports/evidence/F/DRIVE-gate-r1.log").read_text(encoding="utf-8"))
 
 
+class Gravacao(Base):
+    """CI Windows no 682fc60: o --resume respondeu COMMITAR por um .drive-* que sobrou. No Windows, trocar um arquivo que
+    outro processo tem aberto falha (o fim do --fundo grava o estado depois de soltar a trava), e o temporário ficava."""
+
+    DOC = (".md", ".json", ".lock")
+
+    def gravador(self, **troca):
+        fonte = (RAIZ / "sdd/bin/sdd-drive.sh").read_text(encoding="utf-8")
+        corpo = re.search(r"(?ms)^def gravar_atomico\(.*?(?=^\S)", fonte).group(0)
+        erros = []
+        falso = types.SimpleNamespace(**{n: getattr(os, n) for n in ("path", "makedirs", "fdopen", "replace", "remove", "name")})
+        for n, v in troca.items():
+            setattr(falso, n, v)
+        g = dict(os=falso, tempfile=tempfile, time=types.SimpleNamespace(sleep=lambda s: None), falha=erros.append)
+        exec(corpo, g)
+        return g["gravar_atomico"], erros
+
+    def temporarios(self):
+        return sorted(x.name for x in self.r.rglob(".drive-*"))
+
+    def test_troca_que_falha_nao_deixa_temporario(self):
+        self.drive("iniciar", D)
+        rel = self.r / "sdd/reports/DRIVE_REPORT_F.md"
+        if rel.exists():
+            rel.unlink()
+        rel.mkdir()   # trocar um arquivo por uma pasta falha em todo sistema
+        rc, out, err = self.drive("bloqueio", D, "falta a chave")
+        self.assertEqual(rc, 2, out + err)
+        self.assertIn("não consegui gravar", out + err)
+        self.assertEqual(self.temporarios(), [])
+
+    def test_nome_do_temporario_e_de_documento(self):
+        # o temporário de um drive morto (ou gravando agora) não pode contar como código
+        for nome in ("DRIVE_F.json", "DRIVE_REPORT_F.md"):
+            with self.subTest(nome=nome):
+                visto = []
+                grava, erros = self.gravador(replace=lambda t, c: (visto.append(t), os.replace(t, c)))
+                grava(str(self.r / "sdd/reports/progress" / nome), "x\n")
+                self.assertEqual(erros, [])
+                self.assertTrue(visto[0].endswith(self.DOC), visto)
+
+    def test_sobra_com_nome_de_documento_nao_trava_o_proximo(self):
+        self.drive("iniciar", D)
+        self.feito()
+        self.escreve(self.r, "sdd/reports/progress/.drive-abcdefgh.json", "{")
+        self.escreve(self.r, "sdd/reports/progress/DRIVE_F.4242.lock", "4242")
+        self.assertAcao(self.drive("proximo", D), "VERIFICAR")
+
+    def test_arquivo_estranho_na_pasta_continua_codigo(self):
+        self.drive("iniciar", D)
+        self.feito()
+        self.escreve(self.r, "sdd/reports/progress/.drive-gate.sh", "true\n")
+        self.assertAcao(self.drive("proximo", D), "COMMITAR")
+
+    def test_no_windows_a_troca_ocupada_e_tentada_de_novo(self):
+        tentativas = []
+
+        def ocupado(t, c):
+            tentativas.append(t)
+            if len(tentativas) < 4:
+                raise PermissionError(13, "em uso")
+            os.replace(t, c)
+        alvo = self.r / "sdd/reports/progress/DRIVE_F.json"
+        grava, erros = self.gravador(name="nt", replace=ocupado)
+        grava(str(alvo), "novo\n")
+        self.assertEqual((erros, len(tentativas)), ([], 4))
+        self.assertEqual(alvo.read_text(encoding="utf-8"), "novo\n")
+
+    def test_a_troca_desiste_e_limpa(self):
+        def nunca(t, c):
+            raise PermissionError(13, "em uso")
+        for sistema in ("nt", "posix"):
+            with self.subTest(sistema=sistema):
+                grava, erros = self.gravador(name=sistema, replace=nunca)
+                grava(str(self.r / "sdd/reports/progress/DRIVE_F.json"), "x\n")
+                self.assertEqual(len(erros), 1)
+                self.assertEqual(self.temporarios(), [])
+
+    def test_nome_da_trava_em_preparo_e_de_documento(self):
+        fonte = (RAIZ / "sdd/bin/sdd-drive.sh").read_text(encoding="utf-8")
+        corpo = re.search(r"(?ms)^def pega_trava\(.*?(?=^\S)", fonte).group(0)
+        visto = []
+
+        def liga(t, c):
+            visto.append(t)
+            os.link(t, c)
+        falso = types.SimpleNamespace(path=os.path, makedirs=os.makedirs, getpid=os.getpid, link=liga, remove=os.remove)
+        alvo = str(self.r / "sdd/reports/progress/DRIVE_F.lock")
+        g = dict(os=falso, open=open, trava=lambda p: alvo, falha=self.fail)
+        exec(corpo, g)
+        self.assertTrue(g["pega_trava"](types.SimpleNamespace(feature="F", p=lambda r: str(self.r / r))))
+        self.assertTrue(visto[0].endswith(".lock"), visto)
+
+    @unittest.skipUnless(*SO_NO_WINDOWS)
+    def test_estado_aberto_por_outro_processo(self):
+        self.drive("iniciar", D)
+        f = open(str(self.r / ESTADO), encoding="utf-8")
+        t = threading.Timer(4.0, f.close)
+        t.start()
+        self.addCleanup(t.cancel)
+        rc, out, err = self.drive("bloqueio", D, "falta a chave")
+        self.assertIn("motivo: bloqueio-humano", out, out + err)
+        self.assertEqual(self.temporarios(), [])
+
+
 class SegundoPlano(Base):
     def setUp(self):
         super().setUp()
@@ -871,7 +979,7 @@ class SegundoPlano(Base):
                 pass
         self.assertNotIn("", vistos)
         self.assertTrue(vistos, "a trava precisa ter existido")
-        self.assertEqual(list((self.r / "sdd/reports/progress").glob("DRIVE_F.lock.*")), [], "nada sobra")
+        self.assertEqual(list((self.r / "sdd/reports/progress").glob("DRIVE_F.[0-9]*.lock")), [], "nada sobra")
 
     def test_recibo_gravado_durante_o_gate_nao_se_perde(self):
         self.verde()
