@@ -134,3 +134,11 @@ Revisão da S2 inteira, rodada 9 (`2864d26`, base `08f41a8`): revisor `codex` (`
 
 revisor2: dispensado rodada=9 — sem superfície de risco (regra antiga: 68 arquivos (limiar 8))
 sem achados: rodada=9 EXTERNAL_REVIEW_20261124-162303
+
+Correção do `sdd-drive` (`v2.27.4`), rodada 10 (`2b015b4`, base `origin/main` = `b85d1c9`): revisor `codex` (`gpt-6.1-sol`,
+20 s e 0 achados: raso, não conta sozinho), 2º revisor openrouter `qwen/qwen3.7-plus`, auditor `claude`; `diversidade: vendor`;
+US$ 0,11. Rodada sem os documentos SDD da feature (o `--feature` não foi passado).
+
+| achado | sev | veredito | rodada | evidência | dano | revisão |
+|---|---|---|---|---|---|---|
+| R1@openrouter | MED | REBATIDA_EVIDENCIA | rodada=10 | `sdd/bin/sdd-drive.sh`, `trava(p)`: o caminho é o mesmo literal `sdd/reports/progress/DRIVE_<F>.lock`, na mesma pasta; auditor: DISAGREE_CONCERN | nao | EXTERNAL_REVIEW_20261124-181536 |
