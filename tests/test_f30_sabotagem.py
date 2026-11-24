@@ -48,10 +48,6 @@ class Base(Sandbox):
     def setUp(self):
         super().setUp()
         self.r = self.repo()
-        # o commit dispara a manutenção do git em segundo plano: o maintenance.lock aparece e some no meio do hash da
-        # árvore (CI da v2.27.1, macOS)
-        self.git(self.r, "config", "maintenance.auto", "false")
-        self.git(self.r, "config", "gc.auto", "0")
         self.escreve(self.r, "conta.py", CONTA)
         self.escreve(self.r, "test_forte.py", FORTE)
         self.escreve(self.r, "test_fraco.py", FRACO)
@@ -231,11 +227,13 @@ class AT014Inconclusivo(Base):
         # o comando do AT roda entre a conferência e a gravação: o log é conferido de novo na hora de gravar
         alvo = self.tmp / "alvo-tardio.txt"
         alvo.write_text("meu arquivo\n", encoding="utf-8")
-        destino = caminho_bash(self.log())
-        comando = 'mkdir -p "%s"; ln -sf "%s" "%s"; %s' % (
-            caminho_bash(self.log().parent), caminho_bash(alvo), destino, cmd("test_forte"))
+        # link criado pelo Python: o `ln -s` do Git Bash copia o arquivo em vez de ligar (CI Windows da v2.27.x)
+        liga = self.escreve(self.tmp, "liga.py", "import os\nlog, alvo = %r, %r\nos.makedirs(os.path.dirname(log), exist_ok=True)\n"
+                            "os.path.lexists(log) and os.remove(log)\nos.symlink(alvo, log)\n" % (str(self.log()), str(alvo)))
+        comando = '"%s" -B "%s" && %s' % (caminho_bash(PYTHON), caminho_bash(liga), cmd("test_forte"))
         rc, out = self.sabota(comando=comando)
         self.assertNotEqual(rc, 0, out)
+        self.assertTrue(self.log().is_symlink(), out)   # o cenário aconteceu: o comando pôs o link no lugar do log
         self.assertEqual(alvo.read_text(encoding="utf-8"), "meu arquivo\n")
 
     @unittest.skipIf(*SEM_CHMOD)

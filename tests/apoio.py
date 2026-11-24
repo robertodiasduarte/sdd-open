@@ -32,6 +32,20 @@ RAIZ = Path(__file__).resolve().parents[1]
 os.environ.setdefault("SDD_OPEN_CHECK_UPDATES", "0")
 os.environ.setdefault("SDD_OPEN_REMOTO", os.path.join(tempfile.gettempdir(), "sdd-open-sem-rede-nos-testes", "nada.git"))
 
+# O `git commit` dispara a manutenção em segundo plano (git maintenance run --auto --detach): o maintenance.lock aparece e
+# some no meio do hash da pasta (CI macOS da v2.27.1). Pelo ambiente, vale também para a fixture com gitconfig próprio
+# (tests/test_apoio_git.py). Acrescenta ao que quem roda já passou em GIT_CONFIG_COUNT.
+def _sem_manutencao_do_git() -> None:
+    n = int(os.environ.get("GIT_CONFIG_COUNT") or 0)
+    for chave, valor in (("maintenance.auto", "false"), ("gc.auto", "0")):
+        os.environ["GIT_CONFIG_KEY_%d" % n] = chave
+        os.environ["GIT_CONFIG_VALUE_%d" % n] = valor
+        n += 1
+    os.environ["GIT_CONFIG_COUNT"] = str(n)
+
+
+_sem_manutencao_do_git()
+
 # SDD_TEST_BASH=/bin/bash roda a suíte no bash 3.2 do macOS, o piso que o open promete.
 BASH = os.environ.get("SDD_TEST_BASH") or shutil.which("bash") or "bash"
 PYTHON = sys.executable  # o mesmo interpretador da suíte: rodar com o 3.9 testa os linters no 3.9

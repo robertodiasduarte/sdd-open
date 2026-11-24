@@ -165,7 +165,7 @@ class Windows(unittest.TestCase):
                 self.assertIn('run: python -B scripts/testes-por-modulo.py --fatia "${{ matrix.fatia }}/16" '
                               '--teto-unidade 600 --saida "$RUNNER_TEMP/tpm"', bloco)
                 self.assertNotIn("unittest -v test_checar", bloco)   # o caminho do aluno sozinho ficou para trás
-                self.assertRegex(bloco, r"(?m)^    timeout-minutes: 30$")
+                self.assertRegex(bloco, r"(?m)^    timeout-minutes: 45$")
                 self.assertNotIn("contents: write", bloco)
                 # só 2 condições: o publish-gate numa fatia, e o artefato também no vermelho
                 ifs = re.findall(r"(?m)^\s+if: (.*)$", sem_comentarios(bloco))

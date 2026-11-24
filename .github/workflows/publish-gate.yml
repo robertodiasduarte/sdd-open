@@ -214,7 +214,9 @@ jobs:
     # F16W: a suíte inteira, módulo a módulo, em 16 fatias paralelas (scripts/testes-por-modulo.py). Cada unidade (a
     # classe de teste) roda num processo próprio com teto de 600 s: uma classe pendurada diz o próprio nome e não come
     # o job. A 1ª medição da F16 (um job só, sem teto por módulo) foi cancelada nos 90 min com 15% feito.
-    timeout-minutes: 30
+    # 45: a divisão é por nº de testes; na v2.27.2 quatro unidades lentas caíram na fatia 4 (29 min num run, cancelada aos
+    # 30 no outro), todas verdes
+    timeout-minutes: 45
     strategy:
       fail-fast: false   # uma fatia vermelha não cancela as outras: a medição é do pacote inteiro
       matrix:
