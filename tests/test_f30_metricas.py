@@ -39,7 +39,7 @@ def par(a, b, linhas=11, tokens=58, ini=1, fim=11):
             "firstFile": {"name": a, "start": ini, "end": fim}, "secondFile": {"name": b, "start": ini, "end": fim}}
 
 
-def jscpd_json(*pares, sources=3) -> str:
+def jscpd_json(*pares, sources=1) -> str:
     return json.dumps({"duplicates": list(pares), "statistics": {"total": {"sources": sources, "clones": len(pares)}}})
 
 
@@ -151,7 +151,7 @@ class AT017Achados(Base):
         self.jscpd()
         self.ok()
         chamada = self.chamadas.read_text(encoding="utf-8")
-        self.assertRegex(chamada, r"jscpd .*--min-tokens 50 ")
+        self.assertRegex(chamada, r"jscpd .*--min-tokens 50 --min-lines 1 ")
         self.assertIn("--config ", chamada)
         self.assertNotIn("--config .jscpd.json", chamada)
 
@@ -161,7 +161,7 @@ class AT017Achados(Base):
         self.jscpd(jscpd_json())
         out, err = self.ok()
         self.assertIn("nenhum aviso (1 função medida", out)
-        self.assertIn("nenhum aviso (2 de 2 arquivos do diff", out)
+        self.assertIn("nenhum aviso (1 de 2 arquivos do diff; o jscpd não leu 1", out)
         self.assertIn("RESULTADO: NADA ACHADO", err)
 
     def test_teto_de_20_itens_o_pior_primeiro(self):
@@ -290,7 +290,7 @@ class AT018NaoMedido(Base):
         out, _ = self.ok()
         self.assertIn("`src/copia.py:1-11` repete `src/notas.py:1-11`", out)
         self.assertIn("`src/Tela.vue:1-11` repete", out)
-        for ruim in ("/outro/lugar/copia.py", "src/sumiu.py", "../copia.py"):
+        for ruim in ("/outro/lugar/copia.py", "src/sumiu.py", "../copia.py", "../nucleo.py", "src/../../nucleo.py"):
             with self.subTest(nome=ruim):
                 self.jscpd(jscpd_json(par(ruim, "src/notas.py")))
                 out, _ = self.ok()
@@ -357,6 +357,24 @@ class AT018NaoMedido(Base):
         out, _ = self.ok()
         self.assertIn("complexidade 15", out)
         self.assertIn("repete", out)
+
+    def test_bloco_de_vue_nao_compensa_arquivo_nao_lido(self):
+        """Revisão do código, rodada 7, N1: cada bloco do .vue é uma fonte; 3 fontes em 3 arquivos não provam os 3."""
+        self.frente()
+        self.escreve(self.r, "src/Tela.vue", NOTAS)
+        self.lizard()
+        self.jscpd(jscpd_json(sources=3))
+        out, _ = self.ok()
+        d = self.parte(out, "Duplicação")
+        self.assertIn("não dá para saber quais arquivos leu", d)
+        self.assertNotIn("3 de 3", d)
+
+    def test_mais_lidos_que_arquivos_e_ilegivel(self):
+        self.frente()
+        self.lizard()
+        self.jscpd(jscpd_json(sources=3))
+        out, _ = self.ok()
+        self.nao_medido(self.parte(out, "Duplicação"), "jscpd devolveu saída")
 
     def test_config_do_projeto_nao_chega_a_ferramenta(self):
         """Revisão do DESIGN, N2: nem .jscpd.json, nem a chave jscpd do package.json, nem o .gitignore."""

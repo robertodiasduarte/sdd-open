@@ -74,6 +74,7 @@ import csv, json, os, re, subprocess, sys
 LIMITES = {"max_complexidade": 10, "max_linhas": 60, "max_parametros": 5, "min_tokens": 50}
 COM_COMPLEXIDADE = set("py js jsx mjs cjs ts tsx vue php java cs c cc cpp cxx h hpp go rb rs swift kt kts scala lua m mm "
                        "dart".split())
+COM_BLOCOS = ("vue",)
 SO_DUPLICACAO = set("sh bash sql".split())
 # As pastas do método e de terceiros não são código do projeto (a lista do qualidade-regras.sh). As 5 últimas valem em
 # qualquer profundidade.
@@ -418,7 +419,7 @@ def nome_do_jscpd(nome, copia):
     nome = nome[2:] if nome.startswith("./") else nome
     sem_formato = nome.rsplit(":", 1)[0]   # bloco embutido: src/Tela.vue:javascript
     for candidato in (nome, sem_formato):
-        if not os.path.isabs(candidato) and os.path.isfile(os.path.join(copia, candidato)):
+        if not os.path.isabs(candidato) and ".." not in candidato.split("/") and os.path.isfile(os.path.join(copia, candidato)):
             return candidato
     raise ValueError("arquivo que não pedi: %s" % nome)
 
@@ -465,6 +466,19 @@ def avisos_de_duplicacao(diff, pares):
     return [a[3] for a in sorted(avisos)]
 
 
+def cobertura_do_jscpd(plano, lidos):
+    total, minimo = len(plano["medidos"]), plano["limites"]["min_tokens"]
+    if any(extensao(a) in COM_BLOCOS for a in plano["medidos"]):   # cada bloco do arquivo conta como uma fonte lida
+        return "%s em %s do diff; com .vue, o jscpd conta cada bloco, e não dá para saber quais arquivos leu" % (
+            contar(lidos, "fonte lida", "fontes lidas"), contar(total, "arquivo", "arquivos"))
+    if lidos > total:
+        raise ValueError("%d arquivos lidos de %d" % (lidos, total))
+    texto = "%d de %s do diff" % (lidos, contar(total, "arquivo", "arquivos"))
+    if lidos < total:
+        texto += "; o jscpd não leu %d: menor que %d tokens, ou que ele não reconhece" % (total - lidos, minimo)
+    return texto
+
+
 def medir_duplicacao(plano, trab, estado):
     """(linhas da parte, tem aviso, mediu)."""
     if not plano["medidos"]:
@@ -475,18 +489,13 @@ def medir_duplicacao(plano, trab, estado):
     try:
         _, do_diff = relatorio_do_jscpd(trab, "diff")
         pares, lidos = relatorio_do_jscpd(trab, "arvore")
+        cobertura = cobertura_do_jscpd(plano, do_diff)
     except ValueError as e:
         return ["- não medido: jscpd devolveu saída que não entendi (%s)" % limpo(str(e))[:120]], False, False
     # a prova é por arquivo do diff: ler o resto do projeto não prova que o código novo foi lido
     if do_diff < 1 or lidos < 1:
         return ["- não medido: jscpd não leu nenhum arquivo do diff (todos com menos de %d tokens, ou linguagem que ele "
                 "não reconhece)" % plano["limites"]["min_tokens"]], False, False
-    lidos_do_diff = min(do_diff, len(plano["medidos"]))   # o jscpd conta de novo o bloco embutido (.vue)
-    total = len(plano["medidos"])
-    cobertura = "%d de %s do diff" % (lidos_do_diff, contar(total, "arquivo", "arquivos"))
-    if lidos_do_diff < total:
-        cobertura += "; o jscpd não leu %d: menor que %d tokens, ou que ele não reconhece" % (
-            total - lidos_do_diff, plano["limites"]["min_tokens"])
     avisos = avisos_de_duplicacao(plano["diff"], pares)
     if not avisos:
         return ["- nenhum aviso (%s)" % cobertura], False, True
@@ -541,7 +550,7 @@ if [ "${N_LIZARD}" -gt 0 ]; then
   fi
 fi
 roda_jscpd() {   # $1 = a pasta da cópia (diff ou arvore). Teto alto: o jscpd pula calado o arquivo acima do padrão dele
-  mkdir "${TRAB}/saida-${1}" && ( cd "${TRAB}/${1}" && jscpd . --min-tokens "${MIN_TOKENS}" --max-lines 1000000 --max-size 6mb \
+  mkdir "${TRAB}/saida-${1}" && ( cd "${TRAB}/${1}" && jscpd . --min-tokens "${MIN_TOKENS}" --min-lines 1 --max-lines 1000000 --max-size 6mb \
     --reporters json --output "${TRAB}/saida-${1}" --config "${TRAB}/jscpd.vazio.json" --silent ) \
     </dev/null >"${TRAB}/jscpd.out" 2>"${TRAB}/jscpd.err"
 }

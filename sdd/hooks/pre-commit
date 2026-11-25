@@ -254,7 +254,8 @@ regra_report() {
     out="$(git show ":$f" 2>/dev/null | PYTHONIOENCODING=utf-8 python3 -B sdd/bin/report-lint.py --stdin "$f" 2>&1)"; rc=$?
     case "$rc" in
       0) ;;
-      1) det="$(printf '%s\n' "$out" | grep -E '🛑' | sed 's/^[^🛑]*//; s/^/        /')"
+      1) # LC_ALL=C: no Git Bash do Windows o grep não casa o emoji em UTF-8, e a recusa perdia linhas (CI da F30 S3)
+         det="$(printf '%s\n' "$out" | LC_ALL=C grep -F '🛑' | LC_ALL=C sed 's/^[^🛑]*//; s/^/        /')"
          # sem nenhuma linha 🛑 (o lint caiu antes de relatar), o fim da saída: a recusa nunca sai muda (CI do PR, F16W2)
          [ -n "$det" ] || det="$(printf '%s\n' "$out" | tail -n 5 | sed 's/^/        /')"
          achado REPORT "$f não passa no report-lint:"$'\n'"$det" ;;
