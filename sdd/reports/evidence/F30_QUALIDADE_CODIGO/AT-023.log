@@ -76,7 +76,7 @@ test_sem_argumento_e_64 (test_report_lint.ReportLint) ... ok
 test_veredito_do_avaliador_sem_arquivo (test_report_lint.ReportLint) ... ok
 
 ----------------------------------------------------------------------
-Ran 75 tests in 13.111s
+Ran 75 tests in 10.473s
 
 OK
 PASS: check-versions — 24 skills com versão coerente, comparadas a origin/main.

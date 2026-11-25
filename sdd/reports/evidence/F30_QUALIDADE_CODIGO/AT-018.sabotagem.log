@@ -1,5 +1,5 @@
 $ cd tests && /usr/bin/python3 -B -m unittest -v test_f30_metricas.AT018NaoMedido
-# sabotagem: sdd/bin/metricas-diff.sh: «if estado == "ausente":» → «if estado == "nunca":» (cópia de HEAD 7fd7c9a)
+# sabotagem: sdd/bin/metricas-diff.sh: «if estado == "ausente":» → «if estado == "nunca":» (cópia de HEAD 6d351d2)
 # sem a sabotagem: exit 0
 test_as_duas_ausentes (test_f30_metricas.AT018NaoMedido) ... FAIL
 test_config_do_projeto_nao_chega_a_ferramenta (test_f30_metricas.AT018NaoMedido)
@@ -8,6 +8,8 @@ test_ferramenta_que_falha (test_f30_metricas.AT018NaoMedido) ... ok
 test_jscpd_que_leu_o_projeto_mas_nao_o_diff (test_f30_metricas.AT018NaoMedido)
 Revisão do DESIGN, N1: ler o resto do projeto não prova que o código novo foi lido. ... ok
 test_jscpd_que_nao_grava_relatorio (test_f30_metricas.AT018NaoMedido) ... ok
+test_nome_do_jscpd_em_outra_forma (test_f30_metricas.AT018NaoMedido)
+Revisão do código, rodada 1, N1: o nome que não casa não pode sumir calado. ... ok
 test_nunca_usa_npx (test_f30_metricas.AT018NaoMedido) ... ok
 test_saida_ilegivel (test_f30_metricas.AT018NaoMedido) ... ok
 test_so_o_jscpd_ausente_mede_a_complexidade (test_f30_metricas.AT018NaoMedido) ... FAIL
@@ -17,19 +19,19 @@ test_so_o_lizard_ausente_mede_a_duplicacao (test_f30_metricas.AT018NaoMedido) ..
 FAIL: test_as_duas_ausentes (test_f30_metricas.AT018NaoMedido)
 ----------------------------------------------------------------------
 Traceback (most recent call last):
-  File "/private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/sdd-sabotagem.JiNDTq/copia/tests/test_f30_metricas.py", line 203, in test_as_duas_ausentes
+  File "/private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/sdd-sabotagem.Gy9PTa/copia/tests/test_f30_metricas.py", line 204, in test_as_duas_ausentes
     self.nao_medido(out, "lizard ausente")
-  File "/private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/sdd-sabotagem.JiNDTq/copia/tests/test_f30_metricas.py", line 196, in nao_medido
+  File "/private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/sdd-sabotagem.Gy9PTa/copia/tests/test_f30_metricas.py", line 197, in nao_medido
     self.assertIn("não medido: " + ferramenta, texto)
-AssertionError: 'não medido: lizard ausente' not found in '## Qualidade (avisos)\n\n> Só o código novo ou alterado desde `main` (2f38a8e). Aviso: não reprova.\n\n### Complexidade\n\n- não medido: lizard falhou (exit ausente: sem mensagem)\n\n### Duplicação\n\n- não medido: jscpd falhou (exit ausente: sem mensagem)\n\n'
+AssertionError: 'não medido: lizard ausente' not found in '## Qualidade (avisos)\n\n> Só o código novo ou alterado desde `main` (2222ee2). Aviso: não reprova.\n\n### Complexidade\n\n- não medido: lizard falhou (exit ausente: sem mensagem)\n\n### Duplicação\n\n- não medido: jscpd falhou (exit ausente: sem mensagem)\n\n'
 
 ======================================================================
 FAIL: test_so_o_jscpd_ausente_mede_a_complexidade (test_f30_metricas.AT018NaoMedido)
 ----------------------------------------------------------------------
 Traceback (most recent call last):
-  File "/private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/sdd-sabotagem.JiNDTq/copia/tests/test_f30_metricas.py", line 214, in test_so_o_jscpd_ausente_mede_a_complexidade
+  File "/private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/sdd-sabotagem.Gy9PTa/copia/tests/test_f30_metricas.py", line 215, in test_so_o_jscpd_ausente_mede_a_complexidade
     self.nao_medido(self.parte(out, "Duplicação"), "jscpd ausente")
-  File "/private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/sdd-sabotagem.JiNDTq/copia/tests/test_f30_metricas.py", line 196, in nao_medido
+  File "/private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/sdd-sabotagem.Gy9PTa/copia/tests/test_f30_metricas.py", line 197, in nao_medido
     self.assertIn("não medido: " + ferramenta, texto)
 AssertionError: 'não medido: jscpd ausente' not found in '### Duplicação\n\n- não medido: jscpd falhou (exit ausente: sem mensagem)\n\n'
 
@@ -37,14 +39,14 @@ AssertionError: 'não medido: jscpd ausente' not found in '### Duplicação\n\n-
 FAIL: test_so_o_lizard_ausente_mede_a_duplicacao (test_f30_metricas.AT018NaoMedido)
 ----------------------------------------------------------------------
 Traceback (most recent call last):
-  File "/private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/sdd-sabotagem.JiNDTq/copia/tests/test_f30_metricas.py", line 220, in test_so_o_lizard_ausente_mede_a_duplicacao
+  File "/private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/sdd-sabotagem.Gy9PTa/copia/tests/test_f30_metricas.py", line 221, in test_so_o_lizard_ausente_mede_a_duplicacao
     self.nao_medido(self.parte(out, "Complexidade"), "lizard ausente")
-  File "/private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/sdd-sabotagem.JiNDTq/copia/tests/test_f30_metricas.py", line 196, in nao_medido
+  File "/private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/sdd-sabotagem.Gy9PTa/copia/tests/test_f30_metricas.py", line 197, in nao_medido
     self.assertIn("não medido: " + ferramenta, texto)
 AssertionError: 'não medido: lizard ausente' not found in '### Complexidade\n\n- não medido: lizard falhou (exit ausente: sem mensagem)\n'
 
 ----------------------------------------------------------------------
-Ran 9 tests in 27.137s
+Ran 10 tests in 22.190s
 
 FAILED (failures=3)
 [exit=1]
