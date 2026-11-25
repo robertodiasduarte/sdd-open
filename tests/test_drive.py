@@ -1331,14 +1331,62 @@ class Relatorio(Base):
 class EstadoSoUmPorVez(Base):
     """R2 e R3 do Codex, rodada 4: nenhum verbo grava com uma cópia antiga."""
 
+    def saidas(self, procs):
+        """[(exit, saída)] de processos em paralelo, sem deixar um cano cheio pendurar ninguém (as saídas são curtas)."""
+        for p in procs:
+            self.addCleanup(lambda p=p: (p.kill(), p.wait(), p.stdout.close()))
+        return [(lambda out: (p.returncode, out.decode("utf-8", "replace")))(p.communicate(timeout=300)[0]) for p in procs]
+
+    def assertTodosZero(self, saidas):
+        self.assertEqual([rc for rc, _ in saidas], [0] * len(saidas),
+                         "\n".join("── processo %d saiu %d:\n%s" % (k, rc, out) for k, (rc, out) in enumerate(saidas)))
+
     def test_recibos_juntos_nao_se_perdem(self):
         import subprocess
         self.drive("iniciar", D)
-        procs = [subprocess.Popen([BASH, "sdd/bin/sdd-drive.sh", "recibo", D, "r%d" % k], cwd=str(self.r), env=self.env, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL,
-                                  stdin=subprocess.DEVNULL) for k in range(6)]
-        self.assertEqual([p.wait() for p in procs], [0] * 6)
+        procs = [subprocess.Popen([BASH, "sdd/bin/sdd-drive.sh", "recibo", D, "r%d" % k], cwd=str(self.r), env=self.env,
+                                  stdout=subprocess.PIPE, stderr=subprocess.STDOUT, stdin=subprocess.DEVNULL) for k in range(6)]
+        self.assertTodosZero(self.saidas(procs))
         self.assertEqual(sorted(self.estado()["recibos"]), ["r%d" % k for k in range(6)])
         self.assertFalse(self.existe("sdd/reports/progress/DRIVE_F.estado.lock"), "a trava não sobra")
+
+    # Só a trava e a gravação, do código real, em laço: muito mais disputa que 6 recibos, que gastam o tempo no arranque.
+    DISPUTA = """
+import errno, os, re, sys, tempfile, time, types
+try:
+    import fcntl
+    msvcrt = None
+except ImportError:
+    fcntl = None
+    import msvcrt
+sys.stdout.reconfigure(encoding="utf-8", errors="replace")
+fonte, raiz, voltas = open(sys.argv[1], encoding="utf-8").read(), sys.argv[2], int(sys.argv[3])
+def falha(motivo, seta=""):
+    print("FALHA na volta %s: %s" % (volta, motivo))
+    sys.exit(2)
+exec(re.search(r"(?ms)^def gravar_atomico\\(.*?(?=^\\S)", fonte).group(0))
+exec(fonte[fonte.index("_ESTADO_PEGO = None"):fonte.index("def le_estado(")])
+p = types.SimpleNamespace(raiz=raiz, feature="F", p=lambda r: os.path.join(raiz, r))
+conta = os.path.join(raiz, "conta.json")
+for volta in range(voltas):
+    segura_estado(p)
+    n = int(open(conta, encoding="utf-8").read())
+    gravar_atomico(conta, str(n + 1))
+    larga_estado()
+"""
+
+    def test_disputa_pela_trava_nao_falha_nem_perde_gravacao(self):
+        # CI Windows no 33b5831: 1 de 6 recibos juntos saiu 2
+        import subprocess
+        import sys
+        raiz = self.tmp / "disputa"
+        raiz.mkdir()
+        self.escreve(raiz, "conta.json", "0")
+        script = self.escreve(self.tmp, "disputa.py", self.DISPUTA)
+        procs = [subprocess.Popen([sys.executable, "-I", "-B", str(script), str(RAIZ / "sdd/bin/sdd-drive.sh"), str(raiz), "40"],
+                                  stdout=subprocess.PIPE, stderr=subprocess.STDOUT, stdin=subprocess.DEVNULL) for _ in range(6)]
+        self.assertTodosZero(self.saidas(procs))
+        self.assertEqual((raiz / "conta.json").read_text(encoding="utf-8"), "240", "gravação perdida: a trava não excluiu")
 
     def test_trava_de_estado_abandonada_vence(self):
         self.drive("iniciar", D)

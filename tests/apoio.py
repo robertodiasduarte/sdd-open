@@ -19,10 +19,12 @@ import shutil
 import subprocess
 import sys
 import tempfile
+import time
 import unittest
 from pathlib import Path
 
 RAIZ = Path(__file__).resolve().parents[1]
+LENTO = 10.0   # s: comando de teste que passa disto é anotado na saída, com o tempo (Sandbox.roda)
 
 # F22: a suíte nunca vai à rede. O doctor (que roda no fim de todo init) consulta se saiu versão nova do SDD Open; aqui
 # a consulta fica desligada, e o endereço aponta para uma pasta que não existe, para falhar local mesmo se um teste a
@@ -207,10 +209,17 @@ class Sandbox(unittest.TestCase):
         shutil.rmtree(self.tmp, ignore_errors=True)
 
     def roda(self, args, cwd: Path, env: dict | None = None) -> tuple[int, str, str]:
-        r = subprocess.run(
-            [str(a) for a in args], cwd=str(cwd), env=env or self.env, capture_output=True,
-            encoding="utf-8", errors="replace", stdin=subprocess.DEVNULL, timeout=120,
-        )
+        inicio = time.monotonic()
+        try:
+            r = subprocess.run(
+                [str(a) for a in args], cwd=str(cwd), env=env or self.env, capture_output=True,
+                encoding="utf-8", errors="replace", stdin=subprocess.DEVNULL, timeout=120,
+            )
+        finally:
+            # o tempo de cada comando lento fica no log da unidade (artefato do CI): o teto de 120 s se discute com medida
+            gasto = time.monotonic() - inicio
+            if gasto >= LENTO:
+                print("⏱ %.1f s: %s (%s)" % (gasto, " ".join(str(a) for a in args)[:160], self.id()), file=sys.stderr, flush=True)
         return r.returncode, r.stdout, r.stderr
 
     def git(self, repo: Path, *args: str) -> str:
