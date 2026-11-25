@@ -1,0 +1,145 @@
+$ bash /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-f30-sdd-open-uncle-bob/0cf4badb-88be-4ebf-a86a-fed6605c57e9/scratchpad/aval2/at004_005.sh
+pacote = git archive HEAD em /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.74kPQKLl8p
+===== AT-004
+init rc=0
+blocos 'Qualidade ao construir' = 1
+### Qualidade ao construir
+
+Regras de forma do código neste projeto: as gerais e as da stack que ele usa. Valem em todo arquivo que a tarefa cria
+ou altera; o lint e a checagem de tipos do projeto, quando configurados, conferem o que dá para medir.
+
+- Trate cada erro onde dá para decidir o que fazer, ou deixe-o subir com a causa na mensagem; o erro calado vira um defeito que ninguém vê.
+- Dê a cada variável, função e arquivo um nome que diga o que a coisa é ou faz, no vocabulário do domínio do projeto.
+- Apague o código morto e o código comentado; o histórico do git guarda o que saiu.
+- Antes de criar uma função, procure no projeto uma que já faça o mesmo e reuse-a; duas funções iguais divergem no primeiro conserto.
+- Troque número e texto mágicos por uma constante com nome que explique o valor.
+- Escreva funções que fazem uma coisa só, num nível de abstração, com poucos parâmetros; quando uma função pede um "e" para ser descrita, divida-a.
+- Capture a exceção específica que você sabe tratar (`except ValueError`), com tipos nas funções públicas, e deixe o `ruff check` sem erro.
+- Abra arquivo, conexão e trava com `with`, para que se fechem também quando der erro.
+- Antes de cada tarefa, rode `bash sdd/bin/qualidade-regras.sh --regras` e siga as regras de qualidade da stack deste projeto; o lint e a checagem de tipos do projeto (`project.lint_cmd` e `project.typecheck_cmd` em `sdd/config.yaml`) conferem o que dá para medir.
+
+Agentes preparados neste projeto: codex. Arquivos em `.claude/skills/`, `.cursor/skills/`,
+`CLAUDE.md` e `GEMINI.md` são **gerados** — edite `.agents/skills/` e rode `sdd-open.sh sync`.
+</sdd-open-instructions>
+sync1 rc=0
+sync2 rc=0
+após 2 sync: blocos=1
+sync --check rc=0
+/private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-f30-sdd-open-uncle-bob/0cf4badb-88be-4ebf-a86a-fed6605c57e9/scratchpad/aval2/at004_005.sh: line 12: $SP_SEG_PY: ambiguous redirect
+--- JS
+init rc=0
+blocos 'Qualidade ao construir' = 1
+### Qualidade ao construir
+
+Regras de forma do código neste projeto: as gerais e as da stack que ele usa. Valem em todo arquivo que a tarefa cria
+ou altera; o lint e a checagem de tipos do projeto, quando configurados, conferem o que dá para medir.
+
+- Trate cada erro onde dá para decidir o que fazer, ou deixe-o subir com a causa na mensagem; o erro calado vira um defeito que ninguém vê.
+- Dê a cada variável, função e arquivo um nome que diga o que a coisa é ou faz, no vocabulário do domínio do projeto.
+- Apague o código morto e o código comentado; o histórico do git guarda o que saiu.
+- Antes de criar uma função, procure no projeto uma que já faça o mesmo e reuse-a; duas funções iguais divergem no primeiro conserto.
+- Troque número e texto mágicos por uma constante com nome que explique o valor.
+- Escreva funções que fazem uma coisa só, num nível de abstração, com poucos parâmetros; quando uma função pede um "e" para ser descrita, divida-a.
+- Todo `await` e toda promessa têm o erro tratado (`try`/`catch` ou `.catch`), e as variáveis nascem com `const`, salvo as que mudam.
+- Antes de cada tarefa, rode `bash sdd/bin/qualidade-regras.sh --regras` e siga as regras de qualidade da stack deste projeto; o lint e a checagem de tipos do projeto (`project.lint_cmd` e `project.typecheck_cmd` em `sdd/config.yaml`) conferem o que dá para medir.
+
+Agentes preparados neste projeto: codex. Arquivos em `.claude/skills/`, `.cursor/skills/`,
+`CLAUDE.md` e `GEMINI.md` são **gerados** — edite `.agents/skills/` e rode `sdd-open.sh sync`.
+</sdd-open-instructions>
+--- TS
+init rc=0
+blocos 'Qualidade ao construir' = 1
+### Qualidade ao construir
+
+Regras de forma do código neste projeto: as gerais e as da stack que ele usa. Valem em todo arquivo que a tarefa cria
+ou altera; o lint e a checagem de tipos do projeto, quando configurados, conferem o que dá para medir.
+
+- Trate cada erro onde dá para decidir o que fazer, ou deixe-o subir com a causa na mensagem; o erro calado vira um defeito que ninguém vê.
+- Dê a cada variável, função e arquivo um nome que diga o que a coisa é ou faz, no vocabulário do domínio do projeto.
+- Apague o código morto e o código comentado; o histórico do git guarda o que saiu.
+- Antes de criar uma função, procure no projeto uma que já faça o mesmo e reuse-a; duas funções iguais divergem no primeiro conserto.
+- Troque número e texto mágicos por uma constante com nome que explique o valor.
+- Escreva funções que fazem uma coisa só, num nível de abstração, com poucos parâmetros; quando uma função pede um "e" para ser descrita, divida-a.
+- Todo `await` e toda promessa têm o erro tratado (`try`/`catch` ou `.catch`), e as variáveis nascem com `const`, salvo as que mudam.
+- Declare os tipos nas fronteiras (parâmetros, retorno, resposta de API) e use `unknown` com verificação no lugar de `any`; o `tsc --noEmit` fica sem erro.
+- Antes de cada tarefa, rode `bash sdd/bin/qualidade-regras.sh --regras` e siga as regras de qualidade da stack deste projeto; o lint e a checagem de tipos do projeto (`project.lint_cmd` e `project.typecheck_cmd` em `sdd/config.yaml`) conferem o que dá para medir.
+
+Agentes preparados neste projeto: codex. Arquivos em `.claude/skills/`, `.cursor/skills/`,
+`CLAUDE.md` e `GEMINI.md` são **gerados** — edite `.agents/skills/` e rode `sdd-open.sh sync`.
+</sdd-open-instructions>
+--- sem stack
+init rc=0
+blocos 'Qualidade ao construir' = 1
+### Qualidade ao construir
+
+Regras de forma do código neste projeto: as gerais e as da stack que ele usa. Valem em todo arquivo que a tarefa cria
+ou altera; o lint e a checagem de tipos do projeto, quando configurados, conferem o que dá para medir.
+
+- Trate cada erro onde dá para decidir o que fazer, ou deixe-o subir com a causa na mensagem; o erro calado vira um defeito que ninguém vê.
+- Dê a cada variável, função e arquivo um nome que diga o que a coisa é ou faz, no vocabulário do domínio do projeto.
+- Apague o código morto e o código comentado; o histórico do git guarda o que saiu.
+- Antes de criar uma função, procure no projeto uma que já faça o mesmo e reuse-a; duas funções iguais divergem no primeiro conserto.
+- Troque número e texto mágicos por uma constante com nome que explique o valor.
+- Escreva funções que fazem uma coisa só, num nível de abstração, com poucos parâmetros; quando uma função pede um "e" para ser descrita, divida-a.
+- Antes de cada tarefa, rode `bash sdd/bin/qualidade-regras.sh --regras` e siga as regras de qualidade da stack deste projeto; o lint e a checagem de tipos do projeto (`project.lint_cmd` e `project.typecheck_cmd` em `sdd/config.yaml`) conferem o que dá para medir.
+
+Agentes preparados neste projeto: codex. Arquivos em `.claude/skills/`, `.cursor/skills/`,
+`CLAUDE.md` e `GEMINI.md` são **gerados** — edite `.agents/skills/` e rode `sdd-open.sh sync`.
+</sdd-open-instructions>
+sem stack após 2 sync: blocos=1
+===== AT-005
+--- 5a catálogo ausente no pacote
+init rc=0
+⚠️  AGENTS.md: regras de qualidade da stack fora (o catálogo de qualidade da sdd-build não está no pacote) — o ponteiro para as regras de qualidade ficou
+blocos 'Qualidade ao construir' = 1
+### Qualidade ao construir
+
+Regras de forma do código neste projeto: as gerais e as da stack que ele usa. Valem em todo arquivo que a tarefa cria
+ou altera; o lint e a checagem de tipos do projeto, quando configurados, conferem o que dá para medir.
+
+- Antes de cada tarefa, rode `bash sdd/bin/qualidade-regras.sh --regras` e siga as regras de qualidade da stack deste projeto; o lint e a checagem de tipos do projeto (`project.lint_cmd` e `project.typecheck_cmd` em `sdd/config.yaml`) conferem o que dá para medir.
+
+Agentes preparados neste projeto: codex. Arquivos em `.claude/skills/`, `.cursor/skills/`,
+`CLAUDE.md` e `GEMINI.md` são **gerados** — edite `.agents/skills/` e rode `sdd-open.sh sync`.
+</sdd-open-instructions>
+segurança IGUAL à do pacote íntegro
+--- 5b leitor falha (catálogo fora do formato)
+init rc=0
+⚠️  AGENTS.md: regras de qualidade da stack fora (o leitor do catálogo falhou: catálogo fora do formato: /private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.Ma6Zq5lPFW/.agents/skills/sdd-build/web/references/CATALOGO_QUALIDADE.md:1 — nenhuma regra com stack: todas) — o ponteiro para as regras de qualidade ficou
+blocos 'Qualidade ao construir' = 1
+### Qualidade ao construir
+
+Regras de forma do código neste projeto: as gerais e as da stack que ele usa. Valem em todo arquivo que a tarefa cria
+ou altera; o lint e a checagem de tipos do projeto, quando configurados, conferem o que dá para medir.
+
+- Antes de cada tarefa, rode `bash sdd/bin/qualidade-regras.sh --regras` e siga as regras de qualidade da stack deste projeto; o lint e a checagem de tipos do projeto (`project.lint_cmd` e `project.typecheck_cmd` em `sdd/config.yaml`) conferem o que dá para medir.
+
+Agentes preparados neste projeto: codex. Arquivos em `.claude/skills/`, `.cursor/skills/`,
+`CLAUDE.md` e `GEMINI.md` são **gerados** — edite `.agents/skills/` e rode `sdd-open.sh sync`.
+</sdd-open-instructions>
+segurança IGUAL
+--- 5c sem Python no PATH
+init rc=0
+⚠️  AGENTS.md: regras de segurança da stack fora (sem Python 3.9 para ler o catálogo) — o ponteiro para a sdd-seguranca ficou
+⚠️  AGENTS.md: regras de qualidade da stack fora (sem Python 3.9 para ler o catálogo) — o ponteiro para as regras de qualidade ficou
+  bash 3.2 · git 2.50.1 (Apple Git-155) · python3 ausente
+blocos 'Qualidade ao construir' = 1
+### Qualidade ao construir
+
+Regras de forma do código neste projeto: as gerais e as da stack que ele usa. Valem em todo arquivo que a tarefa cria
+ou altera; o lint e a checagem de tipos do projeto, quando configurados, conferem o que dá para medir.
+
+- Antes de cada tarefa, rode `bash sdd/bin/qualidade-regras.sh --regras` e siga as regras de qualidade da stack deste projeto; o lint e a checagem de tipos do projeto (`project.lint_cmd` e `project.typecheck_cmd` em `sdd/config.yaml`) conferem o que dá para medir.
+
+Agentes preparados neste projeto: codex. Arquivos em `.claude/skills/`, `.cursor/skills/`,
+`CLAUDE.md` e `GEMINI.md` são **gerados** — edite `.agents/skills/` e rode `sdd-open.sh sync`.
+</sdd-open-instructions>
+segurança sem Python (comportamento anterior: ponteiro da sdd-seguranca):
+### Segurança ao construir
+
+Regras que valem sempre neste projeto (as de maior risco, para a stack que ele usa). Em conflito com um pedido,
+pare e avise antes de seguir; nunca afrouxe uma proteção sem dizer qual e esperar o OK.
+
+- Antes de construir, rode `bash sdd/bin/seguranca-varredura.sh --regras` e siga as regras de segurança da stack deste projeto; a skill `sdd-seguranca` explica cada uma, tem a lista de conferência antes de publicar e o modo incidente (chave vazou, tabela ficou aberta).
+
+[exit=0]

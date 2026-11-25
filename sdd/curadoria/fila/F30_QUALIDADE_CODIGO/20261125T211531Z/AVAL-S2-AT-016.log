@@ -1,0 +1,54 @@
+$ /bin/bash aval_016.sh /Users/robertoduarte/rdd-worktrees/s2-sdd-open-uncle-bob   # AT-016 sem a suíte inteira (recibo dela: Verify Gate)
+HEAD=cc5c5d3 origin/main=08f41a8
+
+## grep do gate (texto proibido nas skills)
+$ ! grep -rlE 'Não cita nem resuma|comece com esta linha|versão atual: http' .agents/skills
+-> exit 0
+
+## check-versions contra origin/main
+$ /usr/bin/python3 scripts/check-versions.py --base origin/main
+PASS: check-versions — 24 skills com versão coerente, comparadas a origin/main.
+RESULTADO: VERDE
+→ siga para o próximo passo.
+-> exit 0
+
+## publish-gate em modo CI sobre cópia de git archive HEAD
+$ git archive HEAD | tar -x -C /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.UZRIjELuQ9 && PUBLISH_GATE_MODE=ci bash scripts/publish-gate.sh /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.UZRIjELuQ9
+publish-gate — tree: /private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.UZRIjELuQ9 — mode: ci
+──────────────────────────────────────────────────────────────────
+G1 secrets (gitleaks)
+  ✅ no secrets detected
+G2 forbidden patterns
+  ✅ no forbidden pattern matched
+G3 allowlist (MANIFEST.txt)
+  ✅ tree and manifest match in both directions
+G4 verify-gate exit contract
+  ✅ DEFINE_FIXTURE_NEEDS_CLARIFICATION.md → exit 5
+  ✅ DEFINE_FIXTURE_CONTROLE.md → exit 0
+  ✅ DEFINE_FIXTURE_SEM_BLOCO.md → exit 64
+G5 documentation
+  ✅ docs present, cross-linked, attribution in place
+──────────────────────────────────────────────────────────────────
+✅ publish-gate GREEN — tree is publishable (human review of the file list still required)
+-> exit 0
+
+## módulos S2 + report-lint antigos (na cópia de git archive)
+$ cd /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.UZRIjELuQ9/tests && SDD_TEST_BASH=/bin/bash /usr/bin/python3 -B -m unittest test_f30_vermelho_antes test_f30_sabotagem test_f30_textos_s2 test_f30_report_lint test_report_lint test_report_lint_evidencia
+.....................................................................................................................................
+----------------------------------------------------------------------
+Ran 133 tests in 21.856s
+
+OK
+-> exit 0
+
+## discover test_f30_*.py (na cópia)
+$ cd /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/tmp.UZRIjELuQ9 && SDD_TEST_BASH=/bin/bash /usr/bin/python3 -B -m unittest discover -s tests -p 'test_f30_*.py'
+.....................................................................................................
+----------------------------------------------------------------------
+Ran 101 tests in 49.683s
+
+OK
+-> exit 0
+
+======== falhas: 0
+[exit=0]

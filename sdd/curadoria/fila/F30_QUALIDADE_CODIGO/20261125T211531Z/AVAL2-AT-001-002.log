@@ -1,0 +1,92 @@
+$ bash /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-f30-sdd-open-uncle-bob/0cf4badb-88be-4ebf-a86a-fed6605c57e9/scratchpad/aval2/at001_002.sh
+--- C1 lint cheio, sem LINT.log (esperado rc1 + conserto)
+🛑 [lint] project.lint_cmd está cheio: `sdd/reports/evidence/EXEMPLO/LINT.log` não existe
+RESULTADO: VERMELHO
+→ rode o comando do slot sobre os arquivos da tarefa até sair 0 e grave `evidence/EXEMPLO/LINT.log` (ou `TIPOS.log`): 1ª linha `$ <comando>`, a saída e, no fim, `[exit=0]`.
+rc=1
+--- C2 LINT.log certo exit0 (esperado rc0)
+RESULTADO: VERDE
+rc=0
+--- C3 outro comando (esperado rc1)
+🛑 [lint] project.lint_cmd está cheio: `sdd/reports/evidence/EXEMPLO/LINT.log`: a 1ª linha roda `flake8 src/a.py`, não o comando do slot (`ruff check`)
+RESULTADO: VERMELHO
+→ rode o comando do slot sobre os arquivos da tarefa até sair 0 e grave `evidence/EXEMPLO/LINT.log` (ou `TIPOS.log`): 1ª linha `$ <comando>`, a saída e, no fim, `[exit=0]`.
+rc=1
+--- C3b prefixo sem espaço (esperado rc1)
+🛑 [lint] project.lint_cmd está cheio: `sdd/reports/evidence/EXEMPLO/LINT.log`: a 1ª linha roda `ruff checker a.py`, não o comando do slot (`ruff check`)
+RESULTADO: VERMELHO
+→ rode o comando do slot sobre os arquivos da tarefa até sair 0 e grave `evidence/EXEMPLO/LINT.log` (ou `TIPOS.log`): 1ª linha `$ <comando>`, a saída e, no fim, `[exit=0]`.
+rc=1
+--- C4 exit=2 sem antes (esperado rc1)
+🛑 [lint] project.lint_cmd está cheio: `sdd/reports/evidence/EXEMPLO/LINT.log` terminou em `[exit=2]`: o comando acusa erro, e não há `sdd/reports/evidence/EXEMPLO/LINT.antes.log` do mesmo comando falhando antes do build
+RESULTADO: VERMELHO
+→ rode o comando do slot sobre os arquivos da tarefa até sair 0 e grave `evidence/EXEMPLO/LINT.log` (ou `TIPOS.log`): 1ª linha `$ <comando>`, a saída e, no fim, `[exit=0]`.
+rc=1
+--- C5 exit=2 com antes mesmo slot exit1 (esperado rc0 aviso dívida)
+⚠️  `sdd/reports/evidence/EXEMPLO/LINT.log` terminou em `[exit=2]`, e o mesmo comando já falhava antes do build (`sdd/reports/evidence/EXEMPLO/LINT.antes.log`, `[exit=1]`): dívida antiga; confira que os erros são os de antes
+RESULTADO: VERDE
+rc=0
+--- C6 antes exit0 (esperado rc1)
+🛑 [lint] project.lint_cmd está cheio: `sdd/reports/evidence/EXEMPLO/LINT.log` terminou em `[exit=2]`: o comando acusa erro, e não há `sdd/reports/evidence/EXEMPLO/LINT.antes.log` do mesmo comando falhando antes do build
+RESULTADO: VERMELHO
+→ rode o comando do slot sobre os arquivos da tarefa até sair 0 e grave `evidence/EXEMPLO/LINT.log` (ou `TIPOS.log`): 1ª linha `$ <comando>`, a saída e, no fim, `[exit=0]`.
+rc=1
+--- C7 antes de outro comando (esperado rc1)
+🛑 [lint] project.lint_cmd está cheio: `sdd/reports/evidence/EXEMPLO/LINT.log` terminou em `[exit=2]`: o comando acusa erro, e não há `sdd/reports/evidence/EXEMPLO/LINT.antes.log` do mesmo comando falhando antes do build
+RESULTADO: VERMELHO
+→ rode o comando do slot sobre os arquivos da tarefa até sair 0 e grave `evidence/EXEMPLO/LINT.log` (ou `TIPOS.log`): 1ª linha `$ <comando>`, a saída e, no fim, `[exit=0]`.
+rc=1
+--- C8 sem [exit=] (esperado rc1)
+🛑 [lint] project.lint_cmd está cheio: `sdd/reports/evidence/EXEMPLO/LINT.log`: a última linha não é `[exit=<n>]` (grave o log por um script em bash, com rc=$?)
+RESULTADO: VERMELHO
+→ rode o comando do slot sobre os arquivos da tarefa até sair 0 e grave `evidence/EXEMPLO/LINT.log` (ou `TIPOS.log`): 1ª linha `$ <comando>`, a saída e, no fim, `[exit=0]`.
+rc=1
+--- C9 1a linha sem $ (esperado rc1)
+🛑 [lint] project.lint_cmd está cheio: `sdd/reports/evidence/EXEMPLO/LINT.log`: a 1ª linha não é `$ <comando>`
+RESULTADO: VERMELHO
+→ rode o comando do slot sobre os arquivos da tarefa até sair 0 e grave `evidence/EXEMPLO/LINT.log` (ou `TIPOS.log`): 1ª linha `$ <comando>`, a saída e, no fim, `[exit=0]`.
+rc=1
+--- C10 LINT.log ignorado pelo git (esperado rc1)
+🛑 [lint] project.lint_cmd está cheio: `sdd/reports/evidence/EXEMPLO/LINT.log` existe, mas o git o IGNORA (`git check-ignore -v` mostra a regra): não vai para o commit — remova a regra ou use `git add -f`
+RESULTADO: VERMELHO
+→ rode o comando do slot sobre os arquivos da tarefa até sair 0 e grave `evidence/EXEMPLO/LINT.log` (ou `TIPOS.log`): 1ª linha `$ <comando>`, a saída e, no fim, `[exit=0]`.
+rc=1
+--- C11 tipos cheio sem TIPOS.log (esperado rc1)
+🛑 [lint] project.typecheck_cmd está cheio: `sdd/reports/evidence/EXEMPLO/TIPOS.log` não existe
+RESULTADO: VERMELHO
+→ rode o comando do slot sobre os arquivos da tarefa até sair 0 e grave `evidence/EXEMPLO/LINT.log` (ou `TIPOS.log`): 1ª linha `$ <comando>`, a saída e, no fim, `[exit=0]`.
+rc=1
+--- C12 tipos ok (esperado rc0)
+RESULTADO: VERDE
+rc=0
+--- C13 tipos divida antiga (esperado rc0 aviso)
+⚠️  `sdd/reports/evidence/EXEMPLO/TIPOS.log` terminou em `[exit=1]`, e o mesmo comando já falhava antes do build (`sdd/reports/evidence/EXEMPLO/TIPOS.antes.log`, `[exit=1]`): dívida antiga; confira que os erros são os de antes
+RESULTADO: VERDE
+rc=0
+--- C14 só tipos cheio, sem TIPOS.log (rc1; não exige LINT.log)
+🛑 [lint] project.typecheck_cmd está cheio: `sdd/reports/evidence/EXEMPLO/TIPOS.log` não existe
+RESULTADO: VERMELHO
+→ rode o comando do slot sobre os arquivos da tarefa até sair 0 e grave `evidence/EXEMPLO/LINT.log` (ou `TIPOS.log`): 1ª linha `$ <comando>`, a saída e, no fim, `[exit=0]`.
+rc=1
+--- C15 só tipos ok (rc0)
+RESULTADO: VERDE
+rc=0
+--- C16 slot sem aspas c/ comentario (rc0)
+RESULTADO: VERDE
+rc=0
+--- C17 slot aspas simples (rc0)
+RESULTADO: VERDE
+rc=0
+===== AT-002
+--- D1 vazios com a linha (rc0 sem aviso)
+RESULTADO: VERDE
+rc=0
+--- D2 vazios sem a linha (rc0 com aviso nomeando a linha)
+⚠️  lint e tipos com o slot vazio (project.lint_cmd e project.typecheck_cmd), e o relatório não diz isso: escreva a linha `lint: slot vazio`
+RESULTADO: VERDE
+rc=0
+--- D3 sem config (rc0, aviso)
+⚠️  lint e tipos com o slot vazio (project.lint_cmd e project.typecheck_cmd), e o relatório não diz isso: escreva a linha `lint: slot vazio`
+RESULTADO: VERDE
+rc=0
+[exit=0]

@@ -1,0 +1,20 @@
+$ bash /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-f30-sdd-open-uncle-bob/0cf4badb-88be-4ebf-a86a-fed6605c57e9/scratchpad/probes/at001_borda.sh
+---- config: lint_cmd: "ruff check"   # comentário
+✅ sdd/reports/BUILD_REPORT_EX.md: todo `true` tem evidência abrível e a avaliação está provada ou declarada
+RESULTADO: VERDE
+→ o relatório pode ser commitado.
+rc=0
+checar --linter rc=1 (1 = slot reconhecido como cheio)
+---- config: lint_cmd: ruff check
+✅ sdd/reports/BUILD_REPORT_EX.md: todo `true` tem evidência abrível e a avaliação está provada ou declarada
+RESULTADO: VERDE
+→ o relatório pode ser commitado.
+rc=0
+checar --linter rc=1 (1 = slot reconhecido como cheio)
+---- config: lint_cmd: 'ruff check'
+✅ sdd/reports/BUILD_REPORT_EX.md: todo `true` tem evidência abrível e a avaliação está provada ou declarada
+RESULTADO: VERDE
+→ o relatório pode ser commitado.
+rc=0
+checar --linter rc=1 (1 = slot reconhecido como cheio)
+[exit=0]

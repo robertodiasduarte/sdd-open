@@ -1,0 +1,37 @@
+$ /bin/bash ./t15.sh
+== sdd-build: antes.log / coluna Antes / sabotagem.sh / Refatorar / build.refatorar
+158:inteiro) e os tipos como estão, e grave `sdd/reports/evidence/{F}/LINT.antes.log` (ou `TIPOS.antes.log`): é ele que separa a dívida antiga do erro que
+196:   grave `sdd/reports/evidence/{F}/AT-nnn.antes.log` (falhando; `shall continue to`: verde), citado na coluna `Antes`
+296:(só gate manual-ux). A coluna `Antes` cita o `AT-nnn.antes.log` de cada AT de gate `test`/`cmd` (fora deles, `N.A. (<motivo>)`). "Por raciocínio" e "deve funcionar" são negados. A linha do avaliador é
+2
+243:`bash sdd/bin/sabotagem.sh --feature {F} --at AT-nnn --arquivo <arquivo> --trocar '<trecho>' --por '<trecho>' --cmd '<comando do AT>'`.
+205:   refatoração (`web/references/disciplina-de-teste.md`). Com `build.refatorar: false` no `sdd/config.yaml`, pule o
+== ordem Verificar < Refatorar < Marcar (linhas dos títulos de passo)
+198:4. **Verificar:** o teste do arquivo; `project.lint_cmd` sobre os arquivos da tarefa (o comando que não aceita lista
+204:5. **Refatorar** só os arquivos da tarefa, com teste, lint e tipos verdes, e rode os três de novo; vermelho desfaz a
+207:6. **Marcar** concluído.
+== config.example.yaml
+26-  # Passo Refatorar de cada tarefa: depois do verde, só nos arquivos da tarefa, rodando de novo teste, lint e tipos.
+27:  # false pula o passo (economiza tokens) e o BUILD_REPORT diz `refatorar: desligado`.
+28:  refatorar: true
+29-
+30-# Camadas do seu projeto: nome → glob. É o que diz "esta feature toca 2 camadas" — o gatilho
+== templates Antes
+sdd/templates/BUILD_REPORT_TEMPLATE.md:259:> **Antes:** o `` `evidence/{FEATURE}/AT-nnn.antes.log` `` do mesmo comando, rodado antes do código — vermelho no
+sdd/templates/BUILD_REPORT_TEMPLATE.md:262:| ID | Critério (EARS, verbatim do DEFINE) | Antes | Resultado | Evidência |
+.agents/skills/sdd-build/web/assets/BUILD_REPORT_TEMPLATE.md:133:| ID | Scenario | Antes | Status | Evidence |
+== sdd-design sabotagens
+206:**Sabotagens:** declare aqui, antes do código, como estragar o trecho que cada AT de superfície de risco protege (dado,
+207:dinheiro, acesso, publicação, disponibilidade: o critério do `sdd/review/CRITERIO_DANO.md`), uma por AT desses e pelo
+== MODO_WEB build: vermelho/refatorar e sem sdd/bin
+236:3. **Surgical change**: refatorar só o que a tarefa tocou, depois do verde; o código vizinho fica como está.
+237:4. **Criterion before code**: o teste do critério primeiro, rodado vermelho antes do código e verde depois, e o
+238:   refatorar com o verde mantido ([references/disciplina-de-teste.md](references/disciplina-de-teste.md)).
+sdd/bin em MODO_WEB: 0
+== starter gerado em pasta temporária
+usage: gerar-starter.py [-h] (--tag TAG | --lint PASTA) [destino]
+
+Gera o sdd-starter a partir de uma tag do sdd-open.
+
+positional arguments:
+[exit=0]

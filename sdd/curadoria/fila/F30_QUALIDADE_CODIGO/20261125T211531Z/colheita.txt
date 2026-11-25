@@ -1,0 +1,11 @@
+TABELA_SEM_CABECALHO DESIGN_F30_QUALIDADE_CODIGO.md:586 (a tabela precisa das colunas fonte ou lm-nnn ou id e veredito ou tratamento: não contei nada dela)
+TABELA_SEM_CABECALHO DESIGN_F30_QUALIDADE_CODIGO.md:613 (a tabela precisa das colunas fonte ou lm-nnn ou id e veredito ou tratamento: não contei nada dela)
+TABELA_SEM_CABECALHO DESIGN_F30_QUALIDADE_CODIGO.md:638 (a tabela precisa das colunas fonte ou lm-nnn ou id e veredito ou tratamento: não contei nada dela)
+SUGESTAO mordeu? LM-054 — termo `fixture` em AVALIACAO_F30_QUALIDADE_CODIGO_20261123-2035.md:18 (achado sem LM explícito; confirmar a causa antes de virar delta) · fp=7a5dec3295
+SUGESTAO mordeu? LM-052 — termo `TMPDIR` em AVALIACAO_F30_QUALIDADE_CODIGO_20261124-1225.md:17 (achado sem LM explícito; confirmar a causa antes de virar delta) · fp=64d72a4a2e
+SUGESTAO mordeu? LM-045 — termo `git archive` em s1_v2.26.0.yaml:8 (achado sem LM explícito; confirmar a causa antes de virar delta) · fp=bc2b34399c,4aa4cccae7,3df0d959ca,af9227d111,1501afd308
+SUGESTAO mordeu? LM-050 — termo `git archive` em s1_v2.26.0.yaml:8 (achado sem LM explícito; confirmar a causa antes de virar delta) · fp=d8d665de44,41504056a1,8f1f49ade7,31e1caff2b,123da2867a
+JA_JULGADO 59 linha(s) já julgada(s) numa curadoria anterior desta feature ou já na fila da curadoria (CURATOR-colhidos.txt): não contam de novo
+resumo: deltas=0 (ajudou=0 mordeu=0) candidatos=0 rejeitados=0 promocoes=0 sugestoes=4
+RESULTADO: HÁ O QUE JULGAR
+→ despache o curador com esta colheita; nada foi aplicado.

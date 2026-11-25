@@ -1,0 +1,19 @@
+feature_id: F30_QUALIDADE_CODIGO
+slice_id: s3
+versao: 2.28.1
+data: 2026-11-25
+estado: shipado
+veredito: CONCERNS
+waived: null
+dod: "correção do sdd-drive (sem fatia nova): Verify Gate verde em 8f79b76 (2.953 testes, 7 pulados); CI 18/18 no PR #46; 47 de 48 execuções da disputa vermelhas no Windows sem o conserto e 0 de 48 com ele (6 máquinas, branch de diagnóstico já apagada)"
+descricao: "sdd-drive.sh: no Windows, a abertura recusada da trava de estado (apagada por quem a larga) é tentada de novo por até 5 s, em vez de sair 2; a recusa ao criar a pasta sai na hora, com a pasta na mensagem. adversarial-review.sh: o diff da revisão deixa de fora sdd/curadoria/, como já deixava os outros documentos do SDD (decisão do Roberto). Testes: os processos em paralelo mostram a saída; comando acima de 10 s é anotado. Lote da curadoria 20261125: 7 entradas, 103 contagens e 16 lições (LM-045 a LM-060)"
+deploy: release automática pelo workflow release.yml (tag v2.28.1 posta à mão no commit)
+trilha: completa
+review_externo: sdd/reports/reviews/EXTERNAL_REVIEW_20261125-155416 sha256=ba70fa169e4dffebacc68d7b494d6508fafbcd6102f8f620a160678def8b58ff diversidade=vendor
+avisos:
+  - "a causa do run 45634528055 é inferida: o mecanismo foi provado, mas a saída daquele run foi descartada; 1.440 recibos reais no diagnóstico não repetiram a queda"
+  - "git add de 120 s: limite mantido; medido de 4 a 10 s em 24 repetições e até 28,8 s na suíte do CI; causa da travada por achar"
+  - "revisão: codex raso (28 s) na rodada 21; a rodada 22 teve codex e claude, sem 2º revisor; o deepseek olhou o código antes dos 2 últimos ajustes; rodadas sem documentos da feature (arquivados)"
+  - "a revisão adversarial não lê mais sdd/curadoria/: o que a fila traz não passa por ela"
+  - "sem DEFINE/DESIGN próprios, sem avaliador fresco; lint, drift, landmines, smoke e test-baseline pulados (o Open não tem sdd/config.yaml; a suíte inteira rodou no Verify Gate); raio de impacto conferido na própria sessão"
+  - "custo das revisões: US$ 0,89 (mais o codex na assinatura e tentativas sem custo medido)"

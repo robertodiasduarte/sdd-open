@@ -1,0 +1,77 @@
+$ bash /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-f30-sdd-open-uncle-bob/0cf4badb-88be-4ebf-a86a-fed6605c57e9/scratchpad/probes/at006.sh
+==== FIXTURE python: app.py=print(1) requirements.txt=requests
+-- checar.sh --linter
+python	ruff check	mypy .	python3 -m pip install ruff mypy
+rc=0
+-- checar.sh (normal), linhas sobre linter/stack:
+rc=0
+8:- Este projeto em Python não tem conferência de estilo (linter) nem de tipos configurada: o código que o agente escreve sai sem ela.
+9-  python3 -m pip install ruff mypy   (depois: ruff check e mypy .; grave em project.lint_cmd e project.typecheck_cmd do sdd/config.yaml)
+hash antes=3489a061dd845ce4 depois=3489a061dd845ce4 IGUAL
+git status: 
+==== FIXTURE js: package.json={} index.js=1
+-- checar.sh --linter
+js	npx eslint .	—	npm init @eslint/config@latest
+rc=0
+-- checar.sh (normal), linhas sobre linter/stack:
+rc=0
+12:- Este projeto em JavaScript não tem conferência de estilo (linter) nem de tipos configurada: o código que o agente escreve sai sem ela.
+13-  npm init @eslint/config@latest   (depois: npx eslint .; grave em project.lint_cmd do sdd/config.yaml)
+hash antes=3e1d3d745bb8e445 depois=3e1d3d745bb8e445 IGUAL
+git status: 
+==== FIXTURE ts: package.json={} tsconfig.json={}
+-- checar.sh --linter
+ts	npx eslint .	npx tsc --noEmit	npm init @eslint/config@latest && npm install --save-dev typescript
+rc=0
+-- checar.sh (normal), linhas sobre linter/stack:
+rc=0
+12:- Este projeto em TypeScript não tem conferência de estilo (linter) nem de tipos configurada: o código que o agente escreve sai sem ela.
+13-  npm init @eslint/config@latest && npm install --save-dev typescript   (depois: npx eslint . e npx tsc --noEmit; grave em project.lint_cmd e project.typecheck_cmd do sdd/config.yaml)
+hash antes=c30eb8a2daf95816 depois=c30eb8a2daf95816 IGUAL
+git status: 
+==== FIXTURE php: composer.json={} index.php=<?php echo 1;
+-- checar.sh --linter
+php	vendor/bin/phpcs --standard=PSR12	—	composer require --dev squizlabs/php_codesniffer
+rc=0
+-- checar.sh (normal), linhas sobre linter/stack:
+rc=0
+10:- Este projeto em PHP não tem conferência de estilo (linter) nem de tipos configurada: o código que o agente escreve sai sem ela.
+11-  composer require --dev squizlabs/php_codesniffer   (depois: vendor/bin/phpcs --standard=PSR12; grave em project.lint_cmd do sdd/config.yaml)
+hash antes=9bee8ee7cf95686e depois=9bee8ee7cf95686e IGUAL
+git status: 
+==== FIXTURE python_com_ruff: app.py=print(1) ruff.toml=line-length=100
+-- checar.sh --linter
+rc=1
+-- checar.sh (normal), linhas sobre linter/stack:
+rc=0
+hash antes=da88eef8ff7ad79b depois=da88eef8ff7ad79b IGUAL
+git status: 
+==== FIXTURE python_slot_cheio: app.py=print(1) sdd/config.yaml=project:
+  lint_cmd: "ruff check"
+  typecheck_cmd: ""
+-- checar.sh --linter
+rc=1
+-- checar.sh (normal), linhas sobre linter/stack:
+rc=0
+hash antes=18a6f4ead6b0ee09 depois=18a6f4ead6b0ee09 IGUAL
+git status: 
+==== FIXTURE sem_stack: README.md=oi
+-- checar.sh --linter
+rc=1
+-- checar.sh (normal), linhas sobre linter/stack:
+rc=0
+hash antes=1dc8c9f800460710 depois=1dc8c9f800460710 IGUAL
+git status: 
+==== saída normal completa da fixture python (para a voz):
+⚠️ Vale arrumar
+- 7 skills do SDD estão em mais de um lugar que o mesmo agente lê (sdd-brainstorm, sdd-build, sdd-define, sdd-design, sdd-handoff, sdd-kb, sdd-prompt-builder): o agente pode estar rodando uma versão diferente da que o projeto traz.
+  bash /Users/robertoduarte/rdd-worktrees/f30-sdd-open-uncle-bob/.agents/skills/sdd-checar-ambiente/scripts/checar.sh --duplicadas   (mostra cada uma, onde está e o que eu tiraria; nada muda sem o seu sim)
+- O repositório não tem remoto — nada que você fizer sai desta máquina, e as frentes nascem dele.
+  git remote add origin <url do repositório>   (projeto ainda sem repositório no GitHub? a skill sdd-iniciar-repo cria um privado e envia)
+- Este projeto em Python não tem conferência de estilo (linter) nem de tipos configurada: o código que o agente escreve sai sem ela.
+  python3 -m pip install ruff mypy   (depois: ruff check e mypy .; grave em project.lint_cmd e project.typecheck_cmd do sdd/config.yaml)
+
+✅ Repo pyfull, branch main, nenhuma frente aberta, Claude Code 2.1.329, Codex 0.163.0, editor cursor · sdd-checar-ambiente v1.8.0 · nov/2026
+rc=0
+==== ruff/mypy/eslint instalados depois? (não deve mudar nada no sistema; só conferência de PATH)
+[exit=0]

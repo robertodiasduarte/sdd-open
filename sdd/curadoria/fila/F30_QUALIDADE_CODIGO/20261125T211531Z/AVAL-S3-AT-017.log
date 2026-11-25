@@ -1,0 +1,49 @@
+$ bash /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-s3-open-sdd-unclebob/8effdefa-7530-47db-938b-6eca322f632a/scratchpad/aval-s3/p17.sh
+--- metricas 
+RESULTADO: AVISOS
+→ cole a seção no BUILD_REPORT; ela avisa e não reprova.
+## Qualidade (avisos)
+
+> Só o código novo ou alterado desde `main` (9ee3f0a). Aviso: não reprova.
+
+### Complexidade
+
+- 2 funções medidas no diff, 1 acima do limite:
+- `src/nova.py:1-31` `nova`: complexidade 15 (limite 10)
+
+### Duplicação
+
+- 2 arquivos do diff lidos, de 2; 3 trechos repetidos:
+- `src/nova.py:1-30` repete `src/velha.py:1-30` (30 linhas, 147 tokens)
+- `src/copia.py:1-11` repete `src/notas.py:1-11` (11 linhas, 59 tokens)
+- `src/copia.py:1-11` repete `src/notas2.py:1-11` (11 linhas, 57 tokens)
+
+[exit=0]
+ARVORE_IGUAL
+== complexidade 40, 1200 linhas, 110 params (acima do padrao do proprio lizard), nao commitado
+--- metricas 
+RESULTADO: AVISOS
+→ cole a seção no BUILD_REPORT; ela avisa e não reprova.
+## Qualidade (avisos)
+
+> Só o código novo ou alterado desde `main` (9ee3f0a). Aviso: não reprova.
+
+### Complexidade
+
+- 4 funções medidas no diff, 3 acima do limite:
+- `src/com espaço e ação.py:85-1285` `longa`: 1201 linhas (limite 60) · 110 parâmetros (limite 5)
+- `src/com espaço e ação.py:1-83` `enorme`: complexidade 41 (limite 10) · 83 linhas (limite 60)
+- `src/nova.py:1-31` `nova`: complexidade 15 (limite 10)
+
+### Duplicação
+
+- 3 arquivos do diff lidos, de 3; 5 trechos repetidos:
+- `src/com espaço e ação.py:1-42` repete `src/velha.py:1-42` (42 linhas, 207 tokens)
+- `src/com espaço e ação.py:1-30` repete `src/nova.py:1-30` (30 linhas, 147 tokens)
+- `src/com espaço e ação.py:21-43` repete `src/velha.py:21-43` (23 linhas, 109 tokens)
+- `src/copia.py:1-11` repete `src/notas.py:1-11` (11 linhas, 59 tokens)
+- `src/copia.py:1-11` repete `src/notas2.py:1-11` (11 linhas, 57 tokens)
+
+[exit=0]
+ARVORE_IGUAL
+[exit=0]

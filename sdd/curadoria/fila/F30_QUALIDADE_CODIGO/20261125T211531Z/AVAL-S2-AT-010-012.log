@@ -1,0 +1,162 @@
+$ /bin/bash aval_rl.sh /Users/robertoduarte/rdd-worktrees/s2-sdd-open-uncle-bob   # script do avaliador (fixtures em mktemp -d)
+######## AT-010 / AT-011 base
+---- caso: base valida (novo vermelho, continua verde, manual-ux N.A.) (esperado exit 0; saída contém «RESULTADO: VERDE»)
+✅ sdd/reports/BUILD_REPORT_FX.md: todo `true` tem evidência abrível e a avaliação está provada ou declarada
+RESULTADO: VERDE
+→ o relatório pode ser commitado.
+   -> exit observado: 0
+   -> OK
+######## AT-010
+---- caso: AT-001 Antes vazio (não cita) (esperado exit 1; saída contém «não cita»)
+🛑 [vermelho antes] AT-001: a coluna `Antes` não cita `evidence/FX/AT-001.antes.log`
+RESULTADO: VERMELHO
+→ rode o comando do AT antes do código e grave `evidence/FX/AT-nnn.antes.log` (vermelho; `shall continue to`: verde), citado na coluna `Antes`; gate fora de `test`/`cmd`: `N.A. (<motivo>)`.
+   -> exit observado: 1
+   -> OK
+---- caso: AT-001 antes.log ausente (esperado exit 1; saída contém «não existe»)
+🛑 [vermelho antes] AT-001: `sdd/reports/evidence/FX/AT-001.antes.log` não existe
+RESULTADO: VERMELHO
+→ rode o comando do AT antes do código e grave `evidence/FX/AT-nnn.antes.log` (vermelho; `shall continue to`: verde), citado na coluna `Antes`; gate fora de `test`/`cmd`: `N.A. (<motivo>)`.
+   -> exit observado: 1
+   -> OK
+---- caso: AT-001 antes verde (esperado exit 1; saída contém «tem de falhar»)
+🛑 [vermelho antes] AT-001: `sdd/reports/evidence/FX/AT-001.antes.log` terminou em `[exit=0]`: o antes de um AT de comportamento novo tem de falhar
+RESULTADO: VERMELHO
+→ rode o comando do AT antes do código e grave `evidence/FX/AT-nnn.antes.log` (vermelho; `shall continue to`: verde), citado na coluna `Antes`; gate fora de `test`/`cmd`: `N.A. (<motivo>)`.
+   -> exit observado: 1
+   -> OK
+---- caso: AT-001 antes 127 (esperado exit 1; saída contém «exit=127»)
+🛑 [vermelho antes] AT-001: `sdd/reports/evidence/FX/AT-001.antes.log` terminou em `[exit=127]`: o antes de um AT de comportamento novo tem de falhar
+RESULTADO: VERMELHO
+→ rode o comando do AT antes do código e grave `evidence/FX/AT-nnn.antes.log` (vermelho; `shall continue to`: verde), citado na coluna `Antes`; gate fora de `test`/`cmd`: `N.A. (<motivo>)`.
+   -> exit observado: 1
+   -> OK
+---- caso: AT-001 antes 126 (esperado exit 1; saída contém «exit=126»)
+🛑 [vermelho antes] AT-001: `sdd/reports/evidence/FX/AT-001.antes.log` terminou em `[exit=126]`: o antes de um AT de comportamento novo tem de falhar
+RESULTADO: VERMELHO
+→ rode o comando do AT antes do código e grave `evidence/FX/AT-nnn.antes.log` (vermelho; `shall continue to`: verde), citado na coluna `Antes`; gate fora de `test`/`cmd`: `N.A. (<motivo>)`.
+   -> exit observado: 1
+   -> OK
+---- caso: AT-001 antes 139 (vermelho válido) (esperado exit 0; saída contém «RESULTADO: VERDE»)
+✅ sdd/reports/BUILD_REPORT_FX.md: todo `true` tem evidência abrível e a avaliação está provada ou declarada
+RESULTADO: VERDE
+→ o relatório pode ser commitado.
+   -> exit observado: 0
+   -> OK
+---- caso: AT-001 antes de outro comando (esperado exit 1; saída contém «não o mesmo comando»)
+🛑 [vermelho antes] AT-001: `sdd/reports/evidence/FX/AT-001.antes.log` roda `outro-cmd`, não o mesmo comando de `sdd/reports/evidence/FX/AT-001.log` (`cmd-um`)
+RESULTADO: VERMELHO
+→ rode o comando do AT antes do código e grave `evidence/FX/AT-nnn.antes.log` (vermelho; `shall continue to`: verde), citado na coluna `Antes`; gate fora de `test`/`cmd`: `N.A. (<motivo>)`.
+   -> exit observado: 1
+   -> OK
+---- caso: AT-001 antes sem [exit= (esperado exit 1; saída contém «[exit=<n>]»)
+🛑 [vermelho antes] AT-001: `sdd/reports/evidence/FX/AT-001.antes.log`: a última linha não é `[exit=<n>]` (grave o log por um script em bash, com rc=$?)
+RESULTADO: VERMELHO
+→ rode o comando do AT antes do código e grave `evidence/FX/AT-nnn.antes.log` (vermelho; `shall continue to`: verde), citado na coluna `Antes`; gate fora de `test`/`cmd`: `N.A. (<motivo>)`.
+   -> exit observado: 1
+   -> OK
+---- caso: AT-001 antes sem 1a linha $ (esperado exit 1; saída contém «1ª linha»)
+🛑 [vermelho antes] AT-001: `sdd/reports/evidence/FX/AT-001.antes.log` sem a 1ª linha `$ <comando>` (não é output capturado)
+RESULTADO: VERMELHO
+→ rode o comando do AT antes do código e grave `evidence/FX/AT-nnn.antes.log` (vermelho; `shall continue to`: verde), citado na coluna `Antes`; gate fora de `test`/`cmd`: `N.A. (<motivo>)`.
+   -> exit observado: 1
+   -> OK
+---- caso: AT-001 N.A. em comportamento novo (esperado exit 1; saída contém «N.A.»)
+🛑 [vermelho antes] AT-001: `N.A.` não vale para um AT de gate `test`/`cmd` (comportamento novo)
+RESULTADO: VERMELHO
+→ rode o comando do AT antes do código e grave `evidence/FX/AT-nnn.antes.log` (vermelho; `shall continue to`: verde), citado na coluna `Antes`; gate fora de `test`/`cmd`: `N.A. (<motivo>)`.
+   -> exit observado: 1
+   -> OK
+---- caso: AT-001 antes ignorado pelo git (esperado exit 1; saída contém «IGNORA»)
+🛑 [vermelho antes] AT-001: `sdd/reports/evidence/FX/AT-001.antes.log` existe, mas o git o IGNORA (`git check-ignore -v` mostra a regra): não vai para o commit — remova a regra ou use `git add -f`
+🛑 [vermelho antes] AT-002: `sdd/reports/evidence/FX/AT-002.antes.log` existe, mas o git o IGNORA (`git check-ignore -v` mostra a regra): não vai para o commit — remova a regra ou use `git add -f`
+RESULTADO: VERMELHO
+→ rode o comando do AT antes do código e grave `evidence/FX/AT-nnn.antes.log` (vermelho; `shall continue to`: verde), citado na coluna `Antes`; gate fora de `test`/`cmd`: `N.A. (<motivo>)`.
+   -> exit observado: 1
+   -> OK
+---- caso: AT-001 antes de outra feature (esperado exit 1; saída contém «fora de evidence/FX»)
+🛑 [vermelho antes] AT-001: `sdd/reports/evidence/OUTRA/AT-001.antes.log` fora de evidence/FX/*.log — só evidência da própria feature vale
+RESULTADO: VERMELHO
+→ rode o comando do AT antes do código e grave `evidence/FX/AT-nnn.antes.log` (vermelho; `shall continue to`: verde), citado na coluna `Antes`; gate fora de `test`/`cmd`: `N.A. (<motivo>)`.
+   -> exit observado: 1
+   -> OK
+---- caso: AT-001 cita antes.log de OUTRO AT (esperado exit 1; saída contém «não cita»)
+🛑 [vermelho antes] AT-001: a coluna `Antes` não cita `evidence/FX/AT-001.antes.log`
+RESULTADO: VERMELHO
+→ rode o comando do AT antes do código e grave `evidence/FX/AT-nnn.antes.log` (vermelho; `shall continue to`: verde), citado na coluna `Antes`; gate fora de `test`/`cmd`: `N.A. (<motivo>)`.
+   -> exit observado: 1
+   -> OK
+---- conserto em 1 linha: as linhas '→' do caso 'antes verde'
+linhas → : 1
+→ rode o comando do AT antes do código e grave `evidence/FX/AT-nnn.antes.log` (vermelho; `shall continue to`: verde), citado na coluna `Antes`; gate fora de `test`/`cmd`: `N.A. (<motivo>)`.
+   -> OK
+######## AT-011
+---- caso: AT-002 continua: antes vermelho (esperado exit 1; saída contém «exige o antes verde»)
+🛑 [vermelho antes] AT-002: `sdd/reports/evidence/FX/AT-002.antes.log` terminou em `[exit=1]`: `shall continue to` exige o antes verde
+RESULTADO: VERMELHO
+→ rode o comando do AT antes do código e grave `evidence/FX/AT-nnn.antes.log` (vermelho; `shall continue to`: verde), citado na coluna `Antes`; gate fora de `test`/`cmd`: `N.A. (<motivo>)`.
+   -> exit observado: 1
+   -> OK
+---- caso: AT-002 continua: Antes vazio (esperado exit 1; saída contém «não cita»)
+🛑 [vermelho antes] AT-002: a coluna `Antes` não cita `evidence/FX/AT-002.antes.log`
+RESULTADO: VERMELHO
+→ rode o comando do AT antes do código e grave `evidence/FX/AT-nnn.antes.log` (vermelho; `shall continue to`: verde), citado na coluna `Antes`; gate fora de `test`/`cmd`: `N.A. (<motivo>)`.
+   -> exit observado: 1
+   -> OK
+---- caso: AT-002 continua: N.A. (esperado exit 1; saída contém «N.A.»)
+🛑 [vermelho antes] AT-002: `N.A.` não vale para um AT de gate `test`/`cmd` (shall continue to)
+RESULTADO: VERMELHO
+→ rode o comando do AT antes do código e grave `evidence/FX/AT-nnn.antes.log` (vermelho; `shall continue to`: verde), citado na coluna `Antes`; gate fora de `test`/`cmd`: `N.A. (<motivo>)`.
+   -> exit observado: 1
+   -> OK
+---- caso: AT-002 continua: verde de outro comando (esperado exit 1; saída contém «não o mesmo comando»)
+🛑 [vermelho antes] AT-002: `sdd/reports/evidence/FX/AT-002.antes.log` roda `outro`, não o mesmo comando de `sdd/reports/evidence/FX/AT-002.log` (`cmd-dois`)
+RESULTADO: VERMELHO
+→ rode o comando do AT antes do código e grave `evidence/FX/AT-nnn.antes.log` (vermelho; `shall continue to`: verde), citado na coluna `Antes`; gate fora de `test`/`cmd`: `N.A. (<motivo>)`.
+   -> exit observado: 1
+   -> OK
+---- caso: AT-003 manual-ux com N.A. (esperado exit 0; saída contém «RESULTADO: VERDE»)
+✅ sdd/reports/BUILD_REPORT_FX.md: todo `true` tem evidência abrível e a avaliação está provada ou declarada
+RESULTADO: VERDE
+→ o relatório pode ser commitado.
+   -> exit observado: 0
+   -> OK
+######## AT-012
+---- caso: sem coluna Antes (esperado exit 0; saída contém «não tem a coluna `Antes`»)
+⚠️  a tabela de critérios não tem a coluna `Antes` (relatório anterior à v2.27.0): o vermelho antes do verde não foi conferido
+✅ sdd/reports/BUILD_REPORT_FX.md: todo `true` tem evidência abrível e a avaliação está provada ou declarada
+RESULTADO: VERDE
+→ o relatório pode ser commitado.
+   -> exit observado: 0
+   -> OK
+avisos sobre a coluna Antes: 1
+   -> OK (1 aviso)
+---- caso: sem coluna Antes e sem DEFINE (esperado exit 0; saída contém «coluna `Antes`»)
+⚠️  a tabela de critérios não tem a coluna `Antes` (relatório anterior à v2.27.0): o vermelho antes do verde não foi conferido
+✅ sdd/reports/BUILD_REPORT_FX.md: todo `true` tem evidência abrível e a avaliação está provada ou declarada
+RESULTADO: VERDE
+→ o relatório pode ser commitado.
+   -> exit observado: 0
+   -> OK
+---- caso: com coluna Antes e sem DEFINE (aviso com a causa) (esperado exit 0; saída contém «sem `sdd/features/DEFINE_FX.md`»)
+⚠️  sem `sdd/features/DEFINE_FX.md`: o vermelho antes do verde não foi conferido
+✅ sdd/reports/BUILD_REPORT_FX.md: todo `true` tem evidência abrível e a avaliação está provada ou declarada
+RESULTADO: VERDE
+→ o relatório pode ser commitado.
+   -> exit observado: 0
+   -> OK
+######## AT-016 (parte): BUILD_REPORT da S1 (commit c4fa53c, sem coluna Antes) pelo --stdin
+⚠️  a tabela de critérios não tem a coluna `Antes` (relatório anterior à v2.27.0): o vermelho antes do verde não foi conferido
+✅ sdd/reports/BUILD_REPORT_F30_QUALIDADE_CODIGO.md: todo `true` tem evidência abrível e a avaliação está provada ou declarada
+RESULTADO: VERDE
+→ o relatório pode ser commitado.
+   -> exit observado: 0
+   -> OK
+######## BUILD_REPORT atual da F30 (com coluna Antes)
+✅ sdd/reports/BUILD_REPORT_F30_QUALIDADE_CODIGO.md: todo `true` tem evidência abrível e a avaliação está provada ou declarada
+RESULTADO: VERDE
+→ o relatório pode ser commitado.
+   -> exit observado: 0
+   -> OK
+======== divergências: 0
+[exit=0]

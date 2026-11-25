@@ -1,0 +1,50 @@
+$ bash /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-f30-sdd-open-uncle-bob/0cf4badb-88be-4ebf-a86a-fed6605c57e9/scratchpad/probes/at003_007.sh
+== AT-003 sdd-build
+2 × [project.lint_cmd] em .agents/skills/sdd-build/SKILL.md
+2 × [project.typecheck_cmd] em .agents/skills/sdd-build/SKILL.md
+1 × [LINT.log] em .agents/skills/sdd-build/SKILL.md
+1 × [TIPOS.log] em .agents/skills/sdd-build/SKILL.md
+1 × [lint: slot vazio] em .agents/skills/sdd-build/SKILL.md
+1 × [sobre os arquivos da tarefa] em .agents/skills/sdd-build/SKILL.md
+1 × [Erro de lint ou de tipos é falha da tarefa e segue a escada] em .agents/skills/sdd-build/SKILL.md
+1 × [LINT.antes.log] em .agents/skills/sdd-build/SKILL.md
+-- passo 4 verbatim:
+195:4. **Verificar:** o teste do arquivo; `project.lint_cmd` sobre os arquivos da tarefa (o comando que não aceita lista
+196-   de arquivos roda inteiro, e contam só os erros nos arquivos da tarefa); `project.typecheck_cmd` como está, sem
+197-   arquivos anexados. Erro de lint ou de tipos é falha da tarefa e segue a escada abaixo. No fim do Build, grave a
+198-   última execução de cada slot cheio em `sdd/reports/evidence/{F}/LINT.log` e `TIPOS.log`, por um script em `bash`
+199-   (1ª linha `$ <comando>`, a saída, `[exit=<rc>]` no fim), com a mesma 1ª linha do log de antes; o `report-lint.py`
+200-   os exige. Os dois slots vazios: a linha `lint: slot vazio` no BUILD_REPORT e um aviso ao aluno, sem bloquear.
+201-5. **Marcar** concluído.
+== AT-007 sdd-new-session
+1 × [checar.sh --linter] em .agents/skills/sdd-new-session/SKILL.md
+2 × [\[D2] em .agents/skills/sdd-new-session/SKILL.md
+1 × [gravar] em .agents/skills/sdd-new-session/SKILL.md
+1 × [nunca instala] em .agents/skills/sdd-new-session/SKILL.md
+2 × [o que o linter confere\|lê o código e aponta] em .agents/skills/sdd-new-session/SKILL.md
+12 × [sdd/config.yaml] em .agents/skills/sdd-new-session/SKILL.md
+== suíte focada (só AT-003/AT-007): test_f30_textos
+test_f30_textos (unittest.loader._FailedTest) ... ERROR
+
+======================================================================
+ERROR: test_f30_textos (unittest.loader._FailedTest)
+----------------------------------------------------------------------
+ImportError: Failed to import test module: test_f30_textos
+Traceback (most recent call last):
+  File "/Library/Developer/CommandLineTools/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/unittest/loader.py", line 154, in loadTestsFromName
+    module = __import__(module_name)
+  File "/Users/robertoduarte/rdd-worktrees/f30-sdd-open-uncle-bob/tests/test_f30_textos.py", line 13, in <module>
+    from apoio import RAIZ
+ModuleNotFoundError: No module named 'apoio'
+
+
+----------------------------------------------------------------------
+Ran 1 test in 0.000s
+
+FAILED (errors=1)
+........
+----------------------------------------------------------------------
+Ran 8 tests in 0.006s
+
+OK
+[exit=0]
