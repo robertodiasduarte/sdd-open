@@ -55,6 +55,7 @@ TOPO="$(git -C "${RAIZ:-.}" rev-parse --show-toplevel 2>/dev/null)" || uso "fora
 if [ -n "${RAIZ}" ]; then RAIZ="$(cd "${RAIZ}" && pwd)" || uso "não consegui entrar na pasta de --raiz"; else RAIZ="${TOPO}"; fi
 
 TRAB="$(mktemp -d "${TMPDIR:-/tmp}/sdd-metricas.XXXXXX" 2>/dev/null)" || uso "não consegui criar a pasta temporária" "confira o TMPDIR e rode de novo."
+case "${TRAB}" in /*|[A-Za-z]:*) ;; *) TRAB="${PWD}/${TRAB}" ;; esac   # TMPDIR relativo
 limpa() { cd / && rm -rf "${TRAB}"; }
 trap limpa EXIT
 trap 'limpa; exit 130' INT
@@ -182,7 +183,7 @@ def legivel(raiz, arq):
 
 def mudados(raiz, base):
     """[(nome antigo, nome novo)] do que mudou ou entrou, com a detecção de renomeação ligada."""
-    campos = nomes_z(git_ok(raiz, "diff", "--relative", "--name-status", "-z", "-M", "--no-ext-diff", base, "--"))
+    campos = nomes_z(git_ok(raiz, "diff", "--no-color", "--relative", "--name-status", "-z", "-M", "--no-ext-diff", base, "--"))
     pares, i = [], 0
     while i < len(campos):
         renomeado = campos[i][:1] in "RC"
@@ -195,7 +196,7 @@ def mudados(raiz, base):
 
 def trechos(raiz, base, antigo, novo):
     """(intervalos acrescentados ou mudados, linhas depois das quais algo foi só apagado) de um arquivo."""
-    saida = git_ok(raiz, "--literal-pathspecs", "diff", "--relative", "-U0", "--inter-hunk-context=0", "-M", "--text", "--no-ext-diff",
+    saida = git_ok(raiz, "--literal-pathspecs", "diff", "--no-color", "--relative", "-U0", "--inter-hunk-context=0", "-M", "--text", "--no-ext-diff",
                    "--no-textconv", base, "--", *sorted({antigo, novo}))
     novos, apagados = [], []
     for m in re.finditer(rb"(?m)^@@ -\S+ \+(\d+)(?:,(\d+))? @@", saida):
@@ -407,7 +408,10 @@ def nome_do_jscpd(nome, copia):
 def relatorio_do_jscpd(trab, pasta):
     """(pares, arquivos lidos); ValueError se não é o relatório esperado."""
     texto, copia = ler(trab, "saida-%s/jscpd-report.json" % pasta), os.path.join(trab, pasta)
-    dados = json.loads(texto)
+    try:
+        dados = json.loads(texto)
+    except RecursionError:
+        raise ValueError("relatório aninhado demais")
     try:
         pares, lidos = dados["duplicates"], dados["statistics"]["total"]["sources"]
         if not isinstance(pares, list) or not isinstance(lidos, int):
@@ -415,7 +419,7 @@ def relatorio_do_jscpd(trab, pasta):
         return [(nome_do_jscpd(p["firstFile"]["name"], copia), int(p["firstFile"]["start"]), int(p["firstFile"]["end"]),
                  nome_do_jscpd(p["secondFile"]["name"], copia), int(p["secondFile"]["start"]), int(p["secondFile"]["end"]),
                  int(p["lines"]), int(p.get("tokens", 0))) for p in pares], lidos
-    except (KeyError, TypeError, AttributeError, IndexError) as e:
+    except (KeyError, TypeError, AttributeError, OverflowError) as e:
         raise ValueError("campo ausente ou de outro tipo: %s" % e)
 
 

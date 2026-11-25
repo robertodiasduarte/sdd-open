@@ -23,7 +23,8 @@ PRE_PUSH = RAIZ / "sdd/hooks/pre-push"
 HIGIENE = ".agents/skills/sdd-higiene-dado"
 RELATORIO_OK = (
     "# BUILD REPORT: X\n\n| ID | Critério (EARS) | Resultado | Evidência |\n|----|---|---|---|\n"
-    "| AT-001 | When x, the system shall y | false | — |\n\navaliador: N.A. (1 camada)\n"
+    "| AT-001 | When x, the system shall y | false | — |\n\navaliador: N.A. (1 camada)\n\n"
+    "## Qualidade (avisos)\n\n- não medido: lizard ausente\n"
 )
 
 # PATH mínimo sem python3: no macOS /usr/bin tem python3 E git/awk/sed, então tirar /usr/bin levaria

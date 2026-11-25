@@ -305,7 +305,7 @@ Release não sai com ela). Flag `LLM Prompts: true` ⇒ a seção do relatório 
 python3 sdd/bin/report-lint.py sdd/reports/BUILD_REPORT_{FEATURE}.md   # exit 0 obrigatório
 ```
 
-Seções obrigatórias: Qualidade (avisos) · Seleção de modo · Contrato de aceite · Landmines lidas no build ·
+Seções obrigatórias: Seleção de modo · Qualidade (avisos) · Contrato de aceite · Landmines lidas no build ·
 Candidatos ao playbook (bloco literal `<<<CANDIDATO_PLAYBOOK … >>>` com `evidencia:`, ou
 "nenhum candidato") · Verify Gate (exit + recibo se manual-ux) · Veredito do avaliador ·
 Advisor Ledger (se houve review) · Drift detectado (mesmo que "nenhum") · Migrations aplicadas

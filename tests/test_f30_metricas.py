@@ -235,7 +235,8 @@ class AT018NaoMedido(Base):
         for csv in ("", "isto não é csv\n", '1,x,9,1,1,"a","./src/nova.py","f","f",1,1\n', CSV_GRANDE + "1,2\n",
                     CSV_GRANDE.replace("./src/nova.py", "./src/n\u00c3va.py")):
             for rel in ("", "não é json", "[]", '{"duplicates": 3}', jscpd_json(sources=0), '{"duplicates": []}',
-                        jscpd_json({"firstFile": 1})):
+                        jscpd_json({"firstFile": 1}), "[" * 100000,
+                        jscpd_json(par("src/copia.py", "src/notas.py")).replace('"start": 1,', '"start": 1e309,')):
                 with self.subTest(csv=csv, rel=rel):
                     shutil.rmtree(str(self.r / "src"))
                     self.git(self.r, "checkout", "-q", "main", "--", "src")
@@ -325,6 +326,18 @@ class AT018NaoMedido(Base):
         self.jscpd()
         self.ok()
         self.assertNotIn("nucleo.py", self.chamadas.read_text(encoding="utf-8"))
+
+    def test_tmpdir_relativo_e_apagado(self):
+        """Revisão do código, rodada 3, R1."""
+        self.tmpdir = self.r / "tmp"
+        self.tmpdir.mkdir()
+        self.env["TMPDIR"] = "tmp"
+        self.frente()
+        self.lizard()
+        self.jscpd()
+        out, _ = self.ok()
+        self.assertIn("complexidade 15", out)
+        self.assertIn("repete", out)
 
     def test_config_do_projeto_nao_chega_a_ferramenta(self):
         """Revisão do DESIGN, N2: nem .jscpd.json, nem a chave jscpd do package.json, nem o .gitignore."""
@@ -481,12 +494,14 @@ class AT019SoODiff(Base):
     def test_config_do_git_de_quem_roda_nao_muda_a_medida(self):
         self.frente()
         for k, v in (("color.ui", "always"), ("diff.noprefix", "true"), ("diff.external", "false"),
-                     ("core.quotepath", "true"), ("diff.renames", "false"), ("diff.interHunkContext", "500")):
+                     ("core.quotepath", "true"), ("diff.renames", "false"), ("diff.interHunkContext", "500"), ("color.diff", "always")):
             self.git(self.r, "config", k, v)
-        self.lizard()
+        self.escreve(self.r, "src/velha.py", GRANDE.replace("grande", "velha").replace("r = 0", "r = 1"))
+        self.lizard(CSV_GRANDE + CSV_GRANDE.replace("nova.py", "velha.py").replace("grande", "velha"))
         self.jscpd()
         out, _ = self.ok()
         self.assertIn("complexidade 15", out)
+        self.assertIn("`velha`", out)
 
 
 class AT020Limites(Base):

@@ -589,7 +589,7 @@ def check_qualidade(content, root, warnings):
         return []
     falta = "o relatório não tem a seção `## Qualidade (avisos)` preenchida"
     if config_tem_qualidade(root):
-        return [(QUALIDADE, falta)]
+        return [(QUALIDADE, falta + ": rode sdd/bin/metricas-diff.sh e cole a saída")]
     warnings.append(falta + " (métricas do código novo, desde a v2.28.0): rode sdd/bin/metricas-diff.sh e cole a saída")
     return []
 

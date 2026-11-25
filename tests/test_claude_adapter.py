@@ -20,7 +20,8 @@ CLI = RAIZ / "bin/sdd-open.sh"
 FIX = RAIZ / "sdd/fixtures/hooks"
 RELATORIO_OK = (
     "# BUILD REPORT: X\n\n| ID | Critério (EARS) | Resultado | Evidência |\n|----|---|---|---|\n"
-    "| AT-001 | When x, the system shall y | false | — |\n\navaliador: N.A. (1 camada)\n"
+    "| AT-001 | When x, the system shall y | false | — |\n\navaliador: N.A. (1 camada)\n\n"
+    "## Qualidade (avisos)\n\n- não medido: lizard ausente\n"
 )
 GUARDS = ("sdd-report-guard.py", "sdd-avaliador-guard.py")
 FERRAMENTAS = ("bash", "sh", "git", "awk", "sed", "grep", "tr", "wc", "basename", "dirname", "mktemp", "cat",
