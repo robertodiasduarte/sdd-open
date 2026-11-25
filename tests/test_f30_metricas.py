@@ -235,7 +235,8 @@ class AT018NaoMedido(Base):
         for csv in ("", "isto não é csv\n", '1,x,9,1,1,"a","./src/nova.py","f","f",1,1\n', CSV_GRANDE + "1,2\n",
                     CSV_GRANDE.replace("./src/nova.py", "./src/n\u00c3va.py")):
             for rel in ("", "não é json", "[]", '{"duplicates": 3}', jscpd_json(sources=0), '{"duplicates": []}',
-                        jscpd_json({"firstFile": 1}), "[" * 100000,
+                        jscpd_json({"firstFile": 1}), jscpd_json(sources=True), jscpd_json(sources="3"), jscpd_json(sources=-1),
+                        "[" * 100000,
                         jscpd_json(par("src/copia.py", "src/notas.py")).replace('"start": 1,', '"start": 1e309,')):
                 with self.subTest(csv=csv, rel=rel):
                     shutil.rmtree(str(self.r / "src"))

@@ -413,6 +413,13 @@ def nome_do_jscpd(nome, copia):
     raise ValueError("arquivo que não pedi: %s" % nome)
 
 
+def inteiro(valor):
+    """O número do relatório como ele é: true, texto e fração não servem de prova."""
+    if type(valor) is not int or valor < 0:
+        raise TypeError("esperava um inteiro")
+    return valor
+
+
 def relatorio_do_jscpd(trab, pasta):
     """(pares, arquivos lidos); ValueError se não é o relatório esperado."""
     texto, copia = ler(trab, "saida-%s/jscpd-report.json" % pasta), os.path.join(trab, pasta)
@@ -422,11 +429,11 @@ def relatorio_do_jscpd(trab, pasta):
         raise ValueError("relatório aninhado demais")
     try:
         pares, lidos = dados["duplicates"], dados["statistics"]["total"]["sources"]
-        if not isinstance(pares, list) or not isinstance(lidos, int):
+        if not isinstance(pares, list):
             raise TypeError("tipos")
-        return [(nome_do_jscpd(p["firstFile"]["name"], copia), int(p["firstFile"]["start"]), int(p["firstFile"]["end"]),
-                 nome_do_jscpd(p["secondFile"]["name"], copia), int(p["secondFile"]["start"]), int(p["secondFile"]["end"]),
-                 int(p["lines"]), int(p.get("tokens", 0))) for p in pares], lidos
+        return [(nome_do_jscpd(p["firstFile"]["name"], copia), inteiro(p["firstFile"]["start"]), inteiro(p["firstFile"]["end"]),
+                 nome_do_jscpd(p["secondFile"]["name"], copia), inteiro(p["secondFile"]["start"]), inteiro(p["secondFile"]["end"]),
+                 inteiro(p["lines"]), inteiro(p.get("tokens", 0))) for p in pares], inteiro(lidos)
     except (KeyError, TypeError, AttributeError, OverflowError) as e:
         raise ValueError("campo ausente ou de outro tipo: %s" % e)
 
