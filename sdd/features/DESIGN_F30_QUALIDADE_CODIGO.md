@@ -893,6 +893,7 @@ S2: `AT-nnn.antes.log` e `AT-nnn.sabotagem.log`, ao lado dos `AT-nnn.log`. Os lo
 
 | Version | Date | Author | Changes |
 |---------|------|--------|---------|
+| 3.3 | 2026-11-25 | build | Rodada 2 (codex) e avaliador: mapa numa linha só (64 no script, exigência no lint), remoto sem ancestral ⇒ 64, arquivo grande ou sem leitura dito, cópia em UTF-8, `TMPDIR` no projeto, seta por causa |
 | 3.2 | 2026-11-25 | build | Revisão do código, rodada 1 (auditor claude): nome de arquivo do `jscpd` normalizado e conferido na cópia (N1); `--raiz` numa subpasta mede a subpasta, por `--relative` (N2). Molde do starter com a seção |
 | 3.1 | 2026-11-25 | design-agent | Revisão do DESIGN da S3: N1, N2 e N3 aplicadas (cópia temporária, prova no diff, trecho só apagado) |
 | 3.0 | 2026-11-25 | design-agent | S3: Decisions 15 a 19, manifest de 17 arquivos, landmines e sabotagens da S3 |

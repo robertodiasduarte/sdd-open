@@ -115,7 +115,7 @@ NA_RE = re.compile(r"^\s*N\.?A\.?(?:\s|\(|$)", re.IGNORECASE)
 SEM_COLUNA_ANTES = ("a tabela de critérios não tem a coluna `Antes` (relatório anterior à v2.27.0): o vermelho antes do "
                     "verde não foi conferido")
 SECAO_QUALIDADE_RE = re.compile(r"^## Qualidade \(avisos\)[ \t]*$\n(.*?)(?=^## |\Z)", re.MULTILINE | re.DOTALL)
-MAPA_QUALIDADE_RE = re.compile(r"^qualidade:[ \t]*(?:#.*)?$", re.MULTILINE)
+MAPA_QUALIDADE_RE = re.compile(r"^qualidade:(?:\s|$)", re.MULTILINE)   # em bloco ou numa linha só
 IGNORADO_MSG = ("existe, mas o git o IGNORA (`git check-ignore -v` mostra a regra): não vai para o commit — "
                 "remova a regra ou use `git add -f`")
 

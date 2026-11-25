@@ -17,7 +17,7 @@ import shutil
 import sys
 import unittest
 
-from apoio import BASH, RAIZ, SEM_SYMLINK, Sandbox, path_restrito
+from apoio import BASH, RAIZ, SEM_CHMOD, SEM_SYMLINK, SOU_ROOT, Sandbox, path_restrito
 
 SCRIPT = RAIZ / "sdd" / "bin" / "metricas-diff.sh"
 LINT = RAIZ / "sdd" / "bin" / "report-lint.py"
@@ -161,7 +161,7 @@ class AT017Achados(Base):
         self.jscpd(jscpd_json())
         out, err = self.ok()
         self.assertIn("nenhum aviso (1 função medida", out)
-        self.assertIn("nenhum aviso (2 arquivos do diff lidos, de 2", out)
+        self.assertIn("nenhum aviso (2 de 2 arquivos do diff", out)
         self.assertIn("RESULTADO: NADA ACHADO", err)
 
     def test_teto_de_20_itens_o_pior_primeiro(self):
@@ -275,6 +275,56 @@ class AT018NaoMedido(Base):
                 self.jscpd(jscpd_json(par(ruim, "src/notas.py")))
                 out, _ = self.ok()
                 self.nao_medido(self.parte(out, "Duplicação"), "jscpd devolveu saída que não entendi")
+
+    def test_arquivo_antigo_grande_e_dito(self):
+        """Revisão do código, rodada 2, R3: o par que não pôde ser comparado não vira "nada achado"."""
+        self.escreve(self.r, "src/enorme.py", "x = 1\n" * 900000)
+        self.commit(self.r)
+        self.git(self.r, "branch", "-q", "-f", "main", "frente")
+        self.frente()
+        self.lizard(CSV_NOTAS)
+        self.jscpd(jscpd_json())
+        out, err = self.ok()
+        self.assertIn("não medido: 1 arquivo (acima de 5 MB", out)
+        self.assertIn("`src/enorme.py`", out)
+        self.assertIn("RESULTADO: NÃO MEDIDO", err)
+
+    @unittest.skipIf(*SEM_CHMOD)
+    @unittest.skipIf(*SOU_ROOT)
+    def test_arquivo_sem_leitura_e_dito(self):
+        self.frente()
+        p = self.escreve(self.r, "src/trancado.py", GRANDE)
+        p.chmod(0)
+        self.lizard(CSV_NOTAS)
+        self.jscpd(jscpd_json())
+        env = dict(self.env, PATH=self.path())
+        rc, out, err = self.roda([BASH, SCRIPT], self.r, env)
+        p.chmod(0o644)
+        self.assertEqual(rc, 0, err)
+        self.assertIn("`src/trancado.py`", out)
+
+    def test_latin1_vai_em_utf8_e_o_nao_lido_e_dito(self):
+        """Avaliador, M1: o jscpd pula calado o que não é UTF-8."""
+        self.frente()
+        (self.r / "src" / "lat.py").write_bytes("# ação\n".encode("latin-1") + NOTAS.encode())
+        self.lizard(CSV_NOTAS)
+        self.jscpd(jscpd_json(sources=2))
+        self.falsa("jscpd", (self.falsas / "jscpd").read_text(encoding="utf-8").split("\n", 1)[1].replace(
+            "find . -type f", "cat src/lat.py"))
+        out, _ = self.ok()
+        self.assertIn("# ação", self.chamadas.read_text(encoding="utf-8"))
+        self.assertIn("2 de 3 arquivos do diff; o jscpd não leu 1", out)
+
+    def test_tmpdir_dentro_do_projeto(self):
+        """Avaliador, L7: a pasta temporária não é código da frente."""
+        self.tmpdir = self.r / "tmp"
+        self.tmpdir.mkdir()
+        self.env["TMPDIR"] = str(self.tmpdir)
+        self.frente()
+        self.lizard(CSV_NOTAS)
+        self.jscpd()
+        self.ok()
+        self.assertNotIn("nucleo.py", self.chamadas.read_text(encoding="utf-8"))
 
     def test_config_do_projeto_nao_chega_a_ferramenta(self):
         """Revisão do DESIGN, N2: nem .jscpd.json, nem a chave jscpd do package.json, nem o .gitignore."""
@@ -410,6 +460,16 @@ class AT019SoODiff(Base):
         self.assertEqual((rc, out), (64, ""))
         self.assertIn("--base", err)
 
+    def test_remoto_sem_ancestral_nao_cai_na_branch_local(self):
+        """Revisão do código, rodada 2, R2."""
+        self.frente()
+        arvore = self.git(self.r, "rev-parse", "HEAD^{tree}").strip()
+        solto = self.git(self.r, "commit-tree", "-m", "solto", arvore).strip()
+        self.git(self.r, "update-ref", "refs/remotes/origin/main", solto)
+        rc, out, err = self.mede()
+        self.assertEqual((rc, out), (64, ""))
+        self.assertIn("--base", err)
+
     def test_gitattributes_menos_diff_nao_esconde_o_arquivo(self):
         self.escreve(self.r, ".gitattributes", "*.py -diff\n")
         self.escreve(self.r, "src/velha.py", GRANDE.replace("grande", "velha").replace("r = 0", "r = 1"))
@@ -461,6 +521,7 @@ class AT020Limites(Base):
                     rc, out, err = self.mede()
                     self.assertEqual((rc, out), (64, ""))
                     self.assertIn("qualidade." + chave, err)
+                    self.assertNotIn("--base", err)
 
     def test_raiz_numa_subpasta(self):
         """Revisão do código, rodada 1, N2: no monorepo, o projeto é a subpasta de --raiz."""
@@ -478,6 +539,15 @@ class AT020Limites(Base):
         self.assertEqual(chamada, ["lizard --csv ./src/nova.py"])
         self.escreve(self.r, "app/sdd/config.yaml", "qualidade:\n  max_linhas: zero\n")
         self.assertEqual(self.mede("--raiz", "app")[0], 64)
+
+    def test_mapa_numa_linha_so(self):
+        """Revisão do código, rodada 2, R1 (avaliador, L4): a forma que o leitor não entende não é ignorada calada."""
+        self.config("qualidade: {max_complexidade: 20}\n")
+        rc, out, err = self.mede()
+        self.assertEqual((rc, out), (64, ""))
+        self.assertIn("uma chave por linha", err)
+        self.config("qualidade: {}  # vazio\n")
+        self.assertEqual(self.mede()[0], 0)
 
     def test_uso_errado_64(self):
         fora = self.tmp / "fora"
@@ -545,6 +615,8 @@ class AT021ReportLint(Sandbox):
 
     def test_mapa_com_chaves_vazias_tambem_exige(self):
         rc, s = self.lint("", "qualidade:\n  max_complexidade: \"\"\n")
+        self.assertEqual(rc, 1, s)
+        rc, s = self.lint("", "qualidade: {}\n")   # revisão do código, rodada 2, R1
         self.assertEqual(rc, 1, s)
 
 

@@ -1,0 +1,320 @@
+$ bash /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-s3-open-sdd-unclebob/8effdefa-7530-47db-938b-6eca322f632a/scratchpad/aval-s3/p18.sh
+== ambas ausentes
+--- metricas 
+RESULTADO: NÃO MEDIDO
+→ cole a seção no BUILD_REPORT; ela avisa e não reprova.
+## Qualidade (avisos)
+
+> Só o código novo ou alterado desde `main` (a20cc17). Aviso: não reprova.
+
+### Complexidade
+
+- não medido: lizard ausente (não está no PATH) — para medir, instale com `python3 -m pip install lizard` e rode de novo
+
+### Duplicação
+
+- não medido: jscpd ausente (não está no PATH) — para medir, instale com `npm install -g jscpd` e rode de novo
+
+[exit=0]
+== so lizard
+--- metricas 
+RESULTADO: AVISOS
+→ cole a seção no BUILD_REPORT; ela avisa e não reprova.
+## Qualidade (avisos)
+
+> Só o código novo ou alterado desde `main` (a20cc17). Aviso: não reprova.
+
+### Complexidade
+
+- 2 funções medidas no diff, 1 acima do limite:
+- `src/nova.py:1-31` `nova`: complexidade 15 (limite 10)
+
+### Duplicação
+
+- não medido: jscpd ausente (não está no PATH) — para medir, instale com `npm install -g jscpd` e rode de novo
+
+[exit=0]
+== so jscpd
+--- metricas 
+RESULTADO: AVISOS
+→ cole a seção no BUILD_REPORT; ela avisa e não reprova.
+## Qualidade (avisos)
+
+> Só o código novo ou alterado desde `main` (a20cc17). Aviso: não reprova.
+
+### Complexidade
+
+- não medido: lizard ausente (não está no PATH) — para medir, instale com `python3 -m pip install lizard` e rode de novo
+
+### Duplicação
+
+- 2 arquivos do diff lidos, de 2; 3 trechos repetidos:
+- `src/nova.py:1-30` repete `src/velha.py:1-30` (30 linhas, 147 tokens)
+- `src/copia.py:1-11` repete `src/notas.py:1-11` (11 linhas, 59 tokens)
+- `src/copia.py:1-11` repete `src/notas2.py:1-11` (11 linhas, 57 tokens)
+
+[exit=0]
+== lizard: exit 3
+--- metricas 
+RESULTADO: AVISOS
+→ cole a seção no BUILD_REPORT; ela avisa e não reprova.
+## Qualidade (avisos)
+
+
+### Complexidade
+
+- não medido: lizard falhou (exit 1: sem mensagem)
+
+### Duplicação
+
+- 2 arquivos do diff lidos, de 2; 3 trechos repetidos:
+- `src/nova.py:1-30` repete `src/velha.py:1-30` (30 linhas, 147 tokens)
+- `src/copia.py:1-11` repete `src/notas.py:1-11` (11 linhas, 59 tokens)
+- `src/copia.py:1-11` repete `src/notas2.py:1-11` (11 linhas, 57 tokens)
+
+[exit=0]
+== lizard: exit 0
+--- metricas 
+RESULTADO: AVISOS
+→ cole a seção no BUILD_REPORT; ela avisa e não reprova.
+## Qualidade (avisos)
+
+
+### Complexidade
+
+- não medido: nenhuma função nova ou alterada encontrada no diff
+
+### Duplicação
+
+- 2 arquivos do diff lidos, de 2; 3 trechos repetidos:
+- `src/nova.py:1-30` repete `src/velha.py:1-30` (30 linhas, 147 tokens)
+- `src/copia.py:1-11` repete `src/notas.py:1-11` (11 linhas, 59 tokens)
+- `src/copia.py:1-11` repete `src/notas2.py:1-11` (11 linhas, 57 tokens)
+
+[exit=0]
+== lizard: echo lixo; exit 0
+--- metricas 
+RESULTADO: AVISOS
+→ cole a seção no BUILD_REPORT; ela avisa e não reprova.
+## Qualidade (avisos)
+
+
+### Complexidade
+
+- não medido: lizard devolveu saída que não entendi (linha com 1 colunas)
+
+### Duplicação
+
+- 2 arquivos do diff lidos, de 2; 3 trechos repetidos:
+- `src/nova.py:1-30` repete `src/velha.py:1-30` (30 linhas, 147 tokens)
+- `src/copia.py:1-11` repete `src/notas.py:1-11` (11 linhas, 59 tokens)
+- `src/copia.py:1-11` repete `src/notas2.py:1-11` (11 linhas, 57 tokens)
+
+[exit=0]
+== lizard: kill -9 $$
+--- metricas 
+RESULTADO: AVISOS
+→ cole a seção no BUILD_REPORT; ela avisa e não reprova.
+## Qualidade (avisos)
+
+
+### Complexidade
+
+- não medido: lizard falhou (exit 1: xargs: lizard: terminated with signal 9; aborting)
+
+### Duplicação
+
+- 2 arquivos do diff lidos, de 2; 3 trechos repetidos:
+- `src/nova.py:1-30` repete `src/velha.py:1-30` (30 linhas, 147 tokens)
+- `src/copia.py:1-11` repete `src/notas.py:1-11` (11 linhas, 59 tokens)
+- `src/copia.py:1-11` repete `src/notas2.py:1-11` (11 linhas, 57 tokens)
+
+[exit=0]
+== lizard: echo boom >&2; exit 127
+--- metricas 
+RESULTADO: AVISOS
+→ cole a seção no BUILD_REPORT; ela avisa e não reprova.
+## Qualidade (avisos)
+
+
+### Complexidade
+
+- não medido: lizard falhou (exit 1: boom)
+
+### Duplicação
+
+- 2 arquivos do diff lidos, de 2; 3 trechos repetidos:
+- `src/nova.py:1-30` repete `src/velha.py:1-30` (30 linhas, 147 tokens)
+- `src/copia.py:1-11` repete `src/notas.py:1-11` (11 linhas, 59 tokens)
+- `src/copia.py:1-11` repete `src/notas2.py:1-11` (11 linhas, 57 tokens)
+
+[exit=0]
+== lizard: echo "1,2,3"
+--- metricas 
+RESULTADO: AVISOS
+→ cole a seção no BUILD_REPORT; ela avisa e não reprova.
+## Qualidade (avisos)
+
+
+### Complexidade
+
+- não medido: lizard devolveu saída que não entendi (linha com 3 colunas)
+
+### Duplicação
+
+- 2 arquivos do diff lidos, de 2; 3 trechos repetidos:
+- `src/nova.py:1-30` repete `src/velha.py:1-30` (30 linhas, 147 tokens)
+- `src/copia.py:1-11` repete `src/notas.py:1-11` (11 linhas, 59 tokens)
+- `src/copia.py:1-11` repete `src/notas2.py:1-11` (11 linhas, 57 tokens)
+
+[exit=0]
+== jscpd: exit 3
+--- metricas 
+RESULTADO: AVISOS
+→ cole a seção no BUILD_REPORT; ela avisa e não reprova.
+## Qualidade (avisos)
+
+
+### Complexidade
+
+- 2 funções medidas no diff, 1 acima do limite:
+- `src/nova.py:1-31` `nova`: complexidade 15 (limite 10)
+
+### Duplicação
+
+- não medido: jscpd falhou (exit 3: sem mensagem)
+
+[exit=0]
+== jscpd: exit 0
+--- metricas 
+RESULTADO: AVISOS
+→ cole a seção no BUILD_REPORT; ela avisa e não reprova.
+## Qualidade (avisos)
+
+
+### Complexidade
+
+- 2 funções medidas no diff, 1 acima do limite:
+- `src/nova.py:1-31` `nova`: complexidade 15 (limite 10)
+
+### Duplicação
+
+- não medido: jscpd devolveu saída que não entendi (Expecting value: line 1 column 1 (char 0))
+
+[exit=0]
+== jscpd: echo lixo; exit 0
+--- metricas 
+RESULTADO: AVISOS
+→ cole a seção no BUILD_REPORT; ela avisa e não reprova.
+## Qualidade (avisos)
+
+
+### Complexidade
+
+- 2 funções medidas no diff, 1 acima do limite:
+- `src/nova.py:1-31` `nova`: complexidade 15 (limite 10)
+
+### Duplicação
+
+- não medido: jscpd devolveu saída que não entendi (Expecting value: line 1 column 1 (char 0))
+
+[exit=0]
+== jscpd: kill -9 $$
+--- metricas 
+RESULTADO: AVISOS
+→ cole a seção no BUILD_REPORT; ela avisa e não reprova.
+## Qualidade (avisos)
+
+
+### Complexidade
+
+- 2 funções medidas no diff, 1 acima do limite:
+- `src/nova.py:1-31` `nova`: complexidade 15 (limite 10)
+
+### Duplicação
+
+- não medido: jscpd falhou (exit 137: /Users/robertoduarte/rdd-worktrees/s3-open-sdd-unclebob/sdd/bin/metricas-diff.sh: line 468: 59430 Killed: 9               jscpd . --min-tokens "${MIN_TOKENS}" --max-lines 1000000 --max-size 6mb --repo)
+
+[exit=0]
+== jscpd: echo boom >&2; exit 127
+--- metricas 
+RESULTADO: AVISOS
+→ cole a seção no BUILD_REPORT; ela avisa e não reprova.
+## Qualidade (avisos)
+
+
+### Complexidade
+
+- 2 funções medidas no diff, 1 acima do limite:
+- `src/nova.py:1-31` `nova`: complexidade 15 (limite 10)
+
+### Duplicação
+
+- não medido: jscpd falhou (exit 127: boom)
+
+[exit=0]
+== jscpd: echo "1,2,3"
+--- metricas 
+RESULTADO: AVISOS
+→ cole a seção no BUILD_REPORT; ela avisa e não reprova.
+## Qualidade (avisos)
+
+
+### Complexidade
+
+- 2 funções medidas no diff, 1 acima do limite:
+- `src/nova.py:1-31` `nova`: complexidade 15 (limite 10)
+
+### Duplicação
+
+- não medido: jscpd devolveu saída que não entendi (Expecting value: line 1 column 1 (char 0))
+
+[exit=0]
+== jscpd json {}
+### Duplicação
+- não medido: jscpd devolveu saída que não entendi (campo ausente ou de outro tipo: 'duplicates')
+[exit=0]
+== jscpd json {"duplicates":[],"statistics":{"total":{"sources":0}}}
+### Duplicação
+- não medido: jscpd não leu nenhum arquivo do diff (todos com menos de 50 tokens, ou linguagem que ele não reconhece)
+[exit=0]
+== jscpd json []
+### Duplicação
+- não medido: jscpd devolveu saída que não entendi (campo ausente ou de outro tipo: list indices must be integers or slices, not str)
+[exit=0]
+== jscpd json {"duplicates":[{}],"statistics":{"total":{"sources":3}}}
+### Duplicação
+- não medido: jscpd devolveu saída que não entendi (campo ausente ou de outro tipo: 'firstFile')
+[exit=0]
+== jscpd json {"duplicates":[],"statistics":[]}
+### Duplicação
+- não medido: jscpd devolveu saída que não entendi (campo ausente ou de outro tipo: list indices must be integers or slices, not str)
+[exit=0]
+== jscpd json null
+### Duplicação
+- não medido: jscpd devolveu saída que não entendi (campo ausente ou de outro tipo: 'NoneType' object is not subscriptable)
+[exit=0]
+== jscpd json {"duplicates":[{"lines":"x"}],"statistics":{"total":{"sources":3}}}
+### Duplicação
+- não medido: jscpd devolveu saída que não entendi (campo ausente ou de outro tipo: 'firstFile')
+[exit=0]
+== jscpd json {"duplicates":[],"statistics":{"total":{"sources":true}}}
+### Duplicação
+- nenhum aviso (1 arquivo do diff lidos, de 2)
+[exit=0]
+== lizard sem permissao de execucao / interprete quebrado
+--- metricas 
+RESULTADO: AVISOS
+→ cole a seção no BUILD_REPORT; ela avisa e não reprova.
+## Qualidade (avisos)
+> Só o código novo ou alterado desde `main` (a20cc17). Aviso: não reprova.
+### Complexidade
+- 2 funções medidas no diff, 1 acima do limite:
+- `src/nova.py:1-31` `nova`: complexidade 15 (limite 10)
+### Duplicação
+- 2 arquivos do diff lidos, de 2; 3 trechos repetidos:
+- `src/nova.py:1-30` repete `src/velha.py:1-30` (30 linhas, 147 tokens)
+- `src/copia.py:1-11` repete `src/notas.py:1-11` (11 linhas, 59 tokens)
+- `src/copia.py:1-11` repete `src/notas2.py:1-11` (11 linhas, 57 tokens)
+[exit=0]
+[exit=0]

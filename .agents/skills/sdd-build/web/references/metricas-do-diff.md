@@ -25,6 +25,9 @@ como não medido.
 - **não medido**, com a causa e o comando de instalar: `não medido: lizard ausente`. Ferramenta ausente, que falhou ou
   que devolveu saída estranha é sempre não medido: sem medida, o número de avisos é desconhecido.
 
+Um comentário no código desliga a medida daquele trecho (`#lizard forgives`, `jscpd:ignore-start`): ao ver um no código
+novo, conte à pessoa, porque a seção não o mostra.
+
 ## Como falar com a pessoa
 
 Uma frase por medida. Com aviso: o que foi achado, onde e o que melhora se refatorar ("a função `fechar_mes` tem 15

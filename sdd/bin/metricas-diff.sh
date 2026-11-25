@@ -68,7 +68,7 @@ for _sdd_c in (_sdd_sys.stdout, _sdd_sys.stderr):
         _sdd_c.reconfigure(encoding="utf-8", errors="replace", newline="\n")
     except (AttributeError, ValueError):
         pass
-import csv, json, os, re, shutil, subprocess, sys
+import csv, json, os, re, subprocess, sys
 
 LIMITES = {"max_complexidade": 10, "max_linhas": 60, "max_parametros": 5, "min_tokens": 50}
 COM_COMPLEXIDADE = set("py js jsx mjs cjs ts tsx vue php java cs c cc cpp cxx h hpp go rb rs swift kt kts scala lua m mm "
@@ -86,6 +86,10 @@ INSTALAR = {"lizard": "python3 -m pip install lizard", "jscpd": "npm install -g 
 
 class Uso(Exception):
     """Chamada que não dá para atender: exit 64, com a causa e o conserto."""
+
+    def __init__(self, causa, conserto="confira a pasta do projeto e rode de novo"):
+        super().__init__(causa)
+        self.conserto = conserto
 
 
 # ── git e config ───────────────────────────────────────────────────────────
@@ -127,12 +131,21 @@ def ler_mapa(raiz, mapa):
     return valores
 
 
+def ler_linha_unica(raiz, mapa):
+    """O que vem depois de `mapa:` na mesma linha (a forma `mapa: {…}`, que o leitor de mapas não entende)."""
+    m = re.search(r"(?m)^%s:[ \t]*([^#\r\n]*)" % mapa, ler(os.path.join(raiz, "sdd"), "config.yaml"))
+    return m.group(1).strip() if m else ""
+
+
 def ler_limites(raiz):
+    if ler_linha_unica(raiz, "qualidade") not in ("", "{}"):
+        raise Uso("qualidade: numa linha só no sdd/config.yaml não é lido", "escreva uma chave por linha, recuada, abaixo de qualidade:")
     mapa, limites = ler_mapa(raiz, "qualidade"), {}
     for chave, padrao in LIMITES.items():
         valor = mapa.get(chave, "")
         if valor and not re.match(r"^[0-9]{1,9}$", valor) or valor and int(valor) < 1:
-            raise Uso("qualidade.%s no sdd/config.yaml não é um inteiro maior que zero: %s" % (chave, valor))
+            raise Uso("qualidade.%s no sdd/config.yaml não é um inteiro maior que zero: %s" % (chave, limpo(valor)),
+                      "escreva um inteiro maior que zero em qualidade.%s, ou deixe vazio para o padrão (%d)" % (chave, padrao))
         limites[chave] = int(valor) if valor else padrao
     return limites
 
@@ -141,10 +154,14 @@ def achar_base(raiz, pedida):
     """(nome da referência, commit comum). Sem --base: o remoto da branch padrão e, sem ele, a branch local."""
     branch = ler_mapa(raiz, "project").get("default_branch") or "main"
     for ref in ([pedida] if pedida else ["origin/" + branch, branch]):
+        if git(raiz, "rev-parse", "--verify", "--quiet", ref + "^{commit}")[0] != 0:
+            continue   # só a referência que não existe dá lugar à próxima
         rc, saida = git(raiz, "merge-base", "HEAD", ref)
         if rc == 0 and saida.strip():
             return ref, saida.decode("ascii").strip()
-    raise Uso("não achei o ponto de partida da frente (%s)" % (pedida or "origin/%s nem %s" % (branch, branch)))
+        raise Uso("%s e a frente não têm um commit em comum" % ref, "passe de onde a frente nasceu: --base REF")
+    raise Uso("não achei o ponto de partida da frente (%s)" % (pedida or "origin/%s nem %s" % (branch, branch)),
+              "passe de onde a frente nasceu: --base REF")
 
 
 # ── o diff ─────────────────────────────────────────────────────────────────
@@ -211,42 +228,63 @@ def toca_o_diff(diff, arq, ini, fim):
 
 
 # ── 1ª passada: a cópia que as ferramentas leem ────────────────────────────
-def copiar(raiz, arq, destino):
+def ler_codigo(raiz, arq):
+    """Os bytes em UTF-8 (o jscpd pula calado o que não é), ou None quando não dá para medir: grande ou sem leitura."""
+    p = os.path.join(raiz, arq)
+    try:
+        if os.path.getsize(p) > MAX_BYTES:
+            return None
+        with open(p, "rb") as f:
+            dado = f.read()
+    except OSError:
+        return None
+    try:
+        dado.decode("utf-8")
+        return dado
+    except UnicodeDecodeError:
+        return dado.decode("latin-1").encode("utf-8")
+
+
+def copiar(dado, arq, destino):
     alvo = os.path.join(destino, arq)
     os.makedirs(os.path.dirname(alvo), exist_ok=True)
-    shutil.copyfile(os.path.join(raiz, arq), alvo)
+    with open(alvo, "wb") as f:
+        f.write(dado)
 
 
 def montar_copias(raiz, trab, diff):
-    """trab/arvore = o código do projeto; trab/diff = só o do diff. Devolve os arquivos do diff acima do tamanho."""
+    """trab/arvore = o código do projeto; trab/diff = só o do diff. Devolve os arquivos que não dá para medir."""
     for pasta in ("arvore", "diff"):
         os.makedirs(os.path.join(trab, pasta))
-    grandes = []
+    fora = []
     for arq in sorted(set(nomes_z(git_ok(raiz, "ls-files", "-z"))) | set(diff)):
         if not e_codigo(arq) or not legivel(raiz, arq):
             continue
-        if os.path.getsize(os.path.join(raiz, arq)) > MAX_BYTES:
-            grandes += [arq] if arq in diff else []
+        dado = ler_codigo(raiz, arq)
+        if dado is None:
+            fora.append(arq)
             continue
-        copiar(raiz, arq, os.path.join(trab, "arvore"))
+        copiar(dado, arq, os.path.join(trab, "arvore"))
         if arq in diff:
-            copiar(raiz, arq, os.path.join(trab, "diff"))
-    return grandes
+            copiar(dado, arq, os.path.join(trab, "diff"))
+    return fora
 
 
 def preparar(raiz, trab, pedida):
     limites = ler_limites(raiz)
     ref, base = achar_base(raiz, pedida)
     diff = linhas_do_diff(raiz, base)
-    grandes = montar_copias(raiz, trab, diff)
-    medidos = sorted(set(diff) - set(grandes))
+    proprio = os.path.relpath(os.path.realpath(trab), os.path.realpath(raiz)).replace(os.sep, "/") + "/"
+    diff = {a: t for a, t in diff.items() if not a.startswith(proprio)}   # TMPDIR dentro do projeto
+    fora = montar_copias(raiz, trab, diff)
+    medidos = sorted(set(diff) - set(fora))
     do_lizard = [a for a in medidos if extensao(a) in COM_COMPLEXIDADE]
     with open(os.path.join(trab, "lizard.lista"), "wb") as f:
         f.write(b"".join(os.fsencode("./" + arq) + b"\0" for arq in do_lizard))
     with open(os.path.join(trab, "jscpd.vazio.json"), "w", encoding="utf-8") as f:
         f.write("{}")
     with open(os.path.join(trab, "plano.json"), "w", encoding="utf-8") as f:
-        json.dump({"ref": ref, "base": base, "limites": limites, "diff": diff, "medidos": medidos, "grandes": grandes}, f)
+        json.dump({"ref": ref, "base": base, "limites": limites, "diff": diff, "medidos": medidos, "fora": fora}, f)
     print("%d %d %d" % (limites["min_tokens"], len(do_lizard), len(medidos)))
 
 
@@ -412,7 +450,11 @@ def medir_duplicacao(plano, trab, estado):
         return ["- não medido: jscpd não leu nenhum arquivo do diff (todos com menos de %d tokens, ou linguagem que ele "
                 "não reconhece)" % plano["limites"]["min_tokens"]], False, False
     lidos_do_diff = min(do_diff, len(plano["medidos"]))   # o jscpd conta de novo o bloco embutido (.vue)
-    cobertura = "%s do diff lidos, de %d" % (contar(lidos_do_diff, "arquivo", "arquivos"), len(plano["medidos"]))
+    total = len(plano["medidos"])
+    cobertura = "%d de %s do diff" % (lidos_do_diff, contar(total, "arquivo", "arquivos"))
+    if lidos_do_diff < total:
+        cobertura += "; o jscpd não leu %d: menor que %d tokens, ou que ele não reconhece" % (
+            total - lidos_do_diff, plano["limites"]["min_tokens"])
     avisos = avisos_de_duplicacao(plano["diff"], pares)
     if not avisos:
         return ["- nenhum aviso (%s)" % cobertura], False, True
@@ -433,9 +475,10 @@ def secao(trab, estado_lizard, estado_jscpd):
     print("> Só o código novo ou alterado desde `%s` (%s). Aviso: não reprova.\n" % (limpo(plano["ref"]), plano["base"][:7]))
     for titulo, (linhas, _, _) in partes:
         print("### %s\n\n%s\n" % (titulo, "\n".join(linhas)))
-    if plano["grandes"]:
-        print("- não medido: %s acima de 5 MB\n" % contar(len(plano["grandes"]), "arquivo do diff", "arquivos do diff"))
-    tem_aviso, mediu_tudo = any(p[1][1] for p in partes), all(p[1][2] for p in partes) and not plano["grandes"]
+    if plano["fora"]:
+        print("- não medido: %s (acima de 5 MB ou sem permissão de leitura), nem como par de comparação: %s\n" % (
+            contar(len(plano["fora"]), "arquivo", "arquivos"), ", ".join("`%s`" % limpo(a) for a in plano["fora"][:3])))
+    tem_aviso, mediu_tudo = any(p[1][1] for p in partes), all(p[1][2] for p in partes) and not plano["fora"]
     palavra = "AVISOS" if tem_aviso else "NADA ACHADO" if mediu_tudo else "NÃO MEDIDO"
     print("RESULTADO: %s\n→ cole a seção no BUILD_REPORT; ela avisa e não reprova." % palavra, file=sys.stderr)
 
@@ -447,7 +490,7 @@ try:
         secao(*sys.argv[2:5])
 except (Uso, OSError) as e:
     print("🛑 metricas-diff: %s" % limpo(str(e)), file=sys.stderr)
-    print("RESULTADO: ERRO DE USO\n→ corrija (a base se passa por --base REF) e rode de novo; nada foi medido.",
+    print("RESULTADO: ERRO DE USO\n→ %s; nada foi medido." % getattr(e, "conserto", "confira a pasta e rode de novo"),
           file=sys.stderr)
     sys.exit(64)
 PY
