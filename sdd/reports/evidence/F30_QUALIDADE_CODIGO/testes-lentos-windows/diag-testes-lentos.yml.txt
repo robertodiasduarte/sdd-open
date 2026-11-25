@@ -1,0 +1,45 @@
+name: diag-testes-lentos
+# Diagnóstico temporário do Windows; nunca vai para a main.
+on:
+  push:
+    branches: [diag-testes-lentos]
+permissions:
+  contents: read
+concurrency:
+  group: diag-testes-lentos
+  cancel-in-progress: true
+jobs:
+  diag:
+    name: ${{ matrix.modo }}
+    runs-on: windows-latest
+    timeout-minutes: 40
+    strategy:
+      fail-fast: false
+      matrix:
+        modo: [discoC1, discoC2, discoD1, discoD2, discoD3, semvss1, semvss2, semvss3]
+    defaults:
+      run:
+        shell: bash
+    steps:
+      - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5.1.0
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0 # v7.1.0
+        with:
+          python-version: '3.12'
+      - name: Mede
+        env:
+          PYTHONUNBUFFERED: '1'
+          PYTHONIOENCODING: utf-8
+          SDD_OPEN_CHECK_UPDATES: '0'
+        run: |
+          export SDD_TEST_BASH="$(cygpath -w "$(command -v bash)")"
+          mkdir -p "$RUNNER_TEMP/diag"
+          python -B diag/medir.py "${{ matrix.modo }}" "$RUNNER_TEMP/diag" 2>&1 | tee "$RUNNER_TEMP/diag/tela.log"
+      - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        if: always()
+        with:
+          name: diag-${{ matrix.modo }}
+          path: ${{ runner.temp }}/diag
+          retention-days: 14

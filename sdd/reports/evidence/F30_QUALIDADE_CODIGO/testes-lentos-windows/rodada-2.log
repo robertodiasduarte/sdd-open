@@ -1,0 +1,948 @@
+# run 45710580300 (branch diag-testes-lentos, apagada depois); saída de cada máquina
+
+########## diag-desligado1
+   13.1 CHECAR {"i": 0, "t": 11.38, "setup": 0.88, "epoch_inicio": 1795644505.26385, "rc": 0}
+   24.9 CHECAR {"i": 1, "t": 11.03, "setup": 0.78, "epoch_inicio": 1795644517.476822, "rc": 0}
+   36.7 CHECAR {"i": 2, "t": 10.92, "setup": 0.77, "epoch_inicio": 1795644529.3165755, "rc": 0}
+   42.9 WaaSMedicSvc Service 'WaaSMedicSvc (WaaSMedicSvc)' cannot be configured due to the following error: Access is denied
+
+Name              Status StartType
+----              ------ ---------
+BITS             Stopped  Disabled
+TrustedInstaller Stopped  Disabled
+UsoSvc           Stopped  Disabled
+WaaSMedicSvc     Stopped    Manual
+wuauserv         Stopped  Disabled
+
+
+
+   83.0 arquivos no índice: 735
+   83.3 {"i": 0, "braco": "desligado", "init": 28.41, "init_pipe": 28.41, "add": 5.2, "add_pipe": 5.2, "rc": 0, "commit": 6.36, "rmtree": 0.31}
+  124.8 {"i": 1, "braco": "desligado", "init": 27.8, "init_pipe": 27.8, "add": 5.69, "add_pipe": 5.69, "rc": 0, "commit": 7.53, "rmtree": 0.33}
+  165.7 {"i": 2, "braco": "desligado", "init": 28.94, "init_pipe": 28.94, "add": 4.92, "add_pipe": 4.92, "rc": 0, "commit": 6.55, "rmtree": 0.33}
+  206.0 {"i": 3, "braco": "desligado", "init": 28.53, "init_pipe": 28.53, "add": 4.88, "add_pipe": 4.88, "rc": 0, "commit": 6.44, "rmtree": 0.33}
+  246.1 {"i": 4, "braco": "desligado", "init": 28.36, "init_pipe": 28.36, "add": 4.86, "add_pipe": 4.86, "rc": 0, "commit": 6.34, "rmtree": 0.31}
+  286.7 {"i": 5, "braco": "desligado", "init": 28.14, "init_pipe": 28.14, "add": 4.72, "add_pipe": 4.72, "rc": 0, "commit": 7.31, "rmtree": 0.33}
+  326.4 {"i": 6, "braco": "desligado", "init": 27.8, "init_pipe": 27.8, "add": 5.03, "add_pipe": 5.03, "rc": 0, "commit": 6.34, "rmtree": 0.33}
+  367.7 {"i": 7, "braco": "desligado", "init": 28.86, "init_pipe": 28.86, "add": 4.98, "add_pipe": 4.98, "rc": 0, "commit": 6.97, "rmtree": 0.34}
+  411.8 {"i": 8, "braco": "desligado", "init": 28.64, "init_pipe": 28.64, "add": 8.67, "add_pipe": 8.67, "rc": 0, "commit": 6.39, "rmtree": 0.33}
+  452.7 {"i": 9, "braco": "desligado", "init": 28.45, "init_pipe": 28.45, "add": 5.7, "add_pipe": 5.7, "rc": 0, "commit": 6.31, "rmtree": 0.33}
+  492.7 {"i": 10, "braco": "desligado", "init": 28.51, "init_pipe": 28.51, "add": 4.7, "add_pipe": 4.7, "rc": 0, "commit": 6.31, "rmtree": 0.31}
+  549.4 {"i": 11, "braco": "desligado", "init": 28.28, "init_pipe": 28.28, "add": 14.53, "add_pipe": 14.53, "rc": 0, "commit": 13.31, "rmtree": 0.39}
+  593.7 {"i": 12, "braco": "desligado", "init": 32.84, "init_pipe": 32.84, "add": 4.61, "add_pipe": 4.61, "rc": 0, "commit": 6.23, "rmtree": 0.33}
+  632.4 {"i": 13, "braco": "desligado", "init": 26.92, "init_pipe": 26.92, "add": 5.0, "add_pipe": 5.0, "rc": 0, "commit": 6.27, "rmtree": 0.31}
+  671.3 {"i": 14, "braco": "desligado", "init": 27.41, "init_pipe": 27.41, "add": 4.7, "add_pipe": 4.7, "rc": 0, "commit": 6.38, "rmtree": 0.31}
+  710.5 {"i": 15, "braco": "desligado", "init": 27.27, "init_pipe": 27.27, "add": 4.83, "add_pipe": 4.83, "rc": 0, "commit": 6.62, "rmtree": 0.33}
+  749.4 {"i": 16, "braco": "desligado", "init": 27.14, "init_pipe": 27.14, "add": 4.84, "add_pipe": 4.84, "rc": 0, "commit": 6.5, "rmtree": 0.31}
+  788.9 {"i": 17, "braco": "desligado", "init": 27.98, "init_pipe": 27.98, "add": 4.62, "add_pipe": 4.62, "rc": 0, "commit": 6.39, "rmtree": 0.36}
+  828.6 {"i": 18, "braco": "desligado", "init": 27.67, "init_pipe": 27.67, "add": 4.91, "add_pipe": 4.91, "rc": 0, "commit": 6.66, "rmtree": 0.31}
+  868.2 {"i": 19, "braco": "desligado", "init": 28.09, "init_pipe": 28.09, "add": 4.66, "add_pipe": 4.66, "rc": 0, "commit": 6.34, "rmtree": 0.33}
+  909.2 {"i": 20, "braco": "desligado", "init": 28.77, "init_pipe": 28.77, "add": 5.45, "add_pipe": 5.45, "rc": 0, "commit": 6.34, "rmtree": 0.31}
+  950.1 {"i": 21, "braco": "desligado", "init": 28.41, "init_pipe": 28.41, "add": 4.73, "add_pipe": 4.73, "rc": 0, "commit": 7.22, "rmtree": 0.33}
+  988.4 {"i": 22, "braco": "desligado", "init": 26.97, "init_pipe": 26.97, "add": 4.58, "add_pipe": 4.58, "rc": 0, "commit": 6.39, "rmtree": 0.31}
+ 1027.7 {"i": 23, "braco": "desligado", "init": 27.0, "init_pipe": 27.0, "add": 5.48, "add_pipe": 5.48, "rc": 0, "commit": 6.28, "rmtree": 0.34}
+ 1066.1 {"i": 24, "braco": "desligado", "init": 27.17, "init_pipe": 27.17, "add": 4.53, "add_pipe": 4.53, "rc": 0, "commit": 6.3, "rmtree": 0.31}
+ 1104.6 {"i": 25, "braco": "desligado", "init": 26.98, "init_pipe": 26.98, "add": 4.73, "add_pipe": 4.73, "rc": 0, "commit": 6.33, "rmtree": 0.31}
+ 1105.3 22:07:16 Microsoft-Windows-WindowsUpdateClient 43 Installation Started: Windows has started installing the following update: Security Intelligence Update for Microsoft Defender Antivirus - KB2267602 (Version 1.463.470.0) - Current Channel (Broad)
+22:07:17 Service Control Manager 7036 The Device Setup Manager service entered the stopped state.
+22:07:32 Microsoft-Windows-WindowsUpdateClient 19 Installation Successful: Windows successfully installed the following update: Security Intelligence Update for Microsoft Defender Antivirus - KB2267602 (Version 1.463.470.0) - Current Channel (Broad)
+22:07:37 Service Control Manager 7036 The Software Protection service entered the stopped state.
+22:07:38 Service Control Manager 7036 The Software Protection service entered the running state.
+22:07:43 Service Control Manager 7036 The Windows Security Service service entered the running state.
+22:07:58 Service Control Manager 7036 The WaaSMedicSvc service entered the stopped state.
+22:08:08 Service Control Manager 7036 The Windows Insider Service service entered the stopped state.
+22:08:09 Service Control Manager 7036 The Software Protection service entered the stopped state.
+22:08:22 Service Control Manager 7036 The Print Device Configuration Service service entered the stopped state.
+22:08:29 Service Control Manager 7036 The Diagnostic Policy Service service entered the running state.
+22:08:29 Service Control Manager 7036 The Diagnostic System Host service entered the running state.
+22:08:29 Service Control Manager 7000 The Microsoft Edge Update Service (edgeupdate) service failed to start due to the following error: 
+
+22:08:29 Service Control Manager 7036 The Program Compatibility Assistant Service service entered the running state.
+22:08:29 Service Control Manager 7036 The Distributed Transaction Coordinator service entered the running state.
+22:08:29 Service Control Manager 7036 The Software Protection service entered the running state.
+22:08:31 Service Control Manager 7036 The User Access Logging Service service entered the running state.
+22:08:32 Service Control Manager 7036 The WaaSMedicSvc service entered the running state.
+22:08:32 Service Control Manager 7036 The Update Orchestrator Service service entered the running state.
+22:08:32 Service Control Manager 7036 The Clipboard User Service_c1d89 service entered the running state.
+22:08:42 Service Control Manager 7040 The start type of the Background Intelligent Transfer Service service was changed from auto start to demand start.
+22:08:42 Service Control Manager 7036 The Background Intelligent Transfer Service service entered the stopped state.
+22:08:52 Service Control Manager 7036 The Device Install Service service entered the stopped state.
+22:08:53 Service Control Manager 7036 The Portable Device Enumerator Service service entered the stopped state.
+22:09:00 Service Control Manager 7036 The Software Protection service entered the stopped state.
+22:09:03 Service Control Manager 7040 The start type of the Update Orchestrator Service service was changed from auto start to disabled.
+22:09:03 Service Control Manager 7036 The Update Orchestrator Service service entered the stopped state.
+22:09:03 Service Control Manager 7040 The start type of the Windows Update service was changed from demand start to disabled.
+22:09:04 Service Control Manager 7036 The Windows Update service entered the stopped state.
+22:09:04 Service Control Manager 7040 The start type of the Background Intelligent Transfer Service service was changed from demand start to disabled.
+22:09:04 Service Control Manager 7040 The start type of the Windows Modules Installer service was changed from demand start to disabled.
+22:09:04 Service Control Manager 7036 The WaaSMedicSvc service entered the stopped state.
+22:10:08 Service Control Manager 7036 The Microsoft Passport service entered the stopped state.
+22:11:32 Service Control Manager 7036 The Network Setup Service service entered the stopped state.
+22:12:15 Service Control Manager 7036 The Delivery Optimization service entered the stopped state.
+22:13:04 Service Control Manager 7036 The Microsoft Account Sign-in Assistant service entered the stopped state.
+22:13:16 Service Control Manager 7036 The Client License Service (ClipSVC) service entered the stopped state.
+22:13:54 Service Control Manager 7036 The Windows PushToInstall Service service entered the running state.
+22:13:55 Service Control Manager 7036 The Microsoft Account Sign-in Assistant service entered the running state.
+22:14:00 Service Control Manager 7036 The Windows PushToInstall Service service entered the stopped state.
+22:14:03 Service Control Manager 7036 The Software Protection service entered the running state.
+22:14:58 Service Control Manager 7036 The Software Protection service entered the stopped state.
+22:15:08 Service Control Manager 7036 The Microsoft Passport Container service entered the stopped state.
+22:16:24 Service Control Manager 7036 The Remote Registry service entered the stopped state.
+22:16:39 Service Control Manager 7036 The Declared Configuration(DC) service service entered the running state.
+22:17:00 Service Control Manager 7036 The Microsoft Account Sign-in Assistant service entered the stopped state.
+22:17:08 Service Control Manager 7036 The Volume Shadow Copy service entered the running state.
+22:17:08 Service Control Manager 7036 The Microsoft Software Shadow Copy Provider service entered the running state.
+22:18:39 Service Control Manager 7036 The Declared Configuration(DC) service service entered the stopped state.
+22:20:08 VSS 8224 The VSS service is shutting down due to idle timeout. 
+22:20:08 Service Control Manager 7036 The Volume Shadow Copy service entered the stopped state.
+22:21:54 Service Control Manager 7036 The Geolocation Service service entered the running state.
+22:21:54 Service Control Manager 7040 The start type of the Background Intelligent Transfer Service service was changed from disabled to auto start.
+22:21:54 Service Control Manager 7036 The Background Intelligent Transfer Service service entered the running state.
+22:21:54 Service Control Manager 7040 The start type of the Windows Update service was changed from disabled to demand start.
+22:21:55 Service Control Manager 7036 The Windows Update service entered the running state.
+22:23:00 Service Control Manager 7036 The Client License Service (ClipSVC) service entered the running state.
+22:23:08 Service Control Manager 7036 The Microsoft Software Shadow Copy Provider service entered the stopped state.
+22:23:54 Service Control Manager 7040 The start type of the Background Intelligent Transfer Service service was changed from auto start to demand start.
+22:23:54 Service Control Manager 7036 The Background Intelligent Transfer Service service entered the stopped state.
+
+
+== RESUMO desligado1
+desligado    init    n=26 min=26.9 mediana=28.1 max=32.8
+desligado    add     n=26 min=4.5 mediana=4.9 max=14.5
+desligado    commit  n=26 min=6.2 mediana=6.4 max=13.3
+desligado    rmtree  n=26 min=0.3 mediana=0.3 max=0.4
+--- batimento (t,atraso,C,D) acima de 0,3 s:
+142.1,0.000,0.328,0.000
+443.7,0.000,0.578,0.000
+528.1,0.000,0.625,0.000
+532.7,0.000,0.343,0.000
+
+########## diag-desligado2
+   13.7 CHECAR {"i": 0, "t": 11.75, "setup": 0.97, "epoch_inicio": 1795644507.094916, "rc": 0}
+   26.0 CHECAR {"i": 1, "t": 11.27, "setup": 0.94, "epoch_inicio": 1795644519.859005, "rc": 0}
+   38.2 CHECAR {"i": 2, "t": 11.2, "setup": 0.92, "epoch_inicio": 1795644532.090204, "rc": 0}
+   45.1 WaaSMedicSvc Service 'WaaSMedicSvc (WaaSMedicSvc)' cannot be configured due to the following error: Access is denied
+
+Name              Status StartType
+----              ------ ---------
+BITS             Stopped  Disabled
+TrustedInstaller Stopped  Disabled
+UsoSvc           Stopped  Disabled
+WaaSMedicSvc     Stopped    Manual
+wuauserv         Stopped  Disabled
+
+
+
+   94.5 arquivos no índice: 735
+   94.9 {"i": 0, "braco": "desligado", "init": 32.58, "init_pipe": 32.58, "add": 8.62, "add_pipe": 8.62, "rc": 0, "commit": 8.03, "rmtree": 0.33}
+  150.5 {"i": 1, "braco": "desligado", "init": 32.0, "init_pipe": 32.0, "add": 9.59, "add_pipe": 9.59, "rc": 0, "commit": 13.47, "rmtree": 0.36}
+  201.6 {"i": 2, "braco": "desligado", "init": 34.09, "init_pipe": 34.09, "add": 8.66, "add_pipe": 8.66, "rc": 0, "commit": 7.86, "rmtree": 0.34}
+  250.9 {"i": 3, "braco": "desligado", "init": 32.48, "init_pipe": 32.48, "add": 8.52, "add_pipe": 8.52, "rc": 0, "commit": 7.73, "rmtree": 0.34}
+  299.5 {"i": 4, "braco": "desligado", "init": 31.58, "init_pipe": 31.58, "add": 8.48, "add_pipe": 8.48, "rc": 0, "commit": 8.06, "rmtree": 0.34}
+  347.5 {"i": 5, "braco": "desligado", "init": 31.38, "init_pipe": 31.38, "add": 8.31, "add_pipe": 8.31, "rc": 0, "commit": 7.83, "rmtree": 0.33}
+  396.5 {"i": 6, "braco": "desligado", "init": 32.64, "init_pipe": 32.64, "add": 8.03, "add_pipe": 8.03, "rc": 0, "commit": 7.8, "rmtree": 0.34}
+  445.5 {"i": 7, "braco": "desligado", "init": 31.95, "init_pipe": 31.95, "add": 8.61, "add_pipe": 8.61, "rc": 0, "commit": 8.0, "rmtree": 0.34}
+  494.0 {"i": 8, "braco": "desligado", "init": 31.38, "init_pipe": 31.38, "add": 8.5, "add_pipe": 8.5, "rc": 0, "commit": 8.06, "rmtree": 0.34}
+  578.6 {"i": 9, "braco": "desligado", "init": 30.98, "init_pipe": 30.98, "add": 44.11, "add_pipe": 44.11, "rc": 0, "commit": 9.05, "rmtree": 0.33}
+  627.0 {"i": 10, "braco": "desligado", "init": 30.76, "init_pipe": 30.76, "add": 9.34, "add_pipe": 9.34, "rc": 0, "commit": 7.73, "rmtree": 0.33}
+  673.8 {"i": 11, "braco": "desligado", "init": 30.58, "init_pipe": 30.58, "add": 8.14, "add_pipe": 8.14, "rc": 0, "commit": 7.64, "rmtree": 0.33}
+  721.6 {"i": 12, "braco": "desligado", "init": 31.14, "init_pipe": 31.14, "add": 8.33, "add_pipe": 8.33, "rc": 0, "commit": 7.8, "rmtree": 0.34}
+  768.7 {"i": 13, "braco": "desligado", "init": 30.7, "init_pipe": 30.7, "add": 8.17, "add_pipe": 8.17, "rc": 0, "commit": 7.7, "rmtree": 0.31}
+  817.0 {"i": 14, "braco": "desligado", "init": 30.51, "init_pipe": 30.51, "add": 8.99, "add_pipe": 8.99, "rc": 0, "commit": 8.33, "rmtree": 0.33}
+  865.5 {"i": 15, "braco": "desligado", "init": 31.88, "init_pipe": 31.88, "add": 8.2, "add_pipe": 8.2, "rc": 0, "commit": 7.86, "rmtree": 0.34}
+  915.4 {"i": 16, "braco": "desligado", "init": 32.8, "init_pipe": 32.8, "add": 8.55, "add_pipe": 8.55, "rc": 0, "commit": 8.08, "rmtree": 0.34}
+  963.6 {"i": 17, "braco": "desligado", "init": 31.53, "init_pipe": 31.53, "add": 8.33, "add_pipe": 8.33, "rc": 0, "commit": 7.84, "rmtree": 0.33}
+ 1011.6 {"i": 18, "braco": "desligado", "init": 31.67, "init_pipe": 31.67, "add": 8.08, "add_pipe": 8.08, "rc": 0, "commit": 7.73, "rmtree": 0.33}
+ 1058.7 {"i": 19, "braco": "desligado", "init": 30.72, "init_pipe": 30.72, "add": 8.2, "add_pipe": 8.2, "rc": 0, "commit": 7.75, "rmtree": 0.33}
+ 1108.0 {"i": 20, "braco": "desligado", "init": 31.11, "init_pipe": 31.11, "add": 9.95, "add_pipe": 9.95, "rc": 0, "commit": 7.67, "rmtree": 0.33}
+ 1108.7 22:07:11 Service Control Manager 7036 The Windows Insider Service service entered the running state.
+22:07:14 Service Control Manager 7036 The Connected Devices Platform Service service entered the running state.
+22:07:21 Service Control Manager 7036 The Windows Camera Frame Server Monitor service entered the stopped state.
+22:07:41 Service Control Manager 7036 The Software Protection service entered the stopped state.
+22:07:42 Service Control Manager 7036 The Software Protection service entered the running state.
+22:07:44 Service Control Manager 7036 The WaaSMedicSvc service entered the stopped state.
+22:07:48 Service Control Manager 7036 The Windows Security Service service entered the running state.
+22:08:09 Service Control Manager 7036 The Print Device Configuration Service service entered the stopped state.
+22:08:12 Service Control Manager 7036 The Windows Insider Service service entered the stopped state.
+22:08:13 Service Control Manager 7036 The Software Protection service entered the stopped state.
+22:08:17 Service Control Manager 7036 The Diagnostic Policy Service service entered the running state.
+22:08:17 Service Control Manager 7036 The Diagnostic System Host service entered the running state.
+22:08:17 Service Control Manager 7000 The Microsoft Edge Update Service (edgeupdate) service failed to start due to the following error: 
+
+22:08:17 Service Control Manager 7036 The Program Compatibility Assistant Service service entered the running state.
+22:08:17 Service Control Manager 7036 The Distributed Transaction Coordinator service entered the running state.
+22:08:17 Service Control Manager 7036 The Software Protection service entered the running state.
+22:08:20 Service Control Manager 7036 The User Access Logging Service service entered the running state.
+22:08:22 Service Control Manager 7036 The WaaSMedicSvc service entered the running state.
+22:08:22 Service Control Manager 7036 The Update Orchestrator Service service entered the running state.
+22:08:23 Service Control Manager 7036 The Clipboard User Service_d8bb2 service entered the running state.
+22:08:28 Service Control Manager 7040 The start type of the Background Intelligent Transfer Service service was changed from auto start to demand start.
+22:08:28 Service Control Manager 7036 The Background Intelligent Transfer Service service entered the stopped state.
+22:08:39 Service Control Manager 7036 The Device Install Service service entered the stopped state.
+22:08:48 Service Control Manager 7036 The Software Protection service entered the stopped state.
+22:08:54 Service Control Manager 7036 The Portable Device Enumerator Service service entered the stopped state.
+22:09:06 Service Control Manager 7040 The start type of the Update Orchestrator Service service was changed from auto start to disabled.
+22:09:06 Service Control Manager 7036 The Update Orchestrator Service service entered the stopped state.
+22:09:06 Service Control Manager 7040 The start type of the Windows Update service was changed from demand start to disabled.
+22:09:08 Service Control Manager 7036 The Windows Update service entered the stopped state.
+22:09:08 Service Control Manager 7040 The start type of the Background Intelligent Transfer Service service was changed from demand start to disabled.
+22:09:08 Service Control Manager 7040 The start type of the Windows Modules Installer service was changed from demand start to disabled.
+22:09:08 Service Control Manager 7036 The WaaSMedicSvc service entered the stopped state.
+22:09:55 Service Control Manager 7036 The Microsoft Passport service entered the stopped state.
+22:10:42 Service Control Manager 7036 The Windows PushToInstall Service service entered the running state.
+22:10:47 Service Control Manager 7036 The Windows PushToInstall Service service entered the stopped state.
+22:10:48 Service Control Manager 7036 The Software Protection service entered the running state.
+22:11:20 Service Control Manager 7036 The Network Setup Service service entered the stopped state.
+22:11:31 Service Control Manager 7036 The Software Protection service entered the stopped state.
+22:11:33 Service Control Manager 7036 The Delivery Optimization service entered the stopped state.
+22:13:22 Service Control Manager 7036 The Client License Service (ClipSVC) service entered the stopped state.
+22:13:47 Service Control Manager 7036 The Microsoft Account Sign-in Assistant service entered the stopped state.
+22:14:55 Service Control Manager 7036 The Microsoft Passport Container service entered the stopped state.
+22:16:11 Service Control Manager 7036 The Remote Registry service entered the stopped state.
+22:16:13 Service Control Manager 7036 The Declared Configuration(DC) service service entered the running state.
+22:17:12 Service Control Manager 7036 The Volume Shadow Copy service entered the running state.
+22:17:12 Service Control Manager 7036 The Microsoft Software Shadow Copy Provider service entered the running state.
+22:17:12 Service Control Manager 7036 The AppX Deployment Service (AppXSVC) service entered the stopped state.
+22:18:13 Service Control Manager 7036 The Declared Configuration(DC) service service entered the stopped state.
+22:20:12 VSS 8224 The VSS service is shutting down due to idle timeout. 
+22:20:12 Service Control Manager 7036 The Volume Shadow Copy service entered the stopped state.
+22:21:55 Service Control Manager 7036 The Geolocation Service service entered the running state.
+22:21:55 Service Control Manager 7040 The start type of the Background Intelligent Transfer Service service was changed from disabled to auto start.
+22:21:55 Service Control Manager 7036 The Background Intelligent Transfer Service service entered the running state.
+22:21:56 Service Control Manager 7040 The start type of the Windows Update service was changed from disabled to demand start.
+22:21:56 Service Control Manager 7036 The Windows Update service entered the running state.
+22:23:03 Service Control Manager 7036 The AppX Deployment Service (AppXSVC) service entered the running state.
+22:23:03 Service Control Manager 7036 The Client License Service (ClipSVC) service entered the running state.
+22:23:12 Service Control Manager 7036 The Microsoft Software Shadow Copy Provider service entered the stopped state.
+22:23:55 Service Control Manager 7040 The start type of the Background Intelligent Transfer Service service was changed from auto start to demand start.
+22:23:56 Service Control Manager 7036 The Background Intelligent Transfer Service service entered the stopped state.
+
+
+== RESUMO desligado2
+desligado    init    n=21 min=30.5 mediana=31.5 max=34.1
+desligado    add     n=21 min=8.0 mediana=8.5 max=44.1
+desligado    commit  n=21 min=7.6 mediana=7.8 max=13.5
+desligado    rmtree  n=21 min=0.3 mediana=0.3 max=0.4
+--- batimento (t,atraso,C,D) acima de 0,3 s:
+151.5,0.000,0.312,0.000
+170.0,0.000,1.188,0.000
+352.4,0.000,0.735,0.000
+529.3,0.000,0.375,0.000
+531.0,0.000,0.734,0.000
+533.7,0.000,0.484,0.000
+564.4,0.000,0.422,0.000
+1094.2,0.000,1.578,0.000
+
+########## diag-desligado3
+   12.8 CHECAR {"i": 0, "t": 10.88, "setup": 0.77, "epoch_inicio": 1795644502.5072415, "rc": 0}
+   24.5 CHECAR {"i": 1, "t": 10.42, "setup": 1.3, "epoch_inicio": 1795644514.7351422, "rc": 0}
+   35.5 CHECAR {"i": 2, "t": 10.34, "setup": 0.62, "epoch_inicio": 1795644525.8211956, "rc": 0}
+   42.3 WaaSMedicSvc Service 'WaaSMedicSvc (WaaSMedicSvc)' cannot be configured due to the following error: Access is denied
+
+Name              Status StartType
+----              ------ ---------
+BITS             Stopped  Disabled
+TrustedInstaller Stopped  Disabled
+UsoSvc           Stopped  Disabled
+WaaSMedicSvc     Stopped    Manual
+wuauserv         Stopped  Disabled
+
+
+
+   81.5 arquivos no índice: 735
+   81.7 {"i": 0, "braco": "desligado", "init": 26.95, "init_pipe": 26.95, "add": 7.11, "add_pipe": 7.11, "rc": 0, "commit": 4.99, "rmtree": 0.22}
+  119.1 {"i": 1, "braco": "desligado", "init": 25.55, "init_pipe": 25.55, "add": 5.74, "add_pipe": 5.74, "rc": 0, "commit": 5.75, "rmtree": 0.22}
+  155.8 {"i": 2, "braco": "desligado", "init": 25.48, "init_pipe": 25.48, "add": 5.8, "add_pipe": 5.8, "rc": 0, "commit": 5.08, "rmtree": 0.2}
+  192.5 {"i": 3, "braco": "desligado", "init": 25.5, "init_pipe": 25.5, "add": 6.12, "add_pipe": 6.12, "rc": 0, "commit": 4.81, "rmtree": 0.22}
+  229.9 {"i": 4, "braco": "desligado", "init": 25.53, "init_pipe": 25.53, "add": 5.64, "add_pipe": 5.64, "rc": 0, "commit": 5.72, "rmtree": 0.22}
+  267.5 {"i": 5, "braco": "desligado", "init": 25.52, "init_pipe": 25.52, "add": 6.78, "add_pipe": 6.78, "rc": 0, "commit": 4.94, "rmtree": 0.22}
+  304.0 {"i": 6, "braco": "desligado", "init": 25.56, "init_pipe": 25.56, "add": 5.2, "add_pipe": 5.2, "rc": 0, "commit": 5.52, "rmtree": 0.22}
+  340.6 {"i": 7, "braco": "desligado", "init": 25.52, "init_pipe": 25.52, "add": 4.69, "add_pipe": 4.69, "rc": 0, "commit": 5.95, "rmtree": 0.2}
+  377.9 {"i": 8, "braco": "desligado", "init": 25.47, "init_pipe": 25.47, "add": 5.56, "add_pipe": 5.56, "rc": 0, "commit": 5.8, "rmtree": 0.22}
+  413.7 {"i": 9, "braco": "desligado", "init": 25.49, "init_pipe": 25.49, "add": 4.94, "add_pipe": 4.94, "rc": 0, "commit": 5.14, "rmtree": 0.2}
+  451.4 {"i": 10, "braco": "desligado", "init": 25.48, "init_pipe": 25.48, "add": 6.22, "add_pipe": 6.22, "rc": 0, "commit": 5.58, "rmtree": 0.23}
+  488.7 {"i": 11, "braco": "desligado", "init": 25.41, "init_pipe": 25.41, "add": 5.91, "add_pipe": 5.91, "rc": 0, "commit": 5.45, "rmtree": 0.22}
+  529.4 {"i": 12, "braco": "desligado", "init": 25.47, "init_pipe": 25.47, "add": 7.31, "add_pipe": 7.31, "rc": 0, "commit": 7.52, "rmtree": 0.22}
+  589.6 {"i": 13, "braco": "desligado", "init": 43.08, "init_pipe": 43.08, "add": 10.59, "add_pipe": 10.59, "rc": 0, "commit": 5.98, "rmtree": 0.2}
+  630.7 {"i": 14, "braco": "desligado", "init": 25.56, "init_pipe": 25.56, "add": 8.33, "add_pipe": 8.33, "rc": 0, "commit": 6.86, "rmtree": 0.22}
+  666.8 {"i": 15, "braco": "desligado", "init": 25.5, "init_pipe": 25.5, "add": 4.91, "add_pipe": 4.91, "rc": 0, "commit": 5.33, "rmtree": 0.25}
+  709.8 {"i": 16, "braco": "desligado", "init": 25.48, "init_pipe": 25.48, "add": 9.91, "add_pipe": 9.91, "rc": 0, "commit": 7.06, "rmtree": 0.2}
+  746.8 {"i": 17, "braco": "desligado", "init": 25.5, "init_pipe": 25.5, "add": 6.08, "add_pipe": 6.08, "rc": 0, "commit": 5.16, "rmtree": 0.22}
+  786.4 {"i": 18, "braco": "desligado", "init": 25.61, "init_pipe": 25.61, "add": 7.52, "add_pipe": 7.52, "rc": 0, "commit": 6.05, "rmtree": 0.22}
+  822.4 {"i": 19, "braco": "desligado", "init": 25.53, "init_pipe": 25.53, "add": 5.0, "add_pipe": 5.0, "rc": 0, "commit": 5.12, "rmtree": 0.26}
+  860.5 {"i": 20, "braco": "desligado", "init": 25.58, "init_pipe": 25.58, "add": 6.59, "add_pipe": 6.59, "rc": 0, "commit": 5.52, "rmtree": 0.23}
+  904.7 {"i": 21, "braco": "desligado", "init": 30.14, "init_pipe": 30.14, "add": 7.95, "add_pipe": 7.95, "rc": 0, "commit": 5.48, "rmtree": 0.22}
+  942.1 {"i": 22, "braco": "desligado", "init": 25.58, "init_pipe": 25.58, "add": 5.73, "add_pipe": 5.73, "rc": 0, "commit": 5.72, "rmtree": 0.23}
+  978.7 {"i": 23, "braco": "desligado", "init": 25.62, "init_pipe": 25.62, "add": 5.25, "add_pipe": 5.25, "rc": 0, "commit": 5.42, "rmtree": 0.22}
+ 1016.3 {"i": 24, "braco": "desligado", "init": 25.61, "init_pipe": 25.61, "add": 6.12, "add_pipe": 6.12, "rc": 0, "commit": 5.5, "rmtree": 0.2}
+ 1052.1 {"i": 25, "braco": "desligado", "init": 25.58, "init_pipe": 25.58, "add": 4.59, "add_pipe": 4.59, "rc": 0, "commit": 5.27, "rmtree": 0.22}
+ 1093.3 {"i": 26, "braco": "desligado", "init": 25.44, "init_pipe": 25.44, "add": 9.09, "add_pipe": 9.09, "rc": 0, "commit": 6.36, "rmtree": 0.22}
+ 1093.8 22:07:21 Microsoft-Windows-WindowsUpdateClient 19 Installation Successful: Windows successfully installed the following update: Security Intelligence Update for Microsoft Defender Antivirus - KB2267602 (Version 1.463.470.0) - Current Channel (Broad)
+22:07:24 Service Control Manager 7036 The Microsoft Storage Spaces SMP service entered the running state.
+22:07:25 Service Control Manager 7036 The Device Setup Manager service entered the running state.
+22:07:26 Service Control Manager 7045 A service was installed in the system.
+
+22:07:29 Service Control Manager 7036 The Windows Security Service service entered the running state.
+22:07:58 Service Control Manager 7036 The Software Protection service entered the stopped state.
+22:07:59 Service Control Manager 7036 The WaaSMedicSvc service entered the stopped state.
+22:08:12 Service Control Manager 7036 The Device Setup Manager service entered the stopped state.
+22:08:16 Service Control Manager 7036 The Windows Insider Service service entered the stopped state.
+22:08:26 Service Control Manager 7036 The Print Device Configuration Service service entered the stopped state.
+22:08:33 Service Control Manager 7036 The Diagnostic Policy Service service entered the running state.
+22:08:33 Service Control Manager 7036 The Diagnostic System Host service entered the running state.
+22:08:33 Service Control Manager 7036 The Program Compatibility Assistant Service service entered the running state.
+22:08:33 Service Control Manager 7000 The Microsoft Edge Update Service (edgeupdate) service failed to start due to the following error: 
+
+22:08:33 Service Control Manager 7036 The Distributed Transaction Coordinator service entered the running state.
+22:08:33 Service Control Manager 7036 The Software Protection service entered the running state.
+22:08:35 Service Control Manager 7036 The User Access Logging Service service entered the running state.
+22:08:36 Service Control Manager 7036 The WaaSMedicSvc service entered the running state.
+22:08:36 Service Control Manager 7036 The Update Orchestrator Service service entered the running state.
+22:08:36 Service Control Manager 7036 The Clipboard User Service_d1449 service entered the running state.
+22:08:40 Service Control Manager 7040 The start type of the Background Intelligent Transfer Service service was changed from auto start to demand start.
+22:08:40 Service Control Manager 7036 The Background Intelligent Transfer Service service entered the stopped state.
+22:08:59 Service Control Manager 7040 The start type of the Update Orchestrator Service service was changed from auto start to disabled.
+22:08:59 Service Control Manager 7036 The Update Orchestrator Service service entered the stopped state.
+22:08:59 Service Control Manager 7040 The start type of the Windows Update service was changed from demand start to disabled.
+22:09:01 Service Control Manager 7036 The Windows Update service entered the stopped state.
+22:09:01 Service Control Manager 7040 The start type of the Background Intelligent Transfer Service service was changed from demand start to disabled.
+22:09:01 Service Control Manager 7040 The start type of the Windows Modules Installer service was changed from demand start to disabled.
+22:09:01 Service Control Manager 7036 The WaaSMedicSvc service entered the stopped state.
+22:09:04 Service Control Manager 7036 The Software Protection service entered the stopped state.
+22:09:26 Service Control Manager 7036 The Portable Device Enumerator Service service entered the stopped state.
+22:09:26 Service Control Manager 7036 The Device Install Service service entered the stopped state.
+22:10:15 Service Control Manager 7036 The Microsoft Passport service entered the stopped state.
+22:11:36 Service Control Manager 7036 The Network Setup Service service entered the stopped state.
+22:11:46 Service Control Manager 7036 The Delivery Optimization service entered the stopped state.
+22:13:03 Service Control Manager 7036 The Client License Service (ClipSVC) service entered the stopped state.
+22:13:12 Service Control Manager 7036 The Microsoft Account Sign-in Assistant service entered the stopped state.
+22:15:15 Service Control Manager 7036 The Microsoft Passport Container service entered the stopped state.
+22:15:52 Service Control Manager 7036 The Windows PushToInstall Service service entered the running state.
+22:15:52 Service Control Manager 7036 The Microsoft Account Sign-in Assistant service entered the running state.
+22:15:57 Service Control Manager 7036 The Software Protection service entered the running state.
+22:15:57 Service Control Manager 7036 The Windows PushToInstall Service service entered the stopped state.
+22:16:27 Service Control Manager 7036 The Remote Registry service entered the stopped state.
+22:16:30 Service Control Manager 7036 The Declared Configuration(DC) service service entered the running state.
+22:16:41 Service Control Manager 7036 The Software Protection service entered the stopped state.
+22:17:16 Service Control Manager 7036 The Volume Shadow Copy service entered the running state.
+22:17:16 Service Control Manager 7036 The Microsoft Software Shadow Copy Provider service entered the running state.
+22:18:30 Service Control Manager 7036 The Declared Configuration(DC) service service entered the stopped state.
+22:18:57 Service Control Manager 7036 The Microsoft Account Sign-in Assistant service entered the stopped state.
+22:20:16 VSS 8224 The VSS service is shutting down due to idle timeout. 
+22:20:16 Service Control Manager 7036 The Volume Shadow Copy service entered the stopped state.
+22:22:02 Service Control Manager 7036 The Geolocation Service service entered the running state.
+22:22:02 Service Control Manager 7040 The start type of the Background Intelligent Transfer Service service was changed from disabled to auto start.
+22:22:02 Service Control Manager 7036 The Background Intelligent Transfer Service service entered the running state.
+22:22:02 Service Control Manager 7040 The start type of the Windows Update service was changed from disabled to demand start.
+22:22:02 Service Control Manager 7036 The Windows Update service entered the running state.
+22:23:07 Service Control Manager 7036 The Client License Service (ClipSVC) service entered the running state.
+22:23:16 Service Control Manager 7036 The Microsoft Software Shadow Copy Provider service entered the stopped state.
+22:24:02 Service Control Manager 7040 The start type of the Background Intelligent Transfer Service service was changed from auto start to demand start.
+22:24:02 Service Control Manager 7036 The Background Intelligent Transfer Service service entered the stopped state.
+
+
+== RESUMO desligado3
+desligado    init    n=27 min=25.4 mediana=25.5 max=43.1
+desligado    add     n=27 min=4.6 mediana=6.1 max=10.6
+desligado    commit  n=27 min=4.8 mediana=5.5 max=7.5
+desligado    rmtree  n=27 min=0.2 mediana=0.2 max=0.3
+--- batimento (t,atraso,C,D) acima de 0,3 s:
+157.4,0.000,0.890,0.000
+277.5,0.000,0.312,0.000
+416.8,0.000,0.469,0.000
+461.0,0.000,0.500,0.000
+538.9,0.000,0.421,0.000
+541.4,0.000,0.328,0.000
+563.8,0.000,0.672,0.000
+565.1,0.000,0.344,0.000
+566.5,0.000,0.344,0.000
+578.3,0.000,0.750,0.000
+597.4,0.000,0.312,0.000
+705.5,0.000,0.312,0.000
+707.1,0.016,0.500,0.000
+750.3,0.016,0.641,0.000
+875.2,0.015,6.094,0.000
+876.8,0.000,0.531,0.000
+881.1,0.000,0.312,0.000
+1079.1,0.000,0.328,0.000
+
+########## diag-fatia7
+   13.0 CHECAR {"i": 0, "t": 11.33, "setup": 0.83, "epoch_inicio": 1795644503.0539913, "rc": 0}
+   24.7 CHECAR {"i": 1, "t": 10.86, "setup": 0.78, "epoch_inicio": 1795644515.212352, "rc": 0}
+   36.3 CHECAR {"i": 2, "t": 10.81, "setup": 0.77, "epoch_inicio": 1795644526.8949578, "rc": 0}
+fatia 7/16: 41 unidade(s), 183 teste(s); teto por unidade 900s; paralelo 1
+test_checar.TestGh[2de2]                     OK     testes=5    falhas=0   erros=0   pulados=0      26.0s
+test_contexto_lint.Real3                     OK     testes=2    falhas=0   erros=0   pulados=0       7.2s
+test_copiar_docs.Copia                       OK     testes=8    falhas=0   erros=0   pulados=1       4.1s
+test_curadoria_bloco.Fronteira[1de2]         OK     testes=6    falhas=0   erros=0   pulados=0       7.8s
+test_curadoria_bloco.Reprova[2de5]           OK     testes=7    falhas=0   erros=0   pulados=0       6.4s
+test_deploy_espera_testes.DeployEsperaTestes[4de4] OK     testes=5    falhas=0   erros=0   pulados=0       0.3s
+test_desempenho_varredura.Dispensa           OK     testes=2    falhas=0   erros=0   pulados=0       2.6s
+test_desempenho_varredura.RevisaoDoCodigo2   OK     testes=4    falhas=0   erros=0   pulados=0       3.9s
+test_f13_textos.Roteador[1de2]               OK     testes=5    falhas=0   erros=0   pulados=0       0.1s
+test_f13_textos.TabelaWcag                   OK     testes=7    falhas=0   erros=0   pulados=0       0.1s
+test_f14_drive_textos.Despachar              OK     testes=1    falhas=0   erros=0   pulados=0       0.4s
+test_f16w2_processos.Recusas                 OK     testes=6    falhas=0   erros=0   pulados=1      14.9s
+test_f17_passo0.Incidente                    OK     testes=3    falhas=0   erros=0   pulados=0       0.1s
+test_f17b_passo0.LintSemBarra                OK     testes=2    falhas=0   erros=0   pulados=0       0.6s
+test_f17c_textos.ValidadorDaBuilder          OK     testes=1    falhas=0   erros=0   pulados=0       0.4s
+test_f18_f20_textos.Seguranca                OK     testes=4    falhas=0   erros=0   pulados=0       0.1s
+test_f23_custo.AT001Marca                    OK     testes=5    falhas=0   erros=0   pulados=1       2.0s
+test_f23b2_papeis.AT010Pacote                OK     testes=7    falhas=0   erros=0   pulados=0       0.1s
+test_f23b3_revisao.AT002Risco                OK     testes=8    falhas=0   erros=0   pulados=0       8.3s
+test_f24_release_enxuta.AT006_CommitDePapel  OK     testes=3    falhas=0   erros=0   pulados=0       0.5s
+test_f24_release_enxuta.Revisao4aTextos      OK     testes=4    falhas=0   erros=0   pulados=0       0.2s
+test_f25_skills_duplicadas.AT007Matriz       OK     testes=2    falhas=0   erros=0   pulados=1      13.9s
+test_f28_revisores.Paridade                  OK     testes=1    falhas=0   erros=0   pulados=0       0.4s
+test_f30_agents_qualidade.Leitor             OK     testes=3    falhas=0   erros=0   pulados=0       1.0s
+test_f30_report_lint.AT001SlotCheio[2de2]    OK     testes=6    falhas=0   erros=0   pulados=0       1.1s
+test_fluxo.ReviewDesign                      OK     testes=7    falhas=0   erros=0   pulados=0       2.2s
+test_gate_baseline.GateBaseline[1de2]        OK     testes=5    falhas=0   erros=0   pulados=0      10.7s
+test_gate_shell_evidencia.ModoDiff           OK     testes=4    falhas=0   erros=0   pulados=0       4.0s
+test_governanca_fronteira.Uso                OK     testes=1    falhas=0   erros=0   pulados=0       2.3s
+test_inventario.TestGh                       OK     testes=2    falhas=0   erros=0   pulados=0       7.9s
+test_playbook_curator.Aplicar[3de3]          OK     testes=6    falhas=0   erros=0   pulados=0       4.2s
+test_playbook_invariantes.Cruzar[1de2]       OK     testes=8    falhas=0   erros=0   pulados=0       4.3s
+test_python_resolver.Parada                  OK     testes=7    falhas=0   erros=0   pulados=0       1.0s
+test_revisao.RevisaoFinal[1de2]              OK     testes=5    falhas=0   erros=0   pulados=0       5.4s
+test_sdd_archive.Aplicar                     OK     testes=3    falhas=0   erros=0   pulados=0       1.4s
+test_sdd_archive.Simulacao[1de2]             OK     testes=6    falhas=0   erros=0   pulados=0       2.8s
+test_sdd_kb_normativo.GeralUntouched         OK     testes=1    falhas=0   erros=0   pulados=0       0.2s
+test_sdd_open.Projeto[4de4]                  OK     testes=7    falhas=0   erros=0   pulados=0     397.1s
+test_seguranca_catalogo.Catalogo             OK     testes=8    falhas=0   erros=0   pulados=0       0.4s
+test_seguranca_varredura.Uso[2de2]           OK     testes=4    falhas=0   erros=0   pulados=0       1.8s
+test_verify_gate.FixturesDoRepositorio       OK     testes=2    falhas=0   erros=0   pulados=0       3.4s
+total: 41 unidade(s), 183 teste(s): 0 falha(s), 0 erro(s), 4 pulado(s) em 552.0s
+RESULTADO: VERDE
+  589.2 fatia rc 0
+  592.1 21:57:41 Service Control Manager 7036 The Software Protection service entered the stopped state.
+21:57:43 Service Control Manager 7036 The Software Protection service entered the running state.
+21:57:51 Service Control Manager 7036 The Windows Security Service service entered the running state.
+21:58:05 Service Control Manager 7036 The Print Device Configuration Service service entered the stopped state.
+21:58:14 Service Control Manager 7036 The Software Protection service entered the stopped state.
+21:58:17 Service Control Manager 7036 The Diagnostic Policy Service service entered the running state.
+21:58:17 Service Control Manager 7036 The Diagnostic System Host service entered the running state.
+21:58:17 Service Control Manager 7000 The Microsoft Edge Update Service (edgeupdate) service failed to start due to the following error: 
+
+21:58:17 Service Control Manager 7036 The Program Compatibility Assistant Service service entered the running state.
+21:58:17 Service Control Manager 7036 The Distributed Transaction Coordinator service entered the running state.
+21:58:17 Service Control Manager 7036 The Software Protection service entered the running state.
+21:58:20 Service Control Manager 7036 The User Access Logging Service service entered the running state.
+21:58:20 Service Control Manager 7036 The WaaSMedicSvc service entered the running state.
+21:58:20 Service Control Manager 7036 The Update Orchestrator Service service entered the running state.
+21:58:20 Service Control Manager 7036 The Clipboard User Service_d9383 service entered the running state.
+21:58:28 Service Control Manager 7040 The start type of the Background Intelligent Transfer Service service was changed from auto start to demand start.
+21:58:28 Service Control Manager 7036 The Background Intelligent Transfer Service service entered the stopped state.
+21:58:35 Service Control Manager 7036 The Device Install Service service entered the stopped state.
+21:58:48 Service Control Manager 7036 The Software Protection service entered the stopped state.
+21:58:53 Service Control Manager 7036 The Portable Device Enumerator Service service entered the stopped state.
+21:59:21 Service Control Manager 7036 The WaaSMedicSvc service entered the stopped state.
+21:59:51 Service Control Manager 7036 The Microsoft Passport service entered the stopped state.
+22:01:20 Service Control Manager 7036 The Network Setup Service service entered the stopped state.
+22:01:33 Service Control Manager 7036 The Delivery Optimization service entered the stopped state.
+22:03:08 Service Control Manager 7036 The Microsoft Account Sign-in Assistant service entered the stopped state.
+22:03:24 Service Control Manager 7036 The Client License Service (ClipSVC) service entered the stopped state.
+22:04:49 Service Control Manager 7036 The Windows PushToInstall Service service entered the running state.
+22:04:49 Service Control Manager 7036 The Microsoft Account Sign-in Assistant service entered the running state.
+22:04:49 Service Control Manager 7036 The WaaSMedicSvc service entered the running state.
+22:04:51 Service Control Manager 7036 The Microsoft Passport Container service entered the stopped state.
+22:04:54 Service Control Manager 7040 The start type of the Background Intelligent Transfer Service service was changed from demand start to auto start.
+22:04:54 Service Control Manager 7036 The Background Intelligent Transfer Service service entered the running state.
+22:04:54 Service Control Manager 7036 The Software Protection service entered the running state.
+22:04:55 Service Control Manager 7036 The Windows PushToInstall Service service entered the stopped state.
+22:04:59 Service Control Manager 7036 The Windows Modules Installer service entered the running state.
+22:05:47 Service Control Manager 7036 The Software Protection service entered the stopped state.
+22:05:50 Service Control Manager 7036 The WaaSMedicSvc service entered the stopped state.
+22:06:07 Service Control Manager 7036 The Remote Registry service entered the stopped state.
+22:06:16 Service Control Manager 7036 The Declared Configuration(DC) service service entered the running state.
+22:06:54 Service Control Manager 7036 The Windows Insider Service service entered the stopped state.
+22:07:07 Service Control Manager 7040 The start type of the Background Intelligent Transfer Service service was changed from auto start to demand start.
+22:07:07 Service Control Manager 7036 The Background Intelligent Transfer Service service entered the stopped state.
+22:07:11 Service Control Manager 7036 The Windows Modules Installer service entered the stopped state.
+22:07:13 Service Control Manager 7036 The Volume Shadow Copy service entered the running state.
+22:07:13 Service Control Manager 7036 The Microsoft Software Shadow Copy Provider service entered the running state.
+22:07:55 Service Control Manager 7036 The Microsoft Account Sign-in Assistant service entered the stopped state.
+22:08:16 Service Control Manager 7036 The Declared Configuration(DC) service service entered the stopped state.
+22:08:20 Service Control Manager 7036 The WaaSMedicSvc service entered the running state.
+22:09:21 Service Control Manager 7036 The WaaSMedicSvc service entered the stopped state.
+22:10:13 VSS 8224 The VSS service is shutting down due to idle timeout. 
+22:10:13 Service Control Manager 7036 The Volume Shadow Copy service entered the stopped state.
+22:11:54 Service Control Manager 7036 The WaaSMedicSvc service entered the running state.
+22:11:54 Service Control Manager 7036 The Windows Modules Installer service entered the running state.
+22:11:54 Service Control Manager 7036 The Geolocation Service service entered the running state.
+22:12:55 Service Control Manager 7036 The WaaSMedicSvc service entered the stopped state.
+22:13:02 Service Control Manager 7036 The Client License Service (ClipSVC) service entered the running state.
+22:13:13 Service Control Manager 7036 The Microsoft Software Shadow Copy Provider service entered the stopped state.
+22:13:58 Service Control Manager 7036 The Windows Modules Installer service entered the stopped state.
+22:16:56 Service Control Manager 7036 The App Readiness service entered the stopped state.
+22:18:03 Service Control Manager 7036 The Client License Service (ClipSVC) service entered the stopped state.
+
+
+== RESUMO fatia7
+--- batimento (t,atraso,C,D) acima de 0,3 s:
+
+########## diag-fatia9
+   13.6 CHECAR {"i": 0, "t": 11.64, "setup": 0.91, "epoch_inicio": 1795644506.4678323, "rc": 0}
+   24.9 CHECAR {"i": 1, "t": 10.52, "setup": 0.7, "epoch_inicio": 1795644518.8528469, "rc": 0}
+   36.2 CHECAR {"i": 2, "t": 10.47, "setup": 0.8, "epoch_inicio": 1795644530.206006, "rc": 0}
+fatia 9/16: 42 unidade(s), 183 teste(s); teto por unidade 900s; paralelo 1
+test_apoio_ambiente.Ambiente                 OK     testes=1    falhas=0   erros=0   pulados=0      35.5s
+test_contexto_lint.Lint                      OK     testes=5    falhas=0   erros=0   pulados=0      43.4s
+test_contraste.Locale                        OK     testes=1    falhas=0   erros=0   pulados=1       0.1s
+test_contrato_build_release.TemplateEPlaybook OK     testes=2    falhas=0   erros=0   pulados=0       2.6s
+test_curadoria_bloco.Reprova[4de5]           OK     testes=7    falhas=0   erros=0   pulados=0       5.4s
+test_deploy_espera_testes.DeployEsperaTestes[2de4] FALHOU testes=8    falhas=0   erros=2   pulados=0       0.6s
+    ERROR DeployEsperaTestes.test_job_com_nome_de_deploy_nao_reconhecido_impede_o_sim
+    ERROR DeployEsperaTestes.test_release_do_sdd_open_espera_por_needs
+test_desempenho_diagnostico.RevisaoDoCodigo3 OK     testes=5    falhas=0   erros=0   pulados=0       1.8s
+test_design_lint.AvisoDeSeguranca            OK     testes=2    falhas=0   erros=0   pulados=0       0.3s
+test_design_lint.DesignLint[2de2]            OK     testes=4    falhas=0   erros=0   pulados=0       0.2s
+test_docs.Guia                               OK     testes=6    falhas=0   erros=0   pulados=0       0.1s
+test_f14_textos.BriefDoCurador               OK     testes=7    falhas=0   erros=0   pulados=0       0.1s
+test_f14_textos.NovaSessao                   OK     testes=1    falhas=0   erros=0   pulados=0       0.1s
+test_f14_textos.Pacote                       FALHOU testes=5    falhas=0   erros=1   pulados=0       0.1s
+    ERROR Pacote.test_gatilho_de_release_cobre_as_invariantes
+test_f17b_textos.SemTerminal                 OK     testes=3    falhas=0   erros=0   pulados=0       0.1s
+test_f17c_passo0.Exemplo                     OK     testes=2    falhas=0   erros=0   pulados=0       0.1s
+test_f19_textos.NoProjeto                    OK     testes=4    falhas=0   erros=0   pulados=0      86.1s
+test_f21_textos.Texto[2de2]                  OK     testes=6    falhas=0   erros=0   pulados=0       0.1s
+test_f22_upgrade.PacoteReal                  OK     testes=1    falhas=0   erros=0   pulados=1       0.1s
+test_f23b2_papeis.AT008AT011Executor[4de4]   OK     testes=5    falhas=0   erros=0   pulados=2      10.1s
+test_f24_release_enxuta.AT008_FichaPorAcrescimo OK     testes=3    falhas=0   erros=0   pulados=0       0.8s
+test_f24_release_enxuta.Revisao5Sandbox      OK     testes=7    falhas=0   erros=0   pulados=0       0.5s
+test_f25_skills_duplicadas.RevisaoRodada6    OK     testes=4    falhas=0   erros=0   pulados=1      18.1s
+test_f26_docs_na_main.SemRegressao           FALHOU testes=2    falhas=1   erros=1   pulados=0       0.3s
+    ERROR SemRegressao.test_at007_init_de_um_clone_com_documentos_nao_instala_documento
+    FAIL SemRegressao.test_at007_push_so_de_documento_nao_publica_e_com_playbook_publica
+test_f28_revisores.GuardarChave              OK     testes=8    falhas=0   erros=0   pulados=8       0.1s
+test_f29_textos.AT008DadoNaoConfiavel        OK     testes=1    falhas=0   erros=0   pulados=0       0.1s
+test_fluxo.LoopF10[1de2]                     OK     testes=6    falhas=0   erros=0   pulados=0       1.4s
+test_gerar_starter.Gera[1de2]                OK     testes=5    falhas=0   erros=0   pulados=0      95.5s
+test_gerar_starter.Lint                      OK     testes=3    falhas=0   erros=0   pulados=0      37.3s
+test_handoff_lint.HandoffLint[1de2]          OK     testes=7    falhas=0   erros=0   pulados=0       0.8s
+test_matriz_new_session.Matriz               OK     testes=4    falhas=0   erros=0   pulados=0       0.1s
+test_patterns_lint.Real1                     OK     testes=1    falhas=0   erros=0   pulados=0       1.0s
+test_patterns_lint.Real4                     OK     testes=2    falhas=0   erros=0   pulados=0       1.9s
+test_playbook_curator.Saidas                 OK     testes=6    falhas=0   erros=0   pulados=0       5.1s
+test_prompt_drift_scan.ErroDeUso[1de3]       OK     testes=8    falhas=0   erros=0   pulados=3       1.5s
+test_report_lint.ReportLint[2de2]            OK     testes=7    falhas=0   erros=0   pulados=0       0.7s
+test_sdd_archive.Simulacao[2de2]             OK     testes=5    falhas=0   erros=0   pulados=0       1.9s
+test_sdd_kb.TextoDaSkill                     OK     testes=3    falhas=0   erros=0   pulados=0       0.1s
+test_sdd_open.SegurancaNoAgents              OK     testes=6    falhas=0   erros=0   pulados=0      62.7s
+test_skill_lint.SkillLint[1de4]              OK     testes=8    falhas=0   erros=0   pulados=0       0.5s
+test_slot.Cerquilha                          OK     testes=7    falhas=0   erros=0   pulados=0       5.0s
+test_testes_por_modulo.SuiteReal             OK     testes=1    falhas=0   erros=0   pulados=0      10.1s
+test_windows.Decodificacao                   OK     testes=4    falhas=0   erros=0   pulados=0       0.2s
+total: 42 unidade(s), 183 teste(s): 1 falha(s), 4 erro(s), 16 pulado(s) em 432.5s
+unidades com problema: test_deploy_espera_testes.DeployEsperaTestes[2de4] (FALHOU), test_f14_textos.Pacote (FALHOU), test_f26_docs_na_main.SemRegressao (FALHOU)
+RESULTADO: VERMELHO
+  469.4 fatia rc 1
+  476.3 22:06:34 Service Control Manager 7036 The Virtual Disk service entered the running state.
+22:06:35 Service Control Manager 7036 The Windows Push Notifications User Service_d8552 service entered the running state.
+22:06:35 Service Control Manager 7036 The Microsoft Passport Container service entered the running state.
+22:06:35 Service Control Manager 7036 The Virtual Disk service entered the stopped state.
+22:06:37 Service Control Manager 7036 The App Readiness service entered the running state.
+22:06:42 Service Control Manager 7036 The Device Setup Manager service entered the stopped state.
+22:06:46 Service Control Manager 7036 The Microsoft Edge Elevation Service (MicrosoftEdgeElevationService) service entered the running state.
+22:06:46 Service Control Manager 7036 The Microsoft Edge Elevation Service (MicrosoftEdgeElevationService) service entered the stopped state.
+22:06:46 Service Control Manager 7036 The Application Information service entered the running state.
+22:06:48 Service Control Manager 7036 The Udk User Service_d8552 service entered the running state.
+22:06:48 Service Control Manager 7036 The Web Account Manager service entered the running state.
+22:06:53 Service Control Manager 7036 The Windows Insider Service service entered the running state.
+22:06:55 Microsoft-Windows-WindowsUpdateClient 19 Installation Successful: Windows successfully installed the following update: Security Intelligence Update for Microsoft Defender Antivirus - KB2267602 (Version 1.463.470.0) - Current Channel (Broad)
+22:06:57 Service Control Manager 7036 The Connected Devices Platform Service service entered the running state.
+22:07:01 Service Control Manager 7036 The Windows Camera Frame Server Monitor service entered the stopped state.
+22:07:02 Service Control Manager 7036 The Microsoft Storage Spaces SMP service entered the running state.
+22:07:04 Service Control Manager 7036 The Device Setup Manager service entered the running state.
+22:07:05 Service Control Manager 7045 A service was installed in the system.
+
+22:07:22 Service Control Manager 7036 The WaaSMedicSvc service entered the stopped state.
+22:07:38 Service Control Manager 7036 The Windows Security Service service entered the running state.
+22:07:39 Service Control Manager 7036 The Software Protection service entered the stopped state.
+22:07:45 Service Control Manager 7036 The Print Device Configuration Service service entered the stopped state.
+22:07:51 Service Control Manager 7036 The Device Setup Manager service entered the stopped state.
+22:07:55 Service Control Manager 7036 The Windows Insider Service service entered the stopped state.
+22:07:55 Service Control Manager 7036 The Diagnostic Policy Service service entered the running state.
+22:07:55 Service Control Manager 7000 The Microsoft Edge Update Service (edgeupdate) service failed to start due to the following error: 
+
+22:07:55 Service Control Manager 7036 The Diagnostic System Host service entered the running state.
+22:07:55 Service Control Manager 7036 The Program Compatibility Assistant Service service entered the running state.
+22:07:56 Service Control Manager 7036 The Distributed Transaction Coordinator service entered the running state.
+22:07:56 Service Control Manager 7036 The Software Protection service entered the running state.
+22:07:59 Service Control Manager 7036 The User Access Logging Service service entered the running state.
+22:08:00 Service Control Manager 7040 The start type of the Background Intelligent Transfer Service service was changed from auto start to demand start.
+22:08:00 Service Control Manager 7036 The Background Intelligent Transfer Service service entered the stopped state.
+22:08:02 Service Control Manager 7036 The WaaSMedicSvc service entered the running state.
+22:08:02 Service Control Manager 7036 The Update Orchestrator Service service entered the running state.
+22:08:03 Service Control Manager 7036 The Clipboard User Service_d8552 service entered the running state.
+22:08:26 Service Control Manager 7036 The Software Protection service entered the stopped state.
+22:09:03 Service Control Manager 7036 The WaaSMedicSvc service entered the stopped state.
+22:09:05 Service Control Manager 7036 The Portable Device Enumerator Service service entered the stopped state.
+22:09:05 Service Control Manager 7036 The Device Install Service service entered the stopped state.
+22:09:31 Service Control Manager 7036 The Microsoft Passport service entered the stopped state.
+22:10:58 Service Control Manager 7036 The Network Setup Service service entered the stopped state.
+22:11:13 Service Control Manager 7036 The Delivery Optimization service entered the stopped state.
+22:12:08 Service Control Manager 7036 The Windows PushToInstall Service service entered the running state.
+22:12:09 Service Control Manager 7036 The WaaSMedicSvc service entered the running state.
+22:12:13 Service Control Manager 7040 The start type of the Background Intelligent Transfer Service service was changed from demand start to auto start.
+22:12:13 Service Control Manager 7036 The Software Protection service entered the running state.
+22:12:13 Service Control Manager 7036 The Background Intelligent Transfer Service service entered the running state.
+22:12:14 Service Control Manager 7036 The Windows PushToInstall Service service entered the stopped state.
+22:12:17 Service Control Manager 7036 The Windows Modules Installer service entered the running state.
+22:13:09 Service Control Manager 7036 The WaaSMedicSvc service entered the stopped state.
+22:13:12 Service Control Manager 7036 The Client License Service (ClipSVC) service entered the stopped state.
+22:13:13 Service Control Manager 7036 The Software Protection service entered the stopped state.
+22:14:26 Service Control Manager 7040 The start type of the Background Intelligent Transfer Service service was changed from auto start to demand start.
+22:14:26 Service Control Manager 7036 The Background Intelligent Transfer Service service entered the stopped state.
+22:14:32 Service Control Manager 7036 The Microsoft Passport Container service entered the stopped state.
+22:14:32 Service Control Manager 7036 The Windows Modules Installer service entered the stopped state.
+22:15:14 Service Control Manager 7036 The Microsoft Account Sign-in Assistant service entered the stopped state.
+22:15:47 Service Control Manager 7036 The Remote Registry service entered the stopped state.
+22:16:02 Service Control Manager 7036 The Declared Configuration(DC) service service entered the running state.
+
+
+== RESUMO fatia9
+--- batimento (t,atraso,C,D) acima de 0,3 s:
+78.6,0.000,0.344,0.000
+125.8,0.000,0.312,0.016
+159.1,0.000,0.516,0.000
+170.9,0.000,0.578,0.000
+175.2,0.000,0.328,0.016
+239.1,0.000,0.375,0.000
+244.0,0.000,0.640,0.000
+245.6,0.000,0.594,0.016
+473.2,0.000,0.438,0.000
+
+########## diag-ligado1
+   13.5 CHECAR {"i": 0, "t": 11.42, "setup": 0.92, "epoch_inicio": 1795644506.5922363, "rc": 0}
+   24.7 CHECAR {"i": 1, "t": 10.34, "setup": 0.83, "epoch_inicio": 1795644518.8762002, "rc": 0}
+   36.1 CHECAR {"i": 2, "t": 10.41, "setup": 0.95, "epoch_inicio": 1795644530.216275, "rc": 0}
+   73.8 arquivos no índice: 735
+   74.0 {"i": 0, "braco": "ligado", "init": 28.01, "init_pipe": 28.01, "add": 4.42, "add_pipe": 4.42, "rc": 0, "commit": 5.11, "rmtree": 0.22}
+  109.7 {"i": 1, "braco": "ligado", "init": 25.51, "init_pipe": 25.51, "add": 4.47, "add_pipe": 4.47, "rc": 0, "commit": 5.42, "rmtree": 0.22}
+  144.8 {"i": 2, "braco": "ligado", "init": 25.47, "init_pipe": 25.47, "add": 4.41, "add_pipe": 4.41, "rc": 0, "commit": 4.91, "rmtree": 0.22}
+  179.3 {"i": 3, "braco": "ligado", "init": 25.5, "init_pipe": 25.5, "add": 3.94, "add_pipe": 3.94, "rc": 0, "commit": 4.77, "rmtree": 0.2}
+  214.1 {"i": 4, "braco": "ligado", "init": 25.42, "init_pipe": 25.42, "add": 4.06, "add_pipe": 4.06, "rc": 0, "commit": 4.95, "rmtree": 0.22}
+  249.1 {"i": 5, "braco": "ligado", "init": 25.41, "init_pipe": 25.41, "add": 3.75, "add_pipe": 3.75, "rc": 0, "commit": 5.59, "rmtree": 0.2}
+  283.6 {"i": 6, "braco": "ligado", "init": 25.51, "init_pipe": 25.51, "add": 3.84, "add_pipe": 3.84, "rc": 0, "commit": 4.75, "rmtree": 0.2}
+  318.2 {"i": 7, "braco": "ligado", "init": 25.52, "init_pipe": 25.52, "add": 3.94, "add_pipe": 3.94, "rc": 0, "commit": 4.84, "rmtree": 0.2}
+  352.9 {"i": 8, "braco": "ligado", "init": 25.45, "init_pipe": 25.45, "add": 4.02, "add_pipe": 4.02, "rc": 0, "commit": 4.88, "rmtree": 0.22}
+  387.2 {"i": 9, "braco": "ligado", "init": 25.45, "init_pipe": 25.45, "add": 3.86, "add_pipe": 3.86, "rc": 0, "commit": 4.78, "rmtree": 0.2}
+  421.6 {"i": 10, "braco": "ligado", "init": 25.47, "init_pipe": 25.47, "add": 3.8, "add_pipe": 3.8, "rc": 0, "commit": 4.75, "rmtree": 0.22}
+  456.6 {"i": 11, "braco": "ligado", "init": 25.44, "init_pipe": 25.44, "add": 4.14, "add_pipe": 4.14, "rc": 0, "commit": 5.09, "rmtree": 0.2}
+  500.4 {"i": 12, "braco": "ligado", "init": 25.47, "init_pipe": 25.47, "add": 9.17, "add_pipe": 9.17, "rc": 0, "commit": 8.8, "rmtree": 0.27}
+  536.1 {"i": 13, "braco": "ligado", "init": 25.61, "init_pipe": 25.61, "add": 4.45, "add_pipe": 4.45, "rc": 0, "commit": 5.06, "rmtree": 0.22}
+  587.2 {"i": 14, "braco": "ligado", "init": 37.38, "init_pipe": 37.38, "add": 8.33, "add_pipe": 8.33, "rc": 0, "commit": 4.99, "rmtree": 0.26}
+  622.7 {"i": 15, "braco": "ligado", "init": 25.55, "init_pipe": 25.55, "add": 4.52, "add_pipe": 4.52, "rc": 0, "commit": 5.11, "rmtree": 0.2}
+  657.0 {"i": 16, "braco": "ligado", "init": 25.47, "init_pipe": 25.47, "add": 3.84, "add_pipe": 3.84, "rc": 0, "commit": 4.7, "rmtree": 0.22}
+  691.3 {"i": 17, "braco": "ligado", "init": 25.44, "init_pipe": 25.44, "add": 3.75, "add_pipe": 3.75, "rc": 0, "commit": 4.84, "rmtree": 0.2}
+  725.9 {"i": 18, "braco": "ligado", "init": 25.47, "init_pipe": 25.47, "add": 4.09, "add_pipe": 4.09, "rc": 0, "commit": 4.73, "rmtree": 0.2}
+  760.4 {"i": 19, "braco": "ligado", "init": 25.47, "init_pipe": 25.47, "add": 3.84, "add_pipe": 3.84, "rc": 0, "commit": 4.86, "rmtree": 0.2}
+  794.9 {"i": 20, "braco": "ligado", "init": 25.45, "init_pipe": 25.45, "add": 3.83, "add_pipe": 3.83, "rc": 0, "commit": 4.83, "rmtree": 0.22}
+  829.9 {"i": 21, "braco": "ligado", "init": 25.48, "init_pipe": 25.48, "add": 3.88, "add_pipe": 3.88, "rc": 0, "commit": 5.38, "rmtree": 0.23}
+  864.4 {"i": 22, "braco": "ligado", "init": 25.52, "init_pipe": 25.52, "add": 3.83, "add_pipe": 3.83, "rc": 0, "commit": 4.75, "rmtree": 0.22}
+  899.1 {"i": 23, "braco": "ligado", "init": 25.44, "init_pipe": 25.44, "add": 3.88, "add_pipe": 3.88, "rc": 0, "commit": 5.08, "rmtree": 0.2}
+  933.6 {"i": 24, "braco": "ligado", "init": 25.48, "init_pipe": 25.48, "add": 3.73, "add_pipe": 3.73, "rc": 0, "commit": 5.02, "rmtree": 0.22}
+  970.0 {"i": 25, "braco": "ligado", "init": 25.5, "init_pipe": 25.5, "add": 5.77, "add_pipe": 5.77, "rc": 0, "commit": 4.81, "rmtree": 0.22}
+ 1004.5 {"i": 26, "braco": "ligado", "init": 25.44, "init_pipe": 25.44, "add": 3.81, "add_pipe": 3.81, "rc": 0, "commit": 4.91, "rmtree": 0.22}
+ 1039.1 {"i": 27, "braco": "ligado", "init": 25.45, "init_pipe": 25.45, "add": 3.81, "add_pipe": 3.81, "rc": 0, "commit": 4.92, "rmtree": 0.2}
+ 1073.5 {"i": 28, "braco": "ligado", "init": 25.44, "init_pipe": 25.44, "add": 3.89, "add_pipe": 3.89, "rc": 0, "commit": 4.78, "rmtree": 0.2}
+ 1108.8 {"i": 29, "braco": "ligado", "init": 25.48, "init_pipe": 25.48, "add": 4.55, "add_pipe": 4.55, "rc": 0, "commit": 4.89, "rmtree": 0.2}
+ 1109.3 22:07:38 Service Control Manager 7045 A service was installed in the system.
+
+22:07:40 Microsoft-Windows-WindowsUpdateClient 19 Installation Successful: Windows successfully installed the following update: Security Intelligence Update for Microsoft Defender Antivirus - KB2267602 (Version 1.463.470.0) - Current Channel (Broad)
+22:08:11 Service Control Manager 7036 The Windows Security Service service entered the running state.
+22:08:11 Service Control Manager 7036 The Software Protection service entered the stopped state.
+22:08:15 Service Control Manager 7036 The WaaSMedicSvc service entered the stopped state.
+22:08:24 Service Control Manager 7036 The Device Setup Manager service entered the stopped state.
+22:08:29 Service Control Manager 7036 The Windows Insider Service service entered the stopped state.
+22:08:40 Service Control Manager 7036 The Print Device Configuration Service service entered the stopped state.
+22:08:46 Service Control Manager 7036 The Diagnostic Policy Service service entered the running state.
+22:08:46 Service Control Manager 7036 The Diagnostic System Host service entered the running state.
+22:08:46 Service Control Manager 7036 The Program Compatibility Assistant Service service entered the running state.
+22:08:46 Service Control Manager 7000 The Microsoft Edge Update Service (edgeupdate) service failed to start due to the following error: 
+
+22:08:47 Service Control Manager 7036 The Distributed Transaction Coordinator service entered the running state.
+22:08:47 Service Control Manager 7036 The Software Protection service entered the running state.
+22:08:48 Service Control Manager 7036 The User Access Logging Service service entered the running state.
+22:08:49 Service Control Manager 7036 The WaaSMedicSvc service entered the running state.
+22:08:49 Service Control Manager 7036 The Update Orchestrator Service service entered the running state.
+22:08:49 Service Control Manager 7036 The Clipboard User Service_ca483 service entered the running state.
+22:08:54 Service Control Manager 7040 The start type of the Background Intelligent Transfer Service service was changed from auto start to demand start.
+22:08:54 Service Control Manager 7036 The Background Intelligent Transfer Service service entered the stopped state.
+22:09:17 Service Control Manager 7036 The Software Protection service entered the stopped state.
+22:09:38 Service Control Manager 7036 The Portable Device Enumerator Service service entered the stopped state.
+22:09:38 Service Control Manager 7036 The Device Install Service service entered the stopped state.
+22:09:49 Service Control Manager 7036 The WaaSMedicSvc service entered the stopped state.
+22:10:29 Service Control Manager 7036 The Microsoft Passport service entered the stopped state.
+22:11:49 Service Control Manager 7036 The Network Setup Service service entered the stopped state.
+22:12:02 Service Control Manager 7036 The Delivery Optimization service entered the stopped state.
+22:13:24 Service Control Manager 7036 The Microsoft Account Sign-in Assistant service entered the stopped state.
+22:13:43 Service Control Manager 7036 The Client License Service (ClipSVC) service entered the stopped state.
+22:15:29 Service Control Manager 7036 The Microsoft Passport Container service entered the stopped state.
+22:16:26 Service Control Manager 7036 The Windows PushToInstall Service service entered the running state.
+22:16:27 Service Control Manager 7036 The Microsoft Account Sign-in Assistant service entered the running state.
+22:16:27 Service Control Manager 7036 The WaaSMedicSvc service entered the running state.
+22:16:32 Service Control Manager 7036 The Windows PushToInstall Service service entered the stopped state.
+22:16:32 Service Control Manager 7036 The Software Protection service entered the running state.
+22:16:32 Service Control Manager 7040 The start type of the Background Intelligent Transfer Service service was changed from demand start to auto start.
+22:16:32 Service Control Manager 7036 The Background Intelligent Transfer Service service entered the running state.
+22:16:36 Service Control Manager 7036 The Windows Modules Installer service entered the running state.
+22:16:42 Service Control Manager 7036 The Remote Registry service entered the stopped state.
+22:17:04 Service Control Manager 7036 The Declared Configuration(DC) service service entered the running state.
+22:17:18 Service Control Manager 7036 The Software Protection service entered the stopped state.
+22:17:27 Service Control Manager 7036 The WaaSMedicSvc service entered the stopped state.
+22:17:29 Service Control Manager 7036 The Volume Shadow Copy service entered the running state.
+22:17:29 Service Control Manager 7036 The Microsoft Software Shadow Copy Provider service entered the running state.
+22:18:44 Service Control Manager 7036 The Windows Modules Installer service entered the stopped state.
+22:18:46 Service Control Manager 7040 The start type of the Background Intelligent Transfer Service service was changed from auto start to demand start.
+22:18:46 Service Control Manager 7036 The Background Intelligent Transfer Service service entered the stopped state.
+22:18:49 Service Control Manager 7036 The WaaSMedicSvc service entered the running state.
+22:19:04 Service Control Manager 7036 The Declared Configuration(DC) service service entered the stopped state.
+22:19:32 Service Control Manager 7036 The Microsoft Account Sign-in Assistant service entered the stopped state.
+22:19:50 Service Control Manager 7036 The WaaSMedicSvc service entered the stopped state.
+22:20:29 VSS 8224 The VSS service is shutting down due to idle timeout. 
+22:20:29 Service Control Manager 7036 The Volume Shadow Copy service entered the stopped state.
+22:22:12 Service Control Manager 7036 The WaaSMedicSvc service entered the running state.
+22:22:12 Service Control Manager 7036 The Windows Modules Installer service entered the running state.
+22:22:12 Service Control Manager 7036 The Geolocation Service service entered the running state.
+22:23:13 Service Control Manager 7036 The WaaSMedicSvc service entered the stopped state.
+22:23:20 Service Control Manager 7036 The Client License Service (ClipSVC) service entered the running state.
+22:23:29 Service Control Manager 7036 The Microsoft Software Shadow Copy Provider service entered the stopped state.
+22:24:16 Service Control Manager 7036 The Windows Modules Installer service entered the stopped state.
+
+
+== RESUMO ligado1
+ligado       init    n=30 min=25.4 mediana=25.5 max=37.4
+ligado       add     n=30 min=3.7 mediana=3.9 max=9.2
+ligado       commit  n=30 min=4.7 mediana=4.9 max=8.8
+ligado       rmtree  n=30 min=0.2 mediana=0.2 max=0.3
+--- batimento (t,atraso,C,D) acima de 0,3 s:
+511.7,0.000,0.312,0.000
+517.3,0.000,0.500,0.000
+548.1,0.000,0.344,0.000
+562.3,0.015,0.375,0.000
+564.7,0.000,0.375,0.000
+567.2,0.000,0.343,0.000
+833.3,0.000,0.344,0.000
+1102.6,0.000,0.344,0.000
+
+########## diag-ligado2
+   15.9 CHECAR {"i": 0, "t": 13.83, "setup": 0.98, "epoch_inicio": 1795644508.5338972, "rc": 0}
+   28.5 CHECAR {"i": 1, "t": 11.11, "setup": 1.42, "epoch_inicio": 1795644523.8300047, "rc": 0}
+   40.4 CHECAR {"i": 2, "t": 11.06, "setup": 0.8, "epoch_inicio": 1795644535.7647429, "rc": 0}
+   84.9 arquivos no índice: 735
+   85.1 {"i": 0, "braco": "ligado", "init": 29.78, "init_pipe": 29.78, "add": 7.64, "add_pipe": 7.64, "rc": 0, "commit": 6.91, "rmtree": 0.25}
+  130.9 {"i": 1, "braco": "ligado", "init": 28.14, "init_pipe": 28.14, "add": 8.48, "add_pipe": 8.48, "rc": 0, "commit": 8.75, "rmtree": 0.25}
+  175.7 {"i": 2, "braco": "ligado", "init": 29.67, "init_pipe": 29.67, "add": 7.34, "add_pipe": 7.34, "rc": 0, "commit": 7.11, "rmtree": 0.25}
+  217.8 {"i": 3, "braco": "ligado", "init": 27.86, "init_pipe": 27.86, "add": 7.05, "add_pipe": 7.05, "rc": 0, "commit": 6.8, "rmtree": 0.25}
+  259.4 {"i": 4, "braco": "ligado", "init": 27.52, "init_pipe": 27.52, "add": 6.83, "add_pipe": 6.83, "rc": 0, "commit": 6.84, "rmtree": 0.23}
+  309.7 {"i": 5, "braco": "ligado", "init": 35.67, "init_pipe": 35.67, "add": 7.02, "add_pipe": 7.02, "rc": 0, "commit": 7.01, "rmtree": 0.27}
+  359.1 {"i": 6, "braco": "ligado", "init": 27.95, "init_pipe": 27.95, "add": 14.19, "add_pipe": 14.19, "rc": 0, "commit": 6.88, "rmtree": 0.23}
+  401.2 {"i": 7, "braco": "ligado", "init": 27.83, "init_pipe": 27.83, "add": 6.97, "add_pipe": 6.97, "rc": 0, "commit": 6.94, "rmtree": 0.25}
+  443.4 {"i": 8, "braco": "ligado", "init": 27.55, "init_pipe": 27.55, "add": 7.2, "add_pipe": 7.2, "rc": 0, "commit": 7.02, "rmtree": 0.25}
+  484.9 {"i": 9, "braco": "ligado", "init": 27.34, "init_pipe": 27.34, "add": 6.95, "add_pipe": 6.95, "rc": 0, "commit": 6.84, "rmtree": 0.25}
+  527.7 {"i": 10, "braco": "ligado", "init": 28.56, "init_pipe": 28.56, "add": 7.11, "add_pipe": 7.11, "rc": 0, "commit": 6.75, "rmtree": 0.27}
+  599.7 {"i": 11, "braco": "ligado", "init": 38.2, "init_pipe": 38.2, "add": 25.76, "add_pipe": 25.76, "rc": 0, "commit": 7.58, "rmtree": 0.25}
+  641.4 {"i": 12, "braco": "ligado", "init": 27.2, "init_pipe": 27.2, "add": 7.24, "add_pipe": 7.24, "rc": 0, "commit": 6.86, "rmtree": 0.23}
+  682.7 {"i": 13, "braco": "ligado", "init": 26.8, "init_pipe": 26.8, "add": 7.22, "add_pipe": 7.22, "rc": 0, "commit": 6.84, "rmtree": 0.27}
+  724.1 {"i": 14, "braco": "ligado", "init": 27.38, "init_pipe": 27.38, "add": 6.92, "add_pipe": 6.92, "rc": 0, "commit": 6.81, "rmtree": 0.23}
+  766.5 {"i": 15, "braco": "ligado", "init": 27.17, "init_pipe": 27.17, "add": 7.78, "add_pipe": 7.78, "rc": 0, "commit": 6.97, "rmtree": 0.25}
+  810.3 {"i": 16, "braco": "ligado", "init": 29.0, "init_pipe": 29.0, "add": 7.28, "add_pipe": 7.28, "rc": 0, "commit": 7.2, "rmtree": 0.25}
+  855.3 {"i": 17, "braco": "ligado", "init": 29.53, "init_pipe": 29.53, "add": 7.47, "add_pipe": 7.47, "rc": 0, "commit": 7.38, "rmtree": 0.28}
+  899.8 {"i": 18, "braco": "ligado", "init": 28.86, "init_pipe": 28.86, "add": 7.36, "add_pipe": 7.36, "rc": 0, "commit": 7.8, "rmtree": 0.23}
+  941.6 {"i": 19, "braco": "ligado", "init": 27.38, "init_pipe": 27.38, "add": 7.3, "add_pipe": 7.3, "rc": 0, "commit": 6.78, "rmtree": 0.25}
+  984.1 {"i": 20, "braco": "ligado", "init": 27.19, "init_pipe": 27.19, "add": 7.64, "add_pipe": 7.64, "rc": 0, "commit": 7.25, "rmtree": 0.25}
+ 1024.8 {"i": 21, "braco": "ligado", "init": 26.78, "init_pipe": 26.78, "add": 6.81, "add_pipe": 6.81, "rc": 0, "commit": 6.72, "rmtree": 0.25}
+ 1066.8 {"i": 22, "braco": "ligado", "init": 27.77, "init_pipe": 27.77, "add": 6.91, "add_pipe": 6.91, "rc": 0, "commit": 6.89, "rmtree": 0.23}
+ 1107.8 {"i": 23, "braco": "ligado", "init": 27.2, "init_pipe": 27.2, "add": 6.8, "add_pipe": 6.8, "rc": 0, "commit": 6.66, "rmtree": 0.25}
+ 1108.4 22:07:42 Service Control Manager 7036 The Windows Camera Frame Server Monitor service entered the stopped state.
+22:07:57 Service Control Manager 7036 The Software Protection service entered the stopped state.
+22:07:58 Service Control Manager 7036 The Software Protection service entered the running state.
+22:08:03 Service Control Manager 7036 The WaaSMedicSvc service entered the stopped state.
+22:08:08 Service Control Manager 7036 The Windows Security Service service entered the running state.
+22:08:28 Service Control Manager 7036 The Windows Insider Service service entered the stopped state.
+22:08:29 Service Control Manager 7036 The Print Device Configuration Service service entered the stopped state.
+22:08:29 Service Control Manager 7036 The Software Protection service entered the stopped state.
+22:08:37 Service Control Manager 7036 The Diagnostic Policy Service service entered the running state.
+22:08:37 Service Control Manager 7036 The Diagnostic System Host service entered the running state.
+22:08:37 Service Control Manager 7000 The Microsoft Edge Update Service (edgeupdate) service failed to start due to the following error: 
+
+22:08:37 Service Control Manager 7036 The Program Compatibility Assistant Service service entered the running state.
+22:08:37 Service Control Manager 7036 The Distributed Transaction Coordinator service entered the running state.
+22:08:37 Service Control Manager 7036 The Software Protection service entered the running state.
+22:08:40 Service Control Manager 7036 The User Access Logging Service service entered the running state.
+22:08:42 Service Control Manager 7036 The WaaSMedicSvc service entered the running state.
+22:08:42 Service Control Manager 7036 The Update Orchestrator Service service entered the running state.
+22:08:43 Service Control Manager 7036 The Clipboard User Service_d3815 service entered the running state.
+22:08:48 Service Control Manager 7040 The start type of the Background Intelligent Transfer Service service was changed from auto start to demand start.
+22:08:48 Service Control Manager 7036 The Background Intelligent Transfer Service service entered the stopped state.
+22:08:59 Service Control Manager 7036 The Device Install Service service entered the stopped state.
+22:09:07 Service Control Manager 7036 The Software Protection service entered the stopped state.
+22:09:12 Service Control Manager 7036 The Portable Device Enumerator Service service entered the stopped state.
+22:09:43 Service Control Manager 7036 The WaaSMedicSvc service entered the stopped state.
+22:10:28 Service Control Manager 7036 The Microsoft Passport service entered the stopped state.
+22:11:40 Service Control Manager 7036 The Network Setup Service service entered the stopped state.
+22:12:05 Service Control Manager 7036 The Delivery Optimization service entered the stopped state.
+22:12:52 Service Control Manager 7036 The Windows PushToInstall Service service entered the running state.
+22:12:52 Service Control Manager 7036 The WaaSMedicSvc service entered the running state.
+22:12:54 Service Control Manager 7036 The Software Protection service entered the running state.
+22:12:54 Service Control Manager 7040 The start type of the Background Intelligent Transfer Service service was changed from demand start to auto start.
+22:12:54 Service Control Manager 7036 The Background Intelligent Transfer Service service entered the running state.
+22:12:56 Service Control Manager 7036 The Windows Modules Installer service entered the running state.
+22:12:57 Service Control Manager 7036 The Windows PushToInstall Service service entered the stopped state.
+22:13:42 Service Control Manager 7036 The Client License Service (ClipSVC) service entered the stopped state.
+22:13:48 Service Control Manager 7036 The Software Protection service entered the stopped state.
+22:13:53 Service Control Manager 7036 The WaaSMedicSvc service entered the stopped state.
+22:15:06 Service Control Manager 7036 The Windows Modules Installer service entered the stopped state.
+22:15:09 Service Control Manager 7040 The start type of the Background Intelligent Transfer Service service was changed from auto start to demand start.
+22:15:09 Service Control Manager 7036 The Background Intelligent Transfer Service service entered the stopped state.
+22:15:28 Service Control Manager 7036 The Microsoft Passport Container service entered the stopped state.
+22:15:57 Service Control Manager 7036 The Microsoft Account Sign-in Assistant service entered the stopped state.
+22:16:31 Service Control Manager 7036 The Remote Registry service entered the stopped state.
+22:16:35 Service Control Manager 7036 The Declared Configuration(DC) service service entered the running state.
+22:17:28 Service Control Manager 7036 The Volume Shadow Copy service entered the running state.
+22:17:28 Service Control Manager 7036 The Microsoft Software Shadow Copy Provider service entered the running state.
+22:18:18 Service Control Manager 7036 The AppX Deployment Service (AppXSVC) service entered the stopped state.
+22:18:35 Service Control Manager 7036 The Declared Configuration(DC) service service entered the stopped state.
+22:18:42 Service Control Manager 7036 The WaaSMedicSvc service entered the running state.
+22:19:42 Service Control Manager 7036 The WaaSMedicSvc service entered the stopped state.
+22:20:28 VSS 8224 The VSS service is shutting down due to idle timeout. 
+22:20:28 Service Control Manager 7036 The Volume Shadow Copy service entered the stopped state.
+22:22:13 Service Control Manager 7036 The Geolocation Service service entered the running state.
+22:22:13 Service Control Manager 7036 The WaaSMedicSvc service entered the running state.
+22:22:13 Service Control Manager 7036 The Windows Modules Installer service entered the running state.
+22:23:14 Service Control Manager 7036 The WaaSMedicSvc service entered the stopped state.
+22:23:19 Service Control Manager 7036 The AppX Deployment Service (AppXSVC) service entered the running state.
+22:23:19 Service Control Manager 7036 The Client License Service (ClipSVC) service entered the running state.
+22:23:28 Service Control Manager 7036 The Microsoft Software Shadow Copy Provider service entered the stopped state.
+22:24:18 Service Control Manager 7036 The Windows Modules Installer service entered the stopped state.
+
+
+== RESUMO ligado2
+ligado       init    n=24 min=26.8 mediana=27.8 max=38.2
+ligado       add     n=24 min=6.8 mediana=7.2 max=25.8
+ligado       commit  n=24 min=6.7 mediana=6.9 max=8.7
+ligado       rmtree  n=24 min=0.2 mediana=0.2 max=0.3
+--- batimento (t,atraso,C,D) acima de 0,3 s:
+15.3,0.000,1.047,0.000
+135.9,0.000,0.562,0.016
+501.7,0.000,0.812,0.016
+545.9,0.000,0.437,0.000
+549.6,0.000,0.312,0.000
+574.8,0.000,0.329,0.000
+583.1,0.000,0.328,0.000
+784.3,0.000,0.469,0.000
+859.7,0.000,0.453,0.000
+1037.0,0.000,0.828,0.000
+
+########## diag-ligado3
+   13.7 CHECAR {"i": 0, "t": 11.95, "setup": 0.89, "epoch_inicio": 1795644503.2517412, "rc": 0}
+   26.1 CHECAR {"i": 1, "t": 10.97, "setup": 1.39, "epoch_inicio": 1795644516.6436064, "rc": 0}
+   38.0 CHECAR {"i": 2, "t": 11.02, "setup": 0.78, "epoch_inicio": 1795644528.4566782, "rc": 0}
+   79.0 arquivos no índice: 735
+   79.4 {"i": 0, "braco": "ligado", "init": 29.41, "init_pipe": 29.41, "add": 5.12, "add_pipe": 5.12, "rc": 0, "commit": 6.39, "rmtree": 0.31}
+  127.0 {"i": 1, "braco": "ligado", "init": 29.73, "init_pipe": 29.73, "add": 10.45, "add_pipe": 10.45, "rc": 0, "commit": 7.02, "rmtree": 0.33}
+  167.5 {"i": 2, "braco": "ligado", "init": 28.39, "init_pipe": 28.39, "add": 5.33, "add_pipe": 5.33, "rc": 0, "commit": 6.24, "rmtree": 0.33}
+  207.2 {"i": 3, "braco": "ligado", "init": 28.25, "init_pipe": 28.25, "add": 4.58, "add_pipe": 4.58, "rc": 0, "commit": 6.48, "rmtree": 0.33}
+  246.9 {"i": 4, "braco": "ligado", "init": 28.17, "init_pipe": 28.17, "add": 4.59, "add_pipe": 4.59, "rc": 0, "commit": 6.47, "rmtree": 0.31}
+  287.2 {"i": 5, "braco": "ligado", "init": 28.95, "init_pipe": 28.95, "add": 4.5, "add_pipe": 4.5, "rc": 0, "commit": 6.31, "rmtree": 0.34}
+  327.9 {"i": 6, "braco": "ligado", "init": 28.58, "init_pipe": 28.58, "add": 5.2, "add_pipe": 5.2, "rc": 0, "commit": 6.53, "rmtree": 0.31}
+  366.4 {"i": 7, "braco": "ligado", "init": 27.16, "init_pipe": 27.16, "add": 4.64, "add_pipe": 4.64, "rc": 0, "commit": 6.22, "rmtree": 0.31}
+  404.9 {"i": 8, "braco": "ligado", "init": 27.33, "init_pipe": 27.33, "add": 4.5, "add_pipe": 4.5, "rc": 0, "commit": 6.17, "rmtree": 0.33}
+  443.1 {"i": 9, "braco": "ligado", "init": 27.12, "init_pipe": 27.12, "add": 4.45, "add_pipe": 4.45, "rc": 0, "commit": 6.19, "rmtree": 0.31}
+  481.8 {"i": 10, "braco": "ligado", "init": 27.8, "init_pipe": 27.8, "add": 4.3, "add_pipe": 4.3, "rc": 0, "commit": 6.12, "rmtree": 0.31}
+  524.4 {"i": 11, "braco": "ligado", "init": 27.48, "init_pipe": 27.48, "add": 8.41, "add_pipe": 8.41, "rc": 0, "commit": 6.3, "rmtree": 0.33}
+  596.3 {"i": 12, "braco": "ligado", "init": 39.53, "init_pipe": 39.53, "add": 25.81, "add_pipe": 25.81, "rc": 0, "commit": 6.11, "rmtree": 0.31}
+  635.0 {"i": 13, "braco": "ligado", "init": 27.3, "init_pipe": 27.3, "add": 4.66, "add_pipe": 4.66, "rc": 0, "commit": 6.31, "rmtree": 0.31}
+  674.0 {"i": 14, "braco": "ligado", "init": 27.78, "init_pipe": 27.78, "add": 4.56, "add_pipe": 4.56, "rc": 0, "commit": 6.2, "rmtree": 0.33}
+  712.9 {"i": 15, "braco": "ligado", "init": 27.44, "init_pipe": 27.44, "add": 4.75, "add_pipe": 4.75, "rc": 0, "commit": 6.2, "rmtree": 0.31}
+  751.5 {"i": 16, "braco": "ligado", "init": 27.24, "init_pipe": 27.24, "add": 4.59, "add_pipe": 4.59, "rc": 0, "commit": 6.31, "rmtree": 0.33}
+  791.2 {"i": 17, "braco": "ligado", "init": 27.34, "init_pipe": 27.34, "add": 5.45, "add_pipe": 5.45, "rc": 0, "commit": 6.47, "rmtree": 0.31}
+  832.4 {"i": 18, "braco": "ligado", "init": 28.12, "init_pipe": 28.12, "add": 5.73, "add_pipe": 5.73, "rc": 0, "commit": 6.91, "rmtree": 0.33}
+  871.0 {"i": 19, "braco": "ligado", "init": 27.34, "init_pipe": 27.34, "add": 4.53, "add_pipe": 4.53, "rc": 0, "commit": 6.3, "rmtree": 0.33}
+  910.6 {"i": 20, "braco": "ligado", "init": 28.49, "init_pipe": 28.49, "add": 4.36, "add_pipe": 4.36, "rc": 0, "commit": 6.28, "rmtree": 0.33}
+  949.8 {"i": 21, "braco": "ligado", "init": 27.95, "init_pipe": 27.95, "add": 4.5, "add_pipe": 4.5, "rc": 0, "commit": 6.25, "rmtree": 0.33}
+  989.1 {"i": 22, "braco": "ligado", "init": 28.11, "init_pipe": 28.11, "add": 4.5, "add_pipe": 4.5, "rc": 0, "commit": 6.25, "rmtree": 0.31}
+ 1028.9 {"i": 23, "braco": "ligado", "init": 28.28, "init_pipe": 28.28, "add": 4.83, "add_pipe": 4.83, "rc": 0, "commit": 6.2, "rmtree": 0.33}
+ 1068.5 {"i": 24, "braco": "ligado", "init": 28.27, "init_pipe": 28.27, "add": 4.44, "add_pipe": 4.44, "rc": 0, "commit": 6.41, "rmtree": 0.33}
+ 1108.2 {"i": 25, "braco": "ligado", "init": 27.88, "init_pipe": 27.88, "add": 5.0, "add_pipe": 5.0, "rc": 0, "commit": 6.39, "rmtree": 0.33}
+ 1109.0 22:07:33 Microsoft-Windows-WindowsUpdateClient 19 Installation Successful: Windows successfully installed the following update: Security Intelligence Update for Microsoft Defender Antivirus - KB2267602 (Version 1.463.470.0) - Current Channel (Broad)
+22:07:49 Service Control Manager 7036 The Software Protection service entered the stopped state.
+22:07:50 Service Control Manager 7036 The Software Protection service entered the running state.
+22:07:54 Service Control Manager 7036 The Windows Security Service service entered the running state.
+22:08:02 Service Control Manager 7036 The WaaSMedicSvc service entered the stopped state.
+22:08:21 Service Control Manager 7036 The Software Protection service entered the stopped state.
+22:08:21 Service Control Manager 7036 The Windows Insider Service service entered the stopped state.
+22:08:25 Service Control Manager 7036 The Print Device Configuration Service service entered the stopped state.
+22:08:32 Service Control Manager 7036 The Diagnostic Policy Service service entered the running state.
+22:08:32 Service Control Manager 7036 The Diagnostic System Host service entered the running state.
+22:08:33 Service Control Manager 7000 The Microsoft Edge Update Service (edgeupdate) service failed to start due to the following error: 
+
+22:08:33 Service Control Manager 7036 The Program Compatibility Assistant Service service entered the running state.
+22:08:33 Service Control Manager 7036 The Distributed Transaction Coordinator service entered the running state.
+22:08:33 Service Control Manager 7036 The Software Protection service entered the running state.
+22:08:35 Service Control Manager 7036 The User Access Logging Service service entered the running state.
+22:08:35 Service Control Manager 7036 The WaaSMedicSvc service entered the running state.
+22:08:35 Service Control Manager 7036 The Update Orchestrator Service service entered the running state.
+22:08:36 Service Control Manager 7036 The Clipboard User Service_d704d service entered the running state.
+22:08:46 Service Control Manager 7040 The start type of the Background Intelligent Transfer Service service was changed from auto start to demand start.
+22:08:47 Service Control Manager 7036 The Background Intelligent Transfer Service service entered the stopped state.
+22:08:55 Service Control Manager 7036 The Device Install Service service entered the stopped state.
+22:09:03 Service Control Manager 7036 The Software Protection service entered the stopped state.
+22:09:04 Service Control Manager 7036 The Portable Device Enumerator Service service entered the stopped state.
+22:09:36 Service Control Manager 7036 The WaaSMedicSvc service entered the stopped state.
+22:09:58 Service Control Manager 7036 The Windows PushToInstall Service service entered the running state.
+22:09:59 Service Control Manager 7036 The WaaSMedicSvc service entered the running state.
+22:10:02 Service Control Manager 7040 The start type of the Background Intelligent Transfer Service service was changed from demand start to auto start.
+22:10:02 Service Control Manager 7036 The Background Intelligent Transfer Service service entered the running state.
+22:10:02 Service Control Manager 7036 The Software Protection service entered the running state.
+22:10:04 Service Control Manager 7036 The Windows PushToInstall Service service entered the stopped state.
+22:10:05 Service Control Manager 7036 The Windows Modules Installer service entered the running state.
+22:10:20 Service Control Manager 7036 The Microsoft Passport service entered the stopped state.
+22:10:50 Service Control Manager 7036 The Software Protection service entered the stopped state.
+22:10:59 Service Control Manager 7036 The WaaSMedicSvc service entered the stopped state.
+22:11:35 Service Control Manager 7036 The Network Setup Service service entered the stopped state.
+22:11:59 Service Control Manager 7036 The Delivery Optimization service entered the stopped state.
+22:12:14 Service Control Manager 7040 The start type of the Background Intelligent Transfer Service service was changed from auto start to demand start.
+22:12:14 Service Control Manager 7036 The Background Intelligent Transfer Service service entered the stopped state.
+22:12:16 Service Control Manager 7036 The Windows Modules Installer service entered the stopped state.
+22:13:16 Service Control Manager 7036 The Microsoft Account Sign-in Assistant service entered the stopped state.
+22:13:27 Service Control Manager 7036 The Client License Service (ClipSVC) service entered the stopped state.
+22:15:20 Service Control Manager 7036 The Microsoft Passport Container service entered the stopped state.
+22:16:27 Service Control Manager 7036 The Remote Registry service entered the stopped state.
+22:16:53 Service Control Manager 7036 The Declared Configuration(DC) service service entered the running state.
+22:17:20 Service Control Manager 7036 The Volume Shadow Copy service entered the running state.
+22:17:20 Service Control Manager 7036 The Microsoft Software Shadow Copy Provider service entered the running state.
+22:17:29 Service Control Manager 7036 The AppX Deployment Service (AppXSVC) service entered the stopped state.
+22:18:36 Service Control Manager 7036 The WaaSMedicSvc service entered the running state.
+22:18:53 Service Control Manager 7036 The Declared Configuration(DC) service service entered the stopped state.
+22:19:36 Service Control Manager 7036 The WaaSMedicSvc service entered the stopped state.
+22:20:20 VSS 8224 The VSS service is shutting down due to idle timeout. 
+22:20:20 Service Control Manager 7036 The Volume Shadow Copy service entered the stopped state.
+22:22:05 Service Control Manager 7036 The WaaSMedicSvc service entered the running state.
+22:22:05 Service Control Manager 7036 The Windows Modules Installer service entered the running state.
+22:22:05 Service Control Manager 7036 The Geolocation Service service entered the running state.
+22:23:07 Service Control Manager 7036 The WaaSMedicSvc service entered the stopped state.
+22:23:11 Service Control Manager 7036 The AppX Deployment Service (AppXSVC) service entered the running state.
+22:23:11 Service Control Manager 7036 The Client License Service (ClipSVC) service entered the running state.
+22:23:20 Service Control Manager 7036 The Microsoft Software Shadow Copy Provider service entered the stopped state.
+22:24:10 Service Control Manager 7036 The Windows Modules Installer service entered the stopped state.
+
+
+== RESUMO ligado3
+ligado       init    n=26 min=27.1 mediana=28.0 max=39.5
+ligado       add     n=26 min=4.3 mediana=4.6 max=25.8
+ligado       commit  n=26 min=6.1 mediana=6.3 max=7.0
+ligado       rmtree  n=26 min=0.3 mediana=0.3 max=0.3
+--- batimento (t,atraso,C,D) acima de 0,3 s:
+156.7,0.000,0.453,0.000
+541.8,0.000,0.765,0.000
+543.2,0.000,0.406,0.000
+546.8,0.000,0.344,0.000
+553.9,0.000,0.359,0.000
+569.7,0.000,0.313,0.000
+572.6,0.000,0.641,0.000
+575.2,0.000,0.422,0.000
+783.1,0.000,0.438,0.000
+1097.7,0.000,0.328,0.000

@@ -1,0 +1,129 @@
+"""Diagnóstico temporário: mede git add/init no Windows, uma variável por vez, com controle intercalado.
+Nunca mata o comando (até 420 s): quer saber se ele TERMINA. Acima de 20 s, fotografa processos, disco e antivírus."""
+import json, os, pathlib, shutil, statistics, subprocess, sys, tempfile, threading, time
+MODO, SAIDA = sys.argv[1], pathlib.Path(sys.argv[2])
+RAIZ = pathlib.Path(__file__).resolve().parents[1]
+BASH = os.environ["SDD_TEST_BASH"]
+T0 = time.monotonic(); ORCAMENTO = 18 * 60
+def diz(*a): print("%7.1f" % (time.monotonic() - T0), *a, flush=True)
+def ps(cmd, t=90):
+    try:
+        return subprocess.run(["powershell", "-NoProfile", "-Command", cmd], capture_output=True, encoding="utf-8",
+                              errors="replace", timeout=t, stdin=subprocess.DEVNULL).stdout
+    except Exception as e: return "ERRO ps: %r" % e
+FOTO = r"""
+Get-CimInstance Win32_Process | Sort-Object CreationDate | Select-Object -Last 45 ProcessId,ParentProcessId,CreationDate,@{n='cpu';e={($_.KernelModeTime+$_.UserModeTime)/1e7}},ReadTransferCount,WriteTransferCount,CommandLine | ConvertTo-Csv -NoTypeInformation
+'--- top cpu'; Get-Process | Sort-Object CPU -Descending | Select-Object -First 10 Name,Id,CPU,WS | ConvertTo-Csv -NoTypeInformation
+'--- disco'; Get-Counter '\PhysicalDisk(*)\Current Disk Queue Length','\PhysicalDisk(*)\Avg. Disk sec/Write','\PhysicalDisk(*)\Avg. Disk sec/Read','\PhysicalDisk(*)\Disk Writes/sec','\Processor(_Total)\% Processor Time','\Memory\Available MBytes' -SampleInterval 2 -MaxSamples 2 | % { $_.CounterSamples | % { $_.Path + ' = ' + $_.CookedValue } }
+'--- defender'; Get-MpComputerStatus | Select-Object RealTimeProtectionEnabled,AntivirusEnabled,QuickScanStartTime,FullScanStartTime | ConvertTo-Csv -NoTypeInformation
+"""
+def foto(rot, seg):
+    t = time.monotonic(); txt = ps(FOTO)
+    n = "foto-%05d-%s-%ds.txt" % (time.monotonic() - T0, rot, seg)
+    (SAIDA / n).write_text("a foto levou %.1f s\n%s" % (time.monotonic() - t, txt), encoding="utf-8")
+# batimento: acorda a cada 1 s; anota atraso do relógio (CPU) e o tempo de um arquivo com fsync em C: e em D:
+def batimento():
+    pastas = {"C": tempfile.mkdtemp(prefix="bat-"), "D": tempfile.mkdtemp(prefix="bat-", dir=str(RAIZ.parent))}
+    with open(SAIDA / "batimento.csv", "w", encoding="utf-8") as f:
+        f.write("t,atraso,C,D\n")
+        while True:
+            a = time.monotonic(); time.sleep(1); atraso = time.monotonic() - a - 1; v = {}
+            for k, p in pastas.items():
+                a = time.monotonic()
+                with open(os.path.join(p, "x"), "wb") as g: g.write(b"x" * 4096); g.flush(); os.fsync(g.fileno())
+                v[k] = time.monotonic() - a
+            f.write("%.1f,%.3f,%.3f,%.3f\n" % (time.monotonic() - T0, atraso, v["C"], v["D"])); f.flush()
+RES = []
+def roda(rot, args, cwd, env, teto=420):
+    a = time.monotonic()
+    p = subprocess.Popen([str(x) for x in args], cwd=str(cwd), env=env, stdin=subprocess.DEVNULL, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
+    buf = []; th = threading.Thread(target=lambda: buf.append(p.stdout.read()), daemon=True); th.start()
+    marcos = [20, 60, 110, 200, 300]
+    while True:
+        try: p.wait(timeout=0.5); break
+        except subprocess.TimeoutExpired: pass
+        g = time.monotonic() - a
+        if marcos and g > marcos[0]: foto(rot, marcos.pop(0))
+        if g > teto:
+            diz("ESTOUROU", rot, "%.0f s" % g); subprocess.run(["taskkill", "/F", "/T", "/PID", str(p.pid)], capture_output=True); p.wait(); break
+    fim = time.monotonic() - a; th.join(30); pipe = time.monotonic() - a
+    return p.returncode, (buf[0] if buf else b"").decode("utf-8", "replace"), fim, pipe
+def ambiente(base, trace, extra):
+    vazio = base / "gitconfig"; vazio.write_text("", encoding="utf-8"); (base / "home").mkdir()
+    cfg = [("maintenance.auto", "false"), ("gc.auto", "0")] + extra
+    e = {k: v for k, v in os.environ.items() if k != "PYTHONIOENCODING"}
+    e.update(HOME=str(base / "home"), GIT_CONFIG_GLOBAL=str(vazio), GIT_CONFIG_NOSYSTEM="1", GIT_CEILING_DIRECTORIES=str(base),
+             GIT_TERMINAL_PROMPT="0", GIT_AUTHOR_NAME="t", GIT_AUTHOR_EMAIL="t@example.com", GIT_COMMITTER_NAME="t",
+             GIT_COMMITTER_EMAIL="t@example.com", GIT_CONFIG_COUNT=str(len(cfg)))
+    for i, (k, v) in enumerate(cfg): e["GIT_CONFIG_KEY_%d" % i] = k; e["GIT_CONFIG_VALUE_%d" % i] = v
+    return e
+def fixture(i, braco, raiz_tmp=None, extra=()):
+    base = pathlib.Path(tempfile.mkdtemp(prefix="sdd-open-", dir=raiz_tmp)).resolve(); p = base / "projeto"; p.mkdir()
+    e = ambiente(base, None, list(extra)); L = {"i": i, "braco": braco}
+    roda("git", ["git", "init", "-q"], p, e); (p / "AGENTS.md").write_text("# x\n", encoding="utf-8", newline="\n")
+    roda("git", ["git", "add", "-A"], p, e); roda("git", ["git", "commit", "-q", "-m", "base"], p, e)
+    _, out, L["init"], L["init_pipe"] = roda("init", [BASH, RAIZ / "bin/sdd-open.sh", "init", "--yes", "--vendors", "claude,codex"], p, e)
+    tr = SAIDA / ("perf-%s-%03d.txt" % (braco, i)); ea = dict(e, GIT_TRACE2_PERF=str(tr))
+    rc, o, L["add"], L["add_pipe"] = roda("add", ["git", "add", "-A"], p, ea)
+    L["rc"] = rc
+    if rc: diz("ADD rc", rc, o[-400:])
+    _, _, L["commit"], _ = roda("commit", ["git", "commit", "-q", "-m", "init"], p, e)
+    if L["add"] < 20 and i > 2: tr.unlink(missing_ok=True)
+    if i == 0: diz("arquivos no índice:", len(subprocess.run(["git", "ls-files"], cwd=str(p), env=e, capture_output=True).stdout.splitlines()))
+    a = time.monotonic(); shutil.rmtree(base, ignore_errors=True); L["rmtree"] = time.monotonic() - a
+    RES.append(L); diz(json.dumps({k: round(v, 2) if isinstance(v, float) else v for k, v in L.items()}))
+def resumo():
+    print("\n== RESUMO", MODO)
+    for b in sorted({r["braco"] for r in RES}):
+        for c in ("init", "add", "commit", "rmtree"):
+            v = sorted(r[c] for r in RES if r["braco"] == b and c in r)
+            if v: print("%-12s %-7s n=%d min=%.1f mediana=%.1f max=%.1f" % (b, c, len(v), v[0], statistics.median(v), v[-1]))
+    (SAIDA / "res.json").write_text(json.dumps(RES), encoding="utf-8")
+def pares(kw):
+    i = 0
+    while time.monotonic() - T0 < ORCAMENTO:
+        ordem = [("controle", {}), ("variante", kw)]
+        if i % 2: ordem.reverse()
+        for nome, k in ordem: fixture(i, nome, **k)
+        i += 1
+def checar():
+    sys.path.insert(0, str(RAIZ / "tests")); import test_checar as tc
+    orig = tc.SCRIPT; inst = SAIDA / "checar-inst.sh"; tr = SAIDA / "xtrace.log"
+    s = orig.read_text(encoding="utf-8").split("\n", 1)
+    inst.write_text(s[0] + "\nexec 9>>\"$DIAG_TRACE\"; BASH_XTRACEFD=9; PS4='+${EPOCHREALTIME} ${BASHPID} ${LINENO} '; set -x\n" + s[1], encoding="utf-8", newline="\n")
+    tc.TestRemoto.setUpClass(); i = 0
+    while time.monotonic() - T0 < ORCAMENTO:
+        for braco, scr in (("original", orig), ("rastreado", inst)):
+            c = tc.TestRemoto("test_rede_pendurada"); c.setUp(); c.script = scr
+            c.origin("http://127.0.0.1:%d/x.git" % c.srv_pendurado.server_address[1])
+            t2 = SAIDA / ("perf-%s-%03d.txt" % (braco, i)); t1 = SAIDA / ("xtrace-%03d.log" % i)
+            a = time.monotonic()
+            try: rc, out, t = c.roda(DIAG_TRACE=tc.caminho_bash(t1), GIT_TRACE2_PERF=str(t2))
+            except subprocess.TimeoutExpired: rc, out, t = -1, "TIMEOUT", time.monotonic() - a
+            a = time.monotonic(); subprocess.run([BASH, "-c", "true"]); b = time.monotonic() - a
+            a = time.monotonic(); subprocess.run(["taskkill", "/F", "/T", "/PID", "999999"], capture_output=True); k = time.monotonic() - a
+            diz(json.dumps({"i": i, "braco": braco, "t": round(t, 2), "bash_vazio": round(b, 2), "taskkill_vazio": round(k, 2), "rc": rc}))
+            RES.append({"braco": braco, "init": t}); c.tearDown()
+        i += 1
+
+def checar_frio():
+    """Máquina fria: 1º remoto que responde logo (401), depois o pendurado, 3 vezes. Mede a ideia de descontar a base."""
+    sys.path.insert(0, str(RAIZ / "tests")); import test_checar as tc
+    tc.TestRemoto.setUpClass()
+    for i in range(3):
+        c = tc.TestRemoto("test_rede_pendurada"); a = time.monotonic(); c.setUp(); su = time.monotonic() - a
+        c.origin("http://127.0.0.1:%d/x.git" % c.srv401.server_address[1]); _, _, base = c.roda()
+        c.origin("http://127.0.0.1:%d/x.git" % c.srv_pendurado.server_address[1]); rc, _, t = c.roda()
+        diz("CHECAR", json.dumps({"i": i, "base401": round(base, 2), "pendurado": round(t, 2), "dif": round(t - base, 2), "setup": round(su, 2), "rc": rc})); c.tearDown()
+threading.Thread(target=batimento, daemon=True).start()
+checar_frio()
+
+try:
+    if MODO.startswith("semvss"):
+        diz(ps("foreach ($s in 'VSS','swprv') { try { Set-Service $s -StartupType Disabled -ErrorAction Stop } catch { \"$s $_\" }; Stop-Service $s -Force -ErrorAction SilentlyContinue }; Get-Service VSS,swprv | ft Name,Status,StartType"))
+    kw = {"raiz_tmp": os.environ["RUNNER_TEMP"]} if MODO.startswith("discoD") else {}
+    while time.monotonic() - T0 < ORCAMENTO: fixture(len(RES), MODO[:-1], **kw)
+finally:
+    diz(ps("Get-WinEvent -LogName System,Application,Setup -MaxEvents 250 -ErrorAction SilentlyContinue | ? { $_.ProviderName -match 'Update|Servicing|VSS|Restore|Uso|Service Control' } | Sort TimeCreated | select -Last 60 | % { $_.TimeCreated.ToString('HH:mm:ss') + ' ' + $_.ProviderName + ' ' + $_.Id + ' ' + ($_.Message -split \"`n\")[0] }"))
+    resumo()
+os._exit(0)

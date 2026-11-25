@@ -1,0 +1,1253 @@
+# run 45704192975 (branch diag-testes-lentos, apagada depois); saída de cada máquina
+
+########## diag-antivirus
+    7.2 
+
+RealTimeProtectionEnabled : False
+AntivirusEnabled          : True
+
+
+
+
+
+DisableRealtimeMonitoring : True
+ExclusionPath             : {C:\, D:\}
+
+
+
+
+DriveLetter FriendlyName      FileSystemType DriveType HealthStatus OperationalStatus SizeRemaining      Size
+----------- ------------      -------------- --------- ------------ ----------------- -------------      ----
+D           Temporary Storage NTFS           Fixed     Healthy      OK                    146.96 GB    150 GB
+C           Windows           NTFS           Fixed     Healthy      OK                     29.81 GB 149.89 GB
+                              FAT32          Fixed     Healthy      OK                     60.66 MB     95 MB
+
+
+17174360064
+4
+
+    7.3 git version 2.56.1.windows.1
+cpu: x86_64
+built from commit: 7bda9d349370004e1aec464249d784d18e58c001
+sizeof-long: 4
+sizeof-size_t: 8
+shell-path: D:/git-sdk-64/usr/bin/sh
+rust: disabled
+feature: fsmonitor--daemon
+gettext: enabled
+libcurl: 8.23.0
+OpenSSL: OpenSSL 3.5.9 29 Sep 2026
+zlib: 1.3.2
+SHA-1: SHA1_DC
+SHA-256: SHA256_BLK
+default-ref-format: files
+default-hash: sha1
+ TEMP C:\Users\RUNNER~1\AppData\Local\Temp RAIZ D:\a\sdd-open\sdd-open
+    8.1 C:\
+C:\Users\RUNNER~1\AppData\Local\Temp\sdd-ex-dtaibm5d
+D:\
+
+   47.8 arquivos no índice: 735
+   48.1 {"i": 0, "braco": "controle", "init": 28.31, "init_pipe": 28.31, "add": 4.95, "add_pipe": 4.95, "rc": 0, "commit": 6.2, "rmtree": 0.33}
+   88.4 arquivos no índice: 735
+   88.7 {"i": 0, "braco": "variante", "init": 27.09, "init_pipe": 27.09, "add": 5.27, "add_pipe": 5.27, "rc": 0, "commit": 7.75, "rmtree": 0.34}
+  134.1 {"i": 1, "braco": "variante", "init": 33.27, "init_pipe": 33.27, "add": 5.3, "add_pipe": 5.3, "rc": 0, "commit": 6.23, "rmtree": 0.34}
+  173.0 {"i": 1, "braco": "controle", "init": 27.58, "init_pipe": 27.58, "add": 4.67, "add_pipe": 4.67, "rc": 0, "commit": 6.26, "rmtree": 0.33}
+  211.7 {"i": 2, "braco": "controle", "init": 27.39, "init_pipe": 27.39, "add": 4.62, "add_pipe": 4.62, "rc": 0, "commit": 6.25, "rmtree": 0.31}
+  250.7 {"i": 2, "braco": "variante", "init": 27.58, "init_pipe": 27.58, "add": 4.55, "add_pipe": 4.55, "rc": 0, "commit": 6.39, "rmtree": 0.33}
+  289.5 {"i": 3, "braco": "variante", "init": 27.31, "init_pipe": 27.31, "add": 4.72, "add_pipe": 4.72, "rc": 0, "commit": 6.31, "rmtree": 0.33}
+  327.8 {"i": 3, "braco": "controle", "init": 26.61, "init_pipe": 26.61, "add": 4.84, "add_pipe": 4.84, "rc": 0, "commit": 6.31, "rmtree": 0.31}
+  365.7 {"i": 4, "braco": "controle", "init": 26.61, "init_pipe": 26.61, "add": 4.59, "add_pipe": 4.59, "rc": 0, "commit": 6.27, "rmtree": 0.3}
+  403.1 {"i": 4, "braco": "variante", "init": 26.47, "init_pipe": 26.47, "add": 4.36, "add_pipe": 4.36, "rc": 0, "commit": 6.17, "rmtree": 0.33}
+  441.2 {"i": 5, "braco": "variante", "init": 27.05, "init_pipe": 27.05, "add": 4.39, "add_pipe": 4.39, "rc": 0, "commit": 6.22, "rmtree": 0.33}
+  478.8 {"i": 5, "braco": "controle", "init": 26.53, "init_pipe": 26.53, "add": 4.36, "add_pipe": 4.36, "rc": 0, "commit": 6.23, "rmtree": 0.31}
+  517.5 {"i": 6, "braco": "controle", "init": 26.8, "init_pipe": 26.8, "add": 4.83, "add_pipe": 4.83, "rc": 0, "commit": 6.5, "rmtree": 0.33}
+  573.1 {"i": 6, "braco": "variante", "init": 36.97, "init_pipe": 36.97, "add": 12.06, "add_pipe": 12.06, "rc": 0, "commit": 6.11, "rmtree": 0.31}
+  611.5 {"i": 7, "braco": "variante", "init": 27.08, "init_pipe": 27.08, "add": 4.64, "add_pipe": 4.64, "rc": 0, "commit": 6.2, "rmtree": 0.33}
+  649.5 {"i": 7, "braco": "controle", "init": 26.62, "init_pipe": 26.62, "add": 4.62, "add_pipe": 4.62, "rc": 0, "commit": 6.28, "rmtree": 0.31}
+  687.3 {"i": 8, "braco": "controle", "init": 26.55, "init_pipe": 26.55, "add": 4.42, "add_pipe": 4.42, "rc": 0, "commit": 6.25, "rmtree": 0.33}
+  725.2 {"i": 8, "braco": "variante", "init": 26.64, "init_pipe": 26.64, "add": 4.53, "add_pipe": 4.53, "rc": 0, "commit": 6.23, "rmtree": 0.31}
+  763.4 {"i": 9, "braco": "variante", "init": 26.74, "init_pipe": 26.74, "add": 4.7, "add_pipe": 4.7, "rc": 0, "commit": 6.31, "rmtree": 0.33}
+  801.1 {"i": 9, "braco": "controle", "init": 26.53, "init_pipe": 26.53, "add": 4.66, "add_pipe": 4.66, "rc": 0, "commit": 6.09, "rmtree": 0.31}
+  840.2 {"i": 10, "braco": "controle", "init": 27.64, "init_pipe": 27.64, "add": 4.58, "add_pipe": 4.58, "rc": 0, "commit": 6.31, "rmtree": 0.31}
+  878.5 {"i": 10, "braco": "variante", "init": 26.66, "init_pipe": 26.66, "add": 4.51, "add_pipe": 4.51, "rc": 0, "commit": 6.64, "rmtree": 0.33}
+  917.7 {"i": 11, "braco": "variante", "init": 27.0, "init_pipe": 27.0, "add": 5.28, "add_pipe": 5.28, "rc": 0, "commit": 6.42, "rmtree": 0.33}
+  956.0 {"i": 11, "braco": "controle", "init": 27.03, "init_pipe": 27.03, "add": 4.36, "add_pipe": 4.36, "rc": 0, "commit": 6.44, "rmtree": 0.33}
+  994.1 {"i": 12, "braco": "controle", "init": 26.81, "init_pipe": 26.81, "add": 4.66, "add_pipe": 4.66, "rc": 0, "commit": 6.19, "rmtree": 0.33}
+ 1032.4 {"i": 12, "braco": "variante", "init": 27.14, "init_pipe": 27.14, "add": 4.5, "add_pipe": 4.5, "rc": 0, "commit": 6.17, "rmtree": 0.34}
+ 1071.1 {"i": 13, "braco": "variante", "init": 27.28, "init_pipe": 27.28, "add": 4.61, "add_pipe": 4.61, "rc": 0, "commit": 6.31, "rmtree": 0.34}
+ 1109.4 {"i": 13, "braco": "controle", "init": 26.92, "init_pipe": 26.92, "add": 4.55, "add_pipe": 4.55, "rc": 0, "commit": 6.39, "rmtree": 0.33}
+ 1147.9 {"i": 14, "braco": "controle", "init": 27.31, "init_pipe": 27.31, "add": 4.59, "add_pipe": 4.59, "rc": 0, "commit": 6.12, "rmtree": 0.33}
+ 1186.2 {"i": 14, "braco": "variante", "init": 26.88, "init_pipe": 26.88, "add": 4.61, "add_pipe": 4.61, "rc": 0, "commit": 6.39, "rmtree": 0.34}
+ 1225.1 {"i": 15, "braco": "variante", "init": 27.53, "init_pipe": 27.53, "add": 4.55, "add_pipe": 4.55, "rc": 0, "commit": 6.16, "rmtree": 0.34}
+ 1262.7 {"i": 15, "braco": "controle", "init": 26.66, "init_pipe": 26.66, "add": 4.39, "add_pipe": 4.39, "rc": 0, "commit": 6.11, "rmtree": 0.31}
+ 1300.4 {"i": 16, "braco": "controle", "init": 26.44, "init_pipe": 26.44, "add": 4.52, "add_pipe": 4.52, "rc": 0, "commit": 6.11, "rmtree": 0.44}
+ 1338.8 {"i": 16, "braco": "variante", "init": 27.3, "init_pipe": 27.3, "add": 4.39, "add_pipe": 4.39, "rc": 0, "commit": 6.27, "rmtree": 0.33}
+ 1378.5 {"i": 17, "braco": "variante", "init": 27.53, "init_pipe": 27.53, "add": 5.41, "add_pipe": 5.41, "rc": 0, "commit": 6.28, "rmtree": 0.34}
+ 1417.3 {"i": 17, "braco": "controle", "init": 27.84, "init_pipe": 27.84, "add": 4.34, "add_pipe": 4.34, "rc": 0, "commit": 6.2, "rmtree": 0.33}
+ 1455.8 {"i": 18, "braco": "controle", "init": 27.48, "init_pipe": 27.48, "add": 4.39, "add_pipe": 4.39, "rc": 0, "commit": 6.19, "rmtree": 0.33}
+ 1494.9 {"i": 18, "braco": "variante", "init": 27.58, "init_pipe": 27.58, "add": 4.66, "add_pipe": 4.66, "rc": 0, "commit": 6.36, "rmtree": 0.33}
+ 1534.2 {"i": 19, "braco": "variante", "init": 28.12, "init_pipe": 28.12, "add": 4.38, "add_pipe": 4.38, "rc": 0, "commit": 6.2, "rmtree": 0.33}
+ 1572.9 {"i": 19, "braco": "controle", "init": 27.59, "init_pipe": 27.59, "add": 4.38, "add_pipe": 4.38, "rc": 0, "commit": 6.17, "rmtree": 0.33}
+ 1611.7 {"i": 20, "braco": "controle", "init": 27.45, "init_pipe": 27.45, "add": 4.58, "add_pipe": 4.58, "rc": 0, "commit": 6.33, "rmtree": 0.31}
+ 1650.2 {"i": 20, "braco": "variante", "init": 27.16, "init_pipe": 27.16, "add": 4.36, "add_pipe": 4.36, "rc": 0, "commit": 6.56, "rmtree": 0.33}
+ 1688.4 {"i": 21, "braco": "variante", "init": 26.91, "init_pipe": 26.91, "add": 4.58, "add_pipe": 4.58, "rc": 0, "commit": 6.25, "rmtree": 0.33}
+ 1727.1 {"i": 21, "braco": "controle", "init": 26.97, "init_pipe": 26.97, "add": 4.64, "add_pipe": 4.64, "rc": 0, "commit": 6.66, "rmtree": 0.33}
+ 1765.4 {"i": 22, "braco": "controle", "init": 26.67, "init_pipe": 26.67, "add": 4.98, "add_pipe": 4.98, "rc": 0, "commit": 6.19, "rmtree": 0.33}
+ 1804.1 {"i": 22, "braco": "variante", "init": 26.75, "init_pipe": 26.75, "add": 4.91, "add_pipe": 4.91, "rc": 0, "commit": 6.58, "rmtree": 0.34}
+ 1842.7 {"i": 23, "braco": "variante", "init": 27.44, "init_pipe": 27.44, "add": 4.5, "add_pipe": 4.5, "rc": 0, "commit": 6.2, "rmtree": 0.33}
+ 1880.6 {"i": 23, "braco": "controle", "init": 26.7, "init_pipe": 26.7, "add": 4.39, "add_pipe": 4.39, "rc": 0, "commit": 6.31, "rmtree": 0.31}
+ 1919.9 {"i": 24, "braco": "controle", "init": 28.03, "init_pipe": 28.03, "add": 4.62, "add_pipe": 4.62, "rc": 0, "commit": 6.22, "rmtree": 0.31}
+ 1958.4 {"i": 24, "braco": "variante", "init": 27.56, "init_pipe": 27.56, "add": 4.48, "add_pipe": 4.48, "rc": 0, "commit": 5.99, "rmtree": 0.33}
+ 1998.5 {"i": 25, "braco": "variante", "init": 28.64, "init_pipe": 28.64, "add": 4.52, "add_pipe": 4.52, "rc": 0, "commit": 6.44, "rmtree": 0.34}
+ 2040.6 {"i": 25, "braco": "controle", "init": 30.39, "init_pipe": 30.39, "add": 4.59, "add_pipe": 4.59, "rc": 0, "commit": 6.61, "rmtree": 0.33}
+ 2080.2 {"i": 26, "braco": "controle", "init": 28.3, "init_pipe": 28.3, "add": 4.7, "add_pipe": 4.7, "rc": 0, "commit": 6.2, "rmtree": 0.31}
+ 2119.8 {"i": 26, "braco": "variante", "init": 28.25, "init_pipe": 28.25, "add": 4.53, "add_pipe": 4.53, "rc": 0, "commit": 6.28, "rmtree": 0.34}
+ 2157.8 {"i": 27, "braco": "variante", "init": 26.73, "init_pipe": 26.73, "add": 4.47, "add_pipe": 4.47, "rc": 0, "commit": 6.41, "rmtree": 0.33}
+ 2196.0 {"i": 27, "braco": "controle", "init": 27.22, "init_pipe": 27.22, "add": 4.42, "add_pipe": 4.42, "rc": 0, "commit": 6.09, "rmtree": 0.33}
+ 2234.9 {"i": 28, "braco": "controle", "init": 27.49, "init_pipe": 27.49, "add": 4.59, "add_pipe": 4.59, "rc": 0, "commit": 6.09, "rmtree": 0.34}
+ 2273.3 {"i": 28, "braco": "variante", "init": 27.11, "init_pipe": 27.11, "add": 4.5, "add_pipe": 4.5, "rc": 0, "commit": 6.3, "rmtree": 0.33}
+ 2311.6 {"i": 29, "braco": "variante", "init": 27.3, "init_pipe": 27.3, "add": 4.39, "add_pipe": 4.39, "rc": 0, "commit": 6.2, "rmtree": 0.34}
+ 2349.4 {"i": 29, "braco": "controle", "init": 26.83, "init_pipe": 26.83, "add": 4.34, "add_pipe": 4.34, "rc": 0, "commit": 6.12, "rmtree": 0.31}
+
+== RESUMO antivirus
+controle     init    n=30 min=26.4 mediana=27.0 max=30.4
+controle     add     n=30 min=4.3 mediana=4.6 max=5.0
+controle     commit  n=30 min=6.1 mediana=6.2 max=6.7
+controle     rmtree  n=30 min=0.3 mediana=0.3 max=0.4
+variante     init    n=30 min=26.5 mediana=27.2 max=37.0
+variante     add     n=30 min=4.4 mediana=4.5 max=12.1
+variante     commit  n=30 min=6.0 mediana=6.3 max=7.8
+variante     rmtree  n=30 min=0.3 mediana=0.3 max=0.3
+--- batimento (t,atraso,C,D) acima de 0,3 s:
+1045.6,0.000,0.422,0.000
+1190.4,0.000,0.437,0.000
+
+########## diag-checar
+    4.6 
+
+RealTimeProtectionEnabled : False
+AntivirusEnabled          : True
+
+
+
+
+
+DisableRealtimeMonitoring : True
+ExclusionPath             : {C:\, D:\}
+
+
+
+
+DriveLetter FriendlyName FileSystemType DriveType HealthStatus OperationalStatus SizeRemaining      Size
+----------- ------------ -------------- --------- ------------ ----------------- -------------      ----
+C           Windows      NTFS           Fixed     Healthy      OK                     26.95 GB 149.89 GB
+D           Temp         NTFS           Fixed     Healthy      OK                    219.82 GB 219.98 GB
+                         FAT32          Fixed     Healthy      OK                     60.66 MB     95 MB
+
+
+17174360064
+4
+
+    4.6 git version 2.56.1.windows.1
+cpu: x86_64
+built from commit: 7bda9d349370004e1aec464249d784d18e58c001
+sizeof-long: 4
+sizeof-size_t: 8
+shell-path: D:/git-sdk-64/usr/bin/sh
+rust: disabled
+feature: fsmonitor--daemon
+gettext: enabled
+libcurl: 8.23.0
+OpenSSL: OpenSSL 3.5.9 29 Sep 2026
+zlib: 1.3.2
+SHA-1: SHA1_DC
+SHA-256: SHA256_BLK
+default-ref-format: files
+default-hash: sha1
+ TEMP C:\Users\RUNNER~1\AppData\Local\Temp RAIZ D:\a\sdd-open\sdd-open
+   18.9 {"i": 0, "braco": "original", "t": 12.75, "bash_vazio": 0.01, "taskkill_vazio": 0.05, "rc": 0}
+   30.0 {"i": 0, "braco": "rastreado", "t": 10.42, "bash_vazio": 0.03, "taskkill_vazio": 0.05, "rc": 0}
+   41.7 {"i": 1, "braco": "original", "t": 10.91, "bash_vazio": 0.02, "taskkill_vazio": 0.05, "rc": 0}
+   52.8 {"i": 1, "braco": "rastreado", "t": 10.38, "bash_vazio": 0.01, "taskkill_vazio": 0.03, "rc": 0}
+   64.2 {"i": 2, "braco": "original", "t": 10.61, "bash_vazio": 0.01, "taskkill_vazio": 0.03, "rc": 0}
+   75.2 {"i": 2, "braco": "rastreado", "t": 10.25, "bash_vazio": 0.03, "taskkill_vazio": 0.03, "rc": 0}
+   86.5 {"i": 3, "braco": "original", "t": 10.62, "bash_vazio": 0.02, "taskkill_vazio": 0.05, "rc": 0}
+   97.5 {"i": 3, "braco": "rastreado", "t": 10.25, "bash_vazio": 0.01, "taskkill_vazio": 0.05, "rc": 0}
+  108.9 {"i": 4, "braco": "original", "t": 10.77, "bash_vazio": 0.01, "taskkill_vazio": 0.05, "rc": 0}
+  120.0 {"i": 4, "braco": "rastreado", "t": 10.36, "bash_vazio": 0.01, "taskkill_vazio": 0.05, "rc": 0}
+  131.6 {"i": 5, "braco": "original", "t": 10.84, "bash_vazio": 0.03, "taskkill_vazio": 0.05, "rc": 0}
+  142.6 {"i": 5, "braco": "rastreado", "t": 10.31, "bash_vazio": 0.03, "taskkill_vazio": 0.05, "rc": 0}
+  154.1 {"i": 6, "braco": "original", "t": 10.75, "bash_vazio": 0.02, "taskkill_vazio": 0.05, "rc": 0}
+  165.2 {"i": 6, "braco": "rastreado", "t": 10.41, "bash_vazio": 0.01, "taskkill_vazio": 0.05, "rc": 0}
+  176.7 {"i": 7, "braco": "original", "t": 10.77, "bash_vazio": 0.01, "taskkill_vazio": 0.05, "rc": 0}
+  187.8 {"i": 7, "braco": "rastreado", "t": 10.33, "bash_vazio": 0.02, "taskkill_vazio": 0.05, "rc": 0}
+  199.0 {"i": 8, "braco": "original", "t": 10.56, "bash_vazio": 0.02, "taskkill_vazio": 0.03, "rc": 0}
+  210.1 {"i": 8, "braco": "rastreado", "t": 10.31, "bash_vazio": 0.03, "taskkill_vazio": 0.03, "rc": 0}
+  221.4 {"i": 9, "braco": "original", "t": 10.67, "bash_vazio": 0.01, "taskkill_vazio": 0.03, "rc": 0}
+  232.4 {"i": 9, "braco": "rastreado", "t": 10.25, "bash_vazio": 0.02, "taskkill_vazio": 0.03, "rc": 0}
+  243.7 {"i": 10, "braco": "original", "t": 10.59, "bash_vazio": 0.01, "taskkill_vazio": 0.05, "rc": 0}
+  254.6 {"i": 10, "braco": "rastreado", "t": 10.25, "bash_vazio": 0.02, "taskkill_vazio": 0.03, "rc": 0}
+  265.8 {"i": 11, "braco": "original", "t": 10.52, "bash_vazio": 0.02, "taskkill_vazio": 0.05, "rc": 0}
+  276.7 {"i": 11, "braco": "rastreado", "t": 10.19, "bash_vazio": 0.03, "taskkill_vazio": 0.03, "rc": 0}
+  287.8 {"i": 12, "braco": "original", "t": 10.47, "bash_vazio": 0.01, "taskkill_vazio": 0.05, "rc": 0}
+  298.6 {"i": 12, "braco": "rastreado", "t": 10.16, "bash_vazio": 0.02, "taskkill_vazio": 0.03, "rc": 0}
+  309.7 {"i": 13, "braco": "original", "t": 10.38, "bash_vazio": 0.02, "taskkill_vazio": 0.05, "rc": 0}
+  320.7 {"i": 13, "braco": "rastreado", "t": 10.34, "bash_vazio": 0.02, "taskkill_vazio": 0.05, "rc": 0}
+  332.6 {"i": 14, "braco": "original", "t": 10.62, "bash_vazio": 0.03, "taskkill_vazio": 0.03, "rc": 0}
+  346.2 {"i": 14, "braco": "rastreado", "t": 10.38, "bash_vazio": 0.02, "taskkill_vazio": 0.05, "rc": 0}
+  357.6 {"i": 15, "braco": "original", "t": 10.67, "bash_vazio": 0.02, "taskkill_vazio": 0.05, "rc": 0}
+  368.5 {"i": 15, "braco": "rastreado", "t": 10.25, "bash_vazio": 0.02, "taskkill_vazio": 0.05, "rc": 0}
+  380.0 {"i": 16, "braco": "original", "t": 10.73, "bash_vazio": 0.02, "taskkill_vazio": 0.05, "rc": 0}
+  391.0 {"i": 16, "braco": "rastreado", "t": 10.23, "bash_vazio": 0.02, "taskkill_vazio": 0.05, "rc": 0}
+  402.2 {"i": 17, "braco": "original", "t": 10.56, "bash_vazio": 0.02, "taskkill_vazio": 0.05, "rc": 0}
+  413.0 {"i": 17, "braco": "rastreado", "t": 10.14, "bash_vazio": 0.02, "taskkill_vazio": 0.03, "rc": 0}
+  424.3 {"i": 18, "braco": "original", "t": 10.56, "bash_vazio": 0.03, "taskkill_vazio": 0.03, "rc": 0}
+  435.5 {"i": 18, "braco": "rastreado", "t": 10.47, "bash_vazio": 0.02, "taskkill_vazio": 0.03, "rc": 0}
+  446.7 {"i": 19, "braco": "original", "t": 10.5, "bash_vazio": 0.01, "taskkill_vazio": 0.05, "rc": 0}
+  457.7 {"i": 19, "braco": "rastreado", "t": 10.3, "bash_vazio": 0.02, "taskkill_vazio": 0.05, "rc": 0}
+  469.2 {"i": 20, "braco": "original", "t": 10.81, "bash_vazio": 0.02, "taskkill_vazio": 0.05, "rc": 0}
+  480.4 {"i": 20, "braco": "rastreado", "t": 10.44, "bash_vazio": 0.03, "taskkill_vazio": 0.03, "rc": 0}
+  491.7 {"i": 21, "braco": "original", "t": 10.58, "bash_vazio": 0.02, "taskkill_vazio": 0.05, "rc": 0}
+  502.5 {"i": 21, "braco": "rastreado", "t": 10.17, "bash_vazio": 0.02, "taskkill_vazio": 0.05, "rc": 0}
+  513.9 {"i": 22, "braco": "original", "t": 10.59, "bash_vazio": 0.02, "taskkill_vazio": 0.05, "rc": 0}
+  524.8 {"i": 22, "braco": "rastreado", "t": 10.22, "bash_vazio": 0.03, "taskkill_vazio": 0.03, "rc": 0}
+  536.2 {"i": 23, "braco": "original", "t": 10.73, "bash_vazio": 0.02, "taskkill_vazio": 0.05, "rc": 0}
+  547.3 {"i": 23, "braco": "rastreado", "t": 10.33, "bash_vazio": 0.03, "taskkill_vazio": 0.03, "rc": 0}
+  559.5 {"i": 24, "braco": "original", "t": 10.89, "bash_vazio": 0.02, "taskkill_vazio": 0.05, "rc": 0}
+  571.8 {"i": 24, "braco": "rastreado", "t": 10.41, "bash_vazio": 0.02, "taskkill_vazio": 0.05, "rc": 0}
+  586.0 {"i": 25, "braco": "original", "t": 10.91, "bash_vazio": 0.03, "taskkill_vazio": 0.03, "rc": 0}
+  596.9 {"i": 25, "braco": "rastreado", "t": 10.23, "bash_vazio": 0.02, "taskkill_vazio": 0.05, "rc": 0}
+  608.2 {"i": 26, "braco": "original", "t": 10.56, "bash_vazio": 0.03, "taskkill_vazio": 0.03, "rc": 0}
+  619.1 {"i": 26, "braco": "rastreado", "t": 10.27, "bash_vazio": 0.02, "taskkill_vazio": 0.05, "rc": 0}
+  630.4 {"i": 27, "braco": "original", "t": 10.53, "bash_vazio": 0.03, "taskkill_vazio": 0.03, "rc": 0}
+  641.5 {"i": 27, "braco": "rastreado", "t": 10.36, "bash_vazio": 0.01, "taskkill_vazio": 0.05, "rc": 0}
+  652.7 {"i": 28, "braco": "original", "t": 10.5, "bash_vazio": 0.03, "taskkill_vazio": 0.03, "rc": 0}
+  663.6 {"i": 28, "braco": "rastreado", "t": 10.17, "bash_vazio": 0.01, "taskkill_vazio": 0.03, "rc": 0}
+  674.8 {"i": 29, "braco": "original", "t": 10.58, "bash_vazio": 0.02, "taskkill_vazio": 0.03, "rc": 0}
+  685.8 {"i": 29, "braco": "rastreado", "t": 10.28, "bash_vazio": 0.02, "taskkill_vazio": 0.05, "rc": 0}
+  697.2 {"i": 30, "braco": "original", "t": 10.72, "bash_vazio": 0.03, "taskkill_vazio": 0.03, "rc": 0}
+  708.2 {"i": 30, "braco": "rastreado", "t": 10.31, "bash_vazio": 0.02, "taskkill_vazio": 0.05, "rc": 0}
+  719.7 {"i": 31, "braco": "original", "t": 10.76, "bash_vazio": 0.02, "taskkill_vazio": 0.05, "rc": 0}
+  730.7 {"i": 31, "braco": "rastreado", "t": 10.25, "bash_vazio": 0.01, "taskkill_vazio": 0.05, "rc": 0}
+  741.9 {"i": 32, "braco": "original", "t": 10.55, "bash_vazio": 0.02, "taskkill_vazio": 0.03, "rc": 0}
+  752.8 {"i": 32, "braco": "rastreado", "t": 10.2, "bash_vazio": 0.03, "taskkill_vazio": 0.03, "rc": 0}
+  764.0 {"i": 33, "braco": "original", "t": 10.53, "bash_vazio": 0.02, "taskkill_vazio": 0.05, "rc": 0}
+  775.0 {"i": 33, "braco": "rastreado", "t": 10.2, "bash_vazio": 0.03, "taskkill_vazio": 0.03, "rc": 0}
+  786.3 {"i": 34, "braco": "original", "t": 10.62, "bash_vazio": 0.02, "taskkill_vazio": 0.05, "rc": 0}
+  797.3 {"i": 34, "braco": "rastreado", "t": 10.28, "bash_vazio": 0.02, "taskkill_vazio": 0.05, "rc": 0}
+  808.6 {"i": 35, "braco": "original", "t": 10.61, "bash_vazio": 0.02, "taskkill_vazio": 0.05, "rc": 0}
+  819.5 {"i": 35, "braco": "rastreado", "t": 10.23, "bash_vazio": 0.02, "taskkill_vazio": 0.05, "rc": 0}
+  830.9 {"i": 36, "braco": "original", "t": 10.67, "bash_vazio": 0.02, "taskkill_vazio": 0.05, "rc": 0}
+  842.0 {"i": 36, "braco": "rastreado", "t": 10.33, "bash_vazio": 0.03, "taskkill_vazio": 0.05, "rc": 0}
+  853.4 {"i": 37, "braco": "original", "t": 10.66, "bash_vazio": 0.02, "taskkill_vazio": 0.05, "rc": 0}
+  864.5 {"i": 37, "braco": "rastreado", "t": 10.38, "bash_vazio": 0.01, "taskkill_vazio": 0.05, "rc": 0}
+  876.0 {"i": 38, "braco": "original", "t": 10.78, "bash_vazio": 0.02, "taskkill_vazio": 0.05, "rc": 0}
+  887.0 {"i": 38, "braco": "rastreado", "t": 10.31, "bash_vazio": 0.02, "taskkill_vazio": 0.05, "rc": 0}
+  898.2 {"i": 39, "braco": "original", "t": 10.55, "bash_vazio": 0.02, "taskkill_vazio": 0.03, "rc": 0}
+  909.2 {"i": 39, "braco": "rastreado", "t": 10.22, "bash_vazio": 0.03, "taskkill_vazio": 0.03, "rc": 0}
+  920.5 {"i": 40, "braco": "original", "t": 10.59, "bash_vazio": 0.02, "taskkill_vazio": 0.05, "rc": 0}
+  931.5 {"i": 40, "braco": "rastreado", "t": 10.28, "bash_vazio": 0.03, "taskkill_vazio": 0.03, "rc": 0}
+  942.7 {"i": 41, "braco": "original", "t": 10.48, "bash_vazio": 0.03, "taskkill_vazio": 0.03, "rc": 0}
+  953.6 {"i": 41, "braco": "rastreado", "t": 10.2, "bash_vazio": 0.02, "taskkill_vazio": 0.05, "rc": 0}
+  964.7 {"i": 42, "braco": "original", "t": 10.47, "bash_vazio": 0.02, "taskkill_vazio": 0.03, "rc": 0}
+  975.7 {"i": 42, "braco": "rastreado", "t": 10.22, "bash_vazio": 0.02, "taskkill_vazio": 0.03, "rc": 0}
+  986.9 {"i": 43, "braco": "original", "t": 10.5, "bash_vazio": 0.02, "taskkill_vazio": 0.05, "rc": 0}
+  997.8 {"i": 43, "braco": "rastreado", "t": 10.22, "bash_vazio": 0.02, "taskkill_vazio": 0.05, "rc": 0}
+ 1009.0 {"i": 44, "braco": "original", "t": 10.45, "bash_vazio": 0.02, "taskkill_vazio": 0.05, "rc": 0}
+ 1019.8 {"i": 44, "braco": "rastreado", "t": 10.17, "bash_vazio": 0.02, "taskkill_vazio": 0.05, "rc": 0}
+ 1030.9 {"i": 45, "braco": "original", "t": 10.41, "bash_vazio": 0.02, "taskkill_vazio": 0.03, "rc": 0}
+ 1041.7 {"i": 45, "braco": "rastreado", "t": 10.11, "bash_vazio": 0.02, "taskkill_vazio": 0.03, "rc": 0}
+ 1052.9 {"i": 46, "braco": "original", "t": 10.48, "bash_vazio": 0.02, "taskkill_vazio": 0.05, "rc": 0}
+ 1063.9 {"i": 46, "braco": "rastreado", "t": 10.3, "bash_vazio": 0.02, "taskkill_vazio": 0.05, "rc": 0}
+ 1075.0 {"i": 47, "braco": "original", "t": 10.39, "bash_vazio": 0.02, "taskkill_vazio": 0.05, "rc": 0}
+ 1085.8 {"i": 47, "braco": "rastreado", "t": 10.09, "bash_vazio": 0.02, "taskkill_vazio": 0.05, "rc": 0}
+ 1096.9 {"i": 48, "braco": "original", "t": 10.48, "bash_vazio": 0.03, "taskkill_vazio": 0.03, "rc": 0}
+ 1107.7 {"i": 48, "braco": "rastreado", "t": 10.12, "bash_vazio": 0.02, "taskkill_vazio": 0.03, "rc": 0}
+ 1118.5 {"i": 49, "braco": "original", "t": 10.25, "bash_vazio": 0.02, "taskkill_vazio": 0.03, "rc": 0}
+ 1129.1 {"i": 49, "braco": "rastreado", "t": 9.98, "bash_vazio": 0.03, "taskkill_vazio": 0.03, "rc": 0}
+ 1140.1 {"i": 50, "braco": "original", "t": 10.33, "bash_vazio": 0.02, "taskkill_vazio": 0.05, "rc": 0}
+ 1150.8 {"i": 50, "braco": "rastreado", "t": 10.0, "bash_vazio": 0.02, "taskkill_vazio": 0.03, "rc": 0}
+ 1161.8 {"i": 51, "braco": "original", "t": 10.38, "bash_vazio": 0.02, "taskkill_vazio": 0.05, "rc": 0}
+ 1172.4 {"i": 51, "braco": "rastreado", "t": 10.03, "bash_vazio": 0.02, "taskkill_vazio": 0.03, "rc": 0}
+ 1183.4 {"i": 52, "braco": "original", "t": 10.34, "bash_vazio": 0.02, "taskkill_vazio": 0.05, "rc": 0}
+ 1194.2 {"i": 52, "braco": "rastreado", "t": 10.08, "bash_vazio": 0.02, "taskkill_vazio": 0.03, "rc": 0}
+ 1205.1 {"i": 53, "braco": "original", "t": 10.28, "bash_vazio": 0.02, "taskkill_vazio": 0.03, "rc": 0}
+ 1215.9 {"i": 53, "braco": "rastreado", "t": 10.17, "bash_vazio": 0.02, "taskkill_vazio": 0.05, "rc": 0}
+ 1226.8 {"i": 54, "braco": "original", "t": 10.23, "bash_vazio": 0.02, "taskkill_vazio": 0.03, "rc": 0}
+ 1237.4 {"i": 54, "braco": "rastreado", "t": 10.0, "bash_vazio": 0.02, "taskkill_vazio": 0.03, "rc": 0}
+ 1248.3 {"i": 55, "braco": "original", "t": 10.31, "bash_vazio": 0.02, "taskkill_vazio": 0.03, "rc": 0}
+ 1258.8 {"i": 55, "braco": "rastreado", "t": 9.92, "bash_vazio": 0.02, "taskkill_vazio": 0.05, "rc": 0}
+ 1269.8 {"i": 56, "braco": "original", "t": 10.38, "bash_vazio": 0.03, "taskkill_vazio": 0.03, "rc": 0}
+ 1280.6 {"i": 56, "braco": "rastreado", "t": 10.03, "bash_vazio": 0.02, "taskkill_vazio": 0.05, "rc": 0}
+ 1291.5 {"i": 57, "braco": "original", "t": 10.31, "bash_vazio": 0.02, "taskkill_vazio": 0.05, "rc": 0}
+ 1302.3 {"i": 57, "braco": "rastreado", "t": 10.14, "bash_vazio": 0.02, "taskkill_vazio": 0.03, "rc": 0}
+ 1313.5 {"i": 58, "braco": "original", "t": 10.48, "bash_vazio": 0.02, "taskkill_vazio": 0.05, "rc": 0}
+ 1324.7 {"i": 58, "braco": "rastreado", "t": 10.12, "bash_vazio": 0.02, "taskkill_vazio": 0.03, "rc": 0}
+ 1335.6 {"i": 59, "braco": "original", "t": 10.33, "bash_vazio": 0.03, "taskkill_vazio": 0.03, "rc": 0}
+ 1346.5 {"i": 59, "braco": "rastreado", "t": 10.17, "bash_vazio": 0.02, "taskkill_vazio": 0.05, "rc": 0}
+ 1357.6 {"i": 60, "braco": "original", "t": 10.44, "bash_vazio": 0.02, "taskkill_vazio": 0.05, "rc": 0}
+ 1368.4 {"i": 60, "braco": "rastreado", "t": 10.12, "bash_vazio": 0.02, "taskkill_vazio": 0.05, "rc": 0}
+ 1379.6 {"i": 61, "braco": "original", "t": 10.45, "bash_vazio": 0.03, "taskkill_vazio": 0.06, "rc": 0}
+ 1390.4 {"i": 61, "braco": "rastreado", "t": 10.17, "bash_vazio": 0.03, "taskkill_vazio": 0.03, "rc": 0}
+ 1401.5 {"i": 62, "braco": "original", "t": 10.39, "bash_vazio": 0.02, "taskkill_vazio": 0.05, "rc": 0}
+ 1412.2 {"i": 62, "braco": "rastreado", "t": 10.08, "bash_vazio": 0.03, "taskkill_vazio": 0.03, "rc": 0}
+ 1423.5 {"i": 63, "braco": "original", "t": 10.61, "bash_vazio": 0.02, "taskkill_vazio": 0.05, "rc": 0}
+ 1434.3 {"i": 63, "braco": "rastreado", "t": 10.11, "bash_vazio": 0.02, "taskkill_vazio": 0.05, "rc": 0}
+ 1445.5 {"i": 64, "braco": "original", "t": 10.52, "bash_vazio": 0.02, "taskkill_vazio": 0.05, "rc": 0}
+ 1456.3 {"i": 64, "braco": "rastreado", "t": 10.08, "bash_vazio": 0.02, "taskkill_vazio": 0.05, "rc": 0}
+ 1467.5 {"i": 65, "braco": "original", "t": 10.53, "bash_vazio": 0.02, "taskkill_vazio": 0.05, "rc": 0}
+ 1478.4 {"i": 65, "braco": "rastreado", "t": 10.12, "bash_vazio": 0.02, "taskkill_vazio": 0.05, "rc": 0}
+ 1489.5 {"i": 66, "braco": "original", "t": 10.47, "bash_vazio": 0.03, "taskkill_vazio": 0.03, "rc": 0}
+ 1500.4 {"i": 66, "braco": "rastreado", "t": 10.2, "bash_vazio": 0.02, "taskkill_vazio": 0.03, "rc": 0}
+ 1511.6 {"i": 67, "braco": "original", "t": 10.5, "bash_vazio": 0.03, "taskkill_vazio": 0.03, "rc": 0}
+ 1522.5 {"i": 67, "braco": "rastreado", "t": 10.22, "bash_vazio": 0.02, "taskkill_vazio": 0.05, "rc": 0}
+ 1533.9 {"i": 68, "braco": "original", "t": 10.66, "bash_vazio": 0.02, "taskkill_vazio": 0.05, "rc": 0}
+ 1544.9 {"i": 68, "braco": "rastreado", "t": 10.31, "bash_vazio": 0.02, "taskkill_vazio": 0.05, "rc": 0}
+ 1556.3 {"i": 69, "braco": "original", "t": 10.72, "bash_vazio": 0.02, "taskkill_vazio": 0.05, "rc": 0}
+ 1567.3 {"i": 69, "braco": "rastreado", "t": 10.31, "bash_vazio": 0.03, "taskkill_vazio": 0.03, "rc": 0}
+ 1578.7 {"i": 70, "braco": "original", "t": 10.62, "bash_vazio": 0.02, "taskkill_vazio": 0.05, "rc": 0}
+ 1589.5 {"i": 70, "braco": "rastreado", "t": 10.11, "bash_vazio": 0.02, "taskkill_vazio": 0.05, "rc": 0}
+ 1600.6 {"i": 71, "braco": "original", "t": 10.42, "bash_vazio": 0.02, "taskkill_vazio": 0.05, "rc": 0}
+ 1611.2 {"i": 71, "braco": "rastreado", "t": 9.98, "bash_vazio": 0.03, "taskkill_vazio": 0.03, "rc": 0}
+ 1622.1 {"i": 72, "braco": "original", "t": 10.25, "bash_vazio": 0.02, "taskkill_vazio": 0.05, "rc": 0}
+ 1632.7 {"i": 72, "braco": "rastreado", "t": 9.97, "bash_vazio": 0.02, "taskkill_vazio": 0.05, "rc": 0}
+ 1643.7 {"i": 73, "braco": "original", "t": 10.36, "bash_vazio": 0.03, "taskkill_vazio": 0.03, "rc": 0}
+ 1654.5 {"i": 73, "braco": "rastreado", "t": 10.06, "bash_vazio": 0.02, "taskkill_vazio": 0.05, "rc": 0}
+ 1665.3 {"i": 74, "braco": "original", "t": 10.25, "bash_vazio": 0.02, "taskkill_vazio": 0.05, "rc": 0}
+ 1676.0 {"i": 74, "braco": "rastreado", "t": 10.05, "bash_vazio": 0.02, "taskkill_vazio": 0.05, "rc": 0}
+ 1687.2 {"i": 75, "braco": "original", "t": 10.52, "bash_vazio": 0.02, "taskkill_vazio": 0.05, "rc": 0}
+ 1697.9 {"i": 75, "braco": "rastreado", "t": 10.06, "bash_vazio": 0.03, "taskkill_vazio": 0.03, "rc": 0}
+ 1708.7 {"i": 76, "braco": "original", "t": 10.19, "bash_vazio": 0.02, "taskkill_vazio": 0.03, "rc": 0}
+ 1719.4 {"i": 76, "braco": "rastreado", "t": 10.11, "bash_vazio": 0.02, "taskkill_vazio": 0.03, "rc": 0}
+ 1730.5 {"i": 77, "braco": "original", "t": 10.34, "bash_vazio": 0.02, "taskkill_vazio": 0.03, "rc": 0}
+ 1741.2 {"i": 77, "braco": "rastreado", "t": 10.05, "bash_vazio": 0.02, "taskkill_vazio": 0.03, "rc": 0}
+ 1752.5 {"i": 78, "braco": "original", "t": 10.56, "bash_vazio": 0.03, "taskkill_vazio": 0.03, "rc": 0}
+ 1763.4 {"i": 78, "braco": "rastreado", "t": 10.2, "bash_vazio": 0.03, "taskkill_vazio": 0.03, "rc": 0}
+ 1774.7 {"i": 79, "braco": "original", "t": 10.62, "bash_vazio": 0.02, "taskkill_vazio": 0.05, "rc": 0}
+ 1785.6 {"i": 79, "braco": "rastreado", "t": 10.22, "bash_vazio": 0.02, "taskkill_vazio": 0.03, "rc": 0}
+ 1796.8 {"i": 80, "braco": "original", "t": 10.5, "bash_vazio": 0.03, "taskkill_vazio": 0.03, "rc": 0}
+ 1807.6 {"i": 80, "braco": "rastreado", "t": 10.14, "bash_vazio": 0.03, "taskkill_vazio": 0.03, "rc": 0}
+ 1819.0 {"i": 81, "braco": "original", "t": 10.67, "bash_vazio": 0.02, "taskkill_vazio": 0.05, "rc": 0}
+ 1830.0 {"i": 81, "braco": "rastreado", "t": 10.28, "bash_vazio": 0.02, "taskkill_vazio": 0.03, "rc": 0}
+ 1841.1 {"i": 82, "braco": "original", "t": 10.45, "bash_vazio": 0.02, "taskkill_vazio": 0.03, "rc": 0}
+ 1851.9 {"i": 82, "braco": "rastreado", "t": 10.16, "bash_vazio": 0.02, "taskkill_vazio": 0.03, "rc": 0}
+ 1863.2 {"i": 83, "braco": "original", "t": 10.58, "bash_vazio": 0.03, "taskkill_vazio": 0.03, "rc": 0}
+ 1874.0 {"i": 83, "braco": "rastreado", "t": 10.17, "bash_vazio": 0.02, "taskkill_vazio": 0.05, "rc": 0}
+ 1885.1 {"i": 84, "braco": "original", "t": 10.34, "bash_vazio": 0.02, "taskkill_vazio": 0.03, "rc": 0}
+ 1896.0 {"i": 84, "braco": "rastreado", "t": 10.25, "bash_vazio": 0.02, "taskkill_vazio": 0.05, "rc": 0}
+ 1907.2 {"i": 85, "braco": "original", "t": 10.52, "bash_vazio": 0.03, "taskkill_vazio": 0.03, "rc": 0}
+ 1918.1 {"i": 85, "braco": "rastreado", "t": 10.25, "bash_vazio": 0.02, "taskkill_vazio": 0.05, "rc": 0}
+ 1929.5 {"i": 86, "braco": "original", "t": 10.69, "bash_vazio": 0.02, "taskkill_vazio": 0.05, "rc": 0}
+ 1940.5 {"i": 86, "braco": "rastreado", "t": 10.34, "bash_vazio": 0.02, "taskkill_vazio": 0.05, "rc": 0}
+ 1951.9 {"i": 87, "braco": "original", "t": 10.59, "bash_vazio": 0.03, "taskkill_vazio": 0.05, "rc": 0}
+ 1962.8 {"i": 87, "braco": "rastreado", "t": 10.23, "bash_vazio": 0.03, "taskkill_vazio": 0.03, "rc": 0}
+ 1974.1 {"i": 88, "braco": "original", "t": 10.64, "bash_vazio": 0.03, "taskkill_vazio": 0.03, "rc": 0}
+ 1985.1 {"i": 88, "braco": "rastreado", "t": 10.3, "bash_vazio": 0.02, "taskkill_vazio": 0.05, "rc": 0}
+ 1996.4 {"i": 89, "braco": "original", "t": 10.55, "bash_vazio": 0.02, "taskkill_vazio": 0.05, "rc": 0}
+ 2007.4 {"i": 89, "braco": "rastreado", "t": 10.28, "bash_vazio": 0.02, "taskkill_vazio": 0.05, "rc": 0}
+ 2018.8 {"i": 90, "braco": "original", "t": 10.7, "bash_vazio": 0.03, "taskkill_vazio": 0.05, "rc": 0}
+ 2029.9 {"i": 90, "braco": "rastreado", "t": 10.36, "bash_vazio": 0.02, "taskkill_vazio": 0.05, "rc": 0}
+ 2041.2 {"i": 91, "braco": "original", "t": 10.62, "bash_vazio": 0.03, "taskkill_vazio": 0.03, "rc": 0}
+ 2052.2 {"i": 91, "braco": "rastreado", "t": 10.3, "bash_vazio": 0.02, "taskkill_vazio": 0.05, "rc": 0}
+ 2063.7 {"i": 92, "braco": "original", "t": 10.72, "bash_vazio": 0.02, "taskkill_vazio": 0.05, "rc": 0}
+ 2074.7 {"i": 92, "braco": "rastreado", "t": 10.33, "bash_vazio": 0.03, "taskkill_vazio": 0.03, "rc": 0}
+ 2085.9 {"i": 93, "braco": "original", "t": 10.48, "bash_vazio": 0.03, "taskkill_vazio": 0.03, "rc": 0}
+ 2096.7 {"i": 93, "braco": "rastreado", "t": 10.2, "bash_vazio": 0.03, "taskkill_vazio": 0.03, "rc": 0}
+ 2108.0 {"i": 94, "braco": "original", "t": 10.61, "bash_vazio": 0.01, "taskkill_vazio": 0.05, "rc": 0}
+ 2119.1 {"i": 94, "braco": "rastreado", "t": 10.12, "bash_vazio": 0.03, "taskkill_vazio": 0.03, "rc": 0}
+ 2130.3 {"i": 95, "braco": "original", "t": 10.44, "bash_vazio": 0.02, "taskkill_vazio": 0.05, "rc": 0}
+ 2141.1 {"i": 95, "braco": "rastreado", "t": 10.19, "bash_vazio": 0.01, "taskkill_vazio": 0.03, "rc": 0}
+ 2152.2 {"i": 96, "braco": "original", "t": 10.41, "bash_vazio": 0.01, "taskkill_vazio": 0.05, "rc": 0}
+ 2163.2 {"i": 96, "braco": "rastreado", "t": 10.33, "bash_vazio": 0.01, "taskkill_vazio": 0.03, "rc": 0}
+ 2174.4 {"i": 97, "braco": "original", "t": 10.45, "bash_vazio": 0.02, "taskkill_vazio": 0.05, "rc": 0}
+ 2185.2 {"i": 97, "braco": "rastreado", "t": 10.12, "bash_vazio": 0.02, "taskkill_vazio": 0.03, "rc": 0}
+ 2196.4 {"i": 98, "braco": "original", "t": 10.51, "bash_vazio": 0.02, "taskkill_vazio": 0.03, "rc": 0}
+ 2207.2 {"i": 98, "braco": "rastreado", "t": 10.14, "bash_vazio": 0.02, "taskkill_vazio": 0.03, "rc": 0}
+ 2218.2 {"i": 99, "braco": "original", "t": 10.36, "bash_vazio": 0.02, "taskkill_vazio": 0.05, "rc": 0}
+ 2228.8 {"i": 99, "braco": "rastreado", "t": 10.05, "bash_vazio": 0.01, "taskkill_vazio": 0.03, "rc": 0}
+ 2239.8 {"i": 100, "braco": "original", "t": 10.33, "bash_vazio": 0.01, "taskkill_vazio": 0.03, "rc": 0}
+ 2250.6 {"i": 100, "braco": "rastreado", "t": 10.09, "bash_vazio": 0.02, "taskkill_vazio": 0.03, "rc": 0}
+ 2261.4 {"i": 101, "braco": "original", "t": 10.2, "bash_vazio": 0.02, "taskkill_vazio": 0.03, "rc": 0}
+ 2272.0 {"i": 101, "braco": "rastreado", "t": 10.0, "bash_vazio": 0.02, "taskkill_vazio": 0.03, "rc": 0}
+ 2283.0 {"i": 102, "braco": "original", "t": 10.28, "bash_vazio": 0.02, "taskkill_vazio": 0.05, "rc": 0}
+ 2293.6 {"i": 102, "braco": "rastreado", "t": 9.98, "bash_vazio": 0.02, "taskkill_vazio": 0.03, "rc": 0}
+
+== RESUMO checar
+original     init    n=103 min=10.2 mediana=10.5 max=12.8
+rastreado    init    n=103 min=9.9 mediana=10.2 max=10.5
+--- batimento (t,atraso,C,D) acima de 0,3 s:
+17.1,0.000,0.375,0.000
+550.9,0.000,0.515,0.000
+
+########## diag-controle
+    5.0 
+
+RealTimeProtectionEnabled : False
+AntivirusEnabled          : True
+
+
+
+
+
+DisableRealtimeMonitoring : True
+ExclusionPath             : {C:\, D:\}
+
+
+
+
+DriveLetter FriendlyName FileSystemType DriveType HealthStatus OperationalStatus SizeRemaining      Size
+----------- ------------ -------------- --------- ------------ ----------------- -------------      ----
+D           Temp         NTFS           Fixed     Healthy      OK                    219.82 GB 219.98 GB
+C           Windows      NTFS           Fixed     Healthy      OK                     26.94 GB 149.89 GB
+                         FAT32          Fixed     Healthy      OK                     60.66 MB     95 MB
+
+
+17174360064
+4
+
+    5.0 git version 2.56.1.windows.1
+cpu: x86_64
+built from commit: 7bda9d349370004e1aec464249d784d18e58c001
+sizeof-long: 4
+sizeof-size_t: 8
+shell-path: D:/git-sdk-64/usr/bin/sh
+rust: disabled
+feature: fsmonitor--daemon
+gettext: enabled
+libcurl: 8.23.0
+OpenSSL: OpenSSL 3.5.9 29 Sep 2026
+zlib: 1.3.2
+SHA-1: SHA1_DC
+SHA-256: SHA256_BLK
+default-ref-format: files
+default-hash: sha1
+ TEMP C:\Users\RUNNER~1\AppData\Local\Temp RAIZ D:\a\sdd-open\sdd-open
+   42.8 arquivos no índice: 735
+   43.0 {"i": 0, "braco": "controle", "init": 25.72, "init_pipe": 25.72, "add": 6.19, "add_pipe": 6.19, "rc": 0, "commit": 5.67, "rmtree": 0.22}
+   83.9 arquivos no índice: 735
+   84.2 {"i": 0, "braco": "variante", "init": 25.58, "init_pipe": 25.58, "add": 7.72, "add_pipe": 7.72, "rc": 0, "commit": 7.53, "rmtree": 0.22}
+  122.8 {"i": 1, "braco": "variante", "init": 25.61, "init_pipe": 25.61, "add": 6.62, "add_pipe": 6.62, "rc": 0, "commit": 5.86, "rmtree": 0.2}
+  161.4 {"i": 1, "braco": "controle", "init": 25.55, "init_pipe": 25.55, "add": 6.95, "add_pipe": 6.95, "rc": 0, "commit": 5.64, "rmtree": 0.22}
+  199.8 {"i": 2, "braco": "controle", "init": 25.56, "init_pipe": 25.56, "add": 6.92, "add_pipe": 6.92, "rc": 0, "commit": 5.64, "rmtree": 0.22}
+  246.9 {"i": 2, "braco": "variante", "init": 30.7, "init_pipe": 30.7, "add": 9.84, "add_pipe": 9.84, "rc": 0, "commit": 6.17, "rmtree": 0.23}
+  292.5 {"i": 3, "braco": "variante", "init": 25.64, "init_pipe": 25.64, "add": 6.03, "add_pipe": 6.03, "rc": 0, "commit": 13.51, "rmtree": 0.24}
+  346.2 {"i": 3, "braco": "controle", "init": 38.89, "init_pipe": 38.89, "add": 6.92, "add_pipe": 6.92, "rc": 0, "commit": 6.38, "rmtree": 0.22}
+  386.5 {"i": 4, "braco": "controle", "init": 25.67, "init_pipe": 25.67, "add": 8.64, "add_pipe": 8.64, "rc": 0, "commit": 5.64, "rmtree": 0.22}
+  429.9 {"i": 4, "braco": "variante", "init": 25.7, "init_pipe": 25.7, "add": 11.52, "add_pipe": 11.52, "rc": 0, "commit": 5.67, "rmtree": 0.22}
+  468.5 {"i": 5, "braco": "variante", "init": 25.48, "init_pipe": 25.48, "add": 6.38, "add_pipe": 6.38, "rc": 0, "commit": 6.17, "rmtree": 0.2}
+  508.2 {"i": 5, "braco": "controle", "init": 25.52, "init_pipe": 25.52, "add": 7.94, "add_pipe": 7.94, "rc": 0, "commit": 5.84, "rmtree": 0.2}
+  548.9 {"i": 6, "braco": "controle", "init": 25.56, "init_pipe": 25.56, "add": 8.26, "add_pipe": 8.26, "rc": 0, "commit": 6.53, "rmtree": 0.2}
+  591.3 {"i": 6, "braco": "variante", "init": 25.92, "init_pipe": 25.92, "add": 10.02, "add_pipe": 10.02, "rc": 0, "commit": 6.14, "rmtree": 0.22}
+  630.9 {"i": 7, "braco": "variante", "init": 25.52, "init_pipe": 25.52, "add": 7.25, "add_pipe": 7.25, "rc": 0, "commit": 6.34, "rmtree": 0.2}
+  669.6 {"i": 7, "braco": "controle", "init": 25.56, "init_pipe": 25.56, "add": 6.77, "add_pipe": 6.77, "rc": 0, "commit": 5.95, "rmtree": 0.23}
+  710.2 {"i": 8, "braco": "controle", "init": 25.53, "init_pipe": 25.53, "add": 8.78, "add_pipe": 8.78, "rc": 0, "commit": 6.05, "rmtree": 0.22}
+  748.2 {"i": 8, "braco": "variante", "init": 25.59, "init_pipe": 25.59, "add": 5.91, "add_pipe": 5.91, "rc": 0, "commit": 6.12, "rmtree": 0.22}
+  788.9 {"i": 9, "braco": "variante", "init": 25.61, "init_pipe": 25.61, "add": 7.47, "add_pipe": 7.47, "rc": 0, "commit": 7.11, "rmtree": 0.22}
+  829.8 {"i": 9, "braco": "controle", "init": 25.55, "init_pipe": 25.55, "add": 7.98, "add_pipe": 7.98, "rc": 0, "commit": 6.92, "rmtree": 0.2}
+  868.3 {"i": 10, "braco": "controle", "init": 25.55, "init_pipe": 25.55, "add": 6.69, "add_pipe": 6.69, "rc": 0, "commit": 5.88, "rmtree": 0.22}
+  906.8 {"i": 10, "braco": "variante", "init": 25.59, "init_pipe": 25.59, "add": 6.25, "add_pipe": 6.25, "rc": 0, "commit": 6.3, "rmtree": 0.2}
+  945.0 {"i": 11, "braco": "variante", "init": 25.62, "init_pipe": 25.62, "add": 6.19, "add_pipe": 6.19, "rc": 0, "commit": 6.05, "rmtree": 0.22}
+  983.2 {"i": 11, "braco": "controle", "init": 25.64, "init_pipe": 25.64, "add": 6.31, "add_pipe": 6.31, "rc": 0, "commit": 5.92, "rmtree": 0.22}
+ 1021.5 {"i": 12, "braco": "controle", "init": 25.58, "init_pipe": 25.58, "add": 6.44, "add_pipe": 6.44, "rc": 0, "commit": 5.97, "rmtree": 0.22}
+ 1060.5 {"i": 12, "braco": "variante", "init": 25.64, "init_pipe": 25.64, "add": 7.03, "add_pipe": 7.03, "rc": 0, "commit": 5.94, "rmtree": 0.22}
+ 1098.5 {"i": 13, "braco": "variante", "init": 25.59, "init_pipe": 25.59, "add": 6.11, "add_pipe": 6.11, "rc": 0, "commit": 6.02, "rmtree": 0.22}
+ 1141.8 {"i": 13, "braco": "controle", "init": 25.67, "init_pipe": 25.67, "add": 10.08, "add_pipe": 10.08, "rc": 0, "commit": 7.17, "rmtree": 0.22}
+ 1180.5 {"i": 14, "braco": "controle", "init": 25.52, "init_pipe": 25.52, "add": 6.61, "add_pipe": 6.61, "rc": 0, "commit": 6.16, "rmtree": 0.22}
+ 1218.6 {"i": 14, "braco": "variante", "init": 25.59, "init_pipe": 25.59, "add": 6.41, "add_pipe": 6.41, "rc": 0, "commit": 5.8, "rmtree": 0.22}
+ 1261.8 {"i": 15, "braco": "variante", "init": 25.56, "init_pipe": 25.56, "add": 11.64, "add_pipe": 11.64, "rc": 0, "commit": 5.67, "rmtree": 0.22}
+ 1301.0 {"i": 15, "braco": "controle", "init": 25.59, "init_pipe": 25.59, "add": 7.25, "add_pipe": 7.25, "rc": 0, "commit": 5.97, "rmtree": 0.22}
+ 1341.8 {"i": 16, "braco": "controle", "init": 25.58, "init_pipe": 25.58, "add": 8.23, "add_pipe": 8.23, "rc": 0, "commit": 6.61, "rmtree": 0.2}
+ 1379.7 {"i": 16, "braco": "variante", "init": 25.58, "init_pipe": 25.58, "add": 6.38, "add_pipe": 6.38, "rc": 0, "commit": 5.64, "rmtree": 0.22}
+ 1417.5 {"i": 17, "braco": "variante", "init": 25.5, "init_pipe": 25.5, "add": 6.25, "add_pipe": 6.25, "rc": 0, "commit": 5.59, "rmtree": 0.31}
+ 1456.2 {"i": 17, "braco": "controle", "init": 25.5, "init_pipe": 25.5, "add": 6.91, "add_pipe": 6.91, "rc": 0, "commit": 5.97, "rmtree": 0.22}
+ 1494.7 {"i": 18, "braco": "controle", "init": 25.61, "init_pipe": 25.61, "add": 6.77, "add_pipe": 6.77, "rc": 0, "commit": 5.72, "rmtree": 0.25}
+ 1532.3 {"i": 18, "braco": "variante", "init": 25.53, "init_pipe": 25.53, "add": 5.88, "add_pipe": 5.88, "rc": 0, "commit": 5.66, "rmtree": 0.2}
+ 1569.9 {"i": 19, "braco": "variante", "init": 25.5, "init_pipe": 25.5, "add": 6.06, "add_pipe": 6.06, "rc": 0, "commit": 5.69, "rmtree": 0.22}
+ 1610.5 {"i": 19, "braco": "controle", "init": 25.56, "init_pipe": 25.56, "add": 7.62, "add_pipe": 7.62, "rc": 0, "commit": 7.03, "rmtree": 0.23}
+ 1648.5 {"i": 20, "braco": "controle", "init": 25.53, "init_pipe": 25.53, "add": 6.39, "add_pipe": 6.39, "rc": 0, "commit": 5.59, "rmtree": 0.22}
+ 1685.8 {"i": 20, "braco": "variante", "init": 25.53, "init_pipe": 25.53, "add": 5.88, "add_pipe": 5.88, "rc": 0, "commit": 5.64, "rmtree": 0.22}
+ 1724.7 {"i": 21, "braco": "variante", "init": 25.55, "init_pipe": 25.55, "add": 7.34, "add_pipe": 7.34, "rc": 0, "commit": 5.69, "rmtree": 0.22}
+ 1763.2 {"i": 21, "braco": "controle", "init": 25.5, "init_pipe": 25.5, "add": 6.33, "add_pipe": 6.33, "rc": 0, "commit": 6.25, "rmtree": 0.23}
+ 1800.4 {"i": 22, "braco": "controle", "init": 25.48, "init_pipe": 25.48, "add": 5.83, "add_pipe": 5.83, "rc": 0, "commit": 5.59, "rmtree": 0.2}
+ 1838.0 {"i": 22, "braco": "variante", "init": 25.48, "init_pipe": 25.48, "add": 6.0, "add_pipe": 6.0, "rc": 0, "commit": 5.75, "rmtree": 0.22}
+ 1875.2 {"i": 23, "braco": "variante", "init": 25.48, "init_pipe": 25.48, "add": 5.78, "add_pipe": 5.78, "rc": 0, "commit": 5.62, "rmtree": 0.2}
+ 1912.6 {"i": 23, "braco": "controle", "init": 25.47, "init_pipe": 25.47, "add": 5.89, "add_pipe": 5.89, "rc": 0, "commit": 5.69, "rmtree": 0.2}
+ 1950.0 {"i": 24, "braco": "controle", "init": 25.45, "init_pipe": 25.45, "add": 5.78, "add_pipe": 5.78, "rc": 0, "commit": 5.78, "rmtree": 0.23}
+ 1988.2 {"i": 24, "braco": "variante", "init": 25.58, "init_pipe": 25.58, "add": 6.56, "add_pipe": 6.56, "rc": 0, "commit": 5.83, "rmtree": 0.2}
+ 2027.0 {"i": 25, "braco": "variante", "init": 25.56, "init_pipe": 25.56, "add": 7.28, "add_pipe": 7.28, "rc": 0, "commit": 5.58, "rmtree": 0.22}
+ 2064.6 {"i": 25, "braco": "controle", "init": 25.56, "init_pipe": 25.56, "add": 6.12, "add_pipe": 6.12, "rc": 0, "commit": 5.58, "rmtree": 0.22}
+ 2105.5 {"i": 26, "braco": "controle", "init": 25.55, "init_pipe": 25.55, "add": 8.19, "add_pipe": 8.19, "rc": 0, "commit": 6.89, "rmtree": 0.22}
+ 2146.8 {"i": 26, "braco": "variante", "init": 25.58, "init_pipe": 25.58, "add": 7.94, "add_pipe": 7.94, "rc": 0, "commit": 7.42, "rmtree": 0.22}
+ 2187.4 {"i": 27, "braco": "variante", "init": 25.61, "init_pipe": 25.61, "add": 8.7, "add_pipe": 8.7, "rc": 0, "commit": 5.88, "rmtree": 0.22}
+ 2228.4 {"i": 27, "braco": "controle", "init": 25.52, "init_pipe": 25.52, "add": 9.31, "add_pipe": 9.31, "rc": 0, "commit": 5.75, "rmtree": 0.22}
+ 2266.5 {"i": 28, "braco": "controle", "init": 25.55, "init_pipe": 25.55, "add": 6.38, "add_pipe": 6.38, "rc": 0, "commit": 5.84, "rmtree": 0.22}
+ 2305.8 {"i": 28, "braco": "variante", "init": 25.5, "init_pipe": 25.5, "add": 6.62, "add_pipe": 6.62, "rc": 0, "commit": 6.78, "rmtree": 0.22}
+
+== RESUMO controle
+controle     init    n=29 min=25.5 mediana=25.5 max=38.9
+controle     add     n=29 min=5.8 mediana=6.9 max=10.1
+controle     commit  n=29 min=5.6 mediana=5.9 max=7.2
+controle     rmtree  n=29 min=0.2 mediana=0.2 max=0.2
+variante     init    n=29 min=25.5 mediana=25.6 max=30.7
+variante     add     n=29 min=5.8 mediana=6.6 max=11.6
+variante     commit  n=29 min=5.6 mediana=5.9 max=13.5
+variante     rmtree  n=29 min=0.2 mediana=0.2 max=0.3
+--- batimento (t,atraso,C,D) acima de 0,3 s:
+77.0,0.000,0.562,0.000
+88.6,0.000,0.328,0.000
+94.2,0.000,1.531,0.000
+235.6,0.000,1.453,0.000
+282.9,0.000,0.422,0.000
+284.3,0.000,0.406,0.000
+287.2,0.000,0.594,0.000
+292.9,0.016,0.391,0.000
+298.1,0.000,0.375,0.000
+299.5,0.000,0.437,0.000
+387.8,0.000,0.563,0.000
+391.6,0.000,0.641,0.000
+581.7,0.015,0.313,0.000
+591.1,0.000,0.313,0.000
+710.8,0.000,0.312,0.000
+1049.1,0.000,0.312,0.000
+1126.6,0.000,0.407,0.000
+1189.3,0.000,0.625,0.000
+2042.1,0.016,0.469,0.000
+
+########## diag-disco
+   12.3 
+
+RealTimeProtectionEnabled : False
+AntivirusEnabled          : True
+
+
+
+
+
+DisableRealtimeMonitoring : True
+ExclusionPath             : {C:\, D:\}
+
+
+
+
+DriveLetter FriendlyName FileSystemType DriveType HealthStatus OperationalStatus SizeRemaining      Size
+----------- ------------ -------------- --------- ------------ ----------------- -------------      ----
+D           Temp         NTFS           Fixed     Healthy      OK                    219.82 GB 219.98 GB
+C           Windows      NTFS           Fixed     Healthy      OK                     26.93 GB 149.89 GB
+                         FAT32          Fixed     Healthy      OK                     60.66 MB     95 MB
+
+
+17174360064
+4
+
+   12.3 git version 2.56.1.windows.1
+cpu: x86_64
+built from commit: 7bda9d349370004e1aec464249d784d18e58c001
+sizeof-long: 4
+sizeof-size_t: 8
+shell-path: D:/git-sdk-64/usr/bin/sh
+rust: disabled
+feature: fsmonitor--daemon
+gettext: enabled
+libcurl: 8.23.0
+OpenSSL: OpenSSL 3.5.9 29 Sep 2026
+zlib: 1.3.2
+SHA-1: SHA1_DC
+SHA-256: SHA256_BLK
+default-ref-format: files
+default-hash: sha1
+ TEMP C:\Users\RUNNER~1\AppData\Local\Temp RAIZ D:\a\sdd-open\sdd-open
+   54.7 arquivos no índice: 735
+   54.9 {"i": 0, "braco": "controle", "init": 26.75, "init_pipe": 26.75, "add": 9.36, "add_pipe": 9.36, "rc": 0, "commit": 6.03, "rmtree": 0.2}
+   85.3 arquivos no índice: 735
+   85.4 {"i": 0, "braco": "variante", "init": 26.09, "init_pipe": 26.09, "add": 0.51, "add_pipe": 0.51, "rc": 0, "commit": 3.72, "rmtree": 0.12}
+  115.4 {"i": 1, "braco": "variante", "init": 25.5, "init_pipe": 25.5, "add": 0.53, "add_pipe": 0.53, "rc": 0, "commit": 3.77, "rmtree": 0.12}
+  159.0 {"i": 1, "braco": "controle", "init": 25.61, "init_pipe": 25.61, "add": 9.94, "add_pipe": 9.94, "rc": 0, "commit": 7.48, "rmtree": 0.22}
+  197.5 {"i": 2, "braco": "controle", "init": 25.56, "init_pipe": 25.56, "add": 6.81, "add_pipe": 6.81, "rc": 0, "commit": 5.81, "rmtree": 0.22}
+  227.4 {"i": 2, "braco": "variante", "init": 25.53, "init_pipe": 25.53, "add": 0.53, "add_pipe": 0.53, "rc": 0, "commit": 3.66, "rmtree": 0.12}
+  257.3 {"i": 3, "braco": "variante", "init": 25.45, "init_pipe": 25.45, "add": 0.52, "add_pipe": 0.52, "rc": 0, "commit": 3.67, "rmtree": 0.12}
+  296.5 {"i": 3, "braco": "controle", "init": 25.51, "init_pipe": 25.51, "add": 7.24, "add_pipe": 7.24, "rc": 0, "commit": 6.14, "rmtree": 0.22}
+  334.6 {"i": 4, "braco": "controle", "init": 25.59, "init_pipe": 25.59, "add": 6.28, "add_pipe": 6.28, "rc": 0, "commit": 5.51, "rmtree": 0.22}
+  364.2 {"i": 4, "braco": "variante", "init": 25.47, "init_pipe": 25.47, "add": 0.51, "add_pipe": 0.51, "rc": 0, "commit": 3.42, "rmtree": 0.12}
+  393.9 {"i": 5, "braco": "variante", "init": 25.42, "init_pipe": 25.42, "add": 0.53, "add_pipe": 0.53, "rc": 0, "commit": 3.5, "rmtree": 0.12}
+  430.1 {"i": 5, "braco": "controle", "init": 25.52, "init_pipe": 25.52, "add": 5.31, "add_pipe": 5.31, "rc": 0, "commit": 5.0, "rmtree": 0.22}
+  467.1 {"i": 6, "braco": "controle", "init": 25.53, "init_pipe": 25.53, "add": 5.62, "add_pipe": 5.62, "rc": 0, "commit": 5.39, "rmtree": 0.23}
+  496.8 {"i": 6, "braco": "variante", "init": 25.41, "init_pipe": 25.41, "add": 0.55, "add_pipe": 0.55, "rc": 0, "commit": 3.58, "rmtree": 0.12}
+  526.4 {"i": 7, "braco": "variante", "init": 25.44, "init_pipe": 25.44, "add": 0.52, "add_pipe": 0.52, "rc": 0, "commit": 3.48, "rmtree": 0.11}
+  602.5 {"i": 7, "braco": "controle", "init": 36.25, "init_pipe": 36.25, "add": 33.84, "add_pipe": 33.84, "rc": 0, "commit": 5.61, "rmtree": 0.2}
+  642.4 {"i": 8, "braco": "controle", "init": 25.5, "init_pipe": 25.5, "add": 7.72, "add_pipe": 7.72, "rc": 0, "commit": 6.39, "rmtree": 0.23}
+  666.6 {"i": 8, "braco": "variante", "init": 20.09, "init_pipe": 20.09, "add": 0.52, "add_pipe": 0.52, "rc": 0, "commit": 3.39, "rmtree": 0.11}
+  690.6 {"i": 9, "braco": "variante", "init": 19.89, "init_pipe": 19.89, "add": 0.52, "add_pipe": 0.52, "rc": 0, "commit": 3.36, "rmtree": 0.11}
+  732.5 {"i": 9, "braco": "controle", "init": 25.59, "init_pipe": 25.59, "add": 9.05, "add_pipe": 9.05, "rc": 0, "commit": 6.81, "rmtree": 0.36}
+  770.7 {"i": 10, "braco": "controle", "init": 25.45, "init_pipe": 25.45, "add": 6.53, "add_pipe": 6.53, "rc": 0, "commit": 5.83, "rmtree": 0.22}
+  795.0 {"i": 10, "braco": "variante", "init": 20.16, "init_pipe": 20.16, "add": 0.53, "add_pipe": 0.53, "rc": 0, "commit": 3.42, "rmtree": 0.12}
+  824.7 {"i": 11, "braco": "variante", "init": 25.38, "init_pipe": 25.38, "add": 0.51, "add_pipe": 0.51, "rc": 0, "commit": 3.62, "rmtree": 0.14}
+  866.4 {"i": 11, "braco": "controle", "init": 25.58, "init_pipe": 25.58, "add": 6.8, "add_pipe": 6.8, "rc": 0, "commit": 8.92, "rmtree": 0.22}
+  908.0 {"i": 12, "braco": "controle", "init": 25.61, "init_pipe": 25.61, "add": 9.27, "add_pipe": 9.27, "rc": 0, "commit": 6.41, "rmtree": 0.22}
+  937.7 {"i": 12, "braco": "variante", "init": 25.44, "init_pipe": 25.44, "add": 0.52, "add_pipe": 0.52, "rc": 0, "commit": 3.55, "rmtree": 0.14}
+  967.4 {"i": 13, "braco": "variante", "init": 25.45, "init_pipe": 25.45, "add": 0.53, "add_pipe": 0.53, "rc": 0, "commit": 3.52, "rmtree": 0.11}
+ 1009.1 {"i": 13, "braco": "controle", "init": 25.94, "init_pipe": 25.94, "add": 8.23, "add_pipe": 8.23, "rc": 0, "commit": 7.23, "rmtree": 0.22}
+ 1046.1 {"i": 14, "braco": "controle", "init": 25.56, "init_pipe": 25.56, "add": 5.64, "add_pipe": 5.64, "rc": 0, "commit": 5.22, "rmtree": 0.2}
+ 1070.4 {"i": 14, "braco": "variante", "init": 20.06, "init_pipe": 20.06, "add": 0.56, "add_pipe": 0.56, "rc": 0, "commit": 3.45, "rmtree": 0.12}
+ 1100.0 {"i": 15, "braco": "variante", "init": 25.36, "init_pipe": 25.36, "add": 0.52, "add_pipe": 0.52, "rc": 0, "commit": 3.56, "rmtree": 0.12}
+ 1137.5 {"i": 15, "braco": "controle", "init": 25.48, "init_pipe": 25.48, "add": 5.53, "add_pipe": 5.53, "rc": 0, "commit": 6.03, "rmtree": 0.28}
+ 1179.1 {"i": 16, "braco": "controle", "init": 25.55, "init_pipe": 25.55, "add": 9.95, "add_pipe": 9.95, "rc": 0, "commit": 5.86, "rmtree": 0.22}
+ 1208.8 {"i": 16, "braco": "variante", "init": 25.44, "init_pipe": 25.44, "add": 0.5, "add_pipe": 0.5, "rc": 0, "commit": 3.5, "rmtree": 0.12}
+ 1232.9 {"i": 17, "braco": "variante", "init": 19.97, "init_pipe": 19.97, "add": 0.52, "add_pipe": 0.52, "rc": 0, "commit": 3.47, "rmtree": 0.11}
+ 1277.4 {"i": 17, "braco": "controle", "init": 25.53, "init_pipe": 25.53, "add": 11.55, "add_pipe": 11.55, "rc": 0, "commit": 7.09, "rmtree": 0.2}
+ 1318.3 {"i": 18, "braco": "controle", "init": 25.48, "init_pipe": 25.48, "add": 8.55, "add_pipe": 8.55, "rc": 0, "commit": 6.5, "rmtree": 0.22}
+ 1342.4 {"i": 18, "braco": "variante", "init": 19.98, "init_pipe": 19.98, "add": 0.53, "add_pipe": 0.53, "rc": 0, "commit": 3.44, "rmtree": 0.12}
+ 1366.6 {"i": 19, "braco": "variante", "init": 20.11, "init_pipe": 20.11, "add": 0.52, "add_pipe": 0.52, "rc": 0, "commit": 3.38, "rmtree": 0.12}
+ 1410.5 {"i": 19, "braco": "controle", "init": 25.53, "init_pipe": 25.53, "add": 12.28, "add_pipe": 12.28, "rc": 0, "commit": 5.53, "rmtree": 0.2}
+ 1448.9 {"i": 20, "braco": "controle", "init": 25.48, "init_pipe": 25.48, "add": 6.86, "add_pipe": 6.86, "rc": 0, "commit": 5.7, "rmtree": 0.22}
+ 1473.3 {"i": 20, "braco": "variante", "init": 20.25, "init_pipe": 20.25, "add": 0.52, "add_pipe": 0.52, "rc": 0, "commit": 3.45, "rmtree": 0.12}
+ 1497.4 {"i": 21, "braco": "variante", "init": 20.02, "init_pipe": 20.02, "add": 0.53, "add_pipe": 0.53, "rc": 0, "commit": 3.38, "rmtree": 0.12}
+ 1537.3 {"i": 21, "braco": "controle", "init": 25.56, "init_pipe": 25.56, "add": 8.0, "add_pipe": 8.0, "rc": 0, "commit": 6.02, "rmtree": 0.2}
+ 1574.1 {"i": 22, "braco": "controle", "init": 25.52, "init_pipe": 25.52, "add": 5.91, "add_pipe": 5.91, "rc": 0, "commit": 5.08, "rmtree": 0.2}
+ 1603.8 {"i": 22, "braco": "variante", "init": 25.36, "init_pipe": 25.36, "add": 0.52, "add_pipe": 0.52, "rc": 0, "commit": 3.61, "rmtree": 0.12}
+ 1633.4 {"i": 23, "braco": "variante", "init": 25.47, "init_pipe": 25.47, "add": 0.5, "add_pipe": 0.5, "rc": 0, "commit": 3.39, "rmtree": 0.12}
+ 1670.1 {"i": 23, "braco": "controle", "init": 25.47, "init_pipe": 25.47, "add": 5.8, "add_pipe": 5.8, "rc": 0, "commit": 5.12, "rmtree": 0.2}
+ 1706.1 {"i": 24, "braco": "controle", "init": 25.52, "init_pipe": 25.52, "add": 4.89, "add_pipe": 4.89, "rc": 0, "commit": 5.31, "rmtree": 0.2}
+ 1730.3 {"i": 24, "braco": "variante", "init": 20.05, "init_pipe": 20.05, "add": 0.5, "add_pipe": 0.5, "rc": 0, "commit": 3.47, "rmtree": 0.11}
+ 1754.2 {"i": 25, "braco": "variante", "init": 19.77, "init_pipe": 19.77, "add": 0.5, "add_pipe": 0.5, "rc": 0, "commit": 3.41, "rmtree": 0.12}
+ 1791.6 {"i": 25, "braco": "controle", "init": 25.53, "init_pipe": 25.53, "add": 6.31, "add_pipe": 6.31, "rc": 0, "commit": 5.2, "rmtree": 0.22}
+ 1830.8 {"i": 26, "braco": "controle", "init": 25.52, "init_pipe": 25.52, "add": 7.47, "add_pipe": 7.47, "rc": 0, "commit": 5.86, "rmtree": 0.22}
+ 1855.0 {"i": 26, "braco": "variante", "init": 20.0, "init_pipe": 20.0, "add": 0.59, "add_pipe": 0.59, "rc": 0, "commit": 3.42, "rmtree": 0.12}
+ 1879.5 {"i": 27, "braco": "variante", "init": 20.22, "init_pipe": 20.22, "add": 0.55, "add_pipe": 0.55, "rc": 0, "commit": 3.5, "rmtree": 0.11}
+ 1918.3 {"i": 27, "braco": "controle", "init": 25.52, "init_pipe": 25.52, "add": 7.06, "add_pipe": 7.06, "rc": 0, "commit": 5.92, "rmtree": 0.22}
+ 1955.4 {"i": 28, "braco": "controle", "init": 25.49, "init_pipe": 25.49, "add": 5.53, "add_pipe": 5.53, "rc": 0, "commit": 5.7, "rmtree": 0.2}
+ 1979.5 {"i": 28, "braco": "variante", "init": 19.83, "init_pipe": 19.83, "add": 0.53, "add_pipe": 0.53, "rc": 0, "commit": 3.53, "rmtree": 0.12}
+ 2009.2 {"i": 29, "braco": "variante", "init": 25.42, "init_pipe": 25.42, "add": 0.53, "add_pipe": 0.53, "rc": 0, "commit": 3.59, "rmtree": 0.12}
+ 2047.5 {"i": 29, "braco": "controle", "init": 25.55, "init_pipe": 25.55, "add": 6.72, "add_pipe": 6.72, "rc": 0, "commit": 5.69, "rmtree": 0.23}
+ 2089.2 {"i": 30, "braco": "controle", "init": 25.56, "init_pipe": 25.56, "add": 9.05, "add_pipe": 9.05, "rc": 0, "commit": 6.34, "rmtree": 0.22}
+ 2113.3 {"i": 30, "braco": "variante", "init": 19.94, "init_pipe": 19.94, "add": 0.52, "add_pipe": 0.52, "rc": 0, "commit": 3.44, "rmtree": 0.11}
+ 2137.5 {"i": 31, "braco": "variante", "init": 20.09, "init_pipe": 20.09, "add": 0.55, "add_pipe": 0.55, "rc": 0, "commit": 3.39, "rmtree": 0.11}
+ 2175.7 {"i": 31, "braco": "controle", "init": 25.59, "init_pipe": 25.59, "add": 5.86, "add_pipe": 5.86, "rc": 0, "commit": 6.44, "rmtree": 0.2}
+ 2217.5 {"i": 32, "braco": "controle", "init": 25.55, "init_pipe": 25.55, "add": 9.48, "add_pipe": 9.48, "rc": 0, "commit": 6.44, "rmtree": 0.2}
+ 2247.0 {"i": 32, "braco": "variante", "init": 25.38, "init_pipe": 25.38, "add": 0.51, "add_pipe": 0.51, "rc": 0, "commit": 3.47, "rmtree": 0.11}
+ 2276.7 {"i": 33, "braco": "variante", "init": 25.39, "init_pipe": 25.39, "add": 0.52, "add_pipe": 0.52, "rc": 0, "commit": 3.53, "rmtree": 0.12}
+ 2324.7 {"i": 33, "braco": "controle", "init": 25.5, "init_pipe": 25.5, "add": 14.61, "add_pipe": 14.61, "rc": 0, "commit": 7.53, "rmtree": 0.22}
+
+== RESUMO disco
+controle     init    n=34 min=25.5 mediana=25.5 max=36.2
+controle     add     n=34 min=4.9 mediana=7.1 max=33.8
+controle     commit  n=34 min=5.0 mediana=5.9 max=8.9
+controle     rmtree  n=34 min=0.2 mediana=0.2 max=0.4
+variante     init    n=34 min=19.8 mediana=25.4 max=26.1
+variante     add     n=34 min=0.5 mediana=0.5 max=0.6
+variante     commit  n=34 min=3.4 mediana=3.5 max=3.8
+variante     rmtree  n=34 min=0.1 mediana=0.1 max=0.1
+--- batimento (t,atraso,C,D) acima de 0,3 s:
+71.7,0.000,0.453,0.000
+187.1,0.015,0.422,0.000
+440.1,0.000,0.344,0.000
+527.7,0.000,0.390,0.000
+542.4,0.000,0.532,0.000
+544.5,0.000,1.140,0.000
+546.5,0.000,0.938,0.000
+547.8,0.000,0.359,0.000
+549.3,0.000,0.469,0.000
+552.0,0.016,0.516,0.000
+555.8,0.000,0.578,0.000
+557.2,0.016,0.391,0.000
+559.8,0.016,0.438,0.000
+565.7,0.000,0.360,0.000
+567.0,0.000,0.359,0.000
+568.4,0.000,0.344,0.000
+575.4,0.000,0.328,0.000
+576.8,0.000,0.328,0.000
+578.4,0.016,0.593,0.000
+581.1,0.000,0.437,0.000
+584.7,0.000,0.360,0.000
+586.3,0.000,0.531,0.000
+590.0,0.016,0.578,0.000
+722.7,0.000,0.422,0.000
+887.1,0.000,0.437,0.000
+896.4,0.000,1.203,0.000
+977.2,0.000,0.610,0.000
+1010.7,0.000,0.516,0.000
+1166.7,0.000,0.766,0.000
+1351.9,0.000,0.516,0.000
+1383.4,0.000,0.609,0.000
+1400.6,0.000,0.656,0.000
+1402.8,0.016,1.156,0.000
+1567.1,0.000,0.688,0.000
+1819.6,0.000,0.360,0.000
+1910.5,0.000,0.421,0.000
+2308.0,0.000,0.312,0.000
+
+########## diag-fatia
+    4.7 
+
+RealTimeProtectionEnabled : False
+AntivirusEnabled          : True
+
+
+
+
+
+DisableRealtimeMonitoring : True
+ExclusionPath             : {C:\, D:\}
+
+
+
+
+DriveLetter FriendlyName FileSystemType DriveType HealthStatus OperationalStatus SizeRemaining      Size
+----------- ------------ -------------- --------- ------------ ----------------- -------------      ----
+D           Temp         NTFS           Fixed     Healthy      OK                    219.82 GB 219.98 GB
+C           Windows      NTFS           Fixed     Healthy      OK                     26.94 GB 149.89 GB
+                         FAT32          Fixed     Healthy      OK                     60.66 MB     95 MB
+
+
+17174360064
+4
+
+    4.7 git version 2.56.1.windows.1
+cpu: x86_64
+built from commit: 7bda9d349370004e1aec464249d784d18e58c001
+sizeof-long: 4
+sizeof-size_t: 8
+shell-path: D:/git-sdk-64/usr/bin/sh
+rust: disabled
+feature: fsmonitor--daemon
+gettext: enabled
+libcurl: 8.23.0
+OpenSSL: OpenSSL 3.5.9 29 Sep 2026
+zlib: 1.3.2
+SHA-1: SHA1_DC
+SHA-256: SHA256_BLK
+default-ref-format: files
+default-hash: sha1
+ TEMP C:\Users\RUNNER~1\AppData\Local\Temp RAIZ D:\a\sdd-open\sdd-open
+fatia 9/16: 42 unidade(s), 183 teste(s); teto por unidade 900s; paralelo 1
+test_apoio_ambiente.Ambiente                 OK     testes=1    falhas=0   erros=0   pulados=0      43.2s
+test_contexto_lint.Lint                      OK     testes=5    falhas=0   erros=0   pulados=0      44.0s
+test_contraste.Locale                        OK     testes=1    falhas=0   erros=0   pulados=1       0.1s
+test_contrato_build_release.TemplateEPlaybook OK     testes=2    falhas=0   erros=0   pulados=0       2.8s
+test_curadoria_bloco.Reprova[4de5]           OK     testes=7    falhas=0   erros=0   pulados=0       5.4s
+test_deploy_espera_testes.DeployEsperaTestes[2de4] FALHOU testes=8    falhas=0   erros=2   pulados=0       0.6s
+    ERROR DeployEsperaTestes.test_job_com_nome_de_deploy_nao_reconhecido_impede_o_sim
+    ERROR DeployEsperaTestes.test_release_do_sdd_open_espera_por_needs
+test_desempenho_diagnostico.RevisaoDoCodigo3 OK     testes=5    falhas=0   erros=0   pulados=0       1.8s
+test_design_lint.AvisoDeSeguranca            OK     testes=2    falhas=0   erros=0   pulados=0       0.3s
+test_design_lint.DesignLint[2de2]            OK     testes=4    falhas=0   erros=0   pulados=0       0.2s
+test_docs.Guia                               OK     testes=6    falhas=0   erros=0   pulados=0       0.1s
+test_f14_textos.BriefDoCurador               OK     testes=7    falhas=0   erros=0   pulados=0       0.1s
+test_f14_textos.NovaSessao                   OK     testes=1    falhas=0   erros=0   pulados=0       0.1s
+test_f14_textos.Pacote                       FALHOU testes=5    falhas=0   erros=1   pulados=0       0.1s
+    ERROR Pacote.test_gatilho_de_release_cobre_as_invariantes
+test_f17b_textos.SemTerminal                 OK     testes=3    falhas=0   erros=0   pulados=0       0.1s
+test_f17c_passo0.Exemplo                     OK     testes=2    falhas=0   erros=0   pulados=0       0.1s
+test_f19_textos.NoProjeto                    OK     testes=4    falhas=0   erros=0   pulados=0      92.0s
+test_f21_textos.Texto[2de2]                  OK     testes=6    falhas=0   erros=0   pulados=0       0.1s
+test_f22_upgrade.PacoteReal                  OK     testes=1    falhas=0   erros=0   pulados=1       0.1s
+test_f23b2_papeis.AT008AT011Executor[4de4]   OK     testes=5    falhas=0   erros=0   pulados=2      10.6s
+test_f24_release_enxuta.AT008_FichaPorAcrescimo OK     testes=3    falhas=0   erros=0   pulados=0       0.8s
+test_f24_release_enxuta.Revisao5Sandbox      OK     testes=7    falhas=0   erros=0   pulados=0       0.5s
+test_f25_skills_duplicadas.RevisaoRodada6    OK     testes=4    falhas=0   erros=0   pulados=1      15.4s
+test_f26_docs_na_main.SemRegressao           FALHOU testes=2    falhas=1   erros=1   pulados=0       0.4s
+    ERROR SemRegressao.test_at007_init_de_um_clone_com_documentos_nao_instala_documento
+    FAIL SemRegressao.test_at007_push_so_de_documento_nao_publica_e_com_playbook_publica
+test_f28_revisores.GuardarChave              OK     testes=8    falhas=0   erros=0   pulados=8       0.1s
+test_f29_textos.AT008DadoNaoConfiavel        OK     testes=1    falhas=0   erros=0   pulados=0       0.1s
+test_fluxo.LoopF10[1de2]                     OK     testes=6    falhas=0   erros=0   pulados=0       1.2s
+test_gerar_starter.Gera[1de2]                OK     testes=5    falhas=0   erros=0   pulados=0     134.3s
+test_gerar_starter.Lint                      OK     testes=3    falhas=0   erros=0   pulados=0      56.8s
+test_handoff_lint.HandoffLint[1de2]          OK     testes=7    falhas=0   erros=0   pulados=0       0.8s
+test_matriz_new_session.Matriz               OK     testes=4    falhas=0   erros=0   pulados=0       0.1s
+test_patterns_lint.Real1                     OK     testes=1    falhas=0   erros=0   pulados=0       1.9s
+test_patterns_lint.Real4                     OK     testes=2    falhas=0   erros=0   pulados=0       3.7s
+test_playbook_curator.Saidas                 OK     testes=6    falhas=0   erros=0   pulados=0       5.2s
+test_prompt_drift_scan.ErroDeUso[1de3]       OK     testes=8    falhas=0   erros=0   pulados=3       1.5s
+test_report_lint.ReportLint[2de2]            OK     testes=7    falhas=0   erros=0   pulados=0       0.8s
+test_sdd_archive.Simulacao[2de2]             OK     testes=5    falhas=0   erros=0   pulados=0       2.3s
+test_sdd_kb.TextoDaSkill                     OK     testes=3    falhas=0   erros=0   pulados=0       0.1s
+test_sdd_open.SegurancaNoAgents              OK     testes=6    falhas=0   erros=0   pulados=0      70.7s
+test_skill_lint.SkillLint[1de4]              OK     testes=8    falhas=0   erros=0   pulados=0       0.5s
+test_slot.Cerquilha                          OK     testes=7    falhas=0   erros=0   pulados=0       4.9s
+test_testes_por_modulo.SuiteReal             OK     testes=1    falhas=0   erros=0   pulados=0      10.2s
+test_windows.Decodificacao                   OK     testes=4    falhas=0   erros=0   pulados=0       0.1s
+total: 42 unidade(s), 183 teste(s): 1 falha(s), 4 erro(s), 16 pulado(s) em 514.2s
+unidades com problema: test_deploy_espera_testes.DeployEsperaTestes[2de4] (FALHOU), test_f14_textos.Pacote (FALHOU), test_f26_docs_na_main.SemRegressao (FALHOU)
+RESULTADO: VERMELHO
+  520.3 fatia rc 1
+  592.4 arquivos no índice: 737
+  592.6 {"i": 0, "braco": "depois-da-fatia", "init": 25.94, "init_pipe": 25.94, "add": 40.36, "add_pipe": 40.36, "rc": 0, "commit": 5.74, "rmtree": 0.22}
+  628.3 {"i": 1, "braco": "depois-da-fatia", "init": 25.59, "init_pipe": 25.59, "add": 4.3, "add_pipe": 4.3, "rc": 0, "commit": 5.27, "rmtree": 0.22}
+  664.1 {"i": 2, "braco": "depois-da-fatia", "init": 25.64, "init_pipe": 25.64, "add": 4.36, "add_pipe": 4.36, "rc": 0, "commit": 5.47, "rmtree": 0.22}
+  699.8 {"i": 3, "braco": "depois-da-fatia", "init": 25.5, "init_pipe": 25.5, "add": 4.81, "add_pipe": 4.81, "rc": 0, "commit": 5.02, "rmtree": 0.22}
+  737.2 {"i": 4, "braco": "depois-da-fatia", "init": 25.47, "init_pipe": 25.47, "add": 4.3, "add_pipe": 4.3, "rc": 0, "commit": 7.36, "rmtree": 0.22}
+  774.6 {"i": 5, "braco": "depois-da-fatia", "init": 25.47, "init_pipe": 25.47, "add": 6.16, "add_pipe": 6.16, "rc": 0, "commit": 5.38, "rmtree": 0.22}
+  811.2 {"i": 6, "braco": "depois-da-fatia", "init": 25.44, "init_pipe": 25.44, "add": 5.56, "add_pipe": 5.56, "rc": 0, "commit": 5.28, "rmtree": 0.2}
+  847.8 {"i": 7, "braco": "depois-da-fatia", "init": 25.52, "init_pipe": 25.52, "add": 5.61, "add_pipe": 5.61, "rc": 0, "commit": 5.22, "rmtree": 0.23}
+  883.0 {"i": 8, "braco": "depois-da-fatia", "init": 25.5, "init_pipe": 25.5, "add": 4.3, "add_pipe": 4.3, "rc": 0, "commit": 4.95, "rmtree": 0.2}
+  919.0 {"i": 9, "braco": "depois-da-fatia", "init": 25.5, "init_pipe": 25.5, "add": 5.09, "add_pipe": 5.09, "rc": 0, "commit": 5.06, "rmtree": 0.22}
+  956.0 {"i": 10, "braco": "depois-da-fatia", "init": 25.48, "init_pipe": 25.48, "add": 5.73, "add_pipe": 5.73, "rc": 0, "commit": 5.52, "rmtree": 0.22}
+  992.3 {"i": 11, "braco": "depois-da-fatia", "init": 25.58, "init_pipe": 25.58, "add": 5.08, "add_pipe": 5.08, "rc": 0, "commit": 5.17, "rmtree": 0.22}
+ 1028.5 {"i": 12, "braco": "depois-da-fatia", "init": 25.48, "init_pipe": 25.48, "add": 5.0, "add_pipe": 5.0, "rc": 0, "commit": 5.2, "rmtree": 0.22}
+ 1063.8 {"i": 13, "braco": "depois-da-fatia", "init": 25.47, "init_pipe": 25.47, "add": 4.55, "add_pipe": 4.55, "rc": 0, "commit": 4.97, "rmtree": 0.2}
+ 1099.2 {"i": 14, "braco": "depois-da-fatia", "init": 25.5, "init_pipe": 25.5, "add": 4.47, "add_pipe": 4.47, "rc": 0, "commit": 5.09, "rmtree": 0.23}
+ 1136.5 {"i": 15, "braco": "depois-da-fatia", "init": 25.48, "init_pipe": 25.48, "add": 5.7, "add_pipe": 5.7, "rc": 0, "commit": 5.81, "rmtree": 0.22}
+ 1173.5 {"i": 16, "braco": "depois-da-fatia", "init": 25.53, "init_pipe": 25.53, "add": 5.0, "add_pipe": 5.0, "rc": 0, "commit": 6.06, "rmtree": 0.23}
+ 1209.6 {"i": 17, "braco": "depois-da-fatia", "init": 25.5, "init_pipe": 25.5, "add": 5.34, "add_pipe": 5.34, "rc": 0, "commit": 4.98, "rmtree": 0.22}
+ 1249.6 {"i": 18, "braco": "depois-da-fatia", "init": 25.61, "init_pipe": 25.61, "add": 8.44, "add_pipe": 8.44, "rc": 0, "commit": 5.27, "rmtree": 0.59}
+ 1287.3 {"i": 19, "braco": "depois-da-fatia", "init": 25.55, "init_pipe": 25.55, "add": 6.31, "add_pipe": 6.31, "rc": 0, "commit": 5.38, "rmtree": 0.22}
+ 1322.8 {"i": 20, "braco": "depois-da-fatia", "init": 25.59, "init_pipe": 25.59, "add": 4.5, "add_pipe": 4.5, "rc": 0, "commit": 5.02, "rmtree": 0.22}
+ 1359.4 {"i": 21, "braco": "depois-da-fatia", "init": 25.56, "init_pipe": 25.56, "add": 4.98, "add_pipe": 4.98, "rc": 0, "commit": 5.72, "rmtree": 0.22}
+ 1395.4 {"i": 22, "braco": "depois-da-fatia", "init": 25.58, "init_pipe": 25.58, "add": 4.84, "add_pipe": 4.84, "rc": 0, "commit": 5.25, "rmtree": 0.22}
+ 1430.8 {"i": 23, "braco": "depois-da-fatia", "init": 25.59, "init_pipe": 25.59, "add": 4.39, "add_pipe": 4.39, "rc": 0, "commit": 5.11, "rmtree": 0.22}
+ 1466.4 {"i": 24, "braco": "depois-da-fatia", "init": 25.58, "init_pipe": 25.58, "add": 4.48, "add_pipe": 4.48, "rc": 0, "commit": 5.25, "rmtree": 0.22}
+ 1502.2 {"i": 25, "braco": "depois-da-fatia", "init": 25.58, "init_pipe": 25.58, "add": 4.45, "add_pipe": 4.45, "rc": 0, "commit": 5.3, "rmtree": 0.22}
+ 1538.1 {"i": 26, "braco": "depois-da-fatia", "init": 25.52, "init_pipe": 25.52, "add": 5.02, "add_pipe": 5.02, "rc": 0, "commit": 5.03, "rmtree": 0.2}
+ 1574.2 {"i": 27, "braco": "depois-da-fatia", "init": 25.53, "init_pipe": 25.53, "add": 5.16, "add_pipe": 5.16, "rc": 0, "commit": 5.03, "rmtree": 0.22}
+ 1609.4 {"i": 28, "braco": "depois-da-fatia", "init": 25.48, "init_pipe": 25.48, "add": 4.41, "add_pipe": 4.41, "rc": 0, "commit": 5.02, "rmtree": 0.22}
+ 1645.8 {"i": 29, "braco": "depois-da-fatia", "init": 25.45, "init_pipe": 25.45, "add": 5.39, "add_pipe": 5.39, "rc": 0, "commit": 5.23, "rmtree": 0.22}
+ 1681.5 {"i": 30, "braco": "depois-da-fatia", "init": 25.48, "init_pipe": 25.48, "add": 4.66, "add_pipe": 4.66, "rc": 0, "commit": 5.22, "rmtree": 0.22}
+ 1719.3 {"i": 31, "braco": "depois-da-fatia", "init": 25.47, "init_pipe": 25.47, "add": 5.8, "add_pipe": 5.8, "rc": 0, "commit": 6.28, "rmtree": 0.2}
+ 1755.4 {"i": 32, "braco": "depois-da-fatia", "init": 25.45, "init_pipe": 25.45, "add": 4.66, "add_pipe": 4.66, "rc": 0, "commit": 5.59, "rmtree": 0.23}
+ 1790.8 {"i": 33, "braco": "depois-da-fatia", "init": 25.52, "init_pipe": 25.52, "add": 4.45, "add_pipe": 4.45, "rc": 0, "commit": 5.09, "rmtree": 0.2}
+ 1826.8 {"i": 34, "braco": "depois-da-fatia", "init": 25.47, "init_pipe": 25.47, "add": 5.02, "add_pipe": 5.02, "rc": 0, "commit": 5.2, "rmtree": 0.22}
+ 1862.3 {"i": 35, "braco": "depois-da-fatia", "init": 25.47, "init_pipe": 25.47, "add": 4.36, "add_pipe": 4.36, "rc": 0, "commit": 5.22, "rmtree": 0.22}
+ 1897.8 {"i": 36, "braco": "depois-da-fatia", "init": 25.45, "init_pipe": 25.45, "add": 4.55, "add_pipe": 4.55, "rc": 0, "commit": 5.08, "rmtree": 0.22}
+ 1934.0 {"i": 37, "braco": "depois-da-fatia", "init": 25.48, "init_pipe": 25.48, "add": 5.36, "add_pipe": 5.36, "rc": 0, "commit": 5.11, "rmtree": 0.22}
+ 1970.0 {"i": 38, "braco": "depois-da-fatia", "init": 25.45, "init_pipe": 25.45, "add": 5.09, "add_pipe": 5.09, "rc": 0, "commit": 5.09, "rmtree": 0.2}
+ 2005.8 {"i": 39, "braco": "depois-da-fatia", "init": 25.53, "init_pipe": 25.53, "add": 4.44, "add_pipe": 4.44, "rc": 0, "commit": 5.52, "rmtree": 0.22}
+ 2049.1 {"i": 40, "braco": "depois-da-fatia", "init": 25.55, "init_pipe": 25.55, "add": 9.12, "add_pipe": 9.12, "rc": 0, "commit": 8.2, "rmtree": 0.22}
+ 2086.7 {"i": 41, "braco": "depois-da-fatia", "init": 25.52, "init_pipe": 25.52, "add": 5.94, "add_pipe": 5.94, "rc": 0, "commit": 5.77, "rmtree": 0.22}
+ 2123.2 {"i": 42, "braco": "depois-da-fatia", "init": 25.45, "init_pipe": 25.45, "add": 5.33, "add_pipe": 5.33, "rc": 0, "commit": 5.41, "rmtree": 0.22}
+ 2160.4 {"i": 43, "braco": "depois-da-fatia", "init": 25.59, "init_pipe": 25.59, "add": 5.67, "add_pipe": 5.67, "rc": 0, "commit": 5.53, "rmtree": 0.22}
+ 2196.4 {"i": 44, "braco": "depois-da-fatia", "init": 25.41, "init_pipe": 25.41, "add": 5.06, "add_pipe": 5.06, "rc": 0, "commit": 5.22, "rmtree": 0.22}
+ 2232.0 {"i": 45, "braco": "depois-da-fatia", "init": 25.51, "init_pipe": 25.51, "add": 4.69, "add_pipe": 4.69, "rc": 0, "commit": 5.16, "rmtree": 0.2}
+ 2267.4 {"i": 46, "braco": "depois-da-fatia", "init": 25.5, "init_pipe": 25.5, "add": 4.45, "add_pipe": 4.45, "rc": 0, "commit": 5.09, "rmtree": 0.22}
+ 2303.0 {"i": 47, "braco": "depois-da-fatia", "init": 25.55, "init_pipe": 25.55, "add": 4.62, "add_pipe": 4.62, "rc": 0, "commit": 5.05, "rmtree": 0.2}
+
+== RESUMO fatia
+depois-da-fatia init    n=48 min=25.4 mediana=25.5 max=25.9
+depois-da-fatia add     n=48 min=4.3 mediana=5.0 max=40.4
+depois-da-fatia commit  n=48 min=5.0 mediana=5.2 max=8.2
+depois-da-fatia rmtree  n=48 min=0.2 mediana=0.2 max=0.6
+--- batimento (t,atraso,C,D) acima de 0,3 s:
+31.4,0.000,0.328,0.000
+550.1,0.000,0.844,0.000
+551.8,0.000,0.703,0.000
+567.0,0.015,0.532,0.000
+574.2,0.000,0.610,0.000
+579.2,0.000,0.484,0.000
+584.1,0.000,0.469,0.000
+733.2,0.000,0.484,0.000
+1249.6,0.000,0.391,0.000
+1529.3,0.000,0.438,0.000
+1649.2,0.000,0.610,0.000
+1927.4,0.000,0.735,0.000
+2043.0,0.000,0.843,0.000
+2078.9,0.000,0.328,0.000
+
+########## diag-fimdelinha
+    8.2 
+
+RealTimeProtectionEnabled : False
+AntivirusEnabled          : True
+
+
+
+
+
+DisableRealtimeMonitoring : True
+ExclusionPath             : {C:\, D:\}
+
+
+
+
+DriveLetter FriendlyName      FileSystemType DriveType HealthStatus OperationalStatus SizeRemaining      Size
+----------- ------------      -------------- --------- ------------ ----------------- -------------      ----
+D           Temporary Storage NTFS           Fixed     Healthy      OK                    146.96 GB    150 GB
+C           Windows           NTFS           Fixed     Healthy      OK                     29.82 GB 149.89 GB
+                              FAT32          Fixed     Healthy      OK                     60.66 MB     95 MB
+
+
+17174360064
+4
+
+    8.2 git version 2.56.1.windows.1
+cpu: x86_64
+built from commit: 7bda9d349370004e1aec464249d784d18e58c001
+sizeof-long: 4
+sizeof-size_t: 8
+shell-path: D:/git-sdk-64/usr/bin/sh
+rust: disabled
+feature: fsmonitor--daemon
+gettext: enabled
+libcurl: 8.23.0
+OpenSSL: OpenSSL 3.5.9 29 Sep 2026
+zlib: 1.3.2
+SHA-1: SHA1_DC
+SHA-256: SHA256_BLK
+default-ref-format: files
+default-hash: sha1
+ TEMP C:\Users\RUNNER~1\AppData\Local\Temp RAIZ D:\a\sdd-open\sdd-open
+   58.2 arquivos no índice: 735
+   58.5 {"i": 0, "braco": "controle", "init": 34.75, "init_pipe": 34.75, "add": 7.64, "add_pipe": 7.64, "rc": 0, "commit": 7.38, "rmtree": 0.34}
+  103.8 arquivos no índice: 735
+  104.2 {"i": 0, "braco": "variante", "init": 28.48, "init_pipe": 28.48, "add": 8.17, "add_pipe": 8.17, "rc": 0, "commit": 8.5, "rmtree": 0.31}
+  149.8 {"i": 1, "braco": "variante", "init": 29.72, "init_pipe": 29.72, "add": 8.03, "add_pipe": 8.03, "rc": 0, "commit": 7.39, "rmtree": 0.34}
+  194.2 {"i": 1, "braco": "controle", "init": 29.84, "init_pipe": 29.84, "add": 6.8, "add_pipe": 6.8, "rc": 0, "commit": 7.11, "rmtree": 0.33}
+  239.0 {"i": 2, "braco": "controle", "init": 29.56, "init_pipe": 29.56, "add": 7.25, "add_pipe": 7.25, "rc": 0, "commit": 7.42, "rmtree": 0.33}
+  283.0 {"i": 2, "braco": "variante", "init": 29.66, "init_pipe": 29.66, "add": 6.72, "add_pipe": 6.72, "rc": 0, "commit": 7.17, "rmtree": 0.33}
+  327.4 {"i": 3, "braco": "variante", "init": 29.7, "init_pipe": 29.7, "add": 6.97, "add_pipe": 6.97, "rc": 0, "commit": 7.3, "rmtree": 0.33}
+  373.2 {"i": 3, "braco": "controle", "init": 30.72, "init_pipe": 30.72, "add": 7.45, "add_pipe": 7.45, "rc": 0, "commit": 7.12, "rmtree": 0.33}
+  433.2 {"i": 4, "braco": "controle", "init": 30.05, "init_pipe": 30.05, "add": 18.31, "add_pipe": 18.31, "rc": 0, "commit": 11.0, "rmtree": 0.31}
+  476.7 {"i": 4, "braco": "variante", "init": 29.22, "init_pipe": 29.22, "add": 6.62, "add_pipe": 6.62, "rc": 0, "commit": 7.17, "rmtree": 0.34}
+  522.3 {"i": 5, "braco": "variante", "init": 29.69, "init_pipe": 29.69, "add": 8.31, "add_pipe": 8.31, "rc": 0, "commit": 7.11, "rmtree": 0.34}
+  594.5 {"i": 5, "braco": "controle", "init": 34.08, "init_pipe": 34.08, "add": 30.38, "add_pipe": 30.38, "rc": 0, "commit": 7.27, "rmtree": 0.36}
+  638.1 {"i": 6, "braco": "controle", "init": 29.72, "init_pipe": 29.72, "add": 6.27, "add_pipe": 6.27, "rc": 0, "commit": 7.14, "rmtree": 0.33}
+  682.4 {"i": 6, "braco": "variante", "init": 30.02, "init_pipe": 30.02, "add": 6.64, "add_pipe": 6.64, "rc": 0, "commit": 7.12, "rmtree": 0.34}
+  727.1 {"i": 7, "braco": "variante", "init": 30.33, "init_pipe": 30.33, "add": 6.72, "add_pipe": 6.72, "rc": 0, "commit": 7.14, "rmtree": 0.31}
+  770.4 {"i": 7, "braco": "controle", "init": 28.51, "init_pipe": 28.51, "add": 6.95, "add_pipe": 6.95, "rc": 0, "commit": 7.34, "rmtree": 0.33}
+  813.4 {"i": 8, "braco": "controle", "init": 28.89, "init_pipe": 28.89, "add": 6.59, "add_pipe": 6.59, "rc": 0, "commit": 7.0, "rmtree": 0.34}
+  858.0 {"i": 8, "braco": "variante", "init": 30.16, "init_pipe": 30.16, "add": 6.84, "add_pipe": 6.84, "rc": 0, "commit": 7.08, "rmtree": 0.33}
+  903.3 {"i": 9, "braco": "variante", "init": 29.83, "init_pipe": 29.83, "add": 7.78, "add_pipe": 7.78, "rc": 0, "commit": 7.03, "rmtree": 0.31}
+  946.0 {"i": 9, "braco": "controle", "init": 28.75, "init_pipe": 28.75, "add": 6.56, "add_pipe": 6.56, "rc": 0, "commit": 6.94, "rmtree": 0.31}
+  989.2 {"i": 10, "braco": "controle", "init": 29.06, "init_pipe": 29.06, "add": 6.59, "add_pipe": 6.59, "rc": 0, "commit": 7.06, "rmtree": 0.33}
+ 1034.7 {"i": 10, "braco": "variante", "init": 29.25, "init_pipe": 29.25, "add": 8.45, "add_pipe": 8.45, "rc": 0, "commit": 7.17, "rmtree": 0.33}
+ 1077.8 {"i": 11, "braco": "variante", "init": 28.72, "init_pipe": 28.72, "add": 6.5, "add_pipe": 6.5, "rc": 0, "commit": 7.36, "rmtree": 0.33}
+ 1120.6 {"i": 11, "braco": "controle", "init": 28.72, "init_pipe": 28.72, "add": 6.56, "add_pipe": 6.56, "rc": 0, "commit": 7.09, "rmtree": 0.31}
+ 1163.4 {"i": 12, "braco": "controle", "init": 28.8, "init_pipe": 28.8, "add": 6.52, "add_pipe": 6.52, "rc": 0, "commit": 7.03, "rmtree": 0.33}
+ 1208.8 {"i": 12, "braco": "variante", "init": 29.36, "init_pipe": 29.36, "add": 8.22, "add_pipe": 8.22, "rc": 0, "commit": 7.36, "rmtree": 0.33}
+ 1252.4 {"i": 13, "braco": "variante", "init": 29.17, "init_pipe": 29.17, "add": 6.77, "add_pipe": 6.77, "rc": 0, "commit": 7.17, "rmtree": 0.33}
+ 1295.6 {"i": 13, "braco": "controle", "init": 28.81, "init_pipe": 28.81, "add": 6.8, "add_pipe": 6.8, "rc": 0, "commit": 7.06, "rmtree": 0.31}
+ 1337.5 {"i": 14, "braco": "controle", "init": 27.97, "init_pipe": 27.97, "add": 6.41, "add_pipe": 6.41, "rc": 0, "commit": 7.09, "rmtree": 0.33}
+ 1382.7 {"i": 14, "braco": "variante", "init": 29.84, "init_pipe": 29.84, "add": 7.5, "add_pipe": 7.5, "rc": 0, "commit": 7.39, "rmtree": 0.33}
+ 1431.7 {"i": 15, "braco": "variante", "init": 33.5, "init_pipe": 33.5, "add": 7.36, "add_pipe": 7.36, "rc": 0, "commit": 7.59, "rmtree": 0.33}
+ 1480.0 {"i": 15, "braco": "controle", "init": 32.86, "init_pipe": 32.86, "add": 7.3, "add_pipe": 7.3, "rc": 0, "commit": 7.66, "rmtree": 0.33}
+ 1529.2 {"i": 16, "braco": "controle", "init": 33.47, "init_pipe": 33.47, "add": 7.55, "add_pipe": 7.55, "rc": 0, "commit": 7.61, "rmtree": 0.34}
+ 1577.3 {"i": 16, "braco": "variante", "init": 32.78, "init_pipe": 32.78, "add": 7.27, "add_pipe": 7.27, "rc": 0, "commit": 7.61, "rmtree": 0.36}
+ 1621.2 {"i": 17, "braco": "variante", "init": 29.14, "init_pipe": 29.14, "add": 7.09, "add_pipe": 7.09, "rc": 0, "commit": 7.14, "rmtree": 0.33}
+ 1669.2 {"i": 17, "braco": "controle", "init": 32.8, "init_pipe": 32.8, "add": 7.14, "add_pipe": 7.14, "rc": 0, "commit": 7.58, "rmtree": 0.34}
+ 1716.1 {"i": 18, "braco": "controle", "init": 32.08, "init_pipe": 32.08, "add": 6.97, "add_pipe": 6.97, "rc": 0, "commit": 7.39, "rmtree": 0.33}
+ 1763.5 {"i": 18, "braco": "variante", "init": 32.59, "init_pipe": 32.59, "add": 6.97, "add_pipe": 6.97, "rc": 0, "commit": 7.33, "rmtree": 0.33}
+ 1810.4 {"i": 19, "braco": "variante", "init": 31.73, "init_pipe": 31.73, "add": 7.09, "add_pipe": 7.09, "rc": 0, "commit": 7.53, "rmtree": 0.34}
+ 1857.8 {"i": 19, "braco": "controle", "init": 32.3, "init_pipe": 32.3, "add": 7.02, "add_pipe": 7.02, "rc": 0, "commit": 7.41, "rmtree": 0.55}
+ 1907.7 {"i": 20, "braco": "controle", "init": 33.73, "init_pipe": 33.73, "add": 7.42, "add_pipe": 7.42, "rc": 0, "commit": 8.23, "rmtree": 0.34}
+ 1957.4 {"i": 20, "braco": "variante", "init": 33.73, "init_pipe": 33.73, "add": 8.0, "add_pipe": 8.0, "rc": 0, "commit": 7.51, "rmtree": 0.33}
+ 2006.0 {"i": 21, "braco": "variante", "init": 33.45, "init_pipe": 33.45, "add": 6.88, "add_pipe": 6.88, "rc": 0, "commit": 7.73, "rmtree": 0.34}
+ 2055.0 {"i": 21, "braco": "controle", "init": 33.3, "init_pipe": 33.3, "add": 7.61, "add_pipe": 7.61, "rc": 0, "commit": 7.64, "rmtree": 0.34}
+ 2103.4 {"i": 22, "braco": "controle", "init": 33.03, "init_pipe": 33.03, "add": 7.25, "add_pipe": 7.25, "rc": 0, "commit": 7.58, "rmtree": 0.34}
+ 2150.3 {"i": 22, "braco": "variante", "init": 30.24, "init_pipe": 30.24, "add": 8.83, "add_pipe": 8.83, "rc": 0, "commit": 7.33, "rmtree": 0.33}
+ 2194.6 {"i": 23, "braco": "variante", "init": 29.02, "init_pipe": 29.02, "add": 7.5, "add_pipe": 7.5, "rc": 0, "commit": 7.31, "rmtree": 0.33}
+ 2239.2 {"i": 23, "braco": "controle", "init": 29.17, "init_pipe": 29.17, "add": 7.62, "add_pipe": 7.62, "rc": 0, "commit": 7.38, "rmtree": 0.33}
+ 2281.7 {"i": 24, "braco": "controle", "init": 28.2, "init_pipe": 28.2, "add": 6.75, "add_pipe": 6.75, "rc": 0, "commit": 7.03, "rmtree": 0.31}
+ 2326.1 {"i": 24, "braco": "variante", "init": 29.81, "init_pipe": 29.81, "add": 6.86, "add_pipe": 6.86, "rc": 0, "commit": 7.24, "rmtree": 0.33}
+
+== RESUMO fimdelinha
+controle     init    n=25 min=28.0 mediana=29.8 max=34.8
+controle     add     n=25 min=6.3 mediana=7.0 max=30.4
+controle     commit  n=25 min=6.9 mediana=7.3 max=11.0
+controle     rmtree  n=25 min=0.3 mediana=0.3 max=0.5
+variante     init    n=25 min=28.5 mediana=29.8 max=33.7
+variante     add     n=25 min=6.5 mediana=7.1 max=8.8
+variante     commit  n=25 min=7.0 mediana=7.3 max=8.5
+variante     rmtree  n=25 min=0.3 mediana=0.3 max=0.4
+--- batimento (t,atraso,C,D) acima de 0,3 s:
+24.9,0.000,0.391,0.000
+27.3,0.000,0.343,0.000
+98.0,0.000,0.406,0.000
+345.2,0.000,0.953,0.000
+409.3,0.000,0.359,0.000
+417.8,0.000,0.594,0.000
+510.5,0.000,1.328,0.000
+545.3,0.000,0.328,0.000
+546.8,0.000,0.531,0.000
+687.0,0.000,0.641,0.000
+1023.0,0.000,0.766,0.000
+1195.3,0.000,0.312,0.000
+1541.4,0.000,0.562,0.000
+1721.0,0.000,0.594,0.016
+1943.7,0.000,1.047,0.000
+2136.3,0.000,1.094,0.000
+2300.8,0.000,0.609,0.000
+
+########## diag-fsmonitor
+    5.6 
+
+RealTimeProtectionEnabled : False
+AntivirusEnabled          : True
+
+
+
+
+
+DisableRealtimeMonitoring : True
+ExclusionPath             : {C:\, D:\}
+
+
+
+
+DriveLetter FriendlyName FileSystemType DriveType HealthStatus OperationalStatus SizeRemaining      Size
+----------- ------------ -------------- --------- ------------ ----------------- -------------      ----
+D           Temp         NTFS           Fixed     Healthy      OK                    219.82 GB 219.98 GB
+C           Windows      NTFS           Fixed     Healthy      OK                     26.94 GB 149.89 GB
+                         FAT32          Fixed     Healthy      OK                     60.66 MB     95 MB
+
+
+17174360064
+4
+
+    5.7 git version 2.56.1.windows.1
+cpu: x86_64
+built from commit: 7bda9d349370004e1aec464249d784d18e58c001
+sizeof-long: 4
+sizeof-size_t: 8
+shell-path: D:/git-sdk-64/usr/bin/sh
+rust: disabled
+feature: fsmonitor--daemon
+gettext: enabled
+libcurl: 8.23.0
+OpenSSL: OpenSSL 3.5.9 29 Sep 2026
+zlib: 1.3.2
+SHA-1: SHA1_DC
+SHA-256: SHA256_BLK
+default-ref-format: files
+default-hash: sha1
+ TEMP C:\Users\RUNNER~1\AppData\Local\Temp RAIZ D:\a\sdd-open\sdd-open
+   43.7 arquivos no índice: 735
+   43.9 {"i": 0, "braco": "controle", "init": 27.53, "init_pipe": 27.53, "add": 4.88, "add_pipe": 4.88, "rc": 0, "commit": 5.44, "rmtree": 0.23}
+   81.5 arquivos no índice: 735
+   81.7 {"i": 0, "braco": "variante", "init": 25.53, "init_pipe": 25.53, "add": 6.22, "add_pipe": 6.22, "rc": 0, "commit": 5.66, "rmtree": 0.22}
+  119.5 {"i": 1, "braco": "variante", "init": 25.66, "init_pipe": 25.66, "add": 5.83, "add_pipe": 5.83, "rc": 0, "commit": 5.95, "rmtree": 0.23}
+  157.2 {"i": 1, "braco": "controle", "init": 26.34, "init_pipe": 26.34, "add": 5.0, "add_pipe": 5.0, "rc": 0, "commit": 5.83, "rmtree": 0.23}
+  196.1 {"i": 2, "braco": "controle", "init": 27.34, "init_pipe": 27.34, "add": 5.61, "add_pipe": 5.61, "rc": 0, "commit": 5.61, "rmtree": 0.23}
+  250.6 {"i": 2, "braco": "variante", "init": 28.8, "init_pipe": 28.8, "add": 19.69, "add_pipe": 19.69, "rc": 0, "commit": 5.66, "rmtree": 0.23}
+  290.3 {"i": 3, "braco": "variante", "init": 27.81, "init_pipe": 27.81, "add": 5.78, "add_pipe": 5.78, "rc": 0, "commit": 5.75, "rmtree": 0.23}
+  326.3 {"i": 3, "braco": "controle", "init": 25.48, "init_pipe": 25.48, "add": 4.92, "add_pipe": 4.92, "rc": 0, "commit": 5.33, "rmtree": 0.22}
+  362.5 {"i": 4, "braco": "controle", "init": 25.61, "init_pipe": 25.61, "add": 4.89, "add_pipe": 4.89, "rc": 0, "commit": 5.3, "rmtree": 0.2}
+  398.6 {"i": 4, "braco": "variante", "init": 25.64, "init_pipe": 25.64, "add": 4.55, "add_pipe": 4.55, "rc": 0, "commit": 5.56, "rmtree": 0.22}
+  435.2 {"i": 5, "braco": "variante", "init": 25.61, "init_pipe": 25.61, "add": 4.98, "add_pipe": 4.98, "rc": 0, "commit": 5.64, "rmtree": 0.2}
+  471.9 {"i": 5, "braco": "controle", "init": 25.59, "init_pipe": 25.59, "add": 5.48, "add_pipe": 5.48, "rc": 0, "commit": 5.2, "rmtree": 0.22}
+  510.2 {"i": 6, "braco": "controle", "init": 25.58, "init_pipe": 25.58, "add": 6.7, "add_pipe": 6.7, "rc": 0, "commit": 5.69, "rmtree": 0.22}
+  546.7 {"i": 6, "braco": "variante", "init": 25.58, "init_pipe": 25.58, "add": 4.75, "add_pipe": 4.75, "rc": 0, "commit": 5.83, "rmtree": 0.24}
+  603.1 {"i": 7, "braco": "variante", "init": 41.09, "init_pipe": 41.09, "add": 8.25, "add_pipe": 8.25, "rc": 0, "commit": 5.3, "rmtree": 0.22}
+  637.9 {"i": 7, "braco": "controle", "init": 25.55, "init_pipe": 25.55, "add": 4.09, "add_pipe": 4.09, "rc": 0, "commit": 4.86, "rmtree": 0.2}
+  672.9 {"i": 8, "braco": "controle", "init": 25.41, "init_pipe": 25.41, "add": 4.36, "add_pipe": 4.36, "rc": 0, "commit": 4.94, "rmtree": 0.2}
+  708.5 {"i": 8, "braco": "variante", "init": 25.42, "init_pipe": 25.42, "add": 4.88, "add_pipe": 4.88, "rc": 0, "commit": 5.02, "rmtree": 0.2}
+  744.1 {"i": 9, "braco": "variante", "init": 25.45, "init_pipe": 25.45, "add": 4.97, "add_pipe": 4.97, "rc": 0, "commit": 4.81, "rmtree": 0.22}
+  783.7 {"i": 9, "braco": "controle", "init": 25.41, "init_pipe": 25.41, "add": 8.25, "add_pipe": 8.25, "rc": 0, "commit": 5.58, "rmtree": 0.22}
+  821.1 {"i": 10, "braco": "controle", "init": 25.47, "init_pipe": 25.47, "add": 6.62, "add_pipe": 6.62, "rc": 0, "commit": 5.0, "rmtree": 0.2}
+  862.5 {"i": 10, "braco": "variante", "init": 25.53, "init_pipe": 25.53, "add": 9.66, "add_pipe": 9.66, "rc": 0, "commit": 5.83, "rmtree": 0.22}
+  902.7 {"i": 11, "braco": "variante", "init": 25.44, "init_pipe": 25.44, "add": 6.91, "add_pipe": 6.91, "rc": 0, "commit": 7.47, "rmtree": 0.2}
+  939.7 {"i": 11, "braco": "controle", "init": 25.5, "init_pipe": 25.5, "add": 5.91, "add_pipe": 5.91, "rc": 0, "commit": 5.17, "rmtree": 0.22}
+  975.8 {"i": 12, "braco": "controle", "init": 25.39, "init_pipe": 25.39, "add": 5.17, "add_pipe": 5.17, "rc": 0, "commit": 5.25, "rmtree": 0.22}
+ 1012.7 {"i": 12, "braco": "variante", "init": 25.5, "init_pipe": 25.5, "add": 5.7, "add_pipe": 5.7, "rc": 0, "commit": 5.34, "rmtree": 0.22}
+ 1048.5 {"i": 13, "braco": "variante", "init": 25.47, "init_pipe": 25.47, "add": 4.75, "add_pipe": 4.75, "rc": 0, "commit": 5.14, "rmtree": 0.2}
+ 1084.1 {"i": 13, "braco": "controle", "init": 25.47, "init_pipe": 25.47, "add": 4.81, "add_pipe": 4.81, "rc": 0, "commit": 5.05, "rmtree": 0.2}
+ 1119.8 {"i": 14, "braco": "controle", "init": 25.47, "init_pipe": 25.47, "add": 4.81, "add_pipe": 4.81, "rc": 0, "commit": 5.09, "rmtree": 0.22}
+ 1158.1 {"i": 14, "braco": "variante", "init": 25.59, "init_pipe": 25.59, "add": 6.73, "add_pipe": 6.73, "rc": 0, "commit": 5.62, "rmtree": 0.22}
+ 1195.9 {"i": 15, "braco": "variante", "init": 25.58, "init_pipe": 25.58, "add": 4.91, "add_pipe": 4.91, "rc": 0, "commit": 6.89, "rmtree": 0.2}
+ 1231.5 {"i": 15, "braco": "controle", "init": 25.55, "init_pipe": 25.55, "add": 4.58, "add_pipe": 4.58, "rc": 0, "commit": 4.98, "rmtree": 0.22}
+ 1266.5 {"i": 16, "braco": "controle", "init": 25.52, "init_pipe": 25.52, "add": 4.2, "add_pipe": 4.2, "rc": 0, "commit": 5.0, "rmtree": 0.22}
+ 1301.9 {"i": 16, "braco": "variante", "init": 25.52, "init_pipe": 25.52, "add": 4.77, "add_pipe": 4.77, "rc": 0, "commit": 4.84, "rmtree": 0.2}
+ 1337.0 {"i": 17, "braco": "variante", "init": 25.53, "init_pipe": 25.53, "add": 4.11, "add_pipe": 4.11, "rc": 0, "commit": 5.08, "rmtree": 0.22}
+ 1372.0 {"i": 17, "braco": "controle", "init": 25.56, "init_pipe": 25.56, "add": 4.14, "add_pipe": 4.14, "rc": 0, "commit": 4.95, "rmtree": 0.2}
+ 1407.1 {"i": 18, "braco": "controle", "init": 25.55, "init_pipe": 25.55, "add": 4.2, "add_pipe": 4.2, "rc": 0, "commit": 5.03, "rmtree": 0.22}
+ 1443.1 {"i": 18, "braco": "variante", "init": 25.55, "init_pipe": 25.55, "add": 5.3, "add_pipe": 5.3, "rc": 0, "commit": 4.83, "rmtree": 0.2}
+ 1480.9 {"i": 19, "braco": "variante", "init": 25.58, "init_pipe": 25.58, "add": 5.75, "add_pipe": 5.75, "rc": 0, "commit": 6.06, "rmtree": 0.25}
+ 1522.8 {"i": 19, "braco": "controle", "init": 25.55, "init_pipe": 25.55, "add": 10.75, "add_pipe": 10.75, "rc": 0, "commit": 5.23, "rmtree": 0.2}
+ 1558.6 {"i": 20, "braco": "controle", "init": 25.5, "init_pipe": 25.5, "add": 4.2, "add_pipe": 4.2, "rc": 0, "commit": 5.78, "rmtree": 0.22}
+ 1594.9 {"i": 20, "braco": "variante", "init": 25.58, "init_pipe": 25.58, "add": 5.25, "add_pipe": 5.25, "rc": 0, "commit": 5.16, "rmtree": 0.22}
+ 1630.4 {"i": 21, "braco": "variante", "init": 25.5, "init_pipe": 25.5, "add": 4.69, "add_pipe": 4.69, "rc": 0, "commit": 4.95, "rmtree": 0.22}
+ 1665.5 {"i": 21, "braco": "controle", "init": 25.55, "init_pipe": 25.55, "add": 4.23, "add_pipe": 4.23, "rc": 0, "commit": 5.0, "rmtree": 0.22}
+ 1700.8 {"i": 22, "braco": "controle", "init": 25.58, "init_pipe": 25.58, "add": 4.33, "add_pipe": 4.33, "rc": 0, "commit": 5.16, "rmtree": 0.2}
+ 1736.5 {"i": 22, "braco": "variante", "init": 25.5, "init_pipe": 25.5, "add": 4.92, "add_pipe": 4.92, "rc": 0, "commit": 4.97, "rmtree": 0.2}
+ 1772.4 {"i": 23, "braco": "variante", "init": 25.47, "init_pipe": 25.47, "add": 4.86, "add_pipe": 4.86, "rc": 0, "commit": 5.14, "rmtree": 0.22}
+ 1807.9 {"i": 23, "braco": "controle", "init": 25.5, "init_pipe": 25.5, "add": 4.7, "add_pipe": 4.7, "rc": 0, "commit": 5.05, "rmtree": 0.22}
+ 1845.2 {"i": 24, "braco": "controle", "init": 25.58, "init_pipe": 25.58, "add": 5.72, "add_pipe": 5.72, "rc": 0, "commit": 5.67, "rmtree": 0.2}
+ 1882.6 {"i": 24, "braco": "variante", "init": 25.59, "init_pipe": 25.59, "add": 5.25, "add_pipe": 5.25, "rc": 0, "commit": 6.25, "rmtree": 0.22}
+ 1918.9 {"i": 25, "braco": "variante", "init": 25.56, "init_pipe": 25.56, "add": 4.86, "add_pipe": 4.86, "rc": 0, "commit": 5.53, "rmtree": 0.23}
+ 1954.9 {"i": 25, "braco": "controle", "init": 25.48, "init_pipe": 25.48, "add": 4.56, "add_pipe": 4.56, "rc": 0, "commit": 5.45, "rmtree": 0.2}
+ 1990.5 {"i": 26, "braco": "controle", "init": 25.47, "init_pipe": 25.47, "add": 4.22, "add_pipe": 4.22, "rc": 0, "commit": 5.47, "rmtree": 0.2}
+ 2026.7 {"i": 26, "braco": "variante", "init": 25.47, "init_pipe": 25.47, "add": 5.44, "add_pipe": 5.44, "rc": 0, "commit": 4.95, "rmtree": 0.2}
+ 2061.1 {"i": 27, "braco": "variante", "init": 25.36, "init_pipe": 25.36, "add": 4.02, "add_pipe": 4.02, "rc": 0, "commit": 4.76, "rmtree": 0.2}
+ 2100.2 {"i": 27, "braco": "controle", "init": 25.47, "init_pipe": 25.47, "add": 8.08, "add_pipe": 8.08, "rc": 0, "commit": 5.19, "rmtree": 0.22}
+ 2135.5 {"i": 28, "braco": "controle", "init": 25.39, "init_pipe": 25.39, "add": 4.34, "add_pipe": 4.34, "rc": 0, "commit": 5.28, "rmtree": 0.2}
+ 2172.0 {"i": 28, "braco": "variante", "init": 25.38, "init_pipe": 25.38, "add": 5.03, "add_pipe": 5.03, "rc": 0, "commit": 5.44, "rmtree": 0.22}
+ 2209.2 {"i": 29, "braco": "variante", "init": 25.49, "init_pipe": 25.49, "add": 5.59, "add_pipe": 5.59, "rc": 0, "commit": 5.66, "rmtree": 0.28}
+ 2245.8 {"i": 29, "braco": "controle", "init": 25.45, "init_pipe": 25.45, "add": 4.41, "add_pipe": 4.41, "rc": 0, "commit": 6.31, "rmtree": 0.2}
+ 2282.5 {"i": 30, "braco": "controle", "init": 25.47, "init_pipe": 25.47, "add": 4.31, "add_pipe": 4.31, "rc": 0, "commit": 6.53, "rmtree": 0.22}
+ 2319.6 {"i": 30, "braco": "variante", "init": 25.48, "init_pipe": 25.48, "add": 6.14, "add_pipe": 6.14, "rc": 0, "commit": 5.17, "rmtree": 0.22}
+
+== RESUMO fsmonitor
+controle     init    n=31 min=25.4 mediana=25.5 max=27.5
+controle     add     n=31 min=4.1 mediana=4.8 max=10.8
+controle     commit  n=31 min=4.9 mediana=5.2 max=6.5
+controle     rmtree  n=31 min=0.2 mediana=0.2 max=0.2
+variante     init    n=31 min=25.4 mediana=25.5 max=41.1
+variante     add     n=31 min=4.0 mediana=5.2 max=19.7
+variante     commit  n=31 min=4.8 mediana=5.4 max=7.5
+variante     rmtree  n=31 min=0.2 mediana=0.2 max=0.3
+--- batimento (t,atraso,C,D) acima de 0,3 s:
+16.2,0.000,0.407,0.000
+120.4,0.000,0.407,0.000
+227.6,0.000,0.422,0.000
+231.1,0.000,0.359,0.000
+233.7,0.000,0.516,0.000
+271.8,0.000,0.359,0.000
+279.7,0.000,0.687,0.000
+427.4,0.000,0.391,0.000
+546.8,0.000,0.532,0.000
+548.2,0.000,0.390,0.000
+552.9,0.000,0.312,0.000
+559.5,0.000,0.328,0.000
+569.5,0.000,0.656,0.000
+579.5,0.000,0.328,0.000
+775.5,0.000,0.329,0.000
+854.5,0.000,0.500,0.000
+979.1,0.000,0.328,0.000
+1123.3,0.000,0.578,0.000
+1134.7,0.000,0.344,0.000
+1511.3,0.000,3.922,0.000
+1950.5,0.000,0.375,0.000
+1955.9,0.000,0.375,0.000
+2298.3,0.000,0.578,0.000
+
+########## diag-fsync
+    8.8 
+
+RealTimeProtectionEnabled : False
+AntivirusEnabled          : True
+
+
+
+
+
+DisableRealtimeMonitoring : True
+ExclusionPath             : {C:\, D:\}
+
+
+
+
+DriveLetter FriendlyName FileSystemType DriveType HealthStatus OperationalStatus SizeRemaining      Size
+----------- ------------ -------------- --------- ------------ ----------------- -------------      ----
+D           Temp         NTFS           Fixed     Healthy      OK                    219.82 GB 219.98 GB
+C           Windows      NTFS           Fixed     Healthy      OK                     26.93 GB 149.89 GB
+                         FAT32          Fixed     Healthy      OK                     60.66 MB     95 MB
+
+
+17174360064
+4
+
+    8.8 git version 2.56.1.windows.1
+cpu: x86_64
+built from commit: 7bda9d349370004e1aec464249d784d18e58c001
+sizeof-long: 4
+sizeof-size_t: 8
+shell-path: D:/git-sdk-64/usr/bin/sh
+rust: disabled
+feature: fsmonitor--daemon
+gettext: enabled
+libcurl: 8.23.0
+OpenSSL: OpenSSL 3.5.9 29 Sep 2026
+zlib: 1.3.2
+SHA-1: SHA1_DC
+SHA-256: SHA256_BLK
+default-ref-format: files
+default-hash: sha1
+ TEMP C:\Users\RUNNER~1\AppData\Local\Temp RAIZ D:\a\sdd-open\sdd-open
+   50.9 arquivos no índice: 735
+   51.1 {"i": 0, "braco": "controle", "init": 30.3, "init_pipe": 30.3, "add": 6.19, "add_pipe": 6.19, "rc": 0, "commit": 5.47, "rmtree": 0.22}
+   90.9 arquivos no índice: 735
+   91.2 {"i": 0, "braco": "variante", "init": 25.5, "init_pipe": 25.5, "add": 6.83, "add_pipe": 6.83, "rc": 0, "commit": 7.3, "rmtree": 0.38}
+  130.3 {"i": 1, "braco": "variante", "init": 25.52, "init_pipe": 25.52, "add": 6.33, "add_pipe": 6.33, "rc": 0, "commit": 6.75, "rmtree": 0.22}
+  167.4 {"i": 1, "braco": "controle", "init": 25.56, "init_pipe": 25.56, "add": 5.78, "add_pipe": 5.78, "rc": 0, "commit": 5.48, "rmtree": 0.22}
+  204.3 {"i": 2, "braco": "controle", "init": 25.58, "init_pipe": 25.58, "add": 5.16, "add_pipe": 5.16, "rc": 0, "commit": 5.8, "rmtree": 0.22}
+  242.1 {"i": 2, "braco": "variante", "init": 25.56, "init_pipe": 25.56, "add": 6.3, "add_pipe": 6.3, "rc": 0, "commit": 5.64, "rmtree": 0.23}
+  278.8 {"i": 3, "braco": "variante", "init": 25.61, "init_pipe": 25.61, "add": 5.25, "add_pipe": 5.25, "rc": 0, "commit": 5.44, "rmtree": 0.22}
+  315.7 {"i": 3, "braco": "controle", "init": 25.53, "init_pipe": 25.53, "add": 5.17, "add_pipe": 5.17, "rc": 0, "commit": 5.87, "rmtree": 0.2}
+  353.8 {"i": 4, "braco": "controle", "init": 25.53, "init_pipe": 25.53, "add": 6.97, "add_pipe": 6.97, "rc": 0, "commit": 5.27, "rmtree": 0.2}
+  390.0 {"i": 4, "braco": "variante", "init": 25.53, "init_pipe": 25.53, "add": 5.05, "add_pipe": 5.05, "rc": 0, "commit": 5.25, "rmtree": 0.2}
+  430.7 {"i": 5, "braco": "variante", "init": 25.51, "init_pipe": 25.51, "add": 9.11, "add_pipe": 9.11, "rc": 0, "commit": 5.7, "rmtree": 0.23}
+  468.2 {"i": 5, "braco": "controle", "init": 25.55, "init_pipe": 25.55, "add": 6.49, "add_pipe": 6.49, "rc": 0, "commit": 5.09, "rmtree": 0.2}
+  529.4 {"i": 6, "braco": "controle", "init": 45.61, "init_pipe": 45.61, "add": 8.5, "add_pipe": 8.5, "rc": 0, "commit": 6.75, "rmtree": 0.22}
+  568.2 {"i": 6, "braco": "variante", "init": 25.56, "init_pipe": 25.56, "add": 7.27, "add_pipe": 7.27, "rc": 0, "commit": 5.58, "rmtree": 0.22}
+  606.8 {"i": 7, "braco": "variante", "init": 25.49, "init_pipe": 25.49, "add": 6.97, "add_pipe": 6.97, "rc": 0, "commit": 5.7, "rmtree": 0.22}
+  643.8 {"i": 7, "braco": "controle", "init": 25.48, "init_pipe": 25.48, "add": 5.91, "add_pipe": 5.91, "rc": 0, "commit": 5.34, "rmtree": 0.2}
+  679.9 {"i": 8, "braco": "controle", "init": 25.52, "init_pipe": 25.52, "add": 5.0, "add_pipe": 5.0, "rc": 0, "commit": 5.3, "rmtree": 0.2}
+  718.8 {"i": 8, "braco": "variante", "init": 25.55, "init_pipe": 25.55, "add": 5.77, "add_pipe": 5.77, "rc": 0, "commit": 7.19, "rmtree": 0.22}
+  755.4 {"i": 9, "braco": "variante", "init": 25.58, "init_pipe": 25.58, "add": 5.5, "add_pipe": 5.5, "rc": 0, "commit": 5.17, "rmtree": 0.25}
+  795.4 {"i": 9, "braco": "controle", "init": 25.59, "init_pipe": 25.59, "add": 6.55, "add_pipe": 6.55, "rc": 0, "commit": 7.16, "rmtree": 0.22}
+  837.1 {"i": 10, "braco": "controle", "init": 25.55, "init_pipe": 25.55, "add": 9.44, "add_pipe": 9.44, "rc": 0, "commit": 6.36, "rmtree": 0.22}
+  875.6 {"i": 10, "braco": "variante", "init": 25.56, "init_pipe": 25.56, "add": 7.22, "add_pipe": 7.22, "rc": 0, "commit": 5.34, "rmtree": 0.22}
+  912.4 {"i": 11, "braco": "variante", "init": 25.58, "init_pipe": 25.58, "add": 5.58, "add_pipe": 5.58, "rc": 0, "commit": 5.38, "rmtree": 0.2}
+  949.0 {"i": 11, "braco": "controle", "init": 25.55, "init_pipe": 25.55, "add": 5.34, "add_pipe": 5.34, "rc": 0, "commit": 5.36, "rmtree": 0.22}
+  985.5 {"i": 12, "braco": "controle", "init": 25.58, "init_pipe": 25.58, "add": 5.11, "add_pipe": 5.11, "rc": 0, "commit": 5.42, "rmtree": 0.22}
+ 1022.6 {"i": 12, "braco": "variante", "init": 25.59, "init_pipe": 25.59, "add": 5.41, "add_pipe": 5.41, "rc": 0, "commit": 5.77, "rmtree": 0.2}
+ 1059.0 {"i": 13, "braco": "variante", "init": 25.58, "init_pipe": 25.58, "add": 4.88, "add_pipe": 4.88, "rc": 0, "commit": 5.62, "rmtree": 0.23}
+ 1095.9 {"i": 13, "braco": "controle", "init": 25.48, "init_pipe": 25.48, "add": 5.64, "add_pipe": 5.64, "rc": 0, "commit": 5.47, "rmtree": 0.2}
+ 1132.9 {"i": 14, "braco": "controle", "init": 25.55, "init_pipe": 25.55, "add": 5.81, "add_pipe": 5.81, "rc": 0, "commit": 5.34, "rmtree": 0.2}
+ 1173.7 {"i": 14, "braco": "variante", "init": 25.64, "init_pipe": 25.64, "add": 9.48, "add_pipe": 9.48, "rc": 0, "commit": 5.33, "rmtree": 0.2}
+ 1210.7 {"i": 15, "braco": "variante", "init": 25.58, "init_pipe": 25.58, "add": 5.22, "add_pipe": 5.22, "rc": 0, "commit": 5.84, "rmtree": 0.22}
+ 1248.5 {"i": 15, "braco": "controle", "init": 25.56, "init_pipe": 25.56, "add": 6.44, "add_pipe": 6.44, "rc": 0, "commit": 5.44, "rmtree": 0.22}
+ 1284.9 {"i": 16, "braco": "controle", "init": 25.55, "init_pipe": 25.55, "add": 5.02, "add_pipe": 5.02, "rc": 0, "commit": 5.25, "rmtree": 0.23}
+ 1326.3 {"i": 16, "braco": "variante", "init": 25.59, "init_pipe": 25.59, "add": 7.5, "add_pipe": 7.5, "rc": 0, "commit": 8.05, "rmtree": 0.22}
+ 1363.2 {"i": 17, "braco": "variante", "init": 25.56, "init_pipe": 25.56, "add": 5.09, "add_pipe": 5.09, "rc": 0, "commit": 5.67, "rmtree": 0.22}
+ 1401.9 {"i": 17, "braco": "controle", "init": 25.62, "init_pipe": 25.62, "add": 6.66, "add_pipe": 6.66, "rc": 0, "commit": 5.88, "rmtree": 0.22}
+ 1438.1 {"i": 18, "braco": "controle", "init": 25.56, "init_pipe": 25.56, "add": 4.95, "add_pipe": 4.95, "rc": 0, "commit": 5.39, "rmtree": 0.22}
+ 1474.6 {"i": 18, "braco": "variante", "init": 25.53, "init_pipe": 25.53, "add": 5.33, "add_pipe": 5.33, "rc": 0, "commit": 5.28, "rmtree": 0.2}
+ 1511.0 {"i": 19, "braco": "variante", "init": 25.59, "init_pipe": 25.59, "add": 4.89, "add_pipe": 4.89, "rc": 0, "commit": 5.62, "rmtree": 0.22}
+ 1548.1 {"i": 19, "braco": "controle", "init": 25.55, "init_pipe": 25.55, "add": 5.88, "add_pipe": 5.88, "rc": 0, "commit": 5.38, "rmtree": 0.22}
+ 1585.0 {"i": 20, "braco": "controle", "init": 25.53, "init_pipe": 25.53, "add": 5.7, "add_pipe": 5.7, "rc": 0, "commit": 5.3, "rmtree": 0.22}
+ 1622.2 {"i": 20, "braco": "variante", "init": 25.45, "init_pipe": 25.45, "add": 5.83, "add_pipe": 5.83, "rc": 0, "commit": 5.55, "rmtree": 0.22}
+ 1660.7 {"i": 21, "braco": "variante", "init": 25.56, "init_pipe": 25.56, "add": 5.94, "add_pipe": 5.94, "rc": 0, "commit": 6.66, "rmtree": 0.22}
+ 1699.5 {"i": 21, "braco": "controle", "init": 25.64, "init_pipe": 25.64, "add": 7.22, "add_pipe": 7.22, "rc": 0, "commit": 5.55, "rmtree": 0.22}
+ 1737.9 {"i": 22, "braco": "controle", "init": 25.75, "init_pipe": 25.75, "add": 5.97, "add_pipe": 5.97, "rc": 0, "commit": 6.2, "rmtree": 0.23}
+ 1775.2 {"i": 22, "braco": "variante", "init": 25.64, "init_pipe": 25.64, "add": 5.31, "add_pipe": 5.31, "rc": 0, "commit": 6.06, "rmtree": 0.22}
+ 1815.5 {"i": 23, "braco": "variante", "init": 26.19, "init_pipe": 26.19, "add": 7.52, "add_pipe": 7.52, "rc": 0, "commit": 6.22, "rmtree": 0.22}
+ 1857.0 {"i": 23, "braco": "controle", "init": 25.61, "init_pipe": 25.61, "add": 9.44, "add_pipe": 9.44, "rc": 0, "commit": 6.11, "rmtree": 0.25}
+ 1894.2 {"i": 24, "braco": "controle", "init": 25.64, "init_pipe": 25.64, "add": 5.7, "add_pipe": 5.7, "rc": 0, "commit": 5.51, "rmtree": 0.22}
+ 1932.6 {"i": 24, "braco": "variante", "init": 25.61, "init_pipe": 25.61, "add": 6.77, "add_pipe": 6.77, "rc": 0, "commit": 5.61, "rmtree": 0.22}
+ 1976.2 {"i": 25, "braco": "variante", "init": 25.62, "init_pipe": 25.62, "add": 7.5, "add_pipe": 7.5, "rc": 0, "commit": 10.19, "rmtree": 0.22}
+ 2013.4 {"i": 25, "braco": "controle", "init": 25.59, "init_pipe": 25.59, "add": 5.49, "add_pipe": 5.49, "rc": 0, "commit": 5.78, "rmtree": 0.2}
+ 2051.3 {"i": 26, "braco": "controle", "init": 25.64, "init_pipe": 25.64, "add": 6.06, "add_pipe": 6.06, "rc": 0, "commit": 5.86, "rmtree": 0.22}
+ 2091.8 {"i": 26, "braco": "variante", "init": 25.69, "init_pipe": 25.69, "add": 7.38, "add_pipe": 7.38, "rc": 0, "commit": 6.89, "rmtree": 0.38}
+ 2134.9 {"i": 27, "braco": "variante", "init": 25.56, "init_pipe": 25.56, "add": 10.66, "add_pipe": 10.66, "rc": 0, "commit": 6.48, "rmtree": 0.22}
+ 2172.8 {"i": 27, "braco": "controle", "init": 25.64, "init_pipe": 25.64, "add": 6.45, "add_pipe": 6.45, "rc": 0, "commit": 5.47, "rmtree": 0.22}
+ 2210.4 {"i": 28, "braco": "controle", "init": 25.58, "init_pipe": 25.58, "add": 5.77, "add_pipe": 5.77, "rc": 0, "commit": 5.88, "rmtree": 0.22}
+ 2248.5 {"i": 28, "braco": "variante", "init": 25.61, "init_pipe": 25.61, "add": 5.98, "add_pipe": 5.98, "rc": 0, "commit": 6.2, "rmtree": 0.22}
+ 2287.1 {"i": 29, "braco": "variante", "init": 25.67, "init_pipe": 25.67, "add": 6.47, "add_pipe": 6.47, "rc": 0, "commit": 5.81, "rmtree": 0.2}
+ 2323.8 {"i": 29, "braco": "controle", "init": 25.58, "init_pipe": 25.58, "add": 5.12, "add_pipe": 5.12, "rc": 0, "commit": 5.66, "rmtree": 0.22}
+
+== RESUMO fsync
+controle     init    n=30 min=25.5 mediana=25.6 max=45.6
+controle     add     n=30 min=5.0 mediana=5.8 max=9.4
+controle     commit  n=30 min=5.1 mediana=5.5 max=7.2
+controle     rmtree  n=30 min=0.2 mediana=0.2 max=0.2
+variante     init    n=30 min=25.5 mediana=25.6 max=26.2
+variante     add     n=30 min=4.9 mediana=6.1 max=10.7
+variante     commit  n=30 min=5.2 mediana=5.7 max=10.2
+variante     rmtree  n=30 min=0.2 mediana=0.2 max=0.4
+--- batimento (t,atraso,C,D) acima de 0,3 s:
+20.5,0.000,0.422,0.000
+21.9,0.000,0.344,0.000
+27.6,0.000,0.485,0.000
+118.8,0.016,0.437,0.000
+234.5,0.000,0.454,0.000
+343.4,0.016,0.687,0.000
+471.4,0.000,0.313,0.000
+472.9,0.000,0.500,0.000
+474.3,0.000,0.468,0.000
+479.0,0.000,0.360,0.000
+481.4,0.000,0.390,0.000
+486.0,0.000,0.406,0.000
+498.2,0.000,0.344,0.000
+500.9,0.000,0.547,0.000
+516.0,0.000,1.063,0.000
+521.5,0.000,0.437,0.000
+713.7,0.000,0.453,0.000
+826.8,0.000,0.687,0.000
+964.0,0.000,0.359,0.000
+1252.5,0.000,0.484,0.000
+1319.4,0.000,0.969,0.000
+1394.0,0.000,0.328,0.000
+1677.6,0.000,1.125,0.000
+1822.5,0.000,0.438,0.000
+1962.7,0.000,0.500,0.000
+2126.2,0.000,0.344,0.000
+2290.9,0.000,0.344,0.000

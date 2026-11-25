@@ -1,0 +1,963 @@
+# run 45713478902 (branch diag-testes-lentos, apagada depois); saída de cada máquina
+
+########## diag-discoC1
+   14.6 CHECAR {"i": 0, "base401": 2.81, "pendurado": 10.3, "dif": 7.48, "setup": 0.66, "rc": 0}
+   27.8 CHECAR {"i": 1, "base401": 2.2, "pendurado": 10.3, "dif": 8.09, "setup": 0.61, "rc": 0}
+   40.7 CHECAR {"i": 2, "base401": 2.11, "pendurado": 10.16, "dif": 8.05, "setup": 0.61, "rc": 0}
+   79.5 arquivos no índice: 735
+   79.7 {"i": 0, "braco": "discoC", "init": 28.44, "init_pipe": 28.44, "add": 5.06, "add_pipe": 5.06, "rc": 0, "commit": 5.14, "rmtree": 0.2}
+  119.4 {"i": 1, "braco": "discoC", "init": 25.52, "init_pipe": 25.52, "add": 5.47, "add_pipe": 5.47, "rc": 0, "commit": 8.31, "rmtree": 0.23}
+  156.2 {"i": 2, "braco": "discoC", "init": 25.91, "init_pipe": 25.91, "add": 4.81, "add_pipe": 4.81, "rc": 0, "commit": 5.2, "rmtree": 0.22}
+  192.8 {"i": 3, "braco": "discoC", "init": 25.52, "init_pipe": 25.52, "add": 5.27, "add_pipe": 5.27, "rc": 0, "commit": 5.51, "rmtree": 0.22}
+  235.4 {"i": 4, "braco": "discoC", "init": 25.58, "init_pipe": 25.58, "add": 10.58, "add_pipe": 10.58, "rc": 0, "commit": 6.05, "rmtree": 0.22}
+  272.0 {"i": 5, "braco": "discoC", "init": 25.53, "init_pipe": 25.53, "add": 4.45, "add_pipe": 4.45, "rc": 0, "commit": 6.33, "rmtree": 0.2}
+  310.0 {"i": 6, "braco": "discoC", "init": 25.55, "init_pipe": 25.55, "add": 6.84, "add_pipe": 6.84, "rc": 0, "commit": 5.17, "rmtree": 0.2}
+  348.2 {"i": 7, "braco": "discoC", "init": 25.5, "init_pipe": 25.5, "add": 6.45, "add_pipe": 6.45, "rc": 0, "commit": 5.97, "rmtree": 0.2}
+  383.4 {"i": 8, "braco": "discoC", "init": 25.47, "init_pipe": 25.47, "add": 4.33, "add_pipe": 4.33, "rc": 0, "commit": 5.06, "rmtree": 0.2}
+  420.6 {"i": 9, "braco": "discoC", "init": 25.48, "init_pipe": 25.48, "add": 5.38, "add_pipe": 5.38, "rc": 0, "commit": 6.02, "rmtree": 0.22}
+  456.7 {"i": 10, "braco": "discoC", "init": 25.53, "init_pipe": 25.53, "add": 5.28, "add_pipe": 5.28, "rc": 0, "commit": 4.92, "rmtree": 0.2}
+  491.8 {"i": 11, "braco": "discoC", "init": 25.44, "init_pipe": 25.44, "add": 4.38, "add_pipe": 4.38, "rc": 0, "commit": 5.03, "rmtree": 0.22}
+  528.7 {"i": 12, "braco": "discoC", "init": 25.48, "init_pipe": 25.48, "add": 5.77, "add_pipe": 5.77, "rc": 0, "commit": 5.25, "rmtree": 0.23}
+  594.6 {"i": 13, "braco": "discoC", "init": 54.72, "init_pipe": 54.72, "add": 5.25, "add_pipe": 5.25, "rc": 0, "commit": 5.66, "rmtree": 0.2}
+  631.8 {"i": 14, "braco": "discoC", "init": 25.53, "init_pipe": 25.53, "add": 6.23, "add_pipe": 6.23, "rc": 0, "commit": 5.08, "rmtree": 0.2}
+  669.5 {"i": 15, "braco": "discoC", "init": 25.48, "init_pipe": 25.48, "add": 5.73, "add_pipe": 5.73, "rc": 0, "commit": 6.12, "rmtree": 0.22}
+  705.6 {"i": 16, "braco": "discoC", "init": 25.47, "init_pipe": 25.47, "add": 5.25, "add_pipe": 5.25, "rc": 0, "commit": 5.03, "rmtree": 0.22}
+  746.1 {"i": 17, "braco": "discoC", "init": 25.51, "init_pipe": 25.51, "add": 6.34, "add_pipe": 6.34, "rc": 0, "commit": 8.31, "rmtree": 0.22}
+  785.8 {"i": 18, "braco": "discoC", "init": 25.55, "init_pipe": 25.55, "add": 8.17, "add_pipe": 8.17, "rc": 0, "commit": 5.25, "rmtree": 0.2}
+  824.6 {"i": 19, "braco": "discoC", "init": 25.47, "init_pipe": 25.47, "add": 5.91, "add_pipe": 5.91, "rc": 0, "commit": 6.55, "rmtree": 0.22}
+  866.2 {"i": 20, "braco": "discoC", "init": 25.59, "init_pipe": 25.59, "add": 9.58, "add_pipe": 9.58, "rc": 0, "commit": 6.14, "rmtree": 0.22}
+  903.9 {"i": 21, "braco": "discoC", "init": 26.11, "init_pipe": 26.11, "add": 5.83, "add_pipe": 5.83, "rc": 0, "commit": 5.39, "rmtree": 0.22}
+  940.5 {"i": 22, "braco": "discoC", "init": 25.59, "init_pipe": 25.59, "add": 5.61, "add_pipe": 5.61, "rc": 0, "commit": 5.12, "rmtree": 0.22}
+  975.9 {"i": 23, "braco": "discoC", "init": 25.53, "init_pipe": 25.53, "add": 4.44, "add_pipe": 4.44, "rc": 0, "commit": 4.95, "rmtree": 0.23}
+ 1012.2 {"i": 24, "braco": "discoC", "init": 25.58, "init_pipe": 25.58, "add": 4.83, "add_pipe": 4.83, "rc": 0, "commit": 5.34, "rmtree": 0.5}
+ 1055.0 {"i": 25, "braco": "discoC", "init": 25.53, "init_pipe": 25.53, "add": 9.53, "add_pipe": 9.53, "rc": 0, "commit": 7.41, "rmtree": 0.22}
+ 1092.0 {"i": 26, "braco": "discoC", "init": 25.52, "init_pipe": 25.52, "add": 6.28, "add_pipe": 6.28, "rc": 0, "commit": 4.89, "rmtree": 0.2}
+ 1092.6 22:27:25 Service Control Manager 7036 The Device Setup Manager service entered the running state.
+22:27:25 Service Control Manager 7045 A service was installed in the system.
+
+22:27:27 Service Control Manager 7036 The Software Protection service entered the running state.
+22:27:28 Service Control Manager 7036 The Windows Security Service service entered the running state.
+22:27:48 Service Control Manager 7036 The Print Device Configuration Service service entered the stopped state.
+22:27:57 Service Control Manager 7036 The Diagnostic Policy Service service entered the running state.
+22:27:57 Service Control Manager 7000 The Microsoft Edge Update Service (edgeupdate) service failed to start due to the following error: 
+
+22:27:57 Service Control Manager 7036 The Diagnostic System Host service entered the running state.
+22:27:58 Service Control Manager 7036 The Program Compatibility Assistant Service service entered the running state.
+22:27:58 Service Control Manager 7036 The Software Protection service entered the stopped state.
+22:27:58 Service Control Manager 7036 The Distributed Transaction Coordinator service entered the running state.
+22:27:58 Service Control Manager 7036 The Software Protection service entered the running state.
+22:28:02 Service Control Manager 7036 The User Access Logging Service service entered the running state.
+22:28:04 Service Control Manager 7036 The WaaSMedicSvc service entered the running state.
+22:28:04 Service Control Manager 7036 The Update Orchestrator Service service entered the running state.
+22:28:05 Service Control Manager 7036 The Clipboard User Service_dfff8 service entered the running state.
+22:28:12 Service Control Manager 7036 The Device Setup Manager service entered the stopped state.
+22:28:13 Service Control Manager 7040 The start type of the Background Intelligent Transfer Service service was changed from auto start to demand start.
+22:28:13 Service Control Manager 7036 The Background Intelligent Transfer Service service entered the stopped state.
+22:28:14 Service Control Manager 7036 The Windows Insider Service service entered the stopped state.
+22:28:28 Service Control Manager 7036 The Software Protection service entered the stopped state.
+22:29:05 Service Control Manager 7036 The WaaSMedicSvc service entered the stopped state.
+22:29:26 Service Control Manager 7036 The Portable Device Enumerator Service service entered the stopped state.
+22:29:26 Service Control Manager 7036 The Device Install Service service entered the stopped state.
+22:29:41 Service Control Manager 7036 The Microsoft Passport service entered the stopped state.
+22:30:17 Service Control Manager 7036 The Windows PushToInstall Service service entered the running state.
+22:30:17 Service Control Manager 7036 The WaaSMedicSvc service entered the running state.
+22:30:18 Service Control Manager 7036 The Software Protection service entered the running state.
+22:30:19 Service Control Manager 7040 The start type of the Background Intelligent Transfer Service service was changed from demand start to auto start.
+22:30:19 Service Control Manager 7036 The Background Intelligent Transfer Service service entered the running state.
+22:30:20 Service Control Manager 7036 The Windows Modules Installer service entered the running state.
+22:30:22 Service Control Manager 7036 The Windows PushToInstall Service service entered the stopped state.
+22:31:00 Service Control Manager 7036 The Network Setup Service service entered the stopped state.
+22:31:08 Service Control Manager 7036 The Software Protection service entered the stopped state.
+22:31:17 Service Control Manager 7036 The WaaSMedicSvc service entered the stopped state.
+22:31:19 Service Control Manager 7036 The Delivery Optimization service entered the stopped state.
+22:32:30 Service Control Manager 7036 The Windows Modules Installer service entered the stopped state.
+22:32:31 Service Control Manager 7040 The start type of the Background Intelligent Transfer Service service was changed from auto start to demand start.
+22:32:31 Service Control Manager 7036 The Background Intelligent Transfer Service service entered the stopped state.
+22:33:03 Service Control Manager 7036 The Client License Service (ClipSVC) service entered the stopped state.
+22:33:22 Service Control Manager 7036 The Microsoft Account Sign-in Assistant service entered the stopped state.
+22:34:41 Service Control Manager 7036 The Microsoft Passport Container service entered the stopped state.
+22:35:50 Service Control Manager 7036 The Remote Registry service entered the stopped state.
+22:36:11 Service Control Manager 7036 The Declared Configuration(DC) service service entered the running state.
+22:36:51 Service Control Manager 7036 The AppX Deployment Service (AppXSVC) service entered the stopped state.
+22:37:14 Service Control Manager 7036 The Volume Shadow Copy service entered the running state.
+22:37:14 Service Control Manager 7036 The Microsoft Software Shadow Copy Provider service entered the running state.
+22:38:04 Service Control Manager 7036 The WaaSMedicSvc service entered the running state.
+22:38:11 Service Control Manager 7036 The Declared Configuration(DC) service service entered the stopped state.
+22:39:04 Service Control Manager 7036 The WaaSMedicSvc service entered the stopped state.
+22:40:14 VSS 8224 The VSS service is shutting down due to idle timeout. 
+22:40:14 Service Control Manager 7036 The Volume Shadow Copy service entered the stopped state.
+22:41:52 Service Control Manager 7036 The WaaSMedicSvc service entered the running state.
+22:41:52 Service Control Manager 7036 The Windows Modules Installer service entered the running state.
+22:41:52 Service Control Manager 7036 The Geolocation Service service entered the running state.
+22:42:53 Service Control Manager 7036 The WaaSMedicSvc service entered the stopped state.
+22:43:02 Service Control Manager 7036 The AppX Deployment Service (AppXSVC) service entered the running state.
+22:43:02 Service Control Manager 7036 The Client License Service (ClipSVC) service entered the running state.
+22:43:14 Service Control Manager 7036 The Microsoft Software Shadow Copy Provider service entered the stopped state.
+22:43:56 Service Control Manager 7036 The Windows Modules Installer service entered the stopped state.
+
+
+== RESUMO discoC1
+discoC       init    n=27 min=25.4 mediana=25.5 max=54.7
+discoC       add     n=27 min=4.3 mediana=5.6 max=10.6
+discoC       commit  n=27 min=4.9 mediana=5.3 max=8.3
+discoC       rmtree  n=27 min=0.2 mediana=0.2 max=0.5
+--- batimento (t,atraso,C,D) acima de 0,3 s:
+118.1,0.000,0.656,0.000
+119.8,0.000,0.672,0.000
+134.8,0.000,0.437,0.000
+222.3,0.000,0.468,0.000
+279.5,0.000,0.328,0.000
+533.3,0.000,0.391,0.000
+534.7,0.000,0.359,0.000
+548.7,0.000,0.640,0.000
+553.4,0.000,0.328,0.000
+562.8,0.000,0.313,0.000
+565.2,0.015,0.344,0.000
+568.8,0.000,0.375,0.000
+571.6,0.015,0.422,0.000
+605.5,0.000,0.313,0.015
+607.0,0.000,0.454,0.000
+748.9,0.000,0.359,0.000
+786.2,0.000,0.343,0.000
+826.5,0.000,0.359,0.000
+877.7,0.000,0.329,0.000
+1059.8,0.000,0.500,0.000
+
+########## diag-discoC2
+   16.8 CHECAR {"i": 0, "base401": 3.88, "pendurado": 11.14, "dif": 7.26, "setup": 0.89, "rc": 0}
+   32.0 CHECAR {"i": 1, "base401": 3.12, "pendurado": 11.17, "dif": 8.05, "setup": 0.83, "rc": 0}
+   46.9 CHECAR {"i": 2, "base401": 2.94, "pendurado": 11.0, "dif": 8.06, "setup": 0.86, "rc": 0}
+   88.6 arquivos no índice: 735
+   88.9 {"i": 0, "braco": "discoC", "init": 29.52, "init_pipe": 29.52, "add": 5.36, "add_pipe": 5.36, "rc": 0, "commit": 6.56, "rmtree": 0.33}
+  130.5 {"i": 1, "braco": "discoC", "init": 27.75, "init_pipe": 27.75, "add": 5.91, "add_pipe": 5.91, "rc": 0, "commit": 7.47, "rmtree": 0.31}
+  171.0 {"i": 2, "braco": "discoC", "init": 28.56, "init_pipe": 28.56, "add": 5.17, "add_pipe": 5.17, "rc": 0, "commit": 6.34, "rmtree": 0.33}
+  220.0 {"i": 3, "braco": "discoC", "init": 27.98, "init_pipe": 27.98, "add": 11.41, "add_pipe": 11.41, "rc": 0, "commit": 9.16, "rmtree": 0.33}
+  260.7 {"i": 4, "braco": "discoC", "init": 28.03, "init_pipe": 28.03, "add": 5.36, "add_pipe": 5.36, "rc": 0, "commit": 6.8, "rmtree": 0.31}
+  300.6 {"i": 5, "braco": "discoC", "init": 28.3, "init_pipe": 28.3, "add": 4.72, "add_pipe": 4.72, "rc": 0, "commit": 6.44, "rmtree": 0.31}
+  340.8 {"i": 6, "braco": "discoC", "init": 28.06, "init_pipe": 28.06, "add": 5.05, "add_pipe": 5.05, "rc": 0, "commit": 6.59, "rmtree": 0.33}
+  379.6 {"i": 7, "braco": "discoC", "init": 27.03, "init_pipe": 27.03, "add": 4.91, "add_pipe": 4.91, "rc": 0, "commit": 6.38, "rmtree": 0.33}
+  419.3 {"i": 8, "braco": "discoC", "init": 26.94, "init_pipe": 26.94, "add": 5.84, "add_pipe": 5.84, "rc": 0, "commit": 6.45, "rmtree": 0.31}
+  458.7 {"i": 9, "braco": "discoC", "init": 27.38, "init_pipe": 27.38, "add": 5.17, "add_pipe": 5.17, "rc": 0, "commit": 6.42, "rmtree": 0.33}
+  498.5 {"i": 10, "braco": "discoC", "init": 27.69, "init_pipe": 27.69, "add": 4.94, "add_pipe": 4.94, "rc": 0, "commit": 6.7, "rmtree": 0.31}
+  538.2 {"i": 11, "braco": "discoC", "init": 27.78, "init_pipe": 27.78, "add": 4.91, "add_pipe": 4.91, "rc": 0, "commit": 6.34, "rmtree": 0.33}
+  597.8 {"i": 12, "braco": "discoC", "init": 41.5, "init_pipe": 41.5, "add": 11.28, "add_pipe": 11.28, "rc": 0, "commit": 6.44, "rmtree": 0.33}
+  636.7 {"i": 13, "braco": "discoC", "init": 27.36, "init_pipe": 27.36, "add": 4.7, "add_pipe": 4.7, "rc": 0, "commit": 6.34, "rmtree": 0.31}
+  675.8 {"i": 14, "braco": "discoC", "init": 27.0, "init_pipe": 27.0, "add": 4.94, "add_pipe": 4.94, "rc": 0, "commit": 6.67, "rmtree": 0.33}
+  714.5 {"i": 15, "braco": "discoC", "init": 27.09, "init_pipe": 27.09, "add": 4.8, "add_pipe": 4.8, "rc": 0, "commit": 6.42, "rmtree": 0.31}
+  753.9 {"i": 16, "braco": "discoC", "init": 27.42, "init_pipe": 27.42, "add": 4.94, "add_pipe": 4.94, "rc": 0, "commit": 6.53, "rmtree": 0.33}
+  793.1 {"i": 17, "braco": "discoC", "init": 27.25, "init_pipe": 27.25, "add": 4.98, "add_pipe": 4.98, "rc": 0, "commit": 6.47, "rmtree": 0.31}
+  834.2 {"i": 18, "braco": "discoC", "init": 27.52, "init_pipe": 27.52, "add": 5.34, "add_pipe": 5.34, "rc": 0, "commit": 7.7, "rmtree": 0.39}
+  873.9 {"i": 19, "braco": "discoC", "init": 27.69, "init_pipe": 27.69, "add": 5.12, "add_pipe": 5.12, "rc": 0, "commit": 6.45, "rmtree": 0.31}
+  914.8 {"i": 20, "braco": "discoC", "init": 29.16, "init_pipe": 29.16, "add": 4.98, "add_pipe": 4.98, "rc": 0, "commit": 6.34, "rmtree": 0.33}
+  954.7 {"i": 21, "braco": "discoC", "init": 27.98, "init_pipe": 27.98, "add": 4.95, "add_pipe": 4.95, "rc": 0, "commit": 6.47, "rmtree": 0.31}
+  994.5 {"i": 22, "braco": "discoC", "init": 28.16, "init_pipe": 28.16, "add": 4.83, "add_pipe": 4.83, "rc": 0, "commit": 6.41, "rmtree": 0.33}
+ 1034.7 {"i": 23, "braco": "discoC", "init": 28.5, "init_pipe": 28.5, "add": 4.73, "add_pipe": 4.73, "rc": 0, "commit": 6.45, "rmtree": 0.33}
+ 1076.3 {"i": 24, "braco": "discoC", "init": 29.88, "init_pipe": 29.88, "add": 4.7, "add_pipe": 4.7, "rc": 0, "commit": 6.5, "rmtree": 0.33}
+ 1116.7 {"i": 25, "braco": "discoC", "init": 28.31, "init_pipe": 28.31, "add": 4.97, "add_pipe": 4.97, "rc": 0, "commit": 6.62, "rmtree": 0.33}
+ 1117.5 22:27:58 Microsoft-Windows-WindowsUpdateClient 19 Installation Successful: Windows successfully installed the following update: Security Intelligence Update for Microsoft Defender Antivirus - KB2267602 (Version 1.463.470.0) - Current Channel (Broad)
+22:28:01 Service Control Manager 7036 The Software Protection service entered the stopped state.
+22:28:02 Service Control Manager 7036 The Software Protection service entered the running state.
+22:28:10 Service Control Manager 7036 The Windows Security Service service entered the running state.
+22:28:16 Service Control Manager 7036 The WaaSMedicSvc service entered the stopped state.
+22:28:32 Service Control Manager 7036 The Windows Insider Service service entered the stopped state.
+22:28:33 Service Control Manager 7036 The Software Protection service entered the stopped state.
+22:28:41 Service Control Manager 7036 The Print Device Configuration Service service entered the stopped state.
+22:28:48 Service Control Manager 7036 The Diagnostic Policy Service service entered the running state.
+22:28:48 Service Control Manager 7036 The Diagnostic System Host service entered the running state.
+22:28:48 Service Control Manager 7000 The Microsoft Edge Update Service (edgeupdate) service failed to start due to the following error: 
+
+22:28:48 Service Control Manager 7036 The Program Compatibility Assistant Service service entered the running state.
+22:28:48 Service Control Manager 7036 The Distributed Transaction Coordinator service entered the running state.
+22:28:49 Service Control Manager 7036 The Software Protection service entered the running state.
+22:28:51 Service Control Manager 7036 The User Access Logging Service service entered the running state.
+22:28:51 Service Control Manager 7036 The WaaSMedicSvc service entered the running state.
+22:28:51 Service Control Manager 7036 The Update Orchestrator Service service entered the running state.
+22:28:52 Service Control Manager 7036 The Clipboard User Service_c6ced service entered the running state.
+22:29:00 Service Control Manager 7040 The start type of the Background Intelligent Transfer Service service was changed from auto start to demand start.
+22:29:00 Service Control Manager 7036 The Background Intelligent Transfer Service service entered the stopped state.
+22:29:11 Service Control Manager 7036 The Device Install Service service entered the stopped state.
+22:29:16 Service Control Manager 7036 The Portable Device Enumerator Service service entered the stopped state.
+22:29:19 Service Control Manager 7036 The Software Protection service entered the stopped state.
+22:29:52 Service Control Manager 7036 The WaaSMedicSvc service entered the stopped state.
+22:30:29 Service Control Manager 7036 The Microsoft Passport service entered the stopped state.
+22:31:42 Service Control Manager 7036 The Windows PushToInstall Service service entered the running state.
+22:31:43 Service Control Manager 7036 The WaaSMedicSvc service entered the running state.
+22:31:47 Service Control Manager 7040 The start type of the Background Intelligent Transfer Service service was changed from demand start to auto start.
+22:31:47 Service Control Manager 7036 The Background Intelligent Transfer Service service entered the running state.
+22:31:47 Service Control Manager 7036 The Software Protection service entered the running state.
+22:31:47 Service Control Manager 7036 The Windows PushToInstall Service service entered the stopped state.
+22:31:50 Service Control Manager 7036 The Windows Modules Installer service entered the running state.
+22:31:51 Service Control Manager 7036 The Network Setup Service service entered the stopped state.
+22:32:37 Service Control Manager 7036 The Software Protection service entered the stopped state.
+22:32:39 Service Control Manager 7036 The Delivery Optimization service entered the stopped state.
+22:32:43 Service Control Manager 7036 The WaaSMedicSvc service entered the stopped state.
+22:33:42 Service Control Manager 7036 The Client License Service (ClipSVC) service entered the stopped state.
+22:34:00 Service Control Manager 7040 The start type of the Background Intelligent Transfer Service service was changed from auto start to demand start.
+22:34:00 Service Control Manager 7036 The Background Intelligent Transfer Service service entered the stopped state.
+22:34:00 Service Control Manager 7036 The Windows Modules Installer service entered the stopped state.
+22:34:47 Service Control Manager 7036 The Microsoft Account Sign-in Assistant service entered the stopped state.
+22:35:29 Service Control Manager 7036 The Microsoft Passport Container service entered the stopped state.
+22:36:43 Service Control Manager 7036 The Remote Registry service entered the stopped state.
+22:37:06 Service Control Manager 7036 The Declared Configuration(DC) service service entered the running state.
+22:37:32 Service Control Manager 7036 The Volume Shadow Copy service entered the running state.
+22:37:32 Service Control Manager 7036 The Microsoft Software Shadow Copy Provider service entered the running state.
+22:37:44 Service Control Manager 7036 The AppX Deployment Service (AppXSVC) service entered the stopped state.
+22:38:51 Service Control Manager 7036 The WaaSMedicSvc service entered the running state.
+22:39:06 Service Control Manager 7036 The Declared Configuration(DC) service service entered the stopped state.
+22:39:53 Service Control Manager 7036 The WaaSMedicSvc service entered the stopped state.
+22:40:32 VSS 8224 The VSS service is shutting down due to idle timeout. 
+22:40:32 Service Control Manager 7036 The Volume Shadow Copy service entered the stopped state.
+22:42:17 Service Control Manager 7036 The Geolocation Service service entered the running state.
+22:42:17 Service Control Manager 7036 The WaaSMedicSvc service entered the running state.
+22:42:17 Service Control Manager 7036 The Windows Modules Installer service entered the running state.
+22:43:19 Service Control Manager 7036 The WaaSMedicSvc service entered the stopped state.
+22:43:23 Service Control Manager 7036 The AppX Deployment Service (AppXSVC) service entered the running state.
+22:43:23 Service Control Manager 7036 The Client License Service (ClipSVC) service entered the running state.
+22:43:32 Service Control Manager 7036 The Microsoft Software Shadow Copy Provider service entered the stopped state.
+22:44:22 Service Control Manager 7036 The Windows Modules Installer service entered the stopped state.
+
+
+== RESUMO discoC2
+discoC       init    n=26 min=26.9 mediana=27.9 max=41.5
+discoC       add     n=26 min=4.7 mediana=5.0 max=11.4
+discoC       commit  n=26 min=6.3 mediana=6.5 max=9.2
+discoC       rmtree  n=26 min=0.3 mediana=0.3 max=0.4
+--- batimento (t,atraso,C,D) acima de 0,3 s:
+208.8,0.000,0.344,0.000
+210.2,0.000,0.359,0.000
+409.0,0.000,0.703,0.000
+550.0,0.000,0.328,0.000
+585.8,0.000,0.625,0.000
+1048.0,0.000,0.656,0.000
+
+########## diag-discoD1
+   13.9 CHECAR {"i": 0, "base401": 2.5, "pendurado": 10.01, "dif": 7.51, "setup": 0.66, "rc": 0}
+   26.7 CHECAR {"i": 1, "base401": 2.17, "pendurado": 10.02, "dif": 7.84, "setup": 0.58, "rc": 0}
+   39.6 CHECAR {"i": 2, "base401": 2.08, "pendurado": 10.09, "dif": 8.01, "setup": 0.59, "rc": 0}
+   61.9 arquivos no índice: 735
+   62.0 {"i": 0, "braco": "discoD", "init": 18.86, "init_pipe": 18.86, "add": 0.41, "add_pipe": 0.41, "rc": 0, "commit": 3.02, "rmtree": 0.08}
+   83.7 {"i": 1, "braco": "discoD", "init": 18.12, "init_pipe": 18.12, "add": 0.39, "add_pipe": 0.39, "rc": 0, "commit": 3.0, "rmtree": 0.08}
+  105.4 {"i": 2, "braco": "discoD", "init": 18.17, "init_pipe": 18.17, "add": 0.41, "add_pipe": 0.41, "rc": 0, "commit": 2.95, "rmtree": 0.08}
+  127.4 {"i": 3, "braco": "discoD", "init": 18.44, "init_pipe": 18.44, "add": 0.39, "add_pipe": 0.39, "rc": 0, "commit": 3.11, "rmtree": 0.08}
+  150.1 {"i": 4, "braco": "discoD", "init": 18.89, "init_pipe": 18.89, "add": 0.44, "add_pipe": 0.44, "rc": 0, "commit": 3.16, "rmtree": 0.09}
+  172.4 {"i": 5, "braco": "discoD", "init": 18.69, "init_pipe": 18.69, "add": 0.41, "add_pipe": 0.41, "rc": 0, "commit": 3.06, "rmtree": 0.08}
+  194.2 {"i": 6, "braco": "discoD", "init": 18.38, "init_pipe": 18.38, "add": 0.41, "add_pipe": 0.41, "rc": 0, "commit": 2.84, "rmtree": 0.08}
+  214.7 {"i": 7, "braco": "discoD", "init": 16.61, "init_pipe": 16.61, "add": 0.41, "add_pipe": 0.41, "rc": 0, "commit": 3.28, "rmtree": 0.09}
+  235.8 {"i": 8, "braco": "discoD", "init": 17.78, "init_pipe": 17.78, "add": 0.41, "add_pipe": 0.41, "rc": 0, "commit": 2.78, "rmtree": 0.08}
+  255.5 {"i": 9, "braco": "discoD", "init": 16.48, "init_pipe": 16.48, "add": 0.41, "add_pipe": 0.41, "rc": 0, "commit": 2.67, "rmtree": 0.06}
+  275.2 {"i": 10, "braco": "discoD", "init": 16.31, "init_pipe": 16.31, "add": 0.39, "add_pipe": 0.39, "rc": 0, "commit": 2.86, "rmtree": 0.08}
+  295.0 {"i": 11, "braco": "discoD", "init": 16.52, "init_pipe": 16.52, "add": 0.41, "add_pipe": 0.41, "rc": 0, "commit": 2.78, "rmtree": 0.08}
+  315.2 {"i": 12, "braco": "discoD", "init": 16.69, "init_pipe": 16.69, "add": 0.41, "add_pipe": 0.41, "rc": 0, "commit": 2.92, "rmtree": 0.06}
+  335.1 {"i": 13, "braco": "discoD", "init": 16.7, "init_pipe": 16.7, "add": 0.41, "add_pipe": 0.41, "rc": 0, "commit": 2.72, "rmtree": 0.06}
+  354.7 {"i": 14, "braco": "discoD", "init": 16.26, "init_pipe": 16.26, "add": 0.39, "add_pipe": 0.39, "rc": 0, "commit": 2.83, "rmtree": 0.08}
+  374.7 {"i": 15, "braco": "discoD", "init": 16.53, "init_pipe": 16.53, "add": 0.41, "add_pipe": 0.41, "rc": 0, "commit": 2.91, "rmtree": 0.08}
+  394.3 {"i": 16, "braco": "discoD", "init": 16.31, "init_pipe": 16.31, "add": 0.38, "add_pipe": 0.38, "rc": 0, "commit": 2.8, "rmtree": 0.08}
+  414.0 {"i": 17, "braco": "discoD", "init": 16.31, "init_pipe": 16.31, "add": 0.42, "add_pipe": 0.42, "rc": 0, "commit": 2.75, "rmtree": 0.08}
+  433.7 {"i": 18, "braco": "discoD", "init": 16.38, "init_pipe": 16.38, "add": 0.39, "add_pipe": 0.39, "rc": 0, "commit": 2.78, "rmtree": 0.08}
+  452.9 {"i": 19, "braco": "discoD", "init": 16.0, "init_pipe": 16.0, "add": 0.38, "add_pipe": 0.38, "rc": 0, "commit": 2.73, "rmtree": 0.08}
+  472.7 {"i": 20, "braco": "discoD", "init": 16.31, "init_pipe": 16.31, "add": 0.41, "add_pipe": 0.41, "rc": 0, "commit": 2.97, "rmtree": 0.08}
+  492.4 {"i": 21, "braco": "discoD", "init": 16.41, "init_pipe": 16.41, "add": 0.39, "add_pipe": 0.39, "rc": 0, "commit": 2.75, "rmtree": 0.08}
+  512.5 {"i": 22, "braco": "discoD", "init": 16.58, "init_pipe": 16.58, "add": 0.41, "add_pipe": 0.41, "rc": 0, "commit": 2.91, "rmtree": 0.06}
+  533.7 {"i": 23, "braco": "discoD", "init": 17.64, "init_pipe": 17.64, "add": 0.41, "add_pipe": 0.41, "rc": 0, "commit": 3.0, "rmtree": 0.08}
+  554.5 {"i": 24, "braco": "discoD", "init": 17.5, "init_pipe": 17.5, "add": 0.41, "add_pipe": 0.41, "rc": 0, "commit": 2.76, "rmtree": 0.08}
+  574.1 {"i": 25, "braco": "discoD", "init": 16.3, "init_pipe": 16.3, "add": 0.41, "add_pipe": 0.41, "rc": 0, "commit": 2.78, "rmtree": 0.06}
+  593.7 {"i": 26, "braco": "discoD", "init": 16.23, "init_pipe": 16.23, "add": 0.44, "add_pipe": 0.44, "rc": 0, "commit": 2.73, "rmtree": 0.08}
+  613.2 {"i": 27, "braco": "discoD", "init": 16.26, "init_pipe": 16.26, "add": 0.39, "add_pipe": 0.39, "rc": 0, "commit": 2.78, "rmtree": 0.08}
+  632.7 {"i": 28, "braco": "discoD", "init": 16.02, "init_pipe": 16.02, "add": 0.39, "add_pipe": 0.39, "rc": 0, "commit": 2.88, "rmtree": 0.08}
+  652.1 {"i": 29, "braco": "discoD", "init": 16.05, "init_pipe": 16.05, "add": 0.42, "add_pipe": 0.42, "rc": 0, "commit": 2.89, "rmtree": 0.08}
+  672.6 {"i": 30, "braco": "discoD", "init": 16.86, "init_pipe": 16.86, "add": 0.5, "add_pipe": 0.5, "rc": 0, "commit": 3.0, "rmtree": 0.08}
+  693.1 {"i": 31, "braco": "discoD", "init": 17.14, "init_pipe": 17.14, "add": 0.39, "add_pipe": 0.39, "rc": 0, "commit": 2.84, "rmtree": 0.06}
+  713.3 {"i": 32, "braco": "discoD", "init": 16.86, "init_pipe": 16.86, "add": 0.39, "add_pipe": 0.39, "rc": 0, "commit": 2.8, "rmtree": 0.08}
+  733.5 {"i": 33, "braco": "discoD", "init": 16.7, "init_pipe": 16.7, "add": 0.41, "add_pipe": 0.41, "rc": 0, "commit": 2.95, "rmtree": 0.08}
+  753.6 {"i": 34, "braco": "discoD", "init": 16.69, "init_pipe": 16.69, "add": 0.44, "add_pipe": 0.44, "rc": 0, "commit": 2.81, "rmtree": 0.08}
+  773.6 {"i": 35, "braco": "discoD", "init": 16.67, "init_pipe": 16.67, "add": 0.42, "add_pipe": 0.42, "rc": 0, "commit": 2.8, "rmtree": 0.08}
+  793.8 {"i": 36, "braco": "discoD", "init": 16.69, "init_pipe": 16.69, "add": 0.41, "add_pipe": 0.41, "rc": 0, "commit": 2.89, "rmtree": 0.08}
+  815.3 {"i": 37, "braco": "discoD", "init": 18.23, "init_pipe": 18.23, "add": 0.39, "add_pipe": 0.39, "rc": 0, "commit": 2.77, "rmtree": 0.08}
+  835.5 {"i": 38, "braco": "discoD", "init": 16.66, "init_pipe": 16.66, "add": 0.42, "add_pipe": 0.42, "rc": 0, "commit": 2.94, "rmtree": 0.08}
+  855.6 {"i": 39, "braco": "discoD", "init": 16.67, "init_pipe": 16.67, "add": 0.41, "add_pipe": 0.41, "rc": 0, "commit": 2.94, "rmtree": 0.06}
+  876.0 {"i": 40, "braco": "discoD", "init": 16.97, "init_pipe": 16.97, "add": 0.39, "add_pipe": 0.39, "rc": 0, "commit": 2.89, "rmtree": 0.08}
+  898.3 {"i": 41, "braco": "discoD", "init": 18.81, "init_pipe": 18.81, "add": 0.41, "add_pipe": 0.41, "rc": 0, "commit": 2.95, "rmtree": 0.08}
+  920.3 {"i": 42, "braco": "discoD", "init": 18.36, "init_pipe": 18.36, "add": 0.41, "add_pipe": 0.41, "rc": 0, "commit": 3.08, "rmtree": 0.08}
+  941.0 {"i": 43, "braco": "discoD", "init": 17.22, "init_pipe": 17.22, "add": 0.39, "add_pipe": 0.39, "rc": 0, "commit": 2.89, "rmtree": 0.08}
+  961.0 {"i": 44, "braco": "discoD", "init": 16.64, "init_pipe": 16.64, "add": 0.41, "add_pipe": 0.41, "rc": 0, "commit": 2.84, "rmtree": 0.06}
+  981.9 {"i": 45, "braco": "discoD", "init": 17.44, "init_pipe": 17.44, "add": 0.41, "add_pipe": 0.41, "rc": 0, "commit": 2.95, "rmtree": 0.08}
+ 1003.2 {"i": 46, "braco": "discoD", "init": 17.88, "init_pipe": 17.88, "add": 0.42, "add_pipe": 0.42, "rc": 0, "commit": 2.88, "rmtree": 0.08}
+ 1023.8 {"i": 47, "braco": "discoD", "init": 17.16, "init_pipe": 17.16, "add": 0.41, "add_pipe": 0.41, "rc": 0, "commit": 2.91, "rmtree": 0.08}
+ 1044.9 {"i": 48, "braco": "discoD", "init": 17.41, "init_pipe": 17.41, "add": 0.48, "add_pipe": 0.48, "rc": 0, "commit": 3.05, "rmtree": 0.08}
+ 1067.2 {"i": 49, "braco": "discoD", "init": 18.44, "init_pipe": 18.44, "add": 0.44, "add_pipe": 0.44, "rc": 0, "commit": 3.23, "rmtree": 0.08}
+ 1090.5 {"i": 50, "braco": "discoD", "init": 19.48, "init_pipe": 19.48, "add": 0.47, "add_pipe": 0.47, "rc": 0, "commit": 3.25, "rmtree": 0.08}
+ 1093.0 22:26:56 Microsoft-Windows-WindowsUpdateClient 19 Installation Successful: Windows successfully installed the following update: Security Intelligence Update for Microsoft Defender Antivirus - KB2267602 (Version 1.463.470.0) - Current Channel (Broad)
+22:26:57 Service Control Manager 7045 A service was installed in the system.
+
+22:27:00 Service Control Manager 7036 The Windows Security Service service entered the running state.
+22:27:29 Service Control Manager 7036 The Software Protection service entered the stopped state.
+22:27:39 Service Control Manager 7036 The WaaSMedicSvc service entered the stopped state.
+22:27:43 Service Control Manager 7036 The Device Setup Manager service entered the stopped state.
+22:27:51 Service Control Manager 7036 The Windows Insider Service service entered the stopped state.
+22:28:05 Service Control Manager 7036 The Print Device Configuration Service service entered the stopped state.
+22:28:11 Service Control Manager 7036 The Diagnostic Policy Service service entered the running state.
+22:28:11 Service Control Manager 7036 The Diagnostic System Host service entered the running state.
+22:28:11 Service Control Manager 7000 The Microsoft Edge Update Service (edgeupdate) service failed to start due to the following error: 
+
+22:28:11 Service Control Manager 7036 The Program Compatibility Assistant Service service entered the running state.
+22:28:11 Service Control Manager 7036 The Distributed Transaction Coordinator service entered the running state.
+22:28:11 Service Control Manager 7036 The Software Protection service entered the running state.
+22:28:13 Service Control Manager 7036 The User Access Logging Service service entered the running state.
+22:28:14 Service Control Manager 7036 The WaaSMedicSvc service entered the running state.
+22:28:14 Service Control Manager 7036 The Update Orchestrator Service service entered the running state.
+22:28:14 Service Control Manager 7036 The Clipboard User Service_d116a service entered the running state.
+22:28:18 Service Control Manager 7040 The start type of the Background Intelligent Transfer Service service was changed from auto start to demand start.
+22:28:18 Service Control Manager 7036 The Background Intelligent Transfer Service service entered the stopped state.
+22:28:42 Service Control Manager 7036 The Software Protection service entered the stopped state.
+22:28:58 Service Control Manager 7036 The Portable Device Enumerator Service service entered the stopped state.
+22:28:58 Service Control Manager 7036 The Device Install Service service entered the stopped state.
+22:29:14 Service Control Manager 7036 The WaaSMedicSvc service entered the stopped state.
+22:29:54 Service Control Manager 7036 The Microsoft Passport service entered the stopped state.
+22:31:14 Service Control Manager 7036 The Network Setup Service service entered the stopped state.
+22:31:25 Service Control Manager 7036 The Delivery Optimization service entered the stopped state.
+22:31:55 Service Control Manager 7036 The Windows PushToInstall Service service entered the running state.
+22:31:55 Service Control Manager 7036 The WaaSMedicSvc service entered the running state.
+22:31:58 Service Control Manager 7040 The start type of the Background Intelligent Transfer Service service was changed from demand start to auto start.
+22:31:58 Service Control Manager 7036 The Background Intelligent Transfer Service service entered the running state.
+22:31:58 Service Control Manager 7036 The Software Protection service entered the running state.
+22:32:00 Service Control Manager 7036 The Windows PushToInstall Service service entered the stopped state.
+22:32:01 Service Control Manager 7036 The Windows Modules Installer service entered the running state.
+22:32:32 Service Control Manager 7036 The Client License Service (ClipSVC) service entered the stopped state.
+22:32:46 Service Control Manager 7036 The Software Protection service entered the stopped state.
+22:32:55 Service Control Manager 7036 The WaaSMedicSvc service entered the stopped state.
+22:34:10 Service Control Manager 7036 The Windows Modules Installer service entered the stopped state.
+22:34:11 Service Control Manager 7040 The start type of the Background Intelligent Transfer Service service was changed from auto start to demand start.
+22:34:11 Service Control Manager 7036 The Background Intelligent Transfer Service service entered the stopped state.
+22:34:54 Service Control Manager 7036 The Microsoft Passport Container service entered the stopped state.
+22:35:00 Service Control Manager 7036 The Microsoft Account Sign-in Assistant service entered the stopped state.
+22:36:06 Service Control Manager 7036 The Remote Registry service entered the stopped state.
+22:36:26 Service Control Manager 7036 The Declared Configuration(DC) service service entered the running state.
+22:36:50 Service Control Manager 7036 The Volume Shadow Copy service entered the running state.
+22:36:50 Service Control Manager 7036 The Microsoft Software Shadow Copy Provider service entered the running state.
+22:37:16 Service Control Manager 7036 The AppX Deployment Service (AppXSVC) service entered the stopped state.
+22:38:14 Service Control Manager 7036 The WaaSMedicSvc service entered the running state.
+22:38:26 Service Control Manager 7036 The Declared Configuration(DC) service service entered the stopped state.
+22:39:15 Service Control Manager 7036 The WaaSMedicSvc service entered the stopped state.
+22:39:50 VSS 8224 The VSS service is shutting down due to idle timeout. 
+22:39:50 Service Control Manager 7036 The Volume Shadow Copy service entered the stopped state.
+22:41:37 Service Control Manager 7036 The Geolocation Service service entered the running state.
+22:41:37 Service Control Manager 7036 The WaaSMedicSvc service entered the running state.
+22:41:37 Service Control Manager 7036 The Windows Modules Installer service entered the running state.
+22:42:37 Service Control Manager 7036 The WaaSMedicSvc service entered the stopped state.
+22:42:42 Service Control Manager 7036 The AppX Deployment Service (AppXSVC) service entered the running state.
+22:42:42 Service Control Manager 7036 The Client License Service (ClipSVC) service entered the running state.
+22:42:50 Service Control Manager 7036 The Microsoft Software Shadow Copy Provider service entered the stopped state.
+22:43:41 Service Control Manager 7036 The Windows Modules Installer service entered the stopped state.
+
+
+== RESUMO discoD1
+discoD       init    n=51 min=16.0 mediana=16.7 max=19.5
+discoD       add     n=51 min=0.4 mediana=0.4 max=0.5
+discoD       commit  n=51 min=2.7 mediana=2.9 max=3.3
+discoD       rmtree  n=51 min=0.1 mediana=0.1 max=0.1
+--- batimento (t,atraso,C,D) acima de 0,3 s:
+510.3,0.000,0.422,0.000
+538.7,0.000,0.375,0.000
+
+########## diag-discoD2
+   17.0 CHECAR {"i": 0, "base401": 4.61, "pendurado": 10.72, "dif": 6.11, "setup": 0.8, "rc": 0}
+   31.8 CHECAR {"i": 1, "base401": 2.95, "pendurado": 10.94, "dif": 7.98, "setup": 0.78, "rc": 0}
+   46.1 CHECAR {"i": 2, "base401": 2.7, "pendurado": 10.81, "dif": 8.11, "setup": 0.73, "rc": 0}
+   82.2 arquivos no índice: 735
+   82.4 {"i": 0, "braco": "discoD", "init": 30.78, "init_pipe": 30.78, "add": 0.72, "add_pipe": 0.72, "rc": 0, "commit": 4.5, "rmtree": 0.16}
+  113.9 {"i": 1, "braco": "discoD", "init": 26.06, "init_pipe": 26.06, "add": 0.78, "add_pipe": 0.78, "rc": 0, "commit": 4.44, "rmtree": 0.17}
+  145.3 {"i": 2, "braco": "discoD", "init": 25.95, "init_pipe": 25.95, "add": 0.77, "add_pipe": 0.77, "rc": 0, "commit": 4.38, "rmtree": 0.19}
+  176.7 {"i": 3, "braco": "discoD", "init": 25.89, "init_pipe": 25.89, "add": 0.73, "add_pipe": 0.73, "rc": 0, "commit": 4.47, "rmtree": 0.17}
+  208.0 {"i": 4, "braco": "discoD", "init": 25.94, "init_pipe": 25.94, "add": 0.72, "add_pipe": 0.72, "rc": 0, "commit": 4.44, "rmtree": 0.17}
+  239.3 {"i": 5, "braco": "discoD", "init": 25.91, "init_pipe": 25.91, "add": 0.72, "add_pipe": 0.72, "rc": 0, "commit": 4.41, "rmtree": 0.17}
+  270.6 {"i": 6, "braco": "discoD", "init": 25.91, "init_pipe": 25.91, "add": 0.72, "add_pipe": 0.72, "rc": 0, "commit": 4.38, "rmtree": 0.17}
+  302.0 {"i": 7, "braco": "discoD", "init": 25.91, "init_pipe": 25.91, "add": 0.73, "add_pipe": 0.73, "rc": 0, "commit": 4.47, "rmtree": 0.17}
+  333.3 {"i": 8, "braco": "discoD", "init": 25.92, "init_pipe": 25.92, "add": 0.73, "add_pipe": 0.73, "rc": 0, "commit": 4.38, "rmtree": 0.19}
+  364.6 {"i": 9, "braco": "discoD", "init": 25.95, "init_pipe": 25.95, "add": 0.73, "add_pipe": 0.73, "rc": 0, "commit": 4.34, "rmtree": 0.17}
+  395.9 {"i": 10, "braco": "discoD", "init": 25.89, "init_pipe": 25.89, "add": 0.77, "add_pipe": 0.77, "rc": 0, "commit": 4.42, "rmtree": 0.17}
+  427.3 {"i": 11, "braco": "discoD", "init": 25.94, "init_pipe": 25.94, "add": 0.77, "add_pipe": 0.77, "rc": 0, "commit": 4.38, "rmtree": 0.17}
+  458.5 {"i": 12, "braco": "discoD", "init": 25.89, "init_pipe": 25.89, "add": 0.73, "add_pipe": 0.73, "rc": 0, "commit": 4.33, "rmtree": 0.17}
+  490.0 {"i": 13, "braco": "discoD", "init": 25.97, "init_pipe": 25.97, "add": 0.72, "add_pipe": 0.72, "rc": 0, "commit": 4.55, "rmtree": 0.17}
+  521.2 {"i": 14, "braco": "discoD", "init": 25.86, "init_pipe": 25.86, "add": 0.72, "add_pipe": 0.72, "rc": 0, "commit": 4.38, "rmtree": 0.19}
+  552.7 {"i": 15, "braco": "discoD", "init": 25.95, "init_pipe": 25.95, "add": 0.73, "add_pipe": 0.73, "rc": 0, "commit": 4.47, "rmtree": 0.17}
+  584.0 {"i": 16, "braco": "discoD", "init": 25.92, "init_pipe": 25.92, "add": 0.73, "add_pipe": 0.73, "rc": 0, "commit": 4.44, "rmtree": 0.17}
+  615.3 {"i": 17, "braco": "discoD", "init": 25.97, "init_pipe": 25.97, "add": 0.72, "add_pipe": 0.72, "rc": 0, "commit": 4.36, "rmtree": 0.19}
+  646.8 {"i": 18, "braco": "discoD", "init": 25.98, "init_pipe": 25.98, "add": 0.75, "add_pipe": 0.75, "rc": 0, "commit": 4.45, "rmtree": 0.17}
+  678.2 {"i": 19, "braco": "discoD", "init": 25.94, "init_pipe": 25.94, "add": 0.73, "add_pipe": 0.73, "rc": 0, "commit": 4.5, "rmtree": 0.17}
+  709.6 {"i": 20, "braco": "discoD", "init": 25.92, "init_pipe": 25.92, "add": 0.73, "add_pipe": 0.73, "rc": 0, "commit": 4.47, "rmtree": 0.17}
+  741.0 {"i": 21, "braco": "discoD", "init": 25.94, "init_pipe": 25.94, "add": 0.73, "add_pipe": 0.73, "rc": 0, "commit": 4.44, "rmtree": 0.17}
+  772.4 {"i": 22, "braco": "discoD", "init": 25.95, "init_pipe": 25.95, "add": 0.78, "add_pipe": 0.78, "rc": 0, "commit": 4.41, "rmtree": 0.17}
+  803.8 {"i": 23, "braco": "discoD", "init": 25.94, "init_pipe": 25.94, "add": 0.72, "add_pipe": 0.72, "rc": 0, "commit": 4.41, "rmtree": 0.17}
+  835.1 {"i": 24, "braco": "discoD", "init": 25.97, "init_pipe": 25.97, "add": 0.72, "add_pipe": 0.72, "rc": 0, "commit": 4.39, "rmtree": 0.17}
+  866.3 {"i": 25, "braco": "discoD", "init": 25.88, "init_pipe": 25.88, "add": 0.73, "add_pipe": 0.73, "rc": 0, "commit": 4.31, "rmtree": 0.19}
+  897.6 {"i": 26, "braco": "discoD", "init": 25.95, "init_pipe": 25.95, "add": 0.73, "add_pipe": 0.73, "rc": 0, "commit": 4.38, "rmtree": 0.17}
+  929.0 {"i": 27, "braco": "discoD", "init": 25.94, "init_pipe": 25.94, "add": 0.77, "add_pipe": 0.77, "rc": 0, "commit": 4.44, "rmtree": 0.17}
+  960.4 {"i": 28, "braco": "discoD", "init": 26.0, "init_pipe": 26.0, "add": 0.73, "add_pipe": 0.73, "rc": 0, "commit": 4.39, "rmtree": 0.17}
+  991.7 {"i": 29, "braco": "discoD", "init": 25.95, "init_pipe": 25.95, "add": 0.73, "add_pipe": 0.73, "rc": 0, "commit": 4.34, "rmtree": 0.17}
+ 1023.1 {"i": 30, "braco": "discoD", "init": 25.92, "init_pipe": 25.92, "add": 0.77, "add_pipe": 0.77, "rc": 0, "commit": 4.45, "rmtree": 0.17}
+ 1054.4 {"i": 31, "braco": "discoD", "init": 25.94, "init_pipe": 25.94, "add": 0.73, "add_pipe": 0.73, "rc": 0, "commit": 4.33, "rmtree": 0.17}
+ 1085.8 {"i": 32, "braco": "discoD", "init": 25.94, "init_pipe": 25.94, "add": 0.73, "add_pipe": 0.73, "rc": 0, "commit": 4.45, "rmtree": 0.17}
+ 1086.5 22:14:05 Service Control Manager 7036 The Device Setup Manager service entered the stopped state.
+22:14:28 Service Control Manager 7036 The Software Protection service entered the stopped state.
+22:14:30 Service Control Manager 7036 The Software Protection service entered the running state.
+22:14:33 Service Control Manager 7036 The Windows Security Service service entered the running state.
+22:15:00 Service Control Manager 7036 The Software Protection service entered the stopped state.
+22:15:02 Service Control Manager 7036 The Windows Insider Service service entered the stopped state.
+22:15:04 Service Control Manager 7036 The Storage Service service entered the running state.
+22:15:10 Service Control Manager 7036 The Print Device Configuration Service service entered the stopped state.
+22:15:17 Service Control Manager 7036 The Diagnostic Policy Service service entered the running state.
+22:15:17 Service Control Manager 7036 The Diagnostic System Host service entered the running state.
+22:15:17 Service Control Manager 7000 The Microsoft Edge Update Service (edgeupdate) service failed to start due to the following error: 
+
+22:15:17 Service Control Manager 7036 The Program Compatibility Assistant Service service entered the running state.
+22:15:18 Service Control Manager 7036 The Distributed Transaction Coordinator service entered the running state.
+22:15:18 Service Control Manager 7036 The Software Protection service entered the running state.
+22:15:20 Service Control Manager 7036 The User Access Logging Service service entered the running state.
+22:15:20 Service Control Manager 7036 The Update Orchestrator Service service entered the running state.
+22:15:21 Service Control Manager 7036 The Clipboard User Service_b704f service entered the running state.
+22:15:29 Service Control Manager 7040 The start type of the Background Intelligent Transfer Service service was changed from auto start to demand start.
+22:15:29 Service Control Manager 7036 The Background Intelligent Transfer Service service entered the stopped state.
+22:15:40 Service Control Manager 7036 The Device Install Service service entered the stopped state.
+22:15:43 Service Control Manager 7036 The Portable Device Enumerator Service service entered the stopped state.
+22:15:48 Service Control Manager 7036 The Software Protection service entered the stopped state.
+22:17:02 Service Control Manager 7036 The Microsoft Passport service entered the stopped state.
+22:18:20 Service Control Manager 7036 The Network Setup Service service entered the stopped state.
+22:19:55 Service Control Manager 7036 The Microsoft Account Sign-in Assistant service entered the stopped state.
+22:20:06 Service Control Manager 7036 The Client License Service (ClipSVC) service entered the stopped state.
+22:22:02 Service Control Manager 7036 The Microsoft Passport Container service entered the stopped state.
+22:22:29 Service Control Manager 7036 The Windows PushToInstall Service service entered the running state.
+22:22:29 Service Control Manager 7036 The Microsoft Account Sign-in Assistant service entered the running state.
+22:22:34 Service Control Manager 7036 The Software Protection service entered the running state.
+22:22:35 Service Control Manager 7036 The Windows PushToInstall Service service entered the stopped state.
+22:22:36 Service Control Manager 7036 The Windows Modules Installer service entered the running state.
+22:23:12 Service Control Manager 7036 The Remote Registry service entered the stopped state.
+22:23:27 Service Control Manager 7036 The Delivery Optimization service entered the running state.
+22:23:28 Service Control Manager 7036 The Software Protection service entered the stopped state.
+22:23:28 Service Control Manager 7036 The Network Setup Service service entered the running state.
+22:23:28 Microsoft-Windows-WindowsUpdateClient 44 Windows Update started downloading an update.
+22:23:28 Microsoft-Windows-WindowsUpdateClient 43 Installation Started: Windows has started installing the following update: Security Intelligence Update for Microsoft Defender Antivirus - KB2267602 (Version 1.463.470.0) - Current Channel (Broad)
+22:23:29 Service Control Manager 7036 The Declared Configuration(DC) service service entered the running state.
+22:23:39 Microsoft-Windows-WindowsUpdateClient 19 Installation Successful: Windows successfully installed the following update: Security Intelligence Update for Microsoft Defender Antivirus - KB2267602 (Version 1.463.470.0) - Current Channel (Broad)
+22:24:00 Service Control Manager 7036 The Volume Shadow Copy service entered the running state.
+22:24:00 Service Control Manager 7036 The Microsoft Software Shadow Copy Provider service entered the running state.
+22:24:44 Service Control Manager 7036 The Windows Modules Installer service entered the stopped state.
+22:25:29 Service Control Manager 7036 The Declared Configuration(DC) service service entered the stopped state.
+22:25:35 Service Control Manager 7036 The Microsoft Account Sign-in Assistant service entered the stopped state.
+22:26:06 Service Control Manager 7036 The Network Setup Service service entered the stopped state.
+22:27:00 VSS 8224 The VSS service is shutting down due to idle timeout. 
+22:27:00 Service Control Manager 7036 The Volume Shadow Copy service entered the stopped state.
+22:28:27 Service Control Manager 7036 The Delivery Optimization service entered the stopped state.
+22:28:44 Service Control Manager 7036 The Geolocation Service service entered the running state.
+22:28:44 Service Control Manager 7036 The Windows Modules Installer service entered the running state.
+22:29:50 Service Control Manager 7036 The Client License Service (ClipSVC) service entered the running state.
+22:30:00 Service Control Manager 7036 The Microsoft Software Shadow Copy Provider service entered the stopped state.
+22:30:49 Service Control Manager 7036 The Windows Modules Installer service entered the stopped state.
+22:33:45 Service Control Manager 7036 The App Readiness service entered the stopped state.
+22:34:52 Service Control Manager 7036 The Client License Service (ClipSVC) service entered the stopped state.
+22:35:35 Service Control Manager 7036 The Software Protection service entered the running state.
+22:36:05 Service Control Manager 7036 The Software Protection service entered the stopped state.
+22:36:13 Service Control Manager 7036 The AppX Deployment Service (AppXSVC) service entered the stopped state.
+22:38:47 Service Control Manager 7036 The Windows Update service entered the stopped state.
+
+
+== RESUMO discoD2
+discoD       init    n=33 min=25.9 mediana=25.9 max=30.8
+discoD       add     n=33 min=0.7 mediana=0.7 max=0.8
+discoD       commit  n=33 min=4.3 mediana=4.4 max=4.5
+discoD       rmtree  n=33 min=0.2 mediana=0.2 max=0.2
+--- batimento (t,atraso,C,D) acima de 0,3 s:
+
+########## diag-discoD3
+   14.6 CHECAR {"i": 0, "base401": 2.86, "pendurado": 10.16, "dif": 7.3, "setup": 0.69, "rc": 0}
+   27.9 CHECAR {"i": 1, "base401": 2.14, "pendurado": 10.25, "dif": 8.11, "setup": 0.89, "rc": 0}
+   40.9 CHECAR {"i": 2, "base401": 2.11, "pendurado": 10.22, "dif": 8.11, "setup": 0.59, "rc": 0}
+   74.5 arquivos no índice: 735
+   74.6 {"i": 0, "braco": "discoD", "init": 29.45, "init_pipe": 29.45, "add": 0.53, "add_pipe": 0.53, "rc": 0, "commit": 3.52, "rmtree": 0.12}
+  104.3 {"i": 1, "braco": "discoD", "init": 25.39, "init_pipe": 25.39, "add": 0.52, "add_pipe": 0.52, "rc": 0, "commit": 3.59, "rmtree": 0.12}
+  134.0 {"i": 2, "braco": "discoD", "init": 25.42, "init_pipe": 25.42, "add": 0.55, "add_pipe": 0.55, "rc": 0, "commit": 3.52, "rmtree": 0.12}
+  158.3 {"i": 3, "braco": "discoD", "init": 20.11, "init_pipe": 20.11, "add": 0.51, "add_pipe": 0.51, "rc": 0, "commit": 3.45, "rmtree": 0.11}
+  182.6 {"i": 4, "braco": "discoD", "init": 20.11, "init_pipe": 20.11, "add": 0.52, "add_pipe": 0.52, "rc": 0, "commit": 3.55, "rmtree": 0.12}
+  206.7 {"i": 5, "braco": "discoD", "init": 19.86, "init_pipe": 19.86, "add": 0.55, "add_pipe": 0.55, "rc": 0, "commit": 3.44, "rmtree": 0.12}
+  230.8 {"i": 6, "braco": "discoD", "init": 20.03, "init_pipe": 20.03, "add": 0.5, "add_pipe": 0.5, "rc": 0, "commit": 3.39, "rmtree": 0.12}
+  254.3 {"i": 7, "braco": "discoD", "init": 19.45, "init_pipe": 19.45, "add": 0.5, "add_pipe": 0.5, "rc": 0, "commit": 3.39, "rmtree": 0.12}
+  278.2 {"i": 8, "braco": "discoD", "init": 19.69, "init_pipe": 19.69, "add": 0.61, "add_pipe": 0.61, "rc": 0, "commit": 3.41, "rmtree": 0.11}
+  302.1 {"i": 9, "braco": "discoD", "init": 19.69, "init_pipe": 19.69, "add": 0.5, "add_pipe": 0.5, "rc": 0, "commit": 3.47, "rmtree": 0.11}
+  325.9 {"i": 10, "braco": "discoD", "init": 19.66, "init_pipe": 19.66, "add": 0.55, "add_pipe": 0.55, "rc": 0, "commit": 3.45, "rmtree": 0.12}
+  349.4 {"i": 11, "braco": "discoD", "init": 19.42, "init_pipe": 19.42, "add": 0.5, "add_pipe": 0.5, "rc": 0, "commit": 3.41, "rmtree": 0.12}
+  373.0 {"i": 12, "braco": "discoD", "init": 19.52, "init_pipe": 19.52, "add": 0.51, "add_pipe": 0.51, "rc": 0, "commit": 3.38, "rmtree": 0.11}
+  396.9 {"i": 13, "braco": "discoD", "init": 19.76, "init_pipe": 19.76, "add": 0.52, "add_pipe": 0.52, "rc": 0, "commit": 3.39, "rmtree": 0.12}
+  420.6 {"i": 14, "braco": "discoD", "init": 19.58, "init_pipe": 19.58, "add": 0.52, "add_pipe": 0.52, "rc": 0, "commit": 3.39, "rmtree": 0.12}
+  451.1 {"i": 15, "braco": "discoD", "init": 25.58, "init_pipe": 25.58, "add": 0.53, "add_pipe": 0.53, "rc": 0, "commit": 4.2, "rmtree": 0.12}
+  480.8 {"i": 16, "braco": "discoD", "init": 25.44, "init_pipe": 25.44, "add": 0.51, "add_pipe": 0.51, "rc": 0, "commit": 3.5, "rmtree": 0.11}
+  504.5 {"i": 17, "braco": "discoD", "init": 19.61, "init_pipe": 19.61, "add": 0.52, "add_pipe": 0.52, "rc": 0, "commit": 3.47, "rmtree": 0.12}
+  528.3 {"i": 18, "braco": "discoD", "init": 19.66, "init_pipe": 19.66, "add": 0.51, "add_pipe": 0.51, "rc": 0, "commit": 3.36, "rmtree": 0.11}
+  551.9 {"i": 19, "braco": "discoD", "init": 19.55, "init_pipe": 19.55, "add": 0.52, "add_pipe": 0.52, "rc": 0, "commit": 3.42, "rmtree": 0.11}
+  575.7 {"i": 20, "braco": "discoD", "init": 19.62, "init_pipe": 19.62, "add": 0.5, "add_pipe": 0.5, "rc": 0, "commit": 3.45, "rmtree": 0.12}
+  599.4 {"i": 21, "braco": "discoD", "init": 19.61, "init_pipe": 19.61, "add": 0.51, "add_pipe": 0.51, "rc": 0, "commit": 3.34, "rmtree": 0.12}
+  623.2 {"i": 22, "braco": "discoD", "init": 19.58, "init_pipe": 19.58, "add": 0.55, "add_pipe": 0.55, "rc": 0, "commit": 3.48, "rmtree": 0.12}
+  647.0 {"i": 23, "braco": "discoD", "init": 19.69, "init_pipe": 19.69, "add": 0.5, "add_pipe": 0.5, "rc": 0, "commit": 3.41, "rmtree": 0.12}
+  670.8 {"i": 24, "braco": "discoD", "init": 19.58, "init_pipe": 19.58, "add": 0.52, "add_pipe": 0.52, "rc": 0, "commit": 3.5, "rmtree": 0.12}
+  694.7 {"i": 25, "braco": "discoD", "init": 19.83, "init_pipe": 19.83, "add": 0.5, "add_pipe": 0.5, "rc": 0, "commit": 3.42, "rmtree": 0.11}
+  719.1 {"i": 26, "braco": "discoD", "init": 20.16, "init_pipe": 20.16, "add": 0.55, "add_pipe": 0.55, "rc": 0, "commit": 3.45, "rmtree": 0.12}
+  743.0 {"i": 27, "braco": "discoD", "init": 19.77, "init_pipe": 19.77, "add": 0.52, "add_pipe": 0.52, "rc": 0, "commit": 3.53, "rmtree": 0.11}
+  766.8 {"i": 28, "braco": "discoD", "init": 19.66, "init_pipe": 19.66, "add": 0.5, "add_pipe": 0.5, "rc": 0, "commit": 3.44, "rmtree": 0.11}
+  791.1 {"i": 29, "braco": "discoD", "init": 20.01, "init_pipe": 20.01, "add": 0.52, "add_pipe": 0.52, "rc": 0, "commit": 3.5, "rmtree": 0.12}
+  814.9 {"i": 30, "braco": "discoD", "init": 19.75, "init_pipe": 19.75, "add": 0.52, "add_pipe": 0.52, "rc": 0, "commit": 3.41, "rmtree": 0.12}
+  838.6 {"i": 31, "braco": "discoD", "init": 19.67, "init_pipe": 19.67, "add": 0.52, "add_pipe": 0.52, "rc": 0, "commit": 3.33, "rmtree": 0.12}
+  862.4 {"i": 32, "braco": "discoD", "init": 19.59, "init_pipe": 19.59, "add": 0.55, "add_pipe": 0.55, "rc": 0, "commit": 3.41, "rmtree": 0.12}
+  886.1 {"i": 33, "braco": "discoD", "init": 19.58, "init_pipe": 19.58, "add": 0.5, "add_pipe": 0.5, "rc": 0, "commit": 3.45, "rmtree": 0.11}
+  909.7 {"i": 34, "braco": "discoD", "init": 19.58, "init_pipe": 19.58, "add": 0.52, "add_pipe": 0.52, "rc": 0, "commit": 3.36, "rmtree": 0.12}
+  933.6 {"i": 35, "braco": "discoD", "init": 19.78, "init_pipe": 19.78, "add": 0.5, "add_pipe": 0.5, "rc": 0, "commit": 3.38, "rmtree": 0.11}
+  957.3 {"i": 36, "braco": "discoD", "init": 19.66, "init_pipe": 19.66, "add": 0.52, "add_pipe": 0.52, "rc": 0, "commit": 3.39, "rmtree": 0.11}
+  981.0 {"i": 37, "braco": "discoD", "init": 19.53, "init_pipe": 19.53, "add": 0.53, "add_pipe": 0.53, "rc": 0, "commit": 3.45, "rmtree": 0.12}
+ 1004.9 {"i": 38, "braco": "discoD", "init": 19.81, "init_pipe": 19.81, "add": 0.52, "add_pipe": 0.52, "rc": 0, "commit": 3.38, "rmtree": 0.11}
+ 1028.5 {"i": 39, "braco": "discoD", "init": 19.52, "init_pipe": 19.52, "add": 0.5, "add_pipe": 0.5, "rc": 0, "commit": 3.38, "rmtree": 0.12}
+ 1052.2 {"i": 40, "braco": "discoD", "init": 19.61, "init_pipe": 19.61, "add": 0.5, "add_pipe": 0.5, "rc": 0, "commit": 3.36, "rmtree": 0.11}
+ 1075.6 {"i": 41, "braco": "discoD", "init": 19.34, "init_pipe": 19.34, "add": 0.52, "add_pipe": 0.52, "rc": 0, "commit": 3.39, "rmtree": 0.11}
+ 1099.5 {"i": 42, "braco": "discoD", "init": 19.64, "init_pipe": 19.64, "add": 0.53, "add_pipe": 0.53, "rc": 0, "commit": 3.58, "rmtree": 0.12}
+ 1100.1 22:26:34 Service Control Manager 7036 The Device Setup Manager service entered the stopped state.
+22:26:42 Service Control Manager 7036 The Windows Insider Service service entered the stopped state.
+22:26:42 Service Control Manager 7036 The Software Protection service entered the stopped state.
+22:26:52 Service Control Manager 7036 The Print Device Configuration Service service entered the stopped state.
+22:26:59 Service Control Manager 7036 The Diagnostic Policy Service service entered the running state.
+22:26:59 Service Control Manager 7036 The Diagnostic System Host service entered the running state.
+22:26:59 Service Control Manager 7000 The Microsoft Edge Update Service (edgeupdate) service failed to start due to the following error: 
+
+22:26:59 Service Control Manager 7036 The Program Compatibility Assistant Service service entered the running state.
+22:26:59 Service Control Manager 7036 The Distributed Transaction Coordinator service entered the running state.
+22:26:59 Service Control Manager 7036 The Software Protection service entered the running state.
+22:27:02 Service Control Manager 7036 The User Access Logging Service service entered the running state.
+22:27:02 Service Control Manager 7036 The WaaSMedicSvc service entered the running state.
+22:27:02 Service Control Manager 7036 The Update Orchestrator Service service entered the running state.
+22:27:02 Service Control Manager 7036 The Clipboard User Service_bbf5e service entered the running state.
+22:27:06 Service Control Manager 7040 The start type of the Background Intelligent Transfer Service service was changed from auto start to demand start.
+22:27:06 Service Control Manager 7036 The Background Intelligent Transfer Service service entered the stopped state.
+22:27:29 Service Control Manager 7036 The Software Protection service entered the stopped state.
+22:27:49 Service Control Manager 7036 The Portable Device Enumerator Service service entered the stopped state.
+22:27:49 Service Control Manager 7036 The Device Install Service service entered the stopped state.
+22:28:03 Service Control Manager 7036 The WaaSMedicSvc service entered the stopped state.
+22:28:12 Service Control Manager 7036 The Windows PushToInstall Service service entered the running state.
+22:28:12 Service Control Manager 7036 The WaaSMedicSvc service entered the running state.
+22:28:14 Service Control Manager 7036 The Software Protection service entered the running state.
+22:28:14 Service Control Manager 7040 The start type of the Background Intelligent Transfer Service service was changed from demand start to auto start.
+22:28:14 Service Control Manager 7036 The Background Intelligent Transfer Service service entered the running state.
+22:28:15 Service Control Manager 7036 The Windows Modules Installer service entered the running state.
+22:28:17 Service Control Manager 7036 The Windows PushToInstall Service service entered the stopped state.
+22:28:42 Service Control Manager 7036 The Microsoft Passport service entered the stopped state.
+22:29:00 Service Control Manager 7036 The Software Protection service entered the stopped state.
+22:29:12 Service Control Manager 7036 The WaaSMedicSvc service entered the stopped state.
+22:30:01 Service Control Manager 7036 The Network Setup Service service entered the stopped state.
+22:30:26 Service Control Manager 7040 The start type of the Background Intelligent Transfer Service service was changed from auto start to demand start.
+22:30:26 Service Control Manager 7036 The Background Intelligent Transfer Service service entered the stopped state.
+22:30:26 Service Control Manager 7036 The Windows Modules Installer service entered the stopped state.
+22:30:46 Service Control Manager 7036 The Delivery Optimization service entered the stopped state.
+22:31:33 Service Control Manager 7036 The Microsoft Account Sign-in Assistant service entered the stopped state.
+22:31:59 Service Control Manager 7036 The Client License Service (ClipSVC) service entered the stopped state.
+22:33:42 Service Control Manager 7036 The Microsoft Passport Container service entered the stopped state.
+22:34:53 Service Control Manager 7036 The Remote Registry service entered the stopped state.
+22:34:55 Service Control Manager 7036 The Declared Configuration(DC) service service entered the running state.
+22:35:41 Service Control Manager 7036 The Volume Shadow Copy service entered the running state.
+22:35:41 Service Control Manager 7036 The Microsoft Software Shadow Copy Provider service entered the running state.
+22:35:54 Service Control Manager 7036 The AppX Deployment Service (AppXSVC) service entered the stopped state.
+22:36:55 Service Control Manager 7036 The Declared Configuration(DC) service service entered the stopped state.
+22:37:02 Service Control Manager 7036 The WaaSMedicSvc service entered the running state.
+22:38:03 Service Control Manager 7036 The WaaSMedicSvc service entered the stopped state.
+22:38:41 VSS 8224 The VSS service is shutting down due to idle timeout. 
+22:38:41 Service Control Manager 7036 The Volume Shadow Copy service entered the stopped state.
+22:40:23 Service Control Manager 7036 The WaaSMedicSvc service entered the running state.
+22:40:23 Service Control Manager 7036 The Geolocation Service service entered the running state.
+22:40:23 Service Control Manager 7036 The Windows Modules Installer service entered the running state.
+22:41:24 Service Control Manager 7036 The WaaSMedicSvc service entered the stopped state.
+22:41:29 Service Control Manager 7036 The AppX Deployment Service (AppXSVC) service entered the running state.
+22:41:29 Service Control Manager 7036 The Client License Service (ClipSVC) service entered the running state.
+22:41:41 Service Control Manager 7036 The Microsoft Software Shadow Copy Provider service entered the stopped state.
+22:42:28 Service Control Manager 7036 The Windows Modules Installer service entered the stopped state.
+22:45:24 Service Control Manager 7036 The App Readiness service entered the stopped state.
+22:45:49 Service Control Manager 7036 The Microsoft Storage Spaces SMP service entered the stopped state.
+22:46:30 Service Control Manager 7036 The Client License Service (ClipSVC) service entered the stopped state.
+22:46:31 Service Control Manager 7036 The AppX Deployment Service (AppXSVC) service entered the stopped state.
+
+
+== RESUMO discoD3
+discoD       init    n=43 min=19.3 mediana=19.7 max=29.5
+discoD       add     n=43 min=0.5 mediana=0.5 max=0.6
+discoD       commit  n=43 min=3.3 mediana=3.4 max=4.2
+discoD       rmtree  n=43 min=0.1 mediana=0.1 max=0.1
+--- batimento (t,atraso,C,D) acima de 0,3 s:
+431.6,0.016,0.406,0.000
+457.6,0.000,0.344,0.000
+
+########## diag-semvss1
+   14.1 CHECAR {"i": 0, "base401": 2.69, "pendurado": 10.14, "dif": 7.45, "setup": 0.61, "rc": 0}
+   27.0 CHECAR {"i": 1, "base401": 2.11, "pendurado": 10.14, "dif": 8.03, "setup": 0.58, "rc": 0}
+   39.9 CHECAR {"i": 2, "base401": 2.02, "pendurado": 10.22, "dif": 8.2, "setup": 0.61, "rc": 0}
+   42.7 
+Name   Status StartType
+----   ------ ---------
+swprv Stopped  Disabled
+VSS   Stopped  Disabled
+
+
+
+   77.6 arquivos no índice: 735
+   77.7 {"i": 0, "braco": "semvss", "init": 25.94, "init_pipe": 25.94, "add": 4.33, "add_pipe": 4.33, "rc": 0, "commit": 4.51, "rmtree": 0.12}
+  114.3 {"i": 1, "braco": "semvss", "init": 25.2, "init_pipe": 25.2, "add": 5.67, "add_pipe": 5.67, "rc": 0, "commit": 5.47, "rmtree": 0.14}
+  154.7 {"i": 2, "braco": "semvss", "init": 25.47, "init_pipe": 25.47, "add": 9.89, "add_pipe": 9.89, "rc": 0, "commit": 4.75, "rmtree": 0.14}
+  189.2 {"i": 3, "braco": "semvss", "init": 25.3, "init_pipe": 25.3, "add": 4.3, "add_pipe": 4.3, "rc": 0, "commit": 4.62, "rmtree": 0.16}
+  222.3 {"i": 4, "braco": "semvss", "init": 19.64, "init_pipe": 19.64, "add": 8.55, "add_pipe": 8.55, "rc": 0, "commit": 4.72, "rmtree": 0.17}
+  257.0 {"i": 5, "braco": "semvss", "init": 25.34, "init_pipe": 25.34, "add": 4.22, "add_pipe": 4.22, "rc": 0, "commit": 4.86, "rmtree": 0.16}
+  291.6 {"i": 6, "braco": "semvss", "init": 25.34, "init_pipe": 25.34, "add": 4.16, "add_pipe": 4.16, "rc": 0, "commit": 4.81, "rmtree": 0.16}
+  326.0 {"i": 7, "braco": "semvss", "init": 25.36, "init_pipe": 25.36, "add": 4.27, "add_pipe": 4.27, "rc": 0, "commit": 4.56, "rmtree": 0.12}
+  360.5 {"i": 8, "braco": "semvss", "init": 25.3, "init_pipe": 25.3, "add": 4.12, "add_pipe": 4.12, "rc": 0, "commit": 4.7, "rmtree": 0.14}
+  394.9 {"i": 9, "braco": "semvss", "init": 25.3, "init_pipe": 25.3, "add": 4.05, "add_pipe": 4.05, "rc": 0, "commit": 4.75, "rmtree": 0.17}
+  429.3 {"i": 10, "braco": "semvss", "init": 25.3, "init_pipe": 25.3, "add": 4.03, "add_pipe": 4.03, "rc": 0, "commit": 4.69, "rmtree": 0.14}
+  490.7 {"i": 11, "braco": "semvss", "init": 25.36, "init_pipe": 25.36, "add": 19.67, "add_pipe": 19.67, "rc": 0, "commit": 16.14, "rmtree": 0.16}
+  519.4 {"i": 12, "braco": "semvss", "init": 20.08, "init_pipe": 20.08, "add": 4.0, "add_pipe": 4.0, "rc": 0, "commit": 4.34, "rmtree": 0.14}
+  547.7 {"i": 13, "braco": "semvss", "init": 19.64, "init_pipe": 19.64, "add": 3.95, "add_pipe": 3.95, "rc": 0, "commit": 4.47, "rmtree": 0.12}
+  576.5 {"i": 14, "braco": "semvss", "init": 20.12, "init_pipe": 20.12, "add": 4.02, "add_pipe": 4.02, "rc": 0, "commit": 4.33, "rmtree": 0.12}
+  604.6 {"i": 15, "braco": "semvss", "init": 19.34, "init_pipe": 19.34, "add": 4.12, "add_pipe": 4.12, "rc": 0, "commit": 4.41, "rmtree": 0.12}
+  633.0 {"i": 16, "braco": "semvss", "init": 19.11, "init_pipe": 19.11, "add": 4.34, "add_pipe": 4.34, "rc": 0, "commit": 4.66, "rmtree": 0.12}
+  660.7 {"i": 17, "braco": "semvss", "init": 19.05, "init_pipe": 19.05, "add": 4.03, "add_pipe": 4.03, "rc": 0, "commit": 4.38, "rmtree": 0.14}
+  695.1 {"i": 18, "braco": "semvss", "init": 25.3, "init_pipe": 25.3, "add": 4.03, "add_pipe": 4.03, "rc": 0, "commit": 4.84, "rmtree": 0.14}
+  729.2 {"i": 19, "braco": "semvss", "init": 25.23, "init_pipe": 25.23, "add": 4.03, "add_pipe": 4.03, "rc": 0, "commit": 4.62, "rmtree": 0.12}
+  764.4 {"i": 20, "braco": "semvss", "init": 25.45, "init_pipe": 25.45, "add": 4.52, "add_pipe": 4.52, "rc": 0, "commit": 4.95, "rmtree": 0.16}
+  799.1 {"i": 21, "braco": "semvss", "init": 25.41, "init_pipe": 25.41, "add": 4.2, "add_pipe": 4.2, "rc": 0, "commit": 4.86, "rmtree": 0.14}
+  834.0 {"i": 22, "braco": "semvss", "init": 25.39, "init_pipe": 25.39, "add": 4.33, "add_pipe": 4.33, "rc": 0, "commit": 4.86, "rmtree": 0.16}
+  868.7 {"i": 23, "braco": "semvss", "init": 25.44, "init_pipe": 25.44, "add": 4.02, "add_pipe": 4.02, "rc": 0, "commit": 4.97, "rmtree": 0.14}
+  903.0 {"i": 24, "braco": "semvss", "init": 25.41, "init_pipe": 25.41, "add": 4.03, "add_pipe": 4.03, "rc": 0, "commit": 4.66, "rmtree": 0.14}
+  937.4 {"i": 25, "braco": "semvss", "init": 25.38, "init_pipe": 25.38, "add": 4.06, "add_pipe": 4.06, "rc": 0, "commit": 4.7, "rmtree": 0.14}
+  972.2 {"i": 26, "braco": "semvss", "init": 25.42, "init_pipe": 25.42, "add": 4.12, "add_pipe": 4.12, "rc": 0, "commit": 4.98, "rmtree": 0.14}
+ 1006.8 {"i": 27, "braco": "semvss", "init": 25.36, "init_pipe": 25.36, "add": 4.22, "add_pipe": 4.22, "rc": 0, "commit": 4.64, "rmtree": 0.14}
+ 1034.5 {"i": 28, "braco": "semvss", "init": 19.0, "init_pipe": 19.0, "add": 4.05, "add_pipe": 4.05, "rc": 0, "commit": 4.34, "rmtree": 0.14}
+ 1060.6 {"i": 29, "braco": "semvss", "init": 17.58, "init_pipe": 17.58, "add": 4.0, "add_pipe": 4.0, "rc": 0, "commit": 4.34, "rmtree": 0.12}
+ 1087.2 {"i": 30, "braco": "semvss", "init": 17.72, "init_pipe": 17.72, "add": 4.56, "add_pipe": 4.56, "rc": 0, "commit": 4.09, "rmtree": 0.17}
+ 1087.7 22:26:13 Service Control Manager 7036 The Windows Camera Frame Server Monitor service entered the stopped state.
+22:26:27 Service Control Manager 7036 The Software Protection service entered the stopped state.
+22:26:29 Service Control Manager 7036 The Software Protection service entered the running state.
+22:26:34 Service Control Manager 7036 The Windows Security Service service entered the running state.
+22:26:47 Service Control Manager 7036 The Print Device Configuration Service service entered the stopped state.
+22:26:51 Service Control Manager 7036 The Device Setup Manager service entered the stopped state.
+22:26:53 Service Control Manager 7036 The Diagnostic Policy Service service entered the running state.
+22:26:53 Service Control Manager 7036 The Diagnostic System Host service entered the running state.
+22:26:53 Service Control Manager 7036 The Program Compatibility Assistant Service service entered the running state.
+22:26:53 Service Control Manager 7000 The Microsoft Edge Update Service (edgeupdate) service failed to start due to the following error: 
+
+22:26:53 Service Control Manager 7036 The Distributed Transaction Coordinator service entered the running state.
+22:26:55 Service Control Manager 7036 The User Access Logging Service service entered the running state.
+22:26:55 Service Control Manager 7036 The WaaSMedicSvc service entered the stopped state.
+22:26:55 Service Control Manager 7036 The WaaSMedicSvc service entered the running state.
+22:26:55 Service Control Manager 7036 The Update Orchestrator Service service entered the running state.
+22:26:56 Service Control Manager 7036 The Clipboard User Service_cb29a service entered the running state.
+22:26:58 Service Control Manager 7036 The Windows Insider Service service entered the stopped state.
+22:26:59 Service Control Manager 7036 The Software Protection service entered the stopped state.
+22:27:00 Service Control Manager 7040 The start type of the Background Intelligent Transfer Service service was changed from auto start to demand start.
+22:27:00 Service Control Manager 7036 The Background Intelligent Transfer Service service entered the stopped state.
+22:27:56 Service Control Manager 7036 The WaaSMedicSvc service entered the stopped state.
+22:28:06 Service Control Manager 7036 The Portable Device Enumerator Service service entered the stopped state.
+22:28:06 Service Control Manager 7036 The Device Install Service service entered the stopped state.
+22:28:40 Service Control Manager 7036 The Microsoft Passport service entered the stopped state.
+22:29:05 Service Control Manager 7040 The start type of the Volume Shadow Copy service was changed from demand start to disabled.
+22:29:05 Service Control Manager 7040 The start type of the Microsoft Software Shadow Copy Provider service was changed from demand start to disabled.
+22:29:56 Service Control Manager 7036 The Network Setup Service service entered the stopped state.
+22:30:34 Service Control Manager 7036 The Windows PushToInstall Service service entered the running state.
+22:30:34 Service Control Manager 7036 The WaaSMedicSvc service entered the running state.
+22:30:37 Service Control Manager 7040 The start type of the Background Intelligent Transfer Service service was changed from demand start to auto start.
+22:30:37 Service Control Manager 7036 The Background Intelligent Transfer Service service entered the running state.
+22:30:37 Service Control Manager 7036 The Software Protection service entered the running state.
+22:30:39 Service Control Manager 7036 The Windows PushToInstall Service service entered the stopped state.
+22:30:40 Service Control Manager 7036 The Windows Modules Installer service entered the running state.
+22:30:45 Service Control Manager 7036 The Delivery Optimization service entered the stopped state.
+22:31:31 Service Control Manager 7036 The Software Protection service entered the stopped state.
+22:31:35 Service Control Manager 7036 The WaaSMedicSvc service entered the stopped state.
+22:32:07 Service Control Manager 7036 The Client License Service (ClipSVC) service entered the stopped state.
+22:32:49 Service Control Manager 7036 The Windows Modules Installer service entered the stopped state.
+22:32:50 Service Control Manager 7040 The start type of the Background Intelligent Transfer Service service was changed from auto start to demand start.
+22:32:50 Service Control Manager 7036 The Background Intelligent Transfer Service service entered the stopped state.
+22:33:39 Service Control Manager 7036 The Microsoft Account Sign-in Assistant service entered the stopped state.
+22:33:40 Service Control Manager 7036 The Microsoft Passport Container service entered the stopped state.
+22:34:48 Service Control Manager 7036 The Remote Registry service entered the stopped state.
+22:35:02 Service Control Manager 7036 The Declared Configuration(DC) service service entered the running state.
+22:35:58 VSS 13 Volume Shadow Copy Service information: The COM Server with CLSID {0b5a2c52-3eb9-470a-96e2-6c6d4570e40f} and name Coordinator cannot be started. [0x80070422, The service cannot be started, either because it is disabled or because it has no enabled devices associated with it.
+
+22:35:58 VSS 8193 Volume Shadow Copy Service error: Unexpected error calling routine CoCreateInstance.  hr = 0x80070422, The service cannot be started, either because it is disabled or because it has no enabled devices associated with it.
+
+22:36:01 Service Control Manager 7036 The AppX Deployment Service (AppXSVC) service entered the stopped state.
+22:36:55 Service Control Manager 7036 The WaaSMedicSvc service entered the running state.
+22:37:02 Service Control Manager 7036 The Declared Configuration(DC) service service entered the stopped state.
+22:37:56 Service Control Manager 7036 The WaaSMedicSvc service entered the stopped state.
+22:40:46 Service Control Manager 7036 The Geolocation Service service entered the running state.
+22:40:46 Service Control Manager 7036 The WaaSMedicSvc service entered the running state.
+22:40:46 Service Control Manager 7036 The Windows Modules Installer service entered the running state.
+22:41:46 Service Control Manager 7036 The WaaSMedicSvc service entered the stopped state.
+22:41:51 Service Control Manager 7036 The AppX Deployment Service (AppXSVC) service entered the running state.
+22:41:51 Service Control Manager 7036 The Client License Service (ClipSVC) service entered the running state.
+22:42:49 Service Control Manager 7036 The Windows Modules Installer service entered the stopped state.
+22:45:47 Service Control Manager 7036 The App Readiness service entered the stopped state.
+22:46:06 Service Control Manager 7036 The Microsoft Storage Spaces SMP service entered the stopped state.
+
+
+== RESUMO semvss1
+semvss       init    n=31 min=17.6 mediana=25.3 max=25.9
+semvss       add     n=31 min=4.0 mediana=4.1 max=19.7
+semvss       commit  n=31 min=4.1 mediana=4.7 max=16.1
+semvss       rmtree  n=31 min=0.1 mediana=0.1 max=0.2
+--- batimento (t,atraso,C,D) acima de 0,3 s:
+265.6,0.000,0.532,0.000
+457.0,0.000,0.547,0.000
+458.6,0.000,0.578,0.000
+461.2,0.000,0.531,0.000
+478.6,0.000,0.750,0.016
+807.7,0.015,0.438,0.000
+
+########## diag-semvss2
+   14.1 CHECAR {"i": 0, "base401": 2.61, "pendurado": 10.08, "dif": 7.47, "setup": 0.61, "rc": 0}
+   26.7 CHECAR {"i": 1, "base401": 1.97, "pendurado": 9.91, "dif": 7.94, "setup": 0.58, "rc": 0}
+   39.5 CHECAR {"i": 2, "base401": 1.91, "pendurado": 10.19, "dif": 8.28, "setup": 0.61, "rc": 0}
+   67.5 
+Name   Status StartType
+----   ------ ---------
+swprv Stopped  Disabled
+VSS   Stopped  Disabled
+
+
+
+   98.1 arquivos no índice: 735
+   98.3 {"i": 0, "braco": "semvss", "init": 19.05, "init_pipe": 19.05, "add": 6.39, "add_pipe": 6.39, "rc": 0, "commit": 5.09, "rmtree": 0.14}
+  129.3 {"i": 1, "braco": "semvss", "init": 18.92, "init_pipe": 18.92, "add": 6.38, "add_pipe": 6.38, "rc": 0, "commit": 5.47, "rmtree": 0.12}
+  161.7 {"i": 2, "braco": "semvss", "init": 19.34, "init_pipe": 19.34, "add": 7.53, "add_pipe": 7.53, "rc": 0, "commit": 5.28, "rmtree": 0.14}
+  193.6 {"i": 3, "braco": "semvss", "init": 19.97, "init_pipe": 19.97, "add": 6.36, "add_pipe": 6.36, "rc": 0, "commit": 5.31, "rmtree": 0.14}
+  231.8 {"i": 4, "braco": "semvss", "init": 26.17, "init_pipe": 26.17, "add": 6.28, "add_pipe": 6.28, "rc": 0, "commit": 5.42, "rmtree": 0.14}
+  268.9 {"i": 5, "braco": "semvss", "init": 25.08, "init_pipe": 25.08, "add": 6.31, "add_pipe": 6.31, "rc": 0, "commit": 5.53, "rmtree": 0.12}
+  306.6 {"i": 6, "braco": "semvss", "init": 25.31, "init_pipe": 25.31, "add": 6.5, "add_pipe": 6.5, "rc": 0, "commit": 5.61, "rmtree": 0.12}
+  344.0 {"i": 7, "braco": "semvss", "init": 25.33, "init_pipe": 25.33, "add": 6.34, "add_pipe": 6.34, "rc": 0, "commit": 5.45, "rmtree": 0.14}
+  381.6 {"i": 8, "braco": "semvss", "init": 25.25, "init_pipe": 25.25, "add": 6.47, "add_pipe": 6.47, "rc": 0, "commit": 5.61, "rmtree": 0.16}
+  419.0 {"i": 9, "braco": "semvss", "init": 25.34, "init_pipe": 25.34, "add": 6.44, "add_pipe": 6.44, "rc": 0, "commit": 5.34, "rmtree": 0.14}
+  458.4 {"i": 10, "braco": "semvss", "init": 25.25, "init_pipe": 25.25, "add": 8.66, "add_pipe": 8.66, "rc": 0, "commit": 5.2, "rmtree": 0.16}
+  489.8 {"i": 11, "braco": "semvss", "init": 19.58, "init_pipe": 19.58, "add": 6.27, "add_pipe": 6.27, "rc": 0, "commit": 5.28, "rmtree": 0.14}
+  521.5 {"i": 12, "braco": "semvss", "init": 19.77, "init_pipe": 19.77, "add": 6.31, "add_pipe": 6.31, "rc": 0, "commit": 5.34, "rmtree": 0.14}
+  552.0 {"i": 13, "braco": "semvss", "init": 18.72, "init_pipe": 18.72, "add": 6.19, "add_pipe": 6.19, "rc": 0, "commit": 5.41, "rmtree": 0.14}
+  589.5 {"i": 14, "braco": "semvss", "init": 25.36, "init_pipe": 25.36, "add": 6.55, "add_pipe": 6.55, "rc": 0, "commit": 5.38, "rmtree": 0.14}
+  626.7 {"i": 15, "braco": "semvss", "init": 25.19, "init_pipe": 25.19, "add": 6.31, "add_pipe": 6.31, "rc": 0, "commit": 5.3, "rmtree": 0.12}
+  658.2 {"i": 16, "braco": "semvss", "init": 19.75, "init_pipe": 19.75, "add": 6.23, "add_pipe": 6.23, "rc": 0, "commit": 5.33, "rmtree": 0.12}
+  688.7 {"i": 17, "braco": "semvss", "init": 18.91, "init_pipe": 18.91, "add": 6.17, "add_pipe": 6.17, "rc": 0, "commit": 5.16, "rmtree": 0.12}
+  719.0 {"i": 18, "braco": "semvss", "init": 18.58, "init_pipe": 18.58, "add": 6.11, "add_pipe": 6.11, "rc": 0, "commit": 5.11, "rmtree": 0.12}
+  749.3 {"i": 19, "braco": "semvss", "init": 18.58, "init_pipe": 18.58, "add": 6.53, "add_pipe": 6.53, "rc": 0, "commit": 4.98, "rmtree": 0.14}
+  780.1 {"i": 20, "braco": "semvss", "init": 18.33, "init_pipe": 18.33, "add": 6.86, "add_pipe": 6.86, "rc": 0, "commit": 5.42, "rmtree": 0.12}
+  810.1 {"i": 21, "braco": "semvss", "init": 18.3, "init_pipe": 18.3, "add": 6.22, "add_pipe": 6.22, "rc": 0, "commit": 5.16, "rmtree": 0.12}
+  840.5 {"i": 22, "braco": "semvss", "init": 18.62, "init_pipe": 18.62, "add": 6.41, "add_pipe": 6.41, "rc": 0, "commit": 5.12, "rmtree": 0.14}
+  869.8 {"i": 23, "braco": "semvss", "init": 17.75, "init_pipe": 17.75, "add": 6.27, "add_pipe": 6.27, "rc": 0, "commit": 5.11, "rmtree": 0.12}
+  899.1 {"i": 24, "braco": "semvss", "init": 17.44, "init_pipe": 17.44, "add": 6.23, "add_pipe": 6.23, "rc": 0, "commit": 5.39, "rmtree": 0.14}
+  937.4 {"i": 25, "braco": "semvss", "init": 25.2, "init_pipe": 25.2, "add": 7.53, "add_pipe": 7.53, "rc": 0, "commit": 5.28, "rmtree": 0.14}
+  974.6 {"i": 26, "braco": "semvss", "init": 25.27, "init_pipe": 25.27, "add": 6.12, "add_pipe": 6.12, "rc": 0, "commit": 5.58, "rmtree": 0.14}
+ 1011.5 {"i": 27, "braco": "semvss", "init": 25.3, "init_pipe": 25.3, "add": 6.19, "add_pipe": 6.19, "rc": 0, "commit": 5.16, "rmtree": 0.14}
+ 1043.1 {"i": 28, "braco": "semvss", "init": 19.48, "init_pipe": 19.48, "add": 6.38, "add_pipe": 6.38, "rc": 0, "commit": 5.52, "rmtree": 0.12}
+ 1075.1 {"i": 29, "braco": "semvss", "init": 19.39, "init_pipe": 19.39, "add": 7.0, "add_pipe": 7.0, "rc": 0, "commit": 5.38, "rmtree": 0.12}
+ 1112.1 {"i": 30, "braco": "semvss", "init": 25.22, "init_pipe": 25.22, "add": 6.3, "add_pipe": 6.3, "rc": 0, "commit": 5.2, "rmtree": 0.12}
+ 1112.8 22:20:12 Service Control Manager 7036 The Program Compatibility Assistant Service service entered the running state.
+22:20:12 Service Control Manager 7000 The Microsoft Edge Update Service (edgeupdate) service failed to start due to the following error: 
+
+22:20:12 Service Control Manager 7036 The Distributed Transaction Coordinator service entered the running state.
+22:20:12 Service Control Manager 7036 The Software Protection service entered the running state.
+22:20:14 Service Control Manager 7036 The User Access Logging Service service entered the running state.
+22:20:14 Service Control Manager 7036 The WaaSMedicSvc service entered the running state.
+22:20:14 Service Control Manager 7036 The Update Orchestrator Service service entered the running state.
+22:20:15 Service Control Manager 7036 The Clipboard User Service_d2f2f service entered the running state.
+22:20:17 Service Control Manager 7040 The start type of the Background Intelligent Transfer Service service was changed from auto start to demand start.
+22:20:17 Service Control Manager 7036 The Background Intelligent Transfer Service service entered the stopped state.
+22:20:42 Service Control Manager 7036 The Software Protection service entered the stopped state.
+22:21:02 Service Control Manager 7036 The Portable Device Enumerator Service service entered the stopped state.
+22:21:02 Service Control Manager 7036 The Device Install Service service entered the stopped state.
+22:21:15 Service Control Manager 7036 The WaaSMedicSvc service entered the stopped state.
+22:21:53 Service Control Manager 7036 The Microsoft Passport service entered the stopped state.
+22:23:15 Service Control Manager 7036 The Network Setup Service service entered the stopped state.
+22:23:26 Service Control Manager 7036 The Delivery Optimization service entered the stopped state.
+22:24:49 Service Control Manager 7036 The Microsoft Account Sign-in Assistant service entered the stopped state.
+22:25:06 Service Control Manager 7036 The Client License Service (ClipSVC) service entered the stopped state.
+22:26:11 Service Control Manager 7036 The Windows PushToInstall Service service entered the running state.
+22:26:11 Service Control Manager 7036 The Microsoft Account Sign-in Assistant service entered the running state.
+22:26:11 Service Control Manager 7036 The WaaSMedicSvc service entered the running state.
+22:26:16 Service Control Manager 7040 The start type of the Background Intelligent Transfer Service service was changed from demand start to auto start.
+22:26:16 Service Control Manager 7036 The Background Intelligent Transfer Service service entered the running state.
+22:26:16 Service Control Manager 7036 The Software Protection service entered the running state.
+22:26:16 Service Control Manager 7036 The Windows PushToInstall Service service entered the stopped state.
+22:26:21 Service Control Manager 7036 The Windows Modules Installer service entered the running state.
+22:26:53 Service Control Manager 7036 The Microsoft Passport Container service entered the stopped state.
+22:27:05 Service Control Manager 7036 The Windows Insider Service service entered the stopped state.
+22:27:09 Service Control Manager 7036 The Software Protection service entered the stopped state.
+22:27:11 Service Control Manager 7036 The WaaSMedicSvc service entered the stopped state.
+22:28:06 Service Control Manager 7036 The Remote Registry service entered the stopped state.
+22:28:29 Service Control Manager 7036 The Windows Modules Installer service entered the stopped state.
+22:28:30 Service Control Manager 7040 The start type of the Background Intelligent Transfer Service service was changed from auto start to demand start.
+22:28:30 Service Control Manager 7036 The Background Intelligent Transfer Service service entered the stopped state.
+22:28:31 Service Control Manager 7036 The Declared Configuration(DC) service service entered the running state.
+22:28:53 Service Control Manager 7036 The Volume Shadow Copy service entered the running state.
+22:28:53 Service Control Manager 7036 The Microsoft Software Shadow Copy Provider service entered the running state.
+22:29:16 Service Control Manager 7036 The Microsoft Account Sign-in Assistant service entered the stopped state.
+22:29:30 Service Control Manager 7040 The start type of the Volume Shadow Copy service was changed from demand start to disabled.
+22:29:30 VSS 8225 The VSS service is shutting down due to shutdown event from the Service Control Manager. 
+22:29:30 Service Control Manager 7036 The Volume Shadow Copy service entered the stopped state.
+22:29:30 Service Control Manager 7040 The start type of the Microsoft Software Shadow Copy Provider service was changed from demand start to disabled.
+22:29:30 Service Control Manager 7036 The Microsoft Software Shadow Copy Provider service entered the stopped state.
+22:30:15 Service Control Manager 7036 The WaaSMedicSvc service entered the running state.
+22:30:31 Service Control Manager 7036 The Declared Configuration(DC) service service entered the stopped state.
+22:31:15 Service Control Manager 7036 The WaaSMedicSvc service entered the stopped state.
+22:33:40 Service Control Manager 7036 The Geolocation Service service entered the running state.
+22:33:40 Service Control Manager 7036 The WaaSMedicSvc service entered the running state.
+22:33:40 Service Control Manager 7036 The Windows Modules Installer service entered the running state.
+22:34:41 Service Control Manager 7036 The WaaSMedicSvc service entered the stopped state.
+22:34:45 Service Control Manager 7036 The Client License Service (ClipSVC) service entered the running state.
+22:35:43 Service Control Manager 7036 The Windows Modules Installer service entered the stopped state.
+22:38:41 Service Control Manager 7036 The App Readiness service entered the stopped state.
+22:39:02 Service Control Manager 7036 The Microsoft Storage Spaces SMP service entered the stopped state.
+22:39:47 Service Control Manager 7036 The Client License Service (ClipSVC) service entered the stopped state.
+22:41:07 Service Control Manager 7036 The AppX Deployment Service (AppXSVC) service entered the stopped state.
+22:43:43 Service Control Manager 7036 The Windows Update service entered the stopped state.
+22:45:45 Service Control Manager 7036 The Software Protection service entered the running state.
+22:46:16 Service Control Manager 7036 The Software Protection service entered the stopped state.
+
+
+== RESUMO semvss2
+semvss       init    n=31 min=17.4 mediana=19.8 max=26.2
+semvss       add     n=31 min=6.1 mediana=6.3 max=8.7
+semvss       commit  n=31 min=5.0 mediana=5.3 max=5.6
+semvss       rmtree  n=31 min=0.1 mediana=0.1 max=0.2
+--- batimento (t,atraso,C,D) acima de 0,3 s:
+32.0,0.000,0.515,0.000
+34.7,0.000,0.328,0.000
+36.2,0.000,0.516,0.000
+47.8,0.016,0.562,0.000
+53.3,0.000,1.031,0.000
+55.0,0.000,0.641,0.000
+58.8,0.000,0.391,0.000
+60.1,0.015,0.313,0.000
+150.3,0.000,0.750,0.015
+272.6,0.015,0.829,0.000
+428.1,0.000,0.531,0.000
+555.3,0.000,0.734,0.000
+695.7,0.000,0.656,0.000
+813.2,0.000,0.312,0.000
+930.0,0.000,1.407,0.000
+
+########## diag-semvss3
+   16.2 CHECAR {"i": 0, "base401": 3.48, "pendurado": 10.86, "dif": 7.38, "setup": 0.84, "rc": 0}
+   30.5 CHECAR {"i": 1, "base401": 2.74, "pendurado": 10.73, "dif": 8.0, "setup": 0.8, "rc": 0}
+   45.0 CHECAR {"i": 2, "base401": 2.73, "pendurado": 10.76, "dif": 8.03, "setup": 0.89, "rc": 0}
+   48.5 
+Name   Status StartType
+----   ------ ---------
+swprv Stopped  Disabled
+VSS   Stopped  Disabled
+
+
+
+   88.1 arquivos no índice: 735
+   88.3 {"i": 0, "braco": "semvss", "init": 26.78, "init_pipe": 26.78, "add": 6.06, "add_pipe": 6.06, "rc": 0, "commit": 6.61, "rmtree": 0.25}
+  129.0 {"i": 1, "braco": "semvss", "init": 26.7, "init_pipe": 26.7, "add": 6.49, "add_pipe": 6.49, "rc": 0, "commit": 7.06, "rmtree": 0.23}
+  170.7 {"i": 2, "braco": "semvss", "init": 28.47, "init_pipe": 28.47, "add": 6.19, "add_pipe": 6.19, "rc": 0, "commit": 6.67, "rmtree": 0.25}
+  211.5 {"i": 3, "braco": "semvss", "init": 28.49, "init_pipe": 28.49, "add": 5.62, "add_pipe": 5.62, "rc": 0, "commit": 6.31, "rmtree": 0.25}
+  252.7 {"i": 4, "braco": "semvss", "init": 27.94, "init_pipe": 27.94, "add": 6.26, "add_pipe": 6.26, "rc": 0, "commit": 6.64, "rmtree": 0.25}
+  293.4 {"i": 5, "braco": "semvss", "init": 28.31, "init_pipe": 28.31, "add": 5.61, "add_pipe": 5.62, "rc": 0, "commit": 6.39, "rmtree": 0.26}
+  335.3 {"i": 6, "braco": "semvss", "init": 29.05, "init_pipe": 29.05, "add": 5.81, "add_pipe": 5.81, "rc": 0, "commit": 6.5, "rmtree": 0.25}
+  376.5 {"i": 7, "braco": "semvss", "init": 28.22, "init_pipe": 28.22, "add": 5.92, "add_pipe": 5.92, "rc": 0, "commit": 6.58, "rmtree": 0.25}
+  417.2 {"i": 8, "braco": "semvss", "init": 28.11, "init_pipe": 28.11, "add": 6.03, "add_pipe": 6.03, "rc": 0, "commit": 6.28, "rmtree": 0.24}
+  459.4 {"i": 9, "braco": "semvss", "init": 27.75, "init_pipe": 27.75, "add": 5.55, "add_pipe": 5.55, "rc": 0, "commit": 8.41, "rmtree": 0.27}
+  507.2 {"i": 10, "braco": "semvss", "init": 34.56, "init_pipe": 34.56, "add": 5.95, "add_pipe": 5.95, "rc": 0, "commit": 6.89, "rmtree": 0.27}
+  584.3 {"i": 11, "braco": "semvss", "init": 27.23, "init_pipe": 27.23, "add": 43.23, "add_pipe": 43.23, "rc": 0, "commit": 6.31, "rmtree": 0.24}
+  624.6 {"i": 12, "braco": "semvss", "init": 26.56, "init_pipe": 26.56, "add": 6.84, "add_pipe": 6.84, "rc": 0, "commit": 6.5, "rmtree": 0.23}
+  663.0 {"i": 13, "braco": "semvss", "init": 26.39, "init_pipe": 26.39, "add": 5.47, "add_pipe": 5.47, "rc": 0, "commit": 6.2, "rmtree": 0.23}
+  702.3 {"i": 14, "braco": "semvss", "init": 26.5, "init_pipe": 26.5, "add": 5.92, "add_pipe": 5.92, "rc": 0, "commit": 6.48, "rmtree": 0.23}
+  742.2 {"i": 15, "braco": "semvss", "init": 26.39, "init_pipe": 26.39, "add": 6.76, "add_pipe": 6.76, "rc": 0, "commit": 6.31, "rmtree": 0.25}
+  780.8 {"i": 16, "braco": "semvss", "init": 26.39, "init_pipe": 26.39, "add": 5.64, "add_pipe": 5.64, "rc": 0, "commit": 6.23, "rmtree": 0.23}
+  820.2 {"i": 17, "braco": "semvss", "init": 26.55, "init_pipe": 26.55, "add": 5.62, "add_pipe": 5.62, "rc": 0, "commit": 6.69, "rmtree": 0.39}
+  859.8 {"i": 18, "braco": "semvss", "init": 26.72, "init_pipe": 26.72, "add": 5.78, "add_pipe": 5.78, "rc": 0, "commit": 6.31, "rmtree": 0.24}
+  899.0 {"i": 19, "braco": "semvss", "init": 27.25, "init_pipe": 27.25, "add": 5.5, "add_pipe": 5.5, "rc": 0, "commit": 6.16, "rmtree": 0.23}
+  937.5 {"i": 20, "braco": "semvss", "init": 25.98, "init_pipe": 25.98, "add": 5.69, "add_pipe": 5.69, "rc": 0, "commit": 6.39, "rmtree": 0.23}
+  976.4 {"i": 21, "braco": "semvss", "init": 26.44, "init_pipe": 26.44, "add": 5.7, "add_pipe": 5.7, "rc": 0, "commit": 6.41, "rmtree": 0.23}
+ 1014.9 {"i": 22, "braco": "semvss", "init": 26.19, "init_pipe": 26.19, "add": 5.75, "add_pipe": 5.75, "rc": 0, "commit": 6.2, "rmtree": 0.23}
+ 1053.6 {"i": 23, "braco": "semvss", "init": 26.45, "init_pipe": 26.45, "add": 5.5, "add_pipe": 5.5, "rc": 0, "commit": 6.36, "rmtree": 0.23}
+ 1091.4 {"i": 24, "braco": "semvss", "init": 25.84, "init_pipe": 25.84, "add": 5.5, "add_pipe": 5.5, "rc": 0, "commit": 6.12, "rmtree": 0.23}
+ 1092.1 22:27:23 Service Control Manager 7036 The Connected Devices Platform Service service entered the running state.
+22:27:26 Microsoft-Windows-WindowsUpdateClient 19 Installation Successful: Windows successfully installed the following update: Security Intelligence Update for Microsoft Defender Antivirus - KB2267602 (Version 1.463.470.0) - Current Channel (Broad)
+22:27:49 Service Control Manager 7036 The Software Protection service entered the stopped state.
+22:27:50 Service Control Manager 7036 The Software Protection service entered the running state.
+22:27:52 Service Control Manager 7036 The Windows Security Service service entered the running state.
+22:28:03 Service Control Manager 7036 The WaaSMedicSvc service entered the stopped state.
+22:28:20 Service Control Manager 7036 The Windows Insider Service service entered the stopped state.
+22:28:21 Service Control Manager 7036 The Software Protection service entered the stopped state.
+22:28:27 Service Control Manager 7036 The Print Device Configuration Service service entered the stopped state.
+22:28:34 Service Control Manager 7036 The Diagnostic Policy Service service entered the running state.
+22:28:34 Service Control Manager 7036 The Diagnostic System Host service entered the running state.
+22:28:34 Service Control Manager 7000 The Microsoft Edge Update Service (edgeupdate) service failed to start due to the following error: 
+
+22:28:34 Service Control Manager 7036 The Program Compatibility Assistant Service service entered the running state.
+22:28:35 Service Control Manager 7036 The Distributed Transaction Coordinator service entered the running state.
+22:28:35 Service Control Manager 7036 The Software Protection service entered the running state.
+22:28:37 Service Control Manager 7036 The User Access Logging Service service entered the running state.
+22:28:37 Service Control Manager 7036 The WaaSMedicSvc service entered the running state.
+22:28:37 Service Control Manager 7036 The Update Orchestrator Service service entered the running state.
+22:28:37 Service Control Manager 7036 The Clipboard User Service_d734b service entered the running state.
+22:28:46 Service Control Manager 7040 The start type of the Background Intelligent Transfer Service service was changed from auto start to demand start.
+22:28:46 Service Control Manager 7036 The Background Intelligent Transfer Service service entered the stopped state.
+22:28:57 Service Control Manager 7036 The Device Install Service service entered the stopped state.
+22:29:05 Service Control Manager 7036 The Portable Device Enumerator Service service entered the stopped state.
+22:29:05 Service Control Manager 7036 The Software Protection service entered the stopped state.
+22:29:15 Service Control Manager 7040 The start type of the Volume Shadow Copy service was changed from demand start to disabled.
+22:29:15 Service Control Manager 7040 The start type of the Microsoft Software Shadow Copy Provider service was changed from demand start to disabled.
+22:29:38 Service Control Manager 7036 The WaaSMedicSvc service entered the stopped state.
+22:30:20 Service Control Manager 7036 The Microsoft Passport service entered the stopped state.
+22:31:37 Service Control Manager 7036 The Network Setup Service service entered the stopped state.
+22:31:52 Service Control Manager 7036 The Delivery Optimization service entered the stopped state.
+22:33:16 Service Control Manager 7036 The Microsoft Account Sign-in Assistant service entered the stopped state.
+22:33:25 Service Control Manager 7036 The Client License Service (ClipSVC) service entered the stopped state.
+22:35:20 Service Control Manager 7036 The Microsoft Passport Container service entered the stopped state.
+22:35:59 Service Control Manager 7036 The Windows PushToInstall Service service entered the running state.
+22:36:00 Service Control Manager 7036 The Microsoft Account Sign-in Assistant service entered the running state.
+22:36:00 Service Control Manager 7036 The WaaSMedicSvc service entered the running state.
+22:36:04 Service Control Manager 7040 The start type of the Background Intelligent Transfer Service service was changed from demand start to auto start.
+22:36:04 Service Control Manager 7036 The Background Intelligent Transfer Service service entered the running state.
+22:36:05 Service Control Manager 7036 The Windows PushToInstall Service service entered the stopped state.
+22:36:06 Service Control Manager 7036 The Software Protection service entered the running state.
+22:36:18 Service Control Manager 7036 The Windows Modules Installer service entered the running state.
+22:36:29 Service Control Manager 7036 The Remote Registry service entered the stopped state.
+22:36:50 Service Control Manager 7036 The Declared Configuration(DC) service service entered the running state.
+22:37:00 Service Control Manager 7036 The WaaSMedicSvc service entered the stopped state.
+22:37:12 Service Control Manager 7036 The Software Protection service entered the stopped state.
+22:37:20 VSS 13 Volume Shadow Copy Service information: The COM Server with CLSID {0b5a2c52-3eb9-470a-96e2-6c6d4570e40f} and name Coordinator cannot be started. [0x80070422, The service cannot be started, either because it is disabled or because it has no enabled devices associated with it.
+
+22:37:20 VSS 8193 Volume Shadow Copy Service error: Unexpected error calling routine CoCreateInstance.  hr = 0x80070422, The service cannot be started, either because it is disabled or because it has no enabled devices associated with it.
+
+22:38:20 Service Control Manager 7040 The start type of the Background Intelligent Transfer Service service was changed from auto start to demand start.
+22:38:20 Service Control Manager 7036 The Background Intelligent Transfer Service service entered the stopped state.
+22:38:29 Service Control Manager 7036 The Windows Modules Installer service entered the stopped state.
+22:38:37 Service Control Manager 7036 The WaaSMedicSvc service entered the running state.
+22:38:50 Service Control Manager 7036 The Declared Configuration(DC) service service entered the stopped state.
+22:39:05 Service Control Manager 7036 The Microsoft Account Sign-in Assistant service entered the stopped state.
+22:39:38 Service Control Manager 7036 The WaaSMedicSvc service entered the stopped state.
+22:42:06 Service Control Manager 7036 The WaaSMedicSvc service entered the running state.
+22:42:06 Service Control Manager 7036 The Windows Modules Installer service entered the running state.
+22:42:06 Service Control Manager 7036 The Geolocation Service service entered the running state.
+22:43:07 Service Control Manager 7036 The WaaSMedicSvc service entered the stopped state.
+22:43:12 Service Control Manager 7036 The Client License Service (ClipSVC) service entered the running state.
+22:44:11 Service Control Manager 7036 The Windows Modules Installer service entered the stopped state.
+
+
+== RESUMO semvss3
+semvss       init    n=25 min=25.8 mediana=26.7 max=34.6
+semvss       add     n=25 min=5.5 mediana=5.8 max=43.2
+semvss       commit  n=25 min=6.1 mediana=6.4 max=8.4
+semvss       rmtree  n=25 min=0.2 mediana=0.2 max=0.4
+--- batimento (t,atraso,C,D) acima de 0,3 s:
+310.4,0.000,0.891,0.000
+477.8,0.000,1.297,0.000
+480.2,0.000,0.406,0.000
+535.4,0.016,0.453,0.000
+539.5,0.000,0.625,0.000
+544.1,0.000,0.359,0.000
+559.8,0.000,0.438,0.000
+565.0,0.000,0.531,0.000
+566.5,0.000,0.500,0.000
+567.9,0.000,0.437,0.000
+569.3,0.000,0.407,0.000
+570.8,0.000,0.484,0.000
+613.4,0.000,1.109,0.000
+730.5,0.016,0.937,0.016
