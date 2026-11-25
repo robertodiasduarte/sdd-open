@@ -1350,9 +1350,10 @@ class EstadoSoUmPorVez(Base):
         self.assertEqual(sorted(self.estado()["recibos"]), ["r%d" % k for k in range(6)])
         self.assertFalse(self.existe("sdd/reports/progress/DRIVE_F.estado.lock"), "a trava não sobra")
 
-    # Só a trava e a gravação, do código real, em laço: muito mais disputa que 6 recibos, que gastam o tempo no arranque.
+    # Só a trava, do código real, em laço e com espera curta: no Windows, apagar a trava ao largar recusa a abertura de
+    # quem chega naquele instante (medido: ~5% das aberturas), e 6 recibos, que gastam o tempo no arranque, quase não batem nisso.
     DISPUTA = """
-import errno, os, re, sys, tempfile, time, types
+import errno, os, sys, time, types
 try:
     import fcntl
     msvcrt = None
@@ -1361,18 +1362,23 @@ except ImportError:
     import msvcrt
 sys.stdout.reconfigure(encoding="utf-8", errors="replace")
 fonte, raiz, voltas = open(sys.argv[1], encoding="utf-8").read(), sys.argv[2], int(sys.argv[3])
+real, volta = time, 0
+time = types.SimpleNamespace(time=real.time, sleep=lambda s: real.sleep(s / 25))
 def falha(motivo, seta=""):
     print("FALHA na volta %s: %s" % (volta, motivo))
     sys.exit(2)
-exec(re.search(r"(?ms)^def gravar_atomico\\(.*?(?=^\\S)", fonte).group(0))
 exec(fonte[fonte.index("_ESTADO_PEGO = None"):fonte.index("def le_estado(")])
 p = types.SimpleNamespace(raiz=raiz, feature="F", p=lambda r: os.path.join(raiz, r))
-conta = os.path.join(raiz, "conta.json")
+conta = os.path.join(raiz, "conta.txt")
 for volta in range(voltas):
     segura_estado(p)
-    n = int(open(conta, encoding="utf-8").read())
-    gravar_atomico(conta, str(n + 1))
+    with open(conta, encoding="utf-8") as f:
+        n = int(f.read())
+    with open(conta, "w", encoding="utf-8") as f:
+        f.write(str(n + 1))
+    real.sleep(0.001)
     larga_estado()
+    real.sleep(0.001)
 """
 
     def test_disputa_pela_trava_nao_falha_nem_perde_gravacao(self):
@@ -1381,12 +1387,68 @@ for volta in range(voltas):
         import sys
         raiz = self.tmp / "disputa"
         raiz.mkdir()
-        self.escreve(raiz, "conta.json", "0")
+        self.escreve(raiz, "conta.txt", "0")
         script = self.escreve(self.tmp, "disputa.py", self.DISPUTA)
-        procs = [subprocess.Popen([sys.executable, "-I", "-B", str(script), str(RAIZ / "sdd/bin/sdd-drive.sh"), str(raiz), "40"],
+        procs = [subprocess.Popen([sys.executable, "-I", "-B", str(script), str(RAIZ / "sdd/bin/sdd-drive.sh"), str(raiz), "200"],
                                   stdout=subprocess.PIPE, stderr=subprocess.STDOUT, stdin=subprocess.DEVNULL) for _ in range(6)]
         self.assertTodosZero(self.saidas(procs))
-        self.assertEqual((raiz / "conta.json").read_text(encoding="utf-8"), "240", "gravação perdida: a trava não excluiu")
+        self.assertEqual((raiz / "conta.txt").read_text(encoding="utf-8"), "1200", "gravação perdida: a trava não excluiu")
+
+    def segurador(self, recusas, erro=PermissionError, sistema="nt"):
+        """segura_estado real, com a abertura recusada as N primeiras vezes e relógio falso: (motivo da falha, aberturas)."""
+        import errno
+        try:
+            import fcntl
+            msvcrt = None
+        except ImportError:
+            fcntl = None
+            import msvcrt
+        fonte = (RAIZ / "sdd/bin/sdd-drive.sh").read_text(encoding="utf-8")
+        corpo = fonte[fonte.index("_ESTADO_PEGO = None"):fonte.index("def le_estado(")]
+        agora, aberturas = [0.0], []
+
+        class Parou(Exception):
+            pass
+
+        def abre(*a):
+            aberturas.append(1)
+            if len(aberturas) > 100000:
+                raise AssertionError("laço sem fim")
+            if len(aberturas) <= recusas:
+                raise erro(13, "Permission denied")
+            return os.open(*a)
+
+        def falha(motivo, seta=""):
+            raise Parou(motivo)
+        falso = types.SimpleNamespace(**{n: getattr(os, n) for n in dir(os) if not n.startswith("__")})
+        falso.open, falso.name = abre, sistema
+        g = dict(os=falso, errno=errno, fcntl=fcntl, msvcrt=msvcrt, falha=falha,
+                 time=types.SimpleNamespace(time=lambda: agora[0], sleep=lambda s: agora.__setitem__(0, agora[0] + s)))
+        exec(corpo, g)
+        raiz = str(self.r)
+        try:
+            g["segura_estado"](types.SimpleNamespace(raiz=raiz, feature="F", p=lambda r: os.path.join(raiz, r)))
+        except Parou as e:
+            return str(e), len(aberturas), agora[0]
+        finally:
+            g["larga_estado"]()
+        return "", len(aberturas), agora[0]
+
+    def test_no_windows_a_abertura_recusada_e_tentada_de_novo(self):
+        self.assertEqual(self.segurador(3)[:2], ("", 4))
+
+    def test_abertura_sempre_recusada_desiste_em_segundos(self):
+        motivo, n, gasto = self.segurador(10 ** 9)
+        self.assertIn("não consegui abrir a trava", motivo)
+        self.assertGreater(n, 1)
+        self.assertLess(gasto, 10)
+
+    def test_fora_do_windows_ou_outro_erro_desiste_na_hora(self):
+        for caso in (dict(sistema="posix"), dict(erro=OSError, sistema="posix"), dict(erro=IsADirectoryError)):
+            with self.subTest(**caso):
+                motivo, n, _ = self.segurador(1, **caso)
+                self.assertIn("não consegui abrir a trava", motivo)
+                self.assertEqual(n, 1)
 
     def test_trava_de_estado_abandonada_vence(self):
         self.drive("iniciar", D)
