@@ -46,7 +46,7 @@
 4. ✨ O clone local `~/rdd-public/sdd-starter` está atrasado (11ª geração) e tem `docs/guia-do-aluno.pt-BR.md` fora do git; as gerações 15ª a 17ª foram feitas em clones limpos.
 5. ⚠️ **`sdd-drive.sh`, falha intermitente:** a `v2.27.4` apaga o temporário da gravação que falha e, no Windows, tenta de novo por até 5 s a troca recusada. O run de 25/11 (item 1) mostra que ainda há falha na área; causa por achar.
 6. ✨ A divisão das fatias do Windows é por número de testes, não por tempo: a fatia 4 levou 30 min no PR (teto 45). Dividir por tempo medido.
-7. Curadoria: na fila (`sdd/curadoria/fila/F30_QUALIDADE_CODIGO/20261125T143002Z`, 13 deltas e 2 candidatos). A fila passou do limite (7 entradas, 3 da F30; limite 5): rodar o lote da `sdd-playbook`.
+7. Curadoria: lote julgado em 2026-11-25 e **ainda não enviado**: commit `6862ec0`, só local, na branch `lote-curadoria-20261125` (`~/rdd-worktrees/lote-curadoria-20261125`; não apagar a pasta). 7 entradas, 103 contagens e 16 lições (LM-045 a LM-060, com o OK do Roberto). Até o envio, a fila da `main` segue com 7: não rodar lote novo a partir dela. O envio muda `sdd/playbook.md` e publica uma Release: vai junto do conserto do `sdd-drive`.
 
 ## Definition of Done
 
@@ -67,6 +67,8 @@
 
 ## Eventos
 
+- 2026-11-25 — `publish-gate` do commit de papel `30b2904` (45659227692): 17 de 18 jobs verdes, com as fatias 2 e 7 do Windows; o do macOS seguia em andamento quando esta linha foi escrita e o Roberto dispensou a espera. O mesmo código caiu em `33b5831` e passou aqui: falha intermitente.
+- 2026-11-25 — Lote da curadoria julgado (7 entradas, blocos válidos, fronteira limpa); envio adiado pelo Roberto. Faxina com o OK dele: branches remotas `s3-open-sdd-unclebob` (`cd70bed`) e `gen/v2.28.0` do starter (`f455e1b`) apagadas, as duas já na `main`; o PR #26 do starter ficou CLOSED, não MERGED.
 - 2026-11-25 — Release da S3 com o OK do Roberto ("sim, publica a v2.28.0"): CI inteiro verde no PR #45 (18/18, `cd70bed`), `--conferir` repetido (CONFERE), push atômico `main` + tag em `33b5831`. Release conferida: runs `release` 45634526448 (tag) e 45634528110 (`main`) verdes, publicada às 15:21 UTC pelo run da `main`; `shasum -c` OK, `VERSION` = `v2.28.0`, 792 arquivos = 792 linhas do `MANIFEST`, nenhum faltando, `metricas-diff.sh` igual ao da tag. O `publish-gate` 45634528055 caiu (item 1 de Falta) e o Roberto mandou seguir.
 - 2026-11-25 — starter: 17ª geração pela tag `v2.28.0` num clone limpo (`f455e1b`; check-gerado VERDE, check-versions e publish-check PASS, testes, gate da KB e 19 zips), PR #26 de lá com CI verde, avanço direto da `main`. O Auto Release (45650576956) caiu no envio dos arquivos durante um incidente do GitHub (rascunho com 9 arquivos, sem tag); com o OK do Roberto, tag `v1.5.33` posta à mão depois do incidente: run 45658965189 verde, rascunho reaproveitado, 19 zips OK no `shasum -c` e iguais ao commit.
 - 2026-11-24 — S2: DEFINE 1.5 (AT-010 a AT-016) e DESIGN 2.0/2.1 (Decisions 8 a 14); revisão do DESIGN (openrouter/qwen, codex 2º revisor, auditor claude): 1 MED aplicado.
@@ -96,18 +98,34 @@
 ## Prompt de retomada
 
 ```text
-Investigar o publish-gate vermelho da main do sdd-open em 33b5831 (run 45634528055), pendência da F30.
+Corrigir a falha intermitente do sdd-drive no Windows (sdd-open), pendência da F30, e enviar junto o lote da curadoria.
 
-A F30 está publicada (v2.28.0; starter v1.5.33). Leia sdd/handoffs/HANDOFF_F30_QUALIDADE_CODIGO.md, item 1 de Falta,
-e a seção "## Sempre" de sdd/playbook.md. Pasta: frente nova pela sdd-new-session a partir de origin/main;
-setup: git status limpo e GIT_TERMINAL_PROMPT=0 git fetch origin main.
+Contexto: a F30 está publicada (Open v2.28.0; starter v1.5.33). O publish-gate da main caiu em 33b5831 (run
+45634528055), 1 teste em cada uma de 2 fatias do Windows; o mesmo código passou nos runs release e no publish-gate de
+30b2904. A S3 não mexeu nessas áreas. A v2.27.4 já tinha tratado uma falha vizinha: o conserto pode estar incompleto.
 
-1. tests/test_drive.py, EstadoSoUmPorVez.test_recibos_juntos_nao_se_perdem: capturar a saída dos 6 processos (hoje vai
-   para DEVNULL) e achar por que um saiu 2 no Windows; teste vermelho antes do conserto em sdd/bin/sdd-drive.sh.
-2. tests/test_sdd_open.py, Projeto.setUp: o git add -A passou de 120 s na fatia 7; medir antes de mudar o limite.
+Leia primeiro: sdd/handoffs/HANDOFF_F30_QUALIDADE_CODIGO.md (Falta, itens 1, 5 e 7) e a seção "## Sempre" de
+sdd/playbook.md. Pasta: frente nova pela sdd-new-session a partir de origin/main, em ~/rdd-worktrees. Setup: git status
+limpo; GIT_TERMINAL_PROMPT=0 git fetch origin main && git log --oneline HEAD..origin/main.
 
-Restrições: nunca gh run rerun de run antigo; nunca mover tag publicada; não rodar duas suítes em paralelo (LM-031);
-PR com o CI inteiro verde antes da tag; release com 1 OK. O log está nos artefatos testes-windows-fatia-2 e -7 do run.
+1. Evidência: gh run download 45634528055 -n testes-windows-fatia-2 -n testes-windows-fatia-7.
+2. tests/test_drive.py, EstadoSoUmPorVez.test_recibos_juntos_nao_se_perdem: dos 6 recibos simultâneos, um saiu 2
+   ([0, 0, 2, 0, 0, 0]). O teste manda a saída para DEVNULL: primeiro faça-o guardar e mostrar a saída de cada processo.
+   Depois ache a causa em sdd/bin/sdd-drive.sh (trava de estado, e a troca do arquivo com os.replace, perto da linha
+   186) sem supor: teste vermelho antes do conserto, e o verde repetido no Windows pelo CI do PR.
+3. tests/test_sdd_open.py, Projeto.setUp: o git add -A passou de 120 s na fatia 7 (TimeoutExpired em tests/apoio.py).
+   Meça antes de mudar o limite; lentidão da máquina é só inferência.
+4. Lote da curadoria: traga o commit 6862ec0 da branch local lote-curadoria-20261125 (git cherry-pick). Em conflito no
+   playbook, pare no git cherry-pick --abort e siga o item 9 de .agents/skills/sdd-playbook/references/lote.md. Depois,
+   playbook-lint.sh e playbook-curator.sh --validar-inv. O envio publica uma Release, porque muda sdd/playbook.md.
+
+Pipeline: conserto (trilha curta ou completa pela sdd-release) → revisão adversarial → Verify Gate → PR com o CI
+inteiro verde ANTES da tag → repetir adversarial-review.sh --conferir → sdd-release com 1 OK → conferir a Release no ar
+(runs, shasum -c, VERSION, MANIFEST) → geração de teste do starter → ficha e PLANO.
+
+Restrições: nunca --force (nem --force-with-lease); nunca mover tag publicada; nunca gh run rerun de run antigo; não usar
+git stash nu; não rodar duas suítes em paralelo (LM-031); texto novo de skill em frase positiva (F29); se o CI da tag
+cair, parar e avisar. Falar em português, para leigo, com recomendação.
 ```
 
 ---
