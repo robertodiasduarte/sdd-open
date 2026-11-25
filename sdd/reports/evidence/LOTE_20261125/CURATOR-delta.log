@@ -1,0 +1,122 @@
+$ bash sdd/bin/playbook-curator.sh --aplicar lote-delta.txt sdd/playbook.md > novo.md
+LM-001 ajudou+1
+LM-002 ajudou+1
+LM-006 ajudou+1
+LM-007 ajudou+1
+LM-012 ajudou+1
+LM-013 ajudou+1
+LM-014 ajudou+1
+LM-015 ajudou+1
+LM-030 ajudou+1
+LM-017 ajudou+1
+LM-018 ajudou+1
+LM-020 ajudou+1
+LM-023 ajudou+1
+LM-026 ajudou+1
+LM-029 ajudou+1
+LM-034 ajudou+1
+LM-035 ajudou+1
+LM-037 ajudou+1
+LM-038 ajudou+1
+LM-022 ajudou+1
+LM-005 ajudou+1
+LM-003 ajudou+1
+LM-012 mordeu+1
+LM-042 ajudou+1
+ADD Reviews / harness :: sup: `export-ignore` `-export-ignore` `git archive` `.gitattributes` `sdd/bin/**` :: Com `sdd/** export-ignore`, liberar só o conteúdo (`pasta/** -export-ignore`), sem a linha da própria pasta, deixa a pasta inteira fora do `git archive`, calado (medido no DESIGN da F26, git 2.50.1). **Do instead:** para cada pasta liberada, escreva as 2 linhas (`pasta -export-ignore` e `pasta/** -export-ignore`) e prove pelo pacote montado, com um teste que tira a linha da pasta e espera o gate vermelho. → ficha: — · promovido_para: —
+ADD Reviews / harness :: sup: `regex` `e-mail` `quadrático` `linha longa` `re.finditer` :: Regex de e-mail com quantificador sem teto tem custo quadrático em linha longa: na F26, a varredura dos documentos levou a suíte de 28 para 74 minutos e um teste estourou o tempo. **Do instead:** quantificadores com teto (`{1,64}`, `{1,253}`), avaliar só a linha que tem `@` e medir com uma linha de 600 KB antes do gate. → ficha: — · promovido_para: —
+ADD Reviews / harness :: sup: `tar` `COPYFILE_DISABLE` `._` `macOS` `anexo` :: O `tar` do macOS pode pôr arquivos `._<nome>` (atributos estendidos) no pacote: na F26, o anexo da Release montado no Mac saiu com eles, e o pacote deixou de ser igual à pasta. **Do instead:** `COPYFILE_DISABLE=1 tar …` em todo pacote montado por script, e confira a lista do pacote contra a pasta. → ficha: — · promovido_para: —
+ADD Reviews / harness :: sup: `-text` `CRLF` `.gitattributes` `blob` `evidência do Windows` :: Log de evidência gravado no Windows pode ter CRLF; com a normalização de fim de linha, copiá-lo para outra branch muda o blob e a conferência por blob reprova (na F26, 40 logs seriam alterados na migração). **Do instead:** `sdd/reports/evidence/** -text` no `.gitattributes`, antes de copiar: evidência é guardada byte a byte. → ficha: — · promovido_para: —
+ADD Reviews / harness :: sup: `--conferir` `--pode-aposentar` `commit da migração` `migração de uma vez` :: A conferência de uma migração feita uma vez não pode ler a `HEAD`: os commits normais de depois (papel da release, entrada nova na fila) a deixam vermelha e travam a aposentadoria da origem à toa (na F26, o `--conferir` lia a `HEAD`). **Do instead:** a conferência lê o commit que criou a lista da migração (`git log --diff-filter=A`); teste com um commit de documento e uma entrada de fila depois da migração. → ficha: — · promovido_para: —
+ADD Reviews / harness :: sup: `git archive` `checkout` `os.walk` `documentos` `Verify Gate` :: O Verify Gate que roda a suíte numa cópia de `git archive` não vê o que a trava deixa fora do pacote; o CI roda no checkout e vê: na F26, `test_seguranca_catalogo` reprovou um documento migrado só no clone. **Do instead:** quando a frente põe no repositório arquivos fora do pacote, rode a suíte também num clone com o checkout inteiro antes de declarar o gate verde. → ficha: — · promovido_para: —
+LM-001 ajudou+1
+LM-002 ajudou+1
+LM-003 ajudou+1
+LM-006 ajudou+1
+LM-009 ajudou+1
+LM-012 ajudou+1
+LM-014 ajudou+1
+LM-017 ajudou+1
+LM-018 ajudou+1
+LM-020 ajudou+1
+LM-023 ajudou+1
+LM-026 ajudou+1
+LM-028 ajudou+1
+LM-029 ajudou+1
+LM-031 ajudou+1
+LM-034 ajudou+1
+LM-035 ajudou+1
+LM-037 ajudou+1
+LM-038 ajudou+1
+ADD Reviews / harness :: sup: `<<'PY'` `_sdd_c.reconfigure` `test_f16w2_saida` `sdd/bin` :: Script `.sh` novo do pacote com Python embutido (heredoc `<<'PY'`) que troca a saída para UTF-8 com outro nome de variável reprova no `test_f16w2_saida`, que procura a linha `_sdd_c.reconfigure(…)` à letra nos primeiros 1.200 caracteres de cada heredoc; na F27 isso só apareceu no Verify Gate inteiro (+28 min). **Do instead:** copie à letra, para o início de cada heredoc, o bloco de um script vizinho de `sdd/bin` (de `import sys as _sdd_sys` ao `pass`) e rode `python3 -B -m unittest discover -s tests -p 'test_f16w2_saida.py'` antes do gate. → ficha: — · promovido_para: —
+ADD Reviews / harness :: sup: `mktemp -d` `TMPDIR` `macOS` :: No macOS, `mktemp -d` sem molde ignora o `TMPDIR` e cria a pasta no temporário do sistema: com o `TMPDIR` apontado para dentro do projeto, a guarda "a pasta temporária não pode cair dentro do projeto" nunca dispara no Mac, e o teste dela falha (na F27, no diagnóstico do banco). **Do instead:** use `mktemp -d "${TMPDIR:-/tmp}/<nome>.XXXXXX"` e teste a guarda com o `TMPDIR` apontado para dentro do projeto. → ficha: — · promovido_para: —
+ADD Reviews / harness :: sup: `web/MODO_WEB.md` `version` `gerar-starter` `linha de identificação` :: Subir a versão da `sdd-define`, da `sdd-design` ou da `sdd-build` só no `SKILL.md` derruba o gerador do starter (sai 65: "o modo tem de trazer, uma vez, a mesma linha de identificação do SKILL.md") e os testes de `test_gerar_starter`, porque o `web/MODO_WEB.md` da skill tem de trazer a mesma linha `sdd-<skill> vX.Y.Z · …`. **Do instead:** ao subir a versão, troque a linha nos dois arquivos no mesmo commit e rode `python3 -B -m unittest discover -s tests -p 'test_gerar_starter.py'` antes do gate. → ficha: — · promovido_para: —
+LM-001 ajudou+1
+LM-002 ajudou+1
+LM-003 ajudou+1
+LM-009 ajudou+1
+LM-010 ajudou+1
+LM-011 ajudou+1
+LM-012 ajudou+1
+LM-014 ajudou+1
+LM-029 ajudou+1
+LM-034 ajudou+1
+LM-037 ajudou+1
+LM-042 ajudou+1
+LM-043 ajudou+1
+ADD Reviews / harness :: sup: `S11` `sk-or-` `evals/cases.json` `fixture` :: Texto de cenário, fixture ou exemplo com a forma de uma chave (`sk-` seguido de 32 ou mais letras, números, `-` ou `_`, com ao menos um número) bloqueia a varredura S11 da release como chave secreta, mesmo inventado e com "exemplo" escrito nele (a LM-020 trata do mesmo bloqueio nos logs de evidência). **Do instead:** descreva a chave em palavras ("um texto que começa por sk-or-") e monte o valor na hora da execução; rode `bash sdd/bin/seguranca-varredura.sh` antes do commit de arquivo de cenário. → ficha: — · promovido_para: —
+ADD Reviews / harness :: sup: `test_contrato_build_release` `test_f19_textos` `nome de engine` `OpenRouter` :: As seções de revisão das skills de fase (design, build, release) não podem nomear engine nem provedor (nomes de CLI ou "OpenRouter"): o `test_contrato_build_release` e, em parte delas, o `test_f19_textos` reprovam a palavra. **Do instead:** nas fases, escreva "credencial de uma engine"; o nome do provedor mora na skill própria e nos docs; rode os 2 módulos (`python3 -B -m unittest discover -s tests -p 'test_contrato_build_release.py'` e `-p 'test_f19_textos.py'`) antes do gate. → ficha: — · promovido_para: —
+ADD Reviews / harness :: sup: `evidence` `run_in_background` `VERIFY_GATE` `log pela metade` :: Um log de evidência redirecionado (`{ …; } > arquivo`) num comando em segundo plano fica incompleto até o comando acabar; um `git add` da pasta no meio commita o log pela metade (na F28, o do Verify Gate foi commitado com 95 bytes, sem saída nem exit). **Do instead:** grave o log longo fora de `sdd/reports/evidence/`, copie para lá só depois do exit e confira que ele termina com o exit antes do commit. → ficha: — · promovido_para: —
+ADD Reviews / harness :: sup: `urllib` `redirect` `Authorization` `Bearer` :: `urllib.request.urlopen` segue 3xx e repassa o cabeçalho `Authorization` ao novo endereço, inclusive outro host: um redirect leva a chave para fora. **Do instead:** em chamada com chave, use um opener com `HTTPRedirectHandler` cujo `redirect_request` devolve `None` (o 3xx vira erro) e teste com um servidor local que responde 302 para outro host. → ficha: — · promovido_para: —
+LM-002 ajudou+1
+LM-003 ajudou+1
+LM-035 ajudou+1
+LM-038 ajudou+1
+LM-037 ajudou+1
+LM-001 ajudou+1
+LM-002 ajudou+1
+LM-003 ajudou+1
+LM-005 ajudou+1
+LM-009 ajudou+1
+LM-014 ajudou+1
+LM-029 ajudou+1
+LM-042 ajudou+1
+LM-015 ajudou+1
+LM-017 ajudou+1
+LM-019 ajudou+1
+LM-018 ajudou+1
+LM-035 ajudou+1
+LM-037 ajudou+1
+LM-038 ajudou+1
+LM-044 ajudou+1
+LM-001 ajudou+1
+LM-002 ajudou+1
+LM-003 ajudou+1
+LM-006 ajudou+1
+LM-009 ajudou+1
+LM-014 ajudou+1
+LM-029 ajudou+1
+LM-042 ajudou+1
+LM-018 ajudou+1
+LM-035 ajudou+1
+LM-036 ajudou+1
+LM-037 ajudou+1
+LM-038 ajudou+1
+ADD Reviews / harness :: sup: `unittest discover` `Ran 0 tests` `python 3.9` `verify-gate` `test -f` :: No Python 3.9 (o `/usr/bin/python3` do macOS), `unittest discover` sem teste que case o padrão sai 0 ("Ran 0 tests … OK"): um Verify Gate que só roda `discover -p 'test_fNN_*.py'` fica verde antes de o teste existir (medido na F30 S1, antes do código). **Do instead:** ao criar um módulo de teste da feature, acrescente `test -f tests/<módulo>.py` ao gate, antes do discover, no mesmo commit; confira o vermelho do gate na árvore de antes. → ficha: — · promovido_para: —
+LM-001 ajudou+1
+LM-002 ajudou+1
+LM-003 ajudou+1
+LM-014 ajudou+1
+LM-029 ajudou+1
+LM-034 ajudou+1
+LM-042 ajudou+1
+LM-016 ajudou+1
+LM-017 ajudou+1
+LM-033 ajudou+1
+LM-035 ajudou+1
+LM-037 ajudou+1
+LM-038 ajudou+1
+ADD Reviews / harness :: sup: `grep -E` `emoji` `🛑` `Git Bash` `pre-commit` :: No Git Bash do Windows, `grep -E '🛑'` não casou as linhas com o emoji: o `pre-commit` caiu calado no caminho de reserva (as últimas 5 linhas) e a recusa perdeu parte da mensagem (F30 S3, no CI). **Do instead:** procure emoji em saída com `LC_ALL=C grep -F` e tenha um teste com mais linhas do que o caminho de reserva mostra. → ficha: — · promovido_para: —
+ADD Reviews / harness :: sup: `jscpd` `min-lines` `ferramenta externa` `filtro padrão` `falso nenhum` :: Ferramenta externa com filtro padrão não declarado dá falso "nenhum": o `jscpd` 5.4.3 sem `--min-lines` perde o trecho repetido de até 5 linhas, e com `--min-lines 1` ainda perde o de 1 linha (F30 S3, medido na revisão). **Do instead:** passe todo filtro de forma explícita (aqui, `--min-lines 0`) e meça os valores de fronteira com a ferramenta real antes de afirmar. → ficha: — · promovido_para: —
+RESULTADO: DELTA APLICADO (119 linha(s))
+[exit=0]

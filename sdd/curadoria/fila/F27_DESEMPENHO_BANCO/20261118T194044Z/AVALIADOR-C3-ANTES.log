@@ -1,5 +1,0 @@
-$ (cópia de git archive a5a5c5e, antes do conserto do ciclo 3, com os testes novos) python3 -m unittest <3 testes>
-test_desempenho_diagnostico.DadoDeFora.test_conexao_chave_valor_como_valor_de_opcao_e_recusada rc=1
-test_desempenho_diagnostico.DadoDeFora.test_mascara_com_aspas_duplas_e_comentario_aninhado rc=1
-test_desempenho_diagnostico.Compila.test_nucleos_sem_aviso rc=1
-[exit=0]

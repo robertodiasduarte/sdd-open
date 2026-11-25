@@ -1,5 +1,0 @@
-$ (cópia de git archive e1225ef, antes do conserto do ciclo 2, com os testes novos) python3 -m unittest <3 testes>
-test_desempenho_diagnostico.DadoDeFora.test_conexao_como_valor_de_opcao_e_recusada rc=1
-test_desempenho_diagnostico.DadoDeFora.test_mascara_le_comentario_texto_e_numero_juntos rc=1
-test_desempenho_varredura.Stack.test_sem_banco_grava_a_saida rc=1
-[exit=0]

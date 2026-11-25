@@ -1,7 +1,0 @@
-$ bash /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-sdd-open-f27-db-performance/1c932530-2974-4176-9efc-5abde2eaf63f/scratchpad/aval_mutantes.sh   # depois das propostas 1 a 3 do contrato, HEAD 615cccb
-HEAD: 615cccb
-✅ MORTO M-A teto sem ordem de gravidade (AT-005) — test_desempenho_varredura.py rc=1 — FAILED (failures=1)
-✅ MORTO M-B confira à mão repetido a cada aviso (AT-001) — test_desempenho_varredura.py rc=1 — FAILED (failures=1)
-✅ MORTO M-C diagnóstico sem ordem de gravidade (AT-008) — test_desempenho_diagnostico.py rc=1 — FAILED (failures=1)
-✅ MORTO M-D já existia pelo número da linha, não pelo texto (AT-003) — test_desempenho_varredura.py rc=1 — FAILED (failures=1)
-[exit=0]

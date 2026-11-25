@@ -1,8 +1,0 @@
-$ bash vermelho2.sh   # os testes do ciclo 1 do avaliador num clone de d5a2770 (o que ele avaliou), com o checkout e os documentos, como o CI
-vermelho · Portadas.test_sem_referencia_ao_starter · AssertionError: Lists differ: ['.agents/skills/sdd-checar-ambiente/scripts/checar.sh: sdd-starter'] != []
-vermelho · SemMaterialDeOrigem · AssertionError: Lists differ: ['sdd/handoffs/HANDOFF_INCORPORAR_STARTER.md'] != []
-vermelho · Varredura.test_at004_cada_regra_reprova_e_o_vizinho_passa · AssertionError: 0 != 1 : ✅ documentos do repositório: 1 arquivo(s), nada achado.
-vermelho · Varredura.test_at012_texto_com_ref_olha_o_historico_da_tag · AssertionError: 0 != 1 : ✅ todos os arquivos de arquivo/filho: 6 arquivo(s), nada achado.
-vermelho · Varredura.test_at011_bruto_compactado_nada_enviado_pela_varredura · AssertionError: 0 != 1 : ✅ pasta /private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/sdd-open-5gyirq_3/br
-vermelho · Varredura.test_at012_contributing_tem_o_procedimento · AssertionError: 'git filter-repo' not found in "\n\nThe working documents of each workstream (specs, reports, 
-[exit=0]

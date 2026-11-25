@@ -1,0 +1,35 @@
+$ bash sdd/bin/playbook-curator.sh --conferir-entrada sdd/curadoria/fila/F26_DOCS_NA_MAIN/20261118T140442Z sdd/playbook.md --inv sdd/invariants.md
+staging: /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/sdd-curadoria-5a216e0e1f9d/LOTE_F26_DOCS_NA_MAIN_20261118T140442Z
+RESULTADO: ENTRADA CONFERIDA
+→ sele o staging e despache o curador com a colheita.txt dele; nada foi aplicado.
+[exit=0]
+$ bash sdd/bin/playbook-curator.sh --conferir-entrada sdd/curadoria/fila/F27_DESEMPENHO_BANCO/20261118T194044Z sdd/playbook.md --inv sdd/invariants.md
+staging: /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/sdd-curadoria-5a216e0e1f9d/LOTE_F27_DESEMPENHO_BANCO_20261118T194044Z
+RESULTADO: ENTRADA CONFERIDA
+→ sele o staging e despache o curador com a colheita.txt dele; nada foi aplicado.
+[exit=0]
+$ bash sdd/bin/playbook-curator.sh --conferir-entrada sdd/curadoria/fila/F28_REVISORES_OPENROUTER/20261119T095433Z sdd/playbook.md --inv sdd/invariants.md
+staging: /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/sdd-curadoria-5a216e0e1f9d/LOTE_F28_REVISORES_OPENROUTER_20261119T095433Z
+RESULTADO: ENTRADA CONFERIDA
+→ sele o staging e despache o curador com a colheita.txt dele; nada foi aplicado.
+[exit=0]
+$ bash sdd/bin/playbook-curator.sh --conferir-entrada sdd/curadoria/fila/F29_SCANNERS_SKILLS/20261120T234916Z sdd/playbook.md --inv sdd/invariants.md
+staging: /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/sdd-curadoria-5a216e0e1f9d/LOTE_F29_SCANNERS_SKILLS_20261120T234916Z
+RESULTADO: ENTRADA CONFERIDA
+→ sele o staging e despache o curador com a colheita.txt dele; nada foi aplicado.
+[exit=0]
+$ bash sdd/bin/playbook-curator.sh --conferir-entrada sdd/curadoria/fila/F30_QUALIDADE_CODIGO/20261124T090127Z sdd/playbook.md --inv sdd/invariants.md
+staging: /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/sdd-curadoria-5a216e0e1f9d/LOTE_F30_QUALIDADE_CODIGO_20261124T090127Z
+RESULTADO: ENTRADA CONFERIDA
+→ sele o staging e despache o curador com a colheita.txt dele; nada foi aplicado.
+[exit=0]
+$ bash sdd/bin/playbook-curator.sh --conferir-entrada sdd/curadoria/fila/F30_QUALIDADE_CODIGO/20261124T135615Z sdd/playbook.md --inv sdd/invariants.md
+staging: /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/sdd-curadoria-5a216e0e1f9d/LOTE_F30_QUALIDADE_CODIGO_20261124T135615Z
+RESULTADO: ENTRADA CONFERIDA
+→ sele o staging e despache o curador com a colheita.txt dele; nada foi aplicado.
+[exit=0]
+$ bash sdd/bin/playbook-curator.sh --conferir-entrada sdd/curadoria/fila/F30_QUALIDADE_CODIGO/20261125T143002Z sdd/playbook.md --inv sdd/invariants.md
+staging: /var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/sdd-curadoria-5a216e0e1f9d/LOTE_F30_QUALIDADE_CODIGO_20261125T143002Z
+RESULTADO: ENTRADA CONFERIDA
+→ sele o staging e despache o curador com a colheita.txt dele; nada foi aplicado.
+[exit=0]
