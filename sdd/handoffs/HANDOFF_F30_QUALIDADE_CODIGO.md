@@ -8,7 +8,7 @@
 |-----------|-------|
 | **Feature** | F30_QUALIDADE_CODIGO |
 | **Objetivo** | O código que o método gera segue Clean Code e TDD: lint e tipos a cada tarefa, regras de qualidade por stack, vermelho antes do verde, sabotagem do gate, refatorar depois do verde e métricas de forma no diff (só aviso) |
-| **Status** | ✅ As 3 fatias publicadas: S3 na `v2.28.0` (2026-11-25, `33b5831`; Release conferida; o `publish-gate` da `main` caiu, ver Falta) e starter **`v1.5.33`**; S2 na `v2.27.3` (as tags `v2.27.0` a `v2.27.2` ficaram sem Release) e correção do `sdd-drive` na `v2.27.4`; S1 na `v2.26.0` |
+| **Status** | ✅ As 3 fatias publicadas: S3 na `v2.28.0` (2026-11-25, `33b5831`; Release conferida; o `publish-gate` da `main` caiu em `33b5831` e passou em `30b2904` e `e47c2ec`, ver Falta) e starter **`v1.5.33`**; S2 na `v2.27.3` (as tags `v2.27.0` a `v2.27.2` ficaram sem Release) e correção do `sdd-drive` na `v2.27.4`; S1 na `v2.26.0` |
 | **Última sessão** | 2026-11-25 |
 | **Branch / pasta** | S3: `s3-open-sdd-unclebob` · `/Users/robertoduarte/rdd-worktrees/s3-open-sdd-unclebob` (PR #45 para o CI antes da tag; a `main` avançou direto). S2: `s2-sdd-open-uncle-bob` · `/Users/robertoduarte/rdd-worktrees/s2-sdd-open-uncle-bob` (PR #43 para o CI antes da tag; a `main` avançou direto para o HEAD da frente); correção do `sdd-drive`: `fix-sdd-drive-temporario`, na mesma pasta (PR #44). S1: `f30-sdd-open-uncle-bob` |
 | **Artefatos** | arquivados em `sdd/archive/F30_QUALIDADE_CODIGO/` (DEFINE, DESIGN, ESCOPO e BUILD_REPORT) · `sdd/features/AVALIACAO_F30_UNCLE_BOB.md` · `sdd/reviews/` (5 avaliações `AVALIACAO_F30_QUALIDADE_CODIGO_*` e `LEDGER_REVISAO_F30_QUALIDADE_CODIGO.md`) · `sdd/releases/F30_QUALIDADE_CODIGO/` (um ledger por tag) · `sdd/reports/evidence/F30_QUALIDADE_CODIGO/` |
@@ -29,7 +29,7 @@
 
 ## Falta
 
-1. 🐛 **`publish-gate` da `main` vermelho em `33b5831` (run 45634528055), 1 teste em cada uma de 2 fatias do Windows.** Os mesmos testes passaram no mesmo commit nos runs `release` da tag (45634526448) e da `main` (45634528110); a S3 não mexeu no `sdd-drive`, no `init` nem nesses testes. O Roberto mandou seguir com o vermelho anotado. Investigar:
+1. 🐛 **`publish-gate` da `main` vermelho em `33b5831` (run 45634528055), 1 teste em cada uma de 2 fatias do Windows.** Os mesmos testes passaram no mesmo commit nos runs `release` da tag (45634526448) e da `main` (45634528110); a S3 não mexeu no `sdd-drive`, no `init` nem nesses testes. O Roberto mandou seguir com o vermelho anotado. Depois, o `publish-gate` passou inteiro em `30b2904` e `e47c2ec` (só papel; mesmo código), o que não prova que a falha sumiu. Investigar:
    - fatia 2, `test_drive.EstadoSoUmPorVez.test_recibos_juntos_nao_se_perdem`: de 6 recibos simultâneos, um saiu 2. O teste descarta a saída, então a causa não aparece: capturar a saída de cada processo e reproduzir no Windows. É a área corrigida na `v2.27.4`: o conserto pode estar incompleto;
    - fatia 7, `test_sdd_open.Projeto.test_doctor_acusa_env_salvo_no_git_e_sai_0`: o `git add -A` do `setUp` passou de 120 s (`TimeoutExpired`). Lentidão do runner é inferência, sem prova.
    - ⚠️ Avisos da release S3: estão no ledger `s3_v2.28.0.yaml` (nota de atualização, avaliador antes dos consertos, unidades diferentes no Windows só com teste de texto, ferramentas falsas no CI).
@@ -67,7 +67,7 @@
 
 ## Eventos
 
-- 2026-11-25 — `publish-gate` do commit de papel `30b2904` (45659227692): 17 de 18 jobs verdes, com as fatias 2 e 7 do Windows; o do macOS seguia em andamento quando esta linha foi escrita e o Roberto dispensou a espera. O mesmo código caiu em `33b5831` e passou aqui: falha intermitente.
+- 2026-11-25 — `publish-gate` do commit de papel `30b2904` (45659227692): verde, 18 de 18 jobs. O do `e47c2ec` (45668336879), a ponta da `main`, também: 18 de 18. O mesmo código caiu em `33b5831` e passou nos dois: falha intermitente, em conserto na branch `fix-sdd-drive-recibos`.
 - 2026-11-25 — Lote da curadoria julgado (7 entradas, blocos válidos, fronteira limpa); envio adiado pelo Roberto. Faxina com o OK dele: branches remotas `s3-open-sdd-unclebob` (`cd70bed`) e `gen/v2.28.0` do starter (`f455e1b`) apagadas, as duas já na `main`; o PR #26 do starter ficou CLOSED, não MERGED.
 - 2026-11-25 — Release da S3 com o OK do Roberto ("sim, publica a v2.28.0"): CI inteiro verde no PR #45 (18/18, `cd70bed`), `--conferir` repetido (CONFERE), push atômico `main` + tag em `33b5831`. Release conferida: runs `release` 45634526448 (tag) e 45634528110 (`main`) verdes, publicada às 15:21 UTC pelo run da `main`; `shasum -c` OK, `VERSION` = `v2.28.0`, 792 arquivos = 792 linhas do `MANIFEST`, nenhum faltando, `metricas-diff.sh` igual ao da tag. O `publish-gate` 45634528055 caiu (item 1 de Falta) e o Roberto mandou seguir.
 - 2026-11-25 — starter: 17ª geração pela tag `v2.28.0` num clone limpo (`f455e1b`; check-gerado VERDE, check-versions e publish-check PASS, testes, gate da KB e 19 zips), PR #26 de lá com CI verde, avanço direto da `main`. O Auto Release (45650576956) caiu no envio dos arquivos durante um incidente do GitHub (rascunho com 9 arquivos, sem tag); com o OK do Roberto, tag `v1.5.33` posta à mão depois do incidente: run 45658965189 verde, rascunho reaproveitado, 19 zips OK no `shasum -c` e iguais ao commit.
@@ -102,7 +102,7 @@ Corrigir a falha intermitente do sdd-drive no Windows (sdd-open), pendência da 
 
 Contexto: a F30 está publicada (Open v2.28.0; starter v1.5.33). O publish-gate da main caiu em 33b5831 (run
 45634528055), 1 teste em cada uma de 2 fatias do Windows; o mesmo código passou nos runs release e no publish-gate de
-30b2904. A S3 não mexeu nessas áreas. A v2.27.4 já tinha tratado uma falha vizinha: o conserto pode estar incompleto.
+30b2904 e de e47c2ec (18 de 18 nos dois). A S3 não mexeu nessas áreas. A v2.27.4 já tinha tratado uma falha vizinha: o conserto pode estar incompleto.
 
 Leia primeiro: sdd/handoffs/HANDOFF_F30_QUALIDADE_CODIGO.md (Falta, itens 1, 5 e 7) e a seção "## Sempre" de
 sdd/playbook.md. Pasta: frente nova pela sdd-new-session a partir de origin/main, em ~/rdd-worktrees. Setup: git status
