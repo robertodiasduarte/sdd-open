@@ -48,8 +48,8 @@ class AT022Textos(unittest.TestCase):
         self.assertIn("references/metricas-do-diff.md", ler(".agents/skills/sdd-build/web/MODO_WEB.md"))
 
     def test_molde_config_contratos(self):
-        molde = (RAIZ / "sdd/templates/BUILD_REPORT_TEMPLATE.md").read_text(encoding="utf-8")
-        self.assertRegex(molde, r"(?m)^## Qualidade \(avisos\)$")
+        for rel in ("sdd/templates/BUILD_REPORT_TEMPLATE.md", ".agents/skills/sdd-build/web/assets/BUILD_REPORT_TEMPLATE.md"):
+            self.assertRegex((RAIZ / rel).read_text(encoding="utf-8"), r"(?m)^## Qualidade \(avisos\)$")
         config = (RAIZ / "sdd/config.example.yaml").read_text(encoding="utf-8")
         bloco = config[config.index("\nqualidade:\n"):]
         for chave, valor in (("max_complexidade", 10), ("max_linhas", 60), ("max_parametros", 5), ("min_tokens", 50)):

@@ -12,6 +12,7 @@ from __future__ import annotations
 
 import hashlib
 import json
+import re
 import shutil
 import sys
 import unittest
@@ -78,7 +79,7 @@ class Base(Sandbox):
         if relatorio is None:
             relatorio = jscpd_json(par("src/copia.py", "src/notas.py"))
         (self.tmp / "jscpd.json").write_text(relatorio, encoding="utf-8")
-        (self.tmp / "diff.json").write_text(relatorio if no_diff is None else no_diff, encoding="utf-8")
+        (self.tmp / "diff.json").write_text(no_diff if no_diff is not None else re.sub(r'"duplicates": \[.*\], "stat', '"duplicates": [], "stat', relatorio), encoding="utf-8")
         self.falsa("jscpd", 'printf "%%s\\n" "jscpd $*" >> "%s"\n[ "$1" = --version ] && { echo "jscpd 5.4.3"; exit 0; }\n'
                    'while [ $# -gt 0 ]; do [ "$1" = --output ] && out="$2"; shift; done\n'
                    'find . -type f >> "%s"\n'
@@ -160,7 +161,7 @@ class AT017Achados(Base):
         self.jscpd(jscpd_json())
         out, err = self.ok()
         self.assertIn("nenhum aviso (1 função medida", out)
-        self.assertIn("nenhum aviso (3 arquivos do diff lidos, de 2", out)
+        self.assertIn("nenhum aviso (2 arquivos do diff lidos, de 2", out)
         self.assertIn("RESULTADO: NADA ACHADO", err)
 
     def test_teto_de_20_itens_o_pior_primeiro(self):
@@ -260,6 +261,21 @@ class AT018NaoMedido(Base):
         out, _ = self.ok()
         self.nao_medido(self.parte(out, "Duplicação"), "jscpd não leu nenhum arquivo do diff")
 
+    def test_nome_do_jscpd_em_outra_forma(self):
+        """Revisão do código, rodada 1, N1: o nome que não casa não pode sumir calado."""
+        self.frente()
+        self.escreve(self.r, "src/Tela.vue", NOTAS)
+        self.lizard()
+        self.jscpd(jscpd_json(par("./src/copia.py", "src\\notas.py"), par("src/Tela.vue:javascript", "src/notas.py")))
+        out, _ = self.ok()
+        self.assertIn("`src/copia.py:1-11` repete `src/notas.py:1-11`", out)
+        self.assertIn("`src/Tela.vue:1-11` repete", out)
+        for ruim in ("/outro/lugar/copia.py", "src/sumiu.py", "../copia.py"):
+            with self.subTest(nome=ruim):
+                self.jscpd(jscpd_json(par(ruim, "src/notas.py")))
+                out, _ = self.ok()
+                self.nao_medido(self.parte(out, "Duplicação"), "jscpd devolveu saída que não entendi")
+
     def test_config_do_projeto_nao_chega_a_ferramenta(self):
         """Revisão do DESIGN, N2: nem .jscpd.json, nem a chave jscpd do package.json, nem o .gitignore."""
         self.frente()
@@ -285,7 +301,7 @@ class AT019SoODiff(Base):
         self.commit(self.r)
         self.lizard('31,15,132,6,31,"v","./src/velha.py","velha","velha( a )",1,31\n'
                     '2,1,5,0,2,"p","./src/velha.py","pequena","pequena( )",34,35\n')
-        self.jscpd(jscpd_json(par("src/notas.py", "src/outra.py")))
+        self.jscpd(jscpd_json(par("src/notas.py", "src/velha.py")))
         out, _ = self.ok()
         self.assertNotIn("`velha`", out)
         self.assertNotIn("repete", out)
@@ -294,8 +310,8 @@ class AT019SoODiff(Base):
     def test_par_em_arquivo_do_diff_mas_fora_das_linhas(self):
         self.escreve(self.r, "src/notas.py", NOTAS + "\n\nX = 1\n")
         self.commit(self.r)
-        self.lizard(CSV_NOTAS)
-        self.jscpd(jscpd_json(par("src/notas.py", "src/outra.py")))
+        self.lizard(CSV_NOTAS.replace("copia", "notas"))
+        self.jscpd(jscpd_json(par("src/notas.py", "src/velha.py")))
         out, _ = self.ok()
         self.assertNotIn("repete", out)
 
@@ -348,6 +364,7 @@ class AT019SoODiff(Base):
 
     def test_so_linguagem_fora_da_complexidade(self):
         self.escreve(self.r, "src/x.sh", "echo oi\n")
+        self.escreve(self.r, "src/y.sh", "echo oi\n")
         self.lizard()
         self.jscpd(jscpd_json(par("src/x.sh", "src/y.sh", ini=1, fim=1)))
         out, _ = self.ok()
@@ -359,11 +376,10 @@ class AT019SoODiff(Base):
     def test_par_com_o_lado_do_diff_em_segundo(self):
         self.frente()
         self.lizard()
-        self.jscpd(jscpd_json(par("src/a_notas.py", "src/copia.py"), par("src/copia.py", "src/a_notas.py"),
-                              par("docs/x.md", "src/copia.py")))
+        self.jscpd(jscpd_json(par("src/notas.py", "src/copia.py"), par("src/copia.py", "src/notas.py")))
         out, _ = self.ok()
         self.assertEqual(out.count("repete"), 1, out)
-        self.assertIn("`src/copia.py:1-11` repete `src/a_notas.py:1-11`", out)
+        self.assertIn("`src/copia.py:1-11` repete `src/notas.py:1-11`", out)
 
     def test_nenhuma_funcao_do_diff(self):
         self.escreve(self.r, "src/const.py", "X = 1\n")
@@ -445,6 +461,23 @@ class AT020Limites(Base):
                     rc, out, err = self.mede()
                     self.assertEqual((rc, out), (64, ""))
                     self.assertIn("qualidade." + chave, err)
+
+    def test_raiz_numa_subpasta(self):
+        """Revisão do código, rodada 1, N2: no monorepo, o projeto é a subpasta de --raiz."""
+        self.escreve(self.r, "app/sdd/config.yaml", "qualidade:\n  max_complexidade: 20\n  max_parametros: 5\n")
+        self.escreve(self.r, "app/sdd/bin/x.py", GRANDE)
+        self.escreve(self.r, "app/src/nova.py", GRANDE)
+        self.escreve(self.r, "src/fora.py", GRANDE)
+        self.commit(self.r)
+        self.lizard(CSV_GRANDE)
+        self.jscpd(jscpd_json())
+        out, _ = self.ok("--raiz", "app")
+        self.assertIn("`src/nova.py:1-31` `grande`: 6 parâmetros (limite 5)", out)
+        self.assertNotIn("complexidade 15", out)
+        chamada = [l for l in self.chamadas.read_text(encoding="utf-8").splitlines() if l.startswith("lizard --csv")]
+        self.assertEqual(chamada, ["lizard --csv ./src/nova.py"])
+        self.escreve(self.r, "app/sdd/config.yaml", "qualidade:\n  max_linhas: zero\n")
+        self.assertEqual(self.mede("--raiz", "app")[0], 64)
 
     def test_uso_errado_64(self):
         fora = self.tmp / "fora"

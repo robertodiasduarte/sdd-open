@@ -128,6 +128,20 @@
 
 ---
 
+## Qualidade (avisos)
+
+> Complexidade e duplicação só do código novo; avisam e não reprovam. Sem a ferramenta: `não medido: <ferramenta> ausente`.
+
+### Complexidade
+
+- {avisos · nenhum aviso (N funções medidas) · não medido: causa}
+
+### Duplicação
+
+- {avisos · nenhum aviso (N arquivos lidos) · não medido: causa}
+
+---
+
 ## Acceptance Test Verification
 
 | ID | Scenario | Antes | Status | Evidence |

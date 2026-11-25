@@ -50,7 +50,9 @@ if ! sdd_python_pronto; then
   exit 64
 fi
 [ -z "${RAIZ}" ] || [ -d "${RAIZ}" ] || uso "a pasta de --raiz não existe: ${RAIZ}"
-RAIZ="$(git -C "${RAIZ:-.}" rev-parse --show-toplevel 2>/dev/null)" || uso "fora de um repositório git" "rode na pasta do projeto."
+TOPO="$(git -C "${RAIZ:-.}" rev-parse --show-toplevel 2>/dev/null)" || uso "fora de um repositório git" "rode na pasta do projeto."
+# com --raiz numa subpasta (monorepo), o projeto é ela: o config, o diff e a cópia são só dela
+if [ -n "${RAIZ}" ]; then RAIZ="$(cd "${RAIZ}" && pwd)" || uso "não consegui entrar na pasta de --raiz"; else RAIZ="${TOPO}"; fi
 
 TRAB="$(mktemp -d "${TMPDIR:-/tmp}/sdd-metricas.XXXXXX" 2>/dev/null)" || uso "não consegui criar a pasta temporária" "confira o TMPDIR e rode de novo."
 limpa() { cd / && rm -rf "${TRAB}"; }
@@ -163,7 +165,7 @@ def legivel(raiz, arq):
 
 def mudados(raiz, base):
     """[(nome antigo, nome novo)] do que mudou ou entrou, com a detecção de renomeação ligada."""
-    campos = nomes_z(git_ok(raiz, "diff", "--name-status", "-z", "-M", "--no-ext-diff", base, "--"))
+    campos = nomes_z(git_ok(raiz, "diff", "--relative", "--name-status", "-z", "-M", "--no-ext-diff", base, "--"))
     pares, i = [], 0
     while i < len(campos):
         renomeado = campos[i][:1] in "RC"
@@ -176,7 +178,7 @@ def mudados(raiz, base):
 
 def trechos(raiz, base, antigo, novo):
     """(intervalos acrescentados ou mudados, linhas depois das quais algo foi só apagado) de um arquivo."""
-    saida = git_ok(raiz, "--literal-pathspecs", "diff", "-U0", "--inter-hunk-context=0", "-M", "--text", "--no-ext-diff",
+    saida = git_ok(raiz, "--literal-pathspecs", "diff", "--relative", "-U0", "--inter-hunk-context=0", "-M", "--text", "--no-ext-diff",
                    "--no-textconv", base, "--", *sorted({antigo, novo}))
     novos, apagados = [], []
     for m in re.finditer(rb"(?m)^@@ -\S+ \+(\d+)(?:,(\d+))? @@", saida):
@@ -349,15 +351,31 @@ def medir_complexidade(plano, trab, estado):
     return ["- %s, %d acima do limite:" % (medidas, len(avisos))] + itens_com_teto(avisos) + nota, True, True
 
 
-def relatorio_do_jscpd(texto):
+def nome_do_jscpd(nome, copia):
+    """O nome como o diff o conhece. ValueError se não é um arquivo da cópia: o par sumiria calado."""
+    nome = nome.replace("\\", "/")
+    for inicio in (copia, os.path.realpath(copia)):
+        inicio = inicio.replace("\\", "/").rstrip("/") + "/"
+        if nome.startswith(inicio):
+            nome = nome[len(inicio):]
+    nome = nome[2:] if nome.startswith("./") else nome
+    sem_formato = nome.rsplit(":", 1)[0]   # bloco embutido: src/Tela.vue:javascript
+    for candidato in (nome, sem_formato):
+        if not os.path.isabs(candidato) and os.path.isfile(os.path.join(copia, candidato)):
+            return candidato
+    raise ValueError("arquivo que não pedi: %s" % nome)
+
+
+def relatorio_do_jscpd(trab, pasta):
     """(pares, arquivos lidos); ValueError se não é o relatório esperado."""
+    texto, copia = ler(trab, "saida-%s/jscpd-report.json" % pasta), os.path.join(trab, pasta)
     dados = json.loads(texto)
     try:
         pares, lidos = dados["duplicates"], dados["statistics"]["total"]["sources"]
         if not isinstance(pares, list) or not isinstance(lidos, int):
             raise TypeError("tipos")
-        return [(p["firstFile"]["name"].replace("\\", "/"), int(p["firstFile"]["start"]), int(p["firstFile"]["end"]),
-                 p["secondFile"]["name"].replace("\\", "/"), int(p["secondFile"]["start"]), int(p["secondFile"]["end"]),
+        return [(nome_do_jscpd(p["firstFile"]["name"], copia), int(p["firstFile"]["start"]), int(p["firstFile"]["end"]),
+                 nome_do_jscpd(p["secondFile"]["name"], copia), int(p["secondFile"]["start"]), int(p["secondFile"]["end"]),
                  int(p["lines"]), int(p.get("tokens", 0))) for p in pares], lidos
     except (KeyError, TypeError, AttributeError, IndexError) as e:
         raise ValueError("campo ausente ou de outro tipo: %s" % e)
@@ -385,15 +403,16 @@ def medir_duplicacao(plano, trab, estado):
     if problema:
         return ["- não medido: " + problema], False, False
     try:
-        _, do_diff = relatorio_do_jscpd(ler(trab, "saida-diff/jscpd-report.json"))
-        pares, lidos = relatorio_do_jscpd(ler(trab, "saida-arvore/jscpd-report.json"))
+        _, do_diff = relatorio_do_jscpd(trab, "diff")
+        pares, lidos = relatorio_do_jscpd(trab, "arvore")
     except ValueError as e:
         return ["- não medido: jscpd devolveu saída que não entendi (%s)" % limpo(str(e))[:120]], False, False
     # a prova é por arquivo do diff: ler o resto do projeto não prova que o código novo foi lido
     if do_diff < 1 or lidos < 1:
         return ["- não medido: jscpd não leu nenhum arquivo do diff (todos com menos de %d tokens, ou linguagem que ele "
                 "não reconhece)" % plano["limites"]["min_tokens"]], False, False
-    cobertura = "%s do diff lidos, de %d" % (contar(do_diff, "arquivo", "arquivos"), len(plano["medidos"]))
+    lidos_do_diff = min(do_diff, len(plano["medidos"]))   # o jscpd conta de novo o bloco embutido (.vue)
+    cobertura = "%s do diff lidos, de %d" % (contar(lidos_do_diff, "arquivo", "arquivos"), len(plano["medidos"]))
     avisos = avisos_de_duplicacao(plano["diff"], pares)
     if not avisos:
         return ["- nenhum aviso (%s)" % cobertura], False, True

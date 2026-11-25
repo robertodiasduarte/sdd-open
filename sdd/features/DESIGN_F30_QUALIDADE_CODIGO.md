@@ -559,7 +559,7 @@ Fatia S3 (a ordem é a do TDD). Os manifests da S1 (21 arquivos) e da S2 (15) es
 | 5 | `.agents/skills/sdd-build/web/references/metricas-do-diff.md` | Create | O que medir, como ler e o que dizer quando a ferramenta falta; sem `sdd/bin/` | (general) | 2 |
 | 6 | `.agents/skills/sdd-build/SKILL.md` | Modify | Chamada no 5b e ponteiro; seção obrigatória no 6; versão 2.17.0 | (general) | 3, 5 |
 | 7 | `.agents/skills/sdd-build/web/MODO_WEB.md` | Modify | 1 linha de ponteiro; versão 2.17.0; ≤ 500 linhas | (general) | 5 |
-| 8 | `sdd/templates/BUILD_REPORT_TEMPLATE.md` | Modify | Seção `## Qualidade (avisos)` | (general) | 3 |
+| 8 | `sdd/templates/BUILD_REPORT_TEMPLATE.md` | Modify | Seção `## Qualidade (avisos)` (e no molde do starter, `sdd-build/web/assets/BUILD_REPORT_TEMPLATE.md`) | (general) | 3 |
 | 9 | `sdd/templates/fragments/EVIDENCIA.md` | Modify | Contrato da seção | (general) | 4 |
 | 10 | `sdd/config.example.yaml` | Modify | `qualidade:` com os 4 limites | (general) | None |
 | 11 | `docs/cli-conventions.md` | Modify | Linha do `metricas-diff.sh` e palavras novas | (general) | 3 |
@@ -893,6 +893,7 @@ S2: `AT-nnn.antes.log` e `AT-nnn.sabotagem.log`, ao lado dos `AT-nnn.log`. Os lo
 
 | Version | Date | Author | Changes |
 |---------|------|--------|---------|
+| 3.2 | 2026-11-25 | build | Revisão do código, rodada 1 (auditor claude): nome de arquivo do `jscpd` normalizado e conferido na cópia (N1); `--raiz` numa subpasta mede a subpasta, por `--relative` (N2). Molde do starter com a seção |
 | 3.1 | 2026-11-25 | design-agent | Revisão do DESIGN da S3: N1, N2 e N3 aplicadas (cópia temporária, prova no diff, trecho só apagado) |
 | 3.0 | 2026-11-25 | design-agent | S3: Decisions 15 a 19, manifest de 17 arquivos, landmines e sabotagens da S3 |
 | 2.1 | 2026-11-24 | design-agent | Revisão do DESIGN, rodada D1 (auditor claude, N1): a classe `continua` vem do início da célula (molde EARS ou Padrão), não de qualquer ocorrência na linha |
