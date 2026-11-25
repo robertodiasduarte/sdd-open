@@ -247,6 +247,14 @@ class AT018NaoMedido(Base):
                     self.nao_medido(self.parte(out, "Complexidade"), "")
                     self.nao_medido(self.parte(out, "Duplicação"), "")
 
+    def test_numero_enorme_nao_derruba(self):
+        """Revisão do código, rodada 4, R1."""
+        self.frente()
+        self.lizard(CSV_GRANDE.replace("31,15,", "31,%s," % ("9" * 400)))
+        self.jscpd()
+        out, _ = self.ok()
+        self.assertIn("repete", out)
+
     def test_jscpd_que_nao_grava_relatorio(self):
         self.frente()
         self.lizard()
@@ -554,6 +562,20 @@ class AT020Limites(Base):
         self.assertEqual(chamada, ["lizard --csv ./src/nova.py"])
         self.escreve(self.r, "app/sdd/config.yaml", "qualidade:\n  max_linhas: zero\n")
         self.assertEqual(self.mede("--raiz", "app")[0], 64)
+
+    def test_limite_grande_vale(self):
+        """Revisão do código, rodada 4, R2: inteiro >= 1, sem teto de dígitos."""
+        self.frente()
+        for valor in ("1000000000", "9" * 5000):
+            self.config("qualidade:\n  max_complexidade: %s\n" % valor)
+            self.lizard()
+            self.jscpd()
+            out, _ = self.ok()
+            self.assertNotIn("complexidade 15", out)
+
+    def test_pasta_temporaria_em_outra_unidade(self):
+        """Revisão do código, rodada 4, N1: no Windows, relpath entre D: e C: lança ValueError."""
+        self.assertNotIn("os.path.relpath(", SCRIPT.read_text(encoding="utf-8"))
 
     def test_mapa_numa_linha_so(self):
         """Revisão do código, rodada 2, R1 (avaliador, L4): a forma que o leitor não entende não é ignorada calada."""

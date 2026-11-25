@@ -81,6 +81,8 @@ FORA_RAIZ = (".agents/", ".claude/", ".cursor/", ".gemini/", ".codex/", ".kimi/"
 FORA_QUALQUER = ("node_modules", "vendor", ".git", ".venv", "venv")
 MAX_BYTES = 5 * 1024 * 1024
 MAX_ITENS = 20
+MAX_DIGITOS = 12
+SEM_LIMITE = 10 ** MAX_DIGITOS   # nenhuma medida real chega aqui: acima, o limite não avisa nada
 COLUNAS_LIZARD = 11
 INSTALAR = {"lizard": "python3 -m pip install lizard", "jscpd": "npm install -g jscpd"}
 
@@ -144,10 +146,10 @@ def ler_limites(raiz):
     mapa, limites = ler_mapa(raiz, "qualidade"), {}
     for chave, padrao in LIMITES.items():
         valor = mapa.get(chave, "")
-        if valor and not re.match(r"^[0-9]{1,9}$", valor) or valor and int(valor) < 1:
+        if valor and not re.match(r"^0*[1-9][0-9]*$", valor):
             raise Uso("qualidade.%s no sdd/config.yaml não é um inteiro maior que zero: %s" % (chave, limpo(valor)),
                       "escreva um inteiro maior que zero em qualidade.%s, ou deixe vazio para o padrão (%d)" % (chave, padrao))
-        limites[chave] = int(valor) if valor else padrao
+        limites[chave] = min(int(valor.lstrip("0")[:MAX_DIGITOS + 1]), SEM_LIMITE) if valor else padrao
     return limites
 
 
@@ -271,12 +273,18 @@ def montar_copias(raiz, trab, diff):
     return fora
 
 
+def dentro_da_raiz(raiz, pasta):
+    """A pasta relativa à raiz, com "/" no fim, ou "" quando fica fora. Sem relpath: no Windows ele cai entre unidades."""
+    raiz, pasta = (os.path.realpath(p).replace("\\", "/").rstrip("/") + "/" for p in (raiz, pasta))
+    return pasta[len(raiz):] if os.path.normcase(pasta).startswith(os.path.normcase(raiz)) else ""
+
+
 def preparar(raiz, trab, pedida):
     limites = ler_limites(raiz)
     ref, base = achar_base(raiz, pedida)
     diff = linhas_do_diff(raiz, base)
-    proprio = os.path.relpath(os.path.realpath(trab), os.path.realpath(raiz)).replace(os.sep, "/") + "/"
-    diff = {a: t for a, t in diff.items() if not a.startswith(proprio)}   # TMPDIR dentro do projeto
+    proprio = dentro_da_raiz(raiz, trab)   # TMPDIR dentro do projeto
+    diff = {a: t for a, t in diff.items() if not (proprio and a.startswith(proprio))}
     fora = montar_copias(raiz, trab, diff)
     medidos = sorted(set(diff) - set(fora))
     do_lizard = [a for a in medidos if extensao(a) in COM_COMPLEXIDADE]
@@ -337,7 +345,7 @@ def funcoes_do_lizard(texto, pedidos):
 def excessos(funcao, limites):
     medidas = (("complexidade %d", funcao[2], "max_complexidade"), ("%d linhas", funcao[3], "max_linhas"),
                ("%d parâmetros", funcao[4], "max_parametros"))
-    return [(valor / limites[chave], (texto + " (limite %d)") % (valor, limites[chave]))
+    return [(min(valor, SEM_LIMITE) / limites[chave], (texto + " (limite %d)") % (valor, limites[chave]))
             for texto, valor, chave in medidas if valor > limites[chave]]
 
 
