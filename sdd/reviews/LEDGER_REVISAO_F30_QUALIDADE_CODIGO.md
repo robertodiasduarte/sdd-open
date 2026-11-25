@@ -198,3 +198,12 @@ revisor2: dispensado rodada=14 — sem superfície de risco (regra antiga: 20 ar
 | R1 | MED | APLICADA | rodada=14 | `77db690`; teste: test_numero_enorme_nao_derruba | nao | EXTERNAL_REVIEW_20261125-073150 |
 | R2 | LOW | APLICADA | rodada=14 | `77db690`; teste: test_limite_grande_vale | nao | EXTERNAL_REVIEW_20261125-073150 |
 | N1 | MED | APLICADA | rodada=14 | `77db690`: sem relpath; teste de texto test_pasta_temporaria_em_outra_unidade (não executado em duas unidades) | nao | EXTERNAL_REVIEW_20261125-073150 |
+
+Revisão do código da S3, rodada 15 (base `fce8c61`): revisor `codex` (`gpt-6.1-sol`, 224 s), auditor `claude`;
+`diversidade: vendor`; US$ 0,87.
+
+revisor2: dispensado rodada=15 — sem superfície de risco (regra antiga: 20 arquivos (limiar 8))
+
+| achado | sev | veredito | rodada | evidência | dano | revisão |
+|---|---|---|---|---|---|---|
+| R1 | MED | APLICADA | rodada=15 | `1585b12`; teste: test_saida_ilegivel | nao | EXTERNAL_REVIEW_20261125-074156 |
