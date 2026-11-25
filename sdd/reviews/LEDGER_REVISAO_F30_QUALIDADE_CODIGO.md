@@ -176,3 +176,14 @@ revisor2: dispensado rodada=12 — sem superfície de risco (regra antiga: 18 ar
 | R1 | HIGH | APLICADA | rodada=12 | `d33ffed`: qualidade: numa linha só; teste: test_mapa_numa_linha_so | nao | EXTERNAL_REVIEW_20261125-070718 |
 | R2 | MED | APLICADA | rodada=12 | `d33ffed`; teste: test_remoto_sem_ancestral_nao_cai_na_branch_local | nao | EXTERNAL_REVIEW_20261125-070718 |
 | R3 | MED | APLICADA | rodada=12 | `d33ffed`; teste: test_arquivo_antigo_grande_e_dito | nao | EXTERNAL_REVIEW_20261125-070718 |
+
+Revisão do código da S3, rodada 13 (base `fce8c61`): revisor `codex` (`gpt-6.1-sol`, 140 s), auditor `claude`;
+`diversidade: vendor`; US$ 0,88.
+
+revisor2: dispensado rodada=13 — sem superfície de risco (regra antiga: 18 arquivos (limiar 8))
+
+| achado | sev | veredito | rodada | evidência | dano | revisão |
+|---|---|---|---|---|---|---|
+| R1 | MED | APLICADA | rodada=13 | `976c970`; teste: test_tmpdir_relativo_e_apagado | nao | EXTERNAL_REVIEW_20261125-072013 |
+| R2 | MED | APLICADA | rodada=13 | `976c970`; teste: test_config_do_git_de_quem_roda_nao_muda_a_medida | nao | EXTERNAL_REVIEW_20261125-072013 |
+| R3 | MED | APLICADA | rodada=13 | `976c970`; teste: test_saida_ilegivel | nao | EXTERNAL_REVIEW_20261125-072013 |

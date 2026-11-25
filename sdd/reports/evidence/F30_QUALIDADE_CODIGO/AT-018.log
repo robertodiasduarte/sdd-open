@@ -19,9 +19,11 @@ test_so_o_jscpd_ausente_mede_a_complexidade (test_f30_metricas.AT018NaoMedido) .
 test_so_o_lizard_ausente_mede_a_duplicacao (test_f30_metricas.AT018NaoMedido) ... ok
 test_tmpdir_dentro_do_projeto (test_f30_metricas.AT018NaoMedido)
 Avaliador, L7: a pasta temporária não é código da frente. ... ok
+test_tmpdir_relativo_e_apagado (test_f30_metricas.AT018NaoMedido)
+Revisão do código, rodada 3, R1. ... ok
 
 ----------------------------------------------------------------------
-Ran 14 tests in 29.144s
+Ran 15 tests in 31.507s
 
 OK
 [exit=0]

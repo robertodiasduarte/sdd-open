@@ -1,5 +1,5 @@
 $ cd tests && /usr/bin/python3 -B -m unittest -v test_f30_metricas.AT019SoODiff
-# sabotagem: sdd/bin/metricas-diff.sh: «if not toca_o_diff(plano["diff"], f[0], f[5], f[6]):» → «if False:» (cópia de HEAD d33ffed)
+# sabotagem: sdd/bin/metricas-diff.sh: «if not toca_o_diff(plano["diff"], f[0], f[5], f[6]):» → «if False:» (cópia de HEAD 976c970)
 # sem a sabotagem: exit 0
 test_apagar_o_que_vem_depois_nao_marca_a_funcao_anterior (test_f30_metricas.AT019SoODiff)
 Revisão do DESIGN, N3: o git aponta o trecho apagado pela linha anterior a ele. ... FAIL
@@ -24,20 +24,20 @@ FAIL: test_apagar_o_que_vem_depois_nao_marca_a_funcao_anterior (test_f30_metrica
 Revisão do DESIGN, N3: o git aponta o trecho apagado pela linha anterior a ele.
 ----------------------------------------------------------------------
 Traceback (most recent call last):
-  File "/private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/sdd-sabotagem.bAH94W/copia/tests/test_f30_metricas.py", line 395, in test_apagar_o_que_vem_depois_nao_marca_a_funcao_anterior
+  File "/private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/sdd-sabotagem.uwXL2F/copia/tests/test_f30_metricas.py", line 408, in test_apagar_o_que_vem_depois_nao_marca_a_funcao_anterior
     self.assertNotIn("`velha`", out)
-AssertionError: '`velha`' unexpectedly found in '## Qualidade (avisos)\n\n> Só o código novo ou alterado desde `main` (2f73415). Aviso: não reprova.\n\n### Complexidade\n\n- 1 função medida no diff, 1 acima do limite:\n- `src/velha.py:1-31` `velha`: complexidade 15 (limite 10) · 6 parâmetros (limite 5)\n\n### Duplicação\n\n- nenhum aviso (1 de 1 arquivo do diff)\n\n'
+AssertionError: '`velha`' unexpectedly found in '## Qualidade (avisos)\n\n> Só o código novo ou alterado desde `main` (7e1a481). Aviso: não reprova.\n\n### Complexidade\n\n- 1 função medida no diff, 1 acima do limite:\n- `src/velha.py:1-31` `velha`: complexidade 15 (limite 10) · 6 parâmetros (limite 5)\n\n### Duplicação\n\n- nenhum aviso (1 de 1 arquivo do diff)\n\n'
 
 ======================================================================
 FAIL: test_funcao_intocada_fica_fora (test_f30_metricas.AT019SoODiff)
 ----------------------------------------------------------------------
 Traceback (most recent call last):
-  File "/private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/sdd-sabotagem.bAH94W/copia/tests/test_f30_metricas.py", line 356, in test_funcao_intocada_fica_fora
+  File "/private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/sdd-sabotagem.uwXL2F/copia/tests/test_f30_metricas.py", line 369, in test_funcao_intocada_fica_fora
     self.assertNotIn("`velha`", out)
-AssertionError: '`velha`' unexpectedly found in '## Qualidade (avisos)\n\n> Só o código novo ou alterado desde `main` (6fbcdbe). Aviso: não reprova.\n\n### Complexidade\n\n- 2 funções medidas no diff, 1 acima do limite:\n- `src/velha.py:1-31` `velha`: complexidade 15 (limite 10) · 6 parâmetros (limite 5)\n\n### Duplicação\n\n- nenhum aviso (1 de 1 arquivo do diff)\n\n'
+AssertionError: '`velha`' unexpectedly found in '## Qualidade (avisos)\n\n> Só o código novo ou alterado desde `main` (de9a932). Aviso: não reprova.\n\n### Complexidade\n\n- 2 funções medidas no diff, 1 acima do limite:\n- `src/velha.py:1-31` `velha`: complexidade 15 (limite 10) · 6 parâmetros (limite 5)\n\n### Duplicação\n\n- nenhum aviso (1 de 1 arquivo do diff)\n\n'
 
 ----------------------------------------------------------------------
-Ran 15 tests in 11.851s
+Ran 15 tests in 12.038s
 
 FAILED (failures=2)
 [exit=1]
