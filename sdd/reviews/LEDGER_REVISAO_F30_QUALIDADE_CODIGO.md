@@ -233,3 +233,12 @@ Revisão do código da S3, rodada 18 (`23ec1ca`, base `fce8c61`): revisor `codex
 
 revisor2: dispensado rodada=18 — sem superfície de risco (regra antiga: 21 arquivos (limiar 8))
 sem achados: rodada=18 EXTERNAL_REVIEW_20261125-081243
+
+Revisão do código da S3, rodada 19 (`ebd73d5`, base `fce8c61`): revisor `codex` (`gpt-6.1-sol`, 162 s), auditor `claude`;
+`diversidade: vendor`; US$ 1,05.
+
+revisor2: dispensado rodada=19 — sem superfície de risco (regra antiga: 21 arquivos (limiar 8))
+
+| achado | sev | veredito | rodada | evidência | dano | revisão |
+|---|---|---|---|---|---|---|
+| R1 | MED | APLICADA | rodada=19 | `0f0ca16`; teste: test_referencia | nao | EXTERNAL_REVIEW_20261125-082447 |

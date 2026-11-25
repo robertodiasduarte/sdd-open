@@ -9,7 +9,7 @@ test_trecho_de_uma_linha_com_o_jscpd_real (test_f30_metricas.AT017Achados)
 Revisão do código, rodada 7, R2: o mínimo é de tokens; o de linhas do jscpd perderia o trecho curto. ... skipped 'jscpd real fora do PATH'
 
 ----------------------------------------------------------------------
-Ran 7 tests in 5.279s
+Ran 7 tests in 5.008s
 
 OK (skipped=2)
 [exit=0]
