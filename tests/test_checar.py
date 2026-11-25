@@ -28,6 +28,7 @@ from apoio import caminho_bash, WINDOWS
 # Teto do vigia (10 s) mais a partida do script. No Git Bash do Windows, abrir bash e git custa caro: lá a folga é de 4 s
 # (CI do PR da F16W2: 12,25 s com o corte certo); fora dele, 2 s.
 LIMITE = 14 if WINDOWS else 12
+TETO_DO_VIGIA = 10   # o `sleep 10` do vigia em alcance() (checar.sh)
 
 SCRIPT = Path(__file__).resolve().parents[1] / ".agents" / "skills" / "sdd-checar-ambiente" / "scripts" / "checar.sh"
 # O publish-gate do sdd-open reprova e-mail fora de example.com, inclusive "git@host": montados aqui.
@@ -347,10 +348,19 @@ class TestRemoto(Base):
         self.assertIn("chave SSH", out)
 
     def test_rede_pendurada(self):
+        # A medida desconta a máquina: o mesmo checar.sh, antes, contra um remoto que responde na hora (a base). O que o
+        # remoto pendurado acrescenta à base é só a espera da rede, e ela tem de caber no teto do vigia (10 s) mais 2 s. Na
+        # máquina fria do Windows a base levou de 1,9 a 4,6 s e a diferença de 6,1 a 8,3 s (8 máquinas); a medida absoluta
+        # de 14 s caiu uma vez com 21,7 s. A base também tem limite: um checar.sh lento em tudo não esconde a espera.
+        self.origin(f"http://127.0.0.1:{self.srv401.server_address[1]}/x.git")
+        rc, out, base = self.roda()
+        self.assertEqual(rc, 0, out)
+        self.assertIn("recusou o acesso", out)
+        self.assertLessEqual(base, LIMITE, out)
         self.origin(f"http://127.0.0.1:{self.srv_pendurado.server_address[1]}/x.git")
         rc, out, t = self.roda()
         self.assertEqual(rc, 0, out)
-        self.assertLessEqual(t, LIMITE, out)
+        self.assertLessEqual(t - base, TETO_DO_VIGIA + 2, "pendurado %.1f s, base %.1f s\n%s" % (t, base, out))
         self.assertIn("sem internet ou rede bloqueada", out)
         for palavra in ("senha", "login", "credencial"):
             self.assertNotIn(palavra, out.lower())

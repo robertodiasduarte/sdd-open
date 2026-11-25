@@ -1,0 +1,31 @@
+$ checar.sh sabotagem=nenhuma, teste novo
+Ran 1 test in 10.431s
+RESULTADO: nenhuma novo VERDE
+$ checar.sh sabotagem=lenta, teste novo
+Ran 1 test in 24.289s
+RESULTADO: lenta novo VERDE
+$ checar.sh sabotagem=pendura, teste novo
+    raise TimeoutExpired(
+subprocess.TimeoutExpired: Command '['/bin/bash', '<tmp>']' timed out after 60 seconds
+Ran 1 test in 62.036s
+RESULTADO: pendura novo VERMELHO
+$ checar.sh sabotagem=lenta-em-tudo, teste novo
+AssertionError: 15.780098207993433 not less than or equal to 12 : 🔴 Impede o trabalho
+Ran 1 test in 17.066s
+RESULTADO: lenta-em-tudo novo VERMELHO
+$ checar.sh sabotagem=nenhuma, teste antigo (HEAD:tests/test_checar.py, limite absoluto)
+Ran 1 test in 10.427s
+RESULTADO: nenhuma antigo VERDE
+$ checar.sh sabotagem=lenta, teste antigo (HEAD:tests/test_checar.py, limite absoluto)
+AssertionError: 15.788363707950339 not less than or equal to 12 : ⚠️ Vale arrumar
+Ran 1 test in 17.418s
+RESULTADO: lenta antigo VERMELHO
+$ checar.sh sabotagem=pendura, teste antigo (HEAD:tests/test_checar.py, limite absoluto)
+    raise TimeoutExpired(
+subprocess.TimeoutExpired: Command '['/bin/bash', '<tmp>']' timed out after 60 seconds
+Ran 1 test in 61.537s
+RESULTADO: pendura antigo VERMELHO
+$ checar.sh sabotagem=lenta-em-tudo, teste antigo (HEAD:tests/test_checar.py, limite absoluto)
+AssertionError: 23.762020291993394 not less than or equal to 12 : ⚠️ Vale arrumar
+Ran 1 test in 24.862s
+RESULTADO: lenta-em-tudo antigo VERMELHO
