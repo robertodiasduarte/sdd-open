@@ -1,0 +1,22 @@
+$ for m in <20 modulos>; do SDD_TEST_BASH=/bin/bash /usr/bin/python3 -B -m unittest discover -s tests -p test_$m.py; done
+f31_vermelho_avaliado Ran 40 tests in 8.559s OK 
+f30_vermelho_antes Ran 26 tests in 4.149s OK 
+report_lint Ran 32 tests in 5.491s OK 
+report_lint_evidencia Ran 37 tests in 6.203s OK 
+f30_report_lint Ran 17 tests in 2.545s OK 
+f30_textos_s2 Ran 12 tests in 2.938s OK 
+f30_textos_s3 Ran 6 tests in 3.979s OK 
+f30_metricas Ran 53 tests in 78.358s OK (skipped=2) 
+f30_sabotagem Ran 21 tests in 9.225s OK 
+f29_textos Ran 11 tests in 0.243s OK 
+gerar_starter Ran 34 tests in 149.511s OK 
+f30_starter Ran 3 tests in 9.795s OK 
+check_versions Ran 16 tests in 3.483s OK 
+gate_shell_evidencia Ran 12 tests in 3.147s OK 
+skill_lint Ran 29 tests in 3.371s OK 
+hooks Ran 24 tests in 30.520s OK 
+claude_adapter Ran 15 tests in 174.585s OK 
+f15_slots_textos Ran 18 tests in 0.036s FAILED (failures=1) 
+f18_f20_textos Ran 11 tests in 0.002s FAILED (failures=2) 
+f19_textos Ran 18 tests in 22.215s FAILED (failures=1) 
+[exit=1]

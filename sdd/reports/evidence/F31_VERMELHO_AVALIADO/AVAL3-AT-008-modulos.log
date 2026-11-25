@@ -1,0 +1,55 @@
+$ bash mods.sh
+test_alarme rc=0 Ran 37 tests in 22.219s OK (skipped=1)
+test_check_versions rc=0 Ran 16 tests in 6.209s OK
+test_claude_adapter rc=0 Ran 15 tests in 102.927s OK
+test_contexto_lint rc=0 Ran 23 tests in 13.995s OK
+test_contrato_build_release rc=0 Ran 29 tests in 0.286s OK
+test_conversa rc=0 Ran 19 tests in 0.089s OK
+test_correcoes_w0 rc=0 Ran 12 tests in 9.107s OK
+test_desempenho_diagnostico rc=0 Ran 30 tests in 6.017s OK
+test_docs rc=0 Ran 23 tests in 0.055s OK
+test_drive rc=0 Ran 131 tests in 219.528s OK (skipped=1)
+test_f12_textos rc=0 Ran 19 tests in 0.018s OK
+test_f14_drive_textos rc=0 Ran 22 tests in 0.092s OK
+test_f14_textos rc=0 Ran 38 tests in 0.066s OK
+test_f15_slots_textos rc=0 Ran 18 tests in 0.077s OK
+test_f16_textos rc=0 Ran 13 tests in 0.003s OK
+test_f16w2_processos rc=0 Ran 8 tests in 21.981s OK
+test_f16w2_render rc=0 Ran 1 test in 0.102s OK
+test_f16w2_saida rc=0 Ran 5 tests in 0.928s OK
+test_f17_passo0 rc=0 Ran 10 tests in 0.072s OK
+test_f17b_textos rc=0 Ran 17 tests in 0.036s OK
+test_f17c_gerador rc=0 Ran 7 tests in 28.350s OK
+test_f18_f20_textos rc=0 Ran 11 tests in 0.002s OK
+test_f19_textos rc=0 Ran 18 tests in 15.945s OK
+test_f21_textos rc=0 Ran 30 tests in 18.056s OK
+test_f22_upgrade rc=0 Ran 20 tests in 203.376s OK
+test_f22_versao rc=0 Ran 39 tests in 60.437s OK
+test_f23b3_revisao rc=0 Ran 49 tests in 26.220s OK
+test_f25_skills_duplicadas rc=0 Ran 49 tests in 47.102s OK (skipped=1)
+test_f26_marca_starter rc=0 Ran 10 tests in 21.987s OK
+test_f27_textos rc=0 Ran 13 tests in 0.009s OK
+test_f29_textos rc=0 Ran 11 tests in 0.105s OK
+test_f30_agents_qualidade rc=0 Ran 15 tests in 31.833s OK
+test_f30_metricas rc=0 Ran 53 tests in 75.849s OK (skipped=2)
+test_f30_report_lint rc=0 Ran 17 tests in 2.116s OK
+test_f30_vermelho_antes rc=0 Ran 26 tests in 3.325s OK
+test_f31_vermelho_avaliado rc=0 Ran 41 tests in 6.470s OK
+test_gerar_starter rc=0 Ran 34 tests in 99.949s OK
+test_governanca_fronteira rc=0 Ran 27 tests in 22.887s OK
+test_hooks rc=0 Ran 24 tests in 24.293s OK
+test_kb_dominios rc=0 Ran 22 tests in 1.717s OK
+test_matriz_new_session rc=0 Ran 12 tests in 0.018s OK
+test_next_version rc=0 Ran 12 tests in 1.552s OK
+test_playbook_invariantes rc=0 Ran 40 tests in 6.726s OK
+test_publish_gate_patterns rc=0 Ran 5 tests in 0.936s OK
+test_python_resolver rc=0 Ran 27 tests in 17.764s OK
+test_release_workflow rc=0 Ran 32 tests in 1.864s OK
+test_report_lint rc=0 Ran 32 tests in 4.594s OK
+test_report_lint_evidencia rc=0 Ran 37 tests in 5.041s OK
+test_sdd_kb rc=0 Ran 21 tests in 16.633s OK
+test_sdd_kb_normativo rc=0 Ran 62 tests in 2.912s OK
+test_sdd_open rc=0 Ran 56 tests in 296.063s OK
+test_windows rc=0 Ran 10 tests in 0.807s OK
+modulos=52 vermelhos=0
+[exit=0]

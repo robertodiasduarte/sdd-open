@@ -1,0 +1,15 @@
+$ cd tests && /usr/bin/python3 -B -m unittest -v test_f31_vermelho_avaliado.AT009Vizinhos
+test_antes_e_final_zerados_sao_dois_avisos (test_f31_vermelho_avaliado.AT009Vizinhos) ... ok
+test_antes_recusado_nao_cala_o_aviso_do_final (test_f31_vermelho_avaliado.AT009Vizinhos) ... ok
+test_continua_verde_com_zero_casos_avisa (test_f31_vermelho_avaliado.AT009Vizinhos) ... ok
+test_final_citado_depois_do_log_de_outra_feature_e_lido (test_f31_vermelho_avaliado.AT009Vizinhos) ... ok
+test_final_verde_com_zero_casos_avisa (test_f31_vermelho_avaliado.AT009Vizinhos) ... ok
+test_final_vermelho_com_zero_casos_fica_fora (test_f31_vermelho_avaliado.AT009Vizinhos) ... ok
+test_novo_que_ja_passava_avisa (test_f31_vermelho_avaliado.AT009Vizinhos) ... ok
+test_zero_de_outro_at_no_final_nao_avisa (test_f31_vermelho_avaliado.AT009Vizinhos) ... ok
+
+----------------------------------------------------------------------
+Ran 8 tests in 1.295s
+
+OK
+[exit=0]

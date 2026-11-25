@@ -1,0 +1,28 @@
+$ cd tests && /usr/bin/python3 -B -m unittest -v test_f31_vermelho_avaliado.AT003SemContagem
+test_comando_compartilhado_com_contagem_de_todos_nao_avisa (test_f31_vermelho_avaliado.AT003SemContagem) ... ok
+test_comando_compartilhado_sem_contagem_avisa_uma_vez_com_os_ids (test_f31_vermelho_avaliado.AT003SemContagem) ... FAIL
+test_comando_proprio_sem_contagem_nao_avisa (test_f31_vermelho_avaliado.AT003SemContagem) ... ok
+test_nao_regressao_com_o_mesmo_comando_nao_forma_grupo (test_f31_vermelho_avaliado.AT003SemContagem) ... ok
+test_o_mesmo_at_em_duas_tabelas_nao_e_comando_compartilhado (test_f31_vermelho_avaliado.AT003SemContagem) ... ok
+
+======================================================================
+FAIL: test_comando_compartilhado_sem_contagem_avisa_uma_vez_com_os_ids (test_f31_vermelho_avaliado.AT003SemContagem)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "<repo>/tests/test_f31_vermelho_avaliado.py", line 150, in test_comando_compartilhado_sem_contagem_avisa_uma_vez_com_os_ids
+    out = self.avisa(linha("AT-001") + linha("AT-004") + linha("AT-005"), "AT-001, AT-004", GATE)
+  File "<repo>/tests/test_f31_vermelho_avaliado.py", line 72, in avisa
+    self.assertEqual(out.count(CLASSE), vezes, out)
+AssertionError: 0 != 1 : ⚠️  N.A. aceito sem conferir camadas — `layers:` do sdd/config.yaml sem nenhum glob preenchido; preencha `layers:` em sdd/config.yaml para a contagem valer
+⚠️  lint e tipos com o slot vazio (project.lint_cmd e project.typecheck_cmd), e o relatório não diz isso: escreva a linha `lint: slot vazio`
+⚠️  o relatório não tem a seção `## Qualidade (avisos)` preenchida (métricas do código novo, desde a v2.28.0): rode sdd/bin/metricas-diff.sh e cole a saída
+✅ sdd/reports/BUILD_REPORT_EXEMPLO.md: todo `true` tem evidência abrível e a avaliação está provada ou declarada
+RESULTADO: VERDE
+→ o relatório pode ser commitado.
+
+
+----------------------------------------------------------------------
+Ran 5 tests in 0.921s
+
+FAILED (failures=1)
+[exit=1]

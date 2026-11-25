@@ -1,0 +1,12 @@
+$ cd tests && /usr/bin/python3 -B -m unittest -v test_f31_vermelho_avaliado.AT003SemContagem
+test_comando_compartilhado_com_contagem_de_todos_nao_avisa (test_f31_vermelho_avaliado.AT003SemContagem) ... ok
+test_comando_compartilhado_sem_contagem_avisa_uma_vez_com_os_ids (test_f31_vermelho_avaliado.AT003SemContagem) ... ok
+test_comando_proprio_sem_contagem_nao_avisa (test_f31_vermelho_avaliado.AT003SemContagem) ... ok
+test_nao_regressao_com_o_mesmo_comando_nao_forma_grupo (test_f31_vermelho_avaliado.AT003SemContagem) ... ok
+test_o_mesmo_at_em_duas_tabelas_nao_e_comando_compartilhado (test_f31_vermelho_avaliado.AT003SemContagem) ... ok
+
+----------------------------------------------------------------------
+Ran 5 tests in 1.122s
+
+OK
+[exit=0]

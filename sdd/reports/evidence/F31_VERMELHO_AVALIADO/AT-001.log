@@ -1,0 +1,11 @@
+$ cd tests && /usr/bin/python3 -B -m unittest -v test_f31_vermelho_avaliado.AT001ZeroCasos
+test_antes_que_ja_reprova_nao_ganha_aviso (test_f31_vermelho_avaliado.AT001ZeroCasos) ... ok
+test_antes_vermelho_com_zero_casos_na_propria_linha_avisa (test_f31_vermelho_avaliado.AT001ZeroCasos) ... ok
+test_at_false_nao_e_lido (test_f31_vermelho_avaliado.AT001ZeroCasos) ... ok
+test_linhas_do_mesmo_at_somam (test_f31_vermelho_avaliado.AT001ZeroCasos) ... ok
+
+----------------------------------------------------------------------
+Ran 4 tests in 0.878s
+
+OK
+[exit=0]

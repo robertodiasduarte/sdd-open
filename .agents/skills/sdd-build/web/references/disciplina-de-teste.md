@@ -19,6 +19,12 @@ de aceite (AT), rode o comando dele e veja falhar:
 Quando o teste falha por um defeito do próprio teste (erro de digitação, fixture quebrada), conserte o teste e grave o
 antes de novo: o vermelho que vale é o que mede a falta do comportamento.
 
+**Um comando para vários ATs (gate composto).** O exit é do conjunto, e um AT sem teste nenhum herda o vermelho dos
+outros. Faça cada AT imprimir a própria linha, que começa pelo id dele e termina com a contagem de casos:
+`AT-001 ❌ saque acima do saldo (PASS 0 · FAIL 2)`. O módulo que ainda não existe é erro de carga: some em FAIL. No
+antes, a linha do AT de comportamento novo tem FAIL de 1 ou mais; no depois, e no `shall continue to`, PASS de 1 ou mais.
+`PASS 0 · FAIL 0` quer dizer que nenhum caso daquele AT rodou: escreva o teste e grave o log de novo.
+
 Os dois casos à parte:
 
 - **`shall continue to`** (não-regressão): o comportamento já existe, então o antes é **verde**, com o mesmo comando.

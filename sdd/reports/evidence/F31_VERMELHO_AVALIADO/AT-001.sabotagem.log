@@ -1,0 +1,23 @@
+$ cd tests && /usr/bin/python3 -B -m unittest -v test_f31_vermelho_avaliado.AT001ZeroCasos
+# sabotagem: sdd/bin/report-lint.py: «if casos == (0, 0):» → «if False:» (cópia de HEAD c8d43ec)
+# sem a sabotagem: exit 0
+test_antes_que_ja_reprova_nao_ganha_aviso (test_f31_vermelho_avaliado.AT001ZeroCasos) ... ok
+test_antes_vermelho_com_zero_casos_na_propria_linha_avisa (test_f31_vermelho_avaliado.AT001ZeroCasos) ... FAIL
+test_at_false_nao_e_lido (test_f31_vermelho_avaliado.AT001ZeroCasos) ... ok
+test_linhas_do_mesmo_at_somam (test_f31_vermelho_avaliado.AT001ZeroCasos) ... ok
+
+======================================================================
+FAIL: test_antes_vermelho_com_zero_casos_na_propria_linha_avisa (test_f31_vermelho_avaliado.AT001ZeroCasos)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/sdd-sabotagem.PC1LXn/copia/tests/test_f31_vermelho_avaliado.py", line 86, in test_antes_vermelho_com_zero_casos_na_propria_linha_avisa
+    self.avisa(linha("AT-001"), "AT-001:", "AT-001.antes.log", "nenhum caso avaliado", "conte o erro de carga em FAIL")
+  File "/private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/sdd-sabotagem.PC1LXn/copia/tests/test_f31_vermelho_avaliado.py", line 74, in avisa
+    self.assertIn(t, out)
+AssertionError: 'nenhum caso avaliado' not found in '⚠️  N.A. aceito sem conferir camadas — `layers:` do sdd/config.yaml sem nenhum glob preenchido; preencha `layers:` em sdd/config.yaml para a contagem valer\n⚠️  lint e tipos com o slot vazio (project.lint_cmd e project.typecheck_cmd), e o relatório não diz isso: escreva a linha `lint: slot vazio`\n⚠️  o relatório não tem a seção `## Qualidade (avisos)` preenchida (métricas do código novo, desde a v2.28.0): rode sdd/bin/metricas-diff.sh e cole a saída\n⚠️  [casos avaliados] AT-001: `evidence/EXEMPLO/AT-001.antes.log` diz `PASS 0 · FAIL 0` na linha do AT: ele já passava antes do código. Ancore o teste no comportamento novo e grave o antes de novo\n✅ sdd/reports/BUILD_REPORT_EXEMPLO.md: todo `true` tem evidência abrível e a avaliação está provada ou declarada\nRESULTADO: VERDE\n→ o relatório pode ser commitado.\n'
+
+----------------------------------------------------------------------
+Ran 4 tests in 0.709s
+
+FAILED (failures=1)
+[exit=1]

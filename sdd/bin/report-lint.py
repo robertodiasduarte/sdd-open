@@ -32,6 +32,10 @@ Vermelho antes do verde (F30 S2): numa tabela de critérios com a coluna `Antes`
 evidência terminando em `[exit=n]`, n fora de 0, 126 e 127; `The system shall continue to` exige o antes `[exit=0]`;
 gate de outro kind (inclusive `manual-ux`) aceita `N.A. (<motivo>)`. Tabela sem a coluna (relatório anterior): aviso.
 
+Casos avaliados (F31, só aviso): nos logs que passaram acima, a linha que COMEÇA pelo id do AT e traz `PASS n · FAIL n`
+diz quantos casos daquele AT rodaram. Zero casos (antes ou final), AT novo que já passava antes e comando repetido em
+vários ATs sem essa contagem geram aviso; o exit não muda.
+
 Métricas do diff (F30 S3): com o mapa `qualidade:` no sdd/config.yaml, a seção `## Qualidade (avisos)` tem de existir, com
 texto (a saída do metricas-diff.sh). Sem o mapa, a falta é aviso. O que a seção diz nunca reprova.
 
@@ -111,6 +115,11 @@ SLOT_VAZIO_RE = re.compile(r"^[ \t>*_|-]*`?lint: slot vazio`?", re.MULTILINE)
 EXIT_FIM_RE = re.compile(r"^\[exit=(-?\d+)\]$")
 NOVO, CONTINUA, FORA = "novo", "continua", "fora"
 CONTINUA_RE = re.compile(r"^(?:the system shall continue to\b|non-regression\b|não-regressão\b)", re.IGNORECASE)
+# F31: `AT-nnn … (PASS n · FAIL n)`. Entre PASS e FAIL, qualquer separador curto: o `·` gravado no Windows chega como U+FFFD.
+COR_RE = re.compile(r"\x1b(?:\[[0-9;:]*[A-Za-z]|\([A-Z0-9])")
+LINHA_AT_RE = re.compile(r"^[^A-Za-z0-9]*(AT-\d+[A-Za-z0-9_-]*)")
+CASOS_RE = re.compile(r"\bPASS[ :=]*(\d{1,9})[^A-Za-z0-9]{1,6}FAIL[ :=]*(\d{1,9})(?!\d)")
+CASOS = "[casos avaliados]"
 NA_RE = re.compile(r"^\s*N\.?A\.?(?:\s|\(|$)", re.IGNORECASE)
 SEM_COLUNA_ANTES = ("a tabela de critérios não tem a coluna `Antes` (relatório anterior à v2.27.0): o vermelho antes do "
                     "verde não foi conferido")
@@ -643,6 +652,11 @@ def primeira_linha(caminho):
         return None
 
 
+def logs_citados(celula, nome):
+    """Os caminhos citados na célula cujo arquivo se chama `nome`."""
+    return [p for p in PATH_RE.findall(celula) if os.path.basename(p.replace("\\", "/")) == nome]
+
+
 def problema_antes(at, classe, cell, evid, root, report_dir, feature, warnings):
     """O que falta na coluna `Antes` de um AT `true` (texto), ou None."""
     if classe == FORA:
@@ -650,7 +664,7 @@ def problema_antes(at, classe, cell, evid, root, report_dir, feature, warnings):
     if NA_RE.match(cell):
         return f"`N.A.` não vale para um AT de gate `test`/`cmd` ({'shall continue to' if classe == CONTINUA else 'comportamento novo'})"
     nome = f"{at}.antes.log"
-    paths = [p for p in PATH_RE.findall(cell) if os.path.basename(p.replace("\\", "/")) == nome]
+    paths = logs_citados(cell, nome)
     if not paths:
         return f"a coluna `Antes` não cita `evidence/{feature}/{nome}`"
     rel = paths[0]
@@ -678,6 +692,65 @@ def problema_antes(at, classe, cell, evid, root, report_dir, feature, warnings):
     return None
 
 
+def contagem_do_at(caminho, at):
+    """(casos que passaram, casos que falharam) somados nas linhas do log que COMEÇAM pelo id exato; None sem contagem.
+    Vale a última contagem da linha: o título do caso, antes dela, pode citar outra."""
+    try:
+        with open(caminho, encoding="utf-8", errors="replace") as f:
+            linhas = f.read().split("\n")[1:]   # a 1ª é o `$ comando`
+    except OSError:
+        return None
+    achadas = []
+    for linha in linhas:
+        linha = COR_RE.sub("", linha)
+        dono = LINHA_AT_RE.match(linha)
+        casos = CASOS_RE.findall(linha) if dono and dono.group(1) == at else []
+        if casos:
+            achadas.append((int(casos[-1][0]), int(casos[-1][1])))
+    return (sum(p for p, _ in achadas), sum(f for _, f in achadas)) if achadas else None
+
+
+def aviso_do_antes(at, classe, rel, casos):
+    """O aviso da contagem do AT no log de antes, ou None."""
+    if casos == (0, 0):
+        return (f"{CASOS} {at}: `{rel}` diz `PASS 0 · FAIL 0` na linha do AT: nenhum caso avaliado. Escreva o teste dele "
+                "(se o módulo ainda não existia, conte o erro de carga em FAIL) e grave o antes de novo")
+    if classe == NOVO and casos and casos[1] == 0:
+        return (f"{CASOS} {at}: `{rel}` diz `PASS {casos[0]} · FAIL 0` na linha do AT: ele já passava antes do código. "
+                "Ancore o teste no comportamento novo e grave o antes de novo")
+    return None
+
+
+def aviso_do_final(at, evid, root, report_dir, feature):
+    """O aviso de zero casos no `AT-nnn.log` verde citado na evidência, ou None."""
+    rel = next((p for p in logs_citados(evid, f"{at}.log") if not problema_do_log(p, root, report_dir, feature)), None)
+    if rel is None:
+        return None
+    caminho = caminho_do_log(rel, root, report_dir)
+    if ler_log_lint(caminho)[1] != "0" or contagem_do_at(caminho, at) != (0, 0):
+        return None
+    return f"{CASOS} {at}: `{rel}` terminou em `[exit=0]` com `PASS 0 · FAIL 0` na linha do AT: nenhum caso avaliado"
+
+
+def avisos_casos(aceitos, root, report_dir, warnings):
+    """F31: avisos da contagem de casos nos logs de antes aceitos (gate `test`/`cmd`). Nunca violação."""
+    por_comando = {}
+    for at, classe, cell in aceitos:
+        rel = logs_citados(cell, f"{at}.antes.log")[0]
+        caminho = caminho_do_log(rel, root, report_dir)
+        casos = contagem_do_at(caminho, at)
+        aviso = aviso_do_antes(at, classe, rel, casos)
+        if aviso:
+            warnings.append(aviso)
+        if classe == NOVO:
+            por_comando.setdefault(ler_log_lint(caminho)[0], {})[at] = casos
+    for comando, grupo in por_comando.items():
+        sem_contagem = [at for at, casos in grupo.items() if casos is None]
+        if len(grupo) > 1 and sem_contagem:
+            warnings.append(f"{CASOS} {', '.join(sem_contagem)}: o antes roda `{comando}`, o mesmo comando de outro AT, e o log não "
+                            "tem a linha `AT-nnn … (PASS n · FAIL n)`: o vermelho pode ser de outro AT")
+
+
 def check_antes(linhas_at, root, report_dir, feature, warnings):
     """F30 S2: o vermelho antes do verde dos AT `true` de uma tabela com a coluna `Antes`."""
     if not linhas_at:
@@ -686,7 +759,7 @@ def check_antes(linhas_at, root, report_dir, feature, warnings):
     if ats is None:
         warnings.append(f"sem `{FEATURES_DIR}/DEFINE_{feature}.md`: o vermelho antes do verde não foi conferido")
         return []
-    violations = []
+    violations, aceitos = [], []
     for at, cell, evid in linhas_at:
         if at not in ats:
             warnings.append(f"{at} não está no DEFINE_{feature}.md: o vermelho antes do verde dele não foi conferido")
@@ -694,6 +767,14 @@ def check_antes(linhas_at, root, report_dir, feature, warnings):
         problema = problema_antes(at, ats[at], cell, evid, root, report_dir, feature, warnings)
         if problema:
             violations.append((ANTES, f"{at}: {problema}"))
+        if ats[at] == FORA:
+            continue
+        if not problema:
+            aceitos.append((at, ats[at], cell))
+        aviso = aviso_do_final(at, evid, root, report_dir, feature)
+        if aviso:
+            warnings.append(aviso)
+    avisos_casos(aceitos, root, report_dir, warnings)
     return violations
 
 

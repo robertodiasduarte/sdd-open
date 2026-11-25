@@ -126,6 +126,18 @@ o lint lê o DEFINE da feature e confere:
 Tabela sem a coluna `Antes` (relatório anterior à v2.27.0): aprova com 1 aviso. AT fora do DEFINE, ou sem DEFINE:
 aviso. A violação sai na classe `[vermelho antes]`.
 
+**Casos avaliados (F31, só aviso).** Num gate composto (um comando para vários ATs), o exit é do conjunto: um AT sem
+teste herda o vermelho dos outros. Por isso cada AT imprime a própria linha, que começa pelo id dele e traz a contagem:
+`AT-001 ❌ saque acima do saldo (PASS 0 · FAIL 2)`. O caso que nem carregou (o módulo novo que ainda não existe) é
+erro de carga e soma em FAIL. Vale a última contagem da linha. O lint soma as linhas do mesmo AT e avisa, sem mudar o exit, quando:
+
+| Log | Linha do próprio AT | Aviso |
+|---|---|---|
+| antes, novo ou `shall continue to` | `PASS 0 · FAIL 0` | nenhum caso avaliado |
+| antes, novo | `PASS 1` ou mais, `FAIL 0` | já passava antes do código |
+| `AT-nnn.log` da evidência, em `[exit=0]` | `PASS 0 · FAIL 0` | nenhum caso avaliado |
+| antes, 2 ATs novos ou mais com o mesmo comando | sem contagem | o vermelho pode ser de outro AT |
+
 A sabotagem declarada no DESIGN grava `evidence/{FEATURE}/AT-nnn.sabotagem.log`: 1ª linha `$ <comando do AT>`, as
 linhas `# sabotagem:` e `# sem a sabotagem: exit 0`, a saída e `[exit=<n≠0>]` da execução sabotada (o teste pegou o
 defeito). Cite-o na evidência do AT, ao lado do `AT-nnn.log`.

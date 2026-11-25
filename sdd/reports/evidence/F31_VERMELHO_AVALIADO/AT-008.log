@@ -1,0 +1,10 @@
+$ cd tests && /usr/bin/python3 -B -m unittest test_report_lint test_report_lint_evidencia test_f30_report_lint test_f30_vermelho_antes && cd .. && /usr/bin/python3 scripts/check-versions.py --base origin/main
+................................................................................................................
+----------------------------------------------------------------------
+Ran 112 tests in 18.409s
+
+OK
+PASS: check-versions — 24 skills com versão coerente, comparadas a origin/main.
+RESULTADO: VERDE
+→ siga para o próximo passo.
+[exit=0]

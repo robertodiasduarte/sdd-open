@@ -741,6 +741,7 @@ tests/test_f30_starter.py
 tests/test_f30_textos.py
 tests/test_f30_textos_s2.py
 tests/test_f30_vermelho_antes.py
+tests/test_f31_vermelho_avaliado.py
 tests/test_fluxo.py
 tests/test_gate_baseline.py
 tests/test_gate_shell_evidencia.py

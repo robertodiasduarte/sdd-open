@@ -1,0 +1,11 @@
+$ cd tests && /usr/bin/python3 -B -m unittest -v test_f31_vermelho_avaliado.AT004FalhouAvaliando
+test_fail_1_na_propria_linha_nao_avisa (test_f31_vermelho_avaliado.AT004FalhouAvaliando) ... ok
+test_fail_com_dois_digitos_e_passou_parte (test_f31_vermelho_avaliado.AT004FalhouAvaliando) ... ok
+test_modulo_ausente_contado_em_fail_nao_avisa (test_f31_vermelho_avaliado.AT004FalhouAvaliando) ... ok
+test_titulo_do_caso_que_cita_zero_nao_avisa (test_f31_vermelho_avaliado.AT004FalhouAvaliando) ... ok
+
+----------------------------------------------------------------------
+Ran 4 tests in 0.833s
+
+OK
+[exit=0]

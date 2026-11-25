@@ -5,7 +5,7 @@ compatibility: Requer bash >= 3.2 e git >= 2.20; roda sdd/bin/verify-gate.sh --p
 license: MIT
 metadata:
   author: Roberto Dias Duarte
-  version: "2.9.1"
+  version: "2.9.2"
   updated: "2026-11"
   source: "https://github.com/robertodiasduarte/sdd-open/releases/latest"
   fase: "1"
@@ -14,7 +14,7 @@ metadata:
 # sdd-define — Fase 1
 
 Na primeira resposta desta skill, informe a versão numa linha, uma vez só, antes do Status:
-`sdd-define v2.9.1 · nov/2026`
+`sdd-define v2.9.2 · nov/2026`
 
 **Projeto sem `sdd/bin/` (sem o `init`) ou sem acesso aos arquivos (claude.ai, ChatGPT)?** Siga `web/MODO_WEB.md`
 desta skill; os caminhos que ele cita (`references/`, `assets/`) são os de dentro de `web/`.
@@ -230,9 +230,10 @@ Anti-padrões a recusar: gate de prosa; `kind: test` com `cmd` vazio; feature de
 `test` só para "passar técnico".
 
 **Gate composto** (feature com vários ATs automatizáveis): escreva um script
-`sdd/bin/gates/gate-{feature}.sh` com **um bloco por AT**, imprimindo `AT-00N ✅/❌`, e aponte
-o `cmd` para ele. Toda asserção precisa de **baseline vermelho**: rode contra a árvore antes da
-mudança; se já passa, ela não prova nada.
+`sdd/bin/gates/gate-{feature}.sh` com **um bloco por AT**, e aponte o `cmd` para ele. Cada bloco imprime uma
+linha que começa pelo id e conta os casos do AT, `AT-001 ❌ saque acima do saldo (PASS 0 · FAIL 2)`, com o erro de carga
+(módulo que ainda não existe) somado em FAIL: sem ela, um AT sem teste herda o vermelho dos outros. Toda asserção
+precisa de **baseline vermelho**: rode contra a árvore antes da mudança; se já passa, ela não prova nada.
 
 ### 9. Gravar
 

@@ -1,0 +1,11 @@
+$ cd tests && /usr/bin/python3 -B -m unittest -v test_f31_vermelho_avaliado.AT005Windows
+test_codigo_de_cor_nao_esconde_a_linha (test_f31_vermelho_avaliado.AT005Windows) ... ok
+test_crlf_e_cp1252_dao_o_mesmo_resultado (test_f31_vermelho_avaliado.AT005Windows) ... ok
+test_fim_de_cor_do_tput_nao_esconde_a_linha (test_f31_vermelho_avaliado.AT005Windows) ... ok
+test_marca_antes_do_id_e_aceita (test_f31_vermelho_avaliado.AT005Windows) ... ok
+
+----------------------------------------------------------------------
+Ran 4 tests in 1.503s
+
+OK
+[exit=0]

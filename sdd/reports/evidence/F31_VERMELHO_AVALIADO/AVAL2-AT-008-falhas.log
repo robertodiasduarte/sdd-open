@@ -1,0 +1,49 @@
+$ for m in f15_slots_textos f18_f20_textos f19_textos; do SDD_TEST_BASH=/bin/bash /usr/bin/python3 -B -m unittest discover -s tests -p test_$m.py; done
+.F................
+======================================================================
+FAIL: test_versao_e_4b (test_f15_slots_textos.Build)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "./cl/tests/test_f15_slots_textos.py", line 127, in test_versa
+    self.assertIn('version: "2.17.0"', txt)
+AssertionError: 'version: "2.17.0"' not found in '---\nname: sdd-build\ndescription: Fase 3 do SDD Open — executa o manifest do DESIGN arquivo a arquivo com verificação incremental, trata o Verify Gat
+
+----------------------------------------------------------------------
+Ran 18 tests in 0.039s
+
+FAILED (failures=1)
+..........
+======================================================================
+FAIL: test_versoes_e_linha_de_identificacao (test_f18_f20_textos.Versoes) (skill='sdd-define')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "./cl/tests/test_f18_f20_textos.py", line 23, in test_versoes_
+    self.assertIn('version: "%s"' % versao, texto)
+AssertionError: 'version: "2.9.1"' not found in '---\nname: sdd-define\ndescription: Fase 1 do SDD Open — transforma um brainstorm, notas ou pedido direto em especificação com testes de aceitação em E
+
+======================================================================
+FAIL: test_versoes_e_linha_de_identificacao (test_f18_f20_textos.Versoes) (skill='sdd-build')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "./cl/tests/test_f18_f20_textos.py", line 23, in test_versoes_
+    self.assertIn('version: "%s"' % versao, texto)
+AssertionError: 'version: "2.17.0"' not found in '---\nname: sdd-build\ndescription: Fase 3 do SDD Open — executa o manifest do DESIGN arquivo a arquivo com verificação incremental, trata o Verify Gat
+
+----------------------------------------------------------------------
+Ran 11 tests in 0.007s
+
+FAILED (failures=2)
+..............F...
+======================================================================
+FAIL: test_build_5c_manda_gravar_conferir_e_passar_o_ledger (test_f19_textos.Skills)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "./cl/tests/test_f19_textos.py", line 79, in test_build_5c_man
+    self.assertIn('version: "2.17.0"', texto)
+AssertionError: 'version: "2.17.0"' not found in '---\nname: sdd-build\ndescription: Fase 3 do SDD Open — executa o manifest do DESIGN arquivo a arquivo com verificação incremental, trata o Verify Gat
+
+----------------------------------------------------------------------
+Ran 18 tests in 20.720s
+
+FAILED (failures=1)
+[exit=1]

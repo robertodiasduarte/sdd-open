@@ -6,7 +6,7 @@ compatibility: "Funciona na web (claude.ai, ChatGPT), onde o documento sai no ch
 # SDD Define
 
 Na primeira resposta desta skill, informe a versão numa linha, uma vez só:
-`sdd-define v2.9.1 · nov/2026`
+`sdd-define v2.9.2 · nov/2026`
 
 ## Quick start
 

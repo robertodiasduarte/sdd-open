@@ -1,0 +1,44 @@
+$ cd tests && /usr/bin/python3 -B -m unittest -v test_f31_vermelho_avaliado.AT003SemContagem
+# sabotagem: sdd/bin/report-lint.py: «if len(grupo) > 1» → «if len(grupo) > 0» (cópia de HEAD c8d43ec)
+# sem a sabotagem: exit 0
+test_comando_compartilhado_com_contagem_de_todos_nao_avisa (test_f31_vermelho_avaliado.AT003SemContagem) ... ok
+test_comando_compartilhado_sem_contagem_avisa_uma_vez_com_os_ids (test_f31_vermelho_avaliado.AT003SemContagem) ... ok
+test_comando_proprio_sem_contagem_nao_avisa (test_f31_vermelho_avaliado.AT003SemContagem) ... FAIL
+test_nao_regressao_com_o_mesmo_comando_nao_forma_grupo (test_f31_vermelho_avaliado.AT003SemContagem) ... FAIL
+test_o_mesmo_at_em_duas_tabelas_nao_e_comando_compartilhado (test_f31_vermelho_avaliado.AT003SemContagem) ... FAIL
+
+======================================================================
+FAIL: test_comando_proprio_sem_contagem_nao_avisa (test_f31_vermelho_avaliado.AT003SemContagem)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/sdd-sabotagem.hdZgxm/copia/tests/test_f31_vermelho_avaliado.py", line 145, in test_comando_proprio_sem_contagem_nao_avisa
+    self.calado(linha("AT-001") + linha("AT-004"))
+  File "/private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/sdd-sabotagem.hdZgxm/copia/tests/test_f31_vermelho_avaliado.py", line 80, in calado
+    self.assertNotIn(CLASSE, out)
+AssertionError: '[casos avaliados]' unexpectedly found in '⚠️  N.A. aceito sem conferir camadas — `layers:` do sdd/config.yaml sem nenhum glob preenchido; preencha `layers:` em sdd/config.yaml para a contagem valer\n⚠️  lint e tipos com o slot vazio (project.lint_cmd e project.typecheck_cmd), e o relatório não diz isso: escreva a linha `lint: slot vazio`\n⚠️  o relatório não tem a seção `## Qualidade (avisos)` preenchida (métricas do código novo, desde a v2.28.0): rode sdd/bin/metricas-diff.sh e cole a saída\n⚠️  [casos avaliados] AT-001: o antes roda `python3 -m unittest tests.a`, o mesmo comando de outro AT, e o log não tem a linha `AT-nnn … (PASS n · FAIL n)`: o vermelho pode ser de outro AT\n⚠️  [casos avaliados] AT-004: o antes roda `python3 -m unittest tests.b`, o mesmo comando de outro AT, e o log não tem a linha `AT-nnn … (PASS n · FAIL n)`: o vermelho pode ser de outro AT\n✅ sdd/reports/BUILD_REPORT_EXEMPLO.md: todo `true` tem evidência abrível e a avaliação está provada ou declarada\nRESULTADO: VERDE\n→ o relatório pode ser commitado.\n'
+
+======================================================================
+FAIL: test_nao_regressao_com_o_mesmo_comando_nao_forma_grupo (test_f31_vermelho_avaliado.AT003SemContagem)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/sdd-sabotagem.hdZgxm/copia/tests/test_f31_vermelho_avaliado.py", line 166, in test_nao_regressao_com_o_mesmo_comando_nao_forma_grupo
+    self.calado(linha("AT-001") + linha("AT-002"))
+  File "/private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/sdd-sabotagem.hdZgxm/copia/tests/test_f31_vermelho_avaliado.py", line 80, in calado
+    self.assertNotIn(CLASSE, out)
+AssertionError: '[casos avaliados]' unexpectedly found in '⚠️  N.A. aceito sem conferir camadas — `layers:` do sdd/config.yaml sem nenhum glob preenchido; preencha `layers:` em sdd/config.yaml para a contagem valer\n⚠️  lint e tipos com o slot vazio (project.lint_cmd e project.typecheck_cmd), e o relatório não diz isso: escreva a linha `lint: slot vazio`\n⚠️  o relatório não tem a seção `## Qualidade (avisos)` preenchida (métricas do código novo, desde a v2.28.0): rode sdd/bin/metricas-diff.sh e cole a saída\n⚠️  [casos avaliados] AT-001: o antes roda `bash scripts/gate.sh`, o mesmo comando de outro AT, e o log não tem a linha `AT-nnn … (PASS n · FAIL n)`: o vermelho pode ser de outro AT\n✅ sdd/reports/BUILD_REPORT_EXEMPLO.md: todo `true` tem evidência abrível e a avaliação está provada ou declarada\nRESULTADO: VERDE\n→ o relatório pode ser commitado.\n'
+
+======================================================================
+FAIL: test_o_mesmo_at_em_duas_tabelas_nao_e_comando_compartilhado (test_f31_vermelho_avaliado.AT003SemContagem)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/sdd-sabotagem.hdZgxm/copia/tests/test_f31_vermelho_avaliado.py", line 161, in test_o_mesmo_at_em_duas_tabelas_nao_e_comando_compartilhado
+    self.calado(linha("AT-001") + "\n" + CABECALHO + linha("AT-001"))
+  File "/private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/sdd-sabotagem.hdZgxm/copia/tests/test_f31_vermelho_avaliado.py", line 80, in calado
+    self.assertNotIn(CLASSE, out)
+AssertionError: '[casos avaliados]' unexpectedly found in '⚠️  N.A. aceito sem conferir camadas — `layers:` do sdd/config.yaml sem nenhum glob preenchido; preencha `layers:` em sdd/config.yaml para a contagem valer\n⚠️  lint e tipos com o slot vazio (project.lint_cmd e project.typecheck_cmd), e o relatório não diz isso: escreva a linha `lint: slot vazio`\n⚠️  o relatório não tem a seção `## Qualidade (avisos)` preenchida (métricas do código novo, desde a v2.28.0): rode sdd/bin/metricas-diff.sh e cole a saída\n⚠️  [casos avaliados] AT-001: o antes roda `bash scripts/gate.sh`, o mesmo comando de outro AT, e o log não tem a linha `AT-nnn … (PASS n · FAIL n)`: o vermelho pode ser de outro AT\n✅ sdd/reports/BUILD_REPORT_EXEMPLO.md: todo `true` tem evidência abrível e a avaliação está provada ou declarada\nRESULTADO: VERDE\n→ o relatório pode ser commitado.\n'
+
+----------------------------------------------------------------------
+Ran 5 tests in 1.246s
+
+FAILED (failures=3)
+[exit=1]

@@ -336,7 +336,7 @@ class Pacote(unittest.TestCase):
 
     def test_versoes_e_linha_de_identificacao(self):
         for skill, versao in (("sdd-playbook", "2.3.1"), ("sdd-release", "2.19.1"), ("sdd-new-session", "1.8.0"),
-                              ("sdd-handoff", "2.3.2"), ("sdd-define", "2.9.1")):
+                              ("sdd-handoff", "2.3.2"), ("sdd-define", "2.9.2")):
             texto = ler(".agents/skills/%s/SKILL.md" % skill)
             with self.subTest(skill=skill):
                 self.assertIn('version: "%s"' % versao, texto)

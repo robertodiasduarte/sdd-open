@@ -6,7 +6,7 @@ compatibility: "Requer um agente com acesso gravável ao projeto; não precisa d
 # SDD Build
 
 Na primeira resposta desta skill, informe a versão numa linha, uma vez só:
-`sdd-build v2.17.0 · nov/2026`
+`sdd-build v2.17.1 · nov/2026`
 
 Executar implementação real. Não tratar Build como geração de um documento isolado.
 

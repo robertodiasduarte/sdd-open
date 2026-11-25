@@ -1,0 +1,109 @@
+$ cd tests && /usr/bin/python3 -B -m unittest -v test_f31_vermelho_avaliado.AT009Vizinhos
+test_antes_e_final_zerados_sao_dois_avisos (test_f31_vermelho_avaliado.AT009Vizinhos) ... FAIL
+test_antes_recusado_nao_cala_o_aviso_do_final (test_f31_vermelho_avaliado.AT009Vizinhos) ... FAIL
+test_continua_verde_com_zero_casos_avisa (test_f31_vermelho_avaliado.AT009Vizinhos) ... FAIL
+test_final_citado_depois_do_log_de_outra_feature_e_lido (test_f31_vermelho_avaliado.AT009Vizinhos) ... FAIL
+test_final_verde_com_zero_casos_avisa (test_f31_vermelho_avaliado.AT009Vizinhos) ... FAIL
+test_final_vermelho_com_zero_casos_fica_fora (test_f31_vermelho_avaliado.AT009Vizinhos) ... ok
+test_novo_que_ja_passava_avisa (test_f31_vermelho_avaliado.AT009Vizinhos) ... FAIL
+test_zero_de_outro_at_no_final_nao_avisa (test_f31_vermelho_avaliado.AT009Vizinhos) ... ok
+
+======================================================================
+FAIL: test_antes_e_final_zerados_sao_dois_avisos (test_f31_vermelho_avaliado.AT009Vizinhos)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "<repo>/tests/test_f31_vermelho_avaliado.py", line 292, in test_antes_e_final_zerados_sao_dois_avisos
+    self.avisa(linha("AT-001"), "AT-001.antes.log", "AT-001.log", vezes=2)
+  File "<repo>/tests/test_f31_vermelho_avaliado.py", line 72, in avisa
+    self.assertEqual(out.count(CLASSE), vezes, out)
+AssertionError: 0 != 2 : ⚠️  N.A. aceito sem conferir camadas — `layers:` do sdd/config.yaml sem nenhum glob preenchido; preencha `layers:` em sdd/config.yaml para a contagem valer
+⚠️  lint e tipos com o slot vazio (project.lint_cmd e project.typecheck_cmd), e o relatório não diz isso: escreva a linha `lint: slot vazio`
+⚠️  o relatório não tem a seção `## Qualidade (avisos)` preenchida (métricas do código novo, desde a v2.28.0): rode sdd/bin/metricas-diff.sh e cole a saída
+✅ sdd/reports/BUILD_REPORT_EXEMPLO.md: todo `true` tem evidência abrível e a avaliação está provada ou declarada
+RESULTADO: VERDE
+→ o relatório pode ser commitado.
+
+
+======================================================================
+FAIL: test_antes_recusado_nao_cala_o_aviso_do_final (test_f31_vermelho_avaliado.AT009Vizinhos)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "<repo>/tests/test_f31_vermelho_avaliado.py", line 301, in test_antes_recusado_nao_cala_o_aviso_do_final
+    self.assertEqual(out.count(CLASSE), 1, out)
+AssertionError: 0 != 1 : ⚠️  N.A. aceito sem conferir camadas — `layers:` do sdd/config.yaml sem nenhum glob preenchido; preencha `layers:` em sdd/config.yaml para a contagem valer
+⚠️  lint e tipos com o slot vazio (project.lint_cmd e project.typecheck_cmd), e o relatório não diz isso: escreva a linha `lint: slot vazio`
+⚠️  o relatório não tem a seção `## Qualidade (avisos)` preenchida (métricas do código novo, desde a v2.28.0): rode sdd/bin/metricas-diff.sh e cole a saída
+🛑 [vermelho antes] AT-001: `evidence/EXEMPLO/AT-001.antes.log` terminou em `[exit=0]`: o antes de um AT de comportamento novo tem de falhar
+RESULTADO: VERMELHO
+→ rode o comando do AT antes do código e grave `evidence/EXEMPLO/AT-nnn.antes.log` (vermelho; `shall continue to`: verde), citado na coluna `Antes`; gate fora de `test`/`cmd`: `N.A. (<motivo>)`.
+
+
+======================================================================
+FAIL: test_continua_verde_com_zero_casos_avisa (test_f31_vermelho_avaliado.AT009Vizinhos)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "<repo>/tests/test_f31_vermelho_avaliado.py", line 275, in test_continua_verde_com_zero_casos_avisa
+    self.avisa(linha("AT-002"), "AT-002:", "AT-002.antes.log", "nenhum caso avaliado")
+  File "<repo>/tests/test_f31_vermelho_avaliado.py", line 72, in avisa
+    self.assertEqual(out.count(CLASSE), vezes, out)
+AssertionError: 0 != 1 : ⚠️  N.A. aceito sem conferir camadas — `layers:` do sdd/config.yaml sem nenhum glob preenchido; preencha `layers:` em sdd/config.yaml para a contagem valer
+⚠️  lint e tipos com o slot vazio (project.lint_cmd e project.typecheck_cmd), e o relatório não diz isso: escreva a linha `lint: slot vazio`
+⚠️  o relatório não tem a seção `## Qualidade (avisos)` preenchida (métricas do código novo, desde a v2.28.0): rode sdd/bin/metricas-diff.sh e cole a saída
+✅ sdd/reports/BUILD_REPORT_EXEMPLO.md: todo `true` tem evidência abrível e a avaliação está provada ou declarada
+RESULTADO: VERDE
+→ o relatório pode ser commitado.
+
+
+======================================================================
+FAIL: test_final_citado_depois_do_log_de_outra_feature_e_lido (test_f31_vermelho_avaliado.AT009Vizinhos)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "<repo>/tests/test_f31_vermelho_avaliado.py", line 306, in test_final_citado_depois_do_log_de_outra_feature_e_lido
+    self.avisa("| AT-001 | x | `evidence/%s/AT-001.antes.log` | true | `evidence/OUTRA/AT-001.log` · `evidence/%s/AT-001.log` |\n"
+  File "<repo>/tests/test_f31_vermelho_avaliado.py", line 72, in avisa
+    self.assertEqual(out.count(CLASSE), vezes, out)
+AssertionError: 0 != 1 : ⚠️  N.A. aceito sem conferir camadas — `layers:` do sdd/config.yaml sem nenhum glob preenchido; preencha `layers:` em sdd/config.yaml para a contagem valer
+⚠️  lint e tipos com o slot vazio (project.lint_cmd e project.typecheck_cmd), e o relatório não diz isso: escreva a linha `lint: slot vazio`
+⚠️  o relatório não tem a seção `## Qualidade (avisos)` preenchida (métricas do código novo, desde a v2.28.0): rode sdd/bin/metricas-diff.sh e cole a saída
+✅ sdd/reports/BUILD_REPORT_EXEMPLO.md: todo `true` tem evidência abrível e a avaliação está provada ou declarada
+RESULTADO: VERDE
+→ o relatório pode ser commitado.
+
+
+======================================================================
+FAIL: test_final_verde_com_zero_casos_avisa (test_f31_vermelho_avaliado.AT009Vizinhos)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "<repo>/tests/test_f31_vermelho_avaliado.py", line 279, in test_final_verde_com_zero_casos_avisa
+    self.avisa(linha("AT-001"), "AT-001:", "AT-001.log", "nenhum caso avaliado")
+  File "<repo>/tests/test_f31_vermelho_avaliado.py", line 72, in avisa
+    self.assertEqual(out.count(CLASSE), vezes, out)
+AssertionError: 0 != 1 : ⚠️  N.A. aceito sem conferir camadas — `layers:` do sdd/config.yaml sem nenhum glob preenchido; preencha `layers:` em sdd/config.yaml para a contagem valer
+⚠️  lint e tipos com o slot vazio (project.lint_cmd e project.typecheck_cmd), e o relatório não diz isso: escreva a linha `lint: slot vazio`
+⚠️  o relatório não tem a seção `## Qualidade (avisos)` preenchida (métricas do código novo, desde a v2.28.0): rode sdd/bin/metricas-diff.sh e cole a saída
+✅ sdd/reports/BUILD_REPORT_EXEMPLO.md: todo `true` tem evidência abrível e a avaliação está provada ou declarada
+RESULTADO: VERDE
+→ o relatório pode ser commitado.
+
+
+======================================================================
+FAIL: test_novo_que_ja_passava_avisa (test_f31_vermelho_avaliado.AT009Vizinhos)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "<repo>/tests/test_f31_vermelho_avaliado.py", line 288, in test_novo_que_ja_passava_avisa
+    self.avisa(linha("AT-001"), "AT-001:", "já passava antes")
+  File "<repo>/tests/test_f31_vermelho_avaliado.py", line 72, in avisa
+    self.assertEqual(out.count(CLASSE), vezes, out)
+AssertionError: 0 != 1 : ⚠️  N.A. aceito sem conferir camadas — `layers:` do sdd/config.yaml sem nenhum glob preenchido; preencha `layers:` em sdd/config.yaml para a contagem valer
+⚠️  lint e tipos com o slot vazio (project.lint_cmd e project.typecheck_cmd), e o relatório não diz isso: escreva a linha `lint: slot vazio`
+⚠️  o relatório não tem a seção `## Qualidade (avisos)` preenchida (métricas do código novo, desde a v2.28.0): rode sdd/bin/metricas-diff.sh e cole a saída
+✅ sdd/reports/BUILD_REPORT_EXEMPLO.md: todo `true` tem evidência abrível e a avaliação está provada ou declarada
+RESULTADO: VERDE
+→ o relatório pode ser commitado.
+
+
+----------------------------------------------------------------------
+Ran 8 tests in 1.161s
+
+FAILED (failures=6)
+[exit=1]

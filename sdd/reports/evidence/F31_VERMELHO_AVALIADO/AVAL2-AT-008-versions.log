@@ -1,0 +1,5 @@
+$ /usr/bin/python3 scripts/check-versions.py --base origin/main
+PASS: check-versions — 24 skills com versão coerente, comparadas a origin/main.
+RESULTADO: VERDE
+→ siga para o próximo passo.
+[exit=0]

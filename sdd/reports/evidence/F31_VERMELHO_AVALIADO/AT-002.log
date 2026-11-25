@@ -1,0 +1,14 @@
+$ cd tests && /usr/bin/python3 -B -m unittest -v test_f31_vermelho_avaliado.AT002SoALinhaDoProprioAt
+test_a_linha_do_comando_nao_conta (test_f31_vermelho_avaliado.AT002SoALinhaDoProprioAt) ... ok
+test_citar_o_at_no_meio_da_linha_de_outro_nao_conta (test_f31_vermelho_avaliado.AT002SoALinhaDoProprioAt) ... ok
+test_fail_de_outro_at_nao_tira_o_aviso (test_f31_vermelho_avaliado.AT002SoALinhaDoProprioAt) ... ok
+test_id_com_o_mesmo_prefixo_nao_conta (test_f31_vermelho_avaliado.AT002SoALinhaDoProprioAt) ... ok
+test_numero_enorme_nao_derruba_o_lint (test_f31_vermelho_avaliado.AT002SoALinhaDoProprioAt) ... ok
+test_vale_a_ultima_contagem_da_linha (test_f31_vermelho_avaliado.AT002SoALinhaDoProprioAt) ... ok
+test_zero_de_outro_at_nao_cria_aviso (test_f31_vermelho_avaliado.AT002SoALinhaDoProprioAt) ... ok
+
+----------------------------------------------------------------------
+Ran 7 tests in 1.955s
+
+OK
+[exit=0]

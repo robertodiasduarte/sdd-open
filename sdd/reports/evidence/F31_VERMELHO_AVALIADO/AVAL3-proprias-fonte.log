@@ -1,0 +1,64 @@
+$ cat meu3.py sabot.sh mods.sh
+"""Sondas próprias do ciclo 3 (fixtures em pasta temporária; velho=c747662, novo=HEAD)."""
+import os
+src=open(os.path.join(os.path.dirname(os.path.abspath(__file__)),"sondas.py"),encoding="utf-8").read().rsplit("globals()",1)[0]
+exec(compile(src,"sondas.py","exec"))
+A=lambda c,rc=2,**k:{"AT-001.antes.log":log(c+"\n",rc,**k)}
+print("# AT-001")
+caso("alvo com 9 ATs, so o AT-004 zerado",["AT-00%d"%i for i in range(1,10)],{"AT-00%d.antes.log"%i:log("".join(L("AT-00%d"%j,Z if j==4 else F1) for j in range(1,10)),2) for i in range(1,10)},1)
+caso("conserto em 1 linha (aviso sem quebra)",["AT-001"],A("AT-001 "+Z),1)
+caso("contagem em linha separada do id nao e da linha do AT",["AT-001"],A("AT-001 caso\n   "+Z),0)
+print("# AT-002")
+caso("AT-001.1 FAIL 3 e AT-001 0/0",["AT-001"],A("AT-0012 "+F3+"\nAT-001 "+Z),1)
+caso("BYPASS 0 nao e PASS",["AT-001"],A("AT-001 BYPASS 0 · FAIL 0"),0)
+caso("log de 1 linha so (comando+contagem), sem corpo",["AT-001"],A("",cmd="AT-001 "+Z),0)
+caso("2a linha repete o comando com id no meio",["AT-001"],A("$ x AT-001 "+Z+" "),0)
+print("# AT-003")
+caso("2 grupos: 1 completo, 1 sem",["AT-001","AT-002","AT-003","AT-004"],{"AT-001.antes.log":log(L("AT-001",F1)),"AT-002.antes.log":log(L("AT-002",F1)),"AT-003.antes.log":log("b\n",1,"c2"),"AT-004.antes.log":log("b\n",1,"c2")},1)
+caso("ATs do mesmo comando em tabelas diferentes",["AT-001"],{"AT-001.antes.log":log("b\n"),"AT-002.antes.log":log("b\n"),"AT-002.log":log("ok\n",0)},1,extra="## t2\n\n| ID | Critério | Antes | Resultado | Evidência |\n|--|--|--|--|--|\n| AT-002 | x | `evidence/EX/AT-002.antes.log` | true | `evidence/EX/AT-002.log` |\n\n")
+print("# AT-004/007")
+caso("node --test fail 1 sem contagem, comando proprio",["AT-001"],A("# tests 1\n# fail 1",1),0)
+caso("unittest Ran 0 sem contagem, comando proprio",["AT-001"],A("Ran 0 tests in 0.0s",5),0)
+caso("AT-001 PASS 4 FAIL 1 em 2 linhas com CRLF",["AT-001"],{"AT-001.antes.log":(log("AT-001 a (PASS 4 · FAIL 0)\nAT-001 b "+F1+"\n",2)).replace("\n","\r\n")},0)
+print("# AT-005")
+caso("utf-16 ilegivel: mesma violacao do velho",["AT-001"],{"AT-001.antes.log":log("AT-001 "+Z+"\n").encode("utf-16"),"AT-001.log":log("ok\n",0)},0,1)
+caso("CRLF, continue 0/0 cp1252",["AT-020"],{"AT-020.antes.log":log("AT-020 "+Z+"\n",0).replace("\n","\r\n").encode("cp1252")},1)
+print("# AT-009")
+caso("caminho com barra invertida do Windows no final: recusado como no velho",[("AT-001","`evidence/EX/AT-001.antes.log`","`evidence\\EX\\AT-001.log`","true")],dict(A("AT-001 "+F1),**{"AT-001.log":log("AT-001 "+Z+"\n",0)}),0,1)
+caso("a,b,c e alvo no mesmo relatorio = 4",["AT-001","AT-002","AT-003","AT-020"],{"AT-001.antes.log":log(L("AT-001",Z),2),"AT-002.antes.log":log(L("AT-002",P2),2),"AT-003.antes.log":log(L("AT-003",F1),2),"AT-003.log":log(L("AT-003",Z),0),"AT-020.antes.log":log(L("AT-020",Z),0)},4)
+caso("continue PASS 2 FAIL 0: nao e 'ja passava'",["AT-020"],{"AT-020.antes.log":log(L("AT-020",P2),0)},0)
+cd "$(dirname "$0")" || exit 1
+rm -rf sb; git clone -q cl sb; t=0; peg=0
+s() { (cd sb && git checkout -q . && /usr/bin/python3 - "$1" "$2" <<'P'
+import sys
+p="sdd/bin/report-lint.py";x=open(p,encoding="utf-8").read();assert x.count(sys.argv[1])==1,(x.count(sys.argv[1]),sys.argv[1])
+open(p,"w",encoding="utf-8").write(x.replace(sys.argv[1],sys.argv[2]))
+P
+) || { echo "NAO APLICADA $1"; return; }
+ o=$(cd sb && /usr/bin/python3 -B -m unittest discover -s tests -p 'test_f31_*.py' 2>&1); r=$?
+ t=$((t+1)); [ $r != 0 ] && peg=$((peg+1)); echo "rc=$r $(printf '%s\n' "$o"|tail -1) | $1 -> $2"; }
+s 'casos[-1][0]), int(casos[-1][1])' 'casos[0][0]), int(casos[0][1])'
+s 'if len(grupo) > 1 and sem_contagem' 'if len(grupo) > 0 and sem_contagem'
+s '[1:]   # a 1ª' '[0:]   # a 1ª'
+s 'if classe == NOVO and casos and casos[1] == 0' 'if classe == NOVO and casos and casos[1] == 9'
+s '        if classe == NOVO:
+            por_comando' '        if True:
+            por_comando'
+s 'if ler_log_lint(caminho)[1] != "0" or ' 'if '
+s 'dono.group(1) == at else' 'dono.group(1).startswith(at) else'
+s 'setdefault(ler_log_lint(caminho)[0], {})' 'setdefault("x", {})'
+s 'errors="replace") as f:
+            linhas' 'errors="strict") as f:
+            linhas'
+s 'if not problema_do_log(p, root, report_dir, feature)), None)' 'if True), None)'
+echo "sabotagens=$t pegas=$peg"; [ $t = $peg ]
+cd "$(dirname "$0")/cl" || exit 1
+n=0; ruim=0
+for m in $(cat ../mods); do m=${m%.py}
+  o=$(SDD_TEST_BASH=/bin/bash /usr/bin/python3 -B -m unittest discover -s tests -p "$m.py" 2>&1); r=$?
+  n=$((n+1)); [ $r = 0 ] || { ruim=$((ruim+1)); printf '%s\n' "$o" | tail -40; }
+  echo "$m rc=$r $(printf '%s\n' "$o" | grep -E '^Ran|^OK|^FAILED' | tr '\n' ' ')"
+done
+echo "modulos=$n vermelhos=$ruim"
+exit $ruim
+[exit=0]

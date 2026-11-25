@@ -1,0 +1,10 @@
+$ cd tests && /usr/bin/python3 -B -m unittest -v test_f31_vermelho_avaliado.AT006Textos
+test_cada_texto_ensina_a_contar_o_erro_de_carga (test_f31_vermelho_avaliado.AT006Textos) ... ok
+test_o_exemplo_de_cada_texto_e_lido_pelo_lint (test_f31_vermelho_avaliado.AT006Textos) ... ok
+test_o_texto_do_starter_nao_cita_o_script (test_f31_vermelho_avaliado.AT006Textos) ... ok
+
+----------------------------------------------------------------------
+Ran 3 tests in 0.011s
+
+OK
+[exit=0]

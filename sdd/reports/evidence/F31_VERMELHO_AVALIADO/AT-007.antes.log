@@ -1,0 +1,12 @@
+$ cd tests && /usr/bin/python3 -B -m unittest -v test_f31_vermelho_avaliado.AT007ControlesIguais
+test_continua_verde_com_casos (test_f31_vermelho_avaliado.AT007ControlesIguais) ... ok
+test_fail_1 (test_f31_vermelho_avaliado.AT007ControlesIguais) ... ok
+test_log_sem_contagem_de_comando_proprio (test_f31_vermelho_avaliado.AT007ControlesIguais) ... ok
+test_na_de_gate_fora_de_test_e_cmd (test_f31_vermelho_avaliado.AT007ControlesIguais) ... ok
+test_relatorio_sem_a_coluna_antes (test_f31_vermelho_avaliado.AT007ControlesIguais) ... ok
+
+----------------------------------------------------------------------
+Ran 5 tests in 0.765s
+
+OK
+[exit=0]
