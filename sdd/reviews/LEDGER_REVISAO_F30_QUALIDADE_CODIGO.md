@@ -207,3 +207,12 @@ revisor2: dispensado rodada=15 — sem superfície de risco (regra antiga: 20 ar
 | achado | sev | veredito | rodada | evidência | dano | revisão |
 |---|---|---|---|---|---|---|
 | R1 | MED | APLICADA | rodada=15 | `1585b12`; teste: test_saida_ilegivel | nao | EXTERNAL_REVIEW_20261125-074156 |
+
+Revisão do código da S3, rodada 16 (base `fce8c61`): revisor `codex` (`gpt-6.1-sol`, 179 s), auditor `claude`;
+`diversidade: vendor`; US$ 0,88.
+
+revisor2: dispensado rodada=16 — sem superfície de risco (regra antiga: 20 arquivos (limiar 8))
+
+| achado | sev | veredito | rodada | evidência | dano | revisão |
+|---|---|---|---|---|---|---|
+| R1 | MED | APLICADA | rodada=16 | `574530a`; teste: test_saida_ilegivel | nao | EXTERNAL_REVIEW_20261125-075041 |
