@@ -5,9 +5,11 @@ test_medido_sem_aviso_diz_quantos_mediu (test_f30_metricas.AT017Achados) ... ok
 test_nome_com_crase_nao_abre_secao (test_f30_metricas.AT017Achados) ... ok
 test_os_dois_achados_exit_0 (test_f30_metricas.AT017Achados) ... ok
 test_teto_de_20_itens_o_pior_primeiro (test_f30_metricas.AT017Achados) ... ok
+test_trecho_de_uma_linha_com_o_jscpd_real (test_f30_metricas.AT017Achados)
+Revisão do código, rodada 7, R2: o mínimo é de tokens; o de linhas do jscpd perderia o trecho curto. ... skipped 'jscpd real fora do PATH'
 
 ----------------------------------------------------------------------
-Ran 6 tests in 5.402s
+Ran 7 tests in 5.279s
 
-OK (skipped=1)
+OK (skipped=2)
 [exit=0]
