@@ -1,0 +1,38 @@
+$ cat novas.py
+import os
+src=open(os.path.join(os.path.dirname(os.path.abspath(__file__)),"sondas.py"),encoding="utf-8").read().rsplit("globals()",1)[0]
+exec(compile(src,"sondas.py","exec"))
+A=lambda c,rc=1,**k:{"AT-001.antes.log":log("AT-001 "+c+"\n",rc,**k)}
+print("# ultima contagem")
+caso("3 contagens, ultima FAIL 1",["AT-001"],A("PASS 0 · FAIL 0 PASS 9 · FAIL 0 (PASS 0 · FAIL 1)"),0)
+caso("ultima 0/0 colada a outra",["AT-001"],A("(PASS 3 · FAIL 3)(PASS 0 · FAIL 0)"),1)
+caso("cadeia PASS·FAIL·PASS·FAIL",["AT-001"],A("PASS 2 · FAIL 3 · PASS 0 · FAIL 0"),1)
+caso("ultima PASS 2 FAIL 0: ja passava",["AT-001"],A("cita FAIL PASS 0 · FAIL 4 (PASS 2 · FAIL 0)"),1)
+caso("2 linhas, cada uma com citacao: soma das ultimas = 0/0",["AT-001"],{"AT-001.antes.log":log("AT-001 a PASS 0 · FAIL 3 (PASS 0 · FAIL 0)\n"*2)},1)
+caso("cp1252 CRLF com citacao",["AT-001"],{"AT-001.antes.log":log("AT-001 a PASS 0 · FAIL 3 (PASS 0 · FAIL 0)\n").replace("\n","\r\n").encode("cp1252")},1)
+caso("final: cita 0/0, ultima PASS 2",["AT-001"],dict(A(F1),**{"AT-001.log":log("AT-001 ok PASS 0 · FAIL 0 (PASS 2 · FAIL 0)\n",0)}),0)
+caso("duracao apos a contagem",["AT-001"],A("x (PASS 0 · FAIL 0) em 1.2s, SKIP 3"),1)
+print("# ids distintos")
+caso("mesmo AT em 3 tabelas + outro AT, mesmo comando",["AT-001","AT-002"],{"AT-001.antes.log":log("b\n"),"AT-002.antes.log":log("b\n")},1,tabelas=3)
+caso("mesmo AT 2x na mesma tabela",["AT-001","AT-001"],{"AT-001.antes.log":log("b\n")},0)
+caso("AT-001 e AT-001b sao distintos",["AT-001","AT-001b"],{"AT-001.antes.log":log("b\n"),"AT-001b.antes.log":log("b\n")},1)
+caso("recusado + 2 aceitos sem contagem: so os aceitos",["AT-001","AT-002","AT-003"],{"AT-001.antes.log":log("b\n"),"AT-002.antes.log":log("b\n"),"AT-003.antes.log":log("b\n",0)},1,1)
+caso("2 tabelas: alvo + final 0/0 = 2 avisos, sem duplicar",["AT-001"],dict(A(Z),**{"AT-001.log":log(L("AT-001",Z),0)}),2,tabelas=2)
+print("# final sem depender do antes")
+E="`evidence/EX/AT-001.log`"; fz={"AT-001.log":log(L("AT-001",Z),0)}
+caso("antes N.A. em gate test",[("AT-001","N.A. (x)",E,"true")],fz,1,1)
+caso("antes roda outro comando",["AT-001"],dict(A(F1,cmd="outro"),**fz),1,1)
+caso("continue com antes vermelho",["AT-020"],{"AT-020.antes.log":log("b\n",1),"AT-020.log":log(L("AT-020",Z),0)},1,1)
+caso("antes ausente, final PASS 1",[("AT-001","—",E,"true")],{"AT-001.log":log(L("AT-001",P2),0)},0,1)
+caso("antes ausente, final exit 1",[("AT-001","—",E,"true")],{"AT-001.log":log(L("AT-001",Z),1)},0,1)
+caso("antes ausente, AT false",[("AT-001","—",E,"false")],fz,0)
+caso("antes ausente, manual-ux",[("AT-030","—","`evidence/EX/AT-030.log`","true")],{"AT-030.log":log(L("AT-030",Z),0)},0)
+caso("final sem a 1a linha $",[("AT-001","—",E,"true")],{"AT-001.log":L("AT-001",Z)+"[exit=0]\n"},0,1)
+caso("final vazio",[("AT-001","—",E,"true")],{"AT-001.log":""},0,1)
+caso("evidencia sem log",[("AT-001","—","—","true")],{},0,1)
+print("# log citado")
+caso("outra feature inexistente 2x antes",[("AT-001","`evidence/EX/AT-001.antes.log`","`evidence/O/AT-001.log` `evidence/P/AT-001.log` "+E,"true")],dict(A(F1),**fz),1)
+caso("so outra feature: violacao, 0",[("AT-001","`evidence/EX/AT-001.antes.log`","`evidence/O/AT-001.log`","true")],dict(A(F1),**fz),0,1)
+caso("BORDA 2 logs da propria feature com o mesmo nome; o 2o e 0/0",[("AT-001","`evidence/EX/AT-001.antes.log`","`evidence/EX/v/AT-001.log` "+E,"true")],dict(A(F1),**{"v/AT-001.log":log(L("AT-001",P2),0),"AT-001.log":log(L("AT-001",Z),0)}),1)
+caso("BORDA antes 0/0 recusado por rodar outro comando",["AT-001"],dict(A(Z,cmd="outro"),**{"AT-001.log":log("ok\n",0)}),1,1)
+[exit=0]

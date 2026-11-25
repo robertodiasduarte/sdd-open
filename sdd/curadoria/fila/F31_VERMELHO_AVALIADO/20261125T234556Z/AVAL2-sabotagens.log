@@ -1,0 +1,43 @@
+$ bash sabotagens.sh
+## if casos == (0, 0): => if False:
+FAIL: test_antes_vermelho_com_zero_casos_na_propria_linha_avisa (test_f31_vermelho_avaliado.AT001ZeroCasos)
+FAIL: test_continua_verde_com_zero_casos_avisa (test_f31_vermelho_avaliado.AT009Vizinhos)
+FAILED (failures=2)
+## dono.group(1) == at => dono.group(1).startswith(at)
+FAIL: test_id_com_o_mesmo_prefixo_nao_conta (test_f31_vermelho_avaliado.AT002SoALinhaDoProprioAt) (vizinho='AT-0010', caso='não salva')
+FAIL: test_id_com_o_mesmo_prefixo_nao_conta (test_f31_vermelho_avaliado.AT002SoALinhaDoProprioAt) (vizinho='AT-0010', caso='não acusa')
+FAIL: test_id_com_o_mesmo_prefixo_nao_conta (test_f31_vermelho_avaliado.AT002SoALinhaDoProprioAt) (vizinho='AT-001b', caso='não salva')
+FAIL: test_id_com_o_mesmo_prefixo_nao_conta (test_f31_vermelho_avaliado.AT002SoALinhaDoProprioAt) (vizinho='AT-001b', caso='não acusa')
+FAIL: test_id_com_o_mesmo_prefixo_nao_conta (test_f31_vermelho_avaliado.AT002SoALinhaDoProprioAt) (vizinho='AT-001-x', caso='não salva')
+FAIL: test_id_com_o_mesmo_prefixo_nao_conta (test_f31_vermelho_avaliado.AT002SoALinhaDoProprioAt) (vizinho='AT-001-x', caso='não acusa')
+FAILED (failures=6)
+## if len(grupo) > 1 => if len(grupo) > 0
+FAIL: test_a_linha_do_comando_nao_conta (test_f31_vermelho_avaliado.AT002SoALinhaDoProprioAt)
+FAIL: test_citar_o_at_no_meio_da_linha_de_outro_nao_conta (test_f31_vermelho_avaliado.AT002SoALinhaDoProprioAt)
+FAIL: test_id_com_o_mesmo_prefixo_nao_conta (test_f31_vermelho_avaliado.AT002SoALinhaDoProprioAt) (vizinho='AT-0010', caso='não acusa')
+FAIL: test_id_com_o_mesmo_prefixo_nao_conta (test_f31_vermelho_avaliado.AT002SoALinhaDoProprioAt) (vizinho='AT-001b', caso='não acusa')
+FAIL: test_id_com_o_mesmo_prefixo_nao_conta (test_f31_vermelho_avaliado.AT002SoALinhaDoProprioAt) (vizinho='AT-001-x', caso='não acusa')
+FAIL: test_numero_enorme_nao_derruba_o_lint (test_f31_vermelho_avaliado.AT002SoALinhaDoProprioAt)
+FAIL: test_comando_proprio_sem_contagem_nao_avisa (test_f31_vermelho_avaliado.AT003SemContagem)
+FAIL: test_nao_regressao_com_o_mesmo_comando_nao_forma_grupo (test_f31_vermelho_avaliado.AT003SemContagem)
+FAIL: test_o_mesmo_at_em_duas_tabelas_nao_e_comando_compartilhado (test_f31_vermelho_avaliado.AT003SemContagem)
+FAIL: test_log_sem_contagem_de_comando_proprio (test_f31_vermelho_avaliado.AT007ControlesIguais)
+FAILED (failures=10)
+## casos[-1][0]), int(casos[-1][1]) => casos[0][0]), int(casos[0][1])
+FAIL: test_vale_a_ultima_contagem_da_linha (test_f31_vermelho_avaliado.AT002SoALinhaDoProprioAt)
+FAIL: test_titulo_do_caso_que_cita_zero_nao_avisa (test_f31_vermelho_avaliado.AT004FalhouAvaliando)
+FAILED (failures=2)
+## for p in logs_citados(evid, f"{at}.log") if not problema_do_log(p, root, report_dir, feature) => for p in logs_citados(evid, f"{at}.log")[:1] if not problema_do_log(p, root, report_dir, feature)
+FAIL: test_final_citado_depois_do_log_de_outra_feature_e_lido (test_f31_vermelho_avaliado.AT009Vizinhos)
+FAILED (failures=1)
+##         aviso = aviso_do_final( =>         aviso = not problema and aviso_do_final(
+FAIL: test_antes_recusado_nao_cala_o_aviso_do_final (test_f31_vermelho_avaliado.AT009Vizinhos)
+FAILED (failures=1)
+## setdefault(ler_log_lint(caminho)[0], {})[at] = casos => setdefault(ler_log_lint(caminho)[0], {})[len(aceitos), id(rel)] = casos
+FAIL: test_comando_compartilhado_sem_contagem_avisa_uma_vez_com_os_ids (test_f31_vermelho_avaliado.AT003SemContagem)
+FAIL: test_o_mesmo_at_em_duas_tabelas_nao_e_comando_compartilhado (test_f31_vermelho_avaliado.AT003SemContagem)
+FAILED (failures=2)
+## |\([A-Z0-9] => 
+FAIL: test_fim_de_cor_do_tput_nao_esconde_a_linha (test_f31_vermelho_avaliado.AT005Windows)
+FAILED (failures=1)
+[exit=0]

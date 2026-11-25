@@ -1,0 +1,13 @@
+$ for m in test_f31_vermelho_avaliado test_f30_vermelho_antes test_report_lint test_report_lint_evidencia test_f30_report_lint test_f30_textos_s2 test_f30_sabotagem test_f29_textos test_check_versions test_gate_shell_evidencia test_skill_lint; do /usr/bin/python3 -B -m unittest discover -s tests -p "$m.py" >../o.txt 2>&1; echo "$m rc=$? $(grep -E "^(Ran|OK|FAILED)" ../o.txt | tr "\n" " ")"; done
+test_f31_vermelho_avaliado rc=0 Ran 33 tests in 6.903s OK 
+test_f30_vermelho_antes rc=0 Ran 26 tests in 4.470s OK 
+test_report_lint rc=0 Ran 32 tests in 5.785s OK 
+test_report_lint_evidencia rc=0 Ran 37 tests in 6.340s OK 
+test_f30_report_lint rc=0 Ran 17 tests in 3.514s OK 
+test_f30_textos_s2 rc=0 Ran 12 tests in 3.777s OK 
+test_f30_sabotagem rc=0 Ran 21 tests in 7.754s OK 
+test_f29_textos rc=0 Ran 11 tests in 0.102s OK 
+test_check_versions rc=0 Ran 16 tests in 3.154s OK 
+test_gate_shell_evidencia rc=0 Ran 12 tests in 3.014s OK 
+test_skill_lint rc=0 Ran 29 tests in 2.483s OK 
+[exit=0]

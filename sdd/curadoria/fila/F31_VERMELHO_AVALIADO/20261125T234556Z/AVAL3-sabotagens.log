@@ -1,0 +1,17 @@
+$ bash sabot.sh
+rc=1 FAILED (failures=2) | casos[-1][0]), int(casos[-1][1]) -> casos[0][0]), int(casos[0][1])
+rc=1 FAILED (failures=10) | if len(grupo) > 1 and sem_contagem -> if len(grupo) > 0 and sem_contagem
+rc=1 FAILED (failures=1) | [1:]   # a 1ª -> [0:]   # a 1ª
+rc=1 FAILED (failures=1) | if classe == NOVO and casos and casos[1] == 0 -> if classe == NOVO and casos and casos[1] == 9
+rc=1 FAILED (failures=1) |         if classe == NOVO:
+            por_comando ->         if True:
+            por_comando
+rc=1 FAILED (failures=1) | if ler_log_lint(caminho)[1] != "0" or  -> if 
+rc=1 FAILED (failures=6) | dono.group(1) == at else -> dono.group(1).startswith(at) else
+rc=1 FAILED (failures=2) | setdefault(ler_log_lint(caminho)[0], {}) -> setdefault("x", {})
+rc=1 FAILED (failures=2) | errors="replace") as f:
+            linhas -> errors="strict") as f:
+            linhas
+rc=1 FAILED (failures=1) | if not problema_do_log(p, root, report_dir, feature)), None) -> if True), None)
+sabotagens=10 pegas=10
+[exit=0]
