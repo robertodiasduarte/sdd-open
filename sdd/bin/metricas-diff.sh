@@ -84,6 +84,7 @@ MAX_ITENS = 20
 MAX_DIGITOS = 12
 SEM_LIMITE = 10 ** MAX_DIGITOS   # nenhuma medida real chega aqui: acima, o limite não avisa nada
 COLUNAS_LIZARD = 11
+NUMERICAS_LIZARD = (0, 1, 2, 3, 4, 9, 10)   # NLOC, complexidade, tokens, parâmetros, linhas, início, fim
 INSTALAR = {"lizard": "python3 -m pip install lizard", "jscpd": "npm install -g jscpd"}
 
 
@@ -325,6 +326,12 @@ def problema_da_ferramenta(trab, nome, estado):
     return None
 
 
+def intervalo(ini, fim):
+    if not 1 <= ini <= fim:
+        raise ValueError("linhas %d a %d" % (ini, fim))
+    return ini, fim
+
+
 def funcoes_do_lizard(texto, pedidos):
     """[(arquivo, nome, complexidade, linhas, parâmetros, início, fim)]; ValueError se a saída não é a esperada."""
     funcoes = []
@@ -333,6 +340,9 @@ def funcoes_do_lizard(texto, pedidos):
             continue
         if len(linha) != COLUNAS_LIZARD:
             raise ValueError("linha com %d colunas" % len(linha))
+        if not all(re.match(r"^[0-9]+$", linha[c], re.ASCII) for c in NUMERICAS_LIZARD):
+            raise ValueError("coluna que devia ser número")
+        intervalo(int(linha[9]), int(linha[10]))
         arq = linha[6].replace("\\", "/")
         arq = arq[2:] if arq.startswith("./") else arq
         if arq not in pedidos:   # nome que voltou trocado (acento, barra) perderia a função calado
@@ -420,6 +430,10 @@ def inteiro(valor):
     return valor
 
 
+def lado_do_par(lado, copia):
+    return (nome_do_jscpd(lado["name"], copia),) + intervalo(inteiro(lado["start"]), inteiro(lado["end"]))
+
+
 def relatorio_do_jscpd(trab, pasta):
     """(pares, arquivos lidos); ValueError se não é o relatório esperado."""
     texto, copia = ler(trab, "saida-%s/jscpd-report.json" % pasta), os.path.join(trab, pasta)
@@ -431,9 +445,8 @@ def relatorio_do_jscpd(trab, pasta):
         pares, lidos = dados["duplicates"], dados["statistics"]["total"]["sources"]
         if not isinstance(pares, list):
             raise TypeError("tipos")
-        return [(nome_do_jscpd(p["firstFile"]["name"], copia), inteiro(p["firstFile"]["start"]), inteiro(p["firstFile"]["end"]),
-                 nome_do_jscpd(p["secondFile"]["name"], copia), inteiro(p["secondFile"]["start"]), inteiro(p["secondFile"]["end"]),
-                 inteiro(p["lines"]), inteiro(p.get("tokens", 0))) for p in pares], inteiro(lidos)
+        return [lado_do_par(p["firstFile"], copia) + lado_do_par(p["secondFile"], copia)
+                + (inteiro(p["lines"]), inteiro(p.get("tokens", 0))) for p in pares], inteiro(lidos)
     except (KeyError, TypeError, AttributeError, OverflowError) as e:
         raise ValueError("campo ausente ou de outro tipo: %s" % e)
 

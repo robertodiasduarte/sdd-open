@@ -232,6 +232,16 @@ class AT018NaoMedido(Base):
         self.assertIn("config ruim", out)
 
     def test_saida_ilegivel(self):
+        ruins = [CSV_GRANDE.replace("31,15,132,6,31,", trocado) for trocado in (
+            "x,15,132,6,31,", "31,15,x,6,31,", "31,-1,132,6,31,", "31,1.5,132,6,31,")]
+        for csv in ruins + [CSV_GRANDE.replace(",1,31\n", ",31,1\n"), CSV_GRANDE.replace(",1,31\n", ",0,31\n")]:
+            with self.subTest(csv=csv):
+                self.frente()
+                self.lizard(csv)
+                self.jscpd(jscpd_json(par("src/copia.py", "src/notas.py", ini=9, fim=2)))
+                out, _ = self.ok()
+                self.nao_medido(self.parte(out, "Complexidade"), "lizard devolveu saída")
+                self.nao_medido(self.parte(out, "Duplicação"), "jscpd devolveu saída")
         for csv in ("", "isto não é csv\n", '1,x,9,1,1,"a","./src/nova.py","f","f",1,1\n', CSV_GRANDE + "1,2\n",
                     CSV_GRANDE.replace("./src/nova.py", "./src/n\u00c3va.py")):
             for rel in ("", "não é json", "[]", '{"duplicates": 3}', jscpd_json(sources=0), '{"duplicates": []}',
