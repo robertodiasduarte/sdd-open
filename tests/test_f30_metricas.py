@@ -151,7 +151,7 @@ class AT017Achados(Base):
         self.jscpd()
         self.ok()
         chamada = self.chamadas.read_text(encoding="utf-8")
-        self.assertRegex(chamada, r"jscpd .*--min-tokens 50 --min-lines 1 ")
+        self.assertRegex(chamada, r"jscpd .*--min-tokens 50 --min-lines 0 ")
         self.assertIn("--config ", chamada)
         self.assertNotIn("--config .jscpd.json", chamada)
 
@@ -190,6 +190,16 @@ class AT017Achados(Base):
         self.assertIn("`grande`: complexidade 15 (limite 10) · 6 parâmetros (limite 5)", out)
         self.assertRegex(self.parte(out, "Duplicação"), r"src/(copia|notas)\.py:\d+-\d+` repete `src/(copia|notas)\.py")
         self.assertNotIn("velha", self.parte(out, "Complexidade"))
+
+
+    @unittest.skipUnless(shutil.which("jscpd"), "jscpd real fora do PATH")
+    def test_trecho_de_uma_linha_com_o_jscpd_real(self):
+        """Revisão do código, rodada 7, R2: o mínimo é de tokens; o de linhas do jscpd perderia o trecho curto."""
+        linha = "const x=[%s];\n" % ",".join("f(%d)" % i for i in range(60))
+        self.escreve(self.r, "src/a.js", linha)
+        self.escreve(self.r, "src/b.js", linha)
+        out, _ = self.ok(path=self.env["PATH"])
+        self.assertIn("`src/a.js:1-1` repete `src/b.js:1-1`", out)
 
 
 class AT018NaoMedido(Base):

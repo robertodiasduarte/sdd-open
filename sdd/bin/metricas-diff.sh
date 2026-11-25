@@ -550,7 +550,7 @@ if [ "${N_LIZARD}" -gt 0 ]; then
   fi
 fi
 roda_jscpd() {   # $1 = a pasta da cópia (diff ou arvore). Teto alto: o jscpd pula calado o arquivo acima do padrão dele
-  mkdir "${TRAB}/saida-${1}" && ( cd "${TRAB}/${1}" && jscpd . --min-tokens "${MIN_TOKENS}" --min-lines 1 --max-lines 1000000 --max-size 6mb \
+  mkdir "${TRAB}/saida-${1}" && ( cd "${TRAB}/${1}" && jscpd . --min-tokens "${MIN_TOKENS}" --min-lines 0 --max-lines 1000000 --max-size 6mb \
     --reporters json --output "${TRAB}/saida-${1}" --config "${TRAB}/jscpd.vazio.json" --silent ) \
     </dev/null >"${TRAB}/jscpd.out" 2>"${TRAB}/jscpd.err"
 }

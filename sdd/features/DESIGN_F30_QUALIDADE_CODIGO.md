@@ -480,7 +480,7 @@ o Git Bash acha. O teste usa ferramentas falsas, que no Windows também são scr
 **Choice:** as ferramentas rodam numa **cópia** no `mktemp`: `arvore/` (todo o código do projeto) e `diff/` (só o código
 do diff), sem `.jscpd.json`, `package.json` nem `.gitignore` do projeto (revisão, N2: a chave `jscpd` do `package.json`
 mudaria a medida). `command -v` no bash; `lizard --csv` por `xargs -0 -n 50` sobre a lista NUL (nomes com espaço; teto da linha
-de comando); `jscpd . --min-tokens N --min-lines 1 --max-lines 1000000 --max-size 6mb --reporters json --output <mktemp> --config
+de comando); `jscpd . --min-tokens N --min-lines 0 --max-lines 1000000 --max-size 6mb --reporters json --output <mktemp> --config
 <vazio> --silent`, uma vez em `diff/` e outra em `arvore/`. Arquivo do diff acima de 5 MB é dito como não medido. Cada ferramenta: entrada `/dev/null` (a lista, no `xargs`), stdout e stderr
 em arquivos do `mktemp`, `rc=$?` sem pipe, apagados por `trap`. Nunca `npx` (baixaria o pacote; D2).
 
@@ -893,7 +893,7 @@ S2: `AT-nnn.antes.log` e `AT-nnn.sabotagem.log`, ao lado dos `AT-nnn.log`. Os lo
 
 | Version | Date | Author | Changes |
 |---------|------|--------|---------|
-| 3.6 | 2026-11-25 | build | Rodadas 5 a 7 (codex e auditor): números das ferramentas conferidos, `..` recusado, `--min-lines 1`, cobertura com `.vue`. CI do PR: o gancho `sdd/hooks/pre-commit` (fora do manifest) perde linhas no Windows, corrigido |
+| 3.6 | 2026-11-25 | build | Rodadas 5 a 7 (codex e auditor): números das ferramentas conferidos, `..` recusado, `--min-lines 0` (medido: o padrão perde trecho de até 5 linhas, e 1 perde o de 1 linha), cobertura com `.vue`. CI do PR: o gancho `sdd/hooks/pre-commit` (fora do manifest) perde linhas no Windows, corrigido |
 | 3.5 | 2026-11-25 | build | Rodada 4 (codex e auditor): número enorme no CSV, limite sem teto de dígitos, pasta temporária em outra unidade do Windows |
 | 3.4 | 2026-11-25 | build | Rodada 3 (codex): `TMPDIR` relativo, `color.diff`, número fora de faixa; raio de impacto: fixtures de `test_hooks` e `test_claude_adapter` com a seção |
 | 3.3 | 2026-11-25 | build | Rodada 2 (codex) e avaliador: mapa numa linha só (64 no script, exigência no lint), remoto sem ancestral ⇒ 64, arquivo grande ou sem leitura dito, cópia em UTF-8, `TMPDIR` no projeto, seta por causa |
