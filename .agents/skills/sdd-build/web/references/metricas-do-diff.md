@@ -13,7 +13,7 @@ com ou sem achado, e quem decide o que refatorar é a pessoa.
 
 Com o SDD Open instalado pelo `init`, o script de métricas do SDD Open mede as duas e imprime a seção pronta. Sem ele,
 com terminal: rode `lizard --csv <arquivos novos ou alterados>` e fique com as funções que a frente tocou; rode
-`jscpd . --min-tokens 50` e fique com os pares em que um dos lados é da frente. Sem terminal, as duas medidas ficam
+`jscpd . --min-tokens 50 --min-lines 0` e fique com os pares em que um dos lados é da frente. Sem terminal, as duas medidas ficam
 como não medido.
 
 ## A seção do BUILD_REPORT

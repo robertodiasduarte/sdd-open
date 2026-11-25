@@ -36,7 +36,7 @@ class AT022Textos(unittest.TestCase):
 
     def test_referencia(self):
         texto = re.sub(r"\s+", " ", REF.read_text(encoding="utf-8"))
-        for trecho in ("não medido", "lizard", "jscpd", "python3 -m pip install lizard", "npm install -g jscpd",
+        for trecho in ("não medido", "lizard", "jscpd", "jscpd . --min-tokens 50 --min-lines 0", "python3 -m pip install lizard", "npm install -g jscpd",
                        "## Qualidade (avisos)", "`qualidade`", "só avisa"):
             with self.subTest(trecho=trecho):
                 self.assertIn(trecho, texto)
