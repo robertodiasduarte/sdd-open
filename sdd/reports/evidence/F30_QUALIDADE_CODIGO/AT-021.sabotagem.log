@@ -1,5 +1,5 @@
 $ cd tests && /usr/bin/python3 -B -m unittest -v test_f30_metricas.AT021ReportLint
-# sabotagem: sdd/bin/report-lint.py: «if tem_secao_qualidade(content):» → «if True:» (cópia de HEAD 976c970)
+# sabotagem: sdd/bin/report-lint.py: «if tem_secao_qualidade(content):» → «if True:» (cópia de HEAD 77db690)
 # sem a sabotagem: exit 0
 test_mapa_com_chaves_vazias_tambem_exige (test_f30_metricas.AT021ReportLint) ... FAIL
 test_secao_presente_passa_mesmo_com_achado (test_f30_metricas.AT021ReportLint) ... ok
@@ -9,10 +9,10 @@ test_sem_secao_com_o_mapa_reprova (test_f30_metricas.AT021ReportLint) ...
 FAIL: test_mapa_com_chaves_vazias_tambem_exige (test_f30_metricas.AT021ReportLint)
 ----------------------------------------------------------------------
 Traceback (most recent call last):
-  File "/private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/sdd-sabotagem.RpoeZ7/copia/tests/test_f30_metricas.py", line 633, in test_mapa_com_chaves_vazias_tambem_exige
+  File "/private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/sdd-sabotagem.ywXt9R/copia/tests/test_f30_metricas.py", line 655, in test_mapa_com_chaves_vazias_tambem_exige
     self.assertEqual(rc, 1, s)
 AssertionError: 0 != 1 : ⚠️  N.A. aceito sem conferir camadas — `layers:` do sdd/config.yaml sem nenhum glob preenchido; preencha `layers:` em sdd/config.yaml para a contagem valer
-✅ /private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/sdd-open-c55zqbo3/rl/sdd/reports/BUILD_REPORT_FX.md: todo `true` tem evidência abrível e a avaliação está provada ou declarada
+✅ /private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/sdd-open-d1iift8i/rl/sdd/reports/BUILD_REPORT_FX.md: todo `true` tem evidência abrível e a avaliação está provada ou declarada
 RESULTADO: VERDE
 → o relatório pode ser commitado.
 
@@ -21,18 +21,18 @@ RESULTADO: VERDE
 FAIL: test_sem_o_mapa_so_avisa (test_f30_metricas.AT021ReportLint)
 ----------------------------------------------------------------------
 Traceback (most recent call last):
-  File "/private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/sdd-sabotagem.RpoeZ7/copia/tests/test_f30_metricas.py", line 629, in test_sem_o_mapa_so_avisa
+  File "/private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/sdd-sabotagem.ywXt9R/copia/tests/test_f30_metricas.py", line 651, in test_sem_o_mapa_so_avisa
     self.assertIn("Qualidade (avisos)", s)
-AssertionError: 'Qualidade (avisos)' not found in '⚠️  N.A. aceito sem conferir camadas — `layers:` do sdd/config.yaml sem nenhum glob preenchido; preencha `layers:` em sdd/config.yaml para a contagem valer\n✅ /private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/sdd-open-g3wrv576/rl/sdd/reports/BUILD_REPORT_FX.md: todo `true` tem evidência abrível e a avaliação está provada ou declarada\nRESULTADO: VERDE\n→ o relatório pode ser commitado.\n'
+AssertionError: 'Qualidade (avisos)' not found in '⚠️  N.A. aceito sem conferir camadas — `layers:` do sdd/config.yaml sem nenhum glob preenchido; preencha `layers:` em sdd/config.yaml para a contagem valer\n✅ /private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/sdd-open-okwqgxut/rl/sdd/reports/BUILD_REPORT_FX.md: todo `true` tem evidência abrível e a avaliação está provada ou declarada\nRESULTADO: VERDE\n→ o relatório pode ser commitado.\n'
 
 ======================================================================
 FAIL: test_sem_secao_com_o_mapa_reprova (test_f30_metricas.AT021ReportLint) (secao='')
 ----------------------------------------------------------------------
 Traceback (most recent call last):
-  File "/private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/sdd-sabotagem.RpoeZ7/copia/tests/test_f30_metricas.py", line 621, in test_sem_secao_com_o_mapa_reprova
+  File "/private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/sdd-sabotagem.ywXt9R/copia/tests/test_f30_metricas.py", line 643, in test_sem_secao_com_o_mapa_reprova
     self.assertEqual(rc, 1, s)
 AssertionError: 0 != 1 : ⚠️  N.A. aceito sem conferir camadas — `layers:` do sdd/config.yaml sem nenhum glob preenchido; preencha `layers:` em sdd/config.yaml para a contagem valer
-✅ /private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/sdd-open-0rvcf_25/rl/sdd/reports/BUILD_REPORT_FX.md: todo `true` tem evidência abrível e a avaliação está provada ou declarada
+✅ /private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/sdd-open-j6d5u7uk/rl/sdd/reports/BUILD_REPORT_FX.md: todo `true` tem evidência abrível e a avaliação está provada ou declarada
 RESULTADO: VERDE
 → o relatório pode ser commitado.
 
@@ -41,10 +41,10 @@ RESULTADO: VERDE
 FAIL: test_sem_secao_com_o_mapa_reprova (test_f30_metricas.AT021ReportLint) (secao='## Qualidade (avisos)\n\n')
 ----------------------------------------------------------------------
 Traceback (most recent call last):
-  File "/private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/sdd-sabotagem.RpoeZ7/copia/tests/test_f30_metricas.py", line 621, in test_sem_secao_com_o_mapa_reprova
+  File "/private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/sdd-sabotagem.ywXt9R/copia/tests/test_f30_metricas.py", line 643, in test_sem_secao_com_o_mapa_reprova
     self.assertEqual(rc, 1, s)
 AssertionError: 0 != 1 : ⚠️  N.A. aceito sem conferir camadas — `layers:` do sdd/config.yaml sem nenhum glob preenchido; preencha `layers:` em sdd/config.yaml para a contagem valer
-✅ /private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/sdd-open-0rvcf_25/rl/sdd/reports/BUILD_REPORT_FX.md: todo `true` tem evidência abrível e a avaliação está provada ou declarada
+✅ /private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/sdd-open-j6d5u7uk/rl/sdd/reports/BUILD_REPORT_FX.md: todo `true` tem evidência abrível e a avaliação está provada ou declarada
 RESULTADO: VERDE
 → o relatório pode ser commitado.
 
@@ -53,10 +53,10 @@ RESULTADO: VERDE
 FAIL: test_sem_secao_com_o_mapa_reprova (test_f30_metricas.AT021ReportLint) (secao='```\n## Qualidade (avisos)\n\nx\n```\n')
 ----------------------------------------------------------------------
 Traceback (most recent call last):
-  File "/private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/sdd-sabotagem.RpoeZ7/copia/tests/test_f30_metricas.py", line 621, in test_sem_secao_com_o_mapa_reprova
+  File "/private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/sdd-sabotagem.ywXt9R/copia/tests/test_f30_metricas.py", line 643, in test_sem_secao_com_o_mapa_reprova
     self.assertEqual(rc, 1, s)
 AssertionError: 0 != 1 : ⚠️  N.A. aceito sem conferir camadas — `layers:` do sdd/config.yaml sem nenhum glob preenchido; preencha `layers:` em sdd/config.yaml para a contagem valer
-✅ /private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/sdd-open-0rvcf_25/rl/sdd/reports/BUILD_REPORT_FX.md: todo `true` tem evidência abrível e a avaliação está provada ou declarada
+✅ /private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/sdd-open-j6d5u7uk/rl/sdd/reports/BUILD_REPORT_FX.md: todo `true` tem evidência abrível e a avaliação está provada ou declarada
 RESULTADO: VERDE
 → o relatório pode ser commitado.
 
@@ -65,10 +65,10 @@ RESULTADO: VERDE
 FAIL: test_sem_secao_com_o_mapa_reprova (test_f30_metricas.AT021ReportLint) (secao='## Qualidade\n\nx\n')
 ----------------------------------------------------------------------
 Traceback (most recent call last):
-  File "/private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/sdd-sabotagem.RpoeZ7/copia/tests/test_f30_metricas.py", line 621, in test_sem_secao_com_o_mapa_reprova
+  File "/private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/sdd-sabotagem.ywXt9R/copia/tests/test_f30_metricas.py", line 643, in test_sem_secao_com_o_mapa_reprova
     self.assertEqual(rc, 1, s)
 AssertionError: 0 != 1 : ⚠️  N.A. aceito sem conferir camadas — `layers:` do sdd/config.yaml sem nenhum glob preenchido; preencha `layers:` em sdd/config.yaml para a contagem valer
-✅ /private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/sdd-open-0rvcf_25/rl/sdd/reports/BUILD_REPORT_FX.md: todo `true` tem evidência abrível e a avaliação está provada ou declarada
+✅ /private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/sdd-open-j6d5u7uk/rl/sdd/reports/BUILD_REPORT_FX.md: todo `true` tem evidência abrível e a avaliação está provada ou declarada
 RESULTADO: VERDE
 → o relatório pode ser commitado.
 
@@ -77,16 +77,16 @@ RESULTADO: VERDE
 FAIL: test_sem_secao_com_o_mapa_reprova (test_f30_metricas.AT021ReportLint) (secao='### Qualidade (avisos)\n\nx\n')
 ----------------------------------------------------------------------
 Traceback (most recent call last):
-  File "/private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/sdd-sabotagem.RpoeZ7/copia/tests/test_f30_metricas.py", line 621, in test_sem_secao_com_o_mapa_reprova
+  File "/private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/sdd-sabotagem.ywXt9R/copia/tests/test_f30_metricas.py", line 643, in test_sem_secao_com_o_mapa_reprova
     self.assertEqual(rc, 1, s)
 AssertionError: 0 != 1 : ⚠️  N.A. aceito sem conferir camadas — `layers:` do sdd/config.yaml sem nenhum glob preenchido; preencha `layers:` em sdd/config.yaml para a contagem valer
-✅ /private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/sdd-open-0rvcf_25/rl/sdd/reports/BUILD_REPORT_FX.md: todo `true` tem evidência abrível e a avaliação está provada ou declarada
+✅ /private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/sdd-open-j6d5u7uk/rl/sdd/reports/BUILD_REPORT_FX.md: todo `true` tem evidência abrível e a avaliação está provada ou declarada
 RESULTADO: VERDE
 → o relatório pode ser commitado.
 
 
 ----------------------------------------------------------------------
-Ran 4 tests in 0.751s
+Ran 4 tests in 0.714s
 
 FAILED (failures=7)
 [exit=1]

@@ -187,3 +187,14 @@ revisor2: dispensado rodada=13 — sem superfície de risco (regra antiga: 18 ar
 | R1 | MED | APLICADA | rodada=13 | `976c970`; teste: test_tmpdir_relativo_e_apagado | nao | EXTERNAL_REVIEW_20261125-072013 |
 | R2 | MED | APLICADA | rodada=13 | `976c970`; teste: test_config_do_git_de_quem_roda_nao_muda_a_medida | nao | EXTERNAL_REVIEW_20261125-072013 |
 | R3 | MED | APLICADA | rodada=13 | `976c970`; teste: test_saida_ilegivel | nao | EXTERNAL_REVIEW_20261125-072013 |
+
+Revisão do código da S3, rodada 14 (base `fce8c61`): revisor `codex` (`gpt-6.1-sol`, 213 s), auditor `claude`;
+`diversidade: vendor`; US$ 0,90.
+
+revisor2: dispensado rodada=14 — sem superfície de risco (regra antiga: 20 arquivos (limiar 8))
+
+| achado | sev | veredito | rodada | evidência | dano | revisão |
+|---|---|---|---|---|---|---|
+| R1 | MED | APLICADA | rodada=14 | `77db690`; teste: test_numero_enorme_nao_derruba | nao | EXTERNAL_REVIEW_20261125-073150 |
+| R2 | LOW | APLICADA | rodada=14 | `77db690`; teste: test_limite_grande_vale | nao | EXTERNAL_REVIEW_20261125-073150 |
+| N1 | MED | APLICADA | rodada=14 | `77db690`: sem relpath; teste de texto test_pasta_temporaria_em_outra_unidade (não executado em duas unidades) | nao | EXTERNAL_REVIEW_20261125-073150 |
