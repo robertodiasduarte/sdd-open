@@ -1,0 +1,7 @@
+$ sabotagem: publish-gate.yml sem o passo "Temporary on the runner disk (asserted)"
+ERROR: test_temporario_no_disco_do_runner (test_release_workflow.Windows.test_temporario_no_disco_do_runner) (workflow='publish-gate.yml')
+ValueError: substring not found
+FAIL: test_o_job_windows_e_igual_nos_dois_workflows (test_release_workflow.Windows.test_o_job_windows_e_igual_nos_dois_workflows)
+AssertionError: '    [2669 chars]   # Afirmado, não só impresso: o temporário d[1694 chars]: 14' != '    [2669 chars]   # O publish-gate não depende da fatia: roda[1180 chars]: 14'
+Ran 4 tests in 0.003s
+FAILED (failures=1, errors=1)

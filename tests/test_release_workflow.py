@@ -175,6 +175,25 @@ class Windows(unittest.TestCase):
                 self.assertNotIn("continue-on-error", sem_comentarios(bloco))
                 self.assertLess(bloco.index("SDD_TEST_BASH="), bloco.index("run: python -B scripts/testes-por-modulo.py"))
 
+    def test_temporario_no_disco_do_runner(self):
+        # Diagnóstico em 24 máquinas (evidência em sdd/reports/evidence/F30_QUALIDADE_CODIGO/testes-lentos-windows/): com o
+        # temporário no C:, o `git add` do setUp levava 4 a 8 s, com picos de até 44 s cerca de 10 min depois de a máquina
+        # ligar; no D: (RUNNER_TEMP), 0,4 a 0,8 s em 161 repetições. TEMP e TMP vão para o D: antes dos testes, e um passo
+        # afirma onde o Python e o bash puseram o temporário.
+        for texto, nome in ((RELEASE, "release.yml"), (GATE, "publish-gate.yml")):
+            with self.subTest(workflow=nome):
+                bloco = job(texto, "testes-windows")
+                self.assertIn('echo "TEMP=$RUNNER_TEMP" >> "$GITHUB_ENV"', bloco)
+                self.assertIn('echo "TMP=$RUNNER_TEMP" >> "$GITHUB_ENV"', bloco)
+                self.assertIn("- name: Temporary on the runner disk (asserted)", bloco)
+                passo = bloco.index("- name: Temporary on the runner disk (asserted)")
+                self.assertLess(bloco.index('echo "TMP=$RUNNER_TEMP"'), passo)   # o GITHUB_ENV só vale no passo seguinte
+                self.assertLess(passo, bloco.index("run: python -B scripts/testes-por-modulo.py"))
+                afirma = bloco[passo:bloco.index("- name:", passo + 1)]
+                self.assertIn("tempfile.gettempdir()", afirma)
+                self.assertIn('cygpath -w "$(mktemp -d)"', afirma)
+                self.assertIn("exit 1", afirma)
+
     def test_o_job_windows_e_igual_nos_dois_workflows(self):
         # mesmo N, mesmos tetos, mesmos passos: um só desenho a manter
         self.assertEqual(job(RELEASE, "testes-windows").rstrip(), job(GATE, "testes-windows").rstrip())

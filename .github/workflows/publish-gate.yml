@@ -250,6 +250,18 @@ jobs:
           bash -c 'echo "bash $BASH_VERSION"; uname -s; case "$(uname -s)" in MINGW*|MSYS*) ;; *) exit 1 ;; esac'
           python -c 'import os, sys; print(sys.version, os.name); sys.exit(os.name != "nt")'
           echo "SDD_TEST_BASH=$(cygpath -w "$(command -v bash)")" >> "$GITHUB_ENV"
+          # O temporário dos testes vai para o disco do runner (D:). No C:, o `git add` do setUp levava 4 a 8 s, com picos de
+          # até 44 s cerca de 10 min depois de a máquina ligar (e 120 s em 2 runs da main); no D:, 0,4 a 0,8 s em 161
+          # repetições (diagnóstico em 24 máquinas: sdd/reports/evidence/F30_QUALIDADE_CODIGO/testes-lentos-windows/).
+          echo "TEMP=$RUNNER_TEMP" >> "$GITHUB_ENV"
+          echo "TMP=$RUNNER_TEMP" >> "$GITHUB_ENV"
+
+      # Afirmado, não só impresso: o temporário do Python e o do Git Bash estão no disco do runner.
+      - name: Temporary on the runner disk (asserted)
+        run: |
+          python -c 'import os, sys, tempfile; t = tempfile.gettempdir(); print(t); sys.exit(not os.path.normcase(t).startswith(os.path.normcase(os.environ["RUNNER_TEMP"])))' || exit 1
+          d="$(cygpath -w "$(mktemp -d)")"; echo "$d"
+          case "${d,,}" in "${RUNNER_TEMP,,}"*) rmdir "$(cygpath -u "$d")" ;; *) exit 1 ;; esac
 
       # O publish-gate não depende da fatia: roda numa só.
       - name: Run publish gate (on the package assembled by git archive)
