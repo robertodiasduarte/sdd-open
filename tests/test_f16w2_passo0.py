@@ -38,7 +38,7 @@ class Curadoria(unittest.TestCase):
 
     def test_lm012_mordeu_e_foi_promovida(self):
         ln = linha(ler("sdd/playbook.md"), "LM-012")
-        self.assertIn("mordeu=2", ln)
+        self.assertGreaterEqual(int(re.search(r"mordeu=(\d+)", ln).group(1)), 2)   # o lote da curadoria soma; a contagem nunca desce
         self.assertIn("promovido_para: scripts/publish-gate-patterns.txt", ln)
         self.assertTrue((RAIZ / "scripts/publish-gate-patterns.txt").is_file())
 
