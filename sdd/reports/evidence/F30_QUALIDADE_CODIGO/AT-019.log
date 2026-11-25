@@ -1,0 +1,22 @@
+$ cd tests && /usr/bin/python3 -B -m unittest -v test_f30_metricas.AT019SoODiff
+test_apagar_o_que_vem_depois_nao_marca_a_funcao_anterior (test_f30_metricas.AT019SoODiff)
+Revisão do DESIGN, N3: o git aponta o trecho apagado pela linha anterior a ele. ... ok
+test_base_remota_local_e_ausente (test_f30_metricas.AT019SoODiff) ... ok
+test_config_do_git_de_quem_roda_nao_muda_a_medida (test_f30_metricas.AT019SoODiff) ... ok
+test_diff_sem_codigo (test_f30_metricas.AT019SoODiff) ... ok
+test_funcao_intocada_fica_fora (test_f30_metricas.AT019SoODiff) ... ok
+test_gitattributes_menos_diff_nao_esconde_o_arquivo (test_f30_metricas.AT019SoODiff) ... ok
+test_linha_so_apagada_conta_como_alterada (test_f30_metricas.AT019SoODiff) ... ok
+test_link_simbolico_fica_fora (test_f30_metricas.AT019SoODiff) ... ok
+test_nao_commitado_e_fora_do_indice_entram (test_f30_metricas.AT019SoODiff) ... ok
+test_nenhuma_funcao_do_diff (test_f30_metricas.AT019SoODiff) ... ok
+test_par_com_o_lado_do_diff_em_segundo (test_f30_metricas.AT019SoODiff) ... ok
+test_par_em_arquivo_do_diff_mas_fora_das_linhas (test_f30_metricas.AT019SoODiff) ... ok
+test_renomear_sem_mudar_nao_e_codigo_novo (test_f30_metricas.AT019SoODiff) ... ok
+test_so_linguagem_fora_da_complexidade (test_f30_metricas.AT019SoODiff) ... ok
+
+----------------------------------------------------------------------
+Ran 14 tests in 20.006s
+
+OK
+[exit=0]

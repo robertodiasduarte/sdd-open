@@ -801,7 +801,7 @@ Na S2, esse antes vira `evidence/F30_QUALIDADE_CODIGO/AT-nnn.antes.log`, citado 
 | AT | Arquivo | Trocar | Por | O que o teste deve acusar |
 |---|---|---|---|---|
 | AT-018 | `sdd/bin/metricas-diff.sh` | `if estado == "ausente":` | `if estado == "nunca":` | a ferramenta ausente deixa de sair como "ausente" com o comando de instalar |
-| AT-019 | `sdd/bin/metricas-diff.sh` | `if not toca_o_diff(diff, f[0], f[5], f[6]):` | `if False:` | a função que o diff não tocou aparece |
+| AT-019 | `sdd/bin/metricas-diff.sh` | `if not toca_o_diff(plano["diff"], f[0], f[5], f[6]):` | `if False:` | a função que o diff não tocou aparece |
 | AT-021 | `sdd/bin/report-lint.py` | `if tem_secao_qualidade(content):` | `if True:` | o relatório sem a seção passa com `qualidade:` no config |
 
 **Sabotagens (S2; Decision 11).** Superfície de risco pelo `sdd/review/CRITERIO_DANO.md`: o AT-010 guarda a

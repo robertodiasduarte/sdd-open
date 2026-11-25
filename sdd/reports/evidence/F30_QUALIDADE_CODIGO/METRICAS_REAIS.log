@@ -1,0 +1,14 @@
+$ cd tests && SDD_TEST_BASH=/bin/bash /usr/bin/python3 -B -m unittest -v test_f30_metricas.AT017Achados
+# com lizard 1.26.1 e jscpd 5.4.3 reais no PATH
+test_com_as_ferramentas_reais (test_f30_metricas.AT017Achados) ... ok
+test_limite_do_jscpd_e_config_proprio (test_f30_metricas.AT017Achados) ... ok
+test_medido_sem_aviso_diz_quantos_mediu (test_f30_metricas.AT017Achados) ... ok
+test_nome_com_crase_nao_abre_secao (test_f30_metricas.AT017Achados) ... ok
+test_os_dois_achados_exit_0 (test_f30_metricas.AT017Achados) ... ok
+test_teto_de_20_itens_o_pior_primeiro (test_f30_metricas.AT017Achados) ... ok
+
+----------------------------------------------------------------------
+Ran 6 tests in 5.869s
+
+OK
+[exit=0]

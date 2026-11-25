@@ -1,0 +1,41 @@
+$ cd tests && /usr/bin/python3 -B -m unittest -v test_f30_metricas.AT019SoODiff
+# sabotagem: sdd/bin/metricas-diff.sh: «if not toca_o_diff(plano["diff"], f[0], f[5], f[6]):» → «if False:» (cópia de HEAD 7fd7c9a)
+# sem a sabotagem: exit 0
+test_apagar_o_que_vem_depois_nao_marca_a_funcao_anterior (test_f30_metricas.AT019SoODiff)
+Revisão do DESIGN, N3: o git aponta o trecho apagado pela linha anterior a ele. ... FAIL
+test_base_remota_local_e_ausente (test_f30_metricas.AT019SoODiff) ... ok
+test_config_do_git_de_quem_roda_nao_muda_a_medida (test_f30_metricas.AT019SoODiff) ... ok
+test_diff_sem_codigo (test_f30_metricas.AT019SoODiff) ... ok
+test_funcao_intocada_fica_fora (test_f30_metricas.AT019SoODiff) ... FAIL
+test_gitattributes_menos_diff_nao_esconde_o_arquivo (test_f30_metricas.AT019SoODiff) ... ok
+test_linha_so_apagada_conta_como_alterada (test_f30_metricas.AT019SoODiff) ... ok
+test_link_simbolico_fica_fora (test_f30_metricas.AT019SoODiff) ... ok
+test_nao_commitado_e_fora_do_indice_entram (test_f30_metricas.AT019SoODiff) ... ok
+test_nenhuma_funcao_do_diff (test_f30_metricas.AT019SoODiff) ... ok
+test_par_com_o_lado_do_diff_em_segundo (test_f30_metricas.AT019SoODiff) ... ok
+test_par_em_arquivo_do_diff_mas_fora_das_linhas (test_f30_metricas.AT019SoODiff) ... ok
+test_renomear_sem_mudar_nao_e_codigo_novo (test_f30_metricas.AT019SoODiff) ... ok
+test_so_linguagem_fora_da_complexidade (test_f30_metricas.AT019SoODiff) ... ok
+
+======================================================================
+FAIL: test_apagar_o_que_vem_depois_nao_marca_a_funcao_anterior (test_f30_metricas.AT019SoODiff)
+Revisão do DESIGN, N3: o git aponta o trecho apagado pela linha anterior a ele.
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/sdd-sabotagem.tVyGTs/copia/tests/test_f30_metricas.py", line 329, in test_apagar_o_que_vem_depois_nao_marca_a_funcao_anterior
+    self.assertNotIn("`velha`", out)
+AssertionError: '`velha`' unexpectedly found in '## Qualidade (avisos)\n\n> Só o código novo ou alterado desde `main` (ca5b1eb). Aviso: não reprova.\n\n### Complexidade\n\n- 1 função medida no diff, 1 acima do limite:\n- `src/velha.py:1-31` `velha`: complexidade 15 (limite 10) · 6 parâmetros (limite 5)\n\n### Duplicação\n\n- nenhum aviso (3 arquivos do diff lidos, de 1)\n\n'
+
+======================================================================
+FAIL: test_funcao_intocada_fica_fora (test_f30_metricas.AT019SoODiff)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/sdd-sabotagem.tVyGTs/copia/tests/test_f30_metricas.py", line 290, in test_funcao_intocada_fica_fora
+    self.assertNotIn("`velha`", out)
+AssertionError: '`velha`' unexpectedly found in '## Qualidade (avisos)\n\n> Só o código novo ou alterado desde `main` (cdc2db6). Aviso: não reprova.\n\n### Complexidade\n\n- 2 funções medidas no diff, 1 acima do limite:\n- `src/velha.py:1-31` `velha`: complexidade 15 (limite 10) · 6 parâmetros (limite 5)\n\n### Duplicação\n\n- nenhum aviso (3 arquivos do diff lidos, de 1)\n\n'
+
+----------------------------------------------------------------------
+Ran 14 tests in 12.719s
+
+FAILED (failures=2)
+[exit=1]

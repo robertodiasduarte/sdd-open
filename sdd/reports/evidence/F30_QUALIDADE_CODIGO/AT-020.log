@@ -1,0 +1,12 @@
+$ cd tests && /usr/bin/python3 -B -m unittest -v test_f30_metricas.AT020Limites
+test_ajuda (test_f30_metricas.AT020Limites) ... ok
+test_invalido_64 (test_f30_metricas.AT020Limites) ... ok
+test_limites_do_config (test_f30_metricas.AT020Limites) ... ok
+test_uso_errado_64 (test_f30_metricas.AT020Limites) ... ok
+test_vazio_e_o_padrao (test_f30_metricas.AT020Limites) ... ok
+
+----------------------------------------------------------------------
+Ran 5 tests in 7.529s
+
+OK
+[exit=0]

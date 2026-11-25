@@ -1,0 +1,13 @@
+$ cd tests && /usr/bin/python3 -B -m unittest -v test_f30_textos_s3
+test_starter_leva_as_metricas_sem_sdd_bin (test_f30_textos_s3.AT022Starter) ... ok
+test_build_chama_antes_do_relatorio (test_f30_textos_s3.AT022Textos) ... ok
+test_modo_web_aponta (test_f30_textos_s3.AT022Textos) ... ok
+test_molde_config_contratos (test_f30_textos_s3.AT022Textos) ... ok
+test_referencia (test_f30_textos_s3.AT022Textos) ... ok
+test_teto_de_linhas (test_f30_textos_s3.AT022Textos) ... ok
+
+----------------------------------------------------------------------
+Ran 6 tests in 3.905s
+
+OK
+[exit=0]
