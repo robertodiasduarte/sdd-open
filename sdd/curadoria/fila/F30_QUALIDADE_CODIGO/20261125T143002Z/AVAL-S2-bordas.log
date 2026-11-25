@@ -1,0 +1,47 @@
+$ /bin/bash aval_bordas.sh /Users/robertoduarte/rdd-worktrees/s2-sdd-open-uncle-bob   # bordas do avaliador (fixtures em mktemp -d)
+## B1: evidência só por AVALIACAO; AT-001.log existe (cmd-um) e o antes roda outro comando
+✅ sdd/reports/BUILD_REPORT_FX.md: todo `true` tem evidência abrível e a avaliação está provada ou declarada
+RESULTADO: VERDE
+→ o relatório pode ser commitado.
+-> exit 0
+
+## B2: cabeçalho 'Antes (vermelho)' em vez de 'Antes' (antes.log verde, que seria reprovado)
+| ID | Critério | Antes (vermelho) | Resultado | Evidência |
+⚠️  a tabela de critérios não tem a coluna `Antes` (relatório anterior à v2.27.0): o vermelho antes do verde não foi conferido
+✅ sdd/reports/BUILD_REPORT_FX.md: todo `true` tem evidência abrível e a avaliação está provada ou declarada
+RESULTADO: VERDE
+→ o relatório pode ser commitado.
+-> exit 0
+
+## B3: sabotagem com TMPDIR contendo espaço
+▶ cópia do último commit (43d8049) · comando sem a sabotagem
+▶ sabotagem: m.py: «return 1» → «return 2»
+🛑 o teste não pega o defeito: com a sabotagem declarada, o comando continuou verde.
+RESULTADO: VERMELHO
+→ reforce a asserção do AT-001 até ela acusar a sabotagem e rode de novo (a prova está em sdd/reports/evidence/FX/AT-001.sabotagem.log).
+-> exit 2 · sobras em TMPDIR: []
+
+## B4: log de sucesso antigo continua depois de uma rodada inconclusiva (3)
+AT-001.sabotagem.log
+⚠️  sabotagem: m.py: o trecho a trocar aparece 0 vez(es) no arquivo, no último commit; declare um trecho que apareça exatamente 1 vez
+RESULTADO: INCONCLUSIVO
+→ corrija a declaração no DESIGN (sdd-iterate) ou o comando do AT e rode de novo; isto não prova nada.
+-> exit 3
+AT-001.sabotagem.log
+[exit=0]
+
+## B5: commit e sabotagem no MESMO segundo (python3 sem -B; teste forte: f()==1, sabotagem return 1 -> return 2)
+rodada 1: commit=1795523100 fim=1795523100 -> exit 2 · 🛑 o teste não pega o defeito: com a sabotagem declarada, o comando continuou verde.
+rodada 2: commit=1795523101 fim=1795523101 -> exit 2 · 🛑 o teste não pega o defeito: com a sabotagem declarada, o comando continuou verde.
+rodada 3: commit=1795523101 fim=1795523101 -> exit 2 · 🛑 o teste não pega o defeito: com a sabotagem declarada, o comando continuou verde.
+rodada 4: commit=1795523101 fim=1795523101 -> exit 2 · 🛑 o teste não pega o defeito: com a sabotagem declarada, o comando continuou verde.
+rodada 5: commit=1795523101 fim=1795523102 -> exit 0 · ✅ o teste pega o defeito: com a sabotagem, o comando saiu 1.
+rodada 6: commit=1795523102 fim=1795523102 -> exit 2 · 🛑 o teste não pega o defeito: com a sabotagem declarada, o comando continuou verde.
+rodada 7: commit=1795523102 fim=1795523102 -> exit 2 · 🛑 o teste não pega o defeito: com a sabotagem declarada, o comando continuou verde.
+rodada 8: commit=1795523102 fim=1795523103 -> exit 0 · ✅ o teste pega o defeito: com a sabotagem, o comando saiu 1.
+## B5b: a mesma coisa com python3 -B (sem .pyc): sempre 0
+rodada 1: commit=1795523103 fim=1795523103 -> exit 0
+rodada 2: commit=1795523103 fim=1795523103 -> exit 0
+rodada 3: commit=1795523103 fim=1795523103 -> exit 0
+rodada 4: commit=1795523104 fim=1795523104 -> exit 0
+[exit=0]

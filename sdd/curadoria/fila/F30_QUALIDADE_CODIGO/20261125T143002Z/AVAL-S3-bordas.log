@@ -1,0 +1,126 @@
+$ bash /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-s3-open-sdd-unclebob/8effdefa-7530-47db-938b-6eca322f632a/scratchpad/aval-s3/pb.sh
+== nome com crase/quebra de linha/aspas/-x/'#'
+--- metricas 
+RESULTADO: AVISOS
+→ cole a seção no BUILD_REPORT; ela avisa e não reprova.
+## Qualidade (avisos)
+
+> Só o código novo ou alterado desde `main` (a9e9934). Aviso: não reprova.
+
+### Complexidade
+
+- não medido: lizard devolveu saída que não entendi (linha com 13 colunas)
+
+### Duplicação
+
+- 5 arquivos do diff lidos, de 5; 5 trechos repetidos:
+- `-x.py:1-31` repete `src/[g].py:1-31` (31 linhas, 149 tokens)
+- `-x.py:1-31` repete `src/a b.py:1-31` (31 linhas, 149 tokens)
+- `-x.py:1-31` repete `src/as"pas,x.py:1-31` (31 linhas, 149 tokens)
+- `-x.py:1-31` repete `src/q ## Outra.py:1-31` (31 linhas, 149 tokens)
+- `-x.py:1-30` repete `src/velha.py:1-30` (30 linhas, 147 tokens)
+
+[exit=0]
+== par antigo grande, tocado numa linha so de um lado no fim
+== nada tocado alem de p.py
+--- metricas --base frente
+RESULTADO: NADA ACHADO
+→ cole a seção no BUILD_REPORT; ela avisa e não reprova.
+## Qualidade (avisos)
+
+> Só o código novo ou alterado desde `frente` (6858f58). Aviso: não reprova.
+
+### Complexidade
+
+- nenhum aviso (1 função medida no diff)
+
+### Duplicação
+
+- nenhum aviso (1 arquivo do diff lidos, de 1)
+
+[exit=0]
+== uma linha
+--- metricas --base frente
+RESULTADO: AVISOS
+→ cole a seção no BUILD_REPORT; ela avisa e não reprova.
+## Qualidade (avisos)
+
+> Só o código novo ou alterado desde `frente` (6858f58). Aviso: não reprova.
+
+### Complexidade
+
+- nenhum aviso (2 funções medidas no diff)
+
+### Duplicação
+
+- 2 arquivos do diff lidos, de 2; 1 trecho repetido:
+- `src/g2.py:1-33` repete `src/g1.py:1-33` (33 linhas, 175 tokens)
+
+[exit=0]
+== TS/JS/vue
+--- metricas 
+RESULTADO: AVISOS
+→ cole a seção no BUILD_REPORT; ela avisa e não reprova.
+## Qualidade (avisos)
+
+> Só o código novo ou alterado desde `main` (015ee8d). Aviso: não reprova.
+
+### Complexidade
+
+- 2 funções medidas no diff, 2 acima do limite:
+- `src/T.vue:2-17` `g`: complexidade 15 (limite 10)
+- `src/a.ts:1-16` `f`: complexidade 15 (limite 10)
+
+### Duplicação
+
+- nenhum aviso (2 arquivos do diff lidos, de 2)
+
+[exit=0]
+== arquivo latin1 duplicado junto de outro lido
+--- metricas 
+RESULTADO: NADA ACHADO
+→ cole a seção no BUILD_REPORT; ela avisa e não reprova.
+## Qualidade (avisos)
+
+> Só o código novo ou alterado desde `main` (015ee8d). Aviso: não reprova.
+
+### Complexidade
+
+- nenhum aviso (2 funções medidas no diff)
+
+### Duplicação
+
+- nenhum aviso (1 arquivo do diff lidos, de 2)
+
+[exit=0]
+== arquivo ilegivel (chmod 000)
+--- metricas 
+🛑 metricas-diff: [Errno 13] Permission denied: '/private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-s3-open-sdd-unclebob/8effdefa-7530-47db-938b-6eca322f632a/scratchpad/aval-s3/n5/src/nova.py'
+RESULTADO: ERRO DE USO
+→ corrija (a base se passa por --base REF) e rode de novo; nada foi medido.
+[exit=64]
+== arquivo de projeto chamado json.py, csv.py, lizard.py, conftest (import hijack)
+--- metricas 
+RESULTADO: AVISOS
+→ cole a seção no BUILD_REPORT; ela avisa e não reprova.
+## Qualidade (avisos)
+
+> Só o código novo ou alterado desde `main` (123255f). Aviso: não reprova.
+
+### Complexidade
+
+- 1 função medida no diff, 1 acima do limite:
+- `src/nova.py:1-31` `nova`: complexidade 15 (limite 10)
+
+### Duplicação
+
+- 1 arquivo do diff lidos, de 7; 1 trecho repetido:
+- `src/nova.py:1-30` repete `src/velha.py:1-30` (30 linhas, 147 tokens)
+
+[exit=0]
+ls: /tmp/PWN_avals3: No such file or directory
+== SIGTERM no meio limpa tmp
+rc=143
+node-compile-cache
+sdd-open-08hhp_xo
+[exit=0]

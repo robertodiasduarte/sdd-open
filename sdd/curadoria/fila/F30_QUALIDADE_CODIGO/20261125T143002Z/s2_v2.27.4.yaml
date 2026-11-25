@@ -1,0 +1,18 @@
+feature_id: F30_QUALIDADE_CODIGO
+slice_id: s2
+versao: 2.27.4
+data: 2026-11-24
+estado: parcial
+veredito: CONCERNS
+waived: null
+dod: "correção do sdd-drive (sem fatia nova): Verify Gate verde em 2b015b4 (2.888 testes, 5 pulados); 8 testes novos (classe Gravacao), 5 vermelhos antes do conserto; no Windows do PR #44 os 8 rodaram sem pulos; revisão do diff: 1 MED rebatido com evidência. S3 segue aberta"
+descricao: "sdd-drive.sh: a gravação que falha apaga o temporário; no Windows, a troca recusada por arquivo aberto em outro processo é tentada de novo por até 5 s; o temporário ganha a extensão do destino e a trava em preparo termina em .lock, e a sobra de um processo cortado conta como documento, nunca como código sem commit (o --resume respondia COMMITAR)"
+deploy: release automática pelo workflow release.yml (tag v2.27.4 posta à mão no commit)
+trilha: completa
+review_externo: sdd/reports/reviews/EXTERNAL_REVIEW_20261124-181536 sha256=16da47b5f2854f8c56c24244f201a900a368cfc06c02cf52b621bf38f4e7efd2 diversidade=vendor
+avisos:
+  - "a causa da queda no CI (fatia 5 do Windows, run 45476586638) é inferida: o vazamento foi reproduzido, a troca recusada naquele run não"
+  - "revisor codex raso (20 s, 0 achados); a revisão vale pelo 2º revisor (openrouter) e pelo auditor; rodada sem --feature"
+  - "sem DEFINE/DESIGN próprios: correção pequena dentro da ficha da F30, sem avaliador fresco"
+  - "lint, drift, landmines, smoke e test-baseline pulados: o Open não tem sdd/config.yaml (a suíte inteira rodou no Verify Gate)"
+  - "custo da revisão: US$ 0,11"

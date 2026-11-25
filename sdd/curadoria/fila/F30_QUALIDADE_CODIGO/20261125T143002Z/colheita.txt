@@ -1,0 +1,32 @@
+TABELA_SEM_CABECALHO DESIGN_F30_QUALIDADE_CODIGO.md:586 (a tabela precisa das colunas fonte ou lm-nnn ou id e veredito ou tratamento: não contei nada dela)
+TABELA_SEM_CABECALHO DESIGN_F30_QUALIDADE_CODIGO.md:613 (a tabela precisa das colunas fonte ou lm-nnn ou id e veredito ou tratamento: não contei nada dela)
+TABELA_SEM_CABECALHO DESIGN_F30_QUALIDADE_CODIGO.md:638 (a tabela precisa das colunas fonte ou lm-nnn ou id e veredito ou tratamento: não contei nada dela)
+DELTA LM-001 ajudou+1 · conf=2026-11-25 · evidencia=BUILD_REPORT_F30_QUALIDADE_CODIGO.md:34 · fp=2fd29248a9
+DELTA LM-002 ajudou+1 · conf=2026-11-25 · evidencia=BUILD_REPORT_F30_QUALIDADE_CODIGO.md:34 · fp=5f039b59f7
+DELTA LM-003 ajudou+1 · conf=2026-11-25 · evidencia=BUILD_REPORT_F30_QUALIDADE_CODIGO.md:35 · fp=91d093f0c4
+DELTA LM-014 ajudou+1 · conf=2026-11-25 · evidencia=BUILD_REPORT_F30_QUALIDADE_CODIGO.md:36 · fp=9791229fe2
+DELTA LM-029 ajudou+1 · conf=2026-11-25 · evidencia=BUILD_REPORT_F30_QUALIDADE_CODIGO.md:36 · fp=76b168a9e5
+DELTA LM-034 ajudou+1 · conf=2026-11-25 · evidencia=BUILD_REPORT_F30_QUALIDADE_CODIGO.md:36 · fp=28e1717186
+DELTA LM-042 ajudou+1 · conf=2026-11-25 · evidencia=BUILD_REPORT_F30_QUALIDADE_CODIGO.md:36 · fp=3892220e06
+DELTA LM-016 ajudou+1 · conf=2026-11-25 · evidencia=BUILD_REPORT_F30_QUALIDADE_CODIGO.md:37 · fp=97dfaa1d86
+DELTA LM-017 ajudou+1 · conf=2026-11-25 · evidencia=BUILD_REPORT_F30_QUALIDADE_CODIGO.md:38 · fp=a653a308f3
+DELTA LM-033 ajudou+1 · conf=2026-11-25 · evidencia=BUILD_REPORT_F30_QUALIDADE_CODIGO.md:39 · fp=01dc0e6e22
+DELTA LM-035 ajudou+1 · conf=2026-11-25 · evidencia=BUILD_REPORT_F30_QUALIDADE_CODIGO.md:40 · fp=f6b9a14946
+DELTA LM-037 ajudou+1 · conf=2026-11-25 · evidencia=BUILD_REPORT_F30_QUALIDADE_CODIGO.md:41 · fp=e8d0a0c659
+DELTA LM-038 ajudou+1 · conf=2026-11-25 · evidencia=BUILD_REPORT_F30_QUALIDADE_CODIGO.md:41 · fp=a4bd0fc1fe
+CANDIDATO #1 → LM-045 · secao=Reviews / harness · sup=`grep` `emoji` `Git Bash` `pre-commit` `Windows` · evidencia=CI do PR #45, run 45597467098, fatia 6/16 (test_hooks.Hooks.test_report_staged_passa_pelo_report_lint); conserto em sdd/hooks/pre-commit · fp=4f9d6399a9
+   delta: ADD Reviews / harness :: sup: `grep` `emoji` `Git Bash` `pre-commit` `Windows` :: No Git Bash do Windows, `grep -E '🛑'` não casa a linha que tem o emoji: o script cai calado no caminho de reserva (no pre-commit, as últimas 5 linhas) e perde parte da mensagem. **Do instead:** procure emoji em saída com `LC_ALL=C grep -F`, e tenha um teste com mais linhas do que o caminho de reserva mostra. → ficha: — · promovido_para: —
+CANDIDATO #2 → LM-046 · secao=Reviews / harness · sup=`jscpd` `min-lines` `ferramenta externa` `padrão implícito` `falso nenhum` · evidencia=sdd/reviews/LEDGER_REVISAO_F30_QUALIDADE_CODIGO.md (rodada 17, R2) · fp=70c8988b6c
+   delta: ADD Reviews / harness :: sup: `jscpd` `min-lines` `ferramenta externa` `padrão implícito` `falso nenhum` :: Ferramenta externa com filtro padrão não declarado dá falso "nenhum": o `jscpd` sem `--min-lines` perde todo trecho repetido de até 5 linhas, com qualquer `--min-tokens`. **Do instead:** ao medir com ferramenta de fora, passe todo filtro de forma explícita e meça os valores de fronteira com a ferramenta real antes de afirmar. → ficha: — · promovido_para: —
+SUGESTAO mordeu? LM-005 — termo `regressão` em s2_v2.27.1.yaml:8 (achado sem LM explícito; confirmar a causa antes de virar delta) · fp=6ba7f800ff,e8595a789e,3a014d78bf
+SUGESTAO mordeu? LM-006 — termo `git archive` em s2_v2.27.1.yaml:8 (achado sem LM explícito; confirmar a causa antes de virar delta) · fp=cd381a760c,ac3e48eef4,81a82feb91
+SUGESTAO mordeu? LM-009 — termo `sabotagem` em s2_v2.27.1.yaml:8 (achado sem LM explícito; confirmar a causa antes de virar delta) · fp=23872eba37,a0545afe46,5fc86177f7,1ebe6060ba
+SUGESTAO mordeu? LM-012 — termo `publish-gate` em s2_v2.27.1.yaml:8 (achado sem LM explícito; confirmar a causa antes de virar delta) · fp=d775f9adf9,e6df3a4968,eb915e8246
+SUGESTAO mordeu? LM-024 — termo `raio de impacto` em s2_v2.27.1.yaml:8 (achado sem LM explícito; confirmar a causa antes de virar delta) · fp=09a5a81022,1d001126b2,c277b05e6d,2028382397
+SUGESTAO mordeu? LM-026 — termo `comando` em s2_v2.27.1.yaml:8 (achado sem LM explícito; confirmar a causa antes de virar delta) · fp=76064a47d9,6eadfff412,cde758c7b6
+SUGESTAO mordeu? LM-037 — termo `publish-gate` em s2_v2.27.1.yaml:8 (achado sem LM explícito; confirmar a causa antes de virar delta) · fp=7038e8200a,a73f3c3504,f3bfd4c8d8
+SUGESTAO mordeu? LM-040 — termo `avaliador` em s2_v2.27.1.yaml:8 (achado sem LM explícito; confirmar a causa antes de virar delta) · fp=fc84d3a484,8a9d0348db,a87bc987b9,3c8b1ccc91
+JA_JULGADO 17 linha(s) já julgada(s) numa curadoria anterior desta feature ou já na fila da curadoria (CURATOR-colhidos.txt): não contam de novo
+resumo: deltas=13 (ajudou=13 mordeu=0) candidatos=2 rejeitados=0 promocoes=0 sugestoes=8
+RESULTADO: HÁ O QUE JULGAR
+→ despache o curador com esta colheita; nada foi aplicado.

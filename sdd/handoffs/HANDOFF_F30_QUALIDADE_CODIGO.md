@@ -8,16 +8,17 @@
 |-----------|-------|
 | **Feature** | F30_QUALIDADE_CODIGO |
 | **Objetivo** | O código que o método gera segue Clean Code e TDD: lint e tipos a cada tarefa, regras de qualidade por stack, vermelho antes do verde, sabotagem do gate, refatorar depois do verde e métricas de forma no diff (só aviso) |
-| **Status** | 🚢 S2 publicada na `v2.27.3` (2026-11-24, `682fc60`; Release conferida; as tags `v2.27.0`, `v2.27.1` e `v2.27.2` ficaram sem Release), correção do `sdd-drive` na `v2.27.4` (`7ab8a72`; Release conferida) e starter **`v1.5.32`**; S1 na `v2.26.0`; S3 aberta |
-| **Última sessão** | 2026-11-24 |
-| **Branch / pasta** | S2: `s2-sdd-open-uncle-bob` · `/Users/robertoduarte/rdd-worktrees/s2-sdd-open-uncle-bob` (PR #43 para o CI antes da tag; a `main` avançou direto para o HEAD da frente); correção do `sdd-drive`: `fix-sdd-drive-temporario`, na mesma pasta (PR #44). S1: `f30-sdd-open-uncle-bob` |
-| **Artefatos** | `sdd/features/{AVALIACAO_F30_UNCLE_BOB,ESCOPO_F30_QUALIDADE_CODIGO,DEFINE_F30_QUALIDADE_CODIGO,DESIGN_F30_QUALIDADE_CODIGO}.md` · `sdd/reports/BUILD_REPORT_F30_QUALIDADE_CODIGO.md` · `sdd/reviews/{AVALIACAO_F30_QUALIDADE_CODIGO_20261123-2035,AVALIACAO_F30_QUALIDADE_CODIGO_20261123-2050,LEDGER_REVISAO_F30_QUALIDADE_CODIGO}.md` · `sdd/releases/F30_QUALIDADE_CODIGO/{s1_v2.26.0,s2_v2.27.0,s2_v2.27.1,s2_v2.27.2,s2_v2.27.3,s2_v2.27.4}.yaml` · `sdd/reviews/AVALIACAO_F30_QUALIDADE_CODIGO_20261124-{1225,1300}.md` · `sdd/reports/evidence/F30_QUALIDADE_CODIGO/` |
-| **Verify Gate** | 🟢 S2: 0 em `2864d26`, o código da `v2.27.3` (2.880 testes, 4 pulados), e 0 em `2b015b4`, o código da `v2.27.4` (2.888 testes, 5 pulados); S1: 0 em `76827bf` — `bash sdd/bin/verify-gate.sh sdd/features/DEFINE_F30_QUALIDADE_CODIGO.md` |
-| **Veredito das releases** | 🟡 `v2.27.4` CONCERNS (5 avisos, no ledger) · 🟡 S2 CONCERNS (6 avisos) · 🟡 S1 CONCERNS (4 avisos), em "Falta" |
+| **Status** | ✅ As 3 fatias publicadas: S3 na `v2.28.0` (2026-11-25, `33b5831`; Release conferida; o `publish-gate` da `main` caiu, ver Falta) e starter **`v1.5.33`**; S2 na `v2.27.3` (as tags `v2.27.0` a `v2.27.2` ficaram sem Release) e correção do `sdd-drive` na `v2.27.4`; S1 na `v2.26.0` |
+| **Última sessão** | 2026-11-25 |
+| **Branch / pasta** | S3: `s3-open-sdd-unclebob` · `/Users/robertoduarte/rdd-worktrees/s3-open-sdd-unclebob` (PR #45 para o CI antes da tag; a `main` avançou direto). S2: `s2-sdd-open-uncle-bob` · `/Users/robertoduarte/rdd-worktrees/s2-sdd-open-uncle-bob` (PR #43 para o CI antes da tag; a `main` avançou direto para o HEAD da frente); correção do `sdd-drive`: `fix-sdd-drive-temporario`, na mesma pasta (PR #44). S1: `f30-sdd-open-uncle-bob` |
+| **Artefatos** | arquivados em `sdd/archive/F30_QUALIDADE_CODIGO/` (DEFINE, DESIGN, ESCOPO e BUILD_REPORT) · `sdd/features/AVALIACAO_F30_UNCLE_BOB.md` · `sdd/reviews/` (5 avaliações `AVALIACAO_F30_QUALIDADE_CODIGO_*` e `LEDGER_REVISAO_F30_QUALIDADE_CODIGO.md`) · `sdd/releases/F30_QUALIDADE_CODIGO/` (um ledger por tag) · `sdd/reports/evidence/F30_QUALIDADE_CODIGO/` |
+| **Verify Gate** | 🟢 S3: 0 em `cd70bed`, o código da `v2.28.0` (2.947 testes, 7 pulados); 🟢 S2: 0 em `2864d26`, o código da `v2.27.3` (2.880 testes, 4 pulados), e 0 em `2b015b4`, o código da `v2.27.4` (2.888 testes, 5 pulados); S1: 0 em `76827bf` — `bash sdd/bin/verify-gate.sh sdd/archive/F30_QUALIDADE_CODIGO/DEFINE_F30_QUALIDADE_CODIGO.md` |
+| **Veredito das releases** | 🟡 S3 CONCERNS (6 avisos, no ledger) · 🟡 `v2.27.4` CONCERNS (5 avisos, no ledger) · 🟡 S2 CONCERNS (6 avisos) · 🟡 S1 CONCERNS (4 avisos), em "Falta" |
 
 ## Publicado
 
 <!-- publicado:inicio (gerado por sdd/bin/ficha-publicado.py a partir de sdd/releases/; não edite à mão) -->
+- 2026-11-25 · s3 · 2.28.0 · shipado · CONCERNS · deploy release automática pelo workflow release.yml (tag v2.28.0 posta à mão no commit) · trilha completa · 33b5831
 - 2026-11-24 · s2 · 2.27.4 · parcial · CONCERNS · deploy release automática pelo workflow release.yml (tag v2.27.4 posta à mão no commit) · trilha completa · 7ab8a72
 - 2026-11-24 · s2 · 2.27.3 · parcial · CONCERNS · deploy release automática pelo workflow release.yml (tag v2.27.3 posta à mão no commit; as tags v2.27.0, v2.27.1 e v2.27.2 ficaram sem Release, com o CI vermelho) · trilha completa · 682fc60
 - 2026-11-24 · s2 · 2.27.2 · parcial · CONCERNS · deploy SEM RELEASE (o CI da tag caiu, teste do ln -s e teto de 30 min no Windows); release automática pelo workflow release.yml (tag v2.27.2 posta à mão no commit; as tags v2.27.0 e v2.27.1 ficaram sem Release, com o CI vermelho) · trilha completa · fb5c1c9
@@ -28,7 +29,11 @@
 
 ## Falta
 
-1. ✨ **S3 — métricas no diff, só aviso (itens 5, 8):** `sdd-iterate` no mesmo DEFINE (seção "Fatia S3"; D5: complexidade 10, 60 linhas, 5 parâmetros, `jscpd --min-tokens 50`, em `qualidade.*` do config; proposta S3-a e S3-b no ESCOPO §6). Ferramenta ausente = "não medido", nunca "0 achados".
+1. 🐛 **`publish-gate` da `main` vermelho em `33b5831` (run 45634528055), 1 teste em cada uma de 2 fatias do Windows.** Os mesmos testes passaram no mesmo commit nos runs `release` da tag (45634526448) e da `main` (45634528110); a S3 não mexeu no `sdd-drive`, no `init` nem nesses testes. O Roberto mandou seguir com o vermelho anotado. Investigar:
+   - fatia 2, `test_drive.EstadoSoUmPorVez.test_recibos_juntos_nao_se_perdem`: de 6 recibos simultâneos, um saiu 2. O teste descarta a saída, então a causa não aparece: capturar a saída de cada processo e reproduzir no Windows. É a área corrigida na `v2.27.4`: o conserto pode estar incompleto;
+   - fatia 7, `test_sdd_open.Projeto.test_doctor_acusa_env_salvo_no_git_e_sai_0`: o `git add -A` do `setUp` passou de 120 s (`TimeoutExpired`). Lentidão do runner é inferência, sem prova.
+   - ⚠️ Avisos da release S3: estão no ledger `s3_v2.28.0.yaml` (nota de atualização, avaliador antes dos consertos, unidades diferentes no Windows só com teste de texto, ferramentas falsas no CI).
+   - 🐛 pendências leves da S3: `jscpd` sem o campo `tokens` sai "0 tokens" (LOW da rodada 20); nome de arquivo com aspas derruba a complexidade (dito como não medido); causa imprecisa quando o `lizard` sai vazio; seção só com `---` conta como preenchida; a `sdd-release` não cita a falta da seção entre as causas de abortar; com `.vue`, não dá para saber quais arquivos o `jscpd` leu.
 2. ⚠️ Avisos da release S2 (não abortaram):
    - nota de atualização: relatório novo nasce com a coluna `Antes` e o `report-lint` cobra o `AT-nnn.antes.log` de cada AT de gate `test`/`cmd`; relatório antigo só recebe aviso;
    - 🐛 observações leves do avaliador (ciclo 2) no `report-lint.py`: O-A citação com `..` passa no `problema_do_log` (anterior à S2; vale também para a coluna Evidência — normalizar o caminho); O-B cabeçalho `**Antes**` ou `Antes/vermelho` não é reconhecido; O-C sem `AT-nnn.log` no disco o comando do antes não é comparado; O-D `N.A.` sem motivo aceito em `manual-ux`; O-E antes que é link simbólico para fora da feature é aceito;
@@ -38,10 +43,10 @@
    - custo das revisões da S2: US$ 11,86 (10 rodadas, com a do DESIGN), fora uma revisão interrompida sem custo medido; mais US$ 0,11 na `v2.27.4`;
    - o avaliador fresco julgou `e65531f`, antes dos consertos das rodadas 6 e 7.
 3. ⚠️ Avisos da release S1 que seguem: o `doctor` não avisa de arquivo novo de `sdd/bin/` ausente num projeto atualizado só com `sync`; o item 5 da `sdd-release` não cita o log de lint entre as causas de abortar.
-4. ✨ O clone local `~/rdd-public/sdd-starter` está atrasado (11ª geração) e tem `docs/guia-do-aluno.pt-BR.md` fora do git; a 15ª e a 16ª gerações foram feitas em clones limpos.
-5. ✅ **`sdd-drive.sh`, falha intermitente (anterior à S2): corrigida na `v2.27.4`.** A gravação que falha apaga o temporário; no Windows, a troca recusada é tentada de novo por até 5 s; sobra de temporário conta como documento, nunca como `COMMITAR`. Fica o aviso: a causa no run 45476586638 é inferida (o vazamento foi reproduzido; a troca recusada naquele run, não).
+4. ✨ O clone local `~/rdd-public/sdd-starter` está atrasado (11ª geração) e tem `docs/guia-do-aluno.pt-BR.md` fora do git; as gerações 15ª a 17ª foram feitas em clones limpos.
+5. ⚠️ **`sdd-drive.sh`, falha intermitente:** a `v2.27.4` apaga o temporário da gravação que falha e, no Windows, tenta de novo por até 5 s a troca recusada. O run de 25/11 (item 1) mostra que ainda há falha na área; causa por achar.
 6. ✨ A divisão das fatias do Windows é por número de testes, não por tempo: a fatia 4 levou 30 min no PR (teto 45). Dividir por tempo medido.
-7. Curadoria: na fila (`sdd/curadoria/fila/F30_QUALIDADE_CODIGO/20261124T135615Z`, 13 deltas e 2 candidatos, entre eles o "discover vazio sai 0 no Python 3.9", agora com `Do instead:`). A fila passou do limite (6 entradas, 2 da F30): rodar o lote da `sdd-playbook`.
+7. Curadoria: na fila (`sdd/curadoria/fila/F30_QUALIDADE_CODIGO/20261125T143002Z`, 13 deltas e 2 candidatos). A fila passou do limite (7 entradas, 3 da F30; limite 5): rodar o lote da `sdd-playbook`.
 
 ## Definition of Done
 
@@ -49,8 +54,9 @@
 - [x] Starter regenerado depois da S1 (`v1.5.31`)
 - [x] S2 publicada (`v2.27.3`): S2-b com o hash da árvore igual antes e depois; custo extra em tokens dos itens 2, 6 e 7 no BUILD_REPORT (+4,4%, n=1)
 - [x] Starter regenerado depois da S2 (`v1.5.32`)
-- [ ] S3 publicada: ferramenta ausente dá "não medido", nunca "0 achados"; métrica só avisa
-- [ ] CI verde em cada release (S1 e S2: verde no run da tag; na S2, o run da `main` em `682fc60` caiu na fatia 5, corrigido na `v2.27.4`, com os 3 runs verdes em `7ab8a72`)
+- [x] S3 publicada (`v2.28.0`): ferramenta ausente dá "não medido", nunca "0 achados"; métrica só avisa
+- [x] Starter regenerado depois da S3 (`v1.5.33`)
+- [ ] CI verde em cada release (na S3, os 2 runs `release` verdes e o `publish-gate` da `main` vermelho, item 1 de Falta; S1 e S2: verde no run da tag; na S2, o run da `main` em `682fc60` caiu na fatia 5, corrigido na `v2.27.4`, com os 3 runs verdes em `7ab8a72`)
 
 ## ⛔ Landmines desta feature
 
@@ -61,6 +67,8 @@
 
 ## Eventos
 
+- 2026-11-25 — Release da S3 com o OK do Roberto ("sim, publica a v2.28.0"): CI inteiro verde no PR #45 (18/18, `cd70bed`), `--conferir` repetido (CONFERE), push atômico `main` + tag em `33b5831`. Release conferida: runs `release` 45634526448 (tag) e 45634528110 (`main`) verdes, publicada às 15:21 UTC pelo run da `main`; `shasum -c` OK, `VERSION` = `v2.28.0`, 792 arquivos = 792 linhas do `MANIFEST`, nenhum faltando, `metricas-diff.sh` igual ao da tag. O `publish-gate` 45634528055 caiu (item 1 de Falta) e o Roberto mandou seguir.
+- 2026-11-25 — starter: 17ª geração pela tag `v2.28.0` num clone limpo (`f455e1b`; check-gerado VERDE, check-versions e publish-check PASS, testes, gate da KB e 19 zips), PR #26 de lá com CI verde, avanço direto da `main`. O Auto Release (45650576956) caiu no envio dos arquivos durante um incidente do GitHub (rascunho com 9 arquivos, sem tag); com o OK do Roberto, tag `v1.5.33` posta à mão depois do incidente: run 45658965189 verde, rascunho reaproveitado, 19 zips OK no `shasum -c` e iguais ao commit.
 - 2026-11-24 — S2: DEFINE 1.5 (AT-010 a AT-016) e DESIGN 2.0/2.1 (Decisions 8 a 14); revisão do DESIGN (openrouter/qwen, codex 2º revisor, auditor claude): 1 MED aplicado.
 - 2026-11-24 — Build da S2: testes antes do código com `AT-nnn.antes.log`; 2 sabotagens declaradas pegas; 3 rodadas de revisão do código (2 LOW rebatidos por escopo); avaliador fresco em 2 ciclos (ciclo 1 NEEDS_WORK pelo cache da execução limpa no `sabotagem.sh`, aplicado); raio de impacto em 2 superfícies (1 risco latente consertado); custo dos passos novos medido (+2.514 tokens, +4,4%).
 - 2026-11-24 — Release da S2 com o OK do Roberto ("pode finalizar"): push atômico `main` + tag `v2.27.0` em `5e89137` (avanço direto, sem PR).
@@ -88,38 +96,30 @@
 ## Prompt de retomada
 
 ```text
-Retomar a feature F30_QUALIDADE_CODIGO do sdd-open, fatia S3 (métricas no diff, só aviso: itens 5, 8).
+Investigar o publish-gate vermelho da main do sdd-open em 33b5831 (run 45634528055), pendência da F30.
 
-Contexto: a F30 faz o código gerado pelo método seguir Clean Code e TDD, em 3 fatias. S1 (lint e tipos no Build,
-regras no AGENTS.md, linter sugerido) na v2.26.0; S2 (vermelho antes do verde no report-lint, sabotagem.sh,
-passo Refatorar) na v2.27.3 (24/11) e a correção do sdd-drive
-na v2.27.4; starter v1.5.32. Falta a S3.
+A F30 está publicada (v2.28.0; starter v1.5.33). Leia sdd/handoffs/HANDOFF_F30_QUALIDADE_CODIGO.md, item 1 de Falta,
+e a seção "## Sempre" de sdd/playbook.md. Pasta: frente nova pela sdd-new-session a partir de origin/main;
+setup: git status limpo e GIT_TERMINAL_PROMPT=0 git fetch origin main.
 
-Pasta: abrir uma frente nova com a sdd-new-session a partir de origin/main. Setup: git status limpo;
-GIT_TERMINAL_PROMPT=0 git fetch origin main && git log --oneline HEAD..origin/main.
+1. tests/test_drive.py, EstadoSoUmPorVez.test_recibos_juntos_nao_se_perdem: capturar a saída dos 6 processos (hoje vai
+   para DEVNULL) e achar por que um saiu 2 no Windows; teste vermelho antes do conserto em sdd/bin/sdd-drive.sh.
+2. tests/test_sdd_open.py, Projeto.setUp: o git add -A passou de 120 s na fatia 7; medir antes de mudar o limite.
 
-Leia primeiro: sdd/handoffs/HANDOFF_F30_QUALIDADE_CODIGO.md; depois sdd/features/DEFINE_F30_QUALIDADE_CODIGO.md
-(seção "Fatia S3" e Clarification D5), sdd/features/ESCOPO_F30_QUALIDADE_CODIGO.md (§ Fatia S3, itens 5 e 8, e
-S3-a, S3-b da tabela §6), sdd/features/DESIGN_F30_QUALIDADE_CODIGO.md e a seção "## Sempre" de sdd/playbook.md.
-
-Pipeline: sdd-iterate (ATs da S3 em EARS, test -f de cada tests/test_f30_*.py novo no gate) → sdd-design com
-revisão adversarial (openrouter/qwen revisor, claude auditor; chave em ~/.config/rdd-eval.env; saldo em /credits)
-→ sdd-build (antes.log de cada AT novo na coluna Antes; sabotagem declarada no DESIGN pelo sabotagem.sh;
-avaliador fresco; Verify Gate ~35 min só depois dos testes dirigidos) → PR com o CI inteiro verde ANTES da tag →
-sdd-release com 1 OK (minor, tag à mão, push atômico main + tag; publicada só com a Release no ar) → starter num clone limpo (gerar-starter.py --tag) → PLANO e esta ficha.
-
-Restrições: métrica só avisa (exit 0); ferramenta ausente = "não medido", nunca "0 achados"; nada instala sem o
-sim (D2); texto novo de skill em frase positiva (F29); limites em qualidade.* do config (D5).
-
-Landmines: sdd-build/SKILL.md 380 e web/MODO_WEB.md 489 de 500 linhas (LM-038): texto novo em references/;
-arquivo novo no MANIFEST.txt (LM-037); sem sdd/bin/ em texto do starter (LM-035); versões fixas de skill em
-testes antigos (grep a versão antes do gate); Python embutido em script .sh precisa da troca de saída UTF-8
-(test_f16w2_saida); não rodar duas suítes em paralelo (LM-031). Pendências da S2 na ficha (O-A a O-E, 1 LOW).
+Restrições: nunca gh run rerun de run antigo; nunca mover tag publicada; não rodar duas suítes em paralelo (LM-031);
+PR com o CI inteiro verde antes da tag; release com 1 OK. O log está nos artefatos testes-windows-fatia-2 e -7 do run.
 ```
 
 ---
 
 ## Histórico de slices
+
+### S3 — Métricas no diff, só aviso — 2026-11-25
+
+- `sdd/bin/metricas-diff.sh`: `lizard` e `jscpd` numa cópia temporária, só o que a frente trouxe; exit 0 sempre que mediu, 64 uso; ferramenta ausente ou com saída estranha é "não medido", com a causa e o comando de instalar.
+- `report-lint.py` exige `## Qualidade (avisos)` quando o config tem `qualidade:`; o conteúdo nunca reprova. `sdd-build` 2.17.0, referência `metricas-do-diff.md`.
+- `pre-commit`: `LC_ALL=C grep -F` para não perder linhas do lint no Git Bash.
+- Lições: só `--min-lines 0` faz o `jscpd` pegar trecho de 1 linha (medido; antes eu tinha afirmado `1` sem medir); um commit verde na tag pode cair no `publish-gate` por teste intermitente.
 
 ### S2 — Disciplina de teste — 2026-11-24
 
