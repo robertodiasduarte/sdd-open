@@ -72,7 +72,7 @@ class SddRelease(unittest.TestCase):
 
 class SddBuild(unittest.TestCase):
     def test_versao(self):
-        self.assertEqual(versao(BUILD), "2.16.0")
+        self.assertEqual(versao(BUILD), "2.17.0")
 
     def test_passo_4b_manda_ler_a_referencia(self):
         passo = ler(BUILD).split("### 4b. Migration", 1)[1].split("### 5.", 1)[0]

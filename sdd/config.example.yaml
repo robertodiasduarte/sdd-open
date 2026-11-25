@@ -27,6 +27,16 @@ build:
   # false pula o passo (economiza tokens) e o BUILD_REPORT diz `refatorar: desligado`.
   refatorar: true
 
+# Métricas do código novo (sdd/bin/metricas-diff.sh): avisam na seção `## Qualidade (avisos)` do BUILD_REPORT e nunca
+# reprovam. Inteiros >= 1; vazio = o padrão daqui. Com este mapa no arquivo, o report-lint.py exige que a seção exista.
+qualidade:
+  # Caminhos de uma função (complexidade ciclomática), linhas e parâmetros: acima disso, aviso (lizard).
+  max_complexidade: 10
+  max_linhas: 60
+  max_parametros: 5
+  # Tamanho mínimo, em tokens, do trecho repetido que vira aviso (jscpd).
+  min_tokens: 50
+
 # Camadas do seu projeto: nome → glob. É o que diz "esta feature toca 2 camadas" — o gatilho
 # do avaliador de contexto fresco. `sql` também diz o que conta como migration (report-lint.py).
 # Exemplos: sql: "db/migrations/**" · api: "src/api/**" · ui: "src/ui/**" · infra: "deploy/**"

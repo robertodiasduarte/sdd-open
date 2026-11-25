@@ -455,9 +455,11 @@ execuções, não da leitura.
 - **Base:** `git merge-base HEAD <ref>`, com `<ref>` = `--base`, ou `origin/<project.default_branch>` (padrão `main`),
   ou a branch local de mesmo nome quando o remoto não existe; nenhuma ⇒ 64 com "passe `--base`".
 - **Linhas do diff:** a árvore de trabalho contra a base. `git diff --name-status -z -M` dá os pares (antigo, novo);
-  por arquivo, `git diff -U0 -M` e só as linhas `@@ … +c,d @@`. Trecho só apagado (`d=0`) marca a linha `c`. Arquivo novo
+  por arquivo, `git diff -U0 -M` e só as linhas `@@ … +c,d @@`. Trecho só apagado (`d=0`) conta quando `ini <= c < fim`: o git
+  aponta a linha **anterior** ao trecho, e na última linha da função ele fica depois dela (revisão, N3). Arquivo novo
   fora do índice (`ls-files -o --exclude-standard -z`) é novo inteiro. Opções fixas: `core.quotepath=off`,
-  `color.ui=never`, `--no-ext-diff --no-textconv` (LM-033). Só arquivo comum (link simbólico fica fora).
+  `color.ui=never`, `--no-ext-diff --no-textconv
+  --text --inter-hunk-context=0 -M` (LM-033). Só arquivo comum (link simbólico fica fora).
 - **Código:** por extensão. Complexidade: as linguagens comuns do `lizard`. Duplicação: as mesmas, mais `sh`, `bash` e
   `sql`. Fora: as pastas do método e de terceiros (a mesma lista do `qualidade-regras.sh`). Arquivo do diff que é código
   só da 2ª lista é dito na seção: "fora da medição de complexidade (linguagem sem suporte): N".
@@ -475,9 +477,11 @@ execuções, não da leitura.
 **Context:** no Windows, o `jscpd` é um calço (`jscpd`, `jscpd.cmd`) que o `subprocess` do Python não acha pelo nome, e
 o Git Bash acha. O teste usa ferramentas falsas, que no Windows também são scripts `sh`.
 
-**Choice:** `command -v` no bash; `lizard --csv` por `xargs -0 -n 50` sobre a lista NUL (nomes com espaço; teto da linha
-de comando); `jscpd . --min-tokens N --max-lines 100000 --max-size 5mb --reporters json --output <mktemp> --config
-<vazio> --silent --ignore <pastas de fora>`. Cada ferramenta: entrada `/dev/null` (a lista, no `xargs`), stdout e stderr
+**Choice:** as ferramentas rodam numa **cópia** no `mktemp`: `arvore/` (todo o código do projeto) e `diff/` (só o código
+do diff), sem `.jscpd.json`, `package.json` nem `.gitignore` do projeto (revisão, N2: a chave `jscpd` do `package.json`
+mudaria a medida). `command -v` no bash; `lizard --csv` por `xargs -0 -n 50` sobre a lista NUL (nomes com espaço; teto da linha
+de comando); `jscpd . --min-tokens N --max-lines 1000000 --max-size 6mb --reporters json --output <mktemp> --config
+<vazio> --silent`, uma vez em `diff/` e outra em `arvore/`. Arquivo do diff acima de 5 MB é dito como não medido. Cada ferramenta: entrada `/dev/null` (a lista, no `xargs`), stdout e stderr
 em arquivos do `mktemp`, `rc=$?` sem pipe, apagados por `trap`. Nunca `npx` (baixaria o pacote; D2).
 
 **Rationale:** o mesmo caminho nos 3 sistemas. `--max-lines` e `--max-size` altos porque o `jscpd` pula calado o arquivo
@@ -495,10 +499,11 @@ acima do padrão, e pular calado é o falso "nenhum".
 
 **Choice:** cada métrica termina em um de 3 estados: `não medido: …`, `nenhum aviso (N medidos)` ou a lista. Só vira
 `nenhum aviso` com prova de que mediu: `lizard` saiu 0, o CSV inteiro tem 11 colunas com inteiros, e pelo menos 1
-função do diff foi lida; `jscpd` saiu 0, o JSON tem `duplicates` (lista) e `statistics.total.sources` ≥ 1. Os motivos de
+função do diff foi lida, toda de arquivo pedido; `jscpd` saiu 0 nas duas passadas, os JSON têm `duplicates` (lista) e
+`statistics.total.sources` ≥ 1, e a passada em `diff/` prova que o código novo foi lido (revisão, N1). Os motivos de
 não medido: `<ferramenta> ausente — instale com …` · `<ferramenta> falhou (exit N: 1ª linha do erro)` · `<ferramenta>
-devolveu saída que não entendi` · `nenhum arquivo de código no diff` · `nenhuma função do diff encontrada` · `o jscpd não
-leu nenhum arquivo`. Instalar: `python3 -m pip install lizard` e `npm install -g jscpd`. Com o diff sem código, as
+devolveu saída que não entendi` · `nenhum arquivo de código no diff` · `nenhuma função do diff encontrada` · `jscpd não
+leu nenhum arquivo do diff`. Instalar: `python3 -m pip install lizard` e `npm install -g jscpd`. Com o diff sem código, as
 ferramentas não são chamadas, e a ausência não é dita.
 
 **Rationale:** é o risco nº 1 da fatia: a ausência de medida ler como qualidade.
@@ -562,9 +567,10 @@ Fatia S3 (a ordem é a do TDD). Os manifests da S1 (21 arquivos) e da S2 (15) es
 | 13 | `tests/test_f18_f20_textos.py` | Modify | Versão fixa da `sdd-build` | (general) | 6 |
 | 14 | `tests/test_correcoes_w0.py` | Modify | Versão fixa da `sdd-build` | (general) | 6 |
 | 15 | `tests/test_contrato_build_release.py` | Modify | Versão fixa da `sdd-build` | (general) | 6 |
-| 16 | `MANIFEST.txt` | Modify | Itens 1, 2, 3, 5 (LM-037) | (general) | 1, 2, 3, 5 |
+| 16 | `tests/test_f19_textos.py` | Modify | Versão fixa da `sdd-build` | (general) | 6 |
+| 17 | `MANIFEST.txt` | Modify | Itens 1, 2, 3, 5 (LM-037) | (general) | 1, 2, 3, 5 |
 
-**Total Files:** 16
+**Total Files:** 17
 
 Mais tarde, no Release: o ledger (minor v2.28.0), o PLANO, a ficha e a geração de teste do starter num clone limpo.
 
@@ -589,7 +595,7 @@ starter, npx, git diff, Windows, SKILL.md) mais o `## Sempre`.
 | LM-029, LM-034, LM-042 | ✔ tratado | `BASH`, `path_restrito` e constantes de `tests/apoio.py` |
 | LM-033 | ✔ tratado | Opções fixas do git (Decision 15) |
 | LM-035 | ✔ tratado | `metricas-do-diff.md` e `MODO_WEB.md` sem `sdd/bin/` |
-| LM-037 | ✔ tratado | Item 16; `publish-gate` em modo CI numa cópia antes do gate |
+| LM-037 | ✔ tratado | Item 17; `publish-gate` em modo CI numa cópia antes do gate |
 | LM-038 | ✔ tratado | `wc -l` antes e depois (380 e 489); texto longo em `references/` |
 | LM-043 | ✔ tratado | Nenhum `npx`; o teste não chama ferramenta real da rede |
 | LM-044 | N.A. | Nenhuma pergunta `[Dn]` nova |
@@ -795,7 +801,7 @@ Na S2, esse antes vira `evidence/F30_QUALIDADE_CODIGO/AT-nnn.antes.log`, citado 
 | AT | Arquivo | Trocar | Por | O que o teste deve acusar |
 |---|---|---|---|---|
 | AT-018 | `sdd/bin/metricas-diff.sh` | `if estado == "ausente":` | `if estado == "nunca":` | a ferramenta ausente deixa de sair como "ausente" com o comando de instalar |
-| AT-019 | `sdd/bin/metricas-diff.sh` | `if not toca(arq, ini, fim):` | `if False:` | a função que o diff não tocou aparece |
+| AT-019 | `sdd/bin/metricas-diff.sh` | `if not toca_o_diff(diff, f[0], f[5], f[6]):` | `if False:` | a função que o diff não tocou aparece |
 | AT-021 | `sdd/bin/report-lint.py` | `if tem_secao_qualidade(content):` | `if True:` | o relatório sem a seção passa com `qualidade:` no config |
 
 **Sabotagens (S2; Decision 11).** Superfície de risco pelo `sdd/review/CRITERIO_DANO.md`: o AT-010 guarda a
@@ -856,7 +862,7 @@ Nenhuma chave nova na S1 (D1).
 
 ## Desempenho
 
-S3: um `git diff` por arquivo mudado e uma passada do `jscpd` no repositório, uma vez por Build.
+S3: um `git diff` por arquivo mudado, a cópia do código e duas passadas do `jscpd`, uma vez por Build.
 
 N.A. — sem banco. O `checar.sh` só faz `[ -f ]` e uma leitura de `pyproject.toml`/`package.json`: custo
 desprezível perto das chamadas de rede dele.
@@ -876,6 +882,10 @@ S2: `AT-nnn.antes.log` e `AT-nnn.sabotagem.log`, ao lado dos `AT-nnn.log`. Os lo
 | — | revisor openrouter `qwen/qwen3.7-plus` e 2º revisor codex `gpt-6.1-sol` | 0 achados (o revisor terminou em 26 s) | — | diversidade: vendor · US$ 0,49 |
 | S2-N1 | auditor claude (`sdd/reports/reviews/EXTERNAL_REVIEW_20261124-083851/auditor.md`) | MED: `shall continue to` em qualquer lugar da linha classificaria o AT-011 (comportamento novo que cita a expressão) como não-regressão | APLICADA | Decision 9 (2.1): a classe vem do início da célula; fixture com a expressão citada no meio |
 | — | S2, rodada D1: revisor openrouter `qwen/qwen3.7-plus` (28 s, 0 achados) e 2º revisor codex `gpt-6.1-sol` (0 achados) | — | — | diversidade: vendor · US$ 0,67 |
+| S3-N1 | auditor claude (`sdd/reports/reviews/EXTERNAL_REVIEW_20261125-064417/auditor.md`) | MED: `sources` ≥ 1 no repositório inteiro não prova que o `jscpd` leu o diff | APLICADA | Decisions 16 e 17 (passada só em `diff/`); teste `test_jscpd_que_leu_o_projeto_mas_nao_o_diff` |
+| S3-N2 | auditor claude (mesma pasta) | MED: a chave `jscpd` do `package.json` mudaria a medida | APLICADA | Decision 16 (cópia sem config do projeto); teste `test_config_do_projeto_nao_chega_a_ferramenta` |
+| S3-N3 | auditor claude (mesma pasta) | MED: o trecho só apagado marcaria a função anterior, intacta | APLICADA | Decision 15 (`ini <= c < fim`); teste `test_apagar_o_que_vem_depois_nao_marca_a_funcao_anterior` |
+| — | S3: revisor openrouter `qwen/qwen3.7-plus` (46 s, 0 achados); 2º revisor dispensado pelo script (sem superfície de risco) | — | — | diversidade: vendor · US$ 0,73 |
 
 ---
 
@@ -883,7 +893,8 @@ S2: `AT-nnn.antes.log` e `AT-nnn.sabotagem.log`, ao lado dos `AT-nnn.log`. Os lo
 
 | Version | Date | Author | Changes |
 |---------|------|--------|---------|
-| 3.0 | 2026-11-25 | design-agent | S3: Decisions 15 a 19, manifest de 16 arquivos, landmines e sabotagens da S3 |
+| 3.1 | 2026-11-25 | design-agent | Revisão do DESIGN da S3: N1, N2 e N3 aplicadas (cópia temporária, prova no diff, trecho só apagado) |
+| 3.0 | 2026-11-25 | design-agent | S3: Decisions 15 a 19, manifest de 17 arquivos, landmines e sabotagens da S3 |
 | 2.1 | 2026-11-24 | design-agent | Revisão do DESIGN, rodada D1 (auditor claude, N1): a classe `continua` vem do início da célula (molde EARS ou Padrão), não de qualquer ocorrência na linha |
 | 2.2 | 2026-11-24 | build | Sabotagem do AT-013 trocada depois do código: a declarada (`ALVO` apontado para a raiz) era barrada pela checagem de caminho (exit 64) e não punha o hash da árvore à prova |
 | 2.0 | 2026-11-24 | design-agent | S2: Decisions 8 a 14, manifest de 15 arquivos, landmines e sabotagens da S2; o manifest da S1 fica na 1.2 (`c4fa53c`) |

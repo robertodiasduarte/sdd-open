@@ -1,0 +1,85 @@
+$ cd tests && /usr/bin/python3 -B -m unittest -v test_f30_report_lint test_f30_vermelho_antes test_report_lint && cd .. && /usr/bin/python3 scripts/check-versions.py --base origin/main
+test_antes_sem_os_arquivos_novos_ainda_e_divida_antiga (test_f30_report_lint.AT001SlotCheio) ... ok
+test_divida_antiga_com_log_de_antes_vira_aviso (test_f30_report_lint.AT001SlotCheio) ... ok
+test_ferramenta_ausente_antes_nao_e_divida_antiga (test_f30_report_lint.AT001SlotCheio) ... ok
+test_lint_cheio_sem_log_reprova_com_conserto (test_f30_report_lint.AT001SlotCheio) ... ok
+test_log_certo_com_os_arquivos_da_tarefa_aprova (test_f30_report_lint.AT001SlotCheio) ... ok
+test_log_de_antes_de_outro_comando_nao_vale (test_f30_report_lint.AT001SlotCheio) ... ok
+test_log_de_outro_comando_reprova (test_f30_report_lint.AT001SlotCheio) ... ok
+test_log_ignorado_pelo_git_reprova (test_f30_report_lint.AT001SlotCheio) ... ok
+test_log_sem_exit_no_fim_reprova (test_f30_report_lint.AT001SlotCheio) ... ok
+test_log_sem_primeira_linha_de_comando_reprova (test_f30_report_lint.AT001SlotCheio) ... ok
+test_log_vermelho_reprova (test_f30_report_lint.AT001SlotCheio) ... ok
+test_tipos_cheio_exige_tipos_log (test_f30_report_lint.AT001SlotCheio) ... ok
+test_verde_antes_e_vermelho_depois_reprova (test_f30_report_lint.AT001SlotCheio) ... ok
+test_a_linha_dentro_de_bloco_cercado_nao_conta (test_f30_report_lint.AT002SlotVazio) ... ok
+test_sem_config_vale_como_vazio (test_f30_report_lint.AT002SlotVazio) ... ok
+test_slots_vazios_com_a_linha_aprova_sem_aviso (test_f30_report_lint.AT002SlotVazio) ... ok
+test_slots_vazios_sem_a_linha_aprova_com_aviso (test_f30_report_lint.AT002SlotVazio) ... ok
+test_antes_127_nao_e_vermelho (test_f30_vermelho_antes.AT010ComportamentoNovo) ... ok
+test_antes_de_outro_at_reprova (test_f30_vermelho_antes.AT010ComportamentoNovo) ... ok
+test_antes_de_outro_comando_reprova (test_f30_vermelho_antes.AT010ComportamentoNovo) ... ok
+test_antes_fora_da_evidencia_da_feature_reprova (test_f30_vermelho_antes.AT010ComportamentoNovo) ... ok
+test_antes_ignorado_pelo_git_reprova (test_f30_vermelho_antes.AT010ComportamentoNovo) ... ok
+test_antes_sem_exit_no_fim_reprova (test_f30_vermelho_antes.AT010ComportamentoNovo) ... ok
+test_antes_verde_reprova (test_f30_vermelho_antes.AT010ComportamentoNovo) ... ok
+test_antes_vermelho_do_mesmo_comando_aprova (test_f30_vermelho_antes.AT010ComportamentoNovo) ... ok
+test_at_false_nao_e_conferido (test_f30_vermelho_antes.AT010ComportamentoNovo) ... ok
+test_at_repetido_numa_tabela_de_rastreio_nao_reclassifica (test_f30_vermelho_antes.AT010ComportamentoNovo) ... ok
+test_cabecalho_antes_com_complemento_ainda_e_a_coluna (test_f30_vermelho_antes.AT010ComportamentoNovo) ... ok
+test_criterio_que_so_cita_shall_continue_to_e_novo (test_f30_vermelho_antes.AT010ComportamentoNovo) ... ok
+test_evidencia_so_pela_avaliacao_ainda_confere_o_comando (test_f30_vermelho_antes.AT010ComportamentoNovo) ... ok
+test_na_em_at_novo_reprova (test_f30_vermelho_antes.AT010ComportamentoNovo) ... ok
+test_sem_antes_reprova (test_f30_vermelho_antes.AT010ComportamentoNovo) ... ok
+test_continua_com_antes_verde_aprova (test_f30_vermelho_antes.AT011ContinuaEFora) ... ok
+test_continua_com_antes_vermelho_reprova (test_f30_vermelho_antes.AT011ContinuaEFora) ... ok
+test_continua_sem_antes_reprova (test_f30_vermelho_antes.AT011ContinuaEFora) ... ok
+test_kind_fora_de_test_e_cmd_aceita_na (test_f30_vermelho_antes.AT011ContinuaEFora) ... ok
+test_manual_ux_aceita_na (test_f30_vermelho_antes.AT011ContinuaEFora) ... ok
+test_varios_ats_cada_um_pela_sua_classe (test_f30_vermelho_antes.AT011ContinuaEFora) ... ok
+test_at_fora_do_define_avisa (test_f30_vermelho_antes.AT012RelatorioAnterior) ... ok
+test_define_sem_coluna_de_kind_usa_o_do_gate (test_f30_vermelho_antes.AT012RelatorioAnterior) ... ok
+test_sem_a_coluna_aprova_com_aviso (test_f30_vermelho_antes.AT012RelatorioAnterior) ... ok
+test_sem_a_coluna_e_sem_at_true_nao_avisa (test_f30_vermelho_antes.AT012RelatorioAnterior) ... ok
+test_sem_define_avisa_com_a_causa (test_f30_vermelho_antes.AT012RelatorioAnterior) ... ok
+test_exit_0_reprova_mesmo_com_log_valido (test_report_lint.Migrations) ... ok
+test_ja_aplicada_em_vale_como_data (test_report_lint.Migrations) ... ok
+test_layers_sql_preenchido_conta_como_migration (test_report_lint.Migrations) ... ok
+test_layers_sql_vazio_usa_so_o_glob_fixo (test_report_lint.Migrations) ... ok
+test_log_sem_linha_de_comando_reprova (test_report_lint.Migrations) ... ok
+test_migration_apagada_nao_exige_linha (test_report_lint.Migrations) ... ok
+test_migration_com_log_passa (test_report_lint.Migrations) ... ok
+test_migration_sem_a_secao_reprova (test_report_lint.Migrations) ... ok
+test_migration_sem_linha_reprova (test_report_lint.Migrations) ... ok
+test_pasta_migrations_conta_como_migration (test_report_lint.Migrations) ... ok
+test_projeto_sem_nome_e_ref_reprova (test_report_lint.Migrations) ... ok
+test_projeto_so_com_travessoes_reprova (test_report_lint.Migrations) ... ok
+test_prova_que_nao_prova_reprova (test_report_lint.Migrations) ... ok
+test_recibo_vale_mesmo_com_gate_test (test_report_lint.Migrations) ... ok
+test_relatorio_sem_migration_nao_exige_a_secao (test_report_lint.Migrations) ... ok
+test_sem_data_reprova (test_report_lint.Migrations) ... ok
+test_sql_citado_fora_da_secao_de_arquivos_nao_conta (test_report_lint.Migrations) ... ok
+test_titulos_reais_numerados_ou_com_prefixo_contam (test_report_lint.Migrations) ... ok
+test_arquivo_inexistente (test_report_lint.ReportLint) ... ok
+test_avaliacao_em_contexto_fresco_passa (test_report_lint.ReportLint) ... ok
+test_criterio_false_nao_exige_evidencia (test_report_lint.ReportLint) ... ok
+test_declaracao_nao_e_prova (test_report_lint.ReportLint) ... ok
+test_declaracao_nega_mesmo_com_log_valido_na_celula (test_report_lint.ReportLint) ... ok
+test_log_capturado_da_feature_passa (test_report_lint.ReportLint) ... ok
+test_log_de_outra_feature (test_report_lint.ReportLint) ... ok
+test_log_sem_linha_de_comando (test_report_lint.ReportLint) ... ok
+test_log_vazio (test_report_lint.ReportLint) ... ok
+test_nome_fora_do_padrao_e_64 (test_report_lint.ReportLint) ... ok
+test_recibo_fora_de_manual_ux (test_report_lint.ReportLint) ... ok
+test_recibo_humano_em_gate_manual_ux_passa (test_report_lint.ReportLint) ... ok
+test_sem_argumento_e_64 (test_report_lint.ReportLint) ... ok
+test_veredito_do_avaliador_sem_arquivo (test_report_lint.ReportLint) ... ok
+
+----------------------------------------------------------------------
+Ran 75 tests in 12.335s
+
+OK
+PASS: check-versions — 24 skills com versão coerente, comparadas a origin/main.
+RESULTADO: VERDE
+→ siga para o próximo passo.
+[exit=0]

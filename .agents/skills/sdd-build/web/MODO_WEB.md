@@ -6,7 +6,7 @@ compatibility: "Requer um agente com acesso gravável ao projeto; não precisa d
 # SDD Build
 
 Na primeira resposta desta skill, informe a versão numa linha, uma vez só:
-`sdd-build v2.16.0 · nov/2026`
+`sdd-build v2.17.0 · nov/2026`
 
 Executar implementação real. Não tratar Build como geração de um documento isolado.
 
@@ -372,6 +372,7 @@ Depois do gate, executar quando configurado:
 - test suite relevante;
 - build/compile;
 - smoke não coberto pelo gate.
+- complexidade e duplicação do código novo, só aviso ([references/metricas-do-diff.md](references/metricas-do-diff.md)).
 
 Esses checks complementam; não substituem o Verify Gate.
 

@@ -1,0 +1,151 @@
+$ cd tests && /usr/bin/python3 -B -m unittest -v test_f30_metricas.AT019SoODiff
+test_base_remota_local_e_ausente (test_f30_metricas.AT019SoODiff) ... FAIL
+test_config_do_git_de_quem_roda_nao_muda_a_medida (test_f30_metricas.AT019SoODiff) ... FAIL
+test_diff_sem_codigo (test_f30_metricas.AT019SoODiff) ... FAIL
+test_funcao_intocada_fica_fora (test_f30_metricas.AT019SoODiff) ... FAIL
+test_linha_so_apagada_conta_como_alterada (test_f30_metricas.AT019SoODiff) ... FAIL
+test_link_simbolico_fica_fora (test_f30_metricas.AT019SoODiff) ... FAIL
+test_nao_commitado_e_fora_do_indice_entram (test_f30_metricas.AT019SoODiff) ... FAIL
+test_nenhuma_funcao_do_diff (test_f30_metricas.AT019SoODiff) ... FAIL
+test_par_com_o_lado_do_diff_em_segundo (test_f30_metricas.AT019SoODiff) ... FAIL
+test_par_em_arquivo_do_diff_mas_fora_das_linhas (test_f30_metricas.AT019SoODiff) ... FAIL
+test_renomear_sem_mudar_nao_e_codigo_novo (test_f30_metricas.AT019SoODiff) ... FAIL
+test_so_linguagem_fora_da_complexidade (test_f30_metricas.AT019SoODiff) ... FAIL
+
+======================================================================
+FAIL: test_base_remota_local_e_ausente (test_f30_metricas.AT019SoODiff)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/robertoduarte/rdd-worktrees/s3-open-sdd-unclebob/tests/test_f30_metricas.py", line 353, in test_base_remota_local_e_ausente
+    out, _ = self.ok()
+  File "/Users/robertoduarte/rdd-worktrees/s3-open-sdd-unclebob/tests/test_f30_metricas.py", line 116, in ok
+    self.assertEqual(rc, 0, out + err)
+AssertionError: 127 != 0 : /bin/bash: /Users/robertoduarte/rdd-worktrees/s3-open-sdd-unclebob/sdd/bin/metricas-diff.sh: No such file or directory
+
+
+======================================================================
+FAIL: test_config_do_git_de_quem_roda_nao_muda_a_medida (test_f30_metricas.AT019SoODiff)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/robertoduarte/rdd-worktrees/s3-open-sdd-unclebob/tests/test_f30_metricas.py", line 367, in test_config_do_git_de_quem_roda_nao_muda_a_medida
+    out, _ = self.ok()
+  File "/Users/robertoduarte/rdd-worktrees/s3-open-sdd-unclebob/tests/test_f30_metricas.py", line 116, in ok
+    self.assertEqual(rc, 0, out + err)
+AssertionError: 127 != 0 : /bin/bash: /Users/robertoduarte/rdd-worktrees/s3-open-sdd-unclebob/sdd/bin/metricas-diff.sh: No such file or directory
+
+
+======================================================================
+FAIL: test_diff_sem_codigo (test_f30_metricas.AT019SoODiff)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/robertoduarte/rdd-worktrees/s3-open-sdd-unclebob/tests/test_f30_metricas.py", line 308, in test_diff_sem_codigo
+    out, err = self.ok()
+  File "/Users/robertoduarte/rdd-worktrees/s3-open-sdd-unclebob/tests/test_f30_metricas.py", line 116, in ok
+    self.assertEqual(rc, 0, out + err)
+AssertionError: 127 != 0 : /bin/bash: /Users/robertoduarte/rdd-worktrees/s3-open-sdd-unclebob/sdd/bin/metricas-diff.sh: No such file or directory
+
+
+======================================================================
+FAIL: test_funcao_intocada_fica_fora (test_f30_metricas.AT019SoODiff)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/robertoduarte/rdd-worktrees/s3-open-sdd-unclebob/tests/test_f30_metricas.py", line 263, in test_funcao_intocada_fica_fora
+    out, _ = self.ok()
+  File "/Users/robertoduarte/rdd-worktrees/s3-open-sdd-unclebob/tests/test_f30_metricas.py", line 116, in ok
+    self.assertEqual(rc, 0, out + err)
+AssertionError: 127 != 0 : /bin/bash: /Users/robertoduarte/rdd-worktrees/s3-open-sdd-unclebob/sdd/bin/metricas-diff.sh: No such file or directory
+
+
+======================================================================
+FAIL: test_linha_so_apagada_conta_como_alterada (test_f30_metricas.AT019SoODiff)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/robertoduarte/rdd-worktrees/s3-open-sdd-unclebob/tests/test_f30_metricas.py", line 291, in test_linha_so_apagada_conta_como_alterada
+    out, _ = self.ok()
+  File "/Users/robertoduarte/rdd-worktrees/s3-open-sdd-unclebob/tests/test_f30_metricas.py", line 116, in ok
+    self.assertEqual(rc, 0, out + err)
+AssertionError: 127 != 0 : /bin/bash: /Users/robertoduarte/rdd-worktrees/s3-open-sdd-unclebob/sdd/bin/metricas-diff.sh: No such file or directory
+
+
+======================================================================
+FAIL: test_link_simbolico_fica_fora (test_f30_metricas.AT019SoODiff)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/robertoduarte/rdd-worktrees/s3-open-sdd-unclebob/tests/test_f30_metricas.py", line 346, in test_link_simbolico_fica_fora
+    out, _ = self.ok()
+  File "/Users/robertoduarte/rdd-worktrees/s3-open-sdd-unclebob/tests/test_f30_metricas.py", line 116, in ok
+    self.assertEqual(rc, 0, out + err)
+AssertionError: 127 != 0 : /bin/bash: /Users/robertoduarte/rdd-worktrees/s3-open-sdd-unclebob/sdd/bin/metricas-diff.sh: No such file or directory
+
+
+======================================================================
+FAIL: test_nao_commitado_e_fora_do_indice_entram (test_f30_metricas.AT019SoODiff)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/robertoduarte/rdd-worktrees/s3-open-sdd-unclebob/tests/test_f30_metricas.py", line 282, in test_nao_commitado_e_fora_do_indice_entram
+    out, _ = self.ok()
+  File "/Users/robertoduarte/rdd-worktrees/s3-open-sdd-unclebob/tests/test_f30_metricas.py", line 116, in ok
+    self.assertEqual(rc, 0, out + err)
+AssertionError: 127 != 0 : /bin/bash: /Users/robertoduarte/rdd-worktrees/s3-open-sdd-unclebob/sdd/bin/metricas-diff.sh: No such file or directory
+
+
+======================================================================
+FAIL: test_nenhuma_funcao_do_diff (test_f30_metricas.AT019SoODiff)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/robertoduarte/rdd-worktrees/s3-open-sdd-unclebob/tests/test_f30_metricas.py", line 335, in test_nenhuma_funcao_do_diff
+    out, _ = self.ok()
+  File "/Users/robertoduarte/rdd-worktrees/s3-open-sdd-unclebob/tests/test_f30_metricas.py", line 116, in ok
+    self.assertEqual(rc, 0, out + err)
+AssertionError: 127 != 0 : /bin/bash: /Users/robertoduarte/rdd-worktrees/s3-open-sdd-unclebob/sdd/bin/metricas-diff.sh: No such file or directory
+
+
+======================================================================
+FAIL: test_par_com_o_lado_do_diff_em_segundo (test_f30_metricas.AT019SoODiff)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/robertoduarte/rdd-worktrees/s3-open-sdd-unclebob/tests/test_f30_metricas.py", line 327, in test_par_com_o_lado_do_diff_em_segundo
+    out, _ = self.ok()
+  File "/Users/robertoduarte/rdd-worktrees/s3-open-sdd-unclebob/tests/test_f30_metricas.py", line 116, in ok
+    self.assertEqual(rc, 0, out + err)
+AssertionError: 127 != 0 : /bin/bash: /Users/robertoduarte/rdd-worktrees/s3-open-sdd-unclebob/sdd/bin/metricas-diff.sh: No such file or directory
+
+
+======================================================================
+FAIL: test_par_em_arquivo_do_diff_mas_fora_das_linhas (test_f30_metricas.AT019SoODiff)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/robertoduarte/rdd-worktrees/s3-open-sdd-unclebob/tests/test_f30_metricas.py", line 273, in test_par_em_arquivo_do_diff_mas_fora_das_linhas
+    out, _ = self.ok()
+  File "/Users/robertoduarte/rdd-worktrees/s3-open-sdd-unclebob/tests/test_f30_metricas.py", line 116, in ok
+    self.assertEqual(rc, 0, out + err)
+AssertionError: 127 != 0 : /bin/bash: /Users/robertoduarte/rdd-worktrees/s3-open-sdd-unclebob/sdd/bin/metricas-diff.sh: No such file or directory
+
+
+======================================================================
+FAIL: test_renomear_sem_mudar_nao_e_codigo_novo (test_f30_metricas.AT019SoODiff)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/robertoduarte/rdd-worktrees/s3-open-sdd-unclebob/tests/test_f30_metricas.py", line 299, in test_renomear_sem_mudar_nao_e_codigo_novo
+    out, _ = self.ok()
+  File "/Users/robertoduarte/rdd-worktrees/s3-open-sdd-unclebob/tests/test_f30_metricas.py", line 116, in ok
+    self.assertEqual(rc, 0, out + err)
+AssertionError: 127 != 0 : /bin/bash: /Users/robertoduarte/rdd-worktrees/s3-open-sdd-unclebob/sdd/bin/metricas-diff.sh: No such file or directory
+
+
+======================================================================
+FAIL: test_so_linguagem_fora_da_complexidade (test_f30_metricas.AT019SoODiff)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/robertoduarte/rdd-worktrees/s3-open-sdd-unclebob/tests/test_f30_metricas.py", line 316, in test_so_linguagem_fora_da_complexidade
+    out, _ = self.ok()
+  File "/Users/robertoduarte/rdd-worktrees/s3-open-sdd-unclebob/tests/test_f30_metricas.py", line 116, in ok
+    self.assertEqual(rc, 0, out + err)
+AssertionError: 127 != 0 : /bin/bash: /Users/robertoduarte/rdd-worktrees/s3-open-sdd-unclebob/sdd/bin/metricas-diff.sh: No such file or directory
+
+
+----------------------------------------------------------------------
+Ran 12 tests in 1.627s
+
+FAILED (failures=12)
+[exit=1]

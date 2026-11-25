@@ -171,6 +171,21 @@ lint: slot vazio
 
 ---
 
+## Qualidade (avisos)
+
+> A saída de `bash sdd/bin/metricas-diff.sh`, colada inteira: complexidade e duplicação só do código novo. Só avisa.
+> Ferramenta ausente é `não medido: <ferramenta> ausente`, com o comando de instalar.
+
+### Complexidade
+
+- {avisos · nenhum aviso (N funções medidas no diff) · não medido: <causa>}
+
+### Duplicação
+
+- {avisos · nenhum aviso (N arquivos do diff lidos) · não medido: <causa>}
+
+---
+
 ## Advisor Ledger (condicional — só se houve review de 2º vendor)
 
 > Contrato: `fragments/ADVISOR_CONSULT.md`. Toda nota recebe **um dos três vereditos**, por

@@ -21,6 +21,7 @@
 .agents/skills/sdd-build/web/references/disciplina-de-teste.md
 .agents/skills/sdd-build/web/references/execution-modes.md
 .agents/skills/sdd-build/web/references/llm-prompt-gate.md
+.agents/skills/sdd-build/web/references/metricas-do-diff.md
 .agents/skills/sdd-build/web/references/retry-and-advisor.md
 .agents/skills/sdd-build/web/references/verify-gate.md
 .agents/skills/sdd-checar-ambiente/SKILL.md
@@ -357,6 +358,7 @@ sdd/bin/kb-dominios.py
 sdd/bin/ledger-revisao-lint.sh
 sdd/bin/lib/python.sh
 sdd/bin/marca-fase.sh
+sdd/bin/metricas-diff.sh
 sdd/bin/papel-medir.sh
 sdd/bin/papel-serie.sh
 sdd/bin/patterns-lint.sh
@@ -733,6 +735,8 @@ tests/test_f30_agents_qualidade.py
 tests/test_f30_checar_linter.py
 tests/test_f30_report_lint.py
 tests/test_f30_sabotagem.py
+tests/test_f30_metricas.py
+tests/test_f30_textos_s3.py
 tests/test_f30_starter.py
 tests/test_f30_textos.py
 tests/test_f30_textos_s2.py

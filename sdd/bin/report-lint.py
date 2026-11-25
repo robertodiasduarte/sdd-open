@@ -32,6 +32,9 @@ Vermelho antes do verde (F30 S2): numa tabela de critérios com a coluna `Antes`
 evidência terminando em `[exit=n]`, n fora de 0, 126 e 127; `The system shall continue to` exige o antes `[exit=0]`;
 gate de outro kind (inclusive `manual-ux`) aceita `N.A. (<motivo>)`. Tabela sem a coluna (relatório anterior): aviso.
 
+Métricas do diff (F30 S3): com o mapa `qualidade:` no sdd/config.yaml, a seção `## Qualidade (avisos)` tem de existir, com
+texto (a saída do metricas-diff.sh). Sem o mapa, a falta é aviso. O que a seção diz nunca reprova.
+
 Só stdlib. Uso:
     python3 sdd/bin/report-lint.py sdd/reports/BUILD_REPORT_{FEATURE}.md     # exit 0 ok · 1 violações · 64 uso
     python3 sdd/bin/report-lint.py --stdin sdd/reports/BUILD_REPORT_{FEATURE}.md < conteudo.md
@@ -101,6 +104,7 @@ DECLARACAO = "declaração"
 MIGRATION = "migration"
 LINT = "lint"
 ANTES = "vermelho antes"
+QUALIDADE = "qualidade"
 # F30: com o slot cheio, o build guarda a última execução do comando sobre os arquivos da tarefa neste log.
 LOGS_LINT = (("lint_cmd", "LINT.log"), ("typecheck_cmd", "TIPOS.log"))
 SLOT_VAZIO_RE = re.compile(r"^[ \t>*_|-]*`?lint: slot vazio`?", re.MULTILINE)
@@ -110,6 +114,8 @@ CONTINUA_RE = re.compile(r"^(?:the system shall continue to\b|non-regression\b|n
 NA_RE = re.compile(r"^\s*N\.?A\.?(?:\s|\(|$)", re.IGNORECASE)
 SEM_COLUNA_ANTES = ("a tabela de critérios não tem a coluna `Antes` (relatório anterior à v2.27.0): o vermelho antes do "
                     "verde não foi conferido")
+SECAO_QUALIDADE_RE = re.compile(r"^## Qualidade \(avisos\)[ \t]*$\n(.*?)(?=^## |\Z)", re.MULTILINE | re.DOTALL)
+MAPA_QUALIDADE_RE = re.compile(r"^qualidade:[ \t]*(?:#.*)?$", re.MULTILINE)
 IGNORADO_MSG = ("existe, mas o git o IGNORA (`git check-ignore -v` mostra a regra): não vai para o commit — "
                 "remova a regra ou use `git add -f`")
 
@@ -563,6 +569,31 @@ def check_lint(content, root, feature, warnings):
     return violations
 
 
+def tem_secao_qualidade(content):
+    """A seção `## Qualidade (avisos)` fora de cerca, com algum texto. O que ela diz não é lido: métrica só avisa."""
+    m = SECAO_QUALIDADE_RE.search(strip_fences(content))
+    return bool(m and m.group(1).strip())
+
+
+def config_tem_qualidade(root):
+    try:
+        with open(os.path.join(root, "sdd", "config.yaml"), encoding="utf-8", errors="replace") as f:
+            return bool(MAPA_QUALIDADE_RE.search(f.read()))
+    except OSError:
+        return False
+
+
+def check_qualidade(content, root, warnings):
+    """F30 S3: com o mapa `qualidade:` no config, a seção de avisos tem de existir; sem ele (projeto anterior), aviso."""
+    if tem_secao_qualidade(content):
+        return []
+    falta = "o relatório não tem a seção `## Qualidade (avisos)` preenchida"
+    if config_tem_qualidade(root):
+        return [(QUALIDADE, falta)]
+    warnings.append(falta + " (métricas do código novo, desde a v2.28.0): rode sdd/bin/metricas-diff.sh e cole a saída")
+    return []
+
+
 def _sem_marcacao(celula):
     return re.sub(r"[*`]", "", celula).strip()
 
@@ -712,6 +743,7 @@ def check(content, root, report_dir, feature):
     violations += existencia_avaliacao(content, root, feature, warnings)
     violations += [(MIGRATION, v) for v in check_migrations(content, root, report_dir, feature)]
     violations += check_lint(content, root, feature, warnings)
+    violations += check_qualidade(content, root, warnings)
     violations += check_antes(com_antes, root, report_dir, feature, warnings)
     if sem_antes:
         warnings.append(SEM_COLUNA_ANTES)
@@ -735,6 +767,8 @@ def conserto(classe, feature):
     if classe == ANTES:
         return (f"rode o comando do AT antes do código e grave `evidence/{feature}/AT-nnn.antes.log` (vermelho; `shall "
                 "continue to`: verde), citado na coluna `Antes`; gate fora de `test`/`cmd`: `N.A. (<motivo>)`.")
+    if classe == QUALIDADE:
+        return "rode `bash sdd/bin/metricas-diff.sh` e cole a saída no relatório (a seção avisa; o que ela diz não reprova)."
     return (f"produza `evidence/{feature}/AT-nnn.log` (1ª linha `$ cmd`, output verbatim), cite "
             f"`AVALIACAO_{feature}_<ts>.md`, ou `recibo: nome YYYY-MM-DD` (só gate manual-ux) — ou mantenha `false`.")
 

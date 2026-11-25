@@ -5,7 +5,7 @@ compatibility: Requer bash >= 3.2, git >= 2.20 e python3 (report-lint.py). Roda 
 license: MIT
 metadata:
   author: Roberto Dias Duarte
-  version: "2.16.0"
+  version: "2.17.0"
   updated: "2026-11"
   source: "https://github.com/robertodiasduarte/sdd-open/releases/latest"
   fase: "3"
@@ -14,7 +14,7 @@ metadata:
 # sdd-build — Fase 3
 
 Na primeira resposta desta skill, informe a versão numa linha, uma vez só, antes do Status:
-`sdd-build v2.16.0 · nov/2026`
+`sdd-build v2.17.0 · nov/2026`
 
 **Projeto sem `sdd/bin/` (sem o `init`) ou sem acesso aos arquivos (claude.ai, ChatGPT)?** Siga `web/MODO_WEB.md`
 desta skill; os caminhos que ele cita (`references/`, `assets/`) são os de dentro de `web/`.
@@ -247,6 +247,8 @@ escada; 3 ⇒ a declaração não casa (trecho que não aparece 1 vez, comando q
 **5b. Checks do projeto:** `{{TEST_CMD}}` via `bash sdd/bin/test-baseline.sh` (só falha nova
 aborta; aceitar uma falha como conhecida, com `--aceitar`, é decisão do usuário), `{{TYPECHECK_CMD}}`,
 `{{LINT_CMD}}` do config, quando preenchidos. Slot vazio = pular **e dizer que pulou**.
+Depois, as métricas do código novo: `bash sdd/bin/metricas-diff.sh` imprime a seção `## Qualidade (avisos)`; cole-a no
+relatório. Ela só avisa, e ferramenta ausente é "não medido" (`web/references/metricas-do-diff.md`).
 
 **5c. Review adversarial pós-build.** A `sdd-release` exige o review externo desta versão do código
 (ou uma dispensa com motivo): rodá-lo aqui, enquanto o contexto está fresco, sai mais barato do que na
@@ -303,7 +305,7 @@ Release não sai com ela). Flag `LLM Prompts: true` ⇒ a seção do relatório 
 python3 sdd/bin/report-lint.py sdd/reports/BUILD_REPORT_{FEATURE}.md   # exit 0 obrigatório
 ```
 
-Seções obrigatórias: Seleção de modo · Contrato de aceite · Landmines lidas no build ·
+Seções obrigatórias: Qualidade (avisos) · Seleção de modo · Contrato de aceite · Landmines lidas no build ·
 Candidatos ao playbook (bloco literal `<<<CANDIDATO_PLAYBOOK … >>>` com `evidencia:`, ou
 "nenhum candidato") · Verify Gate (exit + recibo se manual-ux) · Veredito do avaliador ·
 Advisor Ledger (se houve review) · Drift detectado (mesmo que "nenhum") · Migrations aplicadas

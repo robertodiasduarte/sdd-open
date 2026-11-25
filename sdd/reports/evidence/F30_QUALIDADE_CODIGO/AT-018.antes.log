@@ -1,0 +1,390 @@
+$ cd tests && /usr/bin/python3 -B -m unittest -v test_f30_metricas.AT018NaoMedido
+test_as_duas_ausentes (test_f30_metricas.AT018NaoMedido) ... FAIL
+test_ferramenta_que_falha (test_f30_metricas.AT018NaoMedido) ... FAIL
+test_jscpd_que_nao_grava_relatorio (test_f30_metricas.AT018NaoMedido) ... FAIL
+test_nunca_usa_npx (test_f30_metricas.AT018NaoMedido) ... ERROR
+test_saida_ilegivel (test_f30_metricas.AT018NaoMedido) ... test_so_o_jscpd_ausente_mede_a_complexidade (test_f30_metricas.AT018NaoMedido) ... FAIL
+test_so_o_lizard_ausente_mede_a_duplicacao (test_f30_metricas.AT018NaoMedido) ... FAIL
+
+======================================================================
+ERROR: test_nunca_usa_npx (test_f30_metricas.AT018NaoMedido)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/robertoduarte/rdd-worktrees/s3-open-sdd-unclebob/tests/test_f30_metricas.py", line 251, in test_nunca_usa_npx
+    fonte = SCRIPT.read_text(encoding="utf-8")
+  File "/Library/Developer/CommandLineTools/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/pathlib.py", line 1256, in read_text
+    with self.open(mode='r', encoding=encoding, errors=errors) as f:
+  File "/Library/Developer/CommandLineTools/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/pathlib.py", line 1242, in open
+    return io.open(self, mode, buffering, encoding, errors, newline,
+  File "/Library/Developer/CommandLineTools/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/pathlib.py", line 1110, in _opener
+    return self._accessor.open(self, flags, mode)
+FileNotFoundError: [Errno 2] No such file or directory: '/Users/robertoduarte/rdd-worktrees/s3-open-sdd-unclebob/sdd/bin/metricas-diff.sh'
+
+======================================================================
+FAIL: test_as_duas_ausentes (test_f30_metricas.AT018NaoMedido)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/robertoduarte/rdd-worktrees/s3-open-sdd-unclebob/tests/test_f30_metricas.py", line 198, in test_as_duas_ausentes
+    out, err = self.ok()
+  File "/Users/robertoduarte/rdd-worktrees/s3-open-sdd-unclebob/tests/test_f30_metricas.py", line 116, in ok
+    self.assertEqual(rc, 0, out + err)
+AssertionError: 127 != 0 : /bin/bash: /Users/robertoduarte/rdd-worktrees/s3-open-sdd-unclebob/sdd/bin/metricas-diff.sh: No such file or directory
+
+
+======================================================================
+FAIL: test_ferramenta_que_falha (test_f30_metricas.AT018NaoMedido)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/robertoduarte/rdd-worktrees/s3-open-sdd-unclebob/tests/test_f30_metricas.py", line 223, in test_ferramenta_que_falha
+    out, _ = self.ok()
+  File "/Users/robertoduarte/rdd-worktrees/s3-open-sdd-unclebob/tests/test_f30_metricas.py", line 116, in ok
+    self.assertEqual(rc, 0, out + err)
+AssertionError: 127 != 0 : /bin/bash: /Users/robertoduarte/rdd-worktrees/s3-open-sdd-unclebob/sdd/bin/metricas-diff.sh: No such file or directory
+
+
+======================================================================
+FAIL: test_jscpd_que_nao_grava_relatorio (test_f30_metricas.AT018NaoMedido)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/robertoduarte/rdd-worktrees/s3-open-sdd-unclebob/tests/test_f30_metricas.py", line 247, in test_jscpd_que_nao_grava_relatorio
+    out, _ = self.ok()
+  File "/Users/robertoduarte/rdd-worktrees/s3-open-sdd-unclebob/tests/test_f30_metricas.py", line 116, in ok
+    self.assertEqual(rc, 0, out + err)
+AssertionError: 127 != 0 : /bin/bash: /Users/robertoduarte/rdd-worktrees/s3-open-sdd-unclebob/sdd/bin/metricas-diff.sh: No such file or directory
+
+
+======================================================================
+FAIL: test_saida_ilegivel (test_f30_metricas.AT018NaoMedido) (csv='', rel='')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/robertoduarte/rdd-worktrees/s3-open-sdd-unclebob/tests/test_f30_metricas.py", line 239, in test_saida_ilegivel
+    out, _ = self.ok()
+  File "/Users/robertoduarte/rdd-worktrees/s3-open-sdd-unclebob/tests/test_f30_metricas.py", line 116, in ok
+    self.assertEqual(rc, 0, out + err)
+AssertionError: 127 != 0 : /bin/bash: /Users/robertoduarte/rdd-worktrees/s3-open-sdd-unclebob/sdd/bin/metricas-diff.sh: No such file or directory
+
+
+======================================================================
+FAIL: test_saida_ilegivel (test_f30_metricas.AT018NaoMedido) (csv='', rel='não é json')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/robertoduarte/rdd-worktrees/s3-open-sdd-unclebob/tests/test_f30_metricas.py", line 239, in test_saida_ilegivel
+    out, _ = self.ok()
+  File "/Users/robertoduarte/rdd-worktrees/s3-open-sdd-unclebob/tests/test_f30_metricas.py", line 116, in ok
+    self.assertEqual(rc, 0, out + err)
+AssertionError: 127 != 0 : /bin/bash: /Users/robertoduarte/rdd-worktrees/s3-open-sdd-unclebob/sdd/bin/metricas-diff.sh: No such file or directory
+
+
+======================================================================
+FAIL: test_saida_ilegivel (test_f30_metricas.AT018NaoMedido) (csv='', rel='[]')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/robertoduarte/rdd-worktrees/s3-open-sdd-unclebob/tests/test_f30_metricas.py", line 239, in test_saida_ilegivel
+    out, _ = self.ok()
+  File "/Users/robertoduarte/rdd-worktrees/s3-open-sdd-unclebob/tests/test_f30_metricas.py", line 116, in ok
+    self.assertEqual(rc, 0, out + err)
+AssertionError: 127 != 0 : /bin/bash: /Users/robertoduarte/rdd-worktrees/s3-open-sdd-unclebob/sdd/bin/metricas-diff.sh: No such file or directory
+
+
+======================================================================
+FAIL: test_saida_ilegivel (test_f30_metricas.AT018NaoMedido) (csv='', rel='{"duplicates": 3}')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/robertoduarte/rdd-worktrees/s3-open-sdd-unclebob/tests/test_f30_metricas.py", line 239, in test_saida_ilegivel
+    out, _ = self.ok()
+  File "/Users/robertoduarte/rdd-worktrees/s3-open-sdd-unclebob/tests/test_f30_metricas.py", line 116, in ok
+    self.assertEqual(rc, 0, out + err)
+AssertionError: 127 != 0 : /bin/bash: /Users/robertoduarte/rdd-worktrees/s3-open-sdd-unclebob/sdd/bin/metricas-diff.sh: No such file or directory
+
+
+======================================================================
+FAIL: test_saida_ilegivel (test_f30_metricas.AT018NaoMedido) (csv='', rel='{"duplicates": [], "statistics": {"total": {"sources": 0, "clones": 0}}}')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/robertoduarte/rdd-worktrees/s3-open-sdd-unclebob/tests/test_f30_metricas.py", line 239, in test_saida_ilegivel
+    out, _ = self.ok()
+  File "/Users/robertoduarte/rdd-worktrees/s3-open-sdd-unclebob/tests/test_f30_metricas.py", line 116, in ok
+    self.assertEqual(rc, 0, out + err)
+AssertionError: 127 != 0 : /bin/bash: /Users/robertoduarte/rdd-worktrees/s3-open-sdd-unclebob/sdd/bin/metricas-diff.sh: No such file or directory
+
+
+======================================================================
+FAIL: test_saida_ilegivel (test_f30_metricas.AT018NaoMedido) (csv='', rel='{"duplicates": []}')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/robertoduarte/rdd-worktrees/s3-open-sdd-unclebob/tests/test_f30_metricas.py", line 239, in test_saida_ilegivel
+    out, _ = self.ok()
+  File "/Users/robertoduarte/rdd-worktrees/s3-open-sdd-unclebob/tests/test_f30_metricas.py", line 116, in ok
+    self.assertEqual(rc, 0, out + err)
+AssertionError: 127 != 0 : /bin/bash: /Users/robertoduarte/rdd-worktrees/s3-open-sdd-unclebob/sdd/bin/metricas-diff.sh: No such file or directory
+
+
+======================================================================
+FAIL: test_saida_ilegivel (test_f30_metricas.AT018NaoMedido) (csv='', rel='{"duplicates": [{"firstFile": 1}], "statistics": {"total": {"sources": 3, "clones": 1}}}')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/robertoduarte/rdd-worktrees/s3-open-sdd-unclebob/tests/test_f30_metricas.py", line 239, in test_saida_ilegivel
+    out, _ = self.ok()
+  File "/Users/robertoduarte/rdd-worktrees/s3-open-sdd-unclebob/tests/test_f30_metricas.py", line 116, in ok
+    self.assertEqual(rc, 0, out + err)
+AssertionError: 127 != 0 : /bin/bash: /Users/robertoduarte/rdd-worktrees/s3-open-sdd-unclebob/sdd/bin/metricas-diff.sh: No such file or directory
+
+
+======================================================================
+FAIL: test_saida_ilegivel (test_f30_metricas.AT018NaoMedido) (csv='isto não é csv\n', rel='')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/robertoduarte/rdd-worktrees/s3-open-sdd-unclebob/tests/test_f30_metricas.py", line 239, in test_saida_ilegivel
+    out, _ = self.ok()
+  File "/Users/robertoduarte/rdd-worktrees/s3-open-sdd-unclebob/tests/test_f30_metricas.py", line 116, in ok
+    self.assertEqual(rc, 0, out + err)
+AssertionError: 127 != 0 : /bin/bash: /Users/robertoduarte/rdd-worktrees/s3-open-sdd-unclebob/sdd/bin/metricas-diff.sh: No such file or directory
+
+
+======================================================================
+FAIL: test_saida_ilegivel (test_f30_metricas.AT018NaoMedido) (csv='isto não é csv\n', rel='não é json')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/robertoduarte/rdd-worktrees/s3-open-sdd-unclebob/tests/test_f30_metricas.py", line 239, in test_saida_ilegivel
+    out, _ = self.ok()
+  File "/Users/robertoduarte/rdd-worktrees/s3-open-sdd-unclebob/tests/test_f30_metricas.py", line 116, in ok
+    self.assertEqual(rc, 0, out + err)
+AssertionError: 127 != 0 : /bin/bash: /Users/robertoduarte/rdd-worktrees/s3-open-sdd-unclebob/sdd/bin/metricas-diff.sh: No such file or directory
+
+
+======================================================================
+FAIL: test_saida_ilegivel (test_f30_metricas.AT018NaoMedido) (csv='isto não é csv\n', rel='[]')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/robertoduarte/rdd-worktrees/s3-open-sdd-unclebob/tests/test_f30_metricas.py", line 239, in test_saida_ilegivel
+    out, _ = self.ok()
+  File "/Users/robertoduarte/rdd-worktrees/s3-open-sdd-unclebob/tests/test_f30_metricas.py", line 116, in ok
+    self.assertEqual(rc, 0, out + err)
+AssertionError: 127 != 0 : /bin/bash: /Users/robertoduarte/rdd-worktrees/s3-open-sdd-unclebob/sdd/bin/metricas-diff.sh: No such file or directory
+
+
+======================================================================
+FAIL: test_saida_ilegivel (test_f30_metricas.AT018NaoMedido) (csv='isto não é csv\n', rel='{"duplicates": 3}')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/robertoduarte/rdd-worktrees/s3-open-sdd-unclebob/tests/test_f30_metricas.py", line 239, in test_saida_ilegivel
+    out, _ = self.ok()
+  File "/Users/robertoduarte/rdd-worktrees/s3-open-sdd-unclebob/tests/test_f30_metricas.py", line 116, in ok
+    self.assertEqual(rc, 0, out + err)
+AssertionError: 127 != 0 : /bin/bash: /Users/robertoduarte/rdd-worktrees/s3-open-sdd-unclebob/sdd/bin/metricas-diff.sh: No such file or directory
+
+
+======================================================================
+FAIL: test_saida_ilegivel (test_f30_metricas.AT018NaoMedido) (csv='isto não é csv\n', rel='{"duplicates": [], "statistics": {"total": {"sources": 0, "clones": 0}}}')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/robertoduarte/rdd-worktrees/s3-open-sdd-unclebob/tests/test_f30_metricas.py", line 239, in test_saida_ilegivel
+    out, _ = self.ok()
+  File "/Users/robertoduarte/rdd-worktrees/s3-open-sdd-unclebob/tests/test_f30_metricas.py", line 116, in ok
+    self.assertEqual(rc, 0, out + err)
+AssertionError: 127 != 0 : /bin/bash: /Users/robertoduarte/rdd-worktrees/s3-open-sdd-unclebob/sdd/bin/metricas-diff.sh: No such file or directory
+
+
+======================================================================
+FAIL: test_saida_ilegivel (test_f30_metricas.AT018NaoMedido) (csv='isto não é csv\n', rel='{"duplicates": []}')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/robertoduarte/rdd-worktrees/s3-open-sdd-unclebob/tests/test_f30_metricas.py", line 239, in test_saida_ilegivel
+    out, _ = self.ok()
+  File "/Users/robertoduarte/rdd-worktrees/s3-open-sdd-unclebob/tests/test_f30_metricas.py", line 116, in ok
+    self.assertEqual(rc, 0, out + err)
+AssertionError: 127 != 0 : /bin/bash: /Users/robertoduarte/rdd-worktrees/s3-open-sdd-unclebob/sdd/bin/metricas-diff.sh: No such file or directory
+
+
+======================================================================
+FAIL: test_saida_ilegivel (test_f30_metricas.AT018NaoMedido) (csv='isto não é csv\n', rel='{"duplicates": [{"firstFile": 1}], "statistics": {"total": {"sources": 3, "clones": 1}}}')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/robertoduarte/rdd-worktrees/s3-open-sdd-unclebob/tests/test_f30_metricas.py", line 239, in test_saida_ilegivel
+    out, _ = self.ok()
+  File "/Users/robertoduarte/rdd-worktrees/s3-open-sdd-unclebob/tests/test_f30_metricas.py", line 116, in ok
+    self.assertEqual(rc, 0, out + err)
+AssertionError: 127 != 0 : /bin/bash: /Users/robertoduarte/rdd-worktrees/s3-open-sdd-unclebob/sdd/bin/metricas-diff.sh: No such file or directory
+
+
+======================================================================
+FAIL: test_saida_ilegivel (test_f30_metricas.AT018NaoMedido) (csv='1,x,9,1,1,"a","./src/nova.py","f","f",1,1\n', rel='')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/robertoduarte/rdd-worktrees/s3-open-sdd-unclebob/tests/test_f30_metricas.py", line 239, in test_saida_ilegivel
+    out, _ = self.ok()
+  File "/Users/robertoduarte/rdd-worktrees/s3-open-sdd-unclebob/tests/test_f30_metricas.py", line 116, in ok
+    self.assertEqual(rc, 0, out + err)
+AssertionError: 127 != 0 : /bin/bash: /Users/robertoduarte/rdd-worktrees/s3-open-sdd-unclebob/sdd/bin/metricas-diff.sh: No such file or directory
+
+
+======================================================================
+FAIL: test_saida_ilegivel (test_f30_metricas.AT018NaoMedido) (csv='1,x,9,1,1,"a","./src/nova.py","f","f",1,1\n', rel='não é json')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/robertoduarte/rdd-worktrees/s3-open-sdd-unclebob/tests/test_f30_metricas.py", line 239, in test_saida_ilegivel
+    out, _ = self.ok()
+  File "/Users/robertoduarte/rdd-worktrees/s3-open-sdd-unclebob/tests/test_f30_metricas.py", line 116, in ok
+    self.assertEqual(rc, 0, out + err)
+AssertionError: 127 != 0 : /bin/bash: /Users/robertoduarte/rdd-worktrees/s3-open-sdd-unclebob/sdd/bin/metricas-diff.sh: No such file or directory
+
+
+======================================================================
+FAIL: test_saida_ilegivel (test_f30_metricas.AT018NaoMedido) (csv='1,x,9,1,1,"a","./src/nova.py","f","f",1,1\n', rel='[]')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/robertoduarte/rdd-worktrees/s3-open-sdd-unclebob/tests/test_f30_metricas.py", line 239, in test_saida_ilegivel
+    out, _ = self.ok()
+  File "/Users/robertoduarte/rdd-worktrees/s3-open-sdd-unclebob/tests/test_f30_metricas.py", line 116, in ok
+    self.assertEqual(rc, 0, out + err)
+AssertionError: 127 != 0 : /bin/bash: /Users/robertoduarte/rdd-worktrees/s3-open-sdd-unclebob/sdd/bin/metricas-diff.sh: No such file or directory
+
+
+======================================================================
+FAIL: test_saida_ilegivel (test_f30_metricas.AT018NaoMedido) (csv='1,x,9,1,1,"a","./src/nova.py","f","f",1,1\n', rel='{"duplicates": 3}')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/robertoduarte/rdd-worktrees/s3-open-sdd-unclebob/tests/test_f30_metricas.py", line 239, in test_saida_ilegivel
+    out, _ = self.ok()
+  File "/Users/robertoduarte/rdd-worktrees/s3-open-sdd-unclebob/tests/test_f30_metricas.py", line 116, in ok
+    self.assertEqual(rc, 0, out + err)
+AssertionError: 127 != 0 : /bin/bash: /Users/robertoduarte/rdd-worktrees/s3-open-sdd-unclebob/sdd/bin/metricas-diff.sh: No such file or directory
+
+
+======================================================================
+FAIL: test_saida_ilegivel (test_f30_metricas.AT018NaoMedido) (csv='1,x,9,1,1,"a","./src/nova.py","f","f",1,1\n', rel='{"duplicates": [], "statistics": {"total": {"sources": 0, "clones": 0}}}')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/robertoduarte/rdd-worktrees/s3-open-sdd-unclebob/tests/test_f30_metricas.py", line 239, in test_saida_ilegivel
+    out, _ = self.ok()
+  File "/Users/robertoduarte/rdd-worktrees/s3-open-sdd-unclebob/tests/test_f30_metricas.py", line 116, in ok
+    self.assertEqual(rc, 0, out + err)
+AssertionError: 127 != 0 : /bin/bash: /Users/robertoduarte/rdd-worktrees/s3-open-sdd-unclebob/sdd/bin/metricas-diff.sh: No such file or directory
+
+
+======================================================================
+FAIL: test_saida_ilegivel (test_f30_metricas.AT018NaoMedido) (csv='1,x,9,1,1,"a","./src/nova.py","f","f",1,1\n', rel='{"duplicates": []}')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/robertoduarte/rdd-worktrees/s3-open-sdd-unclebob/tests/test_f30_metricas.py", line 239, in test_saida_ilegivel
+    out, _ = self.ok()
+  File "/Users/robertoduarte/rdd-worktrees/s3-open-sdd-unclebob/tests/test_f30_metricas.py", line 116, in ok
+    self.assertEqual(rc, 0, out + err)
+AssertionError: 127 != 0 : /bin/bash: /Users/robertoduarte/rdd-worktrees/s3-open-sdd-unclebob/sdd/bin/metricas-diff.sh: No such file or directory
+
+
+======================================================================
+FAIL: test_saida_ilegivel (test_f30_metricas.AT018NaoMedido) (csv='1,x,9,1,1,"a","./src/nova.py","f","f",1,1\n', rel='{"duplicates": [{"firstFile": 1}], "statistics": {"total": {"sources": 3, "clones": 1}}}')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/robertoduarte/rdd-worktrees/s3-open-sdd-unclebob/tests/test_f30_metricas.py", line 239, in test_saida_ilegivel
+    out, _ = self.ok()
+  File "/Users/robertoduarte/rdd-worktrees/s3-open-sdd-unclebob/tests/test_f30_metricas.py", line 116, in ok
+    self.assertEqual(rc, 0, out + err)
+AssertionError: 127 != 0 : /bin/bash: /Users/robertoduarte/rdd-worktrees/s3-open-sdd-unclebob/sdd/bin/metricas-diff.sh: No such file or directory
+
+
+======================================================================
+FAIL: test_saida_ilegivel (test_f30_metricas.AT018NaoMedido) (csv='31,15,132,6,31,"grande@1-31@./src/nova.py","./src/nova.py","grande","grande( a , b , c , d , e , f )",1,31\n1,2\n', rel='')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/robertoduarte/rdd-worktrees/s3-open-sdd-unclebob/tests/test_f30_metricas.py", line 239, in test_saida_ilegivel
+    out, _ = self.ok()
+  File "/Users/robertoduarte/rdd-worktrees/s3-open-sdd-unclebob/tests/test_f30_metricas.py", line 116, in ok
+    self.assertEqual(rc, 0, out + err)
+AssertionError: 127 != 0 : /bin/bash: /Users/robertoduarte/rdd-worktrees/s3-open-sdd-unclebob/sdd/bin/metricas-diff.sh: No such file or directory
+
+
+======================================================================
+FAIL: test_saida_ilegivel (test_f30_metricas.AT018NaoMedido) (csv='31,15,132,6,31,"grande@1-31@./src/nova.py","./src/nova.py","grande","grande( a , b , c , d , e , f )",1,31\n1,2\n', rel='não é json')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/robertoduarte/rdd-worktrees/s3-open-sdd-unclebob/tests/test_f30_metricas.py", line 239, in test_saida_ilegivel
+    out, _ = self.ok()
+  File "/Users/robertoduarte/rdd-worktrees/s3-open-sdd-unclebob/tests/test_f30_metricas.py", line 116, in ok
+    self.assertEqual(rc, 0, out + err)
+AssertionError: 127 != 0 : /bin/bash: /Users/robertoduarte/rdd-worktrees/s3-open-sdd-unclebob/sdd/bin/metricas-diff.sh: No such file or directory
+
+
+======================================================================
+FAIL: test_saida_ilegivel (test_f30_metricas.AT018NaoMedido) (csv='31,15,132,6,31,"grande@1-31@./src/nova.py","./src/nova.py","grande","grande( a , b , c , d , e , f )",1,31\n1,2\n', rel='[]')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/robertoduarte/rdd-worktrees/s3-open-sdd-unclebob/tests/test_f30_metricas.py", line 239, in test_saida_ilegivel
+    out, _ = self.ok()
+  File "/Users/robertoduarte/rdd-worktrees/s3-open-sdd-unclebob/tests/test_f30_metricas.py", line 116, in ok
+    self.assertEqual(rc, 0, out + err)
+AssertionError: 127 != 0 : /bin/bash: /Users/robertoduarte/rdd-worktrees/s3-open-sdd-unclebob/sdd/bin/metricas-diff.sh: No such file or directory
+
+
+======================================================================
+FAIL: test_saida_ilegivel (test_f30_metricas.AT018NaoMedido) (csv='31,15,132,6,31,"grande@1-31@./src/nova.py","./src/nova.py","grande","grande( a , b , c , d , e , f )",1,31\n1,2\n', rel='{"duplicates": 3}')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/robertoduarte/rdd-worktrees/s3-open-sdd-unclebob/tests/test_f30_metricas.py", line 239, in test_saida_ilegivel
+    out, _ = self.ok()
+  File "/Users/robertoduarte/rdd-worktrees/s3-open-sdd-unclebob/tests/test_f30_metricas.py", line 116, in ok
+    self.assertEqual(rc, 0, out + err)
+AssertionError: 127 != 0 : /bin/bash: /Users/robertoduarte/rdd-worktrees/s3-open-sdd-unclebob/sdd/bin/metricas-diff.sh: No such file or directory
+
+
+======================================================================
+FAIL: test_saida_ilegivel (test_f30_metricas.AT018NaoMedido) (csv='31,15,132,6,31,"grande@1-31@./src/nova.py","./src/nova.py","grande","grande( a , b , c , d , e , f )",1,31\n1,2\n', rel='{"duplicates": [], "statistics": {"total": {"sources": 0, "clones": 0}}}')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/robertoduarte/rdd-worktrees/s3-open-sdd-unclebob/tests/test_f30_metricas.py", line 239, in test_saida_ilegivel
+    out, _ = self.ok()
+  File "/Users/robertoduarte/rdd-worktrees/s3-open-sdd-unclebob/tests/test_f30_metricas.py", line 116, in ok
+    self.assertEqual(rc, 0, out + err)
+AssertionError: 127 != 0 : /bin/bash: /Users/robertoduarte/rdd-worktrees/s3-open-sdd-unclebob/sdd/bin/metricas-diff.sh: No such file or directory
+
+
+======================================================================
+FAIL: test_saida_ilegivel (test_f30_metricas.AT018NaoMedido) (csv='31,15,132,6,31,"grande@1-31@./src/nova.py","./src/nova.py","grande","grande( a , b , c , d , e , f )",1,31\n1,2\n', rel='{"duplicates": []}')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/robertoduarte/rdd-worktrees/s3-open-sdd-unclebob/tests/test_f30_metricas.py", line 239, in test_saida_ilegivel
+    out, _ = self.ok()
+  File "/Users/robertoduarte/rdd-worktrees/s3-open-sdd-unclebob/tests/test_f30_metricas.py", line 116, in ok
+    self.assertEqual(rc, 0, out + err)
+AssertionError: 127 != 0 : /bin/bash: /Users/robertoduarte/rdd-worktrees/s3-open-sdd-unclebob/sdd/bin/metricas-diff.sh: No such file or directory
+
+
+======================================================================
+FAIL: test_saida_ilegivel (test_f30_metricas.AT018NaoMedido) (csv='31,15,132,6,31,"grande@1-31@./src/nova.py","./src/nova.py","grande","grande( a , b , c , d , e , f )",1,31\n1,2\n', rel='{"duplicates": [{"firstFile": 1}], "statistics": {"total": {"sources": 3, "clones": 1}}}')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/robertoduarte/rdd-worktrees/s3-open-sdd-unclebob/tests/test_f30_metricas.py", line 239, in test_saida_ilegivel
+    out, _ = self.ok()
+  File "/Users/robertoduarte/rdd-worktrees/s3-open-sdd-unclebob/tests/test_f30_metricas.py", line 116, in ok
+    self.assertEqual(rc, 0, out + err)
+AssertionError: 127 != 0 : /bin/bash: /Users/robertoduarte/rdd-worktrees/s3-open-sdd-unclebob/sdd/bin/metricas-diff.sh: No such file or directory
+
+
+======================================================================
+FAIL: test_so_o_jscpd_ausente_mede_a_complexidade (test_f30_metricas.AT018NaoMedido)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/robertoduarte/rdd-worktrees/s3-open-sdd-unclebob/tests/test_f30_metricas.py", line 208, in test_so_o_jscpd_ausente_mede_a_complexidade
+    out, _ = self.ok()
+  File "/Users/robertoduarte/rdd-worktrees/s3-open-sdd-unclebob/tests/test_f30_metricas.py", line 116, in ok
+    self.assertEqual(rc, 0, out + err)
+AssertionError: 127 != 0 : /bin/bash: /Users/robertoduarte/rdd-worktrees/s3-open-sdd-unclebob/sdd/bin/metricas-diff.sh: No such file or directory
+
+
+======================================================================
+FAIL: test_so_o_lizard_ausente_mede_a_duplicacao (test_f30_metricas.AT018NaoMedido)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/robertoduarte/rdd-worktrees/s3-open-sdd-unclebob/tests/test_f30_metricas.py", line 215, in test_so_o_lizard_ausente_mede_a_duplicacao
+    out, _ = self.ok()
+  File "/Users/robertoduarte/rdd-worktrees/s3-open-sdd-unclebob/tests/test_f30_metricas.py", line 116, in ok
+    self.assertEqual(rc, 0, out + err)
+AssertionError: 127 != 0 : /bin/bash: /Users/robertoduarte/rdd-worktrees/s3-open-sdd-unclebob/sdd/bin/metricas-diff.sh: No such file or directory
+
+
+----------------------------------------------------------------------
+Ran 7 tests in 3.000s
+
+FAILED (failures=33, errors=1)
+[exit=1]

@@ -1,0 +1,436 @@
+$ cd tests && /usr/bin/python3 -B -m unittest -v test_f30_metricas.AT020Limites
+test_ajuda (test_f30_metricas.AT020Limites) ... FAIL
+test_invalido_64 (test_f30_metricas.AT020Limites) ... test_limites_do_config (test_f30_metricas.AT020Limites) ... FAIL
+test_uso_errado_64 (test_f30_metricas.AT020Limites) ... test_vazio_e_o_padrao (test_f30_metricas.AT020Limites) ... FAIL
+
+======================================================================
+FAIL: test_ajuda (test_f30_metricas.AT020Limites)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/robertoduarte/rdd-worktrees/s3-open-sdd-unclebob/tests/test_f30_metricas.py", line 416, in test_ajuda
+    self.assertEqual(rc, 0)
+AssertionError: 127 != 0
+
+======================================================================
+FAIL: test_invalido_64 (test_f30_metricas.AT020Limites) (chave='max_complexidade', valor='0')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/robertoduarte/rdd-worktrees/s3-open-sdd-unclebob/tests/test_f30_metricas.py", line 401, in test_invalido_64
+    self.assertEqual((rc, out), (64, ""))
+AssertionError: Tuples differ: (127, '') != (64, '')
+
+First differing element 0:
+127
+64
+
+- (127, '')
++ (64, '')
+
+======================================================================
+FAIL: test_invalido_64 (test_f30_metricas.AT020Limites) (chave='max_complexidade', valor='-1')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/robertoduarte/rdd-worktrees/s3-open-sdd-unclebob/tests/test_f30_metricas.py", line 401, in test_invalido_64
+    self.assertEqual((rc, out), (64, ""))
+AssertionError: Tuples differ: (127, '') != (64, '')
+
+First differing element 0:
+127
+64
+
+- (127, '')
++ (64, '')
+
+======================================================================
+FAIL: test_invalido_64 (test_f30_metricas.AT020Limites) (chave='max_complexidade', valor='dez')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/robertoduarte/rdd-worktrees/s3-open-sdd-unclebob/tests/test_f30_metricas.py", line 401, in test_invalido_64
+    self.assertEqual((rc, out), (64, ""))
+AssertionError: Tuples differ: (127, '') != (64, '')
+
+First differing element 0:
+127
+64
+
+- (127, '')
++ (64, '')
+
+======================================================================
+FAIL: test_invalido_64 (test_f30_metricas.AT020Limites) (chave='max_complexidade', valor='1.5')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/robertoduarte/rdd-worktrees/s3-open-sdd-unclebob/tests/test_f30_metricas.py", line 401, in test_invalido_64
+    self.assertEqual((rc, out), (64, ""))
+AssertionError: Tuples differ: (127, '') != (64, '')
+
+First differing element 0:
+127
+64
+
+- (127, '')
++ (64, '')
+
+======================================================================
+FAIL: test_invalido_64 (test_f30_metricas.AT020Limites) (chave='max_complexidade', valor='²')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/robertoduarte/rdd-worktrees/s3-open-sdd-unclebob/tests/test_f30_metricas.py", line 401, in test_invalido_64
+    self.assertEqual((rc, out), (64, ""))
+AssertionError: Tuples differ: (127, '') != (64, '')
+
+First differing element 0:
+127
+64
+
+- (127, '')
++ (64, '')
+
+======================================================================
+FAIL: test_invalido_64 (test_f30_metricas.AT020Limites) (chave='max_linhas', valor='0')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/robertoduarte/rdd-worktrees/s3-open-sdd-unclebob/tests/test_f30_metricas.py", line 401, in test_invalido_64
+    self.assertEqual((rc, out), (64, ""))
+AssertionError: Tuples differ: (127, '') != (64, '')
+
+First differing element 0:
+127
+64
+
+- (127, '')
++ (64, '')
+
+======================================================================
+FAIL: test_invalido_64 (test_f30_metricas.AT020Limites) (chave='max_linhas', valor='-1')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/robertoduarte/rdd-worktrees/s3-open-sdd-unclebob/tests/test_f30_metricas.py", line 401, in test_invalido_64
+    self.assertEqual((rc, out), (64, ""))
+AssertionError: Tuples differ: (127, '') != (64, '')
+
+First differing element 0:
+127
+64
+
+- (127, '')
++ (64, '')
+
+======================================================================
+FAIL: test_invalido_64 (test_f30_metricas.AT020Limites) (chave='max_linhas', valor='dez')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/robertoduarte/rdd-worktrees/s3-open-sdd-unclebob/tests/test_f30_metricas.py", line 401, in test_invalido_64
+    self.assertEqual((rc, out), (64, ""))
+AssertionError: Tuples differ: (127, '') != (64, '')
+
+First differing element 0:
+127
+64
+
+- (127, '')
++ (64, '')
+
+======================================================================
+FAIL: test_invalido_64 (test_f30_metricas.AT020Limites) (chave='max_linhas', valor='1.5')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/robertoduarte/rdd-worktrees/s3-open-sdd-unclebob/tests/test_f30_metricas.py", line 401, in test_invalido_64
+    self.assertEqual((rc, out), (64, ""))
+AssertionError: Tuples differ: (127, '') != (64, '')
+
+First differing element 0:
+127
+64
+
+- (127, '')
++ (64, '')
+
+======================================================================
+FAIL: test_invalido_64 (test_f30_metricas.AT020Limites) (chave='max_linhas', valor='²')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/robertoduarte/rdd-worktrees/s3-open-sdd-unclebob/tests/test_f30_metricas.py", line 401, in test_invalido_64
+    self.assertEqual((rc, out), (64, ""))
+AssertionError: Tuples differ: (127, '') != (64, '')
+
+First differing element 0:
+127
+64
+
+- (127, '')
++ (64, '')
+
+======================================================================
+FAIL: test_invalido_64 (test_f30_metricas.AT020Limites) (chave='max_parametros', valor='0')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/robertoduarte/rdd-worktrees/s3-open-sdd-unclebob/tests/test_f30_metricas.py", line 401, in test_invalido_64
+    self.assertEqual((rc, out), (64, ""))
+AssertionError: Tuples differ: (127, '') != (64, '')
+
+First differing element 0:
+127
+64
+
+- (127, '')
++ (64, '')
+
+======================================================================
+FAIL: test_invalido_64 (test_f30_metricas.AT020Limites) (chave='max_parametros', valor='-1')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/robertoduarte/rdd-worktrees/s3-open-sdd-unclebob/tests/test_f30_metricas.py", line 401, in test_invalido_64
+    self.assertEqual((rc, out), (64, ""))
+AssertionError: Tuples differ: (127, '') != (64, '')
+
+First differing element 0:
+127
+64
+
+- (127, '')
++ (64, '')
+
+======================================================================
+FAIL: test_invalido_64 (test_f30_metricas.AT020Limites) (chave='max_parametros', valor='dez')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/robertoduarte/rdd-worktrees/s3-open-sdd-unclebob/tests/test_f30_metricas.py", line 401, in test_invalido_64
+    self.assertEqual((rc, out), (64, ""))
+AssertionError: Tuples differ: (127, '') != (64, '')
+
+First differing element 0:
+127
+64
+
+- (127, '')
++ (64, '')
+
+======================================================================
+FAIL: test_invalido_64 (test_f30_metricas.AT020Limites) (chave='max_parametros', valor='1.5')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/robertoduarte/rdd-worktrees/s3-open-sdd-unclebob/tests/test_f30_metricas.py", line 401, in test_invalido_64
+    self.assertEqual((rc, out), (64, ""))
+AssertionError: Tuples differ: (127, '') != (64, '')
+
+First differing element 0:
+127
+64
+
+- (127, '')
++ (64, '')
+
+======================================================================
+FAIL: test_invalido_64 (test_f30_metricas.AT020Limites) (chave='max_parametros', valor='²')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/robertoduarte/rdd-worktrees/s3-open-sdd-unclebob/tests/test_f30_metricas.py", line 401, in test_invalido_64
+    self.assertEqual((rc, out), (64, ""))
+AssertionError: Tuples differ: (127, '') != (64, '')
+
+First differing element 0:
+127
+64
+
+- (127, '')
++ (64, '')
+
+======================================================================
+FAIL: test_invalido_64 (test_f30_metricas.AT020Limites) (chave='min_tokens', valor='0')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/robertoduarte/rdd-worktrees/s3-open-sdd-unclebob/tests/test_f30_metricas.py", line 401, in test_invalido_64
+    self.assertEqual((rc, out), (64, ""))
+AssertionError: Tuples differ: (127, '') != (64, '')
+
+First differing element 0:
+127
+64
+
+- (127, '')
++ (64, '')
+
+======================================================================
+FAIL: test_invalido_64 (test_f30_metricas.AT020Limites) (chave='min_tokens', valor='-1')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/robertoduarte/rdd-worktrees/s3-open-sdd-unclebob/tests/test_f30_metricas.py", line 401, in test_invalido_64
+    self.assertEqual((rc, out), (64, ""))
+AssertionError: Tuples differ: (127, '') != (64, '')
+
+First differing element 0:
+127
+64
+
+- (127, '')
++ (64, '')
+
+======================================================================
+FAIL: test_invalido_64 (test_f30_metricas.AT020Limites) (chave='min_tokens', valor='dez')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/robertoduarte/rdd-worktrees/s3-open-sdd-unclebob/tests/test_f30_metricas.py", line 401, in test_invalido_64
+    self.assertEqual((rc, out), (64, ""))
+AssertionError: Tuples differ: (127, '') != (64, '')
+
+First differing element 0:
+127
+64
+
+- (127, '')
++ (64, '')
+
+======================================================================
+FAIL: test_invalido_64 (test_f30_metricas.AT020Limites) (chave='min_tokens', valor='1.5')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/robertoduarte/rdd-worktrees/s3-open-sdd-unclebob/tests/test_f30_metricas.py", line 401, in test_invalido_64
+    self.assertEqual((rc, out), (64, ""))
+AssertionError: Tuples differ: (127, '') != (64, '')
+
+First differing element 0:
+127
+64
+
+- (127, '')
++ (64, '')
+
+======================================================================
+FAIL: test_invalido_64 (test_f30_metricas.AT020Limites) (chave='min_tokens', valor='²')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/robertoduarte/rdd-worktrees/s3-open-sdd-unclebob/tests/test_f30_metricas.py", line 401, in test_invalido_64
+    self.assertEqual((rc, out), (64, ""))
+AssertionError: Tuples differ: (127, '') != (64, '')
+
+First differing element 0:
+127
+64
+
+- (127, '')
++ (64, '')
+
+======================================================================
+FAIL: test_limites_do_config (test_f30_metricas.AT020Limites)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/robertoduarte/rdd-worktrees/s3-open-sdd-unclebob/tests/test_f30_metricas.py", line 380, in test_limites_do_config
+    out, _ = self.ok()
+  File "/Users/robertoduarte/rdd-worktrees/s3-open-sdd-unclebob/tests/test_f30_metricas.py", line 116, in ok
+    self.assertEqual(rc, 0, out + err)
+AssertionError: 127 != 0 : /bin/bash: /Users/robertoduarte/rdd-worktrees/s3-open-sdd-unclebob/sdd/bin/metricas-diff.sh: No such file or directory
+
+
+======================================================================
+FAIL: test_uso_errado_64 (test_f30_metricas.AT020Limites) (args=['--nada'])
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/robertoduarte/rdd-worktrees/s3-open-sdd-unclebob/tests/test_f30_metricas.py", line 411, in test_uso_errado_64
+    self.assertEqual((rc, out), (64, ""), err)
+AssertionError: Tuples differ: (127, '') != (64, '')
+
+First differing element 0:
+127
+64
+
+- (127, '')
++ (64, '') : /bin/bash: /Users/robertoduarte/rdd-worktrees/s3-open-sdd-unclebob/sdd/bin/metricas-diff.sh: No such file or directory
+
+
+======================================================================
+FAIL: test_uso_errado_64 (test_f30_metricas.AT020Limites) (args=['--base'])
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/robertoduarte/rdd-worktrees/s3-open-sdd-unclebob/tests/test_f30_metricas.py", line 411, in test_uso_errado_64
+    self.assertEqual((rc, out), (64, ""), err)
+AssertionError: Tuples differ: (127, '') != (64, '')
+
+First differing element 0:
+127
+64
+
+- (127, '')
++ (64, '') : /bin/bash: /Users/robertoduarte/rdd-worktrees/s3-open-sdd-unclebob/sdd/bin/metricas-diff.sh: No such file or directory
+
+
+======================================================================
+FAIL: test_uso_errado_64 (test_f30_metricas.AT020Limites) (args=['--base', 'naoexiste'])
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/robertoduarte/rdd-worktrees/s3-open-sdd-unclebob/tests/test_f30_metricas.py", line 411, in test_uso_errado_64
+    self.assertEqual((rc, out), (64, ""), err)
+AssertionError: Tuples differ: (127, '') != (64, '')
+
+First differing element 0:
+127
+64
+
+- (127, '')
++ (64, '') : /bin/bash: /Users/robertoduarte/rdd-worktrees/s3-open-sdd-unclebob/sdd/bin/metricas-diff.sh: No such file or directory
+
+
+======================================================================
+FAIL: test_uso_errado_64 (test_f30_metricas.AT020Limites) (args=['--base', '--x'])
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/robertoduarte/rdd-worktrees/s3-open-sdd-unclebob/tests/test_f30_metricas.py", line 411, in test_uso_errado_64
+    self.assertEqual((rc, out), (64, ""), err)
+AssertionError: Tuples differ: (127, '') != (64, '')
+
+First differing element 0:
+127
+64
+
+- (127, '')
++ (64, '') : /bin/bash: /Users/robertoduarte/rdd-worktrees/s3-open-sdd-unclebob/sdd/bin/metricas-diff.sh: No such file or directory
+
+
+======================================================================
+FAIL: test_uso_errado_64 (test_f30_metricas.AT020Limites) (args=['--raiz', '/private/var/folders/_s/_r8ph5yx5vgbqp_knw08v1380000gn/T/sdd-open-cvj_c606/sumiu'])
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/robertoduarte/rdd-worktrees/s3-open-sdd-unclebob/tests/test_f30_metricas.py", line 411, in test_uso_errado_64
+    self.assertEqual((rc, out), (64, ""), err)
+AssertionError: Tuples differ: (127, '') != (64, '')
+
+First differing element 0:
+127
+64
+
+- (127, '')
++ (64, '') : /bin/bash: /Users/robertoduarte/rdd-worktrees/s3-open-sdd-unclebob/sdd/bin/metricas-diff.sh: No such file or directory
+
+
+======================================================================
+FAIL: test_uso_errado_64 (test_f30_metricas.AT020Limites) (args=[])
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/robertoduarte/rdd-worktrees/s3-open-sdd-unclebob/tests/test_f30_metricas.py", line 411, in test_uso_errado_64
+    self.assertEqual((rc, out), (64, ""), err)
+AssertionError: Tuples differ: (127, '') != (64, '')
+
+First differing element 0:
+127
+64
+
+- (127, '')
++ (64, '') : /bin/bash: /Users/robertoduarte/rdd-worktrees/s3-open-sdd-unclebob/sdd/bin/metricas-diff.sh: No such file or directory
+
+
+======================================================================
+FAIL: test_vazio_e_o_padrao (test_f30_metricas.AT020Limites)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/robertoduarte/rdd-worktrees/s3-open-sdd-unclebob/tests/test_f30_metricas.py", line 392, in test_vazio_e_o_padrao
+    out, _ = self.ok()
+  File "/Users/robertoduarte/rdd-worktrees/s3-open-sdd-unclebob/tests/test_f30_metricas.py", line 116, in ok
+    self.assertEqual(rc, 0, out + err)
+AssertionError: 127 != 0 : /bin/bash: /Users/robertoduarte/rdd-worktrees/s3-open-sdd-unclebob/sdd/bin/metricas-diff.sh: No such file or directory
+
+
+----------------------------------------------------------------------
+Ran 5 tests in 1.273s
+
+FAILED (failures=29)
+[exit=1]

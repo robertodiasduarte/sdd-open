@@ -130,6 +130,13 @@ A sabotagem declarada no DESIGN grava `evidence/{FEATURE}/AT-nnn.sabotagem.log`:
 linhas `# sabotagem:` e `# sem a sabotagem: exit 0`, a saída e `[exit=<n≠0>]` da execução sabotada (o teste pegou o
 defeito). Cite-o na evidência do AT, ao lado do `AT-nnn.log`.
 
+### Métricas do diff (F30 S3)
+
+Com o mapa `qualidade:` no `sdd/config.yaml`, o relatório precisa da seção `## Qualidade (avisos)` com texto, fora de
+bloco cercado (a saída de `bash sdd/bin/metricas-diff.sh`); sem a seção, violação `[qualidade]`. Sem o mapa (projeto
+anterior à v2.28.0), a falta é aviso. O que a seção diz nunca reprova: métrica só avisa, e medida que não aconteceu é
+`não medido: <causa>`.
+
 ### Migration aplicada (seção `## Migrations aplicadas`)
 
 Migration listada nos arquivos do relatório exige a linha dela, com o mesmo caminho, projeto

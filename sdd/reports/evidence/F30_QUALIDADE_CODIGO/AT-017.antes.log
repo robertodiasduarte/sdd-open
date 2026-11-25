@@ -1,0 +1,68 @@
+$ cd tests && /usr/bin/python3 -B -m unittest -v test_f30_metricas.AT017Achados
+test_com_as_ferramentas_reais (test_f30_metricas.AT017Achados) ... skipped 'lizard e jscpd reais fora do PATH'
+test_limite_do_jscpd_e_config_proprio (test_f30_metricas.AT017Achados) ... FAIL
+test_medido_sem_aviso_diz_quantos_mediu (test_f30_metricas.AT017Achados) ... FAIL
+test_nome_com_crase_nao_abre_secao (test_f30_metricas.AT017Achados) ... FAIL
+test_os_dois_achados_exit_0 (test_f30_metricas.AT017Achados) ... FAIL
+test_teto_de_20_itens_o_pior_primeiro (test_f30_metricas.AT017Achados) ... FAIL
+
+======================================================================
+FAIL: test_limite_do_jscpd_e_config_proprio (test_f30_metricas.AT017Achados)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/robertoduarte/rdd-worktrees/s3-open-sdd-unclebob/tests/test_f30_metricas.py", line 147, in test_limite_do_jscpd_e_config_proprio
+    self.ok()
+  File "/Users/robertoduarte/rdd-worktrees/s3-open-sdd-unclebob/tests/test_f30_metricas.py", line 116, in ok
+    self.assertEqual(rc, 0, out + err)
+AssertionError: 127 != 0 : /bin/bash: /Users/robertoduarte/rdd-worktrees/s3-open-sdd-unclebob/sdd/bin/metricas-diff.sh: No such file or directory
+
+
+======================================================================
+FAIL: test_medido_sem_aviso_diz_quantos_mediu (test_f30_metricas.AT017Achados)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/robertoduarte/rdd-worktrees/s3-open-sdd-unclebob/tests/test_f30_metricas.py", line 157, in test_medido_sem_aviso_diz_quantos_mediu
+    out, err = self.ok()
+  File "/Users/robertoduarte/rdd-worktrees/s3-open-sdd-unclebob/tests/test_f30_metricas.py", line 116, in ok
+    self.assertEqual(rc, 0, out + err)
+AssertionError: 127 != 0 : /bin/bash: /Users/robertoduarte/rdd-worktrees/s3-open-sdd-unclebob/sdd/bin/metricas-diff.sh: No such file or directory
+
+
+======================================================================
+FAIL: test_nome_com_crase_nao_abre_secao (test_f30_metricas.AT017Achados)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/robertoduarte/rdd-worktrees/s3-open-sdd-unclebob/tests/test_f30_metricas.py", line 178, in test_nome_com_crase_nao_abre_secao
+    out, _ = self.ok()
+  File "/Users/robertoduarte/rdd-worktrees/s3-open-sdd-unclebob/tests/test_f30_metricas.py", line 116, in ok
+    self.assertEqual(rc, 0, out + err)
+AssertionError: 127 != 0 : /bin/bash: /Users/robertoduarte/rdd-worktrees/s3-open-sdd-unclebob/sdd/bin/metricas-diff.sh: No such file or directory
+
+
+======================================================================
+FAIL: test_os_dois_achados_exit_0 (test_f30_metricas.AT017Achados)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/robertoduarte/rdd-worktrees/s3-open-sdd-unclebob/tests/test_f30_metricas.py", line 132, in test_os_dois_achados_exit_0
+    out, err = self.ok()
+  File "/Users/robertoduarte/rdd-worktrees/s3-open-sdd-unclebob/tests/test_f30_metricas.py", line 116, in ok
+    self.assertEqual(rc, 0, out + err)
+AssertionError: 127 != 0 : /bin/bash: /Users/robertoduarte/rdd-worktrees/s3-open-sdd-unclebob/sdd/bin/metricas-diff.sh: No such file or directory
+
+
+======================================================================
+FAIL: test_teto_de_20_itens_o_pior_primeiro (test_f30_metricas.AT017Achados)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/robertoduarte/rdd-worktrees/s3-open-sdd-unclebob/tests/test_f30_metricas.py", line 168, in test_teto_de_20_itens_o_pior_primeiro
+    out, _ = self.ok()
+  File "/Users/robertoduarte/rdd-worktrees/s3-open-sdd-unclebob/tests/test_f30_metricas.py", line 116, in ok
+    self.assertEqual(rc, 0, out + err)
+AssertionError: 127 != 0 : /bin/bash: /Users/robertoduarte/rdd-worktrees/s3-open-sdd-unclebob/sdd/bin/metricas-diff.sh: No such file or directory
+
+
+----------------------------------------------------------------------
+Ran 6 tests in 0.711s
+
+FAILED (failures=5, skipped=1)
+[exit=1]
