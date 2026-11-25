@@ -2,13 +2,15 @@ $ cd tests && /usr/bin/python3 -B -m unittest -v test_f30_metricas.AT020Limites
 test_ajuda (test_f30_metricas.AT020Limites) ... ok
 test_invalido_64 (test_f30_metricas.AT020Limites) ... ok
 test_limites_do_config (test_f30_metricas.AT020Limites) ... ok
+test_mapa_numa_linha_so (test_f30_metricas.AT020Limites)
+Revisão do código, rodada 2, R1 (avaliador, L4): a forma que o leitor não entende não é ignorada calada. ... ok
 test_raiz_numa_subpasta (test_f30_metricas.AT020Limites)
 Revisão do código, rodada 1, N2: no monorepo, o projeto é a subpasta de --raiz. ... ok
 test_uso_errado_64 (test_f30_metricas.AT020Limites) ... ok
 test_vazio_e_o_padrao (test_f30_metricas.AT020Limites) ... ok
 
 ----------------------------------------------------------------------
-Ran 6 tests in 6.570s
+Ran 7 tests in 8.073s
 
 OK
 [exit=0]

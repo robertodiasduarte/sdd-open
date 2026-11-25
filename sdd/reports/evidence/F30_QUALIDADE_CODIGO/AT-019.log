@@ -12,11 +12,13 @@ test_nao_commitado_e_fora_do_indice_entram (test_f30_metricas.AT019SoODiff) ... 
 test_nenhuma_funcao_do_diff (test_f30_metricas.AT019SoODiff) ... ok
 test_par_com_o_lado_do_diff_em_segundo (test_f30_metricas.AT019SoODiff) ... ok
 test_par_em_arquivo_do_diff_mas_fora_das_linhas (test_f30_metricas.AT019SoODiff) ... ok
+test_remoto_sem_ancestral_nao_cai_na_branch_local (test_f30_metricas.AT019SoODiff)
+Revisão do código, rodada 2, R2. ... ok
 test_renomear_sem_mudar_nao_e_codigo_novo (test_f30_metricas.AT019SoODiff) ... ok
 test_so_linguagem_fora_da_complexidade (test_f30_metricas.AT019SoODiff) ... ok
 
 ----------------------------------------------------------------------
-Ran 14 tests in 11.054s
+Ran 15 tests in 14.708s
 
 OK
 [exit=0]

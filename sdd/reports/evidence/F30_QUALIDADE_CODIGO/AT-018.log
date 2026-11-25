@@ -1,4 +1,7 @@
 $ cd tests && /usr/bin/python3 -B -m unittest -v test_f30_metricas.AT018NaoMedido
+test_arquivo_antigo_grande_e_dito (test_f30_metricas.AT018NaoMedido)
+Revisão do código, rodada 2, R3: o par que não pôde ser comparado não vira "nada achado". ... ok
+test_arquivo_sem_leitura_e_dito (test_f30_metricas.AT018NaoMedido) ... ok
 test_as_duas_ausentes (test_f30_metricas.AT018NaoMedido) ... ok
 test_config_do_projeto_nao_chega_a_ferramenta (test_f30_metricas.AT018NaoMedido)
 Revisão do DESIGN, N2: nem .jscpd.json, nem a chave jscpd do package.json, nem o .gitignore. ... ok
@@ -6,15 +9,19 @@ test_ferramenta_que_falha (test_f30_metricas.AT018NaoMedido) ... ok
 test_jscpd_que_leu_o_projeto_mas_nao_o_diff (test_f30_metricas.AT018NaoMedido)
 Revisão do DESIGN, N1: ler o resto do projeto não prova que o código novo foi lido. ... ok
 test_jscpd_que_nao_grava_relatorio (test_f30_metricas.AT018NaoMedido) ... ok
+test_latin1_vai_em_utf8_e_o_nao_lido_e_dito (test_f30_metricas.AT018NaoMedido)
+Avaliador, M1: o jscpd pula calado o que não é UTF-8. ... ok
 test_nome_do_jscpd_em_outra_forma (test_f30_metricas.AT018NaoMedido)
 Revisão do código, rodada 1, N1: o nome que não casa não pode sumir calado. ... ok
 test_nunca_usa_npx (test_f30_metricas.AT018NaoMedido) ... ok
 test_saida_ilegivel (test_f30_metricas.AT018NaoMedido) ... ok
 test_so_o_jscpd_ausente_mede_a_complexidade (test_f30_metricas.AT018NaoMedido) ... ok
 test_so_o_lizard_ausente_mede_a_duplicacao (test_f30_metricas.AT018NaoMedido) ... ok
+test_tmpdir_dentro_do_projeto (test_f30_metricas.AT018NaoMedido)
+Avaliador, L7: a pasta temporária não é código da frente. ... ok
 
 ----------------------------------------------------------------------
-Ran 10 tests in 20.613s
+Ran 14 tests in 29.144s
 
 OK
 [exit=0]

@@ -142,3 +142,37 @@ US$ 0,11. Rodada sem os documentos SDD da feature (o `--feature` não foi passad
 | achado | sev | veredito | rodada | evidência | dano | revisão |
 |---|---|---|---|---|---|---|
 | R1@openrouter | MED | REBATIDA_EVIDENCIA | rodada=10 | `sdd/bin/sdd-drive.sh`, `trava(p)`: o caminho é o mesmo literal `sdd/reports/progress/DRIVE_<F>.lock`, na mesma pasta; auditor: DISAGREE_CONCERN | nao | EXTERNAL_REVIEW_20261124-181536 |
+
+## S3
+
+Revisão do DESIGN da S3, rodada D3 (base `fce8c61`): revisor openrouter `qwen/qwen3.7-plus` (46 s, 0 achados), auditor
+`claude`; `diversidade: vendor`; US$ 0,73. Os 3 achados são do auditor.
+
+revisor2: dispensado rodada=D3 — sem superfície de risco
+
+| achado | sev | veredito | rodada | evidência | dano | revisão |
+|---|---|---|---|---|---|---|
+| N1 | MED | APLICADA | rodada=D3 | DESIGN 3.1, Decisions 16 e 17; teste: test_jscpd_que_leu_o_projeto_mas_nao_o_diff | nao | EXTERNAL_REVIEW_20261125-064417 |
+| N2 | MED | APLICADA | rodada=D3 | DESIGN 3.1, Decision 16; teste: test_config_do_projeto_nao_chega_a_ferramenta | nao | EXTERNAL_REVIEW_20261125-064417 |
+| N3 | MED | APLICADA | rodada=D3 | DESIGN 3.1, Decision 15; teste: test_apagar_o_que_vem_depois_nao_marca_a_funcao_anterior | nao | EXTERNAL_REVIEW_20261125-064417 |
+
+Revisão do código da S3, rodada 11 (base `fce8c61`): revisor openrouter `qwen/qwen3.7-plus` (155 s, 0 achados), auditor
+`claude`; `diversidade: vendor`; US$ 0,92. Os 2 achados são do auditor.
+
+revisor2: dispensado rodada=11 — sem superfície de risco (regra antiga: 17 arquivos (limiar 8))
+
+| achado | sev | veredito | rodada | evidência | dano | revisão |
+|---|---|---|---|---|---|---|
+| N1 | MED | APLICADA | rodada=11 | nome do jscpd normalizado e conferido; teste: test_nome_do_jscpd_em_outra_forma | nao | EXTERNAL_REVIEW_20261125-065922 |
+| N2 | MED | APLICADA | rodada=11 | --raiz em subpasta; teste: test_raiz_numa_subpasta | nao | EXTERNAL_REVIEW_20261125-065922 |
+
+Revisão do código da S3, rodada 12 (base `fce8c61`): revisor `codex` (`gpt-6.1-sol`, 252 s), auditor `claude`;
+`diversidade: vendor`; US$ 0,87.
+
+revisor2: dispensado rodada=12 — sem superfície de risco (regra antiga: 18 arquivos (limiar 8))
+
+| achado | sev | veredito | rodada | evidência | dano | revisão |
+|---|---|---|---|---|---|---|
+| R1 | HIGH | APLICADA | rodada=12 | `d33ffed`: qualidade: numa linha só; teste: test_mapa_numa_linha_so | nao | EXTERNAL_REVIEW_20261125-070718 |
+| R2 | MED | APLICADA | rodada=12 | `d33ffed`; teste: test_remoto_sem_ancestral_nao_cai_na_branch_local | nao | EXTERNAL_REVIEW_20261125-070718 |
+| R3 | MED | APLICADA | rodada=12 | `d33ffed`; teste: test_arquivo_antigo_grande_e_dito | nao | EXTERNAL_REVIEW_20261125-070718 |
