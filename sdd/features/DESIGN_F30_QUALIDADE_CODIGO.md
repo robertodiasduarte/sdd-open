@@ -1,5 +1,8 @@
-# DESIGN: F30 — Qualidade do código gerado · fatias S1 (itens 1, 3, 4) e S2 (itens 2, 6, 7)
+# DESIGN: F30 — Qualidade do código gerado · fatias S1 (itens 1, 3, 4), S2 (itens 2, 6, 7) e S3 (itens 5, 8)
 
+> **S3:** complexidade e duplicação só no que o diff trouxe, numa seção de avisos do BUILD_REPORT que nunca reprova
+> (Decisions 15 a 19).
+>
 > **S2:** vermelho antes do verde conferido pelo `report-lint.py` (coluna `Antes`), sabotagem do gate numa cópia
 > descartável (`sabotagem.sh`) e o passo Refatorar entre Verificar e Marcar (Decisions 8 a 14).
 >
@@ -10,8 +13,8 @@
 
 | Attribute | Value |
 |-----------|-------|
-| **Feature** | F30_QUALIDADE_CODIGO (fatia S2; a S1 está publicada na v2.26.0) |
-| **Date** | 2026-11-24 (S2) · 2026-11-23 (S1) |
+| **Feature** | F30_QUALIDADE_CODIGO (fatia S3; a S1 está na v2.26.0 e a S2 na v2.27.3) |
+| **Date** | 2026-11-25 (S3) · 2026-11-24 (S2) · 2026-11-23 (S1) |
 | **Author** | design-agent |
 | **DEFINE** | [DEFINE_F30_QUALIDADE_CODIGO.md](./DEFINE_F30_QUALIDADE_CODIGO.md) |
 | **Status** | Ready for Build |
@@ -19,6 +22,20 @@
 ---
 
 ## Architecture Overview
+
+S3:
+
+```text
+   sdd/config.yaml qualidade.* (10 · 60 · 5 · 50) ─┐
+   git diff -U0 (base..árvore) + arquivos novos ───┤
+                                                   ▼
+   sdd/bin/metricas-diff.sh ── Python 1: limites, arquivos de código do diff, linhas novas ⇒ lista NUL em mktemp
+        ├─ bash: `command -v lizard` ─ xargs -0 lizard --csv ────────┐  ausente / exit≠0 / ilegível
+        ├─ bash: `command -v jscpd`  ─ jscpd . --reporters json ─────┤  ⇒ "não medido: …"
+        └─ Python 2: só função/par com linha no diff ◀───────────────┘
+             stdout: `## Qualidade (avisos)` (colada no BUILD_REPORT) · stderr: RESULTADO + → · exit 0 (64 = uso)
+   BUILD_REPORT ──▶ report-lint.py check_qualidade(): config com `qualidade:` ⇒ seção obrigatória; sem ele ⇒ aviso
+```
 
 S2:
 
@@ -73,6 +90,8 @@ S1:
 | Textos das skills | Build (Open e web), new-session, checar-ambiente | Markdown |
 | `report-lint.py` (S2: `ats_do_define`, coluna `Antes`) | Vermelho antes do verde por AT (Decisions 8, 9) | Python stdlib |
 | `sabotagem.sh` (S2) | Sabotagem declarada numa cópia de `git archive HEAD` (Decision 10) | bash 3.2 + Python stdlib |
+| `metricas-diff.sh` (S3) | Complexidade e duplicação do diff, só aviso (Decisions 15 a 18) | bash 3.2 + Python stdlib; `lizard` e `jscpd` do PATH, opcionais |
+| `report-lint.py` (S3: `check_qualidade`) | A seção de avisos existe (Decision 19) | Python stdlib |
 | `disciplina-de-teste.md` (S2) | Texto único das 3 práticas, citado pelo Open e pelo starter (Decision 13) | Markdown |
 
 ---
@@ -427,35 +446,154 @@ execuções, não da leitura.
 
 **Consequences:** n=1 é instável: o relatório diz isso ao lado do número.
 
+### Decision 15: Um script só, e a medição contra a base da frente
+| **Status** | Accepted | · | **Date** | 2026-11-25 |
+
+**Context:** AT-017, AT-019. O aviso só serve se falar do código que a frente trouxe.
+
+**Choice:** `sdd/bin/metricas-diff.sh [--raiz DIR] [--base REF]`, no molde do `qualidade-regras.sh`.
+- **Base:** `git merge-base HEAD <ref>`, com `<ref>` = `--base`, ou `origin/<project.default_branch>` (padrão `main`),
+  ou a branch local de mesmo nome quando o remoto não existe; nenhuma ⇒ 64 com "passe `--base`".
+- **Linhas do diff:** a árvore de trabalho contra a base. `git diff --name-status -z -M` dá os pares (antigo, novo);
+  por arquivo, `git diff -U0 -M` e só as linhas `@@ … +c,d @@`. Trecho só apagado (`d=0`) marca a linha `c`. Arquivo novo
+  fora do índice (`ls-files -o --exclude-standard -z`) é novo inteiro. Opções fixas: `core.quotepath=off`,
+  `color.ui=never`, `--no-ext-diff --no-textconv` (LM-033). Só arquivo comum (link simbólico fica fora).
+- **Código:** por extensão. Complexidade: as linguagens comuns do `lizard`. Duplicação: as mesmas, mais `sh`, `bash` e
+  `sql`. Fora: as pastas do método e de terceiros (a mesma lista do `qualidade-regras.sh`). Arquivo do diff que é código
+  só da 2ª lista é dito na seção: "fora da medição de complexidade (linguagem sem suporte): N".
+
+**Rationale:** renomear sem mudar não vira código novo; a árvore entra porque o Build pode medir antes do commit.
+
+**Alternatives Rejected:** 1. `lizard`/`jscpd` no repositório inteiro: rejeitada, porque a dívida antiga afoga o aviso. ·
+2. O `--changed` do `jscpd` 5: rejeitada, porque só existe na 5 e compara com o HEAD, não com a base da frente.
+
+**Consequences:** uma função antiga e grande com 1 linha mudada aparece: é aviso, e é o momento de ver.
+
+### Decision 16: O bash chama as ferramentas; o Python lê a saída
+| **Status** | Accepted | · | **Date** | 2026-11-25 |
+
+**Context:** no Windows, o `jscpd` é um calço (`jscpd`, `jscpd.cmd`) que o `subprocess` do Python não acha pelo nome, e
+o Git Bash acha. O teste usa ferramentas falsas, que no Windows também são scripts `sh`.
+
+**Choice:** `command -v` no bash; `lizard --csv` por `xargs -0 -n 50` sobre a lista NUL (nomes com espaço; teto da linha
+de comando); `jscpd . --min-tokens N --max-lines 100000 --max-size 5mb --reporters json --output <mktemp> --config
+<vazio> --silent --ignore <pastas de fora>`. Cada ferramenta: entrada `/dev/null` (a lista, no `xargs`), stdout e stderr
+em arquivos do `mktemp`, `rc=$?` sem pipe, apagados por `trap`. Nunca `npx` (baixaria o pacote; D2).
+
+**Rationale:** o mesmo caminho nos 3 sistemas. `--max-lines` e `--max-size` altos porque o `jscpd` pula calado o arquivo
+acima do padrão, e pular calado é o falso "nenhum".
+
+**Alternatives Rejected:** 1. `python3 -m lizard`: rejeitada, porque importaria do diretório do projeto. · 2.
+`node_modules/.bin/jscpd`: rejeitada nesta fatia (YAGNI); o PATH é a regra que a mensagem explica.
+
+**Consequences:** sem teto de tempo por ferramenta: o teto que mata grupo não funciona no Git Bash (LM-016).
+
+### Decision 17: Não medido é um estado por métrica, e nunca vira "nenhum"
+| **Status** | Accepted | · | **Date** | 2026-11-25 |
+
+**Context:** AT-018; LM-002 e LM-017 (a saída graciosa que esconde o caminho errado).
+
+**Choice:** cada métrica termina em um de 3 estados: `não medido: …`, `nenhum aviso (N medidos)` ou a lista. Só vira
+`nenhum aviso` com prova de que mediu: `lizard` saiu 0, o CSV inteiro tem 11 colunas com inteiros, e pelo menos 1
+função do diff foi lida; `jscpd` saiu 0, o JSON tem `duplicates` (lista) e `statistics.total.sources` ≥ 1. Os motivos de
+não medido: `<ferramenta> ausente — instale com …` · `<ferramenta> falhou (exit N: 1ª linha do erro)` · `<ferramenta>
+devolveu saída que não entendi` · `nenhum arquivo de código no diff` · `nenhuma função do diff encontrada` · `o jscpd não
+leu nenhum arquivo`. Instalar: `python3 -m pip install lizard` e `npm install -g jscpd`. Com o diff sem código, as
+ferramentas não são chamadas, e a ausência não é dita.
+
+**Rationale:** é o risco nº 1 da fatia: a ausência de medida ler como qualidade.
+
+**Alternatives Rejected:** 1. Exit próprio para "não medido": rejeitada, porque o DEFINE pede exit 0 sempre que rodou.
+
+**Consequences:** o `RESULTADO:` (stderr) diz `AVISOS`, `NÃO MEDIDO` ou `NADA ACHADO`, nesta precedência.
+
+### Decision 18: A seção em stdout, com teto de 20 itens por métrica
+| **Status** | Accepted | · | **Date** | 2026-11-25 |
+
+**Choice:** stdout é só a seção Markdown (`RESULTADO:` em stderr, como o `--aplicar` do `playbook-curator.sh`), com
+`### Complexidade` e `### Duplicação`. Item de função: `` `arq:ini-fim` `nome`: complexidade 15 (limite 10) · 70 linhas
+(limite 60) · 6 parâmetros (limite 5) ``, só as medidas acima do limite, a pior primeiro. Item de par:
+`` `a:ini-fim` repete `b:ini-fim` (N linhas, N tokens) ``. Pares ficam só se os dois lados são código e ao menos um
+toca o diff; repetidos são unidos. Acima de 20: "e mais N". Nomes sem quebra de linha, caractere de controle nem crase.
+
+**Rationale:** o relatório recebe texto pronto e curto; o dado do projeto não abre outra seção no relatório.
+
+**Alternatives Rejected:** 1. O script gravar no BUILD_REPORT: rejeitada, porque só o Build edita o relatório.
+
+**Consequences:** o agente cola a saída; o `report-lint` confere só que a seção existe.
+
+### Decision 19: A chave `qualidade:` no config liga a exigência da seção
+| **Status** | Accepted | · | **Date** | 2026-11-25 |
+
+**Context:** AT-021. O ESCOPO pede que o `report-lint.py` exija a seção; o relatório antigo não a tem.
+
+**Choice:** `check_qualidade`: procura, fora de cerca, o título `## Qualidade (avisos)` com ao menos uma linha não vazia
+antes do próximo `## `. Faltou: com o mapa `qualidade:` no `sdd/config.yaml`, violação da classe `qualidade`; sem ele,
+aviso. O conteúdo da seção não é lido. As 4 chaves entram no `config.example.yaml` com os padrões do D5.
+
+**Rationale:** o projeto novo nasce com o mapa; o antigo, que o `upgrade` não mescla, só recebe o aviso.
+
+**Alternatives Rejected:** 1. Exigir pela coluna `Antes`: rejeitada, porque reprovaria os relatórios da S2. · 2. Nunca
+exigir: rejeitada, porque o ESCOPO pede.
+
+**Consequences:** quem acrescenta o mapa à mão e roda o lint num relatório antigo cola a seção uma vez.
+
 ---
 
 ## File Manifest
 
-Fatia S2 (a ordem é a do TDD: o teste de cada mecanismo vem antes dele e é rodado vermelho). O manifest da S1 (21
-arquivos) está na versão 1.2 deste DESIGN, em `c4fa53c`.
+Fatia S3 (a ordem é a do TDD). Os manifests da S1 (21 arquivos) e da S2 (15) estão nas versões 1.2 (`c4fa53c`) e 2.2
+(`fce8c61`) deste DESIGN.
 
 | # | File | Action | Purpose | Agent | Dependencies |
 |---|---|---|---|---|---|
-| 1 | `tests/test_f30_vermelho_antes.py` | Create | AT-010, AT-011, AT-012 (repositório git temporário com DEFINE, relatório e logs) | (general) | None |
-| 2 | `tests/test_f30_sabotagem.py` | Create | AT-013, AT-014 (fixture git com teste forte e fraco; hash da árvore antes e depois) | (general) | None |
-| 3 | `tests/test_f30_textos_s2.py` | Create | AT-015 (textos, molde, config, starter gerado numa pasta temporária) | (general) | None |
-| 4 | `sdd/bin/report-lint.py` | Modify | Coluna `Antes`, `ats_do_define`, classe `vermelho antes`, aviso sem a coluna (Decisions 8, 9) | (general) | 1 |
-| 5 | `sdd/bin/sabotagem.sh` | Create | Sabotagem numa cópia de `git archive HEAD` (Decision 10) | (general) | 2 |
-| 6 | `.agents/skills/sdd-build/web/references/disciplina-de-teste.md` | Create | Vermelho antes, sabotagem, refatorar; sem `sdd/bin/` (Decision 13) | (general) | 3 |
-| 7 | `.agents/skills/sdd-build/SKILL.md` | Modify | Passos 3 (vermelho antes), 5 Refatorar, 6 Marcar; 5a com o `sabotagem.sh`; coluna `Antes` no passo 6 do relatório; versão 2.16.0 | (general) | 5, 6 |
-| 8 | `.agents/skills/sdd-build/web/MODO_WEB.md` | Modify | Linha 236 (refatorar só o que a tarefa tocou) e 1 linha na seção 10; versão 2.16.0; ≤ 500 linhas | (general) | 6 |
-| 9 | `.agents/skills/sdd-design/SKILL.md` | Modify | Seção 6: tabela de sabotagens (Decision 11); versão menor nova | (general) | 5 |
-| 10 | `sdd/templates/DESIGN_TEMPLATE.md` | Modify | Tabela de sabotagens na estratégia de testes | (general) | 9 |
-| 11 | `sdd/templates/BUILD_REPORT_TEMPLATE.md` | Modify | Coluna `Antes`; linha `refatorar: desligado`; seção "Custo dos passos novos" não (só neste relatório) | (general) | 4 |
-| 12 | `sdd/templates/fragments/EVIDENCIA.md` | Modify | `AT-nnn.antes.log` e `AT-nnn.sabotagem.log` no contrato | (general) | 4, 5 |
-| 13 | `sdd/config.example.yaml` | Modify | `build.refatorar: true` com o comentário (Decision 12) | (general) | None |
-| 14 | `docs/cli-conventions.md` | Modify | Linha do `sabotagem.sh` na tabela de exits e na lista de `ERRO DE USO` | (general) | 5 |
-| 15 | `MANIFEST.txt` | Modify | Itens 1, 2, 3, 5, 6 (LM-037) | (general) | 1, 2, 3, 5, 6 |
+| 1 | `tests/test_f30_metricas.py` | Create | AT-017 a AT-021 (repositório git temporário, ferramentas falsas com a saída real, PATH restrito, hash da árvore) | (general) | None |
+| 2 | `tests/test_f30_textos_s3.py` | Create | AT-022 (textos, molde, config, starter gerado) | (general) | None |
+| 3 | `sdd/bin/metricas-diff.sh` | Create | Decisions 15 a 18 | (general) | 1 |
+| 4 | `sdd/bin/report-lint.py` | Modify | `check_qualidade` (Decision 19) | (general) | 1 |
+| 5 | `.agents/skills/sdd-build/web/references/metricas-do-diff.md` | Create | O que medir, como ler e o que dizer quando a ferramenta falta; sem `sdd/bin/` | (general) | 2 |
+| 6 | `.agents/skills/sdd-build/SKILL.md` | Modify | Chamada no 5b e ponteiro; seção obrigatória no 6; versão 2.17.0 | (general) | 3, 5 |
+| 7 | `.agents/skills/sdd-build/web/MODO_WEB.md` | Modify | 1 linha de ponteiro; versão 2.17.0; ≤ 500 linhas | (general) | 5 |
+| 8 | `sdd/templates/BUILD_REPORT_TEMPLATE.md` | Modify | Seção `## Qualidade (avisos)` | (general) | 3 |
+| 9 | `sdd/templates/fragments/EVIDENCIA.md` | Modify | Contrato da seção | (general) | 4 |
+| 10 | `sdd/config.example.yaml` | Modify | `qualidade:` com os 4 limites | (general) | None |
+| 11 | `docs/cli-conventions.md` | Modify | Linha do `metricas-diff.sh` e palavras novas | (general) | 3 |
+| 12 | `tests/test_f15_slots_textos.py` | Modify | Versão fixa da `sdd-build` | (general) | 6 |
+| 13 | `tests/test_f18_f20_textos.py` | Modify | Versão fixa da `sdd-build` | (general) | 6 |
+| 14 | `tests/test_correcoes_w0.py` | Modify | Versão fixa da `sdd-build` | (general) | 6 |
+| 15 | `tests/test_contrato_build_release.py` | Modify | Versão fixa da `sdd-build` | (general) | 6 |
+| 16 | `MANIFEST.txt` | Modify | Itens 1, 2, 3, 5 (LM-037) | (general) | 1, 2, 3, 5 |
 
-**Total Files:** 15
+**Total Files:** 16
 
-Mais tarde, no Release: `VERSION`/`CHANGELOG` (minor v2.27.0), `sdd/features/PLANO_F4_F15_CONSOLIDADO.md`, a ficha e
-a geração do starter num clone limpo.
+Mais tarde, no Release: o ledger (minor v2.28.0), o PLANO, a ficha e a geração de teste do starter num clone limpo.
+
+---
+
+## Landmines aplicáveis — S3
+
+Varredura em 2026-11-25 por superfície (mktemp, PATH, jscpd, xargs, MANIFEST, config.yaml, csv, report-lint, pip,
+starter, npx, git diff, Windows, SKILL.md) mais o `## Sempre`.
+
+| LM | Veredito | Como |
+|---|---|---|
+| LM-001, LM-002 | ✔ tratado | Os testes executam o script com a ferramenta, sem ela, quebrada e ilegível; `AT-nnn.antes.log` vermelho; `test -f` no gate |
+| LM-003 | ✔ tratado | Commitar antes de cada revisão; conferir o `git diff --stat` |
+| LM-004 | N.A. | Sem migration |
+| LM-006 | ✔ tratado | A fixture cria o próprio git; o gate roda sem `.git` |
+| LM-014, LM-015 | ✔ tratado | `Sandbox.roda` e troca da saída no Python embutido |
+| LM-016 | ✔ tratado | Sem teto por grupo de processos (Decision 16) |
+| LM-017 | ✔ tratado | "Não medido" tem teste próprio, por causa (Decision 17) |
+| LM-018 | ✔ tratado | `rc=$?` sem pipe |
+| LM-019 | ✔ tratado | `sdd_python_pronto` sem `2>/dev/null` |
+| LM-029, LM-034, LM-042 | ✔ tratado | `BASH`, `path_restrito` e constantes de `tests/apoio.py` |
+| LM-033 | ✔ tratado | Opções fixas do git (Decision 15) |
+| LM-035 | ✔ tratado | `metricas-do-diff.md` e `MODO_WEB.md` sem `sdd/bin/` |
+| LM-037 | ✔ tratado | Item 16; `publish-gate` em modo CI numa cópia antes do gate |
+| LM-038 | ✔ tratado | `wc -l` antes e depois (380 e 489); texto longo em `references/` |
+| LM-043 | ✔ tratado | Nenhum `npx`; o teste não chama ferramenta real da rede |
+| LM-044 | N.A. | Nenhuma pergunta `[Dn]` nova |
+| Demais | N.A. | Superfícies fora da S3 |
 
 ---
 
@@ -518,7 +656,7 @@ Windows, test_decisoes_lint, como-falar, git, status, config.yaml, stack, lint),
 
 ## Contrato de aceite
 
-O Verify Gate do DEFINE (`git archive HEAD` → `publish-gate` → `test -f` dos 8 testes (5 da S1, 3 da S2) → `test_f30_*` → suíte
+O Verify Gate do DEFINE (`git archive HEAD` → `publish-gate` → `test -f` dos 10 testes (5 da S1, 3 da S2, 2 da S3) → `test_f30_*` → suíte
 inteira) é o contrato. O avaliador de contexto fresco recebe o DEFINE, este DESIGN e o diff.
 
 ---
@@ -632,6 +770,9 @@ Nenhum serviço externo. Ferramentas do aluno (ruff, eslint, tsc, phpcs) são s�
 
 | Tipo | Escopo | Ferramenta | Meta |
 |---|---|---|---|
+| integração | AT-017 a AT-020 (S3): `metricas-diff.sh` num repo git com base e frente; ferramentas falsas que devolvem a saída real (`lizard` 1.26.1, `jscpd` 5.4.3) e a mesma fixture com as ferramentas reais quando estão no PATH; ausentes (uma, outra, as 2), exit≠0, CSV e JSON ilegíveis; função intocada, só apagada, renomeada, arquivo novo fora do índice, nome com espaço e acento; limites do config e inválidos; sem código no diff; sem base; sem git | unittest | exit 0 (64 no uso); achados exatos; nunca "0 achados"/"nenhum aviso" sem medida; hash da árvore igual |
+| integração | AT-021 (S3): `report-lint.py` com e sem `qualidade:` no config, seção presente, vazia, em cerca, ausente | unittest | 1 só com o mapa e sem a seção; aviso sem o mapa |
+| texto | AT-022 (S3): skill, molde, config, contrato, convenções, starter gerado | unittest | presentes; frase positiva |
 | integração | AT-010, AT-011, AT-012 (S2): `report-lint.py` num repo git temporário com DEFINE (kinds `test`, `manual-ux`, um `shall continue to`) e relatório com e sem a coluna `Antes`; antes vermelho, verde, ausente, de outro comando, sem `[exit=`, 127, ignorado, `N.A.` em AT novo; DEFINE ausente | unittest | exit 1 exato nas falhas, com a classe `vermelho antes`; 0 nos pares certos; aviso sem a coluna |
 | integração | AT-013, AT-014 (S2): `sabotagem.sh` numa fixture git com um teste forte e um fraco; troca que não casa, que casa 2 vezes, caminho absoluto, com `..`, link simbólico para fora, comando que já falha, comando 127, arquivo fora do HEAD, fora de git; `TMPDIR` da fixture sem resto | unittest | 0/2/3/64 exatos; hash da árvore (fora o log) igual antes e depois em todos; log só em 0 e 2 |
 | texto | AT-015 (S2): `sdd-build/SKILL.md` (vermelho antes, coluna `Antes`, `sabotagem.sh` no 5a, Refatorar entre Verificar e Marcar, `build.refatorar`), `sdd-design/SKILL.md` e `DESIGN_TEMPLATE.md` (tabela de sabotagens, `CRITERIO_DANO.md`), `BUILD_REPORT_TEMPLATE.md` (coluna `Antes`), `config.example.yaml`; starter gerado com `references/disciplina-de-teste.md` e sem `sdd/bin/` | unittest | presentes, na ordem; frase positiva |
@@ -647,6 +788,15 @@ Nenhum serviço externo. Ferramentas do aluno (ruff, eslint, tsc, phpcs) são s�
 Baseline vermelho: cada `test_f30_*` é rodado contra a árvore antes do código do mecanismo dele e precisa falhar.
 Na S2, esse antes vira `evidence/F30_QUALIDADE_CODIGO/AT-nnn.antes.log`, citado na coluna `Antes` do relatório
 (o próprio contrato novo, aplicado à S2).
+
+**Sabotagens (S3; Decision 11).** Superfície de risco: o AT-018 e o AT-019 guardam a verdade do aviso; o AT-021, a
+**publicação** (o `report-lint` é gate da release).
+
+| AT | Arquivo | Trocar | Por | O que o teste deve acusar |
+|---|---|---|---|---|
+| AT-018 | `sdd/bin/metricas-diff.sh` | `if estado == "ausente":` | `if estado == "nunca":` | a ferramenta ausente deixa de sair como "ausente" com o comando de instalar |
+| AT-019 | `sdd/bin/metricas-diff.sh` | `if not toca(arq, ini, fim):` | `if False:` | a função que o diff não tocou aparece |
+| AT-021 | `sdd/bin/report-lint.py` | `if tem_secao_qualidade(content):` | `if True:` | o relatório sem a seção passa com `qualidade:` no config |
 
 **Sabotagens (S2; Decision 11).** Superfície de risco pelo `sdd/review/CRITERIO_DANO.md`: o AT-010 guarda a
 **publicação** (o `report-lint` é gate da release) e o AT-013 guarda **dado** (a árvore de trabalho do aluno).
@@ -668,6 +818,8 @@ Na S2, esse antes vira `evidence/F30_QUALIDADE_CODIGO/AT-nnn.antes.log`, citado 
 | `checar.sh --linter` fora de projeto | Sai 1 (nada a sugerir) | No |
 | S2: `sabotagem.sh` com uso errado, caminho fora da cópia, fora de git, arquivo fora do HEAD | 64 com a causa e o uso; nenhum log | No |
 | S2: comando que já falha sem a sabotagem, 126/127, trecho que não casa exatamente 1 vez, `git archive` que falha | 3 (inconclusivo) com a causa; nenhum log | No |
+| S3: ferramenta ausente, quebrada ou com saída ilegível | "não medido" com a causa, exit 0 (Decision 17) | No |
+| S3: limite inválido, sem git, sem base | 64 com a causa | No |
 | S2: DEFINE ausente ou AT fora dele, no `report-lint` | Aviso com a causa; o vermelho antes não é conferido | No |
 
 ## Configuration
@@ -677,9 +829,10 @@ Na S2, esse antes vira `evidence/F30_QUALIDADE_CODIGO/AT-nnn.antes.log`, citado 
 | `project.lint_cmd` | string | `""` | Já existia; passa a rodar a cada tarefa do Build |
 | `project.typecheck_cmd` | string | `""` | Já existia; passa a rodar a cada tarefa do Build |
 
+| `qualidade.max_complexidade` · `max_linhas` · `max_parametros` · `min_tokens` | inteiro ≥ 1 | 10 · 60 · 5 · 50 | S3 (D5): limites dos avisos; o mapa presente liga a exigência da seção (Decision 19) |
 | `build.refatorar` | bool | `true` | S2 (D7, Decision 12): o passo Refatorar da tarefa; `false` pula e o relatório diz `refatorar: desligado` |
 
-Nenhuma chave nova na S1 (D1). `qualidade.*` entra na S3 (D5).
+Nenhuma chave nova na S1 (D1). 
 
 ---
 
@@ -698,7 +851,12 @@ Nenhuma chave nova na S1 (D1). `qualidade.*` entra na S3 (D5).
    `bash -c` com a mesma confiança do `cmd` do Verify Gate: vem do DESIGN do próprio projeto, sem dado de
    terceiros, rede ou chamada paga.
 
+7. S3, `metricas-diff.sh`: ferramentas do PATH, locais, só de leitura; config próprio para o `jscpd`; saída temporária
+   em `mktemp`, apagada por `trap`; nomes do projeto sem quebra de linha nem crase na seção; nada instalado (D2).
+
 ## Desempenho
+
+S3: um `git diff` por arquivo mudado e uma passada do `jscpd` no repositório, uma vez por Build.
 
 N.A. — sem banco. O `checar.sh` só faz `[ -f ]` e uma leitura de `pyproject.toml`/`package.json`: custo
 desprezível perto das chamadas de rede dele.
@@ -725,6 +883,7 @@ S2: `AT-nnn.antes.log` e `AT-nnn.sabotagem.log`, ao lado dos `AT-nnn.log`. Os lo
 
 | Version | Date | Author | Changes |
 |---------|------|--------|---------|
+| 3.0 | 2026-11-25 | design-agent | S3: Decisions 15 a 19, manifest de 16 arquivos, landmines e sabotagens da S3 |
 | 2.1 | 2026-11-24 | design-agent | Revisão do DESIGN, rodada D1 (auditor claude, N1): a classe `continua` vem do início da célula (molde EARS ou Padrão), não de qualquer ocorrência na linha |
 | 2.2 | 2026-11-24 | build | Sabotagem do AT-013 trocada depois do código: a declarada (`ALVO` apontado para a raiz) era barrada pela checagem de caminho (exit 64) e não punha o hash da árvore à prova |
 | 2.0 | 2026-11-24 | design-agent | S2: Decisions 8 a 14, manifest de 15 arquivos, landmines e sabotagens da S2; o manifest da S1 fica na 1.2 (`c4fa53c`) |

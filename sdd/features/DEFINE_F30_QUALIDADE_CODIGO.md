@@ -11,8 +11,8 @@
 | **Feature** | F30_QUALIDADE_CODIGO |
 | **Date** | 2026-11-23 |
 | **Author** | Roberto Dias Duarte (decisões) · define-agent (redação) |
-| **Status** | S1 publicada (v2.26.0) · S2 Ready for Design · S3 a definir por `sdd-iterate` |
-| **Clarity Score** | 14/15 |
+| **Status** | S1 publicada (v2.26.0) · S2 publicada (v2.27.3) · S3 Ready for Design |
+| **Clarity Score** | 15/15 |
 
 Entradas: `sdd/features/AVALIACAO_F30_UNCLE_BOB.md` (o porquê, as 15 propostas, a nota) e
 `sdd/features/ESCOPO_F30_QUALIDADE_CODIGO.md` (achados com linha, os 8 itens, D1–D7). Sem brainstorm: os dois
@@ -63,6 +63,7 @@ O efeito é código que passa no gate com erro de estilo, de tipos e helper dupl
 - [ ] S2: 100% dos AT de comportamento novo sem `AT-nnn.antes.log` vermelho do mesmo comando são reprovados (exit 1) num relatório com a coluna `Antes`; 0 reprovações nos relatórios sem a coluna.
 - [ ] S2: o `sabotagem.sh` sai 0 quando o teste pega a sabotagem e 2 quando não pega, com o hash da árvore de trabalho igual antes e depois nos 2 casos.
 - [ ] S2: o custo extra em tokens dos itens 2, 6 e 7 medido na mesma tarefa de exemplo, com e sem os passos novos, e registrado no BUILD_REPORT.
+- [ ] S3: na fixture com complexidade 15 e um bloco duplicado, 2 de 2 achados na seção e exit 0; sem as ferramentas, 2 de 2 métricas como "não medido", exit 0 e 0 ocorrências de "0 achados".
 - [ ] Todas as fatias: suíte inteira verde e CI 18 de 18.
 
 ---
@@ -137,8 +138,29 @@ O efeito é código que passa no gate com erro de estilo, de tipos e helper dupl
 
 ## Fatia S3 — Métricas no diff, só aviso (itens 5, 8)
 
-> A definir por `sdd-iterate` depois da release da S2. Decisão já tomada: D5. Proposta de AT no ESCOPO §6
-> (S3-a, S3-b). Ferramenta ausente é "não medido", nunca "0 achados".
+### Acceptance Tests — S3
+
+> "Diff" = o que a frente acrescentou ou mudou contra a base (o ponto comum com `origin/<project.default_branch>`),
+> com o que ainda não foi commitado e os arquivos novos. "Função do diff" = função com ao menos uma linha no diff.
+> "Seção" = o bloco `## Qualidade (avisos)`, impresso em stdout pelo `sdd/bin/metricas-diff.sh`. Limites do D5.
+
+| ID | Padrão | Critério (EARS) | Gate (`kind`) |
+|----|--------|-----------------|---------------|
+| AT-017 | Event-driven | **When** o `sdd/bin/metricas-diff.sh` roda num projeto cujo diff traz uma função de complexidade 15 e um bloco duplicado, com `lizard` e `jscpd` no PATH, the system **shall** imprimir a seção com os dois achados (arquivo, linhas, valor e limite), sair 0 e deixar a árvore idêntica (hash antes = depois) | test |
+| AT-018 | Unwanted | **If** `lizard` ou `jscpd` não está no PATH, sai com erro ou devolve saída que o script não entende, **then** the system **shall** escrever naquela métrica `não medido: <ferramenta> ausente` com o comando de instalar (ou `não medido: <ferramenta> falhou` com a causa), medir a outra normalmente, sair 0, nunca escrever "0 achados" nem "nenhum" para a métrica não medida e nunca instalar nada | test |
+| AT-019 | State-driven | **While** uma função ou um par duplicado não tem nenhuma linha no diff, the system **shall** deixá-lo fora da seção; diff sem arquivo de código dá `não medido: nenhum arquivo de código no diff`; função do diff sem achado conta como medida | test |
+| AT-020 | Where | **Where** `qualidade.max_complexidade`, `qualidade.max_linhas`, `qualidade.max_parametros` ou `qualidade.min_tokens` está no `sdd/config.yaml`, the system **shall** usar o valor; ausente ou vazio, o padrão 10, 60, 5 e 50; valor que não é inteiro ≥ 1 ⇒ exit 64 com a chave e o conserto | test |
+| AT-021 | Event-driven | **When** o `report-lint.py` confere um BUILD_REPORT, the system **shall** exigir a seção `## Qualidade (avisos)` não vazia, fora de bloco cercado, se o `sdd/config.yaml` tem o mapa `qualidade:` (exit 1 com o conserto em 1 linha); sem o mapa (projeto anterior à S3), a falta dela é só aviso; achado na seção nunca reprova | test |
+| AT-022 | Event-driven | **When** o Build termina as tarefas, the system **shall** ter no texto da `sdd-build` (Open) a chamada do `metricas-diff.sh` antes do relatório, com a seção colada no BUILD_REPORT; o `BUILD_REPORT_TEMPLATE.md` tem a seção, o `config.example.yaml` tem `qualidade:` com os 4 limites, a `EVIDENCIA.md` e o `cli-conventions.md` descrevem o contrato; o `MODO_WEB.md` e o starter levam o texto das métricas sem citar `sdd/bin/…` | test |
+| AT-023 | Non-regression | The system **shall continue to** passar a suíte inteira, o `publish-gate` em modo CI sobre uma cópia de `git archive` e o `check-versions.py --base origin/main`, e a aprovar os BUILD_REPORTs sem a seção em projeto sem `qualidade:` | test |
+
+**Padrões considerados:** todos os cinco; While em AT-019, Where em AT-020, If–Then em AT-018.
+
+### Fora da S3
+
+- Reprovar por métrica; tendência entre frentes; medir o repositório inteiro.
+- Instalar `lizard` ou `jscpd` (D2: só o comando), inclusive por `npx`, que baixaria o pacote.
+- Código do próprio método (`sdd/`, `.agents/` e pastas de agente) no projeto do aluno.
 
 ---
 
@@ -150,7 +172,7 @@ O efeito é código que passa no gate com erro de estilo, de tipos e helper dupl
 - [x] (restrições) D2 — Projeto sem linter: instala ou propõe? → **Propõe** o comando exato; slot gravado só com o sim. Integrado em AT-006, AT-007.
 - [x] (escopo) D3 — Vermelho antes do verde vale para quais ATs? → ATs `test`/`cmd` de comportamento novo; `shall continue to` exige verde antes; exit 4 fora. Integrado em AT-010, AT-011 (e AT-012 para o relatório anterior à S2).
 - [x] (escopo) D4 — Sabotagem: quantas e quem escolhe? → Uma por AT de superfície de risco (critério do `CRITERIO_DANO.md`) e ≥ 1 por feature, **declaradas no DESIGN**. Integrado em AT-013, AT-014, AT-015.
-- [x] (NFRs) D5 — Limites das métricas → complexidade 10, 60 linhas, 5 parâmetros, `jscpd --min-tokens 50`, em `qualidade.*` do config. Integrar na S3.
+- [x] (NFRs) D5 — Limites das métricas → complexidade 10, 60 linhas, 5 parâmetros, `jscpd --min-tokens 50`, em `qualidade.*` do config. Integrado em AT-020.
 - [x] (integrações) D6 — Onde fica o catálogo? → Arquivo novo na skill da build (`web/references/CATALOGO_QUALIDADE.md`, para o starter receber; Decision 1 do DESIGN) e **script irmão novo** (não um modo do `seguranca-varredura.sh`: a taxonomia de stack é outra). Integrado em AT-004, AT-005.
 - [x] (sinal de conclusão) D7 — Refatorar depois do verde vem ligado? → Ligado, `build.refatorar: false` desliga. Sai o "desligado no modo `lite`": a `sdd-build` não tem esse modo (o `lite` é perfil dos laços da `sdd-loop-builder`). Integrado em AT-015.
 
@@ -159,8 +181,15 @@ O efeito é código que passa no gate com erro de estilo, de tipos e helper dupl
 - [x] (escopo) Como o `report-lint.py` cobra o vermelho antes sem reprovar todo relatório antigo? → Pela coluna `Antes` da tabela de critérios: com ela, a cobrança é estrita; sem ela, aviso (AT-012). Mesmo molde da linha `lint: slot vazio` da S1 (Decision 3). Decidido pelo agente com a recomendação, dentro de D3.
 - [x] (escopo) A sabotagem confere a cópia limpa antes? → Sim: vermelho com a sabotagem só prova algo se o comando passa sem ela (AT-013, AT-014). Decidido pelo agente.
 
+### Session 2026-11-25 (S3, iterate)
+
+- [x] (escopo) Quando a falta da seção reprova? → Com o mapa `qualidade:` no config (projeto criado ou atualizado para a S3); sem ele, aviso. O mesmo molde das Decisions 3 e 8 (AT-021). Decidido pelo agente com a recomendação, dentro do ESCOPO ("o `report-lint.py` exige só que a seção exista").
+- [x] (escopo) Função "nova ou alterada"? → A que tem ao menos uma linha no diff; par duplicado, idem em pelo menos um dos lados (AT-019). Decidido pelo agente.
+- [x] (restrições) Ferramenta que falha no meio? → "não medido" com a causa, exit 0: a métrica nunca segura o Build (AT-018). Decidido pelo agente.
+
 ### Segurança
 
+- S3: o `metricas-diff.sh` roda duas ferramentas locais do PATH sobre arquivos do projeto, sem rede, sem instalar e sem gravar na árvore (a saída temporária fica numa pasta de `mktemp`, apagada ao sair). O `jscpd` recebe um config próprio vazio, para o `.jscpd.json` do projeto não mudar a medição. Nomes de arquivo e de função entram na seção sem quebra de linha nem crase.
 - S1: N.A. — scripts locais que só leem o projeto (o `checar.sh` não instala nem grava); sem login, rota, dado de terceiros ou chamada paga. A fatia S2 trata a única superfície (sabotagem em cópia descartável).
 - S2: a superfície é o `sabotagem.sh`, que roda um comando do projeto e troca texto num arquivo. Ele roda na cópia de `git archive HEAD` numa pasta temporária, recusa caminho absoluto ou com `..` (AT-014), apaga a cópia ao sair (também por sinal) e deixa a árvore de trabalho idêntica, fora o log (AT-013, hash conferido no teste). O comando vem do DESIGN do próprio projeto, como o do Verify Gate: nenhum dado de terceiros, rede ou chamada paga.
 
@@ -171,7 +200,7 @@ O efeito é código que passa no gate com erro de estilo, de tipos e helper dupl
 ```yaml
 verify_gate:
   kind: test
-  cmd: "! grep -rlE 'Não cite nem resuma|comece com esta linha|versão atual: http' .agents/skills && /usr/bin/python3 scripts/check-versions.py --base origin/main && T=$(mktemp -d) && git archive HEAD | tar -x -C $T && PUBLISH_GATE_MODE=ci bash scripts/publish-gate.sh $T && cd $T && test -f tests/test_f30_report_lint.py && test -f tests/test_f30_textos.py && test -f tests/test_f30_agents_qualidade.py && test -f tests/test_f30_checar_linter.py && test -f tests/test_f30_starter.py && test -f tests/test_f30_vermelho_antes.py && test -f tests/test_f30_sabotagem.py && test -f tests/test_f30_textos_s2.py && SDD_TEST_BASH=/bin/bash /usr/bin/python3 -B -m unittest discover -s tests -p 'test_f30_*.py' && SDD_TEST_BASH=/bin/bash /usr/bin/python3 -B -m unittest discover -s tests -p 'test_*.py'"
+  cmd: "! grep -rlE 'Não cite nem resuma|comece com esta linha|versão atual: http' .agents/skills && /usr/bin/python3 scripts/check-versions.py --base origin/main && T=$(mktemp -d) && git archive HEAD | tar -x -C $T && PUBLISH_GATE_MODE=ci bash scripts/publish-gate.sh $T && cd $T && test -f tests/test_f30_report_lint.py && test -f tests/test_f30_textos.py && test -f tests/test_f30_agents_qualidade.py && test -f tests/test_f30_checar_linter.py && test -f tests/test_f30_starter.py && test -f tests/test_f30_vermelho_antes.py && test -f tests/test_f30_sabotagem.py && test -f tests/test_f30_textos_s2.py && test -f tests/test_f30_metricas.py && test -f tests/test_f30_textos_s3.py && SDD_TEST_BASH=/bin/bash /usr/bin/python3 -B -m unittest discover -s tests -p 'test_f30_*.py' && SDD_TEST_BASH=/bin/bash /usr/bin/python3 -B -m unittest discover -s tests -p 'test_*.py'"
   pass_when: "exit 0"
   threshold: "—"
   manual_fallback: "—"
@@ -184,8 +213,10 @@ AT-008 em `tests/test_f30_starter.py` (gera o starter numa pasta temporária) e 
 suíte inteira, no `publish-gate` e no `check-versions.py`. S2: AT-010 a AT-012 em `tests/test_f30_vermelho_antes.py`;
 AT-013 e AT-014 em `tests/test_f30_sabotagem.py` (repositório git temporário; hash da árvore antes e depois); AT-015 em
 `tests/test_f30_textos_s2.py` (inclui o starter gerado numa pasta temporária); AT-016 na suíte inteira, no
-`publish-gate` e no `check-versions.py`. O gate roda sobre o que está commitado (`git archive
-HEAD`). Baseline vermelho: os 5 `test -f` da S1 (e os 3 da S2) saem 1 antes do código. Eles existem porque, no Python 3.9 do sistema, o `discover` sem nenhum teste sai 0 (medido em 2026-11-23: "Ran 0 tests … OK"), e assim não provaria nada (LM-002).
+`publish-gate` e no `check-versions.py`. S3: AT-017 a AT-021 em `tests/test_f30_metricas.py` (fixture de complexidade
+15 e bloco duplicado; PATH restrito sem as ferramentas; hash da árvore); AT-022 em `tests/test_f30_textos_s3.py` (inclui
+o starter gerado); AT-023 na suíte, no `publish-gate` e no `check-versions.py`. O gate roda sobre o que está commitado (`git archive
+HEAD`). Baseline vermelho: os 5 `test -f` da S1 (os 3 da S2 e os 2 da S3) saem 1 antes do código. Eles existem porque, no Python 3.9 do sistema, o `discover` sem nenhum teste sai 0 (medido em 2026-11-23: "Ran 0 tests … OK"), e assim não provaria nada (LM-002).
 
 ---
 
@@ -222,7 +253,7 @@ HEAD`). Baseline vermelho: os 5 `test -f` da S1 (e os 3 da S2) saem 1 antes do c
 | **LLM Prompts** | false | Muda texto de skill (instrução ao agente de desenvolvimento), não prompt que roda em produção; nenhum sinal forte |
 | **CONTEXTO de domínio** | nenhum (pulado: sem mapa de domínios em `sdd/patterns/dominio.md`; os achados com linha do ESCOPO §2 fazem esse papel) | — |
 | **Governança** | N.A. — não trata dinheiro, saldo, tributo, folha nem dado pessoal (texto de skill e scripts do método); N.A. decidido pelo Roberto no escopo da frente | 2026-11-23 |
-| **Segurança** | S1: N.A. — sem login, rota, dado de terceiros ou chamada paga. S2: só o `sabotagem.sh` (cópia descartável, caminho contido, árvore intacta; Clarifications § Segurança) | 2026-11-24 |
+| **Segurança** | S1: N.A. — sem login, rota, dado de terceiros ou chamada paga. S2: só o `sabotagem.sh` (cópia descartável, caminho contido, árvore intacta). S3: ferramentas locais só de leitura (Clarifications § Segurança) | 2026-11-25 |
 | **Desempenho** | N.A. — sem banco | 2026-11-23 |
 
 ---
@@ -246,14 +277,14 @@ HEAD`). Baseline vermelho: os 5 `test -f` da S1 (e os 3 da S2) saem 1 antes do c
 | Users | 3 | 3 personas com dor própria |
 | Goals | 3 | MUST/SHOULD por fatia |
 | Success | 3 | Contagens e exit codes |
-| Scope | 2 | S2 com ATs (AT-010 a AT-016); S3 decidida em D5, ATs por `sdd-iterate` |
-| **Total** | **14/15** | |
+| Scope | 3 | S1, S2 e S3 com ATs (AT-001 a AT-023) |
+| **Total** | **15/15** | |
 
 ---
 
 ## Open Questions
 
-None for S2 — ready for Design. S3: ATs por `sdd-iterate`, com D5 já registrada.
+None for S3 — ready for Design.
 
 ---
 
@@ -262,6 +293,7 @@ None for S2 — ready for Design. S3: ATs por `sdd-iterate`, com D5 já registra
 | Version | Date | Author | Changes |
 |---------|------|--------|---------|
 | 1.0 | 2026-11-23 | define-agent | S1 (itens 1, 3, 4) com D1–D7 decididas; S2 e S3 reservadas |
+| 1.6 | 2026-11-25 | iterate | S3 (itens 5, 8): AT-017 a AT-023, Clarifications da S3, `test -f` dos 2 testes novos no gate. Aditiva: S1 e S2 não mudam |
 | 1.5 | 2026-11-24 | iterate | S2 (itens 2, 6, 7): AT-010 a AT-016, Clarifications da S2, segurança do `sabotagem.sh`, `test -f` dos 3 testes novos no gate. Aditiva: a S1 não muda |
 | 1.4 | 2026-11-23 | build | AT-006: PHP sem `php -l` (achado 1 do avaliador, ciclo 1). O `php -l` confere um arquivo por chamada e não tem modo de projeto inteiro: no slot de tipos, que roda como está (Decision 4), ele leria a entrada padrão e travaria o Build. Fica o `phpcs` |
 | 1.3 | 2026-11-23 | build | AT-007: a tradução fica no passo dos slots da new-session, não na tabela do `--frente` (Decision 6: o `--frente` não fala de linter) |
@@ -272,5 +304,5 @@ None for S2 — ready for Design. S3: ATs por `sdd-iterate`, com D5 já registra
 
 ## Next Step
 
-**Ready for:** `/sdd-design sdd/features/DEFINE_F30_QUALIDADE_CODIGO.md` (S2). UX Review pulado: sem tela; o
+**Ready for:** `/sdd-design sdd/features/DEFINE_F30_QUALIDADE_CODIGO.md` (S3). UX Review pulado: sem tela; o
 texto ao aluno segue as `references/como-falar.md` das skills tocadas.
