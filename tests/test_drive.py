@@ -1394,7 +1394,7 @@ for volta in range(voltas):
         self.assertTodosZero(self.saidas(procs))
         self.assertEqual((raiz / "conta.txt").read_text(encoding="utf-8"), "1200", "gravação perdida: a trava não excluiu")
 
-    def segurador(self, recusas, erro=PermissionError, sistema="nt"):
+    def segurador(self, recusas, erro=PermissionError, sistema="nt", pasta=None):
         """segura_estado real, com a abertura recusada as N primeiras vezes e relógio falso: (motivo da falha, aberturas)."""
         import errno
         try:
@@ -1422,6 +1422,7 @@ for volta in range(voltas):
             raise Parou(motivo)
         falso = types.SimpleNamespace(**{n: getattr(os, n) for n in dir(os) if not n.startswith("__")})
         falso.open, falso.name = abre, sistema
+        falso.makedirs = pasta or os.makedirs
         g = dict(os=falso, errno=errno, fcntl=fcntl, msvcrt=msvcrt, falha=falha,
                  time=types.SimpleNamespace(time=lambda: agora[0], sleep=lambda s: agora.__setitem__(0, agora[0] + s)))
         exec(corpo, g)
@@ -1442,6 +1443,14 @@ for volta in range(voltas):
         self.assertIn("não consegui abrir a trava", motivo)
         self.assertGreater(n, 1)
         self.assertLess(gasto, 10)
+
+    def test_pasta_da_trava_recusada_nao_espera(self):
+        # revisão (LOW): a recusa do makedirs não é a da abertura; a mensagem tem de apontar a pasta
+        def recusa(*a, **k):
+            raise PermissionError(13, "Permission denied")
+        motivo, n, gasto = self.segurador(0, pasta=recusa)
+        self.assertIn("não consegui criar a pasta da trava", motivo)
+        self.assertEqual((n, gasto), (0, 0.0))
 
     def test_fora_do_windows_ou_outro_erro_desiste_na_hora(self):
         for caso in (dict(sistema="posix"), dict(erro=OSError, sistema="posix"), dict(erro=IsADirectoryError)):

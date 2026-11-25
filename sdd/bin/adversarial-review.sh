@@ -80,7 +80,7 @@ PROMPTS_VERSAO = "v2"                 # prompt vivo: <prompts>/v2/<papel>.md; ""
 RASO_SEGUNDOS = 30                    # revisor abaixo disso, com 0 achados, conta como raso
 DIFF_MAX_MB = 8                       # teto do diff congelado
 TENTATIVAS_429 = 3                    # 1 chamada + 2 novas tentativas no limite passageiro
-PASTAS_SDD = ("sdd/features", "sdd/reports", "sdd/reviews", "sdd/releases", "sdd/handoffs", "sdd/traces")
+PASTAS_SDD = ("sdd/features", "sdd/reports", "sdd/reviews", "sdd/releases", "sdd/handoffs", "sdd/traces", "sdd/curadoria")
 
 # >>> termos-seguranca (a MESMA função está no adversarial-review.sh e no sdd-fluxo.sh; um teste compara os 2 trechos)
 TERMOS_SEGURANCA = frozenset((

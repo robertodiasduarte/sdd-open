@@ -373,6 +373,9 @@ def segura_estado(p):
     while True:
         try:
             os.makedirs(os.path.dirname(caminho), exist_ok=True)
+        except OSError as e:
+            falha("não consegui criar a pasta da trava %s: %s" % (rel, e), "confira a pasta e rode de novo; o estado ficou como estava.")
+        try:
             # só leitura: uma trava que sobrou de outro usuário (sudo) continua utilizável, e não há o que apagar.
             # O_NOFOLLOW: link no lugar da trava criaria arquivo fora do repositório (R1 de Claude, rodada 6)
             # F16W2: o Windows não tem O_NOFOLLOW; o link é recusado antes de abrir, em todo sistema

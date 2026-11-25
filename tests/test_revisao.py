@@ -219,6 +219,24 @@ class Diff(Base):
         self.assertEqual(m["diff_sha256"], hashlib.sha256(patch).hexdigest())
         self.assertEqual(self.git(r, "status", "--porcelain").count("?? src/novo.sh"), 1)
 
+    def test_exclui_a_fila_da_curadoria_acrescentada_e_apagada(self):
+        # o lote que apaga a fila (229 arquivos, 1,6 MB) derrubou o revisor; pasta de nome parecido segue no diff
+        r = self.projeto()
+        self.escreve(r, "sdd/curadoria/fila/F/1/colheita.txt", "velha\n")
+        self.commit(r)
+        base = self.git(r, "rev-parse", "HEAD").strip()
+        (r / "sdd/curadoria/fila/F/1/colheita.txt").unlink()
+        self.escreve(r, "sdd/curadoria/fila/G/2/colheita.txt", "nova\n")
+        self.escreve(r, "sdd/curadoria-x/a.sh", "echo a\n")
+        self.escreve(r, "src/outro.sh", "echo b\n")
+        rc, out = self.rev(r, "--reviewer", "stub-a", "--auditor", "stub-b", "--no-revisor2", "--base", base)
+        self.assertEqual(rc, 0, out)
+        patch = (self.pasta(r) / "diff.patch").read_bytes()
+        self.assertNotIn(b"sdd/curadoria/", patch)
+        self.assertIn(b"sdd/curadoria-x/a.sh", patch)
+        self.assertIn(b"src/outro.sh", patch)
+        self.assertEqual(self.ar(r, "--conferir")[0], 0)
+
     def test_paths_inclui_o_que_nomeia(self):
         r = self.projeto()
         self.escreve(r, "sdd/features/DESIGN_X.md", "design\n")
