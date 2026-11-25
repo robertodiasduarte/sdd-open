@@ -174,7 +174,7 @@ Nenhum.
 
 **Camadas do manifest:** 1 (o pacote não declara `layers:`)
 **Contrato de aceite (passo 1.5 da `sdd-build`):** N.A. (1 camada)
-**Veredito do avaliador (C1):** PASS (sobre `814a3a5`, antes dos consertos das rodadas 12 a 18) · ciclos: 1 · achados: 1 MED e 9 leves; aplicados M1, L3, L4, L7, L8 e L9; L6 documentado; ficam L1 (nome com aspas derruba a complexidade, com "não medido" honesto), L2 (causa imprecisa com saída vazia) e L5 (seção só com `---` conta como preenchida) · `AVALIACAO_F30_QUALIDADE_CODIGO_20261125-0720.md`
+**Veredito do avaliador (C1):** PASS (sobre `814a3a5`, antes dos consertos das rodadas 12 a 19) · ciclos: 1 · achados: 1 MED e 9 leves; aplicados M1, L3, L4, L7, L8 e L9; L6 documentado; ficam L1 (nome com aspas derruba a complexidade, com "não medido" honesto), L2 (causa imprecisa com saída vazia) e L5 (seção só com `---` conta como preenchida) · `AVALIACAO_F30_QUALIDADE_CODIGO_20261125-0720.md`
 
 ---
 
@@ -190,7 +190,7 @@ Nenhum.
 | AT-022 | When o Build termina as tarefas, os textos, moldes, config e o starter shall levar as métricas | `evidence/F30_QUALIDADE_CODIGO/AT-022.antes.log` | true | `evidence/F30_QUALIDADE_CODIGO/AT-022.log` |
 | AT-023 | The system shall continue to aprovar relatórios sem a seção em projeto sem `qualidade:` e passar os checks | `evidence/F30_QUALIDADE_CODIGO/AT-023.antes.log` | true | `evidence/F30_QUALIDADE_CODIGO/AT-023.log` |
 
-**Verify Gate (`bash sdd/bin/verify-gate.sh sdd/features/DEFINE_F30_QUALIDADE_CODIGO.md`):** a rodar sobre o código final.
+**Verify Gate (`bash sdd/bin/verify-gate.sh sdd/features/DEFINE_F30_QUALIDADE_CODIGO.md`):** exit 0 em `cd70bed` (`evidence/F30_QUALIDADE_CODIGO/GATE_S3_cd70bed.log`: suíte inteira, 2.947 testes, 7 pulados). Um gate em `ebd73d5` foi interrompido de propósito (a rodada 19 mudou o texto do guia).
 
 ---
 
@@ -209,14 +209,16 @@ Ledger completo em `sdd/reviews/LEDGER_REVISAO_F30_QUALIDADE_CODIGO.md` (seção
 | 16 | codex | 1 MED | APLICADA |
 | 17 | codex | 3 MED | APLICADA |
 | 18 | codex | nenhum | — |
+| 19 | codex | 1 MED | APLICADA |
+| 20 | codex | 1 LOW | REBATIDA_ESCOPO (pendência na ficha); CONFERE |
 
-`diversidade: vendor` em todas. Custo até a rodada 18: US$ 8,34. O script dispensou o 2º revisor por falta de superfície de risco; nenhuma dispensa à mão.
+`diversidade: vendor` em todas. Custo: US$ 10,44 (a do DESIGN e 10 do código). O script dispensou o 2º revisor por falta de superfície de risco; nenhuma dispensa à mão.
 
 ---
 
 ## Final Status
 
-### Overall: ✅ COMPLETE (falta o recibo do Verify Gate)
+### Overall: ✅ COMPLETE
 
 ## Next Step
 

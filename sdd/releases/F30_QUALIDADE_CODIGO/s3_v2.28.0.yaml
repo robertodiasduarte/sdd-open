@@ -1,0 +1,19 @@
+feature_id: F30_QUALIDADE_CODIGO
+slice_id: s3
+versao: 2.28.0
+data: 2026-11-25
+estado: shipado
+veredito: CONCERNS
+waived: null
+dod: "S3 (itens 5 e 8): Verify Gate verde em cd70bed (2.947 testes, 7 pulados, cópia de git archive com publish-gate, /bin/bash 3.2 e /usr/bin/python3 3.9); 7 de 7 ATs com log e AT-nnn.antes.log do mesmo comando (6 vermelhos, o AT-023 de não-regressão verde); 3 sabotagens declaradas no DESIGN pegas (AT-018, AT-019, AT-021); fixture rodada com lizard 1.26.1 e jscpd 5.4.3 reais; avaliador fresco PASS (ciclo 1, sobre 814a3a5, antes dos consertos das rodadas 12 a 19); revisão do DESIGN (3 MED aplicados) e 10 rodadas do código (11 a 20; a 18 sem achados, a 20 com 1 LOW adiado); raio de impacto com 5 testes antigos corrigidos"
+descricao: "Métricas do código novo, só aviso: sdd/bin/metricas-diff.sh mede complexidade (lizard) e duplicação (jscpd) só do que a frente trouxe, numa cópia temporária, e imprime a seção '## Qualidade (avisos)' do BUILD_REPORT; exit 0 sempre que mediu, 64 é uso; ferramenta ausente, quebrada ou com saída estranha é 'não medido' com a causa e o comando de instalar, e nada é instalado. Limites em qualidade.* (10, 60, 5, 50). O report-lint.py exige a seção quando o config tem o mapa qualidade:; sem o mapa, aviso; o conteúdo nunca reprova. O pre-commit passa a mostrar todas as linhas do lint no Windows. sdd-build 2.17.0"
+deploy: release automática pelo workflow release.yml (tag v2.28.0 posta à mão no commit)
+trilha: completa
+review_externo: sdd/reports/reviews/EXTERNAL_REVIEW_20261125-083347 sha256=091c40a8c23dbba9c67472614a050b0b62deb56931dc99cf18cb38d0d920ee9a diversidade=vendor
+avisos:
+  - "nota de atualização: projeto novo nasce com o mapa qualidade: no config, e o report-lint passa a exigir a seção; upgrade e sync não mesclam chaves, então projeto já instalado só recebe um aviso"
+  - "pendências leves: jscpd sem o campo tokens sai como '0 tokens' (rodada 20); nome de arquivo com aspas derruba a complexidade (dito como não medido); causa imprecisa quando o lizard sai vazio; seção só com '---' conta como preenchida; a sdd-release não cita a falta da seção entre as causas de abortar; com .vue, não dá para saber quais arquivos o jscpd leu"
+  - "o avaliador julgou 814a3a5, antes dos consertos das rodadas 12 a 19"
+  - "o conserto das unidades diferentes do Windows (D: e C:) tem só teste de texto; o CI não instala lizard nem jscpd e usa ferramentas falsas"
+  - "lint, drift, landmines, smoke e test-baseline pulados: o Open não tem sdd/config.yaml (a suíte inteira rodou no Verify Gate); segurança: NADA ACHADO; desempenho: sem banco"
+  - "custo das revisões: US$ 10,44 (DESIGN e 10 rodadas do código)"

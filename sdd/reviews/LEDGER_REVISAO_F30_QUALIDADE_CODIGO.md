@@ -242,3 +242,12 @@ revisor2: dispensado rodada=19 — sem superfície de risco (regra antiga: 21 ar
 | achado | sev | veredito | rodada | evidência | dano | revisão |
 |---|---|---|---|---|---|---|
 | R1 | MED | APLICADA | rodada=19 | `0f0ca16`; teste: test_referencia | nao | EXTERNAL_REVIEW_20261125-082447 |
+
+Revisão do código da S3, rodada 20 (`cd70bed`, base `fce8c61`): revisor `codex` (`gpt-6.1-sol`, 161 s), auditor `claude`;
+`diversidade: vendor`; US$ 1,05.
+
+revisor2: dispensado rodada=20 — sem superfície de risco (regra antiga: 21 arquivos (limiar 8))
+
+| achado | sev | veredito | rodada | evidência | dano | revisão |
+|---|---|---|---|---|---|---|
+| R1 | LOW | REBATIDA_ESCOPO | rodada=20 | procede, mas o `jscpd` real sempre grava `tokens`, e o número não decide nada (auditor); pendência na ficha | nao | EXTERNAL_REVIEW_20261125-083347 |
