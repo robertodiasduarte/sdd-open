@@ -342,6 +342,7 @@ def confere_dentro(p):
 
 _ESTADO_PEGO = None  # (descritor, caminho)
 ESPERA_ESTADO = 70
+ESPERA_ABERTURA = 5
 
 
 def _tranca(fd):
@@ -368,6 +369,7 @@ def segura_estado(p):
     caminho = p.p("sdd/reports/progress/DRIVE_%s.estado.lock" % p.feature)
     rel = os.path.relpath(caminho, p.raiz).replace(os.sep, "/")   # F16W2: a mensagem com "/" também no Windows
     limite_espera = time.time() + ESPERA_ESTADO
+    recusada_desde = None
     while True:
         try:
             os.makedirs(os.path.dirname(caminho), exist_ok=True)
@@ -377,7 +379,16 @@ def segura_estado(p):
             if os.path.islink(caminho):
                 raise OSError("a trava é um link (abri-la criaria arquivo fora do repositório)")
             fd = os.open(caminho, os.O_RDONLY | os.O_CREAT | getattr(os, "O_NOFOLLOW", 0), 0o644)
+            recusada_desde = None
         except OSError as e:
+            # no Windows, quem larga apaga a trava, e abri-la naquele instante é recusado: passa sozinho. Recusa seguida
+            # por ESPERA_ABERTURA s é permissão de verdade
+            if os.name == "nt" and isinstance(e, PermissionError):
+                agora = time.time()
+                recusada_desde = agora if recusada_desde is None else recusada_desde
+                if agora - recusada_desde < ESPERA_ABERTURA and agora < limite_espera:
+                    time.sleep(0.05)
+                    continue
             falha("não consegui abrir a trava %s: %s" % (rel, e), "apague %s e rode de novo; o estado ficou como estava." % rel)
         try:
             pego = _tranca(fd)
