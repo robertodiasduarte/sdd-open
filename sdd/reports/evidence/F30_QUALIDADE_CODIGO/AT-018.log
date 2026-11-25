@@ -3,6 +3,8 @@ test_arquivo_antigo_grande_e_dito (test_f30_metricas.AT018NaoMedido)
 Revisão do código, rodada 2, R3: o par que não pôde ser comparado não vira "nada achado". ... ok
 test_arquivo_sem_leitura_e_dito (test_f30_metricas.AT018NaoMedido) ... ok
 test_as_duas_ausentes (test_f30_metricas.AT018NaoMedido) ... ok
+test_bloco_de_vue_nao_compensa_arquivo_nao_lido (test_f30_metricas.AT018NaoMedido)
+Revisão do código, rodada 7, N1: cada bloco do .vue é uma fonte; 3 fontes em 3 arquivos não provam os 3. ... ok
 test_config_do_projeto_nao_chega_a_ferramenta (test_f30_metricas.AT018NaoMedido)
 Revisão do DESIGN, N2: nem .jscpd.json, nem a chave jscpd do package.json, nem o .gitignore. ... ok
 test_ferramenta_que_falha (test_f30_metricas.AT018NaoMedido) ... ok
@@ -11,6 +13,7 @@ Revisão do DESIGN, N1: ler o resto do projeto não prova que o código novo foi
 test_jscpd_que_nao_grava_relatorio (test_f30_metricas.AT018NaoMedido) ... ok
 test_latin1_vai_em_utf8_e_o_nao_lido_e_dito (test_f30_metricas.AT018NaoMedido)
 Avaliador, M1: o jscpd pula calado o que não é UTF-8. ... ok
+test_mais_lidos_que_arquivos_e_ilegivel (test_f30_metricas.AT018NaoMedido) ... ok
 test_nome_do_jscpd_em_outra_forma (test_f30_metricas.AT018NaoMedido)
 Revisão do código, rodada 1, N1: o nome que não casa não pode sumir calado. ... ok
 test_numero_enorme_nao_derruba (test_f30_metricas.AT018NaoMedido)
@@ -25,7 +28,7 @@ test_tmpdir_relativo_e_apagado (test_f30_metricas.AT018NaoMedido)
 Revisão do código, rodada 3, R1. ... ok
 
 ----------------------------------------------------------------------
-Ran 16 tests in 39.768s
+Ran 18 tests in 50.642s
 
 OK
 [exit=0]

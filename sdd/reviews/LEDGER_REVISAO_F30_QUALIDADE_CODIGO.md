@@ -216,3 +216,14 @@ revisor2: dispensado rodada=16 — sem superfície de risco (regra antiga: 20 ar
 | achado | sev | veredito | rodada | evidência | dano | revisão |
 |---|---|---|---|---|---|---|
 | R1 | MED | APLICADA | rodada=16 | `574530a`; teste: test_saida_ilegivel | nao | EXTERNAL_REVIEW_20261125-075041 |
+
+Revisão do código da S3, rodada 17 (base `fce8c61`): revisor `codex` (`gpt-6.1-sol`, 256 s), auditor `claude`;
+`diversidade: vendor`; US$ 1,12. O R2 foi conferido com o jscpd 5.4.3: com o padrão, um trecho de 1 linha some.
+
+revisor2: dispensado rodada=17 — sem superfície de risco (regra antiga: 20 arquivos (limiar 8))
+
+| achado | sev | veredito | rodada | evidência | dano | revisão |
+|---|---|---|---|---|---|---|
+| R1 | MED | APLICADA | rodada=17 | `d721ca7`; teste: test_nome_do_jscpd_em_outra_forma | nao | EXTERNAL_REVIEW_20261125-075917 |
+| R2 | MED | APLICADA | rodada=17 | `d721ca7`: --min-lines 1; teste: test_limite_do_jscpd_e_config_proprio | nao | EXTERNAL_REVIEW_20261125-075917 |
+| N1 | MED | APLICADA | rodada=17 | `d721ca7`; teste: test_bloco_de_vue_nao_compensa_arquivo_nao_lido | nao | EXTERNAL_REVIEW_20261125-075917 |
