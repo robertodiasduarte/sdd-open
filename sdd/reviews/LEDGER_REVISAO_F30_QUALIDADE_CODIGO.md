@@ -251,3 +251,18 @@ revisor2: dispensado rodada=20 — sem superfície de risco (regra antiga: 21 ar
 | achado | sev | veredito | rodada | evidência | dano | revisão |
 |---|---|---|---|---|---|---|
 | R1 | LOW | REBATIDA_ESCOPO | rodada=20 | procede, mas o `jscpd` real sempre grava `tokens`, e o número não decide nada (auditor); pendência na ficha | nao | EXTERNAL_REVIEW_20261125-083347 |
+
+Correção do `sdd-drive` (v2.28.1), rodada 21 (recorte `sdd/bin tests` em `ad554a5`, base `e47c2ec`): revisor `codex`
+(`gpt-6.1-sol`, 28 s, raso), 2º revisor `openrouter:deepseek/deepseek-v4-pro`, auditor `claude`; `diversidade: vendor`;
+US$ 0,17. Antes dela, 3 tentativas não contaram: codex com o diff inteiro (1,6 MB pela fila da curadoria), codex raso e
+gemini sem login, e o qwen no teto de 15 min; US$ 0,37.
+
+| achado | sev | veredito | rodada | evidência | dano | revisão |
+|---|---|---|---|---|---|---|
+| R1@openrouter-deepseek-deepseek-v4-pro | LOW | APLICADA | rodada=21 | `8f79b76`; teste: test_pasta_da_trava_recusada_nao_espera | nao | EXTERNAL_REVIEW_20261125-154448 |
+
+Rodada 22 (`8f79b76`, diff inteiro sem `sdd/curadoria/`, decisão do Roberto): revisor `codex`, auditor `claude`;
+`diversidade: vendor`; US$ 0,35. Nenhum achado.
+
+revisor2: dispensado rodada=22 — sem superfície de risco
+sem achados: rodada=22 EXTERNAL_REVIEW_20261125-155416

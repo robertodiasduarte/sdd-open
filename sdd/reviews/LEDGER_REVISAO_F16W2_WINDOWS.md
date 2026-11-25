@@ -48,3 +48,5 @@ antes; custo US$ 2,5050 (claude 2,4486 nominal, qwen 0,0564). Completa; o audito
 | achado | sev | veredito | rodada | evidência | dano | revisão |
 |---|---|---|---|---|---|---|
 | R1 | MED | REBATIDA_EVIDENCIA | rodada=4 | pela 3ª vez: os 2 guards leem o stdin por `sys.stdin.buffer` em UTF-8 (`sdd-report-guard.py:85`, `sdd-avaliador-guard.py:55`; teste `test_report_guard_le_o_payload_em_utf8_cru_num_sistema_cp1252`); o stub `sdd/review/stubs/openrouter.py` não lê o stdin (grep sem ocorrência) | nao | EXTERNAL_REVIEW_20261115-040405 |
+
+escapou: commit=e2a1be8 · teste: test_disputa_pela_trava_nao_falha_nem_perde_gravacao · dano=disponibilidade — no Windows, a trava apagada ao largar (8a5a746) recusa a abertura de quem chega, e o verbo do sdd-drive saía 2 (CI 45634528055)

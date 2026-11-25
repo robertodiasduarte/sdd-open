@@ -1,0 +1,44 @@
+$ bash sdd/bin/verify-gate.sh --strict sdd/archive/F30_QUALIDADE_CODIGO/DEFINE_F30_QUALIDADE_CODIGO.md
+commit: 8f79b7654c64240aae8492495b38105ba6653c34
+▶ Verify Gate [test]: ! grep -rlE 'Não cite nem resuma|comece com esta linha|versão atual: http' .agents/skills && /usr/bin/python3 scripts/check-versions.py --base origin/main && T=$(mktemp -d) && git archive HEAD | tar -x -C $T && PUBLISH_GATE_MODE=ci bash scripts/publish-gate.sh $T && cd $T && test -f tests/test_f30_report_lint.py && test -f tests/test_f30_textos.py && test -f tests/test_f30_agents_qualidade.py && test -f tests/test_f30_checar_linter.py && test -f tests/test_f30_starter.py && test -f tests/test_f30_vermelho_antes.py && test -f tests/test_f30_sabotagem.py && test -f tests/test_f30_textos_s2.py && test -f tests/test_f30_metricas.py && test -f tests/test_f30_textos_s3.py && SDD_TEST_BASH=/bin/bash /usr/bin/python3 -B -m unittest discover -s tests -p 'test_f30_*.py' && SDD_TEST_BASH=/bin/bash /usr/bin/python3 -B -m unittest discover -s tests -p 'test_*.py'
+   │ PASS: check-versions — 24 skills com versão coerente, comparadas a origin/main.
+   │ RESULTADO: VERDE
+   │ → siga para o próximo passo.
+   │ publish-gate — tree: /tmp/tmp.f1Obk7tnWz — mode: ci
+   │ ──────────────────────────────────────────────────────────────────
+   │ G1 secrets (gitleaks)
+   │   ✅ no secrets detected
+   │ G2 forbidden patterns
+   │   ✅ no forbidden pattern matched
+   │ G3 allowlist (MANIFEST.txt)
+   │   ✅ tree and manifest match in both directions
+   │ G4 verify-gate exit contract
+   │   ✅ DEFINE_FIXTURE_NEEDS_CLARIFICATION.md → exit 5
+   │   ✅ DEFINE_FIXTURE_CONTROLE.md → exit 0
+   │   ✅ DEFINE_FIXTURE_SEM_BLOCO.md → exit 64
+   │ G5 documentation
+   │   ✅ docs present, cross-linked, attribution in place
+   │ ──────────────────────────────────────────────────────────────────
+   │ ✅ publish-gate GREEN — tree is publishable (human review of the file list still required)
+   │ ..........................s.....s...........................................................................................................................................
+   │ ----------------------------------------------------------------------
+   │ Ran 172 tests in 155.376s
+   │ 
+   │ OK (skipped=2)
+   │ ......................................s.............................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................s..........................................................................⏱ 11.6 s: /bin/bash /tmp/sdd-open-ddhtyzze/copia/sdd/bin/sdd-drive.sh --self-test (test_drive.SelfTest.test_fica_vermelho_num_script_quebrado_e_diz_o_caso)
+   │ .⏱ 11.5 s: /bin/bash /tmp/tmp.f1Obk7tnWz/sdd/bin/sdd-drive.sh --self-test (test_drive.SelfTest.test_nao_depende_da_configuracao_global_do_git)
+   │ .⏱ 12.1 s: /bin/bash /tmp/tmp.f1Obk7tnWz/sdd/bin/sdd-drive.sh --self-test (test_drive.SelfTest.test_verde_sem_git_e_sem_deixar_nada)
+   │ ........................................................................................................................................................................................................................................................................⏱ 14.5 s: /bin/bash /tmp/tmp.f1Obk7tnWz/bin/sdd-open.sh init --yes --vendors claude,codex (test_f16w2_processos.Contagem.test_init_lanca_no_maximo_3_programas_por_arquivo_gerado)
+   │ ...................................................................................................................................................................s.......................................................................................................................................................................................⏱ 11.1 s: /bin/bash /tmp/tmp.f1Obk7tnWz/sdd/bin/adversarial-review-gate.sh (test_f23b3_revisao.Raio.test_o_gate_offline_fica_verde_com_um_config_toml_real_no_home)
+   │ ............................................................................................s.....................................................................................................................................⏱ 10.3 s: /bin/bash /tmp/tmp.f1Obk7tnWz/.agents/skills/sdd-configurar-revisores/scripts/diagnosticar.sh --testar (test_f28_revisores.Testar.test_R19_teto_de_10_s_pela_chamada_inteira)
+   │ .....................................................s.....s..................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................s............................................................................................................................................................................................................................................................................................................................................................................................................................................⏱ 23.2 s: /bin/bash /tmp/sdd-open-0j5a_nzh/pkg/sdd/bin/adversarial-review-gate.sh (test_revisao_gate.Gate.test_sabotagem_custo_do_claude)
+   │ .⏱ 12.1 s: /bin/bash /tmp/sdd-open-k2kv_gz9/pkg/sdd/bin/adversarial-review-gate.sh (test_revisao_gate.Gate.test_sabotagem_exclusao_dentro_do_papel)
+   │ .......................................................................................................................................................................................................................................................................................................................................................................................................................
+   │ ----------------------------------------------------------------------
+   │ Ran 2953 tests in 2682.020s
+   │ 
+   │ OK (skipped=7)
+✅ GATE VERDE (test) — pass_when: 'exit 0' satisfeito (rc=0).
+RESULTADO: VERDE
+→ siga para o próximo passo.
+[exit=0]
