@@ -1,0 +1,69 @@
+$ /usr/bin/python3 -B achados.py
+# A1 contagem no fim da linha (o formato ensinado) x leitor que pega a primeira
+DIVERGE A1a titulo cita 0/0, contagem do fim FAIL 2 | esperado: 0 aviso(s), exit 0 | observado: 1 aviso(s), exit velho=0 novo=0, resto da saida igual=True
+      ⚠️  [casos avaliados] AT-001: `evidence/EX/AT-001.antes.log` diz `PASS 0 · FAIL 0` na linha do AT: nenhum caso avaliado. Escreva o teste dele (se o módulo ainda não existia, conte o erro de carga em FAIL) e grave o antes de novo
+      > ⚠️  N.A. aceito sem conferir camadas — `layers:` do sdd/config.yaml sem nenhum glob preenchido; preencha `layers:` em sdd/config.yaml para a contagem valer
+      > ⚠️  lint e tipos com o slot vazio (project.lint_cmd e project.typecheck_cmd), e o relatório não diz isso: escreva a linha `lint: slot vazio`
+      > ⚠️  o relatório não tem a seção `## Qualidade (avisos)` preenchida (métricas do código novo, desde a v2.28.0): rode sdd/bin/metricas-diff.sh e cole a saída
+      > ⚠️  [casos avaliados] AT-001: `evidence/EX/AT-001.antes.log` diz `PASS 0 · FAIL 0` na linha do AT: nenhum caso avaliado. Escreva o teste dele (se o módulo ainda não existia, conte o erro de carga em FAIL) e grave o antes de novo
+      > ✅ sdd/reports/BUILD_REPORT_EX.md: todo `true` tem evidência abrível e a avaliação está provada ou declarada
+      > RESULTADO: VERDE
+      > → o relatório pode ser commitado.
+DIVERGE A1b titulo cita o FAIL 3 do AT-002, contagem do fim 0/0 | esperado: 1 aviso(s), exit 0 | observado: 0 aviso(s), exit velho=0 novo=0, resto da saida igual=True
+      > ⚠️  N.A. aceito sem conferir camadas — `layers:` do sdd/config.yaml sem nenhum glob preenchido; preencha `layers:` em sdd/config.yaml para a contagem valer
+      > ⚠️  lint e tipos com o slot vazio (project.lint_cmd e project.typecheck_cmd), e o relatório não diz isso: escreva a linha `lint: slot vazio`
+      > ⚠️  o relatório não tem a seção `## Qualidade (avisos)` preenchida (métricas do código novo, desde a v2.28.0): rode sdd/bin/metricas-diff.sh e cole a saída
+      > ✅ sdd/reports/BUILD_REPORT_EX.md: todo `true` tem evidência abrível e a avaliação está provada ou declarada
+      > RESULTADO: VERDE
+      > → o relatório pode ser commitado.
+# A2 o mesmo AT em 2 tabelas, comando so dele
+DIVERGE A2 | esperado: 0 aviso(s), exit 0 | observado: 1 aviso(s), exit velho=0 novo=0, resto da saida igual=True
+      ⚠️  [casos avaliados] AT-001, AT-001: o antes roda `python -m unittest t.A`, o mesmo comando de outro AT, e o log não tem a linha `AT-nnn … (PASS n · FAIL n)`: o vermelho pode ser de outro AT
+      > ⚠️  N.A. aceito sem conferir camadas — `layers:` do sdd/config.yaml sem nenhum glob preenchido; preencha `layers:` em sdd/config.yaml para a contagem valer
+      > ⚠️  lint e tipos com o slot vazio (project.lint_cmd e project.typecheck_cmd), e o relatório não diz isso: escreva a linha `lint: slot vazio`
+      > ⚠️  o relatório não tem a seção `## Qualidade (avisos)` preenchida (métricas do código novo, desde a v2.28.0): rode sdd/bin/metricas-diff.sh e cole a saída
+      > ⚠️  [casos avaliados] AT-001, AT-001: o antes roda `python -m unittest t.A`, o mesmo comando de outro AT, e o log não tem a linha `AT-nnn … (PASS n · FAIL n)`: o vermelho pode ser de outro AT
+      > ✅ sdd/reports/BUILD_REPORT_EX.md: todo `true` tem evidência abrível e a avaliação está provada ou declarada
+      > RESULTADO: VERDE
+      > → o relatório pode ser commitado.
+# A3 antes recusado cala o aviso do AT-nnn.log final 0/0
+DIVERGE A3a antes nao citado | esperado: 1 aviso(s), exit 1 | observado: 0 aviso(s), exit velho=1 novo=1, resto da saida igual=True
+      > 🛑 [vermelho antes] AT-001: a coluna `Antes` não cita `evidence/EX/AT-001.antes.log`
+      > RESULTADO: VERMELHO
+      > → rode o comando do AT antes do código e grave `evidence/EX/AT-nnn.antes.log` (vermelho; `shall continue to`: verde), citado na coluna `Antes`; gate fora de `test`/`cmd`: `N.A. (<motivo>)`.
+      > ⚠️  N.A. aceito sem conferir camadas — `layers:` do sdd/config.yaml sem nenhum glob preenchido; preencha `layers:` em sdd/config.yaml para a contagem valer
+      > ⚠️  lint e tipos com o slot vazio (project.lint_cmd e project.typecheck_cmd), e o relatório não diz isso: escreva a linha `lint: slot vazio`
+      > ⚠️  o relatório não tem a seção `## Qualidade (avisos)` preenchida (métricas do código novo, desde a v2.28.0): rode sdd/bin/metricas-diff.sh e cole a saída
+DIVERGE A3b antes [exit=0] em AT novo | esperado: 1 aviso(s), exit 1 | observado: 0 aviso(s), exit velho=1 novo=1, resto da saida igual=True
+      > 🛑 [vermelho antes] AT-001: `evidence/EX/AT-001.antes.log` terminou em `[exit=0]`: o antes de um AT de comportamento novo tem de falhar
+      > RESULTADO: VERMELHO
+      > → rode o comando do AT antes do código e grave `evidence/EX/AT-nnn.antes.log` (vermelho; `shall continue to`: verde), citado na coluna `Antes`; gate fora de `test`/`cmd`: `N.A. (<motivo>)`.
+      > ⚠️  N.A. aceito sem conferir camadas — `layers:` do sdd/config.yaml sem nenhum glob preenchido; preencha `layers:` em sdd/config.yaml para a contagem valer
+      > ⚠️  lint e tipos com o slot vazio (project.lint_cmd e project.typecheck_cmd), e o relatório não diz isso: escreva a linha `lint: slot vazio`
+      > ⚠️  o relatório não tem a seção `## Qualidade (avisos)` preenchida (métricas do código novo, desde a v2.28.0): rode sdd/bin/metricas-diff.sh e cole a saída
+DIVERGE A3c comando compartilhado com AT de antes recusado | esperado: 1 aviso(s), exit 1 | observado: 0 aviso(s), exit velho=1 novo=1, resto da saida igual=True
+      > 🛑 [vermelho antes] AT-002: `evidence/EX/AT-002.antes.log` terminou em `[exit=0]`: o antes de um AT de comportamento novo tem de falhar
+      > RESULTADO: VERMELHO
+      > → rode o comando do AT antes do código e grave `evidence/EX/AT-nnn.antes.log` (vermelho; `shall continue to`: verde), citado na coluna `Antes`; gate fora de `test`/`cmd`: `N.A. (<motivo>)`.
+      > ⚠️  N.A. aceito sem conferir camadas — `layers:` do sdd/config.yaml sem nenhum glob preenchido; preencha `layers:` em sdd/config.yaml para a contagem valer
+      > ⚠️  lint e tipos com o slot vazio (project.lint_cmd e project.typecheck_cmd), e o relatório não diz isso: escreva a linha `lint: slot vazio`
+      > ⚠️  o relatório não tem a seção `## Qualidade (avisos)` preenchida (métricas do código novo, desde a v2.28.0): rode sdd/bin/metricas-diff.sh e cole a saída
+# A4 evidencia cita primeiro o AT-001.log de outra feature
+DIVERGE A4 | esperado: 1 aviso(s), exit 0 | observado: 0 aviso(s), exit velho=0 novo=0, resto da saida igual=True
+      > ⚠️  N.A. aceito sem conferir camadas — `layers:` do sdd/config.yaml sem nenhum glob preenchido; preencha `layers:` em sdd/config.yaml para a contagem valer
+      > ⚠️  lint e tipos com o slot vazio (project.lint_cmd e project.typecheck_cmd), e o relatório não diz isso: escreva a linha `lint: slot vazio`
+      > ⚠️  o relatório não tem a seção `## Qualidade (avisos)` preenchida (métricas do código novo, desde a v2.28.0): rode sdd/bin/metricas-diff.sh e cole a saída
+      > ✅ sdd/reports/BUILD_REPORT_EX.md: todo `true` tem evidência abrível e a avaliação está provada ou declarada
+      > RESULTADO: VERDE
+      > → o relatório pode ser commitado.
+# A5 letra acentuada antes do id nao e marca
+DIVERGE A5 | esperado: 0 aviso(s), exit 0 | observado: 1 aviso(s), exit velho=0 novo=0, resto da saida igual=True
+      ⚠️  [casos avaliados] AT-001: `evidence/EX/AT-001.antes.log` diz `PASS 0 · FAIL 0` na linha do AT: nenhum caso avaliado. Escreva o teste dele (se o módulo ainda não existia, conte o erro de carga em FAIL) e grave o antes de novo
+      > ⚠️  N.A. aceito sem conferir camadas — `layers:` do sdd/config.yaml sem nenhum glob preenchido; preencha `layers:` em sdd/config.yaml para a contagem valer
+      > ⚠️  lint e tipos com o slot vazio (project.lint_cmd e project.typecheck_cmd), e o relatório não diz isso: escreva a linha `lint: slot vazio`
+      > ⚠️  o relatório não tem a seção `## Qualidade (avisos)` preenchida (métricas do código novo, desde a v2.28.0): rode sdd/bin/metricas-diff.sh e cole a saída
+      > ⚠️  [casos avaliados] AT-001: `evidence/EX/AT-001.antes.log` diz `PASS 0 · FAIL 0` na linha do AT: nenhum caso avaliado. Escreva o teste dele (se o módulo ainda não existia, conte o erro de carga em FAIL) e grave o antes de novo
+      > ✅ sdd/reports/BUILD_REPORT_EX.md: todo `true` tem evidência abrível e a avaliação está provada ou declarada
+      > RESULTADO: VERDE
+      > → o relatório pode ser commitado.
+[exit=0]

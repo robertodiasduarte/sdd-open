@@ -1,0 +1,60 @@
+$ cat sondas2.py achados.py rel51.sh at006.py
+import sys; sys.argv=[sys.argv[0],"004"] if len(sys.argv)<2 else sys.argv
+import io,contextlib,os
+src=open(os.path.join(os.path.dirname(os.path.abspath(__file__)),"sondas.py"),encoding="utf-8").read().rsplit("globals()",1)[0]
+exec(compile(src,"sondas.py","exec"))
+caso("evidencia cita log de OUTRA feature antes do proprio 0/0",[("AT-001","`evidence/EX/AT-001.antes.log`","`evidence/OUTRA/AT-001.log` · `evidence/EX/AT-001.log`","true")],{"AT-001.antes.log":log(L("AT-001",F1)),"AT-001.log":log(L("AT-001",Z),0)},1)
+caso("comando contem 'não conferida' (2 ATs)",["AT-001","AT-002"],{"AT-001.antes.log":log("b\n",1,"t -k 'conta não conferida'"),"AT-002.antes.log":log("b\n",1,"t -k 'conta não conferida'")},1)
+caso("tput sgr0 antes do id",["AT-001"],{"AT-001.antes.log":log("\x1b(B\x1b[mAT-001 %s\n"%Z)},1)
+caso("cor 24 bits com dois-pontos",["AT-001"],{"AT-001.antes.log":log("\x1b[38:2::1:2:3m AT-001 %s\n"%Z)},1)
+caso("log com retorno de carro de progresso antes da linha",["AT-001"],{"AT-001.antes.log":log("....\rAT-001 %s\n"%Z)},1)
+caso("byte NUL e lixo binario",["AT-001"],{"AT-001.antes.log":b"$ bash gate.sh\n\x00\xff\xfe\n"+("AT-001 %s\n[exit=1]\n"%Z).encode()},1)
+caso("log de 200 mil linhas com 1 linha do AT",["AT-001"],{"AT-001.antes.log":log("lixo AT-001 PASS\n"*200000+L("AT-001",Z))},1,mostra=False)
+caso("linha de 2 MB",["AT-001"],{"AT-001.antes.log":log("AT-001 "+"PASS "*400000+"\n")},0,mostra=False)
+caso("contagem com 5000 digitos",["AT-001"],{"AT-001.antes.log":log("AT-001 (PASS %s · FAIL 0)\n"%("9"*5000))},1,mostra=False)
+caso("BOM no inicio: violacao igual",["AT-001"],{"AT-001.antes.log":b"\xef\xbb\xbf"+log(L("AT-001",Z)).encode(),"AT-001.log":log("x\n",0)},0,1)
+caso("palavra entre PASS e FAIL nao conta",["AT-001"],{"AT-001.antes.log":log("AT-001 PASS 0 e FAIL 0\n")},0)
+caso("mojibake da marca ✅ (âœ…)",["AT-001"],{"AT-001.antes.log":log("âœ… AT-001 (PASS 0 Â· FAIL 0)\n")},1)
+import os
+src=open(os.path.join(os.path.dirname(os.path.abspath(__file__)),"sondas.py"),encoding="utf-8").read().rsplit("globals()",1)[0]
+exec(compile(src,"sondas.py","exec"))
+print("# A1 contagem no fim da linha (o formato ensinado) x leitor que pega a primeira")
+caso("A1a titulo cita 0/0, contagem do fim FAIL 2",["AT-001"],{"AT-001.antes.log":log("AT-001 ❌ avisa quando a linha diz PASS 0 · FAIL 0 (PASS 0 · FAIL 2)\n")},0)
+caso("A1b titulo cita o FAIL 3 do AT-002, contagem do fim 0/0",["AT-001"],{"AT-001.antes.log":log("AT-001 ❌ ignora AT-002 PASS 0 · FAIL 3 (PASS 0 · FAIL 0)\n")},1)
+print("# A2 o mesmo AT em 2 tabelas, comando so dele")
+caso("A2",["AT-001"],{"AT-001.antes.log":log("ImportError\n",1,"python -m unittest t.A")},0,tabelas=2)
+print("# A3 antes recusado cala o aviso do AT-nnn.log final 0/0")
+caso("A3a antes nao citado",[("AT-001","—","`evidence/EX/AT-001.log`","true")],{"AT-001.log":log(L("AT-001",Z),0)},1,1)
+caso("A3b antes [exit=0] em AT novo",["AT-001"],{"AT-001.antes.log":log(L("AT-001",F1),0),"AT-001.log":log(L("AT-001",Z),0)},1,1)
+caso("A3c comando compartilhado com AT de antes recusado",["AT-001","AT-002"],{"AT-001.antes.log":log("boom\n"),"AT-002.antes.log":log("ok\n",0)},1,1)
+print("# A4 evidencia cita primeiro o AT-001.log de outra feature")
+caso("A4",[("AT-001","`evidence/EX/AT-001.antes.log`","`evidence/OUTRA/AT-001.log` · `evidence/EX/AT-001.log`","true")],{"AT-001.antes.log":log(L("AT-001",F1)),"AT-001.log":log(L("AT-001",Z),0)},1)
+print("# A5 letra acentuada antes do id nao e marca")
+caso("A5",["AT-001"],{"AT-001.antes.log":log("é AT-001 (PASS 0 · FAIL 0)\n")},0)
+cd "$(dirname "$0")/cl" || exit 1
+D=$(cd .. && pwd); n=0; dif=0; novos=0; antes=0
+for r in $(git ls-files | grep '/BUILD_REPORT_[^/]*\.md$' | grep -v -e '^\.agents/' -e '^sdd/templates/'); do
+  a=$(/usr/bin/python3 -B $D/lint_old.py $r 2>&1); ra=$?
+  b=$(/usr/bin/python3 -B $D/lint_new.py $r 2>&1); rb=$?
+  n=$((n+1)); [ "$ra" = "$rb" ] && [ "$a" = "$b" ] || { dif=$((dif+1)); echo "DIF $r $ra $rb"; }
+  k=$(printf '%s\n' "$b" | grep -c 'casos avaliados'); novos=$((novos+k))
+  echo "$ra $rb avisos_novos=$k $r"
+done
+echo "relatorios=$n diferentes=$dif avisos_da_classe_nova=$novos"
+import importlib.util,re,sys,os,tempfile
+W=sys.argv[1]
+sp=importlib.util.spec_from_file_location("rl",W+"/sdd/bin/report-lint.py"); m=importlib.util.module_from_spec(sp); sp.loader.exec_module(m)
+ruim=0
+for p in (".agents/skills/sdd-define/SKILL.md",".agents/skills/sdd-build/web/references/disciplina-de-teste.md","sdd/templates/fragments/EVIDENCIA.md"):
+    t=open(W+"/"+p,encoding="utf-8").read()
+    ex=re.findall(r"`(AT-\d+[^`]*PASS[^`]*FAIL[^`]*)`",t)
+    carga="erro de carga" in t and "FAIL" in t
+    for e in ex:
+        f=tempfile.mktemp(); open(f,"w",encoding="utf-8").write("$ x\n%s\n[exit=1]\n"%e)
+        c=m.contagem_do_at(f,e.split()[0]); os.unlink(f); print(p,"|",e,"| leitor:",c)
+        ruim+= c is None
+    print(p,"| exemplos:",len(ex),"| cita erro de carga:",carga,"| linhas:",t.count("\n"),"| cita sdd/bin:","sdd/bin/report-lint" in t)
+    ruim+= not ex or not carga
+    if "disciplina" in p: ruim+= "sdd/bin" in t
+print("ruim =",ruim); sys.exit(bool(ruim))
+[exit=0]

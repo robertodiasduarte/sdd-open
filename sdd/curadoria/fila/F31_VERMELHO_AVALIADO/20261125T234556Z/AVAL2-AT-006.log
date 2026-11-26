@@ -1,0 +1,9 @@
+$ python3 -B at006.py .
+.agents/skills/sdd-define/SKILL.md | AT-001 ❌ saque acima do saldo (PASS 0 · FAIL 2) | leitor: (0, 2)
+.agents/skills/sdd-define/SKILL.md | exemplos: 1 | cita erro de carga: True | linhas: 447 | cita sdd/bin: False
+.agents/skills/sdd-build/web/references/disciplina-de-teste.md | AT-001 ❌ saque acima do saldo (PASS 0 · FAIL 2) | leitor: (0, 2)
+.agents/skills/sdd-build/web/references/disciplina-de-teste.md | exemplos: 1 | cita erro de carga: True | linhas: 64 | cita sdd/bin: False
+sdd/templates/fragments/EVIDENCIA.md | AT-001 ❌ saque acima do saldo (PASS 0 · FAIL 2) | leitor: (0, 2)
+sdd/templates/fragments/EVIDENCIA.md | exemplos: 1 | cita erro de carga: True | linhas: 187 | cita sdd/bin: True
+ruim = 0
+[exit=0]

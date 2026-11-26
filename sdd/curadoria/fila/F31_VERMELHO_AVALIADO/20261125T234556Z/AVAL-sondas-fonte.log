@@ -1,0 +1,162 @@
+$ cat sondas.py
+"""Sondas F31. uso: sondas.py <GRUPO>. Cada caso roda o lint de c747662 (VELHO) e o de HEAD (NOVO) no mesmo sandbox."""
+import os, shutil, subprocess, sys, tempfile
+AQ=os.path.dirname(os.path.abspath(__file__))
+OLD,NEW=os.path.join(AQ,"lint_old.py"),os.path.join(AQ,"lint_new.py")
+EV="sdd/reports/evidence/EX/"
+CMD="bash gate.sh"
+D=u"·"
+def define():
+    rows=""
+    for i in range(1,10):
+        rows+="| AT-00%d | Event-driven | **When** x, the system **shall** y | test |\n"%i
+    rows+="| AT-0010 | Event-driven | **When** x, the system **shall** y | test |\n"
+    rows+="| AT-001b | Event-driven | **When** x, the system **shall** y | cmd |\n"
+    rows+="| AT-020 | Non-regression | The system **shall continue to** z | test |\n"
+    rows+="| AT-030 | Event-driven | **When** x, the system **shall** y | manual-ux |\n"
+    rows+="| AT-031 | Event-driven | **When** x, the system **shall** y | smoke |\n"
+    return "# DEFINE\n\n| ID | Padrão | Critério (EARS) | Gate (`kind`) |\n|--|--|--|--|\n"+rows+"\n## Verify Gate\n\n```yaml\nverify_gate:\n  kind: test\n```\n"
+def log(corpo="",rc=1,cmd=CMD): return "$ %s\n%s[exit=%d]\n"%(cmd,corpo,rc)
+def caso(nome,ats,logs,esperado,esp_rc=0,cab=True,env=None,mostra=True,tabelas=1,extra=""):
+    """ats: lista de ids ou (id, celula antes, celula evid, resultado). logs: {nome: str|bytes}. esperado: nº de avisos [casos avaliados]."""
+    r=tempfile.mkdtemp(prefix="f31-"); 
+    try:
+        subprocess.run(["git","init","-q",r],check=True)
+        def w(p,c):
+            p=os.path.join(r,p); os.makedirs(os.path.dirname(p),exist_ok=True)
+            open(p,"wb").write(c if isinstance(c,bytes) else c.encode("utf-8"))
+        w("sdd/features/DEFINE_EX.md",define())
+        linhas=""
+        for a in ats:
+            if isinstance(a,str): a=(a,"`evidence/EX/%s.antes.log`"%a,"`evidence/EX/%s.log`"%a,"true")
+            at,an,ev,res=a
+            linhas+=("| %s | x | %s | %s | %s |\n"%(at,an,res,ev)) if cab else ("| %s | x | %s | %s |\n"%(at,res,ev))
+            if at+".log" not in logs: logs=dict(logs,**{at+".log":log("ok\n",0,(lambda b:(b if isinstance(b,str) else b.decode("cp1252","replace")).splitlines()[0][2:].strip())(logs.get(at+".antes.log","$ "+CMD)))})
+        for n,c in logs.items(): w(EV+n,c)
+        h="| ID | Critério | Antes | Resultado | Evidência |\n|--|--|--|--|--|\n" if cab else "| ID | Critério | Resultado | Evidência |\n|--|--|--|--|\n"
+        w("sdd/reports/BUILD_REPORT_EX.md","# B\n\n"+(("## t\n\n"+h+linhas+"\n")*tabelas)+extra+"\navaliador: N.A. (1 camada)\n")
+        def roda(s):
+            p=subprocess.run([sys.executable,"-B",s,"sdd/reports/BUILD_REPORT_EX.md"],cwd=r,stdout=subprocess.PIPE,stderr=subprocess.STDOUT,env=dict(os.environ,**(env or {})))
+            return p.returncode,p.stdout.decode("utf-8","replace")
+        ro,oo=roda(OLD); rn,on=roda(NEW)
+        av=[l for l in on.splitlines() if "[casos avaliados]" in l]
+        outros=lambda o:[l for l in o.splitlines() if "[casos avaliados]" not in l]
+        ok=len(av)==esperado and rn==ro==esp_rc and outros(oo)==outros(on)
+        print("%s %s | esperado: %d aviso(s), exit %d | observado: %d aviso(s), exit velho=%d novo=%d, resto da saida igual=%s"%("OK   " if ok else "DIVERGE",nome,esperado,esp_rc,len(av),ro,rn,outros(oo)==outros(on)))
+        if mostra:
+            for l in av: print("      "+l)
+        if not ok:
+            for l in on.splitlines(): print("      > "+l)
+    finally: shutil.rmtree(r,ignore_errors=True)
+Z="(PASS 0 %s FAIL 0)"%D; F1="(PASS 0 %s FAIL 1)"%D; F3="(PASS 0 %s FAIL 3)"%D; P2="(PASS 2 %s FAIL 0)"%D
+def L(at,c,m="❌"): return "%s %s caso x %s\n"%(at,m,c)
+def g_001():
+    caso("alvo: gate composto, AT-001 0/0, AT-005 FAIL 3",["AT-001"],{"AT-001.antes.log":log(L("AT-001",Z)+L("AT-005",F3),2)},1)
+    for rc in (1,2,3,64,124,125,128,255,-9): caso("exit=%d"%rc,["AT-001"],{"AT-001.antes.log":log(L("AT-001",Z),rc)},1,mostra=False)
+    for rc in (0,126,127): caso("exit=%d (violacao, como hoje)"%rc,["AT-001"],{"AT-001.antes.log":log(L("AT-001",Z),rc)},0,1)
+    caso("resultado false: nao confere",[("AT-001","—","—","false")],{"AT-001.antes.log":log(L("AT-001",Z))},0)
+    caso("duas linhas 0/0 somam 0/0",["AT-001"],{"AT-001.antes.log":log(L("AT-001",Z)*2)},1)
+    caso("0/0 e FAIL 2 somam FAIL 2",["AT-001"],{"AT-001.antes.log":log(L("AT-001",Z)+L("AT-001","(PASS 0 · FAIL 2)"))},0)
+    caso("gate kind cmd (AT-001b)",["AT-001b"],{"AT-001b.antes.log":log(L("AT-001b",Z))},1)
+    caso("com violacao de outro AT, exit segue 1",["AT-001",("AT-002","—","`evidence/EX/AT-002.log`","true")],{"AT-001.antes.log":log(L("AT-001",Z))},1,1)
+    caso("stdout ascii",["AT-001"],{"AT-001.antes.log":log(L("AT-001",Z))},1,env={"PYTHONIOENCODING":"ascii"},mostra=False)
+    caso("LC_ALL=C PYTHONUTF8=0",["AT-001"],{"AT-001.antes.log":log(L("AT-001",Z))},1,env={"LC_ALL":"C","PYTHONUTF8":"0","PYTHONCOERCECLOCALE":"0"},mostra=False)
+    caso("mesmo AT em 2 tabelas: 1 aviso",["AT-001"],{"AT-001.antes.log":log(L("AT-001",Z))},1,tabelas=2)
+    for m in ("✅","❌","-","*","•","✔","⚠️","[x]" ):
+        caso("marca antes do id: %r"%m,["AT-001"],{"AT-001.antes.log":log("%s AT-001 caso %s\n"%(m,Z))},1,mostra=False) if m!="[x]" else None
+    caso("indentado + tab",["AT-001"],{"AT-001.antes.log":log("\t  AT-001\tcaso\t%s\n"%Z)},1,mostra=False)
+    caso("id seguido de ':'",["AT-001"],{"AT-001.antes.log":log("AT-001: caso %s\n"%Z)},1,mostra=False)
+    caso("cor ANSI em tudo",["AT-001"],{"AT-001.antes.log":log("\x1b[1;31m❌\x1b[0m \x1b[1mAT-001\x1b[0m (\x1b[32mPASS 0\x1b[0m · \x1b[31mFAIL 0\x1b[0m)\n")},1,mostra=False)
+    caso("sem \\n antes de exit, linhas em branco ao fim",["AT-001"],{"AT-001.antes.log":log(L("AT-001",Z))+"\n\n"},1,mostra=False)
+def g_002():
+    caso("vizinho FAIL 3 nao tira",["AT-001"],{"AT-001.antes.log":log(L("AT-001",Z)+L("AT-002",F3))},1)
+    caso("vizinho 0/0 nao cria",["AT-001"],{"AT-001.antes.log":log(L("AT-001",F1)+L("AT-002",Z))},0)
+    for v in ("AT-0010","AT-001b","AT-001-b","AT-001_x","AT-00","AT-0011","AT-1","XAT-001","BAT-001","at-001"):
+        caso("so %s 0/0: nao cria"%v,["AT-001"],{"AT-001.antes.log":log(L(v,Z))},0)
+        caso("%s FAIL 3 nao tira"%v,["AT-001"],{"AT-001.antes.log":log(L(v,F3)+L("AT-001",Z))},1,mostra=False)
+    caso("AT-0010 julgado; AT-001 0/0 nao cria",["AT-0010"],{"AT-0010.antes.log":log(L("AT-001",Z)+L("AT-0010",F1))},0)
+    caso("AT-001b julgado; AT-001 FAIL 3 nao tira",["AT-001b"],{"AT-001b.antes.log":log(L("AT-001",F3)+L("AT-001b",Z))},1)
+    c1="AT-001 "+Z
+    caso("1a linha com AT-001 FAIL 3 nao tira",["AT-001"],{"AT-001.antes.log":log(L("AT-001",Z),1,"AT-001 "+F3)},1)
+    caso("1a linha com 0/0 nao cria",["AT-001"],{"AT-001.antes.log":log("x\n",1,c1)},0)
+    caso("1a linha com 0/0, linha FAIL 1",["AT-001"],{"AT-001.antes.log":log(L("AT-001",F1),1,c1)},0)
+    caso("id citado no meio da linha do vizinho",["AT-001"],{"AT-001.antes.log":log("AT-002 ❌ depende de AT-001 %s\n"%Z)},0)
+    caso("id no meio de prosa",["AT-001"],{"AT-001.antes.log":log("o AT-001 herda %s\n"%Z)},0)
+    caso("prosa por letra acentuada antes do id",["AT-001"],{"AT-001.antes.log":log("é AT-001 %s\n"%Z)},0)
+    caso("resumo total do gate 0/0 sem id",["AT-001"],{"AT-001.antes.log":log("TOTAL %s\n"%Z)},0)
+    caso("trace do bash -x",["AT-001"],{"AT-001.antes.log":log("+ echo 'AT-001 %s'\nAT-001 %s\n"%(Z,F1))},0)
+    caso("titulo do caso cita a contagem; a do AT e a do FIM (PASS 0 FAIL 2)",["AT-001"],{"AT-001.antes.log":log("AT-001 ❌ avisa quando a linha diz PASS 0 · FAIL 0 (PASS 0 · FAIL 2)\n")},0)
+    caso("titulo cita FAIL 3; a do FIM e 0/0",["AT-001"],{"AT-001.antes.log":log("AT-001 ❌ ignora o PASS 0 · FAIL 3 do vizinho (PASS 0 · FAIL 0)\n")},1)
+    caso("linha AT-001 cita AT-002 com contagem do AT-002 antes da propria",["AT-001"],{"AT-001.antes.log":log("AT-001 ❌ ignora AT-002 PASS 0 · FAIL 3 (PASS 0 · FAIL 0)\n")},1)
+def g_003():
+    own={"AT-001.antes.log":log("ImportError\n",1,"python -m unittest t.A")}
+    caso("sem contagem, comando proprio",["AT-001"],own,0)
+    caso("2 ATs, comandos diferentes",["AT-001","AT-002"],dict(own,**{"AT-002.antes.log":log("ImportError\n",1,"python -m unittest t.B")}),0)
+    s={"AT-001.antes.log":log("boom\n"),"AT-002.antes.log":log("boom\n")}
+    caso("2 ATs, mesmo comando, sem contagem",["AT-001","AT-002"],s,1)
+    caso("3 ATs mesmo comando, 1 com contagem",["AT-001","AT-002","AT-003"],dict(s,**{"AT-003.antes.log":log(L("AT-003",F1))}),1)
+    caso("2 ATs, ambos com contagem",["AT-001","AT-002"],{"AT-001.antes.log":log(L("AT-001",F1)+L("AT-002",F1)),"AT-002.antes.log":log(L("AT-001",F1)+L("AT-002",F1))},0)
+    caso("2 comandos compartilhados = 2 avisos",["AT-001","AT-002","AT-003","AT-004"],dict(s,**{"AT-003.antes.log":log("b\n",1,"c2"),"AT-004.antes.log":log("b\n",1,"c2")}),2)
+    caso("segundo AT e shall continue to: nao conta",["AT-001","AT-020"],{"AT-001.antes.log":log("boom\n"),"AT-020.antes.log":log("ok\n",0)},0)
+    caso("segundo AT false: nao conta",["AT-001",("AT-002","`evidence/EX/AT-002.antes.log`","—","false")],s,0)
+    caso("segundo AT manual-ux: nao conta",["AT-001",("AT-030","N.A. (humano)","`evidence/EX/AT-030.log`","true")],{"AT-001.antes.log":log("boom\n")},0)
+    caso("contagem so de outro AT = sem contagem propria",["AT-001","AT-002"],{"AT-001.antes.log":log(L("AT-002",F1)),"AT-002.antes.log":log(L("AT-002",F1))},1)
+    caso("um com zero casos e outro sem contagem = 1 de zero + 1 de comando",["AT-001","AT-002"],{"AT-001.antes.log":log(L("AT-001",Z)),"AT-002.antes.log":log("boom\n")},2)
+    caso("mesmo comando, CRLF num dos logs",["AT-001","AT-002"],{"AT-001.antes.log":log("boom\n").replace("\n","\r\n"),"AT-002.antes.log":log("boom\n")},1)
+    caso("UM AT so, repetido em 2 tabelas, comando proprio: 0",["AT-001"],own,0,tabelas=2)
+    caso("2 ATs, mesmo comando, o 2o com violacao (antes exit 0): AT-001 segue sem contagem -> 1",["AT-001","AT-002"],dict(s,**{"AT-002.antes.log":log("ok\n",0)}),1,1)
+    caso("evidencia so AVALIACAO? comando igual, espaco extra no fim da 1a linha",["AT-001","AT-002"],dict(s,**{"AT-002.antes.log":"$ %s  \nboom\n[exit=1]\n"%CMD}),1)
+    caso("10 logs com contagem 0/1 em um comando",["AT-00%d"%i for i in range(1,10)],{"AT-00%d.antes.log"%i:log(L("AT-00%d"%i,F1)) for i in range(1,10)},0)
+def g_004():
+    for c in ("(PASS 0 · FAIL 1)","(PASS 5 · FAIL 1)","(PASS 0 · FAIL 99)","(PASS 10 · FAIL 10)","(PASS 0 · FAIL 10)","(PASS 00 · FAIL 01)"):
+        caso("linha %s"%c,["AT-001"],{"AT-001.antes.log":log(L("AT-001",c))},0)
+    caso("modulo ausente, contado em FAIL",["AT-001"],{"AT-001.antes.log":log("ModuleNotFoundError: conta\n"+L("AT-001",F1))},0)
+    caso("2 linhas PASS 2 e FAIL 1",["AT-001"],{"AT-001.antes.log":log(L("AT-001",P2)+L("AT-001",F1))},0)
+def g_005():
+    for nome,c,n in (("0/0",Z,1),("FAIL 1",F1,0),("PASS 2",P2,1)):
+        t=log("AT-001 caso x %s\nAT-005 y %s\n"%(c,F3),2)
+        caso(nome+" utf8 LF",["AT-001"],{"AT-001.antes.log":t},n,mostra=False)
+        caso(nome+" utf8 CRLF",["AT-001"],{"AT-001.antes.log":t.replace("\n","\r\n")},n,mostra=False)
+        caso(nome+" cp1252 LF",["AT-001"],{"AT-001.antes.log":t.encode("cp1252")},n,mostra=False)
+        caso(nome+" cp1252 CRLF",["AT-001"],{"AT-001.antes.log":t.replace("\n","\r\n").encode("cp1252")},n)
+        caso(nome+" cp850 CRLF",["AT-001"],{"AT-001.antes.log":t.replace("\n","\r\n").encode("cp850")},n,mostra=False)
+        caso(nome+" mojibake UTF-8 lido como cp1252",["AT-001"],{"AT-001.antes.log":t.replace("·","Â·")},n,mostra=False)
+        caso(nome+" mojibake duplo",["AT-001"],{"AT-001.antes.log":t.replace("·","Ã‚Â·")},n,mostra=False)
+        caso(nome+" cp1252 com acento e marca '?'",["AT-001"],{"AT-001.antes.log":t.replace("AT-001 caso","? AT-001 não é").replace("\n","\r\n").encode("cp1252")},n,mostra=False)
+        caso(nome+" '❌' UTF-8 + '·' cp1252 misturados",["AT-001"],{"AT-001.antes.log":t.replace("AT-001 caso","❌ AT-001 caso").encode().replace("·".encode(),b"\xb7")},n,mostra=False)
+        caso(nome+" final [exit=0] cp1252 CRLF 0/0",["AT-001"],{"AT-001.antes.log":log(L("AT-001",F1)),"AT-001.log":log("AT-001 x %s\n"%c,0).replace("\n","\r\n").encode("cp1252")},1 if c==Z else 0,mostra=False)
+    t2="$ %s\r\nboom \xb7\r\n[exit=1]\r\n"%CMD
+    caso("comando compartilhado: um CRLF/cp1252, outro LF",["AT-001","AT-002"],{"AT-001.antes.log":t2.encode("cp1252"),"AT-002.antes.log":log("boom\n")},1)
+    ca="python -m unittest té"
+    caso("comando acentuado cp1252 x UTF-8 (mesmo comando, 2 ATs)",["AT-001","AT-002"],{"AT-001.antes.log":log("b\n",1,ca).encode("cp1252"),"AT-001.log":log("b\n",0,ca).encode("cp1252"),"AT-002.antes.log":log("b\n",1,ca),"AT-002.log":log("b\n",0,ca)},1)
+def g_007():
+    caso("AT com FAIL 1",["AT-001"],{"AT-001.antes.log":log(L("AT-001",F1),2)},0)
+    caso("continue verde com casos",["AT-020"],{"AT-020.antes.log":log(L("AT-020","(PASS 3 · FAIL 0)"),0),"AT-020.log":log(L("AT-020","(PASS 3 · FAIL 0)"),0)},0)
+    caso("N.A. manual-ux",[("AT-030","N.A. (humano)","`evidence/EX/AT-030.log`","true")],{"AT-030.log":log(L("AT-030",Z),0)},0)
+    caso("N.A. smoke, antes citado com 0/0: fora da classe",[("AT-031","`evidence/EX/AT-031.antes.log`","`evidence/EX/AT-031.log`","true")],{"AT-031.antes.log":log(L("AT-031",Z),1),"AT-031.log":log(L("AT-031",Z),0)},0)
+    caso("sem contagem, comando proprio",["AT-001"],{"AT-001.antes.log":log("ImportError\n")},0)
+    caso("sem a coluna Antes, logs com 0/0",["AT-001"],{"AT-001.antes.log":log(L("AT-001",Z)),"AT-001.log":log(L("AT-001",Z),0)},0,cab=False)
+    caso("continue com antes vermelho: violacao igual",["AT-020"],{"AT-020.antes.log":log(L("AT-020",F1),1)},0,1)
+    caso("AT fora do DEFINE",["AT-099"],{"AT-099.antes.log":log(L("AT-099",Z))},0)
+    caso("log antes ausente: violacao igual",[("AT-001","`evidence/EX/AT-001.antes.log`","`evidence/EX/AT-001.log`","true")],{"AT-001.log":log("ok\n",0)},0,1)
+def g_009():
+    caso("a: continue antes exit 0 com 0/0",["AT-020"],{"AT-020.antes.log":log(L("AT-020",Z),0)},1)
+    caso("b: final exit 0 com 0/0",["AT-001"],{"AT-001.antes.log":log(L("AT-001",F1)),"AT-001.log":log(L("AT-001",Z),0)},1)
+    caso("c: novo com PASS 2 FAIL 0, vermelho de outro",["AT-001"],{"AT-001.antes.log":log(L("AT-001",P2)+L("AT-005",F3),2)},1)
+    caso("a+b no mesmo AT: 2 avisos (1 por log)",["AT-020"],{"AT-020.antes.log":log(L("AT-020",Z),0),"AT-020.log":log(L("AT-020",Z),0)},2)
+    caso("alvo+b no mesmo AT: 2",["AT-001"],{"AT-001.antes.log":log(L("AT-001",Z)),"AT-001.log":log(L("AT-001",Z),0)},2)
+    caso("final com PASS 1: 0",["AT-001"],{"AT-001.antes.log":log(L("AT-001",F1)),"AT-001.log":log(L("AT-001","(PASS 1 · FAIL 0)"),0)},0)
+    caso("final exit 0 com FAIL 1: fora do contrato, 0",["AT-001"],{"AT-001.antes.log":log(L("AT-001",F1)),"AT-001.log":log(L("AT-001",F1),0)},0)
+    caso("final exit 1 com 0/0: fora do escopo, 0",["AT-001"],{"AT-001.antes.log":log(L("AT-001",F1)),"AT-001.log":log(L("AT-001",Z),1)},0)
+    caso("final 0/0 de vizinho: 0",["AT-001"],{"AT-001.antes.log":log(L("AT-001",F1)),"AT-001.log":log(L("AT-002",Z)+L("AT-001",P2),0)},0)
+    caso("continue com PASS 2 no antes: 0",["AT-020"],{"AT-020.antes.log":log(L("AT-020",P2),0)},0)
+    caso("continue com final sem contagem: 0",["AT-020"],{"AT-020.antes.log":log("ok\n",0)},0)
+    caso("final nao citado (so AVAL log), 0/0 no disco: 0",[("AT-001","`evidence/EX/AT-001.antes.log`","`evidence/EX/AVAL-1.log`","true")],{"AT-001.antes.log":log(L("AT-001",F1)),"AT-001.log":log(L("AT-001",Z),0),"AVAL-1.log":log("x\n",0)},0)
+    caso("final citado ao lado da sabotagem",[("AT-001","`evidence/EX/AT-001.antes.log`","`evidence/EX/AT-001.sabotagem.log` · `evidence/EX/AT-001.log`","true")],{"AT-001.antes.log":log(L("AT-001",F1)),"AT-001.log":log(L("AT-001",Z),0),"AT-001.sabotagem.log":log("x\n",1)},1)
+    caso("caminho completo sdd/reports/evidence",[("AT-001","`sdd/reports/evidence/EX/AT-001.antes.log`","`sdd/reports/evidence/EX/AT-001.log`","true")],{"AT-001.antes.log":log(L("AT-001",Z)),"AT-001.log":log(L("AT-001",Z),0)},2)
+    caso("antes recusado (ausente) e final 0/0 em exit 0: o aviso do final sai",[("AT-001","—","`evidence/EX/AT-001.log`","true")],{"AT-001.log":log(L("AT-001",Z),0)},1,1)
+    caso("antes recusado (exit 0) e final 0/0 em exit 0: o aviso do final sai",["AT-001"],{"AT-001.antes.log":log(L("AT-001",F1),0),"AT-001.log":log(L("AT-001",Z),0)},1,1)
+    caso("soma de 2 linhas no final: 0/0 + PASS 1 = 0 avisos",["AT-001"],{"AT-001.antes.log":log(L("AT-001",F1)),"AT-001.log":log(L("AT-001",Z)+L("AT-001",P2),0)},0)
+    caso("pass 2 + 0/0 no antes = ja passava",["AT-001"],{"AT-001.antes.log":log(L("AT-001",P2)+L("AT-001",Z))},1)
+globals()["g_"+sys.argv[1]]()
+[exit=0]

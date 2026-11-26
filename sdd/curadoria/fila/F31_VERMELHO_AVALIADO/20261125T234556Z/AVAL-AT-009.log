@@ -1,0 +1,43 @@
+$ /usr/bin/python3 -B sondas.py 009
+OK    a: continue antes exit 0 com 0/0 | esperado: 1 aviso(s), exit 0 | observado: 1 aviso(s), exit velho=0 novo=0, resto da saida igual=True
+      ⚠️  [casos avaliados] AT-020: `evidence/EX/AT-020.antes.log` diz `PASS 0 · FAIL 0` na linha do AT: nenhum caso avaliado. Escreva o teste dele (se o módulo ainda não existia, conte o erro de carga em FAIL) e grave o antes de novo
+OK    b: final exit 0 com 0/0 | esperado: 1 aviso(s), exit 0 | observado: 1 aviso(s), exit velho=0 novo=0, resto da saida igual=True
+      ⚠️  [casos avaliados] AT-001: `evidence/EX/AT-001.log` terminou em `[exit=0]` com `PASS 0 · FAIL 0` na linha do AT: nenhum caso avaliado
+OK    c: novo com PASS 2 FAIL 0, vermelho de outro | esperado: 1 aviso(s), exit 0 | observado: 1 aviso(s), exit velho=0 novo=0, resto da saida igual=True
+      ⚠️  [casos avaliados] AT-001: `evidence/EX/AT-001.antes.log` diz `PASS 2 · FAIL 0` na linha do AT: ele já passava antes do código. Ancore o teste no comportamento novo e grave o antes de novo
+OK    a+b no mesmo AT: 2 avisos (1 por log) | esperado: 2 aviso(s), exit 0 | observado: 2 aviso(s), exit velho=0 novo=0, resto da saida igual=True
+      ⚠️  [casos avaliados] AT-020: `evidence/EX/AT-020.antes.log` diz `PASS 0 · FAIL 0` na linha do AT: nenhum caso avaliado. Escreva o teste dele (se o módulo ainda não existia, conte o erro de carga em FAIL) e grave o antes de novo
+      ⚠️  [casos avaliados] AT-020: `evidence/EX/AT-020.log` terminou em `[exit=0]` com `PASS 0 · FAIL 0` na linha do AT: nenhum caso avaliado
+OK    alvo+b no mesmo AT: 2 | esperado: 2 aviso(s), exit 0 | observado: 2 aviso(s), exit velho=0 novo=0, resto da saida igual=True
+      ⚠️  [casos avaliados] AT-001: `evidence/EX/AT-001.antes.log` diz `PASS 0 · FAIL 0` na linha do AT: nenhum caso avaliado. Escreva o teste dele (se o módulo ainda não existia, conte o erro de carga em FAIL) e grave o antes de novo
+      ⚠️  [casos avaliados] AT-001: `evidence/EX/AT-001.log` terminou em `[exit=0]` com `PASS 0 · FAIL 0` na linha do AT: nenhum caso avaliado
+OK    final com PASS 1: 0 | esperado: 0 aviso(s), exit 0 | observado: 0 aviso(s), exit velho=0 novo=0, resto da saida igual=True
+OK    final exit 0 com FAIL 1: fora do contrato, 0 | esperado: 0 aviso(s), exit 0 | observado: 0 aviso(s), exit velho=0 novo=0, resto da saida igual=True
+OK    final exit 1 com 0/0: fora do escopo, 0 | esperado: 0 aviso(s), exit 0 | observado: 0 aviso(s), exit velho=0 novo=0, resto da saida igual=True
+OK    final 0/0 de vizinho: 0 | esperado: 0 aviso(s), exit 0 | observado: 0 aviso(s), exit velho=0 novo=0, resto da saida igual=True
+OK    continue com PASS 2 no antes: 0 | esperado: 0 aviso(s), exit 0 | observado: 0 aviso(s), exit velho=0 novo=0, resto da saida igual=True
+OK    continue com final sem contagem: 0 | esperado: 0 aviso(s), exit 0 | observado: 0 aviso(s), exit velho=0 novo=0, resto da saida igual=True
+OK    final nao citado (so AVAL log), 0/0 no disco: 0 | esperado: 0 aviso(s), exit 0 | observado: 0 aviso(s), exit velho=0 novo=0, resto da saida igual=True
+OK    final citado ao lado da sabotagem | esperado: 1 aviso(s), exit 0 | observado: 1 aviso(s), exit velho=0 novo=0, resto da saida igual=True
+      ⚠️  [casos avaliados] AT-001: `evidence/EX/AT-001.log` terminou em `[exit=0]` com `PASS 0 · FAIL 0` na linha do AT: nenhum caso avaliado
+OK    caminho completo sdd/reports/evidence | esperado: 2 aviso(s), exit 0 | observado: 2 aviso(s), exit velho=0 novo=0, resto da saida igual=True
+      ⚠️  [casos avaliados] AT-001: `sdd/reports/evidence/EX/AT-001.antes.log` diz `PASS 0 · FAIL 0` na linha do AT: nenhum caso avaliado. Escreva o teste dele (se o módulo ainda não existia, conte o erro de carga em FAIL) e grave o antes de novo
+      ⚠️  [casos avaliados] AT-001: `sdd/reports/evidence/EX/AT-001.log` terminou em `[exit=0]` com `PASS 0 · FAIL 0` na linha do AT: nenhum caso avaliado
+DIVERGE antes recusado (ausente) e final 0/0 em exit 0: o aviso do final sai | esperado: 1 aviso(s), exit 1 | observado: 0 aviso(s), exit velho=1 novo=1, resto da saida igual=True
+      > 🛑 [vermelho antes] AT-001: a coluna `Antes` não cita `evidence/EX/AT-001.antes.log`
+      > RESULTADO: VERMELHO
+      > → rode o comando do AT antes do código e grave `evidence/EX/AT-nnn.antes.log` (vermelho; `shall continue to`: verde), citado na coluna `Antes`; gate fora de `test`/`cmd`: `N.A. (<motivo>)`.
+      > ⚠️  N.A. aceito sem conferir camadas — `layers:` do sdd/config.yaml sem nenhum glob preenchido; preencha `layers:` em sdd/config.yaml para a contagem valer
+      > ⚠️  lint e tipos com o slot vazio (project.lint_cmd e project.typecheck_cmd), e o relatório não diz isso: escreva a linha `lint: slot vazio`
+      > ⚠️  o relatório não tem a seção `## Qualidade (avisos)` preenchida (métricas do código novo, desde a v2.28.0): rode sdd/bin/metricas-diff.sh e cole a saída
+DIVERGE antes recusado (exit 0) e final 0/0 em exit 0: o aviso do final sai | esperado: 1 aviso(s), exit 1 | observado: 0 aviso(s), exit velho=1 novo=1, resto da saida igual=True
+      > 🛑 [vermelho antes] AT-001: `evidence/EX/AT-001.antes.log` terminou em `[exit=0]`: o antes de um AT de comportamento novo tem de falhar
+      > RESULTADO: VERMELHO
+      > → rode o comando do AT antes do código e grave `evidence/EX/AT-nnn.antes.log` (vermelho; `shall continue to`: verde), citado na coluna `Antes`; gate fora de `test`/`cmd`: `N.A. (<motivo>)`.
+      > ⚠️  N.A. aceito sem conferir camadas — `layers:` do sdd/config.yaml sem nenhum glob preenchido; preencha `layers:` em sdd/config.yaml para a contagem valer
+      > ⚠️  lint e tipos com o slot vazio (project.lint_cmd e project.typecheck_cmd), e o relatório não diz isso: escreva a linha `lint: slot vazio`
+      > ⚠️  o relatório não tem a seção `## Qualidade (avisos)` preenchida (métricas do código novo, desde a v2.28.0): rode sdd/bin/metricas-diff.sh e cole a saída
+OK    soma de 2 linhas no final: 0/0 + PASS 1 = 0 avisos | esperado: 0 aviso(s), exit 0 | observado: 0 aviso(s), exit velho=0 novo=0, resto da saida igual=True
+OK    pass 2 + 0/0 no antes = ja passava | esperado: 1 aviso(s), exit 0 | observado: 1 aviso(s), exit velho=0 novo=0, resto da saida igual=True
+      ⚠️  [casos avaliados] AT-001: `evidence/EX/AT-001.antes.log` diz `PASS 2 · FAIL 0` na linha do AT: ele já passava antes do código. Ancore o teste no comportamento novo e grave o antes de novo
+[exit=0]

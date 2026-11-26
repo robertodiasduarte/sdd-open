@@ -1,0 +1,43 @@
+$ python3 -B sondas.py 005
+OK    0/0 utf8 LF | esperado: 1 aviso(s), exit 0 | observado: 1 aviso(s), exit velho=0 novo=0, resto da saida igual=True
+OK    0/0 utf8 CRLF | esperado: 1 aviso(s), exit 0 | observado: 1 aviso(s), exit velho=0 novo=0, resto da saida igual=True
+OK    0/0 cp1252 LF | esperado: 1 aviso(s), exit 0 | observado: 1 aviso(s), exit velho=0 novo=0, resto da saida igual=True
+OK    0/0 cp1252 CRLF | esperado: 1 aviso(s), exit 0 | observado: 1 aviso(s), exit velho=0 novo=0, resto da saida igual=True
+      ⚠️  [casos avaliados] AT-001: `evidence/EX/AT-001.antes.log` diz `PASS 0 · FAIL 0` na linha do AT: nenhum caso avaliado. Escreva o teste dele (se o módulo ainda não existia, conte o erro de carga em FAIL) e grave o antes de novo
+OK    0/0 cp850 CRLF | esperado: 1 aviso(s), exit 0 | observado: 1 aviso(s), exit velho=0 novo=0, resto da saida igual=True
+OK    0/0 mojibake UTF-8 lido como cp1252 | esperado: 1 aviso(s), exit 0 | observado: 1 aviso(s), exit velho=0 novo=0, resto da saida igual=True
+OK    0/0 mojibake duplo | esperado: 1 aviso(s), exit 0 | observado: 1 aviso(s), exit velho=0 novo=0, resto da saida igual=True
+OK    0/0 cp1252 com acento e marca '?' | esperado: 1 aviso(s), exit 0 | observado: 1 aviso(s), exit velho=0 novo=0, resto da saida igual=True
+OK    0/0 '❌' UTF-8 + '·' cp1252 misturados | esperado: 1 aviso(s), exit 0 | observado: 1 aviso(s), exit velho=0 novo=0, resto da saida igual=True
+OK    0/0 final [exit=0] cp1252 CRLF 0/0 | esperado: 1 aviso(s), exit 0 | observado: 1 aviso(s), exit velho=0 novo=0, resto da saida igual=True
+OK    FAIL 1 utf8 LF | esperado: 0 aviso(s), exit 0 | observado: 0 aviso(s), exit velho=0 novo=0, resto da saida igual=True
+OK    FAIL 1 utf8 CRLF | esperado: 0 aviso(s), exit 0 | observado: 0 aviso(s), exit velho=0 novo=0, resto da saida igual=True
+OK    FAIL 1 cp1252 LF | esperado: 0 aviso(s), exit 0 | observado: 0 aviso(s), exit velho=0 novo=0, resto da saida igual=True
+OK    FAIL 1 cp1252 CRLF | esperado: 0 aviso(s), exit 0 | observado: 0 aviso(s), exit velho=0 novo=0, resto da saida igual=True
+OK    FAIL 1 cp850 CRLF | esperado: 0 aviso(s), exit 0 | observado: 0 aviso(s), exit velho=0 novo=0, resto da saida igual=True
+OK    FAIL 1 mojibake UTF-8 lido como cp1252 | esperado: 0 aviso(s), exit 0 | observado: 0 aviso(s), exit velho=0 novo=0, resto da saida igual=True
+OK    FAIL 1 mojibake duplo | esperado: 0 aviso(s), exit 0 | observado: 0 aviso(s), exit velho=0 novo=0, resto da saida igual=True
+OK    FAIL 1 cp1252 com acento e marca '?' | esperado: 0 aviso(s), exit 0 | observado: 0 aviso(s), exit velho=0 novo=0, resto da saida igual=True
+OK    FAIL 1 '❌' UTF-8 + '·' cp1252 misturados | esperado: 0 aviso(s), exit 0 | observado: 0 aviso(s), exit velho=0 novo=0, resto da saida igual=True
+OK    FAIL 1 final [exit=0] cp1252 CRLF 0/0 | esperado: 0 aviso(s), exit 0 | observado: 0 aviso(s), exit velho=0 novo=0, resto da saida igual=True
+OK    PASS 2 utf8 LF | esperado: 1 aviso(s), exit 0 | observado: 1 aviso(s), exit velho=0 novo=0, resto da saida igual=True
+OK    PASS 2 utf8 CRLF | esperado: 1 aviso(s), exit 0 | observado: 1 aviso(s), exit velho=0 novo=0, resto da saida igual=True
+OK    PASS 2 cp1252 LF | esperado: 1 aviso(s), exit 0 | observado: 1 aviso(s), exit velho=0 novo=0, resto da saida igual=True
+OK    PASS 2 cp1252 CRLF | esperado: 1 aviso(s), exit 0 | observado: 1 aviso(s), exit velho=0 novo=0, resto da saida igual=True
+      ⚠️  [casos avaliados] AT-001: `evidence/EX/AT-001.antes.log` diz `PASS 2 · FAIL 0` na linha do AT: ele já passava antes do código. Ancore o teste no comportamento novo e grave o antes de novo
+OK    PASS 2 cp850 CRLF | esperado: 1 aviso(s), exit 0 | observado: 1 aviso(s), exit velho=0 novo=0, resto da saida igual=True
+OK    PASS 2 mojibake UTF-8 lido como cp1252 | esperado: 1 aviso(s), exit 0 | observado: 1 aviso(s), exit velho=0 novo=0, resto da saida igual=True
+OK    PASS 2 mojibake duplo | esperado: 1 aviso(s), exit 0 | observado: 1 aviso(s), exit velho=0 novo=0, resto da saida igual=True
+OK    PASS 2 cp1252 com acento e marca '?' | esperado: 1 aviso(s), exit 0 | observado: 1 aviso(s), exit velho=0 novo=0, resto da saida igual=True
+OK    PASS 2 '❌' UTF-8 + '·' cp1252 misturados | esperado: 1 aviso(s), exit 0 | observado: 1 aviso(s), exit velho=0 novo=0, resto da saida igual=True
+OK    PASS 2 final [exit=0] cp1252 CRLF 0/0 | esperado: 0 aviso(s), exit 0 | observado: 0 aviso(s), exit velho=0 novo=0, resto da saida igual=True
+OK    comando compartilhado: um CRLF/cp1252, outro LF | esperado: 1 aviso(s), exit 0 | observado: 1 aviso(s), exit velho=0 novo=0, resto da saida igual=True
+      ⚠️  [casos avaliados] AT-001, AT-002: o antes roda `bash gate.sh`, o mesmo comando de outro AT, e o log não tem a linha `AT-nnn … (PASS n · FAIL n)`: o vermelho pode ser de outro AT
+DIVERGE comando acentuado cp1252 x UTF-8 (mesmo comando, 2 ATs) | esperado: 1 aviso(s), exit 0 | observado: 0 aviso(s), exit velho=0 novo=0, resto da saida igual=True
+      > ⚠️  N.A. aceito sem conferir camadas — `layers:` do sdd/config.yaml sem nenhum glob preenchido; preencha `layers:` em sdd/config.yaml para a contagem valer
+      > ⚠️  lint e tipos com o slot vazio (project.lint_cmd e project.typecheck_cmd), e o relatório não diz isso: escreva a linha `lint: slot vazio`
+      > ⚠️  o relatório não tem a seção `## Qualidade (avisos)` preenchida (métricas do código novo, desde a v2.28.0): rode sdd/bin/metricas-diff.sh e cole a saída
+      > ✅ sdd/reports/BUILD_REPORT_EX.md: todo `true` tem evidência abrível e a avaliação está provada ou declarada
+      > RESULTADO: VERDE
+      > → o relatório pode ser commitado.
+[exit=0]

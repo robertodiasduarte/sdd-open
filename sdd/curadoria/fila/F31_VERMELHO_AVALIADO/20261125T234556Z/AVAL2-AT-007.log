@@ -1,0 +1,11 @@
+$ python3 -B sondas.py 007
+OK    AT com FAIL 1 | esperado: 0 aviso(s), exit 0 | observado: 0 aviso(s), exit velho=0 novo=0, resto da saida igual=True
+OK    continue verde com casos | esperado: 0 aviso(s), exit 0 | observado: 0 aviso(s), exit velho=0 novo=0, resto da saida igual=True
+OK    N.A. manual-ux | esperado: 0 aviso(s), exit 0 | observado: 0 aviso(s), exit velho=0 novo=0, resto da saida igual=True
+OK    N.A. smoke, antes citado com 0/0: fora da classe | esperado: 0 aviso(s), exit 0 | observado: 0 aviso(s), exit velho=0 novo=0, resto da saida igual=True
+OK    sem contagem, comando proprio | esperado: 0 aviso(s), exit 0 | observado: 0 aviso(s), exit velho=0 novo=0, resto da saida igual=True
+OK    sem a coluna Antes, logs com 0/0 | esperado: 0 aviso(s), exit 0 | observado: 0 aviso(s), exit velho=0 novo=0, resto da saida igual=True
+OK    continue com antes vermelho: violacao igual | esperado: 0 aviso(s), exit 1 | observado: 0 aviso(s), exit velho=1 novo=1, resto da saida igual=True
+OK    AT fora do DEFINE | esperado: 0 aviso(s), exit 0 | observado: 0 aviso(s), exit velho=0 novo=0, resto da saida igual=True
+OK    log antes ausente: violacao igual | esperado: 0 aviso(s), exit 1 | observado: 0 aviso(s), exit velho=1 novo=1, resto da saida igual=True
+[exit=0]

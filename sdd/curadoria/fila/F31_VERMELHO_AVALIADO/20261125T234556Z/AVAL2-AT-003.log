@@ -1,0 +1,33 @@
+$ python3 -B sondas.py 003
+OK    sem contagem, comando proprio | esperado: 0 aviso(s), exit 0 | observado: 0 aviso(s), exit velho=0 novo=0, resto da saida igual=True
+OK    2 ATs, comandos diferentes | esperado: 0 aviso(s), exit 0 | observado: 0 aviso(s), exit velho=0 novo=0, resto da saida igual=True
+OK    2 ATs, mesmo comando, sem contagem | esperado: 1 aviso(s), exit 0 | observado: 1 aviso(s), exit velho=0 novo=0, resto da saida igual=True
+      ⚠️  [casos avaliados] AT-001, AT-002: o antes roda `bash gate.sh`, o mesmo comando de outro AT, e o log não tem a linha `AT-nnn … (PASS n · FAIL n)`: o vermelho pode ser de outro AT
+OK    3 ATs mesmo comando, 1 com contagem | esperado: 1 aviso(s), exit 0 | observado: 1 aviso(s), exit velho=0 novo=0, resto da saida igual=True
+      ⚠️  [casos avaliados] AT-001, AT-002: o antes roda `bash gate.sh`, o mesmo comando de outro AT, e o log não tem a linha `AT-nnn … (PASS n · FAIL n)`: o vermelho pode ser de outro AT
+OK    2 ATs, ambos com contagem | esperado: 0 aviso(s), exit 0 | observado: 0 aviso(s), exit velho=0 novo=0, resto da saida igual=True
+OK    2 comandos compartilhados = 2 avisos | esperado: 2 aviso(s), exit 0 | observado: 2 aviso(s), exit velho=0 novo=0, resto da saida igual=True
+      ⚠️  [casos avaliados] AT-001, AT-002: o antes roda `bash gate.sh`, o mesmo comando de outro AT, e o log não tem a linha `AT-nnn … (PASS n · FAIL n)`: o vermelho pode ser de outro AT
+      ⚠️  [casos avaliados] AT-003, AT-004: o antes roda `c2`, o mesmo comando de outro AT, e o log não tem a linha `AT-nnn … (PASS n · FAIL n)`: o vermelho pode ser de outro AT
+OK    segundo AT e shall continue to: nao conta | esperado: 0 aviso(s), exit 0 | observado: 0 aviso(s), exit velho=0 novo=0, resto da saida igual=True
+OK    segundo AT false: nao conta | esperado: 0 aviso(s), exit 0 | observado: 0 aviso(s), exit velho=0 novo=0, resto da saida igual=True
+OK    segundo AT manual-ux: nao conta | esperado: 0 aviso(s), exit 0 | observado: 0 aviso(s), exit velho=0 novo=0, resto da saida igual=True
+OK    contagem so de outro AT = sem contagem propria | esperado: 1 aviso(s), exit 0 | observado: 1 aviso(s), exit velho=0 novo=0, resto da saida igual=True
+      ⚠️  [casos avaliados] AT-001: o antes roda `bash gate.sh`, o mesmo comando de outro AT, e o log não tem a linha `AT-nnn … (PASS n · FAIL n)`: o vermelho pode ser de outro AT
+OK    um com zero casos e outro sem contagem = 1 de zero + 1 de comando | esperado: 2 aviso(s), exit 0 | observado: 2 aviso(s), exit velho=0 novo=0, resto da saida igual=True
+      ⚠️  [casos avaliados] AT-001: `evidence/EX/AT-001.antes.log` diz `PASS 0 · FAIL 0` na linha do AT: nenhum caso avaliado. Escreva o teste dele (se o módulo ainda não existia, conte o erro de carga em FAIL) e grave o antes de novo
+      ⚠️  [casos avaliados] AT-002: o antes roda `bash gate.sh`, o mesmo comando de outro AT, e o log não tem a linha `AT-nnn … (PASS n · FAIL n)`: o vermelho pode ser de outro AT
+OK    mesmo comando, CRLF num dos logs | esperado: 1 aviso(s), exit 0 | observado: 1 aviso(s), exit velho=0 novo=0, resto da saida igual=True
+      ⚠️  [casos avaliados] AT-001, AT-002: o antes roda `bash gate.sh`, o mesmo comando de outro AT, e o log não tem a linha `AT-nnn … (PASS n · FAIL n)`: o vermelho pode ser de outro AT
+OK    UM AT so, repetido em 2 tabelas, comando proprio: 0 | esperado: 0 aviso(s), exit 0 | observado: 0 aviso(s), exit velho=0 novo=0, resto da saida igual=True
+DIVERGE 2 ATs, mesmo comando, o 2o com violacao (antes exit 0): AT-001 segue sem contagem -> 1 | esperado: 1 aviso(s), exit 1 | observado: 0 aviso(s), exit velho=1 novo=1, resto da saida igual=True
+      > 🛑 [vermelho antes] AT-002: `evidence/EX/AT-002.antes.log` terminou em `[exit=0]`: o antes de um AT de comportamento novo tem de falhar
+      > RESULTADO: VERMELHO
+      > → rode o comando do AT antes do código e grave `evidence/EX/AT-nnn.antes.log` (vermelho; `shall continue to`: verde), citado na coluna `Antes`; gate fora de `test`/`cmd`: `N.A. (<motivo>)`.
+      > ⚠️  N.A. aceito sem conferir camadas — `layers:` do sdd/config.yaml sem nenhum glob preenchido; preencha `layers:` em sdd/config.yaml para a contagem valer
+      > ⚠️  lint e tipos com o slot vazio (project.lint_cmd e project.typecheck_cmd), e o relatório não diz isso: escreva a linha `lint: slot vazio`
+      > ⚠️  o relatório não tem a seção `## Qualidade (avisos)` preenchida (métricas do código novo, desde a v2.28.0): rode sdd/bin/metricas-diff.sh e cole a saída
+OK    evidencia so AVALIACAO? comando igual, espaco extra no fim da 1a linha | esperado: 1 aviso(s), exit 0 | observado: 1 aviso(s), exit velho=0 novo=0, resto da saida igual=True
+      ⚠️  [casos avaliados] AT-001, AT-002: o antes roda `bash gate.sh`, o mesmo comando de outro AT, e o log não tem a linha `AT-nnn … (PASS n · FAIL n)`: o vermelho pode ser de outro AT
+OK    10 logs com contagem 0/1 em um comando | esperado: 0 aviso(s), exit 0 | observado: 0 aviso(s), exit velho=0 novo=0, resto da saida igual=True
+[exit=0]

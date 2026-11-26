@@ -1,0 +1,10 @@
+$ /usr/bin/python3 -B sondas.py 004
+OK    linha (PASS 0 · FAIL 1) | esperado: 0 aviso(s), exit 0 | observado: 0 aviso(s), exit velho=0 novo=0, resto da saida igual=True
+OK    linha (PASS 5 · FAIL 1) | esperado: 0 aviso(s), exit 0 | observado: 0 aviso(s), exit velho=0 novo=0, resto da saida igual=True
+OK    linha (PASS 0 · FAIL 99) | esperado: 0 aviso(s), exit 0 | observado: 0 aviso(s), exit velho=0 novo=0, resto da saida igual=True
+OK    linha (PASS 10 · FAIL 10) | esperado: 0 aviso(s), exit 0 | observado: 0 aviso(s), exit velho=0 novo=0, resto da saida igual=True
+OK    linha (PASS 0 · FAIL 10) | esperado: 0 aviso(s), exit 0 | observado: 0 aviso(s), exit velho=0 novo=0, resto da saida igual=True
+OK    linha (PASS 00 · FAIL 01) | esperado: 0 aviso(s), exit 0 | observado: 0 aviso(s), exit velho=0 novo=0, resto da saida igual=True
+OK    modulo ausente, contado em FAIL | esperado: 0 aviso(s), exit 0 | observado: 0 aviso(s), exit velho=0 novo=0, resto da saida igual=True
+OK    2 linhas PASS 2 e FAIL 1 | esperado: 0 aviso(s), exit 0 | observado: 0 aviso(s), exit velho=0 novo=0, resto da saida igual=True
+[exit=0]

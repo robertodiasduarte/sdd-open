@@ -1,0 +1,60 @@
+$ python3 -B novas.py
+# ultima contagem
+OK    3 contagens, ultima FAIL 1 | esperado: 0 aviso(s), exit 0 | observado: 0 aviso(s), exit velho=0 novo=0, resto da saida igual=True
+OK    ultima 0/0 colada a outra | esperado: 1 aviso(s), exit 0 | observado: 1 aviso(s), exit velho=0 novo=0, resto da saida igual=True
+      ⚠️  [casos avaliados] AT-001: `evidence/EX/AT-001.antes.log` diz `PASS 0 · FAIL 0` na linha do AT: nenhum caso avaliado. Escreva o teste dele (se o módulo ainda não existia, conte o erro de carga em FAIL) e grave o antes de novo
+OK    cadeia PASS·FAIL·PASS·FAIL | esperado: 1 aviso(s), exit 0 | observado: 1 aviso(s), exit velho=0 novo=0, resto da saida igual=True
+      ⚠️  [casos avaliados] AT-001: `evidence/EX/AT-001.antes.log` diz `PASS 0 · FAIL 0` na linha do AT: nenhum caso avaliado. Escreva o teste dele (se o módulo ainda não existia, conte o erro de carga em FAIL) e grave o antes de novo
+OK    ultima PASS 2 FAIL 0: ja passava | esperado: 1 aviso(s), exit 0 | observado: 1 aviso(s), exit velho=0 novo=0, resto da saida igual=True
+      ⚠️  [casos avaliados] AT-001: `evidence/EX/AT-001.antes.log` diz `PASS 2 · FAIL 0` na linha do AT: ele já passava antes do código. Ancore o teste no comportamento novo e grave o antes de novo
+OK    2 linhas, cada uma com citacao: soma das ultimas = 0/0 | esperado: 1 aviso(s), exit 0 | observado: 1 aviso(s), exit velho=0 novo=0, resto da saida igual=True
+      ⚠️  [casos avaliados] AT-001: `evidence/EX/AT-001.antes.log` diz `PASS 0 · FAIL 0` na linha do AT: nenhum caso avaliado. Escreva o teste dele (se o módulo ainda não existia, conte o erro de carga em FAIL) e grave o antes de novo
+OK    cp1252 CRLF com citacao | esperado: 1 aviso(s), exit 0 | observado: 1 aviso(s), exit velho=0 novo=0, resto da saida igual=True
+      ⚠️  [casos avaliados] AT-001: `evidence/EX/AT-001.antes.log` diz `PASS 0 · FAIL 0` na linha do AT: nenhum caso avaliado. Escreva o teste dele (se o módulo ainda não existia, conte o erro de carga em FAIL) e grave o antes de novo
+OK    final: cita 0/0, ultima PASS 2 | esperado: 0 aviso(s), exit 0 | observado: 0 aviso(s), exit velho=0 novo=0, resto da saida igual=True
+OK    duracao apos a contagem | esperado: 1 aviso(s), exit 0 | observado: 1 aviso(s), exit velho=0 novo=0, resto da saida igual=True
+      ⚠️  [casos avaliados] AT-001: `evidence/EX/AT-001.antes.log` diz `PASS 0 · FAIL 0` na linha do AT: nenhum caso avaliado. Escreva o teste dele (se o módulo ainda não existia, conte o erro de carga em FAIL) e grave o antes de novo
+# ids distintos
+OK    mesmo AT em 3 tabelas + outro AT, mesmo comando | esperado: 1 aviso(s), exit 0 | observado: 1 aviso(s), exit velho=0 novo=0, resto da saida igual=True
+      ⚠️  [casos avaliados] AT-001, AT-002: o antes roda `bash gate.sh`, o mesmo comando de outro AT, e o log não tem a linha `AT-nnn … (PASS n · FAIL n)`: o vermelho pode ser de outro AT
+OK    mesmo AT 2x na mesma tabela | esperado: 0 aviso(s), exit 0 | observado: 0 aviso(s), exit velho=0 novo=0, resto da saida igual=True
+OK    AT-001 e AT-001b sao distintos | esperado: 1 aviso(s), exit 0 | observado: 1 aviso(s), exit velho=0 novo=0, resto da saida igual=True
+      ⚠️  [casos avaliados] AT-001, AT-001b: o antes roda `bash gate.sh`, o mesmo comando de outro AT, e o log não tem a linha `AT-nnn … (PASS n · FAIL n)`: o vermelho pode ser de outro AT
+OK    recusado + 2 aceitos sem contagem: so os aceitos | esperado: 1 aviso(s), exit 1 | observado: 1 aviso(s), exit velho=1 novo=1, resto da saida igual=True
+      ⚠️  [casos avaliados] AT-001, AT-002: o antes roda `bash gate.sh`, o mesmo comando de outro AT, e o log não tem a linha `AT-nnn … (PASS n · FAIL n)`: o vermelho pode ser de outro AT
+OK    2 tabelas: alvo + final 0/0 = 2 avisos, sem duplicar | esperado: 2 aviso(s), exit 0 | observado: 2 aviso(s), exit velho=0 novo=0, resto da saida igual=True
+      ⚠️  [casos avaliados] AT-001: `evidence/EX/AT-001.log` terminou em `[exit=0]` com `PASS 0 · FAIL 0` na linha do AT: nenhum caso avaliado
+      ⚠️  [casos avaliados] AT-001: `evidence/EX/AT-001.antes.log` diz `PASS 0 · FAIL 0` na linha do AT: nenhum caso avaliado. Escreva o teste dele (se o módulo ainda não existia, conte o erro de carga em FAIL) e grave o antes de novo
+# final sem depender do antes
+OK    antes N.A. em gate test | esperado: 1 aviso(s), exit 1 | observado: 1 aviso(s), exit velho=1 novo=1, resto da saida igual=True
+      ⚠️  [casos avaliados] AT-001: `evidence/EX/AT-001.log` terminou em `[exit=0]` com `PASS 0 · FAIL 0` na linha do AT: nenhum caso avaliado
+OK    antes roda outro comando | esperado: 1 aviso(s), exit 1 | observado: 1 aviso(s), exit velho=1 novo=1, resto da saida igual=True
+      ⚠️  [casos avaliados] AT-001: `evidence/EX/AT-001.log` terminou em `[exit=0]` com `PASS 0 · FAIL 0` na linha do AT: nenhum caso avaliado
+OK    continue com antes vermelho | esperado: 1 aviso(s), exit 1 | observado: 1 aviso(s), exit velho=1 novo=1, resto da saida igual=True
+      ⚠️  [casos avaliados] AT-020: `evidence/EX/AT-020.log` terminou em `[exit=0]` com `PASS 0 · FAIL 0` na linha do AT: nenhum caso avaliado
+OK    antes ausente, final PASS 1 | esperado: 0 aviso(s), exit 1 | observado: 0 aviso(s), exit velho=1 novo=1, resto da saida igual=True
+OK    antes ausente, final exit 1 | esperado: 0 aviso(s), exit 1 | observado: 0 aviso(s), exit velho=1 novo=1, resto da saida igual=True
+OK    antes ausente, AT false | esperado: 0 aviso(s), exit 0 | observado: 0 aviso(s), exit velho=0 novo=0, resto da saida igual=True
+OK    antes ausente, manual-ux | esperado: 0 aviso(s), exit 0 | observado: 0 aviso(s), exit velho=0 novo=0, resto da saida igual=True
+OK    final sem a 1a linha $ | esperado: 0 aviso(s), exit 1 | observado: 0 aviso(s), exit velho=1 novo=1, resto da saida igual=True
+OK    final vazio | esperado: 0 aviso(s), exit 1 | observado: 0 aviso(s), exit velho=1 novo=1, resto da saida igual=True
+OK    evidencia sem log | esperado: 0 aviso(s), exit 1 | observado: 0 aviso(s), exit velho=1 novo=1, resto da saida igual=True
+# log citado
+OK    outra feature inexistente 2x antes | esperado: 1 aviso(s), exit 0 | observado: 1 aviso(s), exit velho=0 novo=0, resto da saida igual=True
+      ⚠️  [casos avaliados] AT-001: `evidence/EX/AT-001.log` terminou em `[exit=0]` com `PASS 0 · FAIL 0` na linha do AT: nenhum caso avaliado
+OK    so outra feature: violacao, 0 | esperado: 0 aviso(s), exit 1 | observado: 0 aviso(s), exit velho=1 novo=1, resto da saida igual=True
+DIVERGE BORDA 2 logs da propria feature com o mesmo nome; o 2o e 0/0 | esperado: 1 aviso(s), exit 0 | observado: 0 aviso(s), exit velho=0 novo=0, resto da saida igual=True
+      > ⚠️  N.A. aceito sem conferir camadas — `layers:` do sdd/config.yaml sem nenhum glob preenchido; preencha `layers:` em sdd/config.yaml para a contagem valer
+      > ⚠️  lint e tipos com o slot vazio (project.lint_cmd e project.typecheck_cmd), e o relatório não diz isso: escreva a linha `lint: slot vazio`
+      > ⚠️  o relatório não tem a seção `## Qualidade (avisos)` preenchida (métricas do código novo, desde a v2.28.0): rode sdd/bin/metricas-diff.sh e cole a saída
+      > ✅ sdd/reports/BUILD_REPORT_EX.md: todo `true` tem evidência abrível e a avaliação está provada ou declarada
+      > RESULTADO: VERDE
+      > → o relatório pode ser commitado.
+DIVERGE BORDA antes 0/0 recusado por rodar outro comando | esperado: 1 aviso(s), exit 1 | observado: 0 aviso(s), exit velho=1 novo=1, resto da saida igual=True
+      > 🛑 [vermelho antes] AT-001: `evidence/EX/AT-001.antes.log` roda `outro`, não o mesmo comando de `evidence/EX/AT-001.log` (`bash gate.sh`)
+      > RESULTADO: VERMELHO
+      > → rode o comando do AT antes do código e grave `evidence/EX/AT-nnn.antes.log` (vermelho; `shall continue to`: verde), citado na coluna `Antes`; gate fora de `test`/`cmd`: `N.A. (<motivo>)`.
+      > ⚠️  N.A. aceito sem conferir camadas — `layers:` do sdd/config.yaml sem nenhum glob preenchido; preencha `layers:` em sdd/config.yaml para a contagem valer
+      > ⚠️  lint e tipos com o slot vazio (project.lint_cmd e project.typecheck_cmd), e o relatório não diz isso: escreva a linha `lint: slot vazio`
+      > ⚠️  o relatório não tem a seção `## Qualidade (avisos)` preenchida (métricas do código novo, desde a v2.28.0): rode sdd/bin/metricas-diff.sh e cole a saída
+[exit=0]

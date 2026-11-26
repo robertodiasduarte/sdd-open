@@ -1,0 +1,17 @@
+feature_id: F31_VERMELHO_AVALIADO
+slice_id: unica
+versao: 2.29.0
+data: 2026-11-25
+estado: shipado
+veredito: CONCERNS
+waived: null
+dod: "Verify Gate verde em 7954c9d (Ran 2994 tests, integrado à v2.28.1); 9 de 9 ATs com log e antes do mesmo comando; 3 sabotagens pegas; exit dos 51 BUILD_REPORTs igual antes e depois; avaliador fresco PASS no ciclo 3 (autorizado); 4 rodadas de revisão do código, a última sem achados; raio de impacto sem quebra"
+descricao: "report-lint.py avisa, sem mudar o exit, quando a linha do próprio AT (AT-nnn … PASS n · FAIL n) diz zero casos avaliados ou que já passava antes, ou quando vários ATs usam o mesmo comando sem contagem; sdd-define 2.9.2 e sdd-build 2.17.1 ensinam o formato"
+deploy: release automática pelo workflow release.yml (tag v2.29.0 posta à mão no commit)
+trilha: completa
+review_externo: sdd/reports/reviews/EXTERNAL_REVIEW_20261125-161052 sha256=e6c3ccaebf985c93383e1e8cb5c531c79895c1fd9b78c2f071df443eb323586b diversidade=vendor
+avisos:
+  - "só aviso: bloquear fica para outra frente (5 relatórios com contagem, 2 projetos ou mais, 0 alarmes falsos)"
+  - "pendências: coluna Antes ausente só gera aviso (D4); AT-nnn.log final em exit diferente de 0 é aceito (0 casos em 287 logs); limites O2, O4 e O5 do avaliador; curador pode tomar linha verde sem marca por achado (ruído)"
+  - "CI macOS/Linux/Windows ainda não rodou; roda no PR, antes da tag"
+  - "avaliações dos ciclos 2 e 3 gravadas em resumo; lint, drift, landmines, smoke e test-baseline pulados (o Open não tem sdd/config.yaml)"
