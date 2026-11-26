@@ -266,3 +266,34 @@ Rodada 22 (`8f79b76`, diff inteiro sem `sdd/curadoria/`, decisão do Roberto): r
 
 revisor2: dispensado rodada=22 — sem superfície de risco
 sem achados: rodada=22 EXTERNAL_REVIEW_20261125-155416
+
+Testes lentos no Windows (v2.29.1), rodada 23 (`afdc4b4`, recorte `.github tests`, base `1fd9bb1`): revisor `codex`
+(30 s, raso), auditor `claude`; `diversidade: vendor`; US$ 0,12.
+
+revisor2: dispensado rodada=23 — sem superfície de risco
+sem achados: rodada=23 EXTERNAL_REVIEW_20261125-203425
+
+Rodada 24 (mesmo diff, 2º revisor por regra do Roberto para codex raso): revisor `openrouter:deepseek/deepseek-v4-pro`
+(82 s), auditor `claude`; US$ 0,14. A 1ª tentativa parou sem a chave da OpenRouter no ambiente (custo zero).
+
+sem resultado: rodada=24 EXTERNAL_REVIEW_20261125-203529 — sem a chave da OpenRouter no ambiente (exit 65)
+sem achados: rodada=24 EXTERNAL_REVIEW_20261125-203537
+
+Rodada 25 (`cf3da1c`, depois do TMPDIR e do merge da `main`; mesmo recorte, base `c5e085e`): revisor `codex` (25 s,
+raso; o 2º revisor `gemini` parou sem login), auditor `claude`; US$ 0,12.
+
+sem achados: rodada=25 EXTERNAL_REVIEW_20261125-230455
+sem resultado: rodada=25 EXTERNAL_REVIEW_20261125-230455 — 2º revisor gemini sem login (exit 65)
+
+Rodada 26 (mesmo diff da 25): revisor `openrouter:deepseek/deepseek-v4-pro` (102 s), auditor `claude`; US$ 0,15.
+
+| achado | sev | veredito | rodada | evidência | dano | revisão |
+|---|---|---|---|---|---|---|
+| R1 | HIGH | REBATIDA_EVIDENCIA | rodada=26 | o auditor discordou (aspas no padrão do case só tornam literal a expansão; o `*` segue curinga); CI 45733772112: o passo "Temporary on the runner disk (asserted)" verde nas 16 fatias, com `D:\a\_temp\tmp.…` impresso | nao | EXTERNAL_REVIEW_20261125-230550 |
+| R2 | HIGH | REBATIDA_EVIDENCIA | rodada=26 | a mesma linha em release.yml; mesma evidência do R1 | nao | EXTERNAL_REVIEW_20261125-230550 |
+
+Rodada 27 (`cf3da1c`, diff inteiro da frente, base `c5e085e`; os documentos do SDD ficam fora, e o código é o mesmo da
+26): revisor `codex` (26 s, raso), 2º revisor `openrouter:deepseek/deepseek-v4-pro` acionado pelo revisor raso, auditor
+`claude`; `diversidade: vendor`; US$ 0,14. Nenhum achado; os 2 HIGH da rodada 26 não voltaram.
+
+sem achados: rodada=27 EXTERNAL_REVIEW_20261125-230912
