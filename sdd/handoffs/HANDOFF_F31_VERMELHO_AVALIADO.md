@@ -8,7 +8,7 @@
 |-----------|-------|
 | **Feature** | F31_VERMELHO_AVALIADO |
 | **Objetivo** | O `report-lint.py` avisa quando o log de um AT não prova o AT: zero casos avaliados na linha dele, AT que já passava antes, ou comando compartilhado sem contagem por AT |
-| **Status** | ✅ Publicada na `v2.29.0` (2026-11-25, `1fd9bb1`; Release conferida) |
+| **Status** | ✅ Publicada na `v2.29.0` (2026-11-25, `1fd9bb1`; Release conferida) e starter **`v1.5.34`** (2026-11-26) |
 | **Última sessão** | 2026-11-25 |
 | **Branch / pasta** | publicado pelo commit único da branch `f31-publicar` (PR #47); trabalho em `f31-vermelho-avaliado` · `/Users/robertoduarte/rdd-worktrees/f31-vermelho-avaliado` (só local: tem um commit com números do caso de origem, não enviar) |
 | **Artefatos** | arquivados em `sdd/archive/F31_VERMELHO_AVALIADO/` (ESCOPO, DEFINE, DESIGN, BUILD_REPORT) · `sdd/reviews/` (3 avaliações e o ledger da revisão) · `sdd/releases/F31_VERMELHO_AVALIADO/unica_v2.29.0.yaml` · `sdd/reports/evidence/F31_VERMELHO_AVALIADO/` |
@@ -30,7 +30,7 @@
 5. ⚠️ O `playbook-curator.sh` pode tomar por achado uma linha verde sem marca `AT-001 … (PASS 2 · FAIL 0)` colada num log de avaliação (ruído, com julgamento humano no lote).
 6. ⚠️ As avaliações dos ciclos 2 e 3 foram gravadas em resumo (sondas nos logs `AVAL2-*`/`AVAL3-*`); `lizard` e `jscpd` não estavam instalados (qualidade não medida).
 7. **LM-002:** a promoção `promovido_para=sdd/bin/report-lint.py` no projeto de origem entra quando ele atualizar a cópia do Open para a `v2.29.0` ou mais nova. O que a máquina confere é só aviso.
-8. ✨ Starter: gerar a 18ª geração pela tag `v2.29.0` (muda `disciplina-de-teste.md`, `sdd-define` e `sdd-build`), com OK próprio.
+8. ✅ Starter: 18ª geração pela tag `v2.29.0` publicada na `v1.5.34` (2026-11-26). A `v2.29.1` não muda nada que o starter leva.
 9. Custo: revisões US$ 1,25 (4 rodadas, codex na assinatura); avaliador em 3 ciclos (o 3º autorizado pelo Roberto).
 
 Curadoria: na fila (`sdd/curadoria/fila/F31_VERMELHO_AVALIADO/20261125T234556Z`, 9 deltas, 1 candidato).
@@ -40,12 +40,13 @@ Curadoria: na fila (`sdd/curadoria/fila/F31_VERMELHO_AVALIADO/20261125T234556Z`,
 - 2026-11-25 — Define: o caso reproduziu (antes `[exit=2]` com `PASS 0 · FAIL 0` aceito); D1 a D5 com a recomendada, pela autorização do Roberto; governança N.A. (revisor fresco).
 - 2026-11-25 — Build: 41 testes antes do código; 3 sabotagens pegas; avaliador NEEDS_WORK no ciclo 1 (leitor: primeira contagem, AT repetido, aviso do final) e no ciclo 2 (7 testes com a versão fixa), PASS no 3º.
 - 2026-11-25 — Release com o OK do Roberto ("sim, pode finalizar e publicar a v2.29.0"): a `main` andou para a `v2.28.1` no meio (integrada, gate repetido); commit único sem os números do caso de origem; PR #47 com CI 18/18; push atômico `main` + tag; Release conferida (`shasum -c`, `VERSION`, 793 = 793 do `MANIFEST`).
+- 2026-11-26 — starter: 18ª geração pela tag `v2.29.0` num clone limpo (`4c563a9`; check-gerado VERDE, check-versions e publish-check PASS, testes, gate da KB e 19 zips), PR #27 com CI verde; com o OK do Roberto ("pode avançar a main do starter"), avanço direto da `main`; Auto Release 45794840097 verde, `v1.5.34` com 19 zips OK no `shasum -c` (`sdd-define` 2.9.2, `sdd-build` 2.17.1); branch `gen/v2.29.0` apagada.
 
 ## Prompt de retomada
 
 ```text
 F31 publicada na v2.29.0 (sdd-open). Leia sdd/handoffs/HANDOFF_F31_VERMELHO_AVALIADO.md, seção Falta.
-Próximo passo possível: o starter pela tag v2.29.0 num clone limpo (item 8), com OK próprio; ou medir os avisos
+Starter v1.5.34 publicado (item 8). Próximo passo possível: medir os avisos
 [casos avaliados] em projetos reais antes de propor o bloqueio (item 1). Não enviar a branch local
 f31-vermelho-avaliado: ela tem um commit com números do caso de origem.
 ```
