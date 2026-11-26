@@ -1,0 +1,16 @@
+$ bash /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-s3-open-sdd-unclebob/8effdefa-7530-47db-938b-6eca322f632a/scratchpad/aval-s3/p20b.sh
+RESULTADO: AVISOS
+→ cole a seção no BUILD_REPORT; ela avisa e não reprova.
+- 6 funções medidas no diff, 3 acima do limite:
+- `src/s.py:1-2` `seis`: 6 parâmetros (limite 5)
+- `src/onze.py:1-23` `onze`: complexidade 11 (limite 10)
+- `src/l61.py:1-61` `l61`: 61 linhas (limite 60)
+- 4 arquivos do diff lidos, de 5; 4 trechos repetidos:
+- `src/l60.py:1-60` repete `src/l61.py:1-60` (60 linhas, 180 tokens)
+- `src/dez.py:1-20` repete `src/onze.py:1-20` (20 linhas, 97 tokens)
+- `src/dez.py:1-20` repete `src/velha.py:1-20` (20 linhas, 97 tokens)
+- `src/onze.py:11-22` repete `src/velha.py:11-22` (12 linhas, 59 tokens)
+[exit=0]
+== def numa linha so
+rc=0
+[exit=0]

@@ -8,16 +8,17 @@
 |-----------|-------|
 | **Feature** | F30_QUALIDADE_CODIGO |
 | **Objetivo** | O código que o método gera segue Clean Code e TDD: lint e tipos a cada tarefa, regras de qualidade por stack, vermelho antes do verde, sabotagem do gate, refatorar depois do verde e métricas de forma no diff (só aviso) |
-| **Status** | ✅ As 3 fatias publicadas: S3 na `v2.28.0` (2026-11-25, `33b5831`; Release conferida; o `publish-gate` da `main` caiu em `33b5831` e passou em `30b2904` e `e47c2ec`, ver Falta) e starter **`v1.5.33`**; S2 na `v2.27.3` (as tags `v2.27.0` a `v2.27.2` ficaram sem Release) e correções do `sdd-drive` na `v2.27.4` e na **`v2.28.1`** (2026-11-25, `699573e`; Release conferida); S1 na `v2.26.0` |
-| **Última sessão** | 2026-11-25 |
-| **Branch / pasta** | S3: `s3-open-sdd-unclebob` · `/Users/robertoduarte/rdd-worktrees/s3-open-sdd-unclebob` (PR #45 para o CI antes da tag; a `main` avançou direto). S2: `s2-sdd-open-uncle-bob` · `/Users/robertoduarte/rdd-worktrees/s2-sdd-open-uncle-bob` (PR #43 para o CI antes da tag; a `main` avançou direto para o HEAD da frente); correção do `sdd-drive`: `fix-sdd-drive-temporario`, na mesma pasta (PR #44). S1: `f30-sdd-open-uncle-bob` |
+| **Status** | ✅ As 3 fatias publicadas; por último a **`v2.29.1`** (2026-11-26, `a8c5365`: testes do Windows com o temporário no D: e o `test_rede_pendurada` descontando a máquina). S3 na `v2.28.0` (2026-11-25, `33b5831`; Release conferida; o `publish-gate` da `main` caiu em `33b5831` e passou em `30b2904` e `e47c2ec`, ver Falta) e starter **`v1.5.33`**; S2 na `v2.27.3` (as tags `v2.27.0` a `v2.27.2` ficaram sem Release) e correções do `sdd-drive` na `v2.27.4` e na **`v2.28.1`** (2026-11-25, `699573e`; Release conferida); S1 na `v2.26.0` |
+| **Última sessão** | 2026-11-26 |
+| **Branch / pasta** | `v2.29.1`: `testes-lentos-windows` · `/Users/robertoduarte/rdd-worktrees/testes-lentos-windows` (PR #48 para o CI antes da tag; a `main` avançou direto). S3: `s3-open-sdd-unclebob` · `/Users/robertoduarte/rdd-worktrees/s3-open-sdd-unclebob` (PR #45 para o CI antes da tag; a `main` avançou direto). S2: `s2-sdd-open-uncle-bob` · `/Users/robertoduarte/rdd-worktrees/s2-sdd-open-uncle-bob` (PR #43 para o CI antes da tag; a `main` avançou direto para o HEAD da frente); correção do `sdd-drive`: `fix-sdd-drive-temporario`, na mesma pasta (PR #44). S1: `f30-sdd-open-uncle-bob` |
 | **Artefatos** | arquivados em `sdd/archive/F30_QUALIDADE_CODIGO/` (DEFINE, DESIGN, ESCOPO e BUILD_REPORT) · `sdd/features/AVALIACAO_F30_UNCLE_BOB.md` · `sdd/reviews/` (5 avaliações `AVALIACAO_F30_QUALIDADE_CODIGO_*` e `LEDGER_REVISAO_F30_QUALIDADE_CODIGO.md`) · `sdd/releases/F30_QUALIDADE_CODIGO/` (um ledger por tag) · `sdd/reports/evidence/F30_QUALIDADE_CODIGO/` |
-| **Verify Gate** | 🟢 S3: 0 em `cd70bed`, o código da `v2.28.0` (2.947 testes, 7 pulados); 🟢 S2: 0 em `2864d26`, o código da `v2.27.3` (2.880 testes, 4 pulados), e 0 em `2b015b4`, o código da `v2.27.4` (2.888 testes, 5 pulados); S1: 0 em `76827bf` — `bash sdd/bin/verify-gate.sh sdd/archive/F30_QUALIDADE_CODIGO/DEFINE_F30_QUALIDADE_CODIGO.md` |
-| **Veredito das releases** | 🟡 S3 CONCERNS (6 avisos, no ledger) · 🟡 `v2.27.4` CONCERNS (5 avisos, no ledger) · 🟡 S2 CONCERNS (6 avisos) · 🟡 S1 CONCERNS (4 avisos), em "Falta" |
+| **Verify Gate** | 🟢 `v2.29.1`: 0 em `afdc4b4` (2.995 testes, 7 pulados); o `TMPDIR` e o merge da `main` vieram depois, cobertos pelo CI do PR #48 (18/18 em `cf3da1c`); 🟢 S3: 0 em `cd70bed`, o código da `v2.28.0` (2.947 testes, 7 pulados); 🟢 S2: 0 em `2864d26`, o código da `v2.27.3` (2.880 testes, 4 pulados), e 0 em `2b015b4`, o código da `v2.27.4` (2.888 testes, 5 pulados); S1: 0 em `76827bf` — `bash sdd/bin/verify-gate.sh sdd/archive/F30_QUALIDADE_CODIGO/DEFINE_F30_QUALIDADE_CODIGO.md` |
+| **Veredito das releases** | 🟡 `v2.29.1` CONCERNS (7 avisos, no ledger `s3_v2.29.1.yaml`) · 🟡 S3 CONCERNS (6 avisos, no ledger) · 🟡 `v2.27.4` CONCERNS (5 avisos, no ledger) · 🟡 S2 CONCERNS (6 avisos) · 🟡 S1 CONCERNS (4 avisos), em "Falta" |
 
 ## Publicado
 
 <!-- publicado:inicio (gerado por sdd/bin/ficha-publicado.py a partir de sdd/releases/; não edite à mão) -->
+- 2026-11-26 · s3 · 2.29.1 · shipado · CONCERNS · deploy release automática pelo workflow release.yml (tag v2.29.1 posta à mão no commit) · trilha completa · a8c5365
 - 2026-11-25 · s3 · 2.28.1 · shipado · CONCERNS · deploy release automática pelo workflow release.yml (tag v2.28.1 posta à mão no commit) · trilha completa · 699573e
 - 2026-11-25 · s3 · 2.28.0 · shipado · CONCERNS · deploy release automática pelo workflow release.yml (tag v2.28.0 posta à mão no commit) · trilha completa · 33b5831
 - 2026-11-24 · s2 · 2.27.4 · parcial · CONCERNS · deploy release automática pelo workflow release.yml (tag v2.27.4 posta à mão no commit) · trilha completa · 7ab8a72
@@ -30,9 +31,12 @@
 
 ## Falta
 
-1. 🐛 **Testes de tempo no Windows, intermitentes (a causa está em aberto).** Na publicação da `v2.28.1` (`699573e`) o run da tag passou e publicou, mas:
-   - `release` da `main` (45693022443), fatia 9: o `git add -A` do `setUp` passou de 120 s (`test_doctor_com_pacote_sem_checar_avisa_e_sai_0`); o teste seguinte também travou, 113,6 s num `sdd-open.sh` (vizinhos: 22 a 26 s). Já tinha caído igual em `33b5831` (45634528055, fatia 7). Normal medido: 4 a 10 s em máquina folgada, até 28,8 s na suíte. Indício de máquina parada por minutos, ainda sem causa; o limite segue em 120 s. `tests/apoio.py` anota todo comando acima de 10 s (`⏱`) no log da unidade: use-o para medir;
-   - `publish-gate` da `main` (45693022449), fatia 6: `test_checar.TestRemoto.test_rede_pendurada`, 21,7 s contra limite de 14 s.
+1. ✅ **Testes de tempo no Windows: consertados no CI na `v2.29.1`** (evidência em `sdd/reports/evidence/F30_QUALIDADE_CODIGO/testes-lentos-windows/`).
+   - `git add -A` do `setUp`: em 24 máquinas, o disco C: do runner levou 4 a 8 s por `add`, com picos de até 44 s perto dos 10 min de máquina ligada; o D: (`RUNNER_TEMP`) levou 0,4 a 0,8 s em 161 repetições. Não é antivírus (já vem desligado), nem atualização do Windows, nem cópia de sombra; a causa dentro do C: segue sem nome. Os 120 s não se repetiram nas 24 máquinas: que sejam o mesmo fenômeno é inferência. Conserto: `TMPDIR=$RUNNER_TEMP` nos 2 workflows, com um passo que afirma onde ficou o temporário (o `TEMP` no D: quebrava 8 fatias, porque o Git Bash monta `/tmp` onde o `TEMP` aponta).
+   - `test_rede_pendurada`: o `checar.sh` desiste aos 8,06 s, dentro do teto; o que variava era a partida a frio da máquina. O teste agora mede a base (servidor que recusa) e cobra `pendurado − base ≤ 12 s`. Sabotagem: o teste antigo dava falso vermelho com `sleep 7` na partida e o novo não; os dois reprovam com o vigia removido.
+   - 🐛 O conserto vale só para o CI: o aluno no Windows segue com o temporário no C: (os testes não rodam na máquina dele).
+   - 🐛 Achado lateral: no Windows, o `sdd-slot` passa um caminho `/tmp/...` ao Python quando o projeto está dentro do `TEMP` (apareceu com o `TEMP` no D:; com o `TMPDIR` não aparece).
+   - 🐛 `test_credencial_recusada_rapida` (teto 5 s) teve base fria de 4,6 s no diagnóstico: o mesmo desconto da base pode valer para ele.
    - ✅ a queda do `sdd-drive` (fatia 2 de 45634528055) tem causa provada e conserto na `v2.28.1` (item 5).
    - ⚠️ Avisos da release S3: estão no ledger `s3_v2.28.0.yaml` (nota de atualização, avaliador antes dos consertos, unidades diferentes no Windows só com teste de texto, ferramentas falsas no CI).
    - 🐛 pendências leves da S3: `jscpd` sem o campo `tokens` sai "0 tokens" (LOW da rodada 20); nome de arquivo com aspas derruba a complexidade (dito como não medido); causa imprecisa quando o `lizard` sai vazio; seção só com `---` conta como preenchida; a `sdd-release` não cita a falta da seção entre as causas de abortar; com `.vue`, não dá para saber quais arquivos o `jscpd` leu.
@@ -48,7 +52,8 @@
 4. ✨ O clone local `~/rdd-public/sdd-starter` está atrasado (11ª geração) e tem `docs/guia-do-aluno.pt-BR.md` fora do git; as gerações 15ª a 17ª foram feitas em clones limpos.
 5. ✅ **`sdd-drive.sh`, falha intermitente: consertada na `v2.28.1`.** No Windows, quem larga a trava a apaga, e abri-la naquele instante dá errno 13; o verbo saía 2. Agora espera até 5 s. Prova em 6 máquinas Windows: 47 de 48 vermelhas sem o conserto, 0 de 48 com ele. Que foi isso no run 45634528055 é inferência: a saída daquele run foi descartada.
 6. ✨ A divisão das fatias do Windows é por número de testes, não por tempo: a fatia 4 levou 30 min no PR (teto 45). Dividir por tempo medido.
-7. Curadoria: o lote de 2026-11-25 foi enviado na `v2.28.1` (7 entradas, 103 contagens, 16 lições, LM-045 a LM-060). Fila nova: 1 entrada da F30 (0 deltas). A pasta `~/rdd-worktrees/lote-curadoria-20261125` e a branch local já podem ser apagadas (perguntar ao Roberto).
+7. Curadoria: o lote de 2026-11-25 foi enviado na `v2.28.1` (7 entradas, 103 contagens, 16 lições, LM-045 a LM-060). Fila nova: 1 entrada da F30 (0 deltas). As pastas `lote-curadoria-20261125`, `fix-sdd-drive-recibos` e `s3-open-sdd-unclebob` foram apagadas com o OK do Roberto (2026-11-26). Curadoria da `v2.29.1`: na fila (`sdd/curadoria/fila/F30_QUALIDADE_CODIGO/20261126T084525Z`, 0 deltas).
+9. ⚠️ Avisos da `v2.29.1` (ledger `s3_v2.29.1.yaml`): sem 2º Verify Gate inteiro depois do `TMPDIR` (o CI do PR cobriu); codex raso em 3 rodadas, com o deepseek como revisor; 2 HIGH da rodada 26 rebatidos pela execução no CI (o `${d,,}` não se prova no bash 3 do macOS); custo das revisões US$ 0,67.
 8. ⚠️ Avisos da `v2.28.1` (ledger `s3_v2.28.1.yaml`): codex raso na rodada 21 e sem 2º revisor na 22; a revisão adversarial deixa de ler `sdd/curadoria/` (decisão do Roberto); o CI não rodou sobre os commits de papel antes da tag.
 
 ## Definition of Done
@@ -103,18 +108,17 @@
 ## Prompt de retomada
 
 ```text
-Investigar os 2 testes de tempo do Windows que caem às vezes (sdd-open), pendência da F30. Contexto: Open v2.28.1 e starter
-v1.5.33 publicados; o sdd-drive está consertado. O publish-gate e o release da main caíram em 699573e, 1 teste em cada um.
+Fechar as pendências leves da F30 no sdd-open (Open v2.29.1 publicado; os testes de tempo do Windows estão consertados no CI).
 
-Leia primeiro: sdd/handoffs/HANDOFF_F30_QUALIDADE_CODIGO.md (Falta, item 1) e a seção "## Sempre" de sdd/playbook.md. Pasta:
-frente nova pela sdd-new-session a partir de origin/main, em ~/rdd-worktrees. Setup: git status limpo; GIT_TERMINAL_PROMPT=0
-git fetch origin main && git log --oneline HEAD..origin/main.
+Leia primeiro: sdd/handoffs/HANDOFF_F30_QUALIDADE_CODIGO.md (Falta, itens 1 e 6) e a seção "## Sempre" de sdd/playbook.md.
+Pasta: frente nova pela sdd-new-session a partir de origin/main, em ~/rdd-worktrees. Setup: git status limpo;
+GIT_TERMINAL_PROMPT=0 git fetch origin main && git log --oneline HEAD..origin/main.
 
-1. Evidência: gh run download 45693022443 -n testes-windows-fatia-9 e gh run download 45693022449 -n testes-windows-fatia-6
-   (os artefatos duram 14 dias); compare com 45634528055, fatia 7.
-2. git add -A do Projeto.setUp (tests/test_sdd_open.py): passou de 120 s 2 vezes, e o comando seguinte, que não é do git,
-   também travou. Ache o que para a máquina (antivírus, disco, rajada) antes de mexer em limite; as linhas ⏱ do log medem.
-3. test_checar.TestRemoto.test_rede_pendurada: 21,7 s contra 14 s. Meça a partida do script e o teto real da rede em separado.
+1. Confira os runs da main depois de a8c5365 (gh run list --branch main -L 6): nenhum git add do setUp acima de 10 s
+   nas linhas ⏱ dos artefatos testes-windows-fatia-*.
+2. sdd-slot no Windows passa /tmp/... ao Python quando o projeto está dentro do TEMP: teste vermelho antes do conserto.
+3. test_credencial_recusada_rapida (teto 5 s, base fria medida 4,6 s): mesmo desconto da base do test_rede_pendurada.
+4. Fatias do Windows divididas por tempo medido, não por número de testes.
 
 Restrições: nunca --force; nunca mover tag publicada; nunca gh run rerun de run antigo; não rodar duas suítes em paralelo
 (LM-031); não subir limite sem medida. Falar em português, para leigo, com recomendação.

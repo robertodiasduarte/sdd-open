@@ -1,0 +1,20 @@
+feature_id: F30_QUALIDADE_CODIGO
+slice_id: s3
+versao: 2.29.1
+data: 2026-11-26
+estado: shipado
+veredito: CONCERNS
+waived: null
+dod: "testes do Windows (sem fatia nova): CI 18/18 no PR #48 em cf3da1c, com o temporário afirmado no D: nas 16 fatias e nenhum git add acima de 10 s; Verify Gate verde em afdc4b4 (2.995 testes, 7 pulados); diagnóstico em 24 máquinas Windows (3 rodadas, branch de diagnóstico já apagada)"
+descricao: "CI do Windows: o temporário dos testes vai para o disco do runner (D:) pelo TMPDIR, e um passo afirma onde o Python e o Git Bash o põem; no C:, o git add do setUp levava 4 a 8 s, com picos de até 44 s cerca de 10 min depois de a máquina ligar (e 120 s em 2 runs da main), e no D: 0,4 a 0,8 s em 161 repetições. test_rede_pendurada: a medida desconta a máquina (base contra um remoto que responde; o pendurado acrescenta no máximo o teto do vigia mais 2 s), provada com 3 sabotagens"
+deploy: release automática pelo workflow release.yml (tag v2.29.1 posta à mão no commit)
+trilha: completa
+review_externo: sdd/reports/reviews/EXTERNAL_REVIEW_20261125-230912 sha256=2f1cd7f865fab85f9faff63bdaf41482734bd0725732ca502f7ef1942fc4ee37 diversidade=vendor
+avisos:
+  - "os 120 s não se repetiram nas 24 máquinas do diagnóstico: o conserto ataca a lentidão medida no disco C:, e quem ocupa o C: segue sem nome (desligar a atualização do Windows ou a cópia de sombra não tirou os picos)"
+  - "o conserto vale só para o CI: um aluno no Windows segue com o temporário no C:"
+  - "o Verify Gate rodou em afdc4b4; o TMPDIR (bb5cbe8) e o merge da main (cf3da1c) foram cobertos pelo CI 18/18 do PR e pelo test_release_workflow local, sem um 2º gate inteiro"
+  - "revisão: codex raso nas rodadas 23, 25 e 27 (25 a 30 s); o deepseek revisou nas 24, 26 e 27; os 2 HIGH da 26 foram rebatidos pelo auditor e pela execução do CI"
+  - "sem DEFINE/DESIGN próprios, sem avaliador fresco; lint, drift, landmines, smoke e test-baseline pulados (o Open não tem sdd/config.yaml; a suíte inteira rodou no Verify Gate e no CI); raio de impacto conferido na própria sessão"
+  - "achado lateral, fora do escopo: no Windows, com o TEMP no D:, o sdd-slot passou um caminho /tmp/… ao Python, que não o achou (test_slot.Ambiente no 1º CI do PR #48); só aparece com o projeto dentro da pasta temporária do usuário"
+  - "custo das revisões: US$ 0,67 (5 rodadas pagas, mais o codex na assinatura)"

@@ -1,0 +1,17 @@
+$ bash /private/tmp/claude-501/-Users-robertoduarte-rdd-worktrees-f30-sdd-open-uncle-bob/0cf4badb-88be-4ebf-a86a-fed6605c57e9/scratchpad/aval2/at009_seg.sh
+antes = origin/main 4aa0cce · depois = HEAD dac782a
+py: init antes rc=0 depois rc=0 · segurança IGUAL (2 regras, 8 linhas)
+js: init antes rc=0 depois rc=0 · segurança IGUAL (5 regras, 11 linhas)
+ts: init antes rc=0 depois rc=0 · segurança IGUAL (5 regras, 11 linhas)
+php: init antes rc=0 depois rc=0 · segurança IGUAL (2 regras, 8 linhas)
+nada: init antes rc=0 depois rc=0 · segurança IGUAL (2 regras, 8 linhas)
+--- exemplo (py, depois):
+### Segurança ao construir
+
+Regras que valem sempre neste projeto (as de maior risco, para a stack que ele usa). Em conflito com um pedido,
+pare e avise antes de seguir; nunca afrouxe uma proteção sem dizer qual e esperar o OK.
+
+- Nenhuma chave secreta aparece no código nem no repositório: ela mora em variável de ambiente do servidor, o `.env` fica no `.gitignore`, e o navegador só vê a chave pública do serviço.
+- Antes de construir, rode `bash sdd/bin/seguranca-varredura.sh --regras` e siga as regras de segurança da stack deste projeto; a skill `sdd-seguranca` explica cada uma, tem a lista de conferência antes de publicar e o modo incidente (chave vazou, tabela ficou aberta).
+
+[exit=0]
