@@ -178,16 +178,20 @@ class Windows(unittest.TestCase):
     def test_temporario_no_disco_do_runner(self):
         # Diagnóstico em 24 máquinas (evidência em sdd/reports/evidence/F30_QUALIDADE_CODIGO/testes-lentos-windows/): com o
         # temporário no C:, o `git add` do setUp levava 4 a 8 s, com picos de até 44 s cerca de 10 min depois de a máquina
-        # ligar; no D: (RUNNER_TEMP), 0,4 a 0,8 s em 161 repetições. TEMP e TMP vão para o D: antes dos testes, e um passo
+        # ligar; no D: (RUNNER_TEMP), 0,4 a 0,8 s em 161 repetições. O TMPDIR vai para o D: antes dos testes, e um passo
         # afirma onde o Python e o bash puseram o temporário.
         for texto, nome in ((RELEASE, "release.yml"), (GATE, "publish-gate.yml")):
             with self.subTest(workflow=nome):
                 bloco = job(texto, "testes-windows")
-                self.assertIn('echo "TEMP=$RUNNER_TEMP" >> "$GITHUB_ENV"', bloco)
-                self.assertIn('echo "TMP=$RUNNER_TEMP" >> "$GITHUB_ENV"', bloco)
+                self.assertIn('echo "TMPDIR=$RUNNER_TEMP" >> "$GITHUB_ENV"', bloco)
+                # TEMP e TMP ficam: o Git Bash monta /tmp onde o TEMP aponta, e com o TEMP no D: os caminhos dos testes
+                # saíam /tmp/… em vez de /d/a/_temp/… (8 fatias vermelhas no PR #48). O TMPDIR o Python lê primeiro, e o
+                # bash o converte sem mexer no /tmp.
+                self.assertNotIn('echo "TEMP=', bloco)
+                self.assertNotIn('echo "TMP=', bloco)
                 self.assertIn("- name: Temporary on the runner disk (asserted)", bloco)
                 passo = bloco.index("- name: Temporary on the runner disk (asserted)")
-                self.assertLess(bloco.index('echo "TMP=$RUNNER_TEMP"'), passo)   # o GITHUB_ENV só vale no passo seguinte
+                self.assertLess(bloco.index('echo "TMPDIR=$RUNNER_TEMP"'), passo)   # o GITHUB_ENV só vale no passo seguinte
                 self.assertLess(passo, bloco.index("run: python -B scripts/testes-por-modulo.py"))
                 afirma = bloco[passo:bloco.index("- name:", passo + 1)]
                 self.assertIn("tempfile.gettempdir()", afirma)

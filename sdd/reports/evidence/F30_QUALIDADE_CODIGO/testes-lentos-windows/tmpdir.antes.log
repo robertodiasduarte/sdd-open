@@ -1,0 +1,6 @@
+FAIL: test_temporario_no_disco_do_runner (test_release_workflow.Windows.test_temporario_no_disco_do_runner) (workflow='release.yml')
+AssertionError: 'echo "TMPDIR=$RUNNER_TEMP" >> "$GITHUB_ENV"' not found in '    name: Testes no Windows, fatia ${{ matrix.fatia }}/16 (Git Bash + Python nativo,
+FAIL: test_temporario_no_disco_do_runner (test_release_workflow.Windows.test_temporario_no_disco_do_runner) (workflow='publish-gate.yml')
+AssertionError: 'echo "TMPDIR=$RUNNER_TEMP" >> "$GITHUB_ENV"' not found in '    name: Testes no Windows, fatia ${{ matrix.fatia }}/16 (Git Bash + Python nativo,
+Ran 1 test in 0.001s
+FAILED (failures=2)
